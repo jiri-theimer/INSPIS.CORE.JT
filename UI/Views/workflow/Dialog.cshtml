@@ -1,0 +1,56 @@
+﻿@model UI.Models.WorkflowDialogViewMode
+
+
+@{
+    ViewData["Title"] = "Posunout | Doplnit";
+    Layout = "~/Views/Shared/_LayoutModal.cshtml";
+
+    if (Model.RecA01 == null)
+    {
+        return;
+    }
+
+
+}
+
+@addTagHelper *, UI
+
+<h4>
+    Posunout | Doplnit akci: @(Model.RecA01.a01Signature)
+    @if (Model.RecA01.b02ID > 0)
+    {
+        <span>, aktuální stav:</span>
+        <strong style="margin-left:10px;">@Model.RecA01.b02Name</strong>
+    }
+</h4>
+
+<div class="bg-light" style="padding:10px;">
+    <button id="cmdSave" type="submit" class="btn btn-success">Uložit změny</button>
+    <button type="button" id="cmdClose" onclick="_window_close()" class="btn btn-light">Zavřít</button>
+
+</div>
+
+<form id="form1" asp-controller="workflow" asp-action="Dialog" method="POST">
+
+    <input type="hidden" asp-for="@Model.pid" />
+    <input type="hidden" asp-for="@Model.UploadGuid" />
+
+    <div class="modal_record_container">
+        <myradiolist asp-for="@Model.SelectedB06ID" datasource="@Model.lisB06" valuefield="pid" textfield="b06Name" event_after_changevalue="b06id_onchange"></myradiolist>
+
+        <div class="form-row my-2">
+            <textarea asp-for="@Model.Comment" class="form-control" placeholder="Doplnit komentář..." style="height:100px;"></textarea>
+            <span asp-validation-for="@Model.Comment" class="text-danger"></span>
+        </div>
+
+        <iframe id="fraUpload" src="/FileUpload/Index?prefix=a01&guid=@Model.UploadGuid" height="350" scrolling="no"></iframe>
+    </div>
+</form>
+
+<script type="text/javascript">
+    function b06id_onchange(b06id) {
+       
+    }
+</script>
+
+

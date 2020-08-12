@@ -69,6 +69,8 @@ namespace BO
         public string explicit_selectsql { get; set; }
 
         public bool? IsRecordValid;
+        public BO.RunningUser CurrentUser;
+        public bool MyRecordsDisponible;
 
         public int j04id { get; set; }
 

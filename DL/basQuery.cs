@@ -145,6 +145,13 @@ namespace DL
                     AQ(ref lis, "a.h04Deadline BETWEEN @gd1 AND @gd2 OR a.h04CapacityPlanFrom BETWEEN @gd1 AND @gd2 OR a.h04CapacityPlanUntil BETWEEN @gd1 AND @gd2", "gd1", mq.global_d1, "AND", null, null, "gd2", mq.global_d2);
                 }
             }
+            if (mq.MyRecordsDisponible==true && mq.CurrentUser !=null)
+            {
+                if (mq.Prefix == "a41")
+                {
+                    AQ(ref lis, "a.j02ID=@j02id_me OR a.j11ID IN (select j11ID FROM j12Team_Person WHERE j02ID=@j02id_me OR j04ID=@j04id_me) OR a.j11ID IN (select xa.j11ID FROM j12Team_Person xa INNER JOIN a02Inspector xb ON xa.a04ID=xb.a04ID WHERE xb.j02ID=@j02id_me)", "j02id_me",mq.CurrentUser.j02ID,"AND",null,null,"j04id_me",mq.CurrentUser.j04ID);
+                }
+            }
             if (mq.pids != null && mq.pids.Any())
             {
                 AQ(ref lis, mq.PkField + " IN (" + String.Join(",", mq.pids) + ")", "", null);
@@ -263,6 +270,7 @@ namespace DL
             if (mq.b02id > 0)
             {
                 AQ(ref lis, "a.b02ID=@b02id", "b02id", mq.b02id);
+
             }
             
             if (mq.b02ids != null && mq.b02ids.Count() > 0)
