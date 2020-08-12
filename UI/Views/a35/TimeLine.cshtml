@@ -1,0 +1,272 @@
+﻿@model UI.Models.a35TimeLineViewModel
+
+@{
+    ViewData["Title"] = "Časové kapacity inspektorů";
+    Layout = "~/Views/Shared/_LayoutModal.cshtml";
+
+
+    string strClass = "work-day";
+    int x = 0;
+
+}
+
+@addTagHelper *, UI
+<link rel="stylesheet" href="~/css/tabcapacity.css" />
+
+
+
+<div class="bg-light form-row">
+    <div class="col-sm-2 col-md-2 btn-group">
+        <select asp-for="@Model.CurYear" class="form-control" onchange="goyear(this)">
+            @foreach (var y in Model.lisYears)
+            {
+                <option value="@y">@y</option>
+            }
+        </select>
+        <select asp-for="@Model.CurMonth" class="form-control" onchange="gomonth(this)">
+            <option value="1">Leden</option>
+            <option value="2">Únor</option>
+            <option value="3">Březen</option>
+            <option value="4">Duben</option>
+            <option value="5">Květen</option>
+            <option value="6">Červen</option>
+            <option value="7">Červenec</option>
+            <option value="8">Srpen</option>
+            <option value="9">Září</option>
+            <option value="10">Říjen</option>
+            <option value="11">Listopad</option>
+            <option value="12">Prosinec</option>
+        </select>
+        <button type="button" class="btn btn-secondary btn-sm" title="Předchozí měsíc" onclick="goprev()">←</button>
+        <strong class="val-readonly" style="width:200px;text-align:center;">@(Model.CurMonth.ToString()+" - "+Model.CurYear.ToString())</strong>
+        <button type="button" class="btn btn-secondary btn-sm" title="Další měsíc" onclick="gonext()">→</button>
+    </div>
+
+    <div class="col-sm-1 col-md-1">
+        <mycombo entity="a05Region" asp-for="@Model.a05ID" selectedtext="@Model.a05Name" view-flag="2" event_after_changevalue="change_a05id" placeholder="Kraj"></mycombo>
+    </div>
+    <div class="col-sm-1 col-md-1">
+        <select class="form-control" asp-for="@Model.PersonQueryFlag" onchange="change_personqueryflag(this)">
+            <option value="0"></option>
+            <option value="1">Pouze přizvané osoby</option>
+        </select>
+    </div>
+    <div class="col-sm-1 col-md-1">
+        <select class="form-control" asp-for="@Model.A38QueryFlag" onchange="change_a38queryflag(this)">
+            <option value="0"></option>
+            <option value="1">Vč. rezervací NZ</option>
+        </select>
+    </div>
+    <div class="col-sm-1 col-md-1">
+        <button type="button" id="cmdClose" onclick="_window_close()" class="btn btn-light" style="margin-left:100px;">Zavřít</button>
+    </div>
+
+
+</div>
+
+
+<table class="tableCapacity" cellpadding="0" cellspacing="0" style="overflow-x:auto;width:@(Model.lisDays.Count()*20+160)px;">
+
+    <tr>
+        <td class="firstcol_timeline">
+        </td>
+        <td></td>
+        <td class="timeline_dny">Dní</td>
+        <td class="timeline_dny">Akcí</td>
+        @foreach (DateTime d in Model.lisDays)
+        {
+            strClass = "work-day";
+            if (d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday)
+            {
+                strClass = "nonwork-day";
+            }
+            if (Model.lisJ26.Where(p => p.j26Date == d).Count() > 0)
+            {
+                strClass = "holiday";
+            }
+
+            <td class="@strClass">
+                @d.Day
+                <br />
+                @(BO.BAS.ObjectDate2String(d,"ddd"))
+            </td>
+        }
+
+    </tr>
+
+    @foreach (var recJ02 in Model.lisJ02)
+    {
+        <tr>
+            <td>
+                @if (Model.lisTimeLine.Where(p => p.j02ID == recJ02.pid && p.Krat > 1).Count() > 0)
+                {
+                    <span style="background-color:pink;">
+                        @recJ02.FullNameDesc
+                    </span>
+                }
+                else
+                {
+                    @recJ02.FullNameDesc
+                }
+
+
+            </td>
+            <td>
+                <a class="reczoom" data-rel="/j02/InfoCapacity?pid=@(recJ02.pid)&hover_by_reczoom=1&m=@Model.CurMonth&y=@Model.CurYear" data-maxwidth="1" style="visibility:visible!important;">ℹ</a>
+            </td>
+            @if (Model.lisTimeLine.Where(p => p.j02ID == recJ02.pid).Count() > 0)
+            {
+                <td class="timeline_dny">
+                    @(Model.lisTimeLine.Where(p => p.j02ID == recJ02.pid).Count())d
+                </td>
+                <td class="timeline_dny">
+                    [
+                    @(Model.lisTimeLine.Where(p => p.j02ID == recJ02.pid).Select(p=>p.a01ID).Distinct().Count())
+                    ]
+                </td>
+            }
+            else
+            {
+                <td></td>
+                <td></td>
+            }
+
+
+            @foreach (DateTime d in Model.lisDays)
+            {
+                strClass = "";
+                x = Model.lisTimeLine.Where(p => p.j02ID == recJ02.j02ID && p.a35PlanDate == d).Count();
+                if (d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    strClass = "nonwork-day";
+                }
+        <td class="@strClass">
+            @if (x > 0)
+            {
+                <div class="a35cell">
+                    @if (x > 1)
+                    {
+                        <span style="background-color:pink;padding-left:2px;padding-right:2px;">@x</span>
+                    }
+                </div>
+            }
+
+            @if (Model.A38QueryFlag > 0)
+            {
+                @foreach (var c in Model.lisTimeLineA38.Where(p => p.j02ID == recJ02.j02ID && p.a38PlanDate == d))
+                {
+                    <div class="a38cell">
+
+                    </div>
+                }
+            }
+            @{
+                strClass = "";
+                if (x > 0) strClass = "a35cell";
+            }
+            @if (Model.a05ID > 0)
+            {
+                @foreach (var c in Model.lisH04.Where(p => p.j02ID == recJ02.pid && (p.h04CapacityPlanFrom >= d && p.h04CapacityPlanFrom < d.AddDays(1) || p.h04CapacityPlanUntil >= d && p.h04CapacityPlanUntil < d.AddDays(1))))
+                {
+
+                    if (c.h07IsToDo && c.h04Deadline != null && c.h04Deadline >= d && c.h04Deadline < d.AddDays(1))
+                    {
+                        <div class="@strClass" title="@(c.h07Name+": "+c.h04Name+", Akce: "+c.a01Signature)">
+                            <img src="~/images/todo.png" />
+                        </div>
+                    }
+                    if (c.h04CapacityPlanFrom != null && c.h04CapacityPlanFrom >= d && c.h04CapacityPlanFrom < d.AddDays(1))
+                    {
+                        <div class="@strClass" title="@(c.h07Name+": "+c.h04Name+", Akce: "+c.a01Signature))">
+                            <img src="~/images/todo_start.png" />
+                        </div>
+                    }
+                    else
+                    {
+                        if (c.h04CapacityPlanUntil != null && c.h04CapacityPlanUntil >= d && c.h04CapacityPlanUntil < d.AddDays(1))
+                        {
+                            <div class="@strClass" title="@(c.h07Name+": "+c.h04Name+", Akce: "+c.a01Signature))">
+                                <img src="~/images/todo_end.png" />
+                            </div>
+                        }
+                    }
+
+
+                }
+            }
+
+
+
+
+        </td>
+            }
+        </tr>
+    }
+
+
+
+
+</table>
+
+
+
+
+<script type="text/javascript">
+    var _a05id = "@Model.a05ID";
+
+    $(document).ready(function () {
+
+
+        $("#CurYear").val("@Model.CurYear");
+        $("#CurMonth").val("@Model.CurMonth");
+
+        if (window === top) {
+            $("#cmdClose").css("display", "none");
+        }
+
+
+    });
+
+
+
+    function goyear(ctl) {
+        var year = ctl.value;
+        refresh("/a35/TimeLine?go2month=@Model.CurMonth&go2year=" + year + "&a05id=" + _a05id);
+    }
+    function gomonth(ctl) {
+        var month = ctl.value;
+        refresh("/a35/TimeLine?go2month="+month+"&go2year=@Model.CurYear&a05id="+_a05id);
+    }
+    function gonext() {
+        refresh("/a35/TimeLine?go2month=@Model.NextMonth&go2year=@Model.NextYear&a05id="+_a05id);
+    }
+    function goprev() {
+        refresh("/a35/TimeLine?go2month=@Model.PrevMonth&go2year=@Model.PrevYear&a05id="+_a05id);
+    }
+    function change_a05id(a05id) {
+        $.post("/Common/SetUserParam", { key: "a35TimeLine-a05ID",value:a05id }, function (data) {
+            refresh("/a35/TimeLine?a05id="+a05id);
+
+            });
+
+    }
+    function change_personqueryflag(ctl) {
+        $.post("/Common/SetUserParam", { key: "a35TimeLine-PersonQueryFlag", value: ctl.value }, function (data) {
+            refresh("/a35/TimeLine");
+
+        });
+
+    }
+    function change_a38queryflag(ctl) {
+        $.post("/Common/SetUserParam", { key: "a35TimeLine-A38QueryFlag", value: ctl.value }, function (data) {
+            refresh("/a35/TimeLine");
+
+        });
+    }
+
+    function refresh(url) {
+        _notify_message("Loading...", "info");
+        location.replace(url);
+    }
+
+</script>

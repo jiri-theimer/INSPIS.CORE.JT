@@ -1,0 +1,139 @@
+﻿@model SendMailViewModel
+
+@{
+    ViewData["Title"] = "Odeslat poštovní zprávu";
+    Layout = "~/Views/Shared/_LayoutModal.cshtml";
+    
+
+}
+
+@addTagHelper *, UI
+
+<h4>Odeslat poštovní zprávu</h4>
+<div class="bg-light" style="padding:10px;">
+    <button id="cmdSave" type="submit" class="btn btn-success">Odeslat</button>
+    <button type="button" id="cmdClose" onclick="_window_close()" class="btn btn-light">Zavřít</button>
+
+</div>
+
+<form id="form1" asp-controller="Mail" asp-action="SendMail" method="POST">
+
+    <input type="hidden" asp-for="@Model.UploadGuid" />
+    <input type="hidden" asp-for="Rec.x40MessageGuid" />
+    <input type="hidden" asp-for="Rec.x29ID" />
+    <input type="hidden" asp-for="Rec.x40DataPID" />
+    <input type="hidden" asp-for="@Model.ActiveTabIndex" />
+
+    <div class="tabs_container_record">
+        <!-- Tab panes -->
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a id="link_tab1" class="nav-link" data-toggle="tab" href="#tab1">Poštovní zpráva</a>
+            </li>
+            <li class="nav-item">
+                <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2">Cílové instituce</a>
+            </li>
+
+        </ul>
+    </div>
+
+
+
+    <div class="modal_record_container">
+        <div class="tab-content">
+
+            <div class="tab-pane" id="tab1">
+                <!-- Tab1 -->
+                <p></p>
+                <div class="form-row">
+                    <label class="col-sm-1 col-md-2 col-form-label">Odesílatel:</label>
+                    <div class="col-sm-11 col-md-10">
+                        <mycombo entity="j40MailAccount" asp-for="Rec.j40ID" selectedtext="Rec.j40Name" view-flag="2"></mycombo>
+                    </div>
+                </div>
+
+                <div class="form-row" style="margin-top:10px;">
+                    <label class="col-sm-1 col-md-2 col-form-label">Komu (To):</label>
+                    <div class="col-sm-11 col-md-10">
+                        <input class="form-control" asp-for="Rec.x40Recipient" />
+
+                    </div>
+
+                </div>
+                <div class="form-row" style="margin-top:10px;">
+                    <label class="col-sm-1 col-md-2 col-form-label">V kopii (Cc):</label>
+                    <div class="col-sm-11 col-md-10">
+                        <input class="form-control" asp-for="Rec.x40Cc" />
+
+                    </div>
+
+                </div>
+                <div class="form-row" style="margin-top:10px;">
+                    <label class="col-sm-1 col-md-2 col-form-label">Ve skryté kopii (Bcc):</label>
+                    <div class="col-sm-11 col-md-10">
+                        <input class="form-control" asp-for="Rec.x40Bcc" />
+
+                    </div>
+
+                </div>
+
+                <div class="form-row" style="margin-top:10px;">
+                    <input class="form-control" asp-for="Rec.x40Subject" placeholder="Předmět zprávy" />
+                </div>
+
+
+                <div class="form-row" style="margin-top:10px;">
+                    <textarea asp-for="Rec.x40Body" class="form-control" placeholder="Text zprávy" style="height:200px;"></textarea>
+
+                </div>
+                <iframe id="fraUpload" src="/FileUpload/Index?prefix=j02&guid=@Model.UploadGuid" frameborder="0" height="220" scrolling="no"></iframe>
+
+
+            </div>
+            <div class="tab-pane" id="tab2">
+                <!-- Tab2 -->
+                <p></p>
+
+            </div>
+        </div>
+    </div>
+
+</form>
+
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        $("#cmdSave").click(function () {
+            $(this).text("Processing...");
+            $(this).attr("disabled", true);
+            form1.submit();
+        });
+
+
+        $("#tab@(Model.ActiveTabIndex)").attr("class", "tab-pane active");
+        $("#link_tab@(Model.ActiveTabIndex)").attr("class", "nav-link active");
+
+
+        $('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
+            // v e.target.id je id kliknutá záložka
+            var tabindex = e.target.id.substring(e.target.id.length - 1, e.target.id.length);            
+            $("#ActiveTabIndex").val(tabindex);
+
+
+        })
+
+    });
+
+    
+
+</script>
+
+
+
+
+

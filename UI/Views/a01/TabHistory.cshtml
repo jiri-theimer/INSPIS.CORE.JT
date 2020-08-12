@@ -1,0 +1,81 @@
+﻿@model UI.Models.Tab.a01TabHistory
+
+@{
+    ViewData["Title"] = "Historie událostí";
+    Layout = "~/Views/Shared/_LayoutSubform.cshtml";
+
+
+}
+@addTagHelper *, UI
+
+
+
+
+<table class="table table-sm table-hover" style="min-width:1000px;">
+    <tr class="bg-light">
+        <th>
+            Kdy
+        </th>
+        <th>
+            Krok
+        </th>
+        <th>
+            Aktuální stav
+            <div style="background-color:@(Model.RecA01.b02Color);">
+                @(Model.RecA01.b02Name)
+            </div>
+
+        </th>
+        <th>
+            Změna
+        </th>
+        <th>
+
+        </th>
+    </tr>
+    @foreach (var c in Model.lisB05)
+    {
+
+        <tr>
+            <td>
+                @(BO.BAS.ObjectDateTime2String(c.DateInsert))
+                <div>
+                    @if (c.j02ID > 0)
+                    {
+                        <span style="color:silver;">@c.Person</span>
+                    }
+                    else
+                    {
+                        <span style="color:orange;">@c.UserInsert</span>
+                    }
+
+                </div>
+            </td>
+            <td>
+                @c.b06Name
+            </td>
+            <td>
+                @if (c.b02ID_To > 0)
+                {
+                    @c.b02Name_To
+                }
+                else
+                {
+                    @c.b02Name_From
+                }
+
+            </td>
+            <td>
+                @Html.Raw(c.StatusMoveHtmlRed)
+                @Html.Raw(c.b05SQL)
+            </td>
+            <td>                
+                @Html.Raw(c.b05Comment)
+            </td>
+        </tr>
+
+
+
+    }
+</table>
+

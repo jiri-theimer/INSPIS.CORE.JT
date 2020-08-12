@@ -1,0 +1,175 @@
+﻿@model UI.Models.MyToolbarViewModel
+@{
+    if (Model == null)
+    {
+        return;
+    }
+    Model.RefreshState();
+}
+
+
+<nav class="navbar navbar-expand navbar-toggleable navbar-light border-bottom box-shadow mb-3 @Model.BG" id="nav1" style="margin-bottom:10px;">
+    <div class="navbar-brand" style="margin: 0px;">
+
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+
+
+        <div>
+
+
+            <div class="btn-group">
+                <button type="submit" id="cmdSaveMyToolbar" action="@Model.ControllorName" class="btn btn-success">Uložit změny</button>
+
+            </div>
+            @if (Model.IsApply)
+            {
+                <div class="btn-group">
+                    <button type="submit" id="cmdApply" action="@Model.ControllorName" asp-route-applyonly="true" class="btn btn-success">Uložit a zůstat</button>
+
+                </div>
+            }
+
+
+            @if (Model.IsDelete)
+            {
+                <div class="btn-group" style="margin-left: 7px;">
+                    <button type="button" class="btn btn-danger" onclick="toolbar_try_delete()">Odstranit</button>
+
+                </div>
+            }
+            @if (Model.IsRefresh)
+            {
+                <div class="btn-group" style="margin-left: 7px;">
+                    <a asp-action="@Model.ControllorName" onclick="before_clicked(event)" class="btn btn-light" asp-route-pid="@Model.RecordPID">Občerstvit</a>
+                </div>
+            }
+            @if (Model.IsClone)
+            {
+                <div class="btn-group" style="margin-left: 7px;">
+                    <a asp-action="@Model.ControllorName" onclick="before_clicked(event)" class="btn btn-light" asp-route-pid="@Model.RecordPID" asp-route-isclone="true">Kopírovat</a>
+                </div>
+            }
+            @if (Model.IsToArchive)
+            {
+                <div class="btn-group" style="margin-left: 7px;">
+                    <button type="button" onclick="toolbar_handle_archive(1)" class="btn btn-light">Přesunout do archivu</button>
+                </div>
+            }
+            @if (Model.IsFromArchive)
+            {
+                <div class="btn-group" style="margin-left: 7px;">
+                    <button type="button" onclick="toolbar_handle_archive(2)" class="btn btn-warning">Obnovit z archivu</button>
+                </div>
+            }
+
+            @if (Model.IsClose)
+            {
+                <div class="btn-group">
+                    <button type="button" onclick="_window_close()" class="btn btn-light">Zavřít</button>
+                </div>
+            }
+            
+
+            <div class="btn-group">
+                <span id="toolbar_message" class="badge-info">@Model.Message</span>
+
+            </div>
+
+        </div>
+    </div>
+    <code id="toolbar_changeinfo" style="float:right;"></code>
+</nav>
+
+
+<input type="hidden" id="hidRecordPID" asp-for="@Model.RecordPID" />
+<input type="hidden" id="hidRecordIsClosed" asp-for="@Model.RecordIsClosed" />
+<input type="hidden" id="hidRecordEntity" asp-for="@Model.RecordEntity" />
+<input type="hidden" id="hidAllowArchive" asp-for="@Model.AllowArchive" />
+<input type="hidden" id="hidAllowClone" asp-for="@Model.AllowClone" />
+<input type="hidden" id="hidExplicitD1" asp-for="@Model.ExplicitValidFrom" />
+<input type="hidden" id="hidExplicitD2" asp-for="@Model.ExplicitValidUntil" />
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("input, textarea").change(function () {
+            _toolbar_warn2save_changes();
+
+        });
+
+
+        $("#cmdSaveMyToolbar").click(function () {
+            $(this).text("Processing...");
+            $(this).attr("disabled", true);
+            if (document.getElementById("form1")) {
+                form1.submit();
+            } else {
+                document.forms[0].submit();
+            }
+
+
+        });
+
+    })
+
+
+    function toolbar_try_delete() {
+        $.showConfirm({
+            title: "Potvrďte...", body: "Opravdu chcete nenávratně odstranit tento záznam?", textTrue: "ANO", textFalse: "NE",
+            onSubmit: function (result) {
+                if (result) {
+                    var url = '@Url.Action("DeleteRecord", "Common")';
+
+                    $.post(url, { entity:"@Model.RecordEntity", pid: @Model.RecordPID }, function (data) {
+
+                        if (data == "1") {
+                            _reload_layout_and_close();
+
+                        } else {
+                            alert(data);
+                        }
+
+                    });
+
+
+                } else {
+                    //nechce odstranit
+                }
+            },
+            onDispose: function () {
+                //nic
+            }
+        })
+    }
+
+    function toolbar_handle_archive(flag) {
+        //$("#hidArchiveFlag").val(flag);
+        var d = new Date();
+        if (flag == 1) {
+            $("#hidExplicitD2").val(_format_date(d, true)); //přesunout záznam do archivu
+            $("#toolbar_message").text("Po uložení dojde k přesunutí záznamu do archivu.");
+        }
+        if (flag == 2) {
+            $("#hidExplicitD2").val("01.01.3000 00:00"); //obnovit záznam z archivu
+            $("#toolbar_message").text("Po uložení dojde k obnovení záznamu z archivu.");
+        }
+        
+    }
+    function before_clicked(e) {
+        if ($("#toolbar_changeinfo").text() != "") {
+            if (!confirm("Chcete pokračovat bez uložení změn?")) e.preventDefault();
+        }
+    }
+    function toolbar_handle_validity(e) {
+        var url = "/Record/RecordValidity?strD1=" + $("#hidExplicitD1").val() + "&strD2=" + $("#hidExplicitD2").val();
+        _zoom(e, "", "", "250", "Časová platnost záznamu", url);
+    }
+    
+
+</script>

@@ -1,0 +1,100 @@
+﻿@model AdminPage
+
+@{
+    ViewData["Title"] = "Uživatelé";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@addTagHelper *, UI
+
+
+<div class="row py-3 bg-light m-0">
+    <div class="col-auto" style="width:190px;">
+        <a class="cm h4 mx-0" onclick="_cm(event, 'Users',0,'@Model.prefix');">☰Uživatelé</a>
+    </div>
+    <div class="col-sm-3">
+        <mark>@Model.entityTitle</mark>
+    </div>
+    <div class="col-sm-5">
+        @if (Model.prefix == "j02" || Model.prefix=="j02" || Model.prefix=="j04" || Model.prefix=="j11" || Model.prefix=="j40")
+        {
+            <button id="cmdNew" type="button" class="btn btn-primary">Nový záznam</button>
+        }
+
+    </div>
+    <div class="col-sm-1"></div>
+    <div class="nonmobile nontablet">
+        <a class="btn btn-secondary" href="/Admin/Users?prefix=@Model.prefix">Obnovit</a>
+    </div>
+
+
+
+
+</div>
+
+<div id="layout_sidebar" class="cm_recpage" style="overflow-y:auto;"></div>
+
+
+
+<div id="layout_main">
+
+    @if (Model.entity != null)
+    {
+        <vc:the-grid entity="@Model.entity" j72id="0" go2pid="@Model.go2pid" master_entity="" master_pid="0" contextmenuflag="1" ondblclick="tg_dblclick" master_flag="@Model.master_flag" masterviewflag="3"></vc:the-grid>
+    }
+    else
+    {
+        <h4 style="margin:20px;">Správa  a provoz uživatelů</h4>
+    }
+
+
+
+
+</div>
+
+
+<script type="text/javascript">
+    $(document.body).css("overflow", "hidden");
+
+    $(document).ready(function () {
+
+        $.post("/Menu/AdminUsers", { prefix: "@Model.prefix" }, function (data) {
+
+            $("#layout_sidebar").html(data);
+
+            if (document.getElementById("menu_active_item")) {
+                document.getElementById("menu_active_item").scrollIntoView(true);
+            }
+
+
+
+        });
+
+        $("#cmdNew").click(function () {
+            var url = "/@(Model.prefix)/Record?pid=0";
+            _window_open(url,1,"@Model.entityTitle");
+        });
+
+
+        _mainmenu_highlight_current("cmdAdmin");
+
+
+        var offset = $("#layout_sidebar").offset();
+        var h_vertical = _device.innerHeight - offset.top;
+        h_vertical = parseInt(h_vertical) + 10;
+        $("#layout_sidebar").css("height", h_vertical + "px");
+
+
+    });
+
+
+    /*automaticky volaná událost z thegrid controlu*/
+    function thegrid_handle_event(event_name, pid) {
+
+    }
+
+
+</script>
+
+
+

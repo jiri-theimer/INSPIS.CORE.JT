@@ -1,0 +1,426 @@
+﻿@model a42CreateViewModel
+
+
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (Model.Rec == null) return;
+
+    ViewData["Title"] = "Nový INEZ";
+}
+
+@addTagHelper *, UI
+
+    <script src="~/lib/selection/ds.min.js"></script>
+
+<form id="form1" asp-controller="a42" asp-action="Create" method="POST">
+    <div class="bg-light" style="padding:10px;">        
+        <button type="button" id="cmdSave" class="btn btn-success">Odeslat k vygenerování</button>
+        <a id="cmdCancel" href="/a42/CreatePre" class="btn btn-light">Zrušit</a>
+        
+
+    </div>
+
+    <input type="hidden" asp-for="@Model.a10ID" />
+    <input type="hidden" id="hidA03IDs" asp-for="@Model.a03IDs" />
+    <input type="hidden" asp-for="@Model.ActiveTabIndex" />
+    <input type="hidden" asp-for="@Model.UploadGuid" />
+    <input type="hidden" asp-for="@Model.SelectedA12IDs" />
+
+    <div class="tabs_container_record">
+        <!-- Tab panes -->
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a id="link_tab1" class="nav-link" data-toggle="tab" href="#tab1">Krok č.1: <strong>Nový INEZ</strong></a>
+            </li>
+            <li class="nav-item">
+                <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2">Krok č.2: Cílové instituce</a>
+            </li>
+            <li class="nav-item">
+                <a id="link_tab3" class="nav-link" data-toggle="tab" href="#tab3">Krok č.3: E-mail zpráva</a>
+            </li>
+
+        </ul>
+    </div>
+
+    <div>
+        <div class="tab-content">
+
+            <div class="tab-pane" id="tab1" style="max-width:1000px;padding-left:20px;">
+                <!-- Tab1 -->
+                <p></p>
+                <div class="form-row">
+                    <label class="col-sm-1 col-md-2 col-form-label">Název:</label>
+                    <div class="col-sm-11 col-md-10">
+                        <input class="form-control" asp-for="Rec.a42Name" />
+                        <span asp-validation-for="Rec.a42Name" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-row my-2">
+                    <label class="col-sm-1 col-md-2 col-form-label">Plánované období od:</label>
+                    <div class="col-sm-2 col-md-2">
+                        <mydate asp-for="@Model.a42DateFrom" include-time="false"></mydate>
+                    </div>
+                    <label class="col-sm-1 col-md-1 col-form-label">Do:</label>
+
+                    <div class="col-sm-2 col-md-2">
+                        <mydate asp-for="@Model.a42DateUntil" include-time="false"></mydate>
+                    </div>
+
+                </div>
+
+                <div class="form-row my-2">
+                    <label class="col-sm-1 col-md-2 col-form-label">Téma akce:</label>
+                    <div class="col-sm-11 col-md-10">
+                        <mycombo entity="a08Theme" asp-for="@Model.a08ID" selectedtext="@Model.a08Name" placeholder="Vybrat téma..." event_after_changevalue="handle_a08id_change"></mycombo>
+                    </div>
+
+
+                </div>
+                @if (Model.lisLeftA12 != null)
+                {
+                    <div class="form-row my-2">
+                        <div class="col-6">
+                            <mydropdown asp-for="@Model.LeftA12ID" datasource="@Model.lisLeftA12" textfield="f06Name" valuefield="pid" ismultiple="true" cssfield="CssClass"></mydropdown>
+                        </div>
+                        <div class="col-1">
+                            <button title="Přidat" type="button" id="cmdAddF06" class="btn btn-primary py-0 button_field_append" style="font-size:150%;" onclick="f06_add()">→</button>
+                            <button type="button" id="cmdRemoveF06" class="btn btn-primary py-0" style="font-size:150%;margin-top:10px;" onclick="f06_remove()">←</button>
+                        </div>
+                        <div class="col-5">
+                            <mydropdown asp-for="@Model.RightA12ID" datasource="@Model.lisRightA12" textfield="f06Name" valuefield="pid" ismultiple="true" cssfield="CssClass"></mydropdown>
+                        </div>
+                    </div>
+                }
+
+                <mystitky entity="a42Qes" asp-for="@Model.TagPids" tagnames="@Model.TagNames" taghtml="@Model.TagHtml"></mystitky>
+                @if (Model.lisPollA12 != null)
+                {
+                    <div class="card">
+                        <div class="card-header">Anketní formuláře</div>
+                        <div class="card-body">
+                            @for (var i = 0; i < Model.lisPollA12.Count; i++)
+                            {
+                                <div class="row">
+
+                                    <div class="col-sm-8 col-md-8">
+                                        <label>@Model.lisPollA12[i].f06Name</label>
+                                        <input type="hidden" asp-for="@Model.lisPollA12[i].a12ID" />
+                                        <input type="hidden" asp-for="@Model.lisPollA12[i].f06Name" />
+                                    </div>
+
+                                    <div class="col-1">
+                                        <mynumber asp-for="@Model.lisPollA12[i].TempCount" decimal-digits="0"></mynumber>
+                                    </div>
+
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+
+
+
+                <div class="form-row my-2">
+                    <textarea asp-for="Rec.a42Description" class="form-control" style="height:150px;" placeholder="Podrobný popis"></textarea>
+                    <span asp-validation-for="Rec.a42Description" class="text-danger"></span>
+                </div>
+
+            </div>
+            <div class="tab-pane" id="tab2">
+                <!-- Tab2 -->
+
+                <div style="padding:20px;max-width:1000px;">
+                    <mycombo entity="a03Institution" asp-for="@Model.FilterA03ID" selectedtext="@Model.FilterA03Name" filter-flag="1" placeholder="Vybrat instituci..." event_after_changevalue="handle_a03id_append"></mycombo>
+                    <mycombo entity="a29InstitutionList" asp-for="@Model.FilterA29ID" selectedtext="@Model.FilterA29Name" placeholder="Vložit z pojmenovaného seznamu..." event_after_changevalue="handle_a29id_append"></mycombo>
+                    <mycombo entity="a42Qes" asp-for="@Model.FilterA42ID" selectedtext="@Model.FilterA42Name" placeholder="Vložit z INEZU..." filter-flag="1" event_after_changevalue="handle_a42id_append"></mycombo>
+                    <hr />
+                    <button type="button" id="cmdGrid" class="btn btn-secondary btn-sm" onclick="multiselect()">Přidat hromadně přes Grid</button>
+                    <button type="button" id="cmdClear" class="btn btn-danger btn-sm" style="visibility:hidden;" onclick="clear_all()">Odebrat vše</button>
+                    <button type="button" id="cmdRemoveClosed" class="btn btn-danger btn-sm" style="visibility:hidden;" onclick="handle_remove_closed()">Odebrat neplatné</button>
+                    <label>Počet cílových institucí:</label><span class="badge" id="a03IDs_Count" style="font-size:120%;">0</span>
+                </div>
+
+                <div id="divA03" style="margin-bottom:20px;"></div>
+
+
+            </div>
+            <div class="tab-pane" id="tab3">
+                <!-- Tab3 -->
+                <mycombo entity="b65WorkflowMessage" asp-for="@Model.FilterB65ID" selectedtext="@Model.FilterB65Name" placeholder="Šablona e-mail zprávy..." event_after_changevalue="handle_b65id_change"></mycombo>
+
+                <input type="radio" value="SchoolAdress" id="opg1" asp-for="@Model.MessageReceiverFlag">
+                <label for="opg1">Odesílat na e-mail uvedený v profilu školy</label><br>
+                <input type="radio" value="DirectorAddress" id="opg2" asp-for="@Model.MessageReceiverFlag">
+                <label for="opg2">Odesílat na e-mail ředitele školy</label><br>
+                <input type="radio" value="SchoolPlusDirector" id="opg3" asp-for="@Model.MessageReceiverFlag">
+                <label for="opg3">Odesílat na ředitelský i školní e-mail současně</label><br>
+
+                <div style="max-width:1000px;padding:20px;">
+                    <div class="form-row">
+                        <label class="col-sm-1 col-md-2 col-form-label">Předmět zprávy:</label>
+                        <div class="col-sm-11 col-md-10">
+                            <input class="form-control" asp-for="@Model.MessageSubject" />
+
+                        </div>
+
+                    </div>
+                    <div>
+                        <textarea asp-for="@Model.MessageBody" class="form-control" placeholder="Obsah zprávy" style="height:400px;overflow:auto;"></textarea>
+                    </div>
+                </div>
+                <iframe id="fraUpload" src="/FileUpload/Index?x29id=142&guid=@Model.UploadGuid" height="250" scrolling="no"></iframe>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+
+<script type="text/javascript">
+    var _a03IDsCount = 0;
+    var _arrSelectedA12IDs = [];
+    $(document).ready(function () {
+
+        if ($("#hidA03IDs").val() != "") {
+            refresh_a03_table();
+        }
+        @if(Model.lisLeftA12 !=null && (Model.lisLeftA12.Count + Model.lisRightA12.Count()>10))
+        {
+        <text>
+        $("#LeftA12ID").css("height", "300px");
+        $("#RightA12ID").css("height", "300px");
+        </text>
+        }
+        $("#LeftA12ID").on("dblclick", function () {
+            f06_add();
+        });
+        $("#RightA12ID").on("dblclick", function () {
+            f06_remove();
+        });
+
+        if ($("#SelectedA12IDs").val() != "") {
+            _arrSelectedA12IDs = $("#SelectedA12IDs").val().split(",");
+        }
+
+
+        $("#tab@(Model.ActiveTabIndex)").attr("class", "tab-pane active");
+            $("#link_tab@(Model.ActiveTabIndex)").attr("class", "nav-link active");
+
+            $('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
+                // v e.target.id je id kliknutá záložka
+                var tabindex = e.target.id.substring(e.target.id.length - 1, e.target.id.length);
+                $("#ActiveTabIndex").val(tabindex);
+            })
+    });
+
+
+
+
+    function refresh_a03_table() {
+        var url = "@Url.Action("GetWorkTable", "Common")";
+        var pids = $("#hidA03IDs").val();
+
+        if (pids == "") {
+            $("#divA03").html("");
+            $("#cmdClear").css("visibility", "hidden");
+            $("#cmdRemoveClosed").css("visibility", "hidden");
+            return;
+        }
+        $.post(url, { entity: "a03Institution", tableid: "tabA03IDs", pids: pids, delete_function: "handle_a03id_delete",selectable:true }, function (data) {
+            $("#divA03").html(data);
+            $("#cmdClear").css("visibility", "visible");
+            $("#cmdRemoveClosed").css("visibility", "visible");
+
+            
+            $("#tabA03IDs td").each(function () {
+                $(this).addClass("no_clipboard");                
+            });
+
+            worktable_setup_selectable("divA03");
+            _a03IDsCount = $("#tabA03IDs").find("tr").length-1;
+            
+            $("#a03IDs_Count").text(_a03IDsCount.toString());
+        });
+    }
+
+    function handle_a03id_append(a03id) {
+        if (a03id == "") {
+            _notify_message("Musíte vybrat instituci.");
+            return;
+        }
+        var arr = [a03id];
+        append_a03ids(arr,false);
+    }
+    function handle_a03id_delete(a03id) {
+        var a03ids = [];
+        a03ids = $("#hidA03IDs").val().split(",");
+        var x = a03ids.indexOf(a03id.toString());
+        a03ids.splice(x, 1);
+
+        $("#hidA03IDs").val(a03ids.join(","));
+        refresh_a03_table();
+
+    }
+
+    function append_a03ids(arr, silent) {
+        $("#divA03").html("Loading...");
+        var a03ids = [];
+        if ($("#hidA03IDs").val() != "") {
+            a03ids = $("#hidA03IDs").val().split(",");
+        }
+        for (var i = 0; i < arr.length; i++) {
+            if (a03ids.includes(arr[i]+"")==true) {
+                if (!silent) {
+                    _notify_message("Tato instituce již je v seznamu.");
+                    return;
+                }
+            } else {
+                a03ids.push(arr[i]+"");
+            }
+            if (a03ids.length > 5000) {
+                _notify_message("Maximální počet cílových institucí v jedné INEZ dávce je 5.000.");
+                refresh_a03_table();
+                return;
+            }
+        }
+        $("#hidA03IDs").val(a03ids.join(","));
+
+        refresh_a03_table();
+    }
+
+    function handle_a29id_append(a29id) {
+        if (a29id == "") {
+            _notify_message("Musíte vybrat seznam.");
+            return;
+        }
+        $.post("/Common/GetPidsOfQuery", { entity: "a03Institution", master_prefix: "a29", master_pid: a29id }, function (data) {
+            if (data != null) {
+                append_a03ids(data,true);
+            }
+        });
+    }
+    function handle_a42id_append(a42id) {
+        if (a42id == "") {
+            _notify_message("Musíte vybrat INEZ.");
+            return;
+        }
+        $.post("/Common/GetPidsOfQuery", { entity: "a03Institution", master_prefix: "a42", master_pid: a42id }, function (data) {
+            if (data != null) {
+                append_a03ids(data,true);
+            }
+        });
+    }
+    function clear_all() {
+        $("#hidA03IDs").val("");
+        _a03IDsCount = 0;
+        $("#a03IDs_Count").text(_a03IDsCount);
+        refresh_a03_table();
+    }
+
+    function multiselect() {
+        _window_open("/Record/GridMultiSelect?prefix=a03", 2,"Přidat instituce do INEZ");
+
+    }
+    function handle_remove_closed() {
+        $("#divA03").html("Loading...");
+        $.post("/a42/RemoveClosed", { a03ids: $("#hidA03IDs").val() }, function (data) {
+            $("#hidA03IDs").val(data);
+            refresh_a03_table();
+        });
+
+    }
+
+    function handle_b65id_change(b65id) {
+        if (b65id == "") {
+            _notify_message("Musíte vybrat zprávu.");
+            return;
+        }
+        $.post("/a42/InhaleMessage", { b65id: b65id }, function (data) {
+
+            $("#MessageSubject").val(data.b65MessageSubject);
+            $("#MessageBody").text(data.b65MessageBody);
+        });
+
+    }
+    function handle_a08id_change(a08id) {
+        if (a08id == "") {
+            _notify_message("Musíte vybrat téma.");
+            return;
+        }
+        $("#SelectedA12IDs").val("");
+        form1.action = "/a42/Create?oper=change_a08id";
+        form1.submit();
+
+    }
+
+    function f06_add() {
+        if ($("#LeftA12ID").val() == "") {
+            return;
+        }
+        var arr = [];
+        arr = $("#LeftA12ID").val().toString().split(",");
+        for (var i = 0; i < arr.length; i++) {
+            _arrSelectedA12IDs.push(arr[i]);
+        }
+        $("#SelectedA12IDs").val(_arrSelectedA12IDs.join(","));
+        
+        form1.action = "/a42/Create?oper=postback";
+        form1.submit();
+
+    }
+    function f06_remove() {
+        if ($("#RightA12ID").val() == "") {
+            return;
+        }
+        var arr = [];
+        arr = $("#RightA12ID").val().toString().split(",");
+        for (var i = 0; i < arr.length; i++) {
+            var index = _arrSelectedA12IDs.indexOf(arr[i]);
+            if (index >= 0) {
+                _arrSelectedA12IDs.splice(index, 1);
+            }
+        }
+        $("#SelectedA12IDs").val(_arrSelectedA12IDs.join(","));
+        form1.action = "/a42/Create?oper=postback";
+        form1.submit();
+    }
+
+    function worktable_setup_selectable(containerID) {
+
+        var ds1 = new DragSelect({
+            selectables: document.getElementsByClassName("can-select"), // node/nodes that can be selected. This is also optional, you could just add them later with .addSelectables.
+            selectedClass: "selcell",
+            area: document.getElementById(containerID), // area in which you can drag. If not provided it will be the whole document.
+            customStyles: false,  // If set to true, no styles (except for position absolute) will be applied by default.
+            multiSelectKeys: ['ctrlKey', 'shiftKey', 'metaKey'],  // special keys that allow multiselection.
+            multiSelectMode: false,  // If set to true, the multiselection behavior will be turned on by default without the need of modifier keys. Default: false
+            autoScrollSpeed: 20,  // Speed in which the area scrolls while selecting (if available). Unit is pixel per movement. Set to 0 to disable autoscrolling. Default = 1
+            onDragStart: function (element) { }, // fired when the user clicks in the area. This callback gets the event object. Executed after DragSelect function code ran, befor the setup of event listeners.
+            onDragMove: function (element) { }, // fired when the user drags. This callback gets the event object. Executed before DragSelect function code ran, after getting the current mouse position.
+            onElementSelect: function (element) { }, // fired every time an element is selected. (element) = just selected node
+            onElementUnselect: function (element) { }, // fired every time an element is de-selected. (element) = just de-selected node.
+            callback: function (elements) {
+                // fired once the user releases the mouse. (elements) = selected nodes.
+
+                if (elements.length > 0) {
+                    var _rowids = [];
+
+                    for (i = 0; i < elements.length; i++) {
+                        var rowid = $(elements[i]).attr("data-v");
+
+                        _rowids.push(rowid);
+
+                    }
+
+
+                }
+
+            }
+
+
+
+        });
+    }
+</script>

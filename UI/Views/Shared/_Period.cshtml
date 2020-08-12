@@ -1,0 +1,43 @@
+﻿@model UI.Models.PeriodViewModel
+@inject BL.ThePeriodProvider _pp
+@{
+    if (Model == null)
+    {
+        return;
+    }
+    var _lisPeriods = _pp.getPallete();
+}
+
+@addTagHelper *, UI
+
+    <div class="form-row">
+        <div class="col-sm-1 col-md-1">
+            <label style="margin-left:10px;">Časové období:</label>
+        </div>
+        <div class="col-sm-6 col-md-5">
+            <mydropdown asp-for="@Model.PeriodValue" datasource="@_lisPeriods" valuefield="pid" textfield="Header" isfirstemptyrow="false"></mydropdown>
+
+        </div>
+        <div class="col-sm-2 col-md-2">
+            <mydate asp-for="@Model.d1"></mydate>
+        </div>
+        <div class="col-sm-2 col-md-2">
+            <mydate asp-for="@Model.d2"></mydate>
+        </div>
+        @if (Model.IsShowButtonRefresh)
+        {
+            <div class="col-sm-1 col-md-1">
+                <button id="cmdRefreshPeriod" type="button" class="btn btn-primary">Obnovit</button>
+            </div>
+        }
+
+    </div>
+
+<script type="text/javascript">
+    $("#d1helper").on("change", function () {
+        $("#PeriodValue").val("0");
+    })
+    $("#d2helper").on("change", function () {
+        $("#PeriodValue").val("0");
+    })
+</script>

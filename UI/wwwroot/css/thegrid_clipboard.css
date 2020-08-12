@@ -1,0 +1,352 @@
+﻿
+#container_grid {
+    overflow-y: hidden;
+    overflow-x: hidden;
+    width: 100%;
+    border-right: solid 1px #CCCCCC;
+    -webkit-overflow-scrolling: touch !important;
+}
+
+    #container_grid table.tabgrid_auto {
+        border-collapse: collapse;
+        table-layout: fixed;
+        width: 100%;
+        min-width: 900px;
+        border: solid 1px #CCCCCC;
+    }
+
+
+
+    #container_grid table.tabgrid_fixed {
+        border-collapse: collapse;
+        table-layout: fixed;
+        border: solid 1px #CCCCCC;
+    }
+
+    #container_grid table.tabgrid_manual {
+        border-collapse: collapse;
+        table-layout: fixed;
+        border: solid 1px #CCCCCC;
+    }
+
+#tabgrid1 tr.highlight {
+    background-color: #ccffcc;
+}
+
+#tabgrid1 tr:hover {
+    background-color: #F5F5F5;
+}
+
+
+
+#container_vScroll {
+    overflow-y: auto;
+    overflow-x: hidden;
+    
+}
+
+#filter_container {
+    border: solid 1px #CCCCCC;
+}
+
+
+
+.tabgrid_auto td {
+    padding: 3px;
+    border-left: solid 1px #CCCCCC;
+    border-bottom: solid 1px #CCCCCC;
+    vertical-align: top;
+}
+
+.tabgrid_fixed td {
+    padding: 3px;
+    border-left: solid 1px #CCCCCC;
+    border-bottom: solid 1px #CCCCCC;
+    vertical-align: top;
+}
+
+
+.tabgrid_manual td {
+    padding: 3px;
+    border-left: solid 1px #CCCCCC;
+    border-bottom: solid 1px #CCCCCC;
+    vertical-align: top;
+}
+
+
+td.td_nowrap {
+    padding: 3px;
+    border-left: solid 1px #CCCCCC;
+    border-bottom: solid 1px #CCCCCC;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* well, it's less than 100% in the end, but this still works for me */
+
+.tabgrid_auto th {
+    background-color: #F5F5F5;
+    font-weight: normal;
+    border-left: solid 1px #CCCCCC;
+    
+    padding: 3px;
+    height: 27px;
+}
+
+.tabgrid_fixed th {
+    background-color: #F5F5F5;
+    font-weight: normal;
+    border-left: solid 1px none;
+    
+    padding: 3px;
+    height: 27px;
+}
+
+.tabgrid_manual th {
+    font-weight: normal;
+    border-left: dashed 1px gray;
+    
+    padding: 3px;
+    height: 27px;
+}
+
+
+
+#tr_header_query th {
+    padding: 3px;
+    background-color: #E5E5E5;
+    font-weight: normal;
+    border-left: solid 1px #CCCCCC;
+}
+
+#tabgrid1_tr_totals th {
+    padding: 3px;
+    background-color: #E5E5E5;
+    font-weight: normal;
+    border-left: solid 1px #CCCCCC;
+}
+
+#tabgrid1_tr_pager th {
+    height: 25px;
+    line-height: 25px;
+    background-color: #F5F5F5;
+    font-weight: normal;
+    border-left: solid 1px #CCCCCC;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+
+
+
+
+#tr_header_query input.query_textbox {
+    height: 23px;
+}
+
+#tr_header_query .query_combo {
+    height: 23px;
+    padding: 0px;
+}
+
+#tr_header_query button {
+    float: right;
+    font-size:14px;
+
+    
+}
+
+#tabgrid1_pagenum {
+    width: 26px;
+    height: 23px;
+}
+
+#tabgrid1 tr.selrow,
+#tabgrid1 tr.selrow > td {
+    background-color: #448CCB;
+    color: white;
+}
+
+
+#container_grid td.td0 {
+    text-align: center;
+}
+
+#tabgrid1_tbody td.td1 {
+    text-align: center;
+    width: 20px;
+}
+
+
+#tabgrid1_tbody td.td2 {
+    text-align: center;
+}
+
+
+
+#container_grid th.th0 {
+    text-align: center;
+}
+
+
+#tabgrid1 td.tdn {
+    text-align: right;
+}
+
+
+#tabgrid2 th.tdn {
+    text-align: right;    
+}
+
+#tabgrid1 td.tdn_lastcol {
+    text-align: right;
+    padding-right: 18px !important;
+}
+
+#tabgrid2 th.tdn_lastcol {
+    text-align: right;
+    padding-right: 18px !important;
+}
+
+
+
+
+#tabgrid1 tr.trbin td {
+    text-decoration: line-through;
+    
+}
+
+
+#tabgrid1 tr.trgroup {
+    background-color: #F5F5DC;
+}
+
+
+
+
+#tabgrid1 a.grid_context_menu {
+    cursor: pointer;
+}
+
+a.grid_context_menu:hover {
+    background-color: #25a0da;
+}
+
+
+#tg_div_loading {
+    position: absolute;
+    width: 250px;
+    left: 100px;
+    top: 300px;
+    z-index: 100;
+    
+    background-color: #F5F5F5;
+    color: silver;
+    border: solid 1px #F5F5F5;
+    padding: 10px;
+}
+
+#tg_div_loading_image {
+    background-image: url("../Images/loading.gif");
+}
+
+#tr_header_headline .resizer {
+    position: absolute;
+    top: 0;
+    right: -8px;
+    bottom: 0;
+    left: auto;
+    width: 16px;
+    cursor: col-resize;
+}
+
+#tr_header_headline th.sortcolumn {
+    cursor: pointer;
+}
+
+
+#tg_div_filter {
+    position: absolute;
+    z-index: 1000;
+}
+
+#tr_header_query .qryalias {
+    color: white;
+    background-color: red;
+    white-space: pre-wrap;
+    
+    
+}
+
+#tg_div_setting {
+    position: absolute;
+    z-index: 1000;
+    min-height: 100px;
+    padding: 20px;
+    border-radius: 6px;
+}
+
+#tg_div_selecting {
+    position: absolute;
+    z-index: 1000;
+    min-height: 100px;
+    padding: 20px;
+    border-radius: 6px;
+}
+
+#tg_div_print {
+    position: absolute;
+    z-index: 1000;
+    min-height: 100px;
+    padding: 20px;
+    border-radius: 6px;
+}
+
+a.link_in_grid { /*v TD buňce je link na cokoliv - kvůli odlišení od kliku na TR*/
+    font-size: 90%;
+    color: deepskyblue;
+}
+
+#span_virtual_count {
+    background-color: #808080;
+    border-radius: 3px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    min-width: 40px;
+}
+
+
+.selrow {
+    background-color: #a6c9e2 !important;
+}
+
+
+button.tgp {    
+    padding-bottom: 2px;
+    padding-top: 2px;
+    border-left:solid 1px silver;
+}
+#divPagerContainer {
+    background-color: #E5E5E5;
+    padding-bottom: 0px;
+    padding-left: 10px;
+    width: 100%;
+    height:28px;
+}
+
+.link-in-grid{
+    color:green;
+    text-decoration:underline;
+
+}
+
+@media only screen and (max-width: 1000px) {
+
+    #container_vScroll {
+        overflow-y: auto;
+        overflow-x: auto;
+    }
+}

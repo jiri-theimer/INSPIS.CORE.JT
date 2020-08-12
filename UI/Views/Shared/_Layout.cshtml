@@ -1,0 +1,467 @@
+﻿@model BaseViewModel
+@inject BL.Factory _f
+
+<!DOCTYPE html>
+<html lang="cs" style="@_f.CurrentUser.getFontStyle()">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - INSPIS.CORE</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="~/lib/datepicker/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/qtip/jquery.qtip.css" rel="stylesheet" type="text/css" />
+
+    <link rel="stylesheet" href="~/css/site.css" />
+    @if (_f.CurrentUser.j03GridSelectionModeFlag == 1)
+    {
+        <link rel="stylesheet" href="~/css/thegrid_clipboard.css" />
+    }
+    else
+    {
+        <link rel="stylesheet" href="~/css/thegrid.css" />
+    }
+
+    @if (_f.CurrentUser.j03LiveChatTimestamp != null)
+    {
+        <!-- Smartsupp Live Chat script -->
+        <script type="text/javascript">
+            var _smartsupp = _smartsupp || {};
+            _smartsupp.key = '597e944bf98dc4bb126ce946d7f2d04c571f32da';
+            window.smartsupp || (function (d) {
+                var s, c, o = smartsupp = function () { o._.push(arguments) }; o._ = [];
+                s = d.getElementsByTagName('script')[0]; c = d.createElement('script');
+                c.type = 'text/javascript'; c.charset = 'utf-8'; c.async = true;
+                c.src = 'https://www.smartsuppchat.com/loader.js?'; s.parentNode.insertBefore(c, s);
+            })(document);
+            smartsupp('name', '@_f.CurrentUser.FullName');
+            smartsupp('email', '@_f.CurrentUser.j02Email');
+        </script>
+    }
+
+</head>
+<body>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/lib/modal_bootstrap/bootstrap-show-modal.js"></script>
+
+    <script src="~/lib/splitter/jquery-resizable.js"></script>
+    <script src="~/lib/datepicker/bootstrap-datepicker.min.js"></script>
+    <script src="~/lib/datepicker/bootstrap-datepicker.cs.min.js"></script>
+    <script src="~/lib/qtip/jquery.qtip.min.js"></script>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/mycombo.js" asp-append-version="true"></script>
+    <script src="~/js/thegrid.js" asp-append-version="true"></script>
+    <script src="~/js/contextmenu.js" asp-append-version="true"></script>
+    <script src="~/js/mycontrols.js" asp-append-version="true"></script>
+
+    <header>
+        <nav id="mainmenu1" class="navbar navbar-expand-lg navbar-dark py-1">
+            <div class="navbar-nav">
+                <div class="nav-item dropdown">
+                    <a id="cmdGlobalNavigate" class="btn btn-light btn-sm dropdown-toggle" data-toggle="dropdown" role="button" title="Navigace v INSPIS rodině" style="cursor: pointer;">
+                        <span class="text-primary" style="font-size:140%;">
+
+                            ☰@_f.App.AppName
+                        </span>
+                    </a>
+
+                    <div class="dropdown-menu" style="background-color:white;" id="divGlobalNavigateMenu" aria-labelledby="cmdGlobalNavigate">Loading...</div>
+                </div>
+
+            </div>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+
+            <div class="navbar-collapse collapse d-sm-inline-flex">
+                @if (_f.CurrentUser.j03HomePageUrl == null)
+                {
+                    <a id="cmdHome" class="nav-link text-white" href="/Home/Index" tabindex="-1">HOME</a>
+                }
+                else
+                {
+                    <a id="cmdHome" class="nav-link text-white" href="@_f.CurrentUser.j03HomePageUrl" tabindex="-1">HOME☆</a>
+                }
+
+                @if (_f.CurrentUser.HasAdminMenu())
+                {
+                    <div class="navbar-nav">
+                        <div class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="javascript:void(0)" onclick="menu_open_by_prefix('Admin')" id="cmdAdmin" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tabindex="-1">ADMINISTRACE</a>
+
+                            <div class="dropdown-menu dropdown_menu_container" id="divMenuAdmin" aria-labelledby="cmdAdmin">Loading...</div>
+
+                        </div>
+                    </div>
+                }
+                @if (_f.CurrentUser.TestPermission(BO.PermValueEnum.Menu_Events))
+                {
+                    <div class="navbar-nav">
+                        <div class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="javascript:void(0)" onclick="menu_open_by_prefix('A01')" id="cmdA01" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tabindex="-1">@_f.App.Terminology_Akce.ToUpper()</a>
+
+                            <div class="dropdown-menu dropdown_menu_container" id="divMenuA01" aria-labelledby="cmdA01">Loading...</div>
+                        </div>
+                    </div>
+                }
+                @if (_f.CurrentUser.TestPermission(BO.PermValueEnum.Menu_A03))
+                {
+                    <div class="navbar-nav">
+                        <div class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="javascript:void(0)" onclick="menu_open_by_prefix('A03')" id="cmdA03" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tabindex="-1">INSTITUCE</a>
+
+                            <div class="dropdown-menu dropdown_menu_container" id="divMenuA03" aria-labelledby="cmdA03">Loading...</div>
+                        </div>
+                    </div>
+                }
+                @if (_f.CurrentUser.TestPermission(BO.PermValueEnum.Menu_H04) || 1 == 1)
+                {
+                    <div class="navbar-nav">
+                        <a id="cmdH04" class="nav-link text-white" href="/TheGrid/FlatView?prefix=h04" tabindex="-1">ÚKOLY</a>
+
+                    </div>
+
+                }
+
+                @if (1 == 1)
+                {
+                    <div class="navbar-nav">
+                        <div class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="javascript:void(0)" onclick="menu_open_by_prefix('J02')" id="cmdJ02" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tabindex="-1">LIDÉ</a>
+
+                            <div class="dropdown-menu dropdown_menu_container" id="divMenuJ02" aria-labelledby="cmdJ02">Loading...</div>
+                        </div>
+                    </div>
+                }
+
+                @if (_f.CurrentUser.TestPermission(BO.PermValueEnum.Menu_Reports))
+                {
+                    <div class="navbar-nav">
+                        <div class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="javascript:void(0)" onclick="menu_open_by_prefix('X31')" id="cmdX31" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tabindex="-1">SESTAVY</a>
+
+                            <div class="dropdown-menu dropdown_menu_container" id="divMenuX31" aria-labelledby="cmdX31">Loading...</div>
+                        </div>
+                    </div>
+
+                }
+                <div class="navbar-nav">
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="javascript:void(0)" id="cmdLangIndex" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tabindex="-1">@_f.CurrentUser.LangName</a>
+
+                        <div class="dropdown-menu dropdown_menu_container" id="divLangIndexMenu" aria-labelledby="cmdLangIndex">Loading...</div>
+
+                    </div>
+                </div>
+                <div class="navbar-nav">
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="javascript:void(0)" id="cmdFontStyleFlag" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tabindex="-1">A</a>
+
+                        <div class="dropdown-menu dropdown_menu_container" id="divFontStyleMenu" aria-labelledby="cmdFontStyleFlag">Loading...</div>
+
+                    </div>
+                </div>
+                <div class="navbar-nav">
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="javascript:void(0)" id="cmdCurrentUser" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tabindex="-1">@_f.CurrentUser.j03Login.ToUpper()</a>
+
+                        <div class="dropdown-menu dropdown_menu_container" id="divCurrentUserMenu" aria-labelledby="cmdCurrentUser">Loading...</div>
+
+                    </div>
+                </div>
+
+            </div>
+        </nav>
+    </header>
+
+
+
+    <div id="site_loading1">Loading...</div>
+    <div class="body-content" id="site_master_container" style="visibility: hidden;" role="main">
+        @RenderBody()
+    </div>
+
+    <div id="myModalContainer" style="display:none;">
+        <div id="myModalContent">
+            <div style="height:30px;background-color: lightsteelblue;padding:3px;" ondblclick="_window_toggle()">
+                <button class="btn btn-secondary btn-sm float-left" onclick="_window_close()" style="margin-left:3px;margin-right:3px;">&times;</button>
+                <span id="myModalContentHeader"></span>
+                <button class="btn btn-secondary btn-sm float-right" onclick="_window_close()" style="margin-right:3px;">&times;</button>
+                <button class="btn btn-secondary btn-sm float-right" onclick="_window_toggle()" style="margin-right:3px;">&#9600;</button>
+            </div>
+            <div id="myModalFrame" style="padding: 0px; margin:0px 0px 0px 10px; overflow: auto; -webkit-overflow-scrolling: touch;">
+                <iframe id="fraModalContent" name="fraModalContent" frameborder="0"></iframe>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        var _modal = document.getElementById("myModalContainer");
+        var _modal_current_layout = null;
+        var _header_uschova = "";
+
+        $(document).ready(function ()
+        {
+            document.getElementById("site_master_container").style.visibility = "visible";
+            document.getElementById("site_loading1").style.display = "none";
+
+            $("#fraModalContent").on("load", function () {
+                $("#myModalContentHeader").text(_header_uschova);
+                $("#myModalFrame").css("visibility", "visible");
+            });
+
+           @if (_f.CurrentUser.Messages4Notify != null) {
+           @foreach (var c in _f.CurrentUser.Messages4Notify) {  // <----  placed on the same line, WORKING !!!
+            <text>
+            _notify_message("@c.Value","@c.Key");
+            </text>
+            }
+            }
+            if ($("#toolbar_changeinfo").length) {
+                //události na editačních formulářích
+                $("form").submit(function () {
+                    if ($(document.activeElement).attr("type") == "submit")
+                        return true;
+                    else return false;
+                });
+
+                $("textarea").each(function () {
+                    this.style.height = "auto";
+                    this.style.height = (this.scrollHeight) + "px";
+
+                    $(this).on("input", function () {
+                        this.style.height = "auto";
+                        this.style.height = (this.scrollHeight) + "px";
+                    });
+                });
+            }
+
+
+
+            $(document).on("click", function (e) {
+            if (e.target == _modal) {
+                _window_close();
+            }
+            });
+            $(document).on("keydown", function (e) {
+                if (e.keyCode == 27 && _modal.style.display == "block") {   //klávese ESCAPE
+                _window_close();
+
+                }
+                if (e.keyCode == 13 && e.target.nodeName != "BUTTON" && e.target.nodeName != "TEXTAREA") { //zabránit submit formuláře po stisknutí ENTER na jakémkoliv non-submit input elementu
+                    e.preventDefault();
+                    return false;
+                }
+            });
+
+
+            @if (_f.CurrentUser.j03PingTimestamp == null || _f.CurrentUser.j03PingTimestamp.Value.AddSeconds(120) < DateTime.Now)
+            {
+                <text>
+                _update_user_ping();     //aktualizace ping logu po 120 sekundách
+                </text>
+            }
+
+            $("#cmdLangIndex").click(function () {
+                $.post("/Menu/CurrentUserLangIndex", function (data) {
+                    $("#divLangIndexMenu").html(data);
+                });
+            });
+            $("#cmdFontStyleFlag").click(function () {
+                $.post("/Menu/CurrentUserFontMenu", function (data) {
+                    $("#divFontStyleMenu").html(data);
+                });
+            });
+            $("#cmdCurrentUser").click(function () {
+                $.post("/Menu/CurrentUserMenu", function (data) {
+                    $("#divCurrentUserMenu").html(data);
+                });
+            });
+            $("#cmdGlobalNavigate").click(function () {
+                $.post("/Menu/GlobalNavigateMenu", function (data) {
+                    $("#divGlobalNavigateMenu").html(data);
+                })
+                    .fail(function () {
+                        alert("error");
+                    });
+            });
+
+
+            _init_qtip_onpage(document);
+
+
+
+
+        });
+
+
+        function menu_open_by_prefix(prefix) {
+
+            //$("#divMenu" + prefix).html("Loading...");
+            $.post("/Menu/"+prefix+"Menu", function (data) {
+                $("#divMenu" + prefix).html(data);
+                $("#cmd" + prefix).attr("onclick", "");
+
+            });
+        }
+
+
+
+        function hardrefresh(pid, flag) {
+            var url = window.location.href;
+            if (url.indexOf("#") > 0) {
+                var arr = url.split("#");
+                url = arr[0];
+            }
+
+            if (_modal_current_layout == "subform") {   //volání z iframe -> refreshovat pouze iframe
+                if (document.getElementById("fra_subgrid")) {
+                    document.getElementById("fra_subgrid").contentDocument.location.reload(true);
+                    return;
+
+                }
+            }
+            if (pid !== null && pid !== 0) {
+                url = _removeUrlParam("go2pid", url);
+                if (url.indexOf("?") > 0) {
+                    url = url + "&go2pid=" + pid;
+                } else {
+                    url = url + "?go2pid=" + pid;
+                }
+
+            }
+            location.replace(url);
+
+        }
+
+
+        function save_fontstyle_menu(intFontStyleFlag2Save)
+        {
+            $.post("/Home/SaveCurrentUserFontStyle", { fontstyleflag: intFontStyleFlag2Save }, function (data) {
+                location.replace(window.location.href);
+            });
+
+        }
+        function save_langindex_menu(intLangIndex2Save) {
+            $.post("/Home/SaveCurrentUserLangIndex", { langindex: intLangIndex2Save }, function (data) {
+                location.replace(window.location.href);
+            });
+
+        }
+        function render_currentuser_menu() {
+
+            $.post("/Menu/CurrentUserMenu", function (data) {
+                $("#divCurrentUserMenu").html(data);
+            });
+
+        }
+
+
+
+
+        //vyvolání popup okna - na stránce musí být přítomen DIV: ID=myModalContainer
+        function _window_close() {
+            var iframe = document.getElementById("fraModalContent");
+            var elmnt = iframe.contentWindow.document.getElementById("toolbar_changeinfo");
+            if ($(elmnt).text() !== "") {
+                if (confirm("Chcete zavřít okno bez uložení změn?")) {
+                    $(_modal).css("display", "none");
+                } else {
+                    return;
+                }
+            }
+            $(_modal).css("display", "none");
+
+        }
+        function _window_toggle() {
+            var okno = $("#myModalContent");
+            if (_device.innerWidth - $(okno).width() < 30) {
+                _window_open("", 1);
+            } else {
+                _window_open("", 2);
+            }
+
+        }
+        function _window_open(url, flag, header, layout) {
+            if (url != "") {
+                $("#myModalFrame").css("visibility", "hidden");
+            }
+            if (typeof header === "undefined") header = "";
+            if (typeof layout === "undefined") layout = null;
+            _modal_current_layout = layout;
+            if (typeof flag === "undefined") flag = 1;
+            if (url.toLowerCase().indexOf("/j11/record") > -1 || url.toLowerCase().indexOf("/a29/record") > -1 || url.toLowerCase().indexOf("/a10/record") > -1 || url.toLowerCase().indexOf("/x51/record") > -1) {
+                flag = 2;   //automaticky maximalizovat okno
+            }
+
+
+            if (!$(_modal).attr("initialized") && flag !== 2) {
+                _make_element_draggable(document.getElementById("myModalContent"), document.getElementById("myModalFrame")); //předávání nefunguje přes jquery
+                $(_modal).attr("initialized", true);
+            }
+            $("#myModalContentHeader").text(header);
+            _header_uschova = $("#myModalContentHeader").text();
+            $("#myModalContentHeader").html("<strong style='color:navy;margin-left:100px;'>LOADING CONTENT....</strong>");
+
+
+            var okno = $("#myModalContent");
+            var fra = $("#fraModalContent");
+
+            var w = 1100;
+            var h = 800;
+            var x = 0;
+            var y = 0;
+
+            if (flag === 1) {   //centralizovat, max rozměr 1000x800
+                if (_device.innerWidth < w) w = _device.innerWidth;
+                if (_device.innerHeight < h) h = _device.innerHeight;
+                x = (_device.innerWidth - w) / 2;
+                y = (_device.innerHeight - h) / 2;
+            }
+            if (flag === 2) {   //okno na fullsreen 100%
+                $("#myModalFrame").css("padding", "0");
+                w = _device.innerWidth;
+                h = _device.innerHeight;
+                x = 0;
+                y = 0;
+            }
+
+            $(okno).css("width", w);
+            $(okno).css("height", h);
+            $(okno).css("left", x);
+            $(okno).css("top", y);
+            $(fra).css("width", w-15);
+            $(fra).css("height", h - 30 - 10);    //10 padding dole, 30 div header
+
+            if (url !== "") {
+                $(fra).attr("src", url);
+            }
+
+            $(_modal).css("display", "block");
+        }
+
+
+        function handle_smartsupp(flag) {
+            $.post("/Home/StartStopLiveChat?flag="+flag, function (data) {
+                if (data.flag == 1) {
+                    location.replace("/Home/LiveChat");
+                }
+
+            });
+
+        }
+
+
+    </script>
+
+
+    @RenderSection("Scripts", required: false)
+
+
+</body>
+</html>

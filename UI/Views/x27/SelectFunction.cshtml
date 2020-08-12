@@ -1,0 +1,70 @@
+﻿@model SelectFunction
+@{
+    ViewData["Title"] = "Vybrat EVAL funkci";
+    Layout = "~/Views/Shared/_LayoutModal.cshtml";
+
+    string Osekej(string s)
+    {
+        s = s.Replace("as double", "", StringComparison.OrdinalIgnoreCase);
+        s = s.Replace("as string", "", StringComparison.OrdinalIgnoreCase);
+        s = s.Replace("as object", "", StringComparison.OrdinalIgnoreCase);
+        s = s.Replace("as date", "", StringComparison.OrdinalIgnoreCase);
+        s = s.Replace("as boolean", "", StringComparison.OrdinalIgnoreCase);
+        s = s.Replace(", ", ",");
+        s = s.Replace(" ,", ",");
+        s = s.Replace(" )", ")");
+
+        return s;
+    }
+
+
+}
+
+<table class="table table-hover">
+    @foreach (var c in Model.lisX27)
+    {
+    <tr>
+        <td style="width:20px;">
+            @if (c.x27Returns == "string")
+            {
+                <img src="/Images/type_text.png" />
+            }
+            @if (c.x27Returns == "double")
+            {
+                <img src="/Images/type_number.png" />
+            }
+            @if (c.x27Returns == "date")
+            {
+                <img src="/Images/type_datetime.png" />
+            }
+        </td>
+        <td>
+            <a href="javascript:ok('@(Osekej(c.x27Name))')">@c.x27Name</a>
+            <div>
+                <span style="color:green;">@c.x27Parameters</span>
+            </div>
+            <div>
+                <span style="font-style:italic;">@(c.x27Description)</span>
+            </div>
+        </td>
+    </tr>
+    }
+</table>
+
+
+<script type="text/javascript">
+    var _elementID = "@(Model.ElementID)";
+
+    function ok(s) {
+        
+        var val = window.parent.document.getElementById(_elementID).value;
+        if (val == "") {
+            val = s;
+        } else {
+            val = val + "," + s;
+        }
+        window.parent.document.getElementById(_elementID).value = val;
+
+        _window_close();
+    }
+</script>

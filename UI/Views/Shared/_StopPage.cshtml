@@ -1,0 +1,36 @@
+﻿@model StopPageViewModel
+@inject BL.Factory _f
+
+@{
+    ViewData["Title"] = "Stop";
+    if (Model.IsModal == true)
+    {
+        Layout = "~/Views/Shared/_LayoutModal.cshtml";
+    }
+    else
+    {
+        if (Model.IsSubform)
+        {
+            Layout = "~/Views/Shared/_LayoutSubform.cshtml";
+        }
+        else
+        {
+            Layout = "~/Views/Shared/_Layout.cshtml";
+        }
+
+    }
+
+}
+
+<h1>Upozornění!</h1>
+<hr />
+
+<h4>@Html.Raw(@Model.Message)</h4>
+<hr />
+
+<p>Osobní profil: <strong>@_f.CurrentUser.FullName</strong></p>
+<p>Uživatel: <strong>@_f.CurrentUser.j03Login</strong></p>
+<p>Aplikační role: <strong>@_f.CurrentUser.j04Name</strong></p>
+<p>E-mail: <strong>@_f.CurrentUser.j02Email</strong></p>
+<p>Jazyk: <strong>@_f.CurrentUser.LangName</strong></p>
+

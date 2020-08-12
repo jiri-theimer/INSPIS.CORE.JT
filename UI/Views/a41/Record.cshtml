@@ -1,0 +1,47 @@
+﻿@model UI.Models.Record.a41Record
+@{
+    Layout = "~/Views/Shared/_LayoutRecord.cshtml";
+    if (Model.Rec == null) return;
+    Model.PageTitle = "Účastník akce: " + Model.RecA01.a01Signature;
+}
+@addTagHelper *, UI
+
+<div class="modal_record_container">
+    <input type="hidden" asp-for="@Model.a01ID" />
+    <input type="hidden" asp-for="@Model.Person" />
+
+    <div class="form-row">
+        <label class="col-sm-1 col-md-2 col-form-label">Role v akci:</label>
+        <div class="col-sm-11 col-md-10">
+            <mycombo entity="a45EventRole" asp-for="Rec.a45ID" selectedtext="Rec.a45Name" placeholder="Vybrat roli v akci..." view-flag="2" param1="a45IsManual1"></mycombo>
+        </div>
+    </div>
+
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">Jméno:</label>
+        <div class="col-sm-11 col-md-10">
+            <span class="val-readonly">@Model.Person</span>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+
+    });
+
+
+
+
+
+
+</script>
+

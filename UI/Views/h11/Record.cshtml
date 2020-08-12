@@ -1,0 +1,76 @@
+﻿@model UI.Models.Record.h11Record
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutRecord.cshtml";
+    if (Model.Rec == null) return;
+    Model.PageTitle = "Článek pro nástěnku";
+}
+@addTagHelper *, UI
+
+@section header_content{
+
+    <link href="~/lib/summernote/summernote-bs4.css" rel="stylesheet">
+}
+
+<script src="~/lib/summernote/summernote-bs4.min.js"></script>
+<script src="~/lib/summernote/lang/summernote-cs-CZ.js"></script>
+
+
+<div class="modal_record_container">
+    <div class="form-row">
+        <label class="col-sm-1 col-md-2 col-form-label">Název článku:</label>
+        <div class="col-sm-11 col-md-10">
+            <input class="form-control" asp-for="Rec.h11Name" />
+            <span asp-validation-for="Rec.h11Name" class="text-danger"></span>
+        </div>
+
+
+
+    </div>
+    
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">Omezit přístup k článku rolím:</label>
+        <div class="col-sm-11 col-md-10">
+            <mycombochecklist asp-for="@Model.j04IDs" entity="j04UserRole" selectedtext="@Model.j04Names" placeholder="Vybrat aplikační role..."></mycombochecklist>
+        </div>
+    </div>
+
+</div>
+<input type="hidden" id="hidContent" asp-for="@Model.HtmlContent" />
+<div id="editor1"></div>
+
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var ofs = $("#editor1").offset();
+        var hh = _device.innerHeight - ofs.top - 120;
+
+        $("#editor1").summernote({
+            lang: "cs-CZ", // default: 'en-US'
+            placeholder: "Obsah článku",
+            tabsize: 2,
+            height: hh
+        });
+
+
+        var firstdata = $("#hidContent").val();
+        $("#editor1").summernote("code", firstdata);
+
+        $("#editor1").on("summernote.change", function (e) {   // callback as jquery custom event
+            var s = $("#editor1").summernote("code");
+            $("#hidContent").val(s);
+        });
+
+    });
+
+
+
+
+
+
+</script>
+

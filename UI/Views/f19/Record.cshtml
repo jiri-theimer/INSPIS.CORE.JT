@@ -1,0 +1,473 @@
+﻿@model UI.Models.Record.f19Record
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutRecord.cshtml";
+    if (Model.Rec == null) return;
+    Model.PageTitle = "Formulářová otázka";
+}
+@addTagHelper *, UI
+
+<div class="tabs_container_record">
+    <!-- Tab panes -->
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a id="link_tab1" class="nav-link" data-toggle="tab" href="#tab1">Vlastnosti</a>
+        </li>
+        <li class="nav-item">
+            <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2">Definiční obor odpovědi</a>
+        </li>
+        <li class="nav-item">
+            <a id="link_tab3" class="nav-link" data-toggle="tab" href="#tab3">Přílohy k otázce</a>
+        </li>
+        <li class="nav-item">
+            <a id="link_tab4" class="nav-link" data-toggle="tab" href="#tab4">Ostatní</a>
+        </li>
+    </ul>
+</div>
+<input type="hidden" asp-for="@Model.UploadGuid" />
+<input type="hidden" asp-for="@Model.f06ID" />
+<input type="hidden" asp-for="@Model.f18ID" />
+<input type="hidden" id="hidF21IDs" asp-for="@Model.f21IDs" />
+
+<div class="modal_record_container">
+
+
+    <div class="tab-content">
+        <div class="tab-pane" id="tab1">
+            <!-- Tab1 -->
+            <div class="alert alert-primary" role="alert">
+                @Model.RecF06.f06Name
+            </div>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Segment formuláře:</label>
+                <div class="col-sm-11 col-md-10">
+                    <mycombo entity="f18FormSegment" asp-for="Rec.f18ID" selectedtext="Rec.f18Name" masterprefix="f06" masterpid="@Model.f06ID" view-flag="2" event_after_changevalue="handle_f18id_change"></mycombo>
+                </div>
+            </div>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Typ odpovědi:</label>
+                <div class="col-sm-4 col-md-3">
+                    <mycombo entity="f23ReplyType" asp-for="Rec.f23ID" selectedtext="Rec.f23Name" view-flag="2" event_after_changevalue="handle_f23id_change"></mycombo>
+                </div>
+                @if (Model.Rec.ReplyControl != BO.ReplyKeyEnum.Checkbox && Model.Rec.ReplyControl != BO.ReplyKeyEnum.Button)
+                {
+                    <div class="col-sm-3 col-md-3">
+                        <input type="checkbox" asp-for="Rec.f19IsRequired" />
+                        <label class="col-form-label" for="Rec_f19IsRequired">Povinné k vyplnění</label>
+                    </div>
+                }
+                @if (Model.Rec.ReplyControl == BO.ReplyKeyEnum.Checkbox || Model.Rec.ReplyControl == BO.ReplyKeyEnum.Listbox)
+                {
+                    <div class="col-sm-4 col-md-4">
+                        <input type="checkbox" asp-for="Rec.f19IsMultiselect" />
+                        <label class="col-form-label" for="Rec_f19IsMultiselect">Více-násobný výběr odpovědi (multi-select) </label>
+                    </div>
+                }
+
+            </div>
+            @if (Model.Rec.ReplyControl == BO.ReplyKeyEnum.TextBox)
+            {
+                <div class="form-row my-2">
+                    <label class="col-sm-1 col-md-2 col-form-label">Datový typ:</label>
+                    <div class="col-sm-4 col-md-3">
+                        <mycombo entity="x24DataType" asp-for="Rec.x24ID" selectedtext="Rec.x24Name" view-flag="2" param1="textbox" event_after_changevalue="handle_x24id_change"></mycombo>
+                    </div>
+                </div>
+            }
+            @if (Model.lisF26.Count() > 0)
+            {
+                <div class="form-row my-2">
+                    <label class="col-sm-1 col-md-2 col-form-label">Zařadit do baterie:</label>
+                    <div class="col-sm-11 col-md-10">
+                        <mycombo entity="f26BatteryBoard" asp-for="Rec.f26ID" selectedtext="Rec.f26Name" view-flag="2" masterprefix="f18" masterpid="@Model.Rec.f18ID"></mycombo>
+                    </div>
+                </div>
+            }
+            @if (Model.lisF25.Count() > 0)
+            {
+                <div class="form-row my-2">
+                    <label class="col-sm-1 col-md-2 col-form-label">Zařadit do šachovnice:</label>
+                    <div class="col-sm-5 col-md-4">
+                        <mycombo entity="f25ChessBoard" asp-for="Rec.f25ID" selectedtext="Rec.f25Name" view-flag="2" masterprefix="f18" masterpid="@Model.Rec.f18ID" event_after_changevalue="handle_f25id_change"></mycombo>
+                    </div>
+                    @if (Model.Rec.f25ID > 0)
+                    {
+                        <label class="col-sm-1 col-md-1 col-form-label">Řádek:</label>
+                        <div class="col-sm-1 col-md-1">
+                            <mynumber asp-for="Rec.f19ChessRow" decimal-digits="0"></mynumber>
+                        </div>
+                        <label class="col-sm-1 col-md-1 col-form-label">Sloupec:</label>
+                        <div class="col-sm-1 col-md-1">
+                            <mynumber asp-for="Rec.f19ChessColumn" decimal-digits="0"></mynumber>
+                        </div>
+                    }
+                </div>
+            }
+
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Název otázky:</label>
+                <div class="col-sm-11 col-md-10">
+                    <textarea asp-for="Rec.f19Name" class="form-control" style="min-height:40px;"></textarea>
+                    <span asp-validation-for="Rec.f19Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Rozšířený text:</label>
+                <div class="col-sm-11 col-md-10">
+                    <textarea asp-for="Rec.f19SupportingText" class="form-control" style="min-height:40px;"></textarea>
+                    <span asp-validation-for="Rec.f19SupportingText" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Uživatelský kód:</label>
+                <div class="col-sm-4 col-md-3">
+                    <input class="form-control" asp-for="Rec.f19Ident" />
+                </div>
+                <label class="col-sm-1 col-md-2 col-form-label">Index pořadí:</label>
+                <div class="col-sm-1 col-md-1">
+                    <mynumber asp-for="Rec.f19Ordinal" decimal-digits="0"></mynumber>
+                </div>
+                <label class="col-sm-1 col-md-1 col-form-label">STAT ID:</label>
+                <div class="col-sm-2 col-md-2">
+                    <input class="form-control" asp-for="Rec.f19StatID" />
+                </div>
+            </div>
+            <div class="form-row my-2">
+                <div class="col-sm-4 col-md-4">
+                    <input type="checkbox" asp-for="Rec.f19IsEncrypted" />
+                    <label class="col-form-label" for="Rec_f19IsEncrypted">Odpověď otázky podléhá šifrování</label>
+                </div>
+
+            </div>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Entitní pole k aktualizaci:</label>
+                <div class="col-sm-5 col-md-4">
+                    <select asp-for="Rec.f19EntityField" class="form-control">
+                        <option value=""></option>
+                        <option disabled="disabled">--------- Entita [Učitel] ---------</option>
+                        <option value="k01PID">Klíč (RČ)</option>
+                        <option value="k01TitleBeforeName">Titul před jménem</option>
+                        <option value="k01FirstName">Křestní jméno</option>
+                        <option value="k01LastName">Příjmení</option>
+                        <option value="k01TitleAfterName">Titul za jménem</option>
+                        <option value="k02ValidFrom">Zahájení platnosti vazby na školu</option>
+                        <option value="k02ValidUntil">Ukončení platnosti vazby na školu</option>
+                        <option disabled="disabled">--------- Entita [Instituce] ---------</option>
+                        <option value="a03Name">Název instituce</option>
+                        <option value="a03ICO">IČ</option>
+                        <option value="a03City">Obec</option>
+                        <option value="a03Street">Ulice</option>
+                        <option value="a03PostCode">PSČ</option>
+                        <option value="a03Phone">TEL</option>
+                        <option value="a03Mobile">MOBIL</option>
+                        <option value="a03Web">WWW</option>
+                        <option value="a03Email">E-mail</option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Klastr otázky:</label>
+                <div class="col-sm-11 col-md-10">
+                    <mycombo entity="f44QuestionCluster" asp-for="Rec.f44ID" selectedtext="Rec.f44Name" view-flag="2"></mycombo>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="tab2" style="height:500px;">
+            <!-- Tab2 -->
+
+            @if (Model.Rec.ReplyControl != BO.ReplyKeyEnum.Button && Model.Rec.ReplyControl != BO.ReplyKeyEnum.FileUpload && Model.Rec.f19IsDefaultValueHTML == false)
+            {
+                <div class="form-row my-2">
+                    <label class="col-sm-1 col-md-2 col-form-label"><a href="javascript:popup_evalfunct('Rec_f19DefaultValue')">Výchozí hodnota:</a></label>
+                    <div class="col-sm-11 col-md-10">
+                        <textarea asp-for="Rec.f19DefaultValue" class="form-control evalarea" style="min-height:40px;"></textarea>
+
+                    </div>
+                </div>
+            }
+
+
+            @if (Model.Rec.ReplyControl == BO.ReplyKeyEnum.TextBox && Model.Rec.ReplyType == BO.x24DataTypeEnum.tString)
+            {
+                <div class="form-row my-2">
+                    <label class="col-sm-1 col-md-2 col-form-label">Regulární výraz:</label>
+                    <div class="col-sm-11 col-md-10">
+                        <input class="form-control" asp-for="Rec.f19Regex" />
+                    </div>
+
+                </div>
+            }
+            @if (Model.Rec.ReplyControl == BO.ReplyKeyEnum.TextBox)
+            {
+                <div class="form-row my-2">
+                    <label class="col-sm-1 col-md-2 col-form-label">STAT ID odpovědi:</label>
+                    <div class="col-sm-4 col-md-3">
+                        <input class="form-control" asp-for="Rec.TextBox_ExportValue" />
+                    </div>
+
+                </div>
+            }
+            @if (Model.Rec.ReplyControl == BO.ReplyKeyEnum.TextBox && Model.Rec.x24ID > 0 && Model.Rec.ReplyType != BO.x24DataTypeEnum.tString)
+            {
+                <div class="form-row my-2">
+                    <label class="col-sm-1 col-md-2 col-form-label">Minimální hodnota:</label>
+                    <div class="col-sm-4 col-md-3">
+                        <input class="form-control" asp-for="Rec.TextBox_MinValue" />
+                    </div>
+                    <label class="col-sm-1 col-md-2 col-form-label">Maximální hodnota:</label>
+                    <div class="col-sm-4 col-md-3">
+                        <input class="form-control" asp-for="Rec.TextBox_MaxValue" />
+                    </div>
+
+                </div>
+            }
+            @if (Model.Rec.ReplyControl == BO.ReplyKeyEnum.Button)
+            {
+                <div class="form-row my-2">
+                    <label class="col-sm-1 col-md-2 col-form-label">URL tlačítka:</label>
+                    <div class="col-sm-11 col-md-10">
+
+                        <myautocomplete asp-for="Rec.f19LinkURL" o15flag="427"></myautocomplete>
+                    </div>
+
+                </div>
+            }
+            @if (Model.Rec.ReplyControl == BO.ReplyKeyEnum.FileUpload)
+            {
+                <div class="form-row my-2">
+                    <label class="col-sm-1 col-md-2 col-form-label">Povolené souborové přípony:</label>
+                    <div class="col-sm-11 col-md-10">
+
+                        <input type="text" class="form-control" asp-for="Rec.f19AllowedFileUploadExtensions" placeholder="Oddělovač hodnot je čárka." />
+                    </div>
+
+                </div>
+                <div class="form-row my-2">
+                    <label class="col-sm-1 col-md-2 col-form-label">Maximální počet příloh:</label>
+                    <div class="col-sm-1 col-md-1">
+
+                        <mynumber asp-for="Rec.f19MaxUploadFiles" decimal-digits="0"></mynumber>
+                    </div>
+
+                </div>
+            }
+
+            @if (Model.Rec.ReplyControl == BO.ReplyKeyEnum.DropdownList || Model.Rec.ReplyControl == BO.ReplyKeyEnum.RadiobuttonList || Model.Rec.ReplyControl == BO.ReplyKeyEnum.Listbox || (Model.Rec.ReplyControl == BO.ReplyKeyEnum.Checkbox && Model.Rec.f19IsMultiselect))
+            {
+                <div style="width:100%;">
+                    <mycombo entity="f21ReplyUnit" asp-for="@Model.SelectedF21ID" selectedtext="@Model.SelectedF21Name" filter-flag="1" param1="search" placeholder="Vybrat jednotku odpovědi..." event_after_changevalue="handle_f21id_append"></mycombo>
+
+                </div>
+                <button type="button" id="cmdNew" class="btn btn-primary btn-sm" onclick="f21_create()">Vytvořit novou jednotku</button>
+                <button type="button" id="cmdGrid" class="btn btn-secondary btn-sm" onclick="multiselect()">Přidat hromadně přes Grid</button>
+            }
+            <div id="divF21" style="margin-top:20px;margin-bottom:20px;"></div>
+
+        </div>
+        <div class="tab-pane" id="tab3" style="height:500px;">
+            <!-- Tab3 -->
+            <iframe id="fraUpload" src="/FileUpload/Index?prefix=f19&recpid=@(Model.Rec.pid)&guid=@Model.UploadGuid" height="450" scrolling="no"></iframe>
+
+
+
+        </div>
+        <div class="tab-pane" id="tab4">
+            <!-- Tab4 -->
+            <p></p>
+            <div class="form-row">
+                <label class="col-sm-1 col-md-2 col-form-label">Nápověda:</label>
+                <div class="col-sm-11 col-md-10">
+                    <textarea asp-for="Rec.f19Hint" class="form-control" placeholder="Text nápovědy" style="min-height:40px;"></textarea>
+                    <span asp-validation-for="Rec.f19Hint" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row my-2">                
+                <label class="col-sm-1 col-md-2 col-form-label"><a href="javascript:popup_evalfunct('Rec_f19ReadonlyExpression')">READONLY podmínka:</a></label>
+                <div class="col-sm-11 col-md-10">
+                    <textarea asp-for="Rec.f19ReadonlyExpression" class="form-control evalarea" style="min-height:40px;"></textarea>
+                    <span asp-validation-for="Rec.f19ReadonlyExpression" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row my-2">                
+                <label class="col-sm-1 col-md-2 col-form-label"><a href="javascript:popup_evalfunct('Rec_f19SkipExpression')">SKIP (HIDE) podmínka:</a></label>
+                <div class="col-sm-11 col-md-10">
+                    <textarea asp-for="Rec.f19SkipExpression" class="form-control evalarea" style="min-height:40px;"></textarea>
+                    <span asp-validation-for="Rec.f19SkipExpression" class="text-danger"></span>
+                </div>
+            </div>
+            @if (Model.Rec.ReplyControl != BO.ReplyKeyEnum.Button)
+            {
+        <div class="form-row my-2">            
+            <label class="col-sm-1 col-md-2 col-form-label"><a href="javascript:popup_evalfunct('Rec_f19RequiredExpression')">REQUIRED podmínka:</a></label>
+            <div class="col-sm-11 col-md-10">
+                <textarea asp-for="Rec.f19RequiredExpression" class="form-control evalarea" style="min-height:40px;"></textarea>
+                <span asp-validation-for="Rec.f19RequiredExpression" class="text-danger"></span>
+            </div>
+        </div>
+            }
+
+        <div class="form-row my-2">            
+            <label class="col-sm-1 col-md-2 col-form-label"><a href="javascript:popup_evalfunct('Rec_f19CancelValidateExpression')">CANCEL-VALIDATE podmínka:</a></label>
+            <div class="col-sm-11 col-md-10">
+                <textarea asp-for="Rec.f19CancelValidateExpression" class="form-control evalarea" style="min-height:40px;"></textarea>
+                <span asp-validation-for="Rec.f19CancelValidateExpression" class="text-danger"></span>
+            </div>
+        </div>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Vlastní chybové hlášení::</label>
+                <div class="col-sm-11 col-md-10">
+                    <textarea asp-for="Rec.f19CancelValidateExpression_Message" class="form-control" style="min-height:40px;"></textarea>
+                    <span asp-validation-for="Rec.f19CancelValidateExpression_Message" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Vztah otázky k portálu:</label>
+                <div class="col-sm-5 col-md-4">
+                    <select asp-for="Rec.f19PortalPublishFlag" class="form-control">
+                        <option value="None">Nepublikovat v portálu</option>
+                        <option value="PublishWithSchoolApprove">Publikovat se souhlasem školy</option>
+                        <option value="PublishAlways">Publikovat vždy</option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+</div>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        if ($("#hidF21IDs").val() != "") {
+            refresh_f21_table();
+        }
+
+
+
+    });
+
+
+    function handle_f23id_change(f23id) {
+        if (f23id == "") {
+            _notify_message("Musíte vybrat typ odpovědi.");
+            return;
+        }
+        form1.action = "/f19/Record?oper=postback&f23id=" + f23id;
+        form1.submit();
+    }
+    function handle_x24id_change(x24id) {
+        if (x24id == "") {
+            _notify_message("Musíte vybrat datový typ.");
+            return;
+        }
+        form1.action = "/f19/Record?oper=postback";
+        form1.submit();
+    }
+    function handle_f18id_change(f18id) {
+        if (f18id == "") {
+            _notify_message("Musíte vybrat segment.");
+            return;
+        }
+        form1.action = "/f19/Record?oper=postback";
+        form1.submit();
+    }
+    function handle_f25id_change(f25id) {
+        if (f25id == "") {
+            _notify_message("Musíte vybrat šachovnici.");
+            return;
+        }
+        form1.action = "/f19/Record?oper=postback";
+        form1.submit();
+    }
+
+
+
+
+
+
+
+
+    function handle_f21id_append(f21id) {
+        if (f21id == "") {
+            _notify_message("Musíte vybrat jednotku odpovědi.");
+            return;
+        }
+        var f21ids = [];
+        if ($("#hidF21IDs").val() != "") f21ids = $("#hidF21IDs").val().split(",");
+        if (f21ids.includes(f21id)) {
+            _notify_message("Tato jednotka již je v seznamu.", "info");
+            return;
+        }
+        f21ids.push(f21id);
+        $("#hidF21IDs").val(f21ids.join(","));
+        refresh_f21_table();
+        _notify_message("Jednotka přidána do seznamu. Je třeba potvrdit tlačítkem [Uložit změny].","info");
+
+    }
+    function handle_f21id_delete(f21id) {
+        var f21ids = [];
+        f21ids = $("#hidF21IDs").val().split(",");
+        var x = f21ids.indexOf(f21id.toString());
+        f21ids.splice(x, 1);
+
+        $("#hidF21IDs").val(f21ids.join(","));
+        refresh_f21_table();
+        _toolbar_warn2save_changes();
+
+    }
+    function handle_f21_edit(f21id) {
+        _edit("f21", f21id, "Jednotka odpovědi");
+    }
+
+
+
+    function refresh_f21_table() {
+        var url = "@Url.Action("GetWorkTable", "Common")";
+        var pids = $("#hidF21IDs").val();
+
+        if (pids == "") {
+            $("#divF21").html("");
+
+            return;
+        }
+        $.post(url, { entity: "f21ReplyUnit", tableid: "tabF21IDs", pids: pids, delete_function: "handle_f21id_delete", edit_function:"handle_f21_edit",selectable:true }, function (data) {
+            $("#divF21").html(data);
+
+
+
+
+
+        });
+    }
+
+
+
+    function multiselect() {
+        _window_open("/Record/GridMultiSelect?prefix=f21");
+    }
+
+
+    function f21_create() {
+        _window_open("/f21/Record?pid=0");
+    }
+
+    function hardrefresh(pid, flag) {
+        handle_f21id_append(pid);
+    }
+
+    function popup_evalfunct(elementID) {
+        
+        _window_open("/x27/SelectFunction?elementid=" + elementID,1,"Vybrat EVAL funkci");
+        
+    }
+</script>
+
+

@@ -1,0 +1,126 @@
+﻿@model UI.Models.Record.j40Record
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutRecord.cshtml";
+    if (Model.Rec == null) return;
+    Model.PageTitle = "Poštovní účet";
+}
+@addTagHelper *, UI
+
+
+
+
+<div class="modal_record_container">
+    <div class="form-row">
+        <label class="col-sm-1 col-md-2 col-form-label">Typ účtu:</label>
+        <div class="col-sm-11 col-md-10">
+            <select asp-for="Rec.j40UsageFlag" class="form-control">
+                <option value="1">Privátní SMTP účet</option>
+                <option value="2">Globální SMTP účet</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-row" style="margin-top:10px;">
+        <label class="col-sm-1 col-md-2 col-form-label">Smtp server:</label>
+        <div class="col-sm-8 col-md-7">
+            <input class="form-control" asp-for="Rec.j40SmtpHost" />
+            <span asp-validation-for="Rec.j40SmtpHost" class="text-danger"></span>
+        </div>
+        <label class="col-sm-1 col-md-1 col-form-label">Port:</label>
+        <div class="col-sm-2 col-md-2">
+            <mynumber asp-for="@Model.Rec.j40SmtpPort" decimal-digits="0"></mynumber>
+        </div>
+    </div>
+
+    <div class="form-row" style="margin-top:10px;">
+        <label class="col-sm-1 col-md-2 col-form-label">Jméno odesílatele:</label>
+        <div class="col-sm-11 col-md-10">
+            <input class="form-control" asp-for="Rec.j40SmtpName" />
+            <span asp-validation-for="Rec.j40SmtpName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row" style="margin-top:10px;">
+        <label class="col-sm-1 col-md-2 col-form-label">E-mail odesílatele:</label>
+        <div class="col-sm-11 col-md-10">
+            <input class="form-control" asp-for="Rec.j40SmtpEmail" />
+            <span asp-validation-for="Rec.j40SmtpEmail" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-row" style="margin-top:10px;">
+        <input asp-for="@Model.Rec.j40SmtpUsePersonalReply" />
+        <label for="Rec_j40SmtpUsePersonalReply">Jako REPLY uvádět adresu a jméno z osobního profilu uživatele</label>
+    </div>
+
+    <div class="form-row" style="margin-top:10px;">
+        <input asp-for="@Model.Rec.j40SmtpUseDefaultCredentials" />
+        <label for="Rec_j40SmtpUseDefaultCredentials">Smtp účet nevyžaduje autentifikaci</label>
+    </div>
+    <div id="credentials">
+        <div class="form-row" style="margin-top:10px;">
+            <label class="col-sm-1 col-md-2 col-form-label">Smtp login:</label>
+            <div class="col-sm-11 col-md-10">
+                <input class="form-control" asp-for="Rec.j40SmtpLogin" autocomplete="off"/>
+                <span asp-validation-for="Rec.j40SmtpLogin" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-row" style="margin-top:10px;">
+            <label class="col-sm-1 col-md-2 col-form-label">Smtp heslo:</label>
+            <div class="col-sm-11 col-md-10">
+                <input class="form-control" type="text" asp-for="Rec.j40SmtpPassword" autocomplete="off" placeholder="Heslo zadávejte pouze pokud ho měníte nebo pro nový účet." />
+
+            </div>
+        </div>
+    </div>
+    <div class="form-row" style="margin-top:10px;">
+        <input asp-for="@Model.Rec.j40SmtpEnableSsl" />
+        <label for="Rec_j40SmtpEnableSsl">Podpora SSL</label>
+    </div>
+
+
+
+
+
+    <hr />
+    <div class="form-row">
+        <label class="col-sm-1 col-md-2 col-form-label">Vlastník účtu:</label>
+        <div class="col-sm-11 col-md-10">
+            <mycombo entity="j02Person" asp-for="Rec.j02ID" selectedtext="Rec.Person" filter-flag="1"></mycombo>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        handle_ucet_state();
+
+
+    });
+
+    $("#Rec_j40SmtpUseDefaultCredentials").on("click", function () {
+        handle_ucet_state();
+    });
+
+
+    function handle_ucet_state() {
+
+        if ($("#Rec_j40SmtpUseDefaultCredentials").prop("checked") == true) {
+            $("#credentials").css("display", "none");
+
+        } else {
+            $("#credentials").css("display", "block");
+        }
+    }
+
+</script>
+
+
+

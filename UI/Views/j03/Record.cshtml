@@ -1,0 +1,200 @@
+﻿@model UI.Models.Record.j03Record
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutRecord.cshtml";
+    if (Model.Rec == null) return;
+    Model.PageTitle = "Uživatelský účet";
+}
+@addTagHelper *, UI
+
+
+
+<input type="hidden" asp-for="@Model.IsDefinePassword" value="@Model.IsDefinePassword" />
+<input type="hidden" asp-for="@Model.IsChangeLogin" value="@Model.IsChangeLogin" />
+<div class="modal_record_container">
+
+    <div class="form-row">
+        <label class="col-sm-1 col-md-2 col-form-label">Uživatelské jméno (Login):</label>
+        <div class="col-sm-5 col-md-4">
+            @if (Model.rec_pid > 0 && Model.IsChangeLogin == false)
+            {
+                <input class="form-control" readonly="readonly" asp-for="Rec.j03Login" />
+
+            }
+            else
+            {
+                <input class="form-control" asp-for="Rec.j03Login" />
+                <span asp-validation-for="Rec.j03Login" class="text-danger"></span>
+            }
+
+
+        </div>
+        <div class="col-sm-3 col-md-3">
+            <input type="checkbox" asp-for="Rec.j03IsDomainAccount" />
+            <label class="col-form-label" for="Rec_j03IsDomainAccount">Jedná se o doménový účet</label>
+
+        </div>
+        <div class="col-sm-3 col-md-3">
+            @if (Model.rec_pid > 0 && Model.IsChangeLogin==false)
+            {
+                <button id="cmdChangeLogin" type="button" class="btn btn-secondary btn-sm">Změnit uživatelské jméno</button>
+            }
+        </div>
+    </div>
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">Aplikační role:</label>
+        <div class="col-sm-5 col-md-4">
+            <mycombo entity="j04UserRole" asp-for="Rec.j04ID" selectedtext="Rec.j04Name" view-flag="2"></mycombo>
+        </div>
+        <div class="col-sm-3 col-md-3">
+            <input type="checkbox" asp-for="Rec.j03IsSystemAccount" />
+            <label class="col-form-label" for="Rec_j03IsSystemAccount">Jedná se o systémový účet</label>
+
+        </div>
+        <div class="col-sm-3 col-md-3">
+            @if (Model.IsDefinePassword == false)
+            {
+                <button id="cmdNewPassword" type="button" class="btn btn-secondary btn-sm">Vygenerovat nové přístupové heslo</button>
+            }
+        </div>
+    </div>
+
+
+    @if (Model.IsDefinePassword)
+    {
+        <div id="divNewPwd" style="margin-top:10px;">
+            <div class="form-row">
+                <label class="col-sm-1 col-md-2 col-form-label">Přístupové heslo:</label>
+                <div class="col-sm-6 col-md-5">
+                    <input class="form-control" style="background-color:lightgoldenrodyellow;" autocomplete="off" asp-for="@Model.NewPassword" />
+                    <span asp-validation-for="@Model.NewPassword" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row">
+                <label class="col-sm-1 col-md-2 col-form-label">Ověření hesla:</label>
+                <div class="col-sm-6 col-md-5">
+                    <input class="form-control" style="background-color:lightgoldenrodyellow;" autocomplete="off" asp-for="@Model.VerifyPassword" />
+                    <span asp-validation-for="@Model.VerifyPassword" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    }
+    
+
+
+
+    <div class="card">
+        <div class="card-header">
+            <input type="radio" id="user_profile_create" asp-for="@Model.user_profile_oper" value="create">
+            <label for="user_profile_create">Založit nový osobní profil uživatele</label>
+            <input type="radio" id="user_profile_bind" asp-for="@Model.user_profile_oper" value="bind">
+            <label for="user_profile_bind">Svázat uživatele s již existujícím osobním profilem</label>
+        </div>
+        <div id="divPersonalProfileBind" class="card-body">
+
+            <mycombo entity="j02Person" asp-for="Rec.j02ID" selectedtext="@Model.ComboPerson" filter-flag="1" placeholder="Vybrat osobní profil..."></mycombo>
+
+        </div>
+        <div id="divPersonalProfileCreate" class="card-body">
+            <div class="form-row">
+                <div class="col-sm-2 col-md-2">
+                    <myautocomplete asp-for="RecJ02.j02TitleBeforeName" o15flag="1" placeholder="Titul"></myautocomplete>
+
+                </div>
+                <div class="col-sm-3 col-md-3">
+                    <input class="form-control" asp-for="RecJ02.j02FirstName" placeholder="Jméno" />
+
+
+                </div>
+                <div class="col-sm-5 col-md-5">
+                    <input class="form-control" asp-for="RecJ02.j02LastName" placeholder="Příjmení" />
+
+                </div>
+                <div class="col-sm-2 col-md-2">
+                    <myautocomplete asp-for="RecJ02.j02TitleAfterName" o15flag="2"></myautocomplete>
+                </div>
+
+            </div>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Personální číslo:</label>
+                <div class="col-sm-4 col-md-3">
+                    <input class="form-control" asp-for="RecJ02.j02PID" />
+
+                </div>
+                <label class="col-sm-1 col-md-1 col-form-label">E-mail:</label>
+                <div class="col-sm-4 col-md-4">
+                    <input class="form-control" type="email" asp-for="RecJ02.j02Email" />
+
+                </div>
+            </div>
+
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Mobil:</label>
+                <div class="col-sm-4 col-md-3">
+                    <input class="form-control" type="tel" asp-for="RecJ02.j02Mobile" />
+
+                </div>
+                <label class="col-sm-1 col-md-1 col-form-label">Pevný Tel:</label>
+                <div class="col-sm-4 col-md-4">
+                    <input class="form-control" type="tel" asp-for="RecJ02.j02Phone" />
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#user_profile_create").on("change", function () {
+            form1.action = "/j03/Record?oper=postback";
+            form1.submit();
+        });
+        $("#user_profile_bind").on("change", function () {
+
+            form1.action = "/j03/Record?oper=postback";
+            form1.submit();
+        });
+        $("#cmdNewPassword").on("click", function () {
+            form1.action = "/j03/Record?oper=newpwd";
+            form1.submit();
+        });
+        $("#cmdChangeLogin").on("click", function () {
+            form1.action = "/j03/Record?oper=changelogin";
+            form1.submit();
+        });
+
+        @if (Model.user_profile_oper == "create")
+        {
+            <text>
+        $("#divPersonalProfileBind").css("display", "none");
+        $("#divPersonalProfileCreate").css("display", "block");
+            </text>
+        }
+        @if (Model.user_profile_oper == "bind")
+        {
+            <text>
+        $("#divPersonalProfileBind").css("display", "block");
+        $("#divPersonalProfileCreate").css("display", "none");
+            </text>
+        }
+
+        @if (Model.rec_pid == 0)
+        {
+        <text>
+
+        $("#divNewPwd").css("display", "block");
+        </text>
+        }
+
+
+
+        });
+
+</script>

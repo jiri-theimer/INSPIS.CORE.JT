@@ -1,0 +1,44 @@
+﻿@model UI.Models.Record.a42Record
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutRecord.cshtml";
+    if (Model.Rec == null) return;
+    Model.PageTitle = "INEZ";
+}
+@addTagHelper *, UI
+
+<div class="modal_record_container">
+
+    <div class="form-row">
+        <label class="col-sm-1 col-md-2 col-form-label">Název:</label>
+        <div class="col-sm-11 col-md-10">
+            <input class="form-control" asp-for="Rec.a42Name" />
+            <span asp-validation-for="Rec.a42Name" class="text-danger"></span>
+        </div>
+
+    </div>
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">Plánované období od:</label>
+        <div class="col-sm-2 col-md-2">
+            <mydate asp-for="Rec.a42DateFrom" include-time="false"></mydate>
+        </div>
+        <label class="col-sm-1 col-md-1 col-form-label">Do:</label>
+
+        <div class="col-sm-2 col-md-2">
+            <mydate asp-for="Rec.a42DateUntil" include-time="false"></mydate>
+        </div>
+
+    </div>
+
+    <mystitky entity="a42Qes" asp-for="@Model.TagPids" tagnames="@Model.TagNames" taghtml="@Model.TagHtml"></mystitky>
+
+    <div class="form-row my-2">
+        <textarea asp-for="Rec.a42Description" class="form-control" style="height:150px;" placeholder="Podrobný popis"></textarea>
+        <span asp-validation-for="Rec.a42Description" class="text-danger"></span>
+    </div>
+
+</div>
+
+
+

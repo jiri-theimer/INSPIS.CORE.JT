@@ -1,0 +1,292 @@
+﻿@model UI.Models.Record.b02Record
+@{
+    Layout = "~/Views/Shared/_LayoutRecord.cshtml";
+    if (Model.Rec == null) return;
+    Model.PageTitle = "Workflow stav";
+}
+@addTagHelper *, UI
+
+<input type="hidden" asp-for="@Model.b01ID" />
+
+<div class="tabs_container_record">
+    <!-- Tab panes -->
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a id="link_tab1" class="nav-link" data-toggle="tab" href="#tab1">Vlastnosti</a>
+        </li>
+        <li class="nav-item">
+            <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2">Notifikační zprávy</a>
+        </li>
+        <li class="nav-item">
+            <a id="link_tab3" class="nav-link" data-toggle="tab" href="#tab3">Změna účastníků akce</a>
+        </li>
+        <li class="nav-item">
+            <a id="link_tab4" class="nav-link" data-toggle="tab" href="#tab4">Příkazy</a>
+        </li>
+        <li class="nav-item">
+            <a id="link_tab5" class="nav-link" data-toggle="tab" href="#tab5">Ostatní</a>
+        </li>
+    </ul>
+</div>
+
+<div class="modal_record_container">
+    <div class="tab-content">
+        <div class="tab-pane" id="tab1">
+            <div class="alert alert-primary" role="alert">
+                @Model.RecB01.b01Name
+            </div>
+            <div class="form-row">
+                <label class="col-sm-1 col-md-2 col-form-label">Název stavu:</label>
+                <div class="col-sm-9 col-md-8">
+                    <input class="form-control" asp-for="Rec.b02Name" />
+                    <span asp-validation-for="Rec.b02Name" class="text-danger"></span>
+                </div>
+                <div class="col-sm-2 col-md-2">
+                    ID: <span>@(Model.Rec.pid)</span>
+                </div>
+            </div>
+            <div class="form-row my-2">
+
+                <label class="col-sm-1 col-md-2 col-form-label">Kód stavu:</label>
+                <div class="col-sm-1 col-md-1">
+                    <input class="form-control" asp-for="Rec.b02Ident" />
+
+                </div>
+            </div>
+
+
+            <div class="form-row my-2">
+                <div class="col-sm-4 col-md-4">
+                    <input type="checkbox" asp-for="Rec.b02IsCommentForbidden" />
+                    <label class="col-form-label" for="Rec_b02IsCommentForbidden">Ve stavu je zákaz psaní bez-krokového komentáře</label>
+                </div>
+            </div>
+            <div class="form-row my-2">
+                <div class="col-sm-4 col-md-4">
+                    <input type="checkbox" asp-for="Rec.b02IsHoldStatus" />
+                    <label class="col-form-label" for="Rec_b02IsHoldStatus">Záchytný stav</label>
+                </div>
+            </div>
+            <div class="form-row my-2">
+                <div class="col-sm-4 col-md-4">
+                    <input type="checkbox" asp-for="Rec.b02IsSeparateTab" />
+                    <label class="col-form-label" for="Rec_b02IsSeparateTab">Samostatná záložka v osobní stránce řešitele</label>
+                </div>
+
+            </div>
+
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Barva:</label>
+                <div class="col-sm-1 col-md-1">
+                    <input type="color" asp-for="Rec.b02Color" />
+                </div>
+                <div class="col-sm-2 col-md-3">
+                    <i>Černá = žádná barva!</i>
+                </div>
+            </div>
+
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Index pořadí:</label>
+                <div class="col-sm-1 col-md-1">
+                    <mynumber asp-for="Rec.b02Order" decimal-digits="0"></mynumber>
+                </div>
+
+            </div>
+        </div>
+        <div class="tab-pane" id="tab2">
+            <!-- Tab2 -->
+            <p></p>
+            <button type="button" class="btn btn-primary" onclick="handle_b07_append()">Přidat</button>
+            <table class="table table-hover">
+                @for (var i = 0; i < Model.lisB07.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            <div class="form-row" style="@(Model.lisB07[i].CssTempDisplay)">
+                                <input type="hidden" asp-for="lisB07[i].IsTempDeleted" value="@Model.lisB07[i].IsTempDeleted" />
+                                <input type="hidden" asp-for="lisB07[i].TempGuid" value="@Model.lisB07[i].TempGuid" />
+                                <div class="col-sm-2 col-md-2">
+                                    Příjemce zprávy:
+                                </div>
+                                <div class="col-sm-2 col-md-2">
+                                    <mycombo entity="a45EventRole" asp-for="lisB07[i].a45ID" selectedtext="lisB07[i].a45Name" placeholder="Vybrat roli v akci..." view-flag="2"></mycombo>
+                                </div>
+                                <div class="col-sm-4 col-md-4">
+                                    <mycombo entity="j04UserRole" asp-for="lisB07[i].j04ID" selectedtext="lisB07[i].j04Name" placeholder="Vybrat aplikační roli..." view-flag="2"></mycombo>
+                                </div>
+                                <div class="col-sm-3 col-md-3">
+                                    <mycombo entity="j11Team" asp-for="lisB07[i].j11ID" selectedtext="lisB07[i].j11Name" placeholder="Vybrat tým..." view-flag="2"></mycombo>
+                                </div>
+
+                                <div class="col-1">
+                                    <button type="button" class="btn btn-danger" title="Odstranit řádek" onclick="handle_delete_b07('@(Model.lisB07[i].TempGuid)')">x</button>
+                                </div>
+
+                            </div>
+                            <div class="form-row" style="@(Model.lisB07[i].CssTempDisplay)">
+                                <div class="col-sm-2 col-md-2">
+                                    Šablona zprávy:
+                                </div>
+                                <div class="col-sm-6 col-md-6">
+                                    <mycombo entity="b65WorkflowMessage" asp-for="lisB07[i].b65ID" selectedtext="lisB07[i].b65Name" placeholder="Vybrat šablonu poštovní zprávy..." view-flag="2"></mycombo>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </table>
+
+
+        </div>
+        <div class="tab-pane" id="tab3">
+            <!-- Tab3 -->
+            <p></p>
+            <button type="button" class="btn btn-primary" onclick="handle_b03_append()">Přidat</button>
+            <table class="table table-hover">
+                <tr>
+                    <th>Role v akci</th>
+                    <th>Nové obsazení (tým)</th>
+                    <th></th>
+                </tr>
+                @for (var i = 0; i < Model.lisB03.Count; i++)
+                {
+                    <tr style="@(Model.lisB03[i].CssTempDisplay)">
+                        <td style="width:45%;">
+                            <input type="hidden" asp-for="lisB03[i].IsTempDeleted" value="@Model.lisB03[i].IsTempDeleted" />
+                            <input type="hidden" asp-for="lisB03[i].TempGuid" value="@Model.lisB03[i].TempGuid" />
+                            <mycombo entity="a45EventRole" asp-for="lisB03[i].a45ID" selectedtext="lisB03[i].a45Name" placeholder="Vybrat roli v akci..." view-flag="2"></mycombo>
+
+
+
+                        </td>
+                        <td style="width:45%;">
+                            <mycombo entity="j11Team" asp-for="lisB03[i].j11ID" selectedtext="lisB03[i].j11Name" placeholder="Vybrat tým..." view-flag="2"></mycombo>
+                        </td>
+                        <td style="width:10%;">
+                            <button type="button" class="btn btn-danger" title="Odstranit řádek" onclick="handle_delete_b03('@(Model.lisB03[i].TempGuid)')">x</button>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+        <div class="tab-pane" id="tab4">
+            <!-- Tab4 -->
+            <p></p>
+            <button type="button" class="btn btn-primary" onclick="handle_b10_append()">Přidat</button>
+            <table class="table table-hover">
+                <tr>
+                    <th>Příkaz</th>
+                    <th>Parametr</th>
+                    <th></th>
+                </tr>
+                @for (var i = 0; i < Model.lisB10.Count; i++)
+                {
+                    <tr style="@(Model.lisB10[i].CssTempDisplay)">
+                        <td style="width:45%;">
+                            <input type="hidden" asp-for="lisB10[i].IsTempDeleted" value="@Model.lisB10[i].IsTempDeleted" />
+                            <input type="hidden" asp-for="lisB10[i].TempGuid" value="@Model.lisB10[i].TempGuid" />
+                            <mycombo entity="b09WorkflowCommandCatalog" asp-for="lisB10[i].b09ID" selectedtext="lisB10[i].b09Name" placeholder="Vybrat příkaz..." view-flag="2" event_after_changevalue="handle_b09id_change"></mycombo>
+
+
+
+                        </td>
+                        <td style="width:45%;">
+                            @if (Model.lisB10[i].b09ParametersCount > 0)
+                            {
+                                <input type="text" class="form-control" asp-for="lisB10[i].b10Parameter1" />
+                            }
+                            else
+                            {
+                                <input type="text" class="form-control" asp-for="lisB10[i].b10Parameter1" disabled="disabled" />
+                            }
+
+                        </td>
+                        <td style="width:10%;">
+                            <button type="button" class="btn btn-danger" title="Odstranit řádek" onclick="handle_delete_b10('@(Model.lisB10[i].TempGuid)')">x</button>
+                        </td>
+                    </tr>
+                }
+            </table>
+
+        </div>
+        <div class="tab-pane" id="tab5">
+            <!-- Tab5 -->
+            <p></p>
+            <div class="form-row">
+                <div class="col-sm-4 col-md-4">
+                    <input type="checkbox" asp-for="Rec.b02IsDurationSLA" />
+                    <label class="col-form-label" for="Rec_b02IsDurationSLA">Započítávat do SLA doby trvání</label>
+                </div>
+            </div>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">TOTAL TIMEOUT:</label>
+                <div class="col-sm-1 col-md-1">
+                    <mynumber asp-for="Rec.b02TimeOut_Total" decimal-digits="0"></mynumber>
+                </div>
+
+            </div>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">SLA TIMEOUT:</label>
+                <div class="col-sm-1 col-md-1">
+                    <mynumber asp-for="Rec.b02TimeOut_SLA" decimal-digits="0"></mynumber>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+</div>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+
+
+
+    });
+
+
+    function handle_b07_append() {
+        form1.action = "/b02/Record?oper=add_b07";
+        form1.submit();
+    }
+    function handle_delete_b07(guid) {
+        form1.action = "/b02/Record?oper=delete_b07&guid=" + guid;
+        form1.submit();
+
+    }
+
+
+    function handle_b03_append() {
+        form1.action = "/b02/Record?oper=add_b03";
+        form1.submit();
+    }
+    function handle_delete_b03(guid) {
+        form1.action = "/b02/Record?oper=delete_b03&guid=" + guid;
+        form1.submit();
+
+    }
+
+    function handle_b10_append() {
+        form1.action = "/b02/Record?oper=add_b10";
+        form1.submit();
+    }
+    function handle_delete_b10(guid) {
+        form1.action = "/b02/Record?oper=delete_b10&guid=" + guid;
+        form1.submit();
+
+    }
+    function handle_b09id_change(b09id) {
+        form1.action = "/b02/Record?oper=postback";
+        form1.submit();
+    }
+</script>
+
+

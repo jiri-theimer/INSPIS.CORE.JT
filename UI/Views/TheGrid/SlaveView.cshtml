@@ -1,0 +1,53 @@
+﻿@model TheGridInstanceViewModel
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutSubform.cshtml";
+
+    if (Model.entity == null || Model.master_pid==0)
+    {
+        return;
+    }
+
+}
+
+@addTagHelper *,UI
+
+<vc:the-grid entity="@Model.entity" j72id="@Model.j72id" go2pid="@Model.go2pid" master_entity="@Model.master_entity" master_pid="@Model.master_pid" contextmenuflag="@Model.contextmenuflag" ondblclick="@Model.dblclick" master_flag="@Model.master_flag" masterviewflag="3"></vc:the-grid>
+
+
+
+@section Scripts{
+
+    <script type="text/javascript">
+
+    $(document).ready(function () {
+
+
+
+
+    });
+
+
+
+        /*automaticky volaná událost z thegrid controlu*/
+        function thegrid_handle_event(event_name, pid) {
+
+        }
+
+
+
+        function change_grid(j72id) {
+            var strKey = "slaveview-j72id-@(Model.prefix)-@(Model.master_entity)";
+
+            $.post("/Common/SetUserParam", { key: strKey,value:j72id  }, function (data) {
+                location.replace("/TheGrid/SlaveView?prefix=@Model.prefix&master_entity=@Model.master_entity&master_pid=@Model.master_pid");
+
+            });
+        }
+
+
+    </script>
+
+}
+

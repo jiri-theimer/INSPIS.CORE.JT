@@ -1,0 +1,198 @@
+﻿using Microsoft.Extensions.Primitives;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace UI.Models
+{
+    public class MyToolbarViewModel
+    {
+        //private BO.BaseBO _Record;
+        //public BO.BaseBO Record
+        //{
+        //    get
+        //    {
+        //        return _Record;
+        //    }
+        //    set
+        //    {
+        //        _Record = value;
+        //        RefreshState();
+        //    }
+        //}
+        public int RecordPID { get; set; }
+        public bool RecordIsClosed { get; set; }
+        public string RecordEntity { get; set; }
+        public string ControllorName { get; set; } = "Record";
+        public string TimeStamp { get; set; }
+      
+        public bool AllowArchive { get; set; }
+        public bool AllowClone { get; set; } = true;
+        public string ExplicitValidFrom { get; set; }
+        public String ExplicitValidUntil { get; set; }
+        public bool IsCurrentClone { get; set; }
+        public bool IsSave { get; set; }
+        public bool IsRefresh { get; set; }
+        public bool IsClose { get; set; } = true;
+        public bool IsDelete { get; set; }
+        public bool IsApply { get; set; } = false;
+        public bool IsNew { get; set; }
+        public bool IsClone { get; set; }
+        public bool IsToArchive { get; set; }
+        public bool IsFromArchive { get; set; }
+        
+        public string Message { get; set; }
+        //public string ArchiveFlag { get; set; }
+        public string BG;
+
+        public MyToolbarViewModel(BO.BaseBO rec,bool bolAllowArchive=true)
+        {
+            this.AllowArchive = bolAllowArchive;
+            this.RecordEntity = rec.entity;
+            this.RecordPID = rec.pid;
+            this.RecordIsClosed = rec.isclosed;
+
+            
+            if (rec.pid>0)
+            {
+                var sb = new System.Text.StringBuilder();
+                sb.AppendLine("<div style='border-top:solid 1px #F5F5F5;margin-top:20px;'>");
+                if (rec.DateInsert != null)
+                {
+                    sb.Append("<small>Záznam založen:</small>");
+                    sb.Append("<small class='text-info'>");
+                    sb.Append(rec.UserInsert + " / " + rec.DateInsert.ToString());
+                    sb.Append("</small>");            
+                }
+                if (rec.DateUpdate>rec.DateInsert)
+                {
+                    sb.Append("<small style='margin-left:20px;'>Poslední aktualizace:</small>");
+                    sb.Append("<small class='text-info'>");
+                    sb.Append(rec.UserUpdate + " / " + rec.DateUpdate.ToString());
+                    sb.Append("</small>");
+                }
+                if (bolAllowArchive && rec.ValidFrom !=null && rec.ValidUntil != null)
+                {
+                    this.ExplicitValidFrom = BO.BAS.ObjectDateTime2String(rec.ValidFrom);
+                    this.ExplicitValidUntil = BO.BAS.ObjectDateTime2String(rec.ValidUntil);
+
+                    sb.Append("<small style='margin-left:20px;'>Platnost záznamu:</small>");
+                    sb.Append("<small class='text-info'>");
+                    if (rec.ValidUntil>DateTime.Now && rec.ValidFrom <= DateTime.Now)
+                    {
+                        sb.Append(" Záznam je časově platný.");
+                    }
+                    else
+                    {
+                        sb.Append(rec.ValidFrom.ToString() + " - " + rec.ValidUntil.ToString());
+                        sb.Append("<kbd style='font-size:120%;'>Záznam je v archivu.</kbd>");
+                    }
+                    sb.Append("</small>");
+                }
+
+                sb.AppendLine("</div>");
+                this.TimeStamp = sb.ToString();
+            }
+
+            RefreshState();
+
+        }
+        public MyToolbarViewModel()
+        {
+            RefreshState();
+        }
+
+        
+
+        public void MakeClone()
+        {
+            Message = "Kopírovaný záznam";
+            this.RecordPID = 0;
+            this.ExplicitValidFrom = BO.BAS.ObjectDateTime2String(DateTime.Now);
+            this.ExplicitValidUntil = BO.BAS.ObjectDateTime2String(new DateTime(3000, 1, 1));
+            RefreshState();
+        }
+
+        public void RefreshState()
+        {            
+            
+            IsSave = true;
+            BG = "bg-light";
+            if (RecordPID == 0)
+            {
+                IsDelete = false;
+                IsNew = false;
+                IsClone = false;
+                IsRefresh = false;
+                IsToArchive = false;
+                IsFromArchive = false;
+            }
+            else
+            {
+                IsDelete = true;
+                IsNew = true;
+                IsClone = this.AllowClone;
+                IsRefresh = true;
+                if (this.RecordIsClosed)
+                {
+                    IsFromArchive = this.AllowArchive;
+                    BG = "bg-dark";
+                }
+                else
+                {
+                    IsToArchive = this.AllowArchive;
+                }
+                
+            }
+        }
+
+        public DateTime? GetValidUntil(BO.BaseBO rec)
+        {
+            if (string.IsNullOrEmpty(this.ExplicitValidUntil) == true)
+            {
+                return new DateTime(3000, 1, 1);                
+            }
+            else
+            {
+                return BO.BAS.String2Date(this.ExplicitValidUntil);
+            }
+            //switch (this.ArchiveFlag)
+            //{
+            //    case "1":
+            //        return DateTime.Now;                    
+            //    case "2":
+            //        return new DateTime(3000, 1, 1);                    
+            //    default:
+            //        if (rec.pid == 0)
+            //        {
+            //            return new DateTime(3000, 1, 1);
+            //        }
+            //        else
+            //        {
+            //            return rec.ValidUntil;
+            //        }
+
+            //}            
+        }
+        public DateTime? GetValidFrom(BO.BaseBO rec)
+        {
+            if (string.IsNullOrEmpty(this.ExplicitValidFrom) == true)
+            {
+                return DateTime.Now.AddSeconds(-10);
+            }
+            else
+            {
+                return BO.BAS.String2Date(this.ExplicitValidFrom);
+            }
+            //if (rec.pid == 0)
+            //{
+            //    return DateTime.Now.AddSeconds(-10);
+            //}
+            //else
+            //{
+            //    return rec.ValidFrom;
+            //}
+        }
+    }
+}

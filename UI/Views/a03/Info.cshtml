@@ -1,0 +1,157 @@
+﻿@model UI.Models.Recpage.a03RecPage
+
+@{
+    ViewData["Title"] = "Info";
+    Layout = "~/Views/Shared/_LayoutSubform.cshtml";
+    if (Model.Rec == null) return;
+}
+
+@addTagHelper *, UI
+
+<div class="modal_record_container">
+    <div class="form-row">
+        <label class="col-sm-1 col-md-2 col-form-label">Název:</label>
+        <div class="col-sm-8 col-md-7">
+            <myval value="@Model.Rec.a03Name"></myval>
+        </div>
+
+
+        <div class="col-sm-1 col-md-1">
+            <myval value="@Model.Rec.a06Name"></myval>
+        </div>
+        <div class="col-sm-2 col-md-2">
+            <myval value="@Model.Rec.a21Name"></myval>
+        </div>
+    </div>
+    <div class="form-row my-2">
+        @if (Model.Rec.a06ID == 2)
+        {
+            <label class="col-sm-1 col-md-2 col-form-label">Kód zřizovatele:</label>
+            <div class="col-sm-5 col-md-4">
+
+                <myval value="@Model.Rec.a03FounderCode"></myval>
+            </div>
+        }
+        else
+        {
+            <label class="col-sm-1 col-md-2 col-form-label">REDIZO/IČ:</label>
+            <div class="col-sm-5 col-md-4">
+                <div class="val-readonly rowvalhover" title="REDIZO">
+                    @if (Model.Rec.a03REDIZO != null)
+                    {
+                        <span>@Model.Rec.a03REDIZO</span>
+                        <a class="valhover_tooltip" target="_blank" href="https://portal.csicr.cz/School/@(Model.Rec.a03REDIZO)">portal</a>
+                        @if (Model.Rec.a03ICO != null)
+                        {
+                            <a class="valhover_tooltip" target='_blank' href="https://wwwinfo.mfcr.cz/cgi-bin/ares/darv_sko.cgi?ico=@(Model.Rec.a03ICO)&jazyk=cz&xml=1">rejstřík škol</a>
+                        }
+
+                    }
+                </div>
+            </div>
+        }
+
+        <div class="col-sm-2 col-md-2 rowvalhover">
+            <div class="val-readonly rowvalhover" title="IČ">
+                @if (Model.Rec.a03ICO != null)
+                {
+                    <span>@Model.Rec.a03ICO</span>
+
+                    @if (Model.Rec.a06ID == 1)
+                    {
+                        <a class="valhover_tooltip" target='_blank' href="https://wwwinfo.mfcr.cz/cgi-bin/ares/darv_sko.cgi?ico=@(Model.Rec.a03ICO)&jazyk=cz&xml=1">ares</a>
+                    }
+                    else
+                    {
+                        <a class="valhover_tooltip" target="_blank" href="https://wwwinfo.mfcr.cz/cgi-bin/ares/darv_res.cgi?ico=@(Model.Rec.a03ICO)&jazyk=cz&xml=1">ares</a>
+                    }
+                    <a class="valhover_tooltip" target="_blank" href="https://or.justice.cz/ias/ui/rejstrik-$firma?ico=@(Model.Rec.a03ICO)">justice</a>
+
+                }
+
+            </div>
+        </div>
+        @if (Model.Rec.a06ID == 1)
+        {
+            <label class="col-sm-1 col-md-1 col-form-label">Ředitel:</label>
+            <div class="col-sm-3 col-md-3">
+                <span class="val-readonly">@Model.Rec.a03DirectorFullName</span>
+            </div>
+        }
+
+    </div>
+
+    <div class="form-row" style="margin-top:10px;">
+        <label class="col-sm-1 col-md-2 col-form-label">Kraj:</label>
+        <div class="col-sm-5 col-md-4">
+
+            <span class="val-readonly">@Model.Rec.a05Name</span>
+        </div>
+
+
+
+        <div class="col-sm-6 col-md-6" title="Adresa">
+            <div class="val-readonly rowvalhover">
+                <span>@(Model.Rec.a03Street+", "+Model.Rec.a03PostCode+" "+Model.Rec.a03City)</span>
+                <a class="valhover_tooltip" target='_blank' href="https://mapy.cz/zakladni?q=@(Model.Rec.a03City+"+"+Model.Rec.a03Street)">mapy</a>
+                <a class="valhover_tooltip" target='_blank' href="https://www.google.com/maps/place/@(Model.Rec.a03City+"+"+Model.Rec.a03Street)">google</a>
+            </div>
+
+
+        </div>
+    </div>
+    @if (Model.RecFounder != null)
+    {
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">Zřizovatel:</label>
+            <div class="col-sm-8 col-md-7">
+                <myval datatype="link" value="@Model.RecFounder.a03Name" linkurl="/a03/RecPage?pid=@Model.RecFounder.pid"></myval>
+            </div>
+            <div class="col-sm-2 col-md-2">
+                <myval value="@Model.RecFounder.a21Name"></myval>
+            </div>
+            <div class="col-sm-1 col-md-1">
+                <myval value="@Model.RecFounder.a03FounderCode"></myval>
+            </div>
+        </div>
+    }
+
+    @if (Model.Rec.a03Email != null || Model.Rec.a03Web != null)
+    {
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">Kontakt:</label>
+            <div class="col-sm-5 col-md-4">
+                <myval datatype="link" value="@Model.Rec.a03Email" linkurl="mailto:@Model.Rec.a03Email"></myval>
+
+            </div>
+
+            <div class="col-sm-3 col-md-3">
+                @if (Model.Rec.a03Web != null)
+                {
+                    @if (Model.Rec.a03Web.Contains("http"))
+                    {
+                        <myval datatype="link" linktarget="_blank" value="@Model.Rec.a03Web" linkurl="@Model.Rec.a03Web"></myval>
+
+                    }
+                    else
+                    {
+                        <myval datatype="link" linktarget="_blank" value="@Model.Rec.a03Web" linkurl="@("http://"+Model.Rec.a03Web)"></myval>
+
+                    }
+
+                }
+
+            </div>
+            <div class="col-sm-2 col-md-2">
+                <myval value="@Model.Rec.a03Phone"></myval>
+
+            </div>
+            <div class="col-sm-1 col-md-1">
+                <myval value="@Model.Rec.a03Mobile"></myval>
+
+            </div>
+
+        </div>
+    }
+    @Html.Raw(Model.TagHtml)
+</div>

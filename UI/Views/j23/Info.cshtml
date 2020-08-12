@@ -1,0 +1,64 @@
+﻿@model UI.Models.Recpage.j23RecPage
+@inject BL.Factory _f
+
+@{
+    ViewData["Title"] = "Info";
+    Layout = "~/Views/Shared/_LayoutSubform.cshtml";
+
+}
+
+@addTagHelper *, UI
+
+<div class="modal_record_container">
+    <div class="form-row">
+        <div class="col-sm-3 col-md-2">
+            <myval value="@Model.Rec.j23Name"></myval>
+
+        </div>
+        <div class="col-sm-2 col-md-2">
+            <myval value="@Model.Rec.j23Code"></myval>
+
+        </div>
+        
+        @if (_f.CurrentUser.TestPermission(BO.PermValueEnum.AdminGlobal_Ciselniky))
+        {
+            <div class="colsm-2 col-md-2">
+                <a href="javascript:_window_open('/j23/Record?pid=@(Model.pid)')">Administrace</a>
+            </div>
+        }
+    </div>
+    <div class="form-row my-2">
+        <div class="col-sm-3 col-md-2">
+            <myval value="@Model.Rec.j24Name"></myval>
+
+        </div>
+        <div class="col-sm-2 col-md-2">
+            <myval value="@Model.Rec.a05Name"></myval>
+
+        </div>
+    </div>
+
+    @Html.Raw(Model.TagHtml)
+</div>
+
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+
+    });
+
+
+
+
+    
+
+
+</script>
+
+
+

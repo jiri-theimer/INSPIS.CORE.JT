@@ -1,0 +1,239 @@
+﻿@model UI.Models.a38AppendToA01ViewModel
+
+@{
+    ViewData["Title"] = "Rezervace nepersonálního zdroje";
+    Layout = "~/Views/Shared/_LayoutModal.cshtml";
+
+
+}
+
+@addTagHelper *, UI
+<link rel="stylesheet" href="~/css/tabcapacity.css" />
+
+<h4>Rezervace nepersonálního zdroje v akci: @Model.RecA01.a01Signature</h4>
+
+
+<div class="tabs_container_record">
+    <!-- Tab panes -->
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a id="link_tab1" class="nav-link" data-toggle="tab" href="#tab1">Nová rezervace</a>
+        </li>
+        <li class="nav-item">
+            <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2">Odstranit uložené rezervace</a>
+        </li>
+    </ul>
+</div>
+
+<div class="tab-content">
+    <div class="tab-pane" id="tab1">
+        <div class="bg-light" style="padding:10px;">
+            <button id="cmdSave" type="submit" class="btn btn-success">Uložit změny</button>
+            <button type="button" id="cmdClose" onclick="_window_close()" class="btn btn-light">Zavřít</button>
+
+        </div>
+
+        <form id="form1" asp-controller="a38" asp-action="AppendToA01" method="POST">
+            <input type="hidden" asp-for="@Model.ActiveTabIndex" />
+            <input type="hidden" asp-for="@Model.pid" />
+            <input type="hidden" asp-for="@Model.CurMonth" />
+            <input type="hidden" asp-for="@Model.CurYear" />
+            <input type="hidden" asp-for="@Model.CheckedDays" />
+            <input type="hidden" asp-for="@Model.CheckedIsDriver" />
+
+
+            <div class="card" style="max-width:1200px;">
+                <div class="card-header">Nová rezervace</div>
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="col-sm-10 col-md-10">
+                            <mycombo entity="j23NonPerson" asp-for="@Model.SelectedJ23ID" selectedtext="@Model.SelectedJ23Name" view-flag="2" masterprefix="a05" masterpid="@Model.a05ID" event_after_changevalue="change_j23id" placeholder="Zdroj"></mycombo>
+                        </div>
+                        <div class="col-sm-2 col-md-2">
+                            <mycombo entity="a05Region" asp-for="@Model.a05ID" selectedtext="@Model.a05Name" view-flag="2" event_after_changevalue="change_a05id" placeholder="Kraj"></mycombo>
+                        </div>
+
+                    </div>
+                    <div class="form-row my-2">
+                        <div class="col-sm-10 col-md-10">
+                            <mycombo entity="j02Person" asp-for="@Model.SelectedJ02ID" selectedtext="@Model.SelectedPerson" view-flag="2" event_after_changevalue="change_j02id" placeholder="Jméno" masterprefix="a01" masterpid="@Model.pid" param1="without_teams_and_owner"></mycombo>
+                        </div>
+                        <div class="col-sm-2 col-md-2">
+                            <input type="text" asp-for="@Model.a38Location" class="form-control" placeholder="Místo" />
+                        </div>
+                    </div>
+                    @if (Model.SelectedJ02ID > 0)
+                    {
+                        <table>
+                            @foreach (var c in Model.lisA35)
+                            {
+                                <tr style="vertical-align:top;">
+                                    <td>
+                                        @if (Model.CheckedDays != null && Model.CheckedDays.IndexOf(c.pid.ToString()) > -1)
+                                        {
+                                            <input type="checkbox" checked="checked" name="chkCheckedDays" id="chk(@c.pid)" value="@c.pid" />
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" name="chkCheckedDays" id="chk(@c.pid)" value="@c.pid" />
+                                        }
+
+                                        <label for="chk(@c.pid)">@(BO.BAS.ObjectDate2String(c.a35PlanDate))</label>
+                                    </td>
+                                    <td style="padding-right:10px;padding-left:10px;">
+                                        @if (Model.RecJ23 != null && Model.RecJ23.j24IsDriver)
+                                        {
+                                            @if (Model.CheckedIsDriver == null || Model.CheckedIsDriver.IndexOf(c.pid.ToString() + "-1") > -1)
+                                            {
+                                                <input type="radio" class="opgIsDriver" checked="checked" name="opgIsDriver(@c.pid)" id="IsDriver(@c.pid)" value="@(c.pid.ToString()+"-1")" />
+                                                <label for="IsDriver(@c.pid)">Řidič</label>
+                                                <input type="radio" class="opgIsDriver" name="opgIsDriver(@c.pid)" id="IsNotDriver(@c.pid)" value="@(c.pid.ToString()+"-0")" />
+                                                <label for="IsNotDriver(@c.pid)">Cestující</label>
+                                            }
+                                            else
+                                            {
+                                                <input type="radio" class="opgIsDriver" name="opgIsDriver(@c.pid)" id="IsDriver(@c.pid)" value="@(c.pid.ToString()+"-1")" />
+                                                <label for="IsDriver(@c.pid)">Řidič</label>
+                                                <input type="radio" class="opgIsDriver" checked="checked" name="opgIsDriver(@c.pid)" id="IsNotDriver(@c.pid)" value="@(c.pid.ToString()+"-0")" />
+                                                <label for="IsNotDriver(@c.pid)">Cestující</label>
+                                            }
+
+
+                                        }
+                                    </td>
+                                    <td>
+                                        @{
+                                            var qry = Model.lisA38.Where(p => p.a38PlanDate == c.a35PlanDate && p.j23ID == Model.SelectedJ23ID);
+                                        }
+                                        @if (qry.Count() > 0)
+                                        {
+                                            <code>
+                                                @(qry.First().j23Name+" ("+ qry.First().j23Code+")")
+                                            </code>
+                                            <kbd>
+                                                @(string.Join(" + ",qry.Where(p=>p.j02ID ==Model.SelectedJ02ID).Select(p=>p.PersonAsc)))
+                                            </kbd>
+                                            <small>
+                                                @(string.Join(" + ",qry.Where(p=>p.j02ID !=Model.SelectedJ02ID).Select(p=>p.PersonAsc)))
+                                            </small>
+                                        }
+
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                    }
+
+
+                </div>
+            </div>
+
+        </form>
+
+
+        @Html.EditorFor(m => m.CapacityView, "~/Views/Shared/_a01Capacity.cshtml")
+
+    <iframe id="fraA38" style="height:250px;" src="/a38/TimeLine?a05id=@(Model.a05ID)"></iframe>
+    </div>
+    <div class="tab-pane" id="tab2">
+        <table class="table table-hover">
+            @foreach (var c in Model.lisA38.OrderBy(p=>p.a38PlanDate).ThenBy(p=>p.PersonDesc))
+            {
+                <tr>
+                    <td>
+                        @(BO.BAS.ObjectDate2String(c.a38PlanDate))
+                    </td>
+                    <td style="color:brown;font-weight:bold;">
+                        @(c.j23Name+" ("+c.j23Code+")")
+                    </td>
+                    <td>
+                        @if (c.a38IsDriver)
+                        {
+                            <span style="background-color:darkviolet;color:white;">@c.PersonDesc</span>
+                        }
+                        else
+                        {
+                            @c.PersonDesc
+                        }
+                    </td>
+                 
+                    <td>
+                        @c.a38Location
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger" onclick="delete_record(@c.pid)">Odstranit</button>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+
+
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#fraA38").css("width", (_device.innerWidth-50) + "px");
+
+        $("#cmdSave").click(function () {
+            $(this).text("Processing...");
+            $(this).attr("disabled", true);
+
+            var arrChecked = [];
+
+            $("input[name='chkCheckedDays']:checked").each(function () {
+                arrChecked.push($(this).attr("value"));
+
+            });
+            $("#CheckedDays").val(arrChecked.join(","));
+
+
+            var arrIsDriver = [];
+            $(".opgIsDriver:checked").each(function () {
+                arrIsDriver.push($(this).attr("value"));
+
+            });
+            $("#CheckedIsDriver").val(arrIsDriver.join(","));
+
+
+            form1.submit();
+
+
+        });
+
+
+        $("#tab@(Model.ActiveTabIndex)").attr("class", "tab-pane active");
+        $("#link_tab@(Model.ActiveTabIndex)").attr("class", "nav-link active");
+
+        $('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
+            // v e.target.id je id kliknutá záložka
+            var tabindex = e.target.id.substring(e.target.id.length - 1, e.target.id.length);
+            $("#ActiveTabIndex").val(tabindex);
+        });
+
+
+
+
+    });
+
+    function change_j23id(j23id) {
+        form1.action = "/a38/AppendToA01?oper=postback";
+        form1.submit();
+    }
+    function change_a05id(a05id) {
+        form1.action = "/a38/AppendToA01?oper=postback";
+        form1.submit();
+    }
+    function change_j02id(j02id) {
+        form1.action = "/a38/AppendToA01?oper=postback";
+        form1.submit();
+    }
+    function delete_record(a38id){
+        form1.action = "/a38/AppendToA01?oper=delete&a38id="+a38id;
+        form1.submit();
+    }
+</script>

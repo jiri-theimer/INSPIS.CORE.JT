@@ -1,0 +1,52 @@
+﻿@model UI.Models.Record.a39Record
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutRecord.cshtml";
+    if (Model.Rec == null) return;
+    Model.PageTitle = "Kontaktní osoba";
+
+}
+
+@addTagHelper *, UI
+
+<input type="hidden" asp-for="@Model.a03ID" />
+
+<div class="modal_record_container">
+    <div class="alert alert-primary" role="alert">
+        @Model.RecA03.NamePlusRedizo
+    </div>
+
+    <div class="form-row">
+        <label class="col-sm-1 col-md-2 col-form-label">Osobní profil:</label>
+        <div class="col-sm-11 col-md-10">
+            <mycombo entity="j02Person" asp-for="Rec.j02ID" selectedtext="@Model.Person" filter-flag="1"></mycombo>
+        </div>
+
+    </div>
+
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">Role:</label>
+        <div class="col-sm-11 col-md-10">
+            <mycombo entity="j04UserRole" asp-for="Rec.j04ID_Explicit" selectedtext="@Model.RoleName" param1="j04IsAllowInSchoolAdmin"></mycombo>
+        </div>
+
+    </div>
+
+    <div class="form-row my-2">
+        <div class="col-sm-8 col-md-8">
+            <input type="checkbox" asp-for="Rec.a39IsAllowInspisWS" />
+            <label class="col-form-label" for="Rec_a39IsAllowInspisWS">Oprávnění k integračním službám se školním IS</label>
+
+        </div>
+    </div>
+
+    <div class="form-row">
+        <textarea asp-for="Rec.a39Description" class="form-control" placeholder="Poznámka"></textarea>
+        <span asp-validation-for="Rec.a39Description" class="text-danger"></span>
+    </div>
+</div>
+
+
+
+

@@ -1,0 +1,101 @@
+﻿@model UI.Models.Record.f21Record
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutRecord.cshtml";
+    if (Model.Rec == null) return;
+    Model.PageTitle = "Jednotka odpovědi";
+}
+@addTagHelper *, UI
+
+
+<div class="modal_record_container">
+    <div class="form-row">
+        <label class="col-sm-1 col-md-2 col-form-label">Název:</label>
+        <div class="col-sm-9 col-md-8">
+            <input class="form-control" asp-for="Rec.f21Name" />
+            <span asp-validation-for="Rec.f21Name" class="text-danger"></span>
+        </div>
+        <div class="col-sm-2 col-md-2">
+            ID: <span>@(Model.Rec.pid)</span>
+        </div>
+    </div>
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">STAT ID:</label>
+        <div class="col-sm-5 col-md-4">
+            <input class="form-control" asp-for="Rec.f21ExportValue" />
+        </div>
+        <label class="col-sm-1 col-md-1 col-form-label">Pořadí:</label>
+        <div class="col-sm-1 col-md-1">
+            <mynumber asp-for="Rec.f21Ordinal" decimal-digits="0"></mynumber>
+        </div>
+
+    </div>
+    <div class="form-row my-2">
+        <div class="col-sm-4 col-md-4">
+            <input type="checkbox" asp-for="Rec.f21IsCommentAllowed" />
+            <label class="col-form-label" for="Rec_f21IsCommentAllowed">Povolit komentování odpovědi</label>
+        </div>
+
+    </div>
+    <div class="form-row my-2">
+        <div class="col-sm-4 col-md-4">
+            <input type="checkbox" asp-for="Rec.f21IsNegation" />
+            <label class="col-form-label" for="Rec_f21IsNegation">Negovat ostatní jednotky odpovědi [CHECKBOXLIST]</label>
+        </div>
+    </div>
+
+    <div class="form-row my-2">
+        <textarea asp-for="Rec.f21Description" class="form-control" placeholder="Podrobný popis"></textarea>
+        <span asp-validation-for="Rec.f21Description" class="text-danger"></span>
+    </div>
+
+    @if (Model.rec_pid > 0)
+    {
+        <div class="card">
+            <div class="card-header">Využití jednotky v šablonách jednotek</div>
+            <div class="card-body">
+                @foreach (var c in Model.lisF22)
+                {
+                    <div>
+                        <a href="/f22/Record?pid=@c.pid">@c.f22Name</a>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">Využití jednotky ve formulářových otázkách</div>
+            <div class="card-body">
+                <table class="table table-sm table-hover">
+                    @foreach (var c in Model.lisF19)
+                    {
+                    <tr>
+                        <td>
+                            <a href="/f19/Record?pid=@c.pid">@(c.f19Name)</a>
+                        </td>
+                        <td>
+                            @c.pid
+                        </td>
+                        <td>
+                            @c.f23Name
+                        </td>
+                        <td>
+                            @c.x24Name
+                        </td>
+                        <td>
+                            @c.f18Name
+                        </td>
+                        <td>
+                            @c.f06Name
+                        </td>
+                    </tr>
+                    }
+                </table>
+                
+            </div>
+        </div>
+    }
+
+
+</div>
+

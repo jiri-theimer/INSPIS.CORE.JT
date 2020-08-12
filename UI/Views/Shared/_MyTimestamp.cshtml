@@ -1,0 +1,18 @@
+﻿@model BO.BaseBO
+
+@if (Model.pid>0)
+{
+    <hr />
+    <div>
+        <small>Záznam založen:</small>
+        <small class="text-info">@Model.UserInsert @Model.DateInsert</small>
+        
+
+        @if (Model.DateUpdate > Model.DateInsert)
+        {
+            <small style="margin-left:20px;">Poslední aktualizace:</small>
+            <small class="text-info">@Model.UserUpdate @Model.DateUpdate</small>
+            
+        }
+    </div>
+}

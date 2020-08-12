@@ -1,0 +1,39 @@
+﻿@model UI.Models.FileUploadViewModel
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutSubform.cshtml";
+}
+
+
+<div class="modal_record_container">
+    <a class="btn btn-light" href="/FileUpload/DoUpload?Guid=@Model.Guid&x29id=@Model.x29ID&o13id=@Model.o13ID&recpid=@Model.RecPid">Přidat přílohy</a>
+
+
+    @Html.EditorFor(m => m, "~/Views/Shared/_lisO27.cshtml")
+
+</div>
+
+
+
+<script type="text/javascript">
+    function handle_delete_row(fileguid) {
+        $.post("/FileUpload/Delete2Temp", { fileguid: fileguid, guid: "@Model.Guid" }, function (data) {
+
+            location.reload(location.href);
+
+        });
+    }
+
+    function changelabel_saved(fileguid, current_label) {
+        var s = prompt("Zadejte popis/název k příloze.", current_label);
+        if (s != null) {
+            $.post("/FileUpload/ChangeFileLabel", { fileguid: fileguid, newlabel: s }, function (data) {
+
+                location.reload(location.href);
+
+
+            });
+        }
+    }
+</script>

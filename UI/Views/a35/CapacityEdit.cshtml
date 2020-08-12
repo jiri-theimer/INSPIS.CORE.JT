@@ -1,0 +1,259 @@
+﻿@model UI.Models.Tab.a01TabCapacityEdit
+
+@{
+    ViewData["Title"] = "Upravit časový plán akce";
+    Layout = "~/Views/Shared/_LayoutModal.cshtml";
+
+
+    string strClass = "work-day";
+    int intMesic = 0;
+    int intRok = 0;
+    int x = 0; int y = 0;
+    string strChkValue = "";
+
+}
+
+@addTagHelper *, UI
+<link rel="stylesheet" href="~/css/tabcapacity.css" />
+
+<h4>Upravit časový plán akce</h4>
+<div class="bg-light" style="padding:10px;">
+    <button id="cmdSave" type="submit" class="btn btn-success">Uložit změny</button>
+    <button type="button" id="cmdClose" onclick="_window_close()" class="btn btn-light">Zavřít</button>
+
+</div>
+
+<form id="form1" asp-controller="a35" asp-action="CapacityEdit" method="POST">
+    <input type="hidden" asp-for="@Model.pid" />
+    <input type="hidden" asp-for="@Model.CheckedDays" />
+    <input type="hidden" asp-for="@Model.UnCheckedDays" />
+    @if (Model.IsMonthView)
+    {
+        <div class="btn-group">
+            <button type="button" class="btn btn-secondary btn-sm" title="Předchozí měsíc" onclick="goprev()">←</button>
+            <strong class="val-readonly" style="width:100px;text-align:center;">@(Model.CurMonth.ToString()+" - "+Model.CurYear.ToString())</strong>
+            <button type="button" class="btn btn-secondary btn-sm" title="Další měsíc" onclick="gonext()">→</button>
+        </div>
+    }
+
+    <div class="modal_record_container">
+        <div class="form-row">
+            <label class="col-sm-1 col-md-2 col-form-label">Plán začátek:</label>
+            <div class="col-sm-2 col-md-2">
+                <mydate asp-for="@Model.DateFrom"></mydate>
+            </div>
+            <label class="col-sm-1 col-md-1 col-form-label">Plán konec:</label>
+            <div class="col-sm-2 col-md-2">
+                <mydate asp-for="@Model.DateUntil"></mydate>
+            </div>
+            <div class="col-sm-2 col-md-2">
+                <button type="button" class="btn btn-light" onclick="clear_all()">Odškrtni vše</button>
+            </div>
+        </div>
+    </div>
+
+    <table class="tableCapacity" cellpadding="0" cellspacing="0" style="overflow-x:auto;width:@(Model.lisDays.Count()*20+160)px;">
+        <tr>
+            <td class="firstcol" style="background-color:lightgrey;">
+
+                <span>Pracovních dní: </span>
+                <span class="badge badge-primary">@(Model.PracovnichDni)</span>
+            </td>
+            @foreach (string mesic in Model.lisDays.Select(p => p.Month.ToString() + " / " + p.Year.ToString()).Distinct())
+            {
+                x += 1;
+                strClass = "mesic_lichy";
+                intMesic = Convert.ToInt32(mesic.Substring(0, 2).Trim());
+                intRok = Convert.ToInt32(BO.BAS.RightString(mesic, 4));
+                Math.DivRem(x, 2, out y);
+                if (y > 0)
+                {
+                    strClass = "mesic_sudy";
+                }
+                <td class="@strClass" colspan="@(Model.lisDays.Where(p=>p.Month==intMesic && p.Year==intRok).Count())">
+                    @(BO.BAS.ObjectDateTime2String(new DateTime(intRok, intMesic, 1), "MMMM-yyyy"))
+                </td>
+            }
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="firstcol">
+                <span>
+                    @if (Model.IsMonthView)
+                    {
+                        @(BO.BAS.ObjectDate2String(new DateTime(Model.CurYear,Model.CurMonth,1)))
+                    }
+                    else
+                    {
+                        @(BO.BAS.ObjectDate2String(Model.RecA01.a01DateFrom))
+                    }
+
+                </span>
+                <span>
+                    →
+                </span>
+                <span>
+                    @if (Model.IsMonthView)
+                    {
+                        @(BO.BAS.ObjectDate2String(new DateTime(Model.CurYear,Model.CurMonth,1).AddMonths(1).AddDays(-1)))
+                    }
+                    else
+                    {
+                        @(BO.BAS.ObjectDate2String(Model.RecA01.a01DateUntil))
+                    }
+
+                </span>
+
+            </td>
+            @foreach (DateTime d in Model.lisDays)
+            {
+                strClass = "work-day";
+                if (d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    strClass = "nonwork-day";
+                }
+
+                @if (d >= Model.RecA01.a01DateFrom && Model.RecA01.a01DateUntil >= d)
+                {
+                    strClass = "plan-day";
+                    if (d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday)
+                    {
+                        strClass = "plan-day-nonwork";
+                    }
+
+                }
+                if (Model.lisJ26.Where(p => p.j26Date == d).Count() > 0)
+                {
+                    strClass = "holiday";
+                }
+                <td class="@strClass">
+                    @d.Day
+                    <br />
+                    @(BO.BAS.ObjectDate2String(d,"ddd"))
+                </td>
+            }
+            <td></td>
+            <td></td>
+        </tr>
+
+        @foreach (var recA41 in Model.lisA41)
+        {
+            <tr>
+                <td style="font-weight:bold;">
+                    @recA41.PersonDesc
+                    @if (recA41.a45ID == BO.EventRoleENUM.Vedouci)
+                    {
+                        <img src="~/images/king.png" />
+                    }
+                </td>
+
+                @foreach (DateTime d in Model.lisDays)
+                {
+                    strChkValue = recA41.j02ID.ToString() + "_" + BO.BAS.ObjectDate2String(d);
+                    strClass = "";
+                    if (d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday)
+                    {
+                        strClass = "nonwork-day";
+                    }
+                    <td class="@strClass">
+                        @foreach (var c in Model.lisA35.Where(p => p.j02ID == recA41.j02ID && p.a35PlanDate == d))
+                        {
+                            <div class="a35cell">
+                                <input type="checkbox" name="chkCheckedDays" checked="checked" value="@strChkValue" />
+                            </div>
+                        }
+                        @if (d >= Model.DateFrom && Model.DateUntil >= d)
+                        {
+                            @if (Model.lisA35.Where(p => p.j02ID == recA41.j02ID && p.a35PlanDate == d).Count() == 0)
+                            {
+                                <input type="checkbox" name="chkCheckedDays" value="@strChkValue" />
+                            }
+
+                        }
+                    </td>
+                }
+                <td>
+                    <button type="button" class="btn btn-sm btn-light" title="Zaškrtni vše" onclick="check_line(@recA41.j02ID)">✔</button>                    
+                </td>
+                <td>
+                    <button type="button" class="btn btn-sm btn-light" title="Odšktni vše" onclick="clear_line(@recA41.j02ID)">⌧</button>
+                </td>
+            </tr>
+        }
+
+
+
+    </table>
+
+</form>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+
+        $("#cmdSave").click(function () {
+            $(this).text("Processing...");
+            $(this).attr("disabled", true);
+
+            var arrChecked = [];
+            $("input[name='chkCheckedDays']:checked").each(function () {
+                arrChecked.push($(this).attr("value"));
+            });
+            $("#CheckedDays").val(arrChecked.join(","));
+
+            var arrUnChecked = [];
+            $("input[name='chkCheckedDays']:not(:checked)").each(function () {
+                arrUnChecked.push($(this).attr("value"));
+            });
+            $("#UnCheckedDays").val(arrUnChecked.join(","));
+
+
+            form1.submit();
+
+
+        });
+
+
+
+
+    });
+
+
+    function gonext() {
+        form1.action = "/a35/CapacityEdit?oper=gonext";
+        form1.submit();
+
+    }
+    function goprev() {
+        form1.action = "/a35/CapacityEdit?oper=goprev";
+        form1.submit();
+    }
+
+    function check_line(j02id) {
+        $("input[name='chkCheckedDays']").each(function () {
+            if ($(this).attr("value").indexOf(j02id + "_") > -1) {
+                $(this).prop("checked", true);
+            }
+            
+        });
+    }
+    function clear_line(j02id) {
+        $("input[name='chkCheckedDays']").each(function () {
+            if ($(this).attr("value").indexOf(j02id + "_") > -1) {
+                $(this).prop("checked", false);
+            }
+
+        });
+    }
+    function clear_all() {
+        $("input[name='chkCheckedDays']").each(function () {
+            $(this).prop("checked", false);
+
+        });
+    }
+</script>
+
+
+

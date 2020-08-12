@@ -1,0 +1,64 @@
+﻿@model List<BO.a11EventForm>
+
+@addTagHelper *, UI
+
+@{
+    if (Model == null)
+    {
+        return;
+    }
+}
+
+@foreach (var c in Model.Where(p => p.a11IsPoll == false))
+{
+    <div class="form-row my-2">
+        <div class="col-auto" style="width:20px;">
+
+            @if (c.isclosed)
+            {
+                <img src="~/images/lock.png" />
+            }
+            else
+            {
+                @if (c.a11IsInProcessing)
+                {
+                    <img src="~/images/edit.png" />
+                }
+            }
+        </div>
+        <div class="col-sm-11 col-md-11">
+            <myval datatype="html" value="@c.FullNameHtml" hoverprefix="a11" hoverpid="@c.pid"></myval>
+            
+        </div>
+    </div>
+}
+
+@if (Model.Where(p => p.a11IsPoll == true).Count() > 0)
+{
+    <hr />
+    <h6>Anketní formuláře:</h6>
+    @foreach (var c in Model.Where(p => p.a11IsPoll == true))
+    {
+        <div class="form-row my-2">
+            <div class="col-sm-1 col-md-1">
+
+                @if (c.isclosed)
+                {
+                    <img src="~/images/lock.png" />
+                }
+                else
+                {
+                    @if (c.a11IsInProcessing)
+                    {
+                        <img src="~/images/edit.png" />
+                    }
+                }
+            </div>
+            <div class="col-sm-11 col-md-11">
+                <myval datatype="html" value="@c.FullNameHtml" hoverprefix="a11" hoverpid="@c.pid"></myval>
+                
+            </div>
+        </div>
+    }
+}
+

@@ -1,0 +1,87 @@
+﻿@model UI.Models.Record.a04Record
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutRecord.cshtml";
+    if (Model.Rec == null) return;
+    Model.PageTitle = "Inspektorát";
+}
+@addTagHelper *, UI
+
+
+<div class="modal_record_container">
+    
+    
+    <div class="form-row">
+        <label class="col-sm-1 col-md-2 col-form-label">Kraj:</label>
+        <div class="col-sm-5 col-md-4">
+            <mycombo entity="a05Region" asp-for="Rec.a05ID" selectedtext="Rec.a05Name" view-flag="2"></mycombo>
+        </div>
+
+    </div>
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">Název:</label>
+        <div class="col-sm-5 col-md-4">
+            <input class="form-control" asp-for="Rec.a04Name" />
+            <span asp-validation-for="Rec.a04Name" class="text-danger"></span>
+        </div>
+        <div class="col-sm-5 col-md-5">
+            <input type="checkbox" asp-for="Rec.a04IsRegional" />
+            <label class="col-form-label" for="Rec_a04IsRegional">Krajský  inspektorát</label>
+        </div>
+    </div>
+    <hr />
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">Ulice:</label>
+        <div class="col-sm-5 col-md-4">
+            <input class="form-control" asp-for="Rec.a04Street" />
+            <span asp-validation-for="Rec.a04Street" class="text-danger"></span>
+        </div>
+
+
+    </div>
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">Město:</label>
+        <div class="col-sm-5 col-md-4">
+            <input class="form-control" asp-for="Rec.a04City" />
+            <span asp-validation-for="Rec.a04City" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">PSČ:</label>
+        <div class="col-sm-1 col-md-1">
+            <input class="form-control" asp-for="Rec.a04PostCode" />
+            <span asp-validation-for="Rec.a04PostCode" class="text-danger"></span>
+        </div>
+    </div>
+    <hr />
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">E-mail:</label>
+        <div class="col-sm-5 col-md-4">
+            <input class="form-control" type="email" asp-for="Rec.a04Email" />
+            <span asp-validation-for="Rec.a04Email" class="text-danger"></span>
+        </div>
+        <label class="col-sm-1 col-md-1 col-form-label">Fax:</label>
+        <div class="col-sm-5 col-md-5">
+            <input class="form-control" asp-for="Rec.a04Fax" />
+            <span asp-validation-for="Rec.a04Fax" class="text-danger"></span>
+        </div>
+
+    </div>
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">Mobil:</label>
+        <div class="col-sm-5 col-md-4">
+            <input class="form-control" type="tel" asp-for="Rec.a04Mobile" />
+            <span asp-validation-for="Rec.a04Mobile" class="text-danger"></span>
+        </div>
+        <label class="col-sm-1 col-md-1 col-form-label">Pevný TEL:</label>
+        <div class="col-sm-5 col-md-5">
+            <input class="form-control" type="tel" asp-for="Rec.a04Phone" />
+            <span asp-validation-for="Rec.a04Phone" class="text-danger"></span>
+        </div>
+
+    </div>
+</div>
+
+
+

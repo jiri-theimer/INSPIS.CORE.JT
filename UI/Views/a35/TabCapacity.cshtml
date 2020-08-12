@@ -1,0 +1,60 @@
+﻿@model UI.Models.Tab.a01TabCapacity
+
+@{
+    ViewData["Title"] = "Časový plán akce";
+    Layout = "~/Views/Shared/_LayoutSubform.cshtml";
+
+
+}
+@addTagHelper *, UI
+
+    <link rel="stylesheet" href="~/css/tabcapacity.css" />
+
+<div class="modal_record_container">
+    <div class="form-row">
+        <label class="col-sm-1 col-md-1 col-form-label">Plán začátek:</label>
+        <div class="col-sm-2 col-md-2">
+
+            <myval datatype="date" value="@Model.RecA01.a01DateFrom"></myval>
+        </div>
+        <label class="col-sm-1 col-md-1 col-form-label">Plán konec:</label>
+        <div class="col-sm-2 col-md-2">
+
+            <myval datatype="date" value="@Model.RecA01.a01DateUntil"></myval>
+        </div>
+        @if (Model.PermA01.PermValue == BO.a01EventPermissionENUM.ShareTeam_Leader || Model.PermA01.PermValue == BO.a01EventPermissionENUM.ShareTeam_Owner || Model.PermA01.PermValue == BO.a01EventPermissionENUM.FullAccess)
+        {
+            <div class="col-sm-2 col-md-2">
+                <button type="button" class="btn btn-primary" onclick="edit()">Upravit</button>
+            </div>
+        }
+
+    </div>
+</div>
+
+@if (Model.IsMonthView)
+{
+<div class="btn-group">
+    <button type="button" class="btn btn-secondary btn-sm" title="Předchozí měsíc" onclick="goprev()">←</button>
+    <strong class="val-readonly" style="width:100px;text-align:center;">@(Model.CurMonth.ToString()+" - "+Model.CurYear.ToString())</strong>
+    <button type="button" class="btn btn-secondary btn-sm" title="Další měsíc" onclick="gonext()">→</button>
+</div>
+}
+
+
+
+@Html.EditorFor(m => m, "~/Views/Shared/_a01Capacity.cshtml")
+
+
+
+<script type="text/javascript">
+    function gonext() {
+        location.replace("/a35/TabCapacity?pid=@Model.pid&go2month=@Model.NextMonth&go2year=@Model.NextYear");
+    }
+    function goprev() {
+        location.replace("/a35/TabCapacity?pid=@Model.pid&go2month=@Model.PrevMonth&go2year=@Model.PrevYear");
+    }
+    function edit() {
+        _window_open("/a35/CapacityEdit?pid=@Model.pid&go2month=@Model.CurMonth&go2year=@Model.CurYear");
+    }
+</script>

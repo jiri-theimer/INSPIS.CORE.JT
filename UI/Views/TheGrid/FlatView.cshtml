@@ -1,0 +1,91 @@
+﻿@model TheGridInstanceViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    if (Model.entity == null)
+    {
+        return;
+    }
+
+    ViewData["Title"] = Model.entityTitle;
+
+
+
+}
+
+
+@addTagHelper *,UI
+
+@if (Model.period != null)
+{
+    @Html.EditorFor(m => m.period, "~/Views/Shared/_Period.cshtml")
+}
+
+<vc:the-grid entity="@Model.entity" j72id="@Model.j72id" go2pid="@Model.go2pid" master_entity="" master_pid="0" contextmenuflag="@Model.contextmenuflag" ondblclick="tg_dblclick" master_flag="@Model.master_flag" masterviewflag="1"></vc:the-grid>
+
+
+
+
+
+@section Scripts{
+
+    <script type="text/javascript">
+    $(document.body).css("overflow", "hidden");
+
+    $(document).ready(function () {
+
+        @if(Model.period != null)
+        {
+        <text>
+        $("#PeriodValue").on("change", function () {
+            $.post("/Common/SetUserParam", { key: "grid-period-value",value:$(this).val()  }, function (data) {
+                location.replace("/TheGrid/FlatView?prefix=@Model.prefix");
+
+            });
+        });
+
+        $("#cmdRefreshPeriod").on("click", function () {
+            var k = [];
+            var v = [];
+            k.push("grid-period-value");
+            v.push($("#PeriodValue").val());
+            k.push("grid-period-d1");
+            v.push($("#d1helper").val());
+            k.push("grid-period-d2");
+            v.push($("#d2helper").val());
+
+            $.post("/Common/SetUserParams", { keys: k, values:v  }, function (data) {
+                location.replace("/TheGrid/FlatView?prefix=@Model.prefix");
+
+            });
+
+        });
+
+        </text>
+        }
+
+
+        _mainmenu_highlight_current("cmd@(Model.prefix.ToUpper())");        
+
+
+    });
+
+
+
+        /*automaticky volaná událost z thegrid controlu*/
+        function thegrid_handle_event(event_name, pid) {
+
+        }
+
+
+        function change_grid(j72id) {
+            $.post("/Common/SetUserParam", { key: "flatview-j72id-@(Model.prefix)",value:j72id  }, function (data) {
+                location.replace("/TheGrid/FlatView?prefix=@Model.prefix");
+
+            });
+        }
+    </script>
+
+}
+

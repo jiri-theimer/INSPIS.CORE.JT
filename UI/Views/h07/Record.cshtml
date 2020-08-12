@@ -1,0 +1,56 @@
+﻿@model UI.Models.Record.h07Record
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutRecord.cshtml";
+    if (Model.Rec == null) return;
+    Model.PageTitle = "Typ úkolu";
+}
+@addTagHelper *, UI
+
+    <div class="modal_record_container">
+
+        <div class="form-row">
+            <label class="col-sm-1 col-md-2 col-form-label">Název:</label>
+            <div class="col-sm-11 col-md-10">
+                <input class="form-control" asp-for="Rec.h07Name" />
+                <span asp-validation-for="Rec.h07Name" class="text-danger"></span>
+            </div>
+
+        </div>
+        <hr />
+        <div class="form-row my-2">
+            <div class="col-sm-4 col-md-4">
+                <input type="checkbox" asp-for="Rec.h07IsToDo" />
+                <label class="col-form-label" for="Rec_h07IsToDo">Má charakter úkolu</label>
+            </div>
+
+        </div>
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">Notifikační šablona:</label>
+            <div class="col-sm-11 col-md-10">
+                <mycombo entity="b65WorkflowMessage" asp-for="Rec.b65ID" selectedtext="Rec.b65Name" view-flag="2" param1="604"></mycombo>
+            </div>
+        </div>
+        <div class="form-row my-2">
+            <div class="col-sm-4 col-md-4">
+                <input type="checkbox" asp-for="Rec.h07IsDefault" />
+                <label class="col-form-label" for="Rec_h07IsDefault">Je výchozí typ</label>
+            </div>
+        </div>
+        <div class="form-row my-2">
+            <div class="col-sm-4 col-md-4">
+                <input type="checkbox" asp-for="Rec.h07IsCapacityPlan" />
+                <label class="col-form-label" for="Rec_h07IsCapacityPlan">Povolit definovat kapacitní plán</label>
+            </div>
+        </div>
+
+        <div class="form-row my-2">
+            <textarea asp-for="Rec.h07Description" class="form-control" placeholder="Podrobný popis"></textarea>
+            <span asp-validation-for="Rec.h07Description" class="text-danger"></span>
+        </div>
+
+    </div>
+
+
+

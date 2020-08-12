@@ -1,0 +1,61 @@
+﻿@model UI.Models.Record.x27Record
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutRecord.cshtml";
+    if (Model.Rec == null) return;
+    Model.PageTitle = "EVAL funkce";
+}
+
+@addTagHelper *, UI
+
+
+
+
+<div class="modal_record_container">
+   
+    <div class="form-row">
+        <label class="col-sm-1 col-md-2 col-form-label">Funkce:</label>
+        <div class="col-sm-11 col-md-10">
+            <input class="form-control" asp-for="Rec.x27Name" />
+            <span asp-validation-for="Rec.x27Name" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">Návratová hodnota:</label>
+        <div class="col-sm-3 col-md-3">
+            <select asp-for="Rec.x27Returns" class="form-control">
+                <option value="string">string</option>
+                <option value="double">double</option>
+                <option value="date">date</option>
+                <option value="boolean">boolean</option>                
+            </select>
+        </div>
+
+    </div>
+
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">Parametry:</label>
+        <div class="col-sm-11 col-md-10">
+            <textarea asp-for="Rec.x27Parameters" class="form-control" placeholder="Parametry"></textarea>
+            <span asp-validation-for="Rec.x27Parameters" class="text-danger"></span>
+        </div>
+
+
+    </div>
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">Index pořadí:</label>
+        <div class="col-sm-1 col-md-1">
+            <mynumber asp-for="Rec.x27Ordinal" decimal-digits="0"></mynumber>
+        </div>
+
+    </div>
+    
+    <div class="form-row my-2">
+        <textarea asp-for="Rec.x27Description" class="form-control" placeholder="Podrobný popis"></textarea>
+        <span asp-validation-for="Rec.x27Description" class="text-danger"></span>
+    </div>
+</div>
+
+
+

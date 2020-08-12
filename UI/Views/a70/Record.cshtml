@@ -1,0 +1,92 @@
+﻿@model UI.Models.Record.a70Record
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutRecord.cshtml";
+    if (Model.Rec == null) return;
+    Model.PageTitle = "Školní informační systém";
+}
+@addTagHelper *, UI
+
+    <div class="modal_record_container">
+        <div class="form-row">
+            <label class="col-sm-1 col-md-2 col-form-label">Název systému:</label>
+            <div class="col-sm-11 col-md-10">
+                <input class="form-control" asp-for="Rec.a70Name" />
+                <span asp-validation-for="Rec.a70Name" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">Zkratka systému:</label>
+            <div class="col-sm-3 col-md-2">
+                <input class="form-control" asp-for="Rec.a70Code" />
+            </div>
+        </div>
+        <div class="form-row my-2" id="divLogin">
+            <label class="col-sm-1 col-md-2 col-form-label">Login web služby:</label>
+            <div class="col-sm-3 col-md-2">
+                <input class="form-control" asp-for="Rec.a70WsLogin" />
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                Rozsah integrace
+            </div>
+            <div class="card-body">
+                <input type="radio" id="a70ScopFlagENUM1" onchange="a70ScopFlag_RefreshState()" asp-for="@Model.Rec.a70ScopFlag" value="TestSchoolOnly">
+                <label for="a70ScopFlagENUM1">Pouze testovací školy</label>
+                <br />
+                <input type="radio" id="a70ScopFlagENUM2" onchange="a70ScopFlag_RefreshState()" asp-for="@Model.Rec.a70ScopFlag" value="RealSchoolOnly">
+                <label for="a70ScopFlagENUM2">Pouze reálné školy</label>
+                <br />
+                <input type="radio" id="a70ScopFlagENUM3" onchange="a70ScopFlag_RefreshState()" asp-for="@Model.Rec.a70ScopFlag" value="TestAndRealSchool">
+                <label for="a70ScopFlagENUM3">Všechny školy</label>
+                <br />
+                <input type="radio" id="a70ScopFlagENUM4" onchange="a70ScopFlag_RefreshState()" asp-for="@Model.Rec.a70ScopFlag" value="GlobalSystem">
+                <label for="a70ScopFlagENUM4">Nad-školní obecně integrovaný systém</label>
+            </div>
+        </div>
+
+
+
+        <div class="form-row my-2">
+            <textarea asp-for="Rec.a70Description" class="form-control" placeholder="Podrobný popis"></textarea>
+            <span asp-validation-for="Rec.a70Description" class="text-danger"></span>
+        </div>
+
+
+
+    </div>
+
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        a70ScopFlag_RefreshState();
+
+    });
+
+    function a70ScopFlag_RefreshState() {
+        var s = $("input:radio[name ='Rec.a70ScopFlag']:checked").val();
+        if (s == "GlobalSystem") {
+            $("#divLogin").css("visibility", "visible");
+        } else {
+            $("#divLogin").css("visibility", "hidden");
+        }
+        
+    }
+
+
+
+
+</script>
+
+
+
+
+
+
+

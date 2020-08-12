@@ -1,0 +1,203 @@
+﻿@model UI.Models.Tab.a01TabCapacity
+
+@{
+    if (Model == null || Model.RecA01 == null)
+    {
+        return;
+    }
+
+
+    string strClass = "work-day";
+    int intMesic = 0;
+    int intRok = 0;
+    int x = 0; int y = 0;
+}
+
+
+<table class="tableCapacity" cellpadding="0" cellspacing="0" style="overflow-x:auto;width:@(Model.lisDays.Count()*20+160)px;">
+    <tr>
+        <td class="firstcol" style="background-color:lightgrey;">
+
+            <span>Pracovních dní: </span>
+            <span class="badge badge-primary">@(Model.PracovnichDni)</span>
+        </td>
+        @foreach (string mesic in Model.lisDays.Select(p => p.Month.ToString() + " / " + p.Year.ToString()).Distinct())
+        {
+            x += 1;
+            strClass = "mesic_lichy";
+            intMesic = Convert.ToInt32(mesic.Substring(0, 2).Trim());
+            intRok = Convert.ToInt32(BO.BAS.RightString(mesic, 4));
+            Math.DivRem(x, 2, out y);
+            if (y > 0)
+            {
+                strClass = "mesic_sudy";
+            }
+            <td class="@strClass" colspan="@(Model.lisDays.Where(p=>p.Month==intMesic && p.Year==intRok).Count())">
+                @(BO.BAS.ObjectDateTime2String(new DateTime(intRok, intMesic, 1), "MMMM-yyyy"))
+            </td>
+        }
+
+    </tr>
+    <tr>
+        <td class="firstcol">
+            <span>
+                @if (Model.IsMonthView)
+                {
+                    @(BO.BAS.ObjectDate2String(new DateTime(Model.CurYear,Model.CurMonth,1)))
+                }
+                else
+                {
+                    @(BO.BAS.ObjectDate2String(Model.RecA01.a01DateFrom))
+                }
+
+            </span>
+            <span>
+                →
+            </span>
+            <span>
+                @if (Model.IsMonthView)
+                {
+                    @(BO.BAS.ObjectDate2String(new DateTime(Model.CurYear,Model.CurMonth,1).AddMonths(1).AddDays(-1)))
+                }
+                else
+                {
+                    @(BO.BAS.ObjectDate2String(Model.RecA01.a01DateUntil))
+                }
+
+            </span>
+
+        </td>
+        @foreach (DateTime d in Model.lisDays)
+        {
+            strClass = "work-day";
+            if (d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday)
+            {
+                strClass = "nonwork-day";
+            }
+
+            @if (d >= Model.RecA01.a01DateFrom && Model.RecA01.a01DateUntil >= d)
+            {
+                strClass = "plan-day";
+                if (d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    strClass = "plan-day-nonwork";
+                }
+            }
+            if (Model.lisJ26.Where(p => p.j26Date == d).Count() > 0)
+            {
+                strClass = "holiday";
+            }
+            <td class="@strClass">
+                @d.Day
+                <br />
+                @(BO.BAS.ObjectDate2String(d,"ddd"))
+            </td>
+        }
+
+    </tr>
+
+    @foreach (var recA41 in Model.lisA41)
+    {
+        <tr>
+            <td style="font-weight:bold;">
+                @recA41.PersonDesc
+                @if (recA41.a45ID == BO.EventRoleENUM.Vedouci)
+                {
+                    <img src="~/images/king.png" />
+                }
+            </td>
+
+            @foreach (DateTime d in Model.lisDays)
+            {
+                strClass = "";
+                if (d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    strClass = "nonwork-day";
+                }
+                <td class="@strClass">
+                    @foreach (var c in Model.lisA35.Where(p => p.j02ID == recA41.j02ID && p.a35PlanDate == d))
+                    {
+                        <div class="a35cell">
+                        </div>
+                    }
+                    @foreach (var c in Model.lisA38.Where(p => p.j02ID == recA41.j02ID && p.a38PlanDate == d))
+                    {
+                        if (c.a38IsDriver)
+                        {
+                            strClass = "a38celldriver";
+                        }
+                        else
+                        {
+                            strClass = "a38cell";
+                        }
+
+                        <div class="@strClass" title="@(c.j23Name+BO.BAS.IIFS(c.j23Code !=null," ("+c.j23Code+")","")+BO.BAS.IIFS(c.a38IsDriver," [řidič]","")+" Místo: "+c.a38Location)"></div>
+                    }
+
+                    @foreach (var c in Model.lisH04.Where(p => p.j02ID == recA41.j02ID && (p.h04CapacityPlanFrom >= d && p.h04CapacityPlanFrom < d.AddDays(1) || p.h04CapacityPlanUntil >= d && p.h04CapacityPlanUntil < d.AddDays(1))))
+                    {
+
+                        if (c.h07IsToDo && c.h04Deadline != null && c.h04Deadline >= d && c.h04Deadline < d.AddDays(1))
+                        {
+                            <div class="@strClass" title="@(c.h07Name+": "+c.h04Name)">
+                                <img src="~/images/todo.png" />
+                            </div>
+                        }
+                        if (c.h04CapacityPlanFrom != null && c.h04CapacityPlanFrom >= d && c.h04CapacityPlanFrom < d.AddDays(1))
+                        {
+                            <div class="@strClass" title="@(c.h07Name+": "+c.h04Name))">
+                                <img src="~/images/todo_start.png" />
+                            </div>
+                        }
+                        else
+                        {
+                            if (c.h04CapacityPlanUntil != null && c.h04CapacityPlanUntil >= d && c.h04CapacityPlanUntil < d.AddDays(1))
+                            {
+                                <div class="@strClass" title="@(c.h07Name+": "+c.h04Name))">
+                                    <img src="~/images/todo_end.png" />
+                                </div>
+                            }
+                        }
+
+
+                    }
+                </td>
+            }
+        </tr>
+    }
+    <tr style="border-top:solid 1px silver;">
+        <td></td>
+        @foreach (DateTime d in Model.lisDays)
+        {
+            <td>
+            </td>
+        }
+    </tr>
+    @foreach (var qry in Model.lisA38.GroupBy(p => p.j23ID))
+    {
+        <tr>
+            <td style="font-weight:bold;color:brown;">
+                @(qry.First().j23Name+" ("+ qry.First().j23Code+")")
+            </td>
+
+            @foreach (DateTime d in Model.lisDays)
+            {
+                strClass = "";
+                if (d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    strClass = "nonwork-day";
+                }
+                <td class="@strClass">
+                    @foreach (var c in Model.lisA38.Where(p => p.j23ID == qry.First().j23ID && p.a38PlanDate == d))
+                    {
+                        <div class="a38cell"></div>
+                    }
+
+                </td>
+            }
+        </tr>
+    }
+
+
+</table>
+

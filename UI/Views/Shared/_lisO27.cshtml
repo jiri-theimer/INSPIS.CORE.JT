@@ -1,0 +1,45 @@
+﻿@model FileUploadViewModel
+
+
+@if (Model.lisO27 != null && Model.lisO27.Count()>0)
+{
+    <div class="card my-2">
+        <div class="card-header">Uložené přílohy</div>
+        <div class="card-body py-0 px-0">
+            <table class="table table-hover table-sm">
+                @foreach (var c in Model.lisO27)
+                {
+                <tr>
+                    
+                    <td style="width:20px;" title="Menu"><a class="cm" onclick="_cm(event,'o27',@(c.pid))">☰</a></td>
+                    <td>
+                        <a target="_blank" asp-action="FileDownloadInline" asp-controller="FileUpload" asp-route-downloadguid="@(c.o27DownloadGUID)">@(c.o27OriginalFileName)</a>
+                    </td>
+
+                    <td>
+                        @(c.o13Name+" ["+ BO.BAS.FormatFileSize(c.o27FileSize)+"]")
+                    </td>
+                    <td>
+                        <i>
+                            @if (string.IsNullOrEmpty(c.o27Label) == true)
+                            {
+                                <a href="javascript:changelabel_saved('@(c.o27DownloadGUID)','@(c.o27Label)')">Popis/název</a>
+                            }
+                            else
+                            {
+                                <a href="javascript:changelabel_saved('@(c.o27DownloadGUID)','@(c.o27Label)')">@(c.o27Label)</a>
+                            }
+                        </i>
+                    </td>
+                    <td>
+                        @(c.o27PressMark)
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger" title="Odstranit řádek" onclick="handle_delete_row('@(c.o27DownloadGUID)')">x</button>
+                    </td>
+                </tr>
+                }
+            </table>
+        </div>
+    </div>
+}

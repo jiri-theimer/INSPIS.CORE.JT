@@ -1,0 +1,252 @@
+﻿@model UI.Models.Record.a10Record
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutRecord.cshtml";
+    if (Model.Rec == null) return;
+    Model.PageTitle = "Typ akce";
+}
+@addTagHelper *, UI
+
+<div class="tabs_container_record">
+    <!-- Tab panes -->
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a id="link_tab1" class="nav-link" data-toggle="tab" href="#tab1">Vlastnosti</a>
+        </li>
+        <li class="nav-item">
+            <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2">Linker vazba</a>
+        </li>
+        <li class="nav-item">
+            <a id="link_tab3" class="nav-link" data-toggle="tab" href="#tab3">Podrobný popis</a>
+        </li>
+
+    </ul>
+</div>
+
+<div class="modal_record_container">
+    <div class="tab-content">
+
+        <div class="tab-pane" id="tab1">
+            <!-- Tab1 -->
+            <div class="form-row">
+                <label class="col-sm-1 col-md-2 col-form-label">Název:</label>
+                <div class="col-sm-8 col-md-7">
+                    <input class="form-control" asp-for="Rec.a10Name" />
+                    <span asp-validation-for="Rec.a10Name" class="text-danger"></span>
+                </div>
+                <label class="col-sm-1 col-md-1 col-form-label">Kód:</label>
+                <div class="col-sm-3 col-md-2">
+                    <input class="form-control" asp-for="Rec.a10Ident" />
+                    <span asp-validation-for="Rec.a10Ident" class="text-danger"></span>
+                </div>
+
+            </div>
+
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Workflow šablona:</label>
+                <div class="col-sm-8 col-md-7">
+                    <mycombo entity="a21InstitutionLegalType" asp-for="Rec.b01ID" selectedtext="Rec.b01Name"></mycombo>
+
+                </div>
+            </div>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Okruh svázaných témat:</label>
+                <div class="col-sm-11 col-md-10">
+                    <mycombochecklist asp-for="@Model.a08IDs" entity="a08Theme" selectedtext="@Model.a08Names" placeholder="Vybrat témata..."></mycombochecklist>
+                </div>
+
+
+            </div>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">WEB form [INSERT]:</label>
+                <div class="col-sm-5 col-md-4">
+                    <input class="form-control" asp-for="Rec.a10Aspx_Insert" />
+                    <span asp-validation-for="Rec.a10Aspx_Insert" class="text-danger"></span>
+
+                </div>
+                <label class="col-sm-1 col-md-2 col-form-label">Role zakladatele:</label>
+                <div class="col-sm-5 col-md-4">
+                    <select asp-for="Rec.a45ID_Creator" class="form-control">
+                        <option value="5">Zakladatel akce automaticky obdrží roli [Vlastník]</option>
+                        <option value="3">Zakladatel akce automaticky obdrží roli [Zadavatel]</option>
+                        <option value="0">Zakladatel neobdrží žádnou roli v akci</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">WEB form [DETAIL]:</label>
+                <div class="col-sm-5 col-md-4">
+                    <input class="form-control" asp-for="Rec.a10Aspx_Framework" />
+                    <span asp-validation-for="Rec.a10Aspx_Framework" class="text-danger"></span>
+
+                </div>
+
+                <label class="col-sm-3 col-md-3 col-form-label">Maximální počet akcí u jedné instituce:</label>
+                <div class="col-sm-1 col-md-1">
+                    <mynumber asp-for="Rec.a10OneSchoolInstanceLimit" decimal-digits="0"></mynumber>
+                </div>
+
+            </div>
+            <hr />
+            <div class="form-row my-2">
+                <div class="col-sm-3 col-md-3">
+                    <input type="checkbox" asp-for="Rec.a10IsUse_A08" />
+                    <label class="col-form-label" for="Rec_a10IsUse_A08">Vyplňovat [Téma]</label>
+                </div>
+                <div class="col-sm-3 col-md-3">
+                    <input type="checkbox" asp-for="Rec.a10IsUse_A03" />
+                    <label class="col-form-label" for="Rec_a10IsUse_A03">Vyplňovat [Instituce]</label>
+                </div>
+                <div class="col-sm-3 col-md-3">
+                    <input type="checkbox" asp-for="Rec.a10IsUse_A41" />
+                    <label class="col-form-label" for="Rec_a10IsUse_A41">Vyplňovat [Účastníci akce]</label>
+                </div>
+                <div class="col-sm-3 col-md-3">
+                    <input type="checkbox" asp-for="Rec.a10IsUse_A41_Leader" />
+                    <label class="col-form-label" for="Rec_a10IsUse_A41_Leader">Povinnost definovat vedoucího akce</label>
+                </div>
+            </div>
+            <hr />
+            <div class="form-row my-2">
+                <div class="col-sm-3 col-md-3">
+                    <input type="checkbox" asp-for="Rec.a10IsUse_Period" />
+                    <label class="col-form-label" for="Rec_a10IsUse_Period">Vyplňovat plán [Datum od a Datum do]</label>
+                </div>
+                <div class="col-sm-3 col-md-3">
+                    <input type="checkbox" asp-for="Rec.a10IsUse_DeadLine" />
+                    <label class="col-form-label" for="Rec_a10IsUse_DeadLine">Vyplňovat [Termín akce]</label>
+                </div>
+                <div class="col-sm-3 col-md-3">
+                    <input type="checkbox" asp-for="Rec.a10IsUse_ReChangeForms" />
+                    <label class="col-form-label" for="Rec_a10IsUse_ReChangeForms">Povolit zpětně měnit okruh formulářů v akci</label>
+                </div>
+
+            </div>
+            <hr />
+            <div class="form-row my-2">
+                <div class="col-sm-3 col-md-3">
+                    <input type="checkbox" asp-for="Rec.a10IsUse_CaseCode" />
+                    <label class="col-form-label" for="Rec_a10IsUse_CaseCode">Vyplňovat [GINIS spis]</label>
+                </div>
+                <div class="col-sm-3 col-md-3">
+                    <input type="checkbox" asp-for="Rec.a10IsUse_Name" />
+                    <label class="col-form-label" for="Rec_a10IsUse_Name">Vyplňovat [Název akce]</label>
+                </div>
+                <div class="col-sm-3 col-md-3">
+                    <input type="checkbox" asp-for="Rec.a10IsSupportCloning" />
+                    <label class="col-form-label" for="Rec_a10IsSupportCloning">Podpora zakládání nových akcí kopírováním</label>
+                </div>
+
+            </div>
+            <hr />
+            <div class="form-row my-2">
+                <div class="col-sm-3 col-md-3">
+                    <input type="checkbox" asp-for="Rec.a10IsUse_Poll" />
+                    <label class="col-form-label" for="Rec_a10IsUse_Poll">Povolit [Anketní formuláře]</label>
+                </div>
+                <div class="col-sm-3 col-md-3">
+                    <input type="checkbox" asp-for="Rec.a10IsUse_K01" />
+                    <label class="col-form-label" for="Rec_a10IsUse_K01">Akce patří do modulu [Učitelé]</label>
+                </div>
+                <div class="col-sm-6 col-md-6">
+                    <input type="checkbox" asp-for="Rec.a10IsUse_A41_J11" />
+                    <label class="col-form-label" for="Rec_a10IsUse_A41_J11">Účastníky akce lze přiřazovat i přes pojmenovaný seznam osob</label>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    Web stránky pro aplikační role
+                </div>
+                <div class="card-body">
+                    <div class="form-row">
+                        <label class="col-sm-1 col-md-2 col-form-label">Přidat roli:</label>
+                        <div class="col-sm-11 col-md-10">
+                            <mycombo entity="j04UserRole" asp-for="@Model.SelectedJ04ID" selectedtext="@Model.SelectedRole" placeholder="Vybrat roli..." event_after_changevalue="handle_j04id_append"></mycombo>
+                        </div>
+                    </div>
+                    <hr />
+                    @for (var i = 0; i < Model.lisA20.Count; i++)
+                    {
+                        <div class="row" style="@(Model.lisA20[i].CssTempDisplay)">
+                            <input type="hidden" asp-for="lisA20[i].IsTempDeleted" value="@Model.lisA20[i].IsTempDeleted" />
+
+                            <input type="hidden" asp-for="lisA20[i].TempGuid" value="@Model.lisA20[i].TempGuid" />
+                            <div class="col-sm-4 col-md-4">
+                                <mycombo entity="j04UserRole" asp-for="lisA20[i].j04ID" selectedtext="lisA20[i].j04Name" placeholder="Vybrat roli..." view-flag="2"></mycombo>
+                            </div>
+                           
+                            <div class="col-sm-6 col-sm-6">
+                                <input type="text" class="form-control" asp-for="@Model.lisA20[i].a20Aspx_Framework" placeholder="URL formuláře" />
+                                
+                            </div>
+                            <div class="col-1">
+                                <button type="button" class="btn btn-danger" title="Odstranit řádek" onclick="handle_delete_row('@(Model.lisA20[i].TempGuid)')">x</button>
+                            </div>
+
+                        </div>
+                    }
+                </div>
+            </div>
+
+
+
+        </div>
+        <div class="tab-pane" id="tab2">
+            <!-- Tab2 -->
+            <p></p>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Cílová databáze pro Linker vazbu:</label>
+                <div class="col-sm-5 col-md-4">
+                    <select asp-for="Rec.a10LinkerDB" class="form-control">
+                        <option value="">Aktuální databáze</option>
+                        <option value="DbEpis1">InspIS DATA</option>
+                        <option value="DbEpis4">InspIS INTEGRATION</option>
+                    </select>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="tab-pane" id="tab3">
+            <!-- Tab2 -->
+            <textarea asp-for="Rec.a10Description" class="form-control" placeholder="Podrobný popis" style="min-height:100px;"></textarea>
+            <span asp-validation-for="Rec.a10Description" class="text-danger"></span>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+
+    });
+
+    function handle_j04id_append(j04id) {
+        if (j04id == "") {
+            _notify_message("Musíte vybrat roli.");
+            return;
+        }
+
+        form1.action = "/a10/Record?oper=add&j04id="+j04id;
+        form1.submit();
+    }
+    function handle_delete_row(guid) {
+        form1.action = "/a10/Record?oper=delete&guid="+guid;
+        form1.submit();
+
+    }
+
+
+
+
+
+</script>

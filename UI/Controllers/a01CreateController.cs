@@ -1,0 +1,273 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using DocumentFormat.OpenXml.EMMA;
+using Microsoft.AspNetCore.Mvc;
+using UI.Models;
+
+namespace UI.Controllers
+{
+    public class a01CreateController : BaseController
+    {
+        public IActionResult Index(int a10id)
+        {
+            var v = new a01CreateViewModel();
+            v.a10ID = a10id;
+            if (a10id > 0)
+            {
+                var c = Factory.a10EventTypeBL.Load(a10id);
+                if (c.a10Aspx_Insert != null)
+                {
+                    switch (c.a10Aspx_Insert)
+                    {
+                        case "a01_create_res.aspx":
+                        case "a42/create":
+                            return RedirectToAction("Create", "a42", new { a10id = a10id });
+                        case "a01_create_aus.aspx":
+                        case "a01create/aus":
+                            return RedirectToAction("Aus", new { a10id = a10id });
+                        case "a01create/helpdesk":
+                        case "a01_create_hd.aspx":
+                            return RedirectToAction("Helpdesk", new { a10id = a10id });
+                        default:
+                            return RedirectToAction("Standard", new { a10id = a10id });
+
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("Standard", new { a10id = a10id });
+                }
+                
+            }
+            RefreshState(v);
+
+
+            return View(v);
+        }
+
+        public IActionResult Standard(int a10id, int j02id)
+        {
+            if (a10id == 0)
+            {
+                return RedirectToAction("Index");
+            }
+            var v = new a01CreateViewModel() { j02ID = j02id,a10ID=a10id };
+
+            RefreshState(v);
+            RefreshInstitution(v);
+            
+            
+            v.Rec = new BO.a01Event();
+            return View(v);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Standard(Models.a01CreateViewModel v, string oper,int f06id,int krat,string guid)
+        {
+            RefreshState(v);
+            if (oper == "postback")
+            {
+                return View(v);
+            }
+            if (oper== "a08_change")
+            {
+                v.lisA11.Clear();
+                return View(v);
+            }
+            if (oper == "f06_add" && f06id>0)
+            {
+                for(int i = 1; i <= krat; i++)
+                {
+                    var c = new BO.a11EventForm() { f06ID = f06id,TempGuid=BO.BAS.GetGuid() };
+                    c.f06Name = Factory.f06FormBL.Load(f06id).f06Name;
+                    v.lisA11.Add(c);
+                }
+                
+                return View(v);
+            }
+            if (oper == "f06_delete")
+            {
+                v.lisA11.First(p => p.TempGuid == guid).IsTempDeleted = true;
+                return View(v);
+            }
+            if (oper== "f06_clear")
+            {
+                v.lisA11.Clear();
+                return View(v);
+            }
+            if (oper == "j02_add" && v.SelectedJ02ID>0)
+            {
+                var c = new BO.a41PersonToEvent() { TempGuid = BO.BAS.GetGuid() };
+
+                if (v.lisA41.Where(p => p.j02ID == v.SelectedJ02ID).Count() > 0)
+                {
+                    if (v.lisA41.Where(p => p.j02ID == v.SelectedJ02ID).Count() > 0)
+                    {
+                        c = v.lisA41.Where(p => p.j02ID == v.SelectedJ02ID).First();
+                        if (c.IsTempDeleted == true)
+                        {
+                            c.IsTempDeleted = false;
+                            return View(v);
+                        }
+                        else
+                        {
+                            this.AddMessage("Tato osoba již je v seznamu.");
+                            return View(v);
+                        }
+                    }
+                }
+                c.j02ID = v.SelectedJ02ID;
+                c.PersonCombo = Factory.j02PersonBL.Load(c.j02ID).FullNameDesc;
+                c.a45ID = BO.EventRoleENUM.Resitel;
+                c.a45Name = Factory.FBL.LoadA45((int)c.a45ID).a45Name;
+                c.a45IsManual = true;
+                v.lisA41.Add(c);
+                return View(v);
+            }
+            if (oper == "j02_delete")
+            {
+                v.lisA41.First(p => p.TempGuid == guid).IsTempDeleted = true;
+                return View(v);
+            }
+
+            if (ModelState.IsValid)
+            {                
+
+                BO.a01Event c = new BO.a01Event();
+                c.a10ID = v.a10ID;
+                c.a03ID = v.a03ID;
+                c.j02ID_Issuer = v.j02ID;
+                c.a08ID = v.Rec.a08ID;
+                c.a01DateFrom = v.Rec.a01DateFrom;
+                c.a01DateUntil = v.Rec.a01DateUntil;
+                c.a01CaseCode = v.Rec.a01CaseCode;
+                c.a01Name = v.Rec.a01Name;
+                c.a01Description = v.Rec.a01Description;
+
+                c.pid = Factory.a01EventBL.Create(c, true, v.lisA11.Where(p=>p.IsTempDeleted==false).ToList(), v.lisA41.Where(p=>p.IsTempDeleted==false).ToList(), null,null);
+                if (c.pid > 0)
+                {
+                    return RedirectToAction("RecPage", "a01", new { pid = c.pid });
+
+                }
+            }
+
+            this.Notify_RecNotSaved();
+            return View(v);
+        }
+
+        public IActionResult Helpdesk(int a10id, int j02id)
+        {
+            if (a10id == 0)
+            {
+                return RedirectToAction("Index");
+            }
+            var v = new a01CreateViewModel() { j02ID = j02id };
+
+            RefreshState(v);
+            RefreshInstitution(v);
+            v.a10ID = a10id;
+            
+            v.Rec = new BO.a01Event();
+            return View(v);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Helpdesk(Models.a01CreateViewModel v, string oper)
+        {
+            RefreshState(v);
+            if (oper == "j02_change")
+            {
+                v.a03ID = 0;
+                v.Institution = "";
+                RefreshInstitution(v);
+                return View(v);
+            }
+            RefreshInstitution(v);
+
+            if (ModelState.IsValid)
+            {
+                if (string.IsNullOrEmpty(v.Rec.a01Description) == true || v.Rec.a01Description.Length < 5)
+                {
+                    this.AddMessage("Popis požadavku je příliš stručný.");
+                    return View(v);
+                }
+
+                BO.a01Event c = new BO.a01Event();
+                c.a10ID = v.a10ID;
+                c.a03ID = v.a03ID;
+                c.j02ID_Issuer = v.j02ID;
+                c.a08ID = v.Rec.a08ID;
+                c.a01Description = v.Rec.a01Description;
+
+                c.pid = Factory.a01EventBL.Create(c, true, null, null, null, null);
+                if (c.pid > 0)
+                {
+                    return RedirectToAction("RecPage", "a01", new { pid = c.pid });
+
+                }
+            }
+
+            this.Notify_RecNotSaved();
+            return View(v);
+        }
+        private void RefreshInstitution(Models.a01CreateViewModel v)
+        {
+            var mq = new BO.myQuery("a03Institution") { IsRecordValid = true, j02id = v.j02ID };
+            var lis = Factory.a03InstitutionBL.GetList(mq);
+            if (lis.Count() > 0)
+            {
+                v.a03ID = lis.First().pid;
+                v.Institution = lis.First().NamePlusRedizo;
+                v.IsComboA03 = true;
+            }
+            else
+            {
+                v.IsComboA03 = false;
+            }
+        }
+        private void RefreshState(Models.a01CreateViewModel v)
+        {
+            if (v.Rec == null)
+            {
+                v.Rec = new BO.a01Event();
+            }
+            if (v.a10ID > 0)
+            {
+                v.RecA10 = Factory.a10EventTypeBL.Load(v.a10ID);
+            }
+            
+            if (v.j02ID == 0)
+            {
+                v.j02ID = Factory.CurrentUser.j02ID;
+            }
+            v.RecJ02 = Factory.j02PersonBL.Load(v.j02ID);
+            v.Person = v.RecJ02.FullNameDesc;
+            if (v.Rec.a08ID > 0)
+            {
+                v.lisA12=Factory.a08ThemeBL.GetListA12(v.Rec.a08ID);
+            }
+            if (v.lisA11 == null)
+            {
+                v.lisA11 = new List<BO.a11EventForm>();
+            }
+            if (v.lisA41 == null)
+            {
+                v.lisA41 = new List<BO.a41PersonToEvent>();
+            }
+            switch (v.MasterPrefixComboJ02)
+            {
+                case "a04":
+                    v.MasterPidComboJ02 = v.RecJ02.a04ID;
+                    break;
+                case "a05":
+                    v.MasterPidComboJ02 = v.RecJ02.a05ID;
+                    break;
+            }
+           
+        }
+    }
+}

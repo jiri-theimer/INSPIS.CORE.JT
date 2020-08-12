@@ -1,0 +1,207 @@
+﻿@model UI.Models.Recpage.a01RecPage
+
+
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (Model.Rec == null) return;
+
+    ViewData["Title"] = Model.Rec.a01Signature;
+}
+
+@addTagHelper *, UI
+
+
+
+<div class="row py-3 bg-light m-0">
+    <div class="col-auto" style="width:190px;">
+        @if (Model.pid > 0)
+        {
+            <a class="cm h4 mx-1" title="Menu" onclick="_cm(event, 'a01',@Model.Rec.pid);">☰@Model.Rec.a01Signature</a>
+        }
+
+    </div>
+    <div class="col-sm-8">
+        <mysearch asp-for="@Model.SearchBox" entity="a01Event" placeholder="Fulltext hledání..."></mysearch>
+    </div>
+    <div class="col-sm-1"></div>
+    <div class="nonmobile nontablet">
+        <a class="btn btn-secondary" href="/a01/RecPage?pid=@Model.pid">Obnovit</a>
+    </div>
+
+
+
+
+</div>
+
+<div id="layout_sidebar" class="cm_recpage"></div>
+
+
+<div id="layout_main">
+    <div class="modal_record_container">        
+
+        <div class="form-row">
+            <label class="col-sm-1 col-md-2 col-form-label">ID:</label>
+            <div class="col-sm-4 col-md-3">
+
+                <myval value="@Model.Rec.a01Signature"></myval>
+            </div>
+            <div class="col-sm-1 col-md-1">
+
+                <myval value="@Model.Rec.a01SigID"></myval>
+            </div>
+
+            <label class="col-sm-1 col-md-1 col-form-label">Typ akce:</label>
+            <div class="col-sm-5 col-md-4">
+                <myval value="@Model.Rec.a10Name" hoverprefix="a10" hoverpid="@Model.Rec.a10ID"></myval>
+
+
+            </div>
+        </div>
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">Aktuální stav:</label>
+            <div class="col-sm-4 col-md-3">
+
+                <myval value="@Model.Rec.b02Name" hoverprefix="b02" hoverpid="@Model.Rec.b02ID"></myval>
+                
+            </div>
+            <div class="col-sm-1 col-md-1">
+                <myval datatype="html" value="@("<span style='background-color:"+Model.Rec.b02Color+";'>"+Model.Rec.b02Ident+"</span>")"></myval>
+                
+            </div>
+
+            <label class="col-sm-1 col-md-1 col-form-label">Posl. událost:</label>
+            @if (Model.RecLastEvent != null)
+            {
+                <div class="col-sm-3 col-md-2">
+                    <myval datatype="link" linkurl="/j02/RecPage?pid=@Model.RecLastEvent.j02ID" value="@Model.RecLastEvent.Person" hoverprefix="j02" hoverpid="@Model.RecLastEvent.j02ID"></myval>
+                    
+                    
+                </div>
+                <div class="col-sm-2 col-md-2">
+                    <myval datatype="datetime" value="@Model.RecLastEvent.DateInsert"></myval>                    
+                </div>
+            }
+
+        </div>
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@(Model.Rec.a06Name+":")</label>
+
+            @if (Model.Rec.a03ID > 0)
+            {
+                <div class="col-sm-4 col-md-3">
+                    <myval datatype="link" linkurl="/a03/RecPage?pid=@Model.Rec.a03ID" value="@Model.Rec.a03Name" hoverprefix="a03" hoverpid="@Model.Rec.a03ID"></myval>
+                    
+                    
+                </div>
+                <div class="col-sm-1 col-md-1">
+                    <myval tooltip="REDIZO" value="@Model.Rec.a03REDIZO"></myval>
+                </div>
+            }
+            else
+            {
+
+                <div class="col-sm-5 col-md-4">
+                    <myval value="@Model.Rec.a01InstitutionPlainText"></myval>
+                </div>
+            }
+
+
+            <label class="col-sm-1 col-md-1 col-form-label">Založeno:</label>
+            <div class="col-sm-3 col-md-2">
+                @if (Model.RecIssuer != null)
+                {
+                    <myval datatype="link" linkurl="/j02/RecPage?pid=@Model.RecIssuer.pid" value="Model.RecIssuer.FullNameAsc" hoverprefix="j02" hoverpid="@Model.RecIssuer.pid"></myval>                    
+                }
+            </div>
+            <div class="col-sm-2 col-md-2">
+                <myval datatype="datetime" value="@Model.Rec.DateInsert"></myval>                
+            </div>
+        </div>
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">Téma akce:</label>
+            <div class="col-sm-5 col-md-4">
+
+                <myval value="@Model.Rec.a08Name" hoverprefix="a08" hoverpid="@Model.Rec.a08ID"></myval>
+            </div>
+            @if (Model.Rec.a01CaseCode != null && Model.Rec.a01ParentID == 0)
+            {
+                <label class="col-sm-1 col-md-1 col-form-label">GINIS spis:</label>
+                <div class="col-sm-5 col-md-4">
+                    <myval datatype="string" value="@Model.Rec.a01CaseCode"></myval>
+                    
+                </div>
+
+            }
+
+
+        </div>
+        @Html.Raw(Model.TagHtml)
+    </div>
+    @if (Model.Rec.a01Description != null)
+    {
+        <div style="border:dashed 1px silver;padding:6px;max-height:200px;overflow:auto;">
+
+            @Html.Raw(Model.Rec.a01Description.Replace("\r\n", "\n").Replace("\r", "\n").Replace("\n", "<br>"))
+        </div>
+    }
+
+    <div class="tabs_container">
+        <ul id="navtabs" class="nav nav-tabs">
+            @foreach (var tab in Model.NavTabs)
+            {
+                <li class="nav-item">
+                    <a class="@tab.CssClass" id="tab@(tab.Entity)" href="@tab.Url" target="fra_subgrid" onclick="tabclick(this)">@tab.Name</a>
+                </li>
+            }
+        </ul>
+    </div>
+    <div id="divTabContent">
+        <iframe id="fra_subgrid" name="fra_subgrid" src="@Model.DefaultNavTabUrl" frameborder="0" scrolling="yes" style="width:100%;" onload="$('#divTabContent').css('background','none');"></iframe>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        @if (Model.pid > 0)
+        {
+        <text>
+        $.post("/Menu/ContextMenu", { entity: "a01Event", pid:@Model.pid }, function (data) {
+            var s = "<mark style='margin-left:10px;'>@Model.Rec.a10Name</mark>" + data;
+            $("#layout_sidebar").html(s);
+
+        });
+        </text>
+        }
+        else
+        {
+        <text>
+        $("#layout_main").css("display", "none");
+        </text>
+        }
+
+        var offset = $("#divTabContent").offset();
+        var h_vertical = _device.innerHeight - offset.top;
+        h_vertical = parseInt(h_vertical) + 10;
+        $("#divTabContent").css("height", h_vertical + "px");
+
+        _mainmenu_highlight_current("cmdA01");
+
+
+
+
+    });
+
+
+
+
+    function tabclick(tab) {    //uložit aktuální záložku do profilu uživatele
+        $("#navtabs .nav-link").removeClass("active");
+        $(tab).addClass("active");
+        $.post("/Common/SetUserParam", { key: "recpage-tab-a01", value: tab.id.replace("tab", "") }, function (data) {
+
+
+        });
+    }
+</script>

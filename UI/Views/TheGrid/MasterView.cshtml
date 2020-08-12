@@ -1,0 +1,172 @@
+﻿@model TheGridInstanceViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    if (Model.entity == null)
+    {
+        return;
+    }
+    ViewData["Title"] = Model.entityTitle;
+
+}
+
+@addTagHelper *,UI
+
+
+
+
+
+<div id="splitter_container" class="splitter-container-top2bottom">
+    @if (Model.period != null)
+    {
+        @Html.EditorFor(m => m.period, "~/Views/Shared/_Period.cshtml")
+    }
+    <div id="splitter_panel1" class="splitter-panel-top">
+        <vc:the-grid entity="@Model.entity" j72id="@Model.j72id" go2pid="@Model.go2pid" master_entity="" master_pid="0" contextmenuflag="@Model.contextmenuflag" ondblclick="tg_dblclick" master_flag="@Model.master_flag" masterviewflag="2"></vc:the-grid>
+
+    </div>
+    <div class="tabs_container">
+        <ul id="navtabs" class="nav nav-tabs">
+            @foreach (var tab in Model.NavTabs)
+            {
+                <li class="nav-item">
+                    <a class="@tab.CssClass" id="tab@(tab.Entity)" href="@tab.Url" target="fra_subgrid" onclick="tabclick(this)">@tab.Name</a>
+                </li>
+
+            }
+        </ul>
+    </div>
+
+    <div id="splitter_resizer" class="splitter-resizer-top2bottom"></div>
+
+    <div id="splitter_panel2" class="splitter-panel-bottom">
+
+        <iframe id="fra_subgrid" name="fra_subgrid" frameborder="0" src="@Model.go2pid_url_in_iframe" scrolling="yes" style="width:100%;" onload="$('#splitter_panel2').css('background','none');"></iframe>
+    </div>
+</div>
+
+
+
+<input type="hidden" id="cur_pid" asp-for="@Model.go2pid" />
+
+@section Scripts{
+
+    <script type="text/javascript">
+
+    $(document.body).css("overflow", "hidden");
+
+    $(document).ready(function () {
+
+        _splitter_init("1", "@Model.prefix");
+        var key = "@Model.prefix" + "_panel1_size";
+        var defHeight = localStorage.getItem(key);
+        if (defHeight == null) {
+            defHeight = Math.floor(_device.innerHeight/2);
+            localStorage.setItem(key, defHeight);
+        }
+
+        _splitter_resize_after_init("1", defHeight);
+
+
+
+        tg_adjust_for_screen("splitter_panel1");
+
+        var cmdMenuID = "cmd@(Model.prefix.ToUpper())";
+        if (cmdMenuID == "cmdA42") cmdMenuID = "cmdA01";
+        _mainmenu_highlight_current(cmdMenuID);
+
+
+        @if(Model.period != null)
+        {
+        <text>
+        $("#PeriodValue").on("change", function () {
+            $.post("/Common/SetUserParam", { key: "grid-period-value",value:$(this).val()  }, function (data) {
+                location.replace("/TheGrid/MasterView?prefix=@Model.prefix");
+
+            });
+        });
+        $("#cmdRefreshPeriod").on("click", function () {
+            var k = [];
+            var v = [];
+            k.push("grid-period-value");
+            v.push($("#PeriodValue").val());
+            k.push("grid-period-d1");
+            v.push($("#d1helper").val());
+            k.push("grid-period-d2");
+            v.push($("#d2helper").val());
+
+            $.post("/Common/SetUserParams", { keys: k, values:v  }, function (data) {
+                location.replace("/TheGrid/MasterView?prefix=@Model.prefix");
+
+            });
+
+        });
+        </text>
+        }
+
+    });
+
+
+     /*automaticky volaná událost z thegrid controlu*/
+        function thegrid_handle_event(event_name, pid) {
+            $("#cur_pid").val(pid);
+            var tabUrl = "";
+
+         @foreach (var tab in Model.NavTabs)
+         {
+
+             <text>
+            tabUrl = $("#tab@(@tab.Entity)").attr("href");
+
+            if (tabUrl.indexOf("master_pid=") > 0) {
+                tabUrl = _removeUrlParam("master_pid", tabUrl);
+                tabUrl = tabUrl + "&master_pid=" + pid;
+            } else {
+                if (tabUrl.indexOf("pid=") > 0) {
+                    tabUrl = _removeUrlParam("pid", tabUrl);
+                    if (tabUrl.indexOf("?") > 0) {
+                        tabUrl = tabUrl + "&pid=" + pid;
+                    } else {
+                        tabUrl = tabUrl + "?pid=" + pid;
+                    }                    
+                }
+            }            
+
+            $("#tab@(@tab.Entity)").attr("href", tabUrl);
+            </text>
+         }
+            var selectedtab = $("#navtabs").find(".active");
+
+            tabUrl = $(selectedtab).attr("href");
+            document.getElementById("fra_subgrid").src = tabUrl;
+
+
+
+     }
+
+
+        function tabclick(tab) {    //uložit aktuální záložku do profilu uživatele
+            $("#navtabs .nav-link").removeClass("active");
+            $(tab).addClass("active");
+            $.post("/Common/SetUserParam", { key: "masterview-tab-@(Model.prefix)",value:tab.id.replace("tab","")  }, function (data) {
+
+
+            });
+
+
+        }
+
+
+        function change_grid(j72id) {
+            $.post("/Common/SetUserParam", { key: "masterview-j72id-@(Model.prefix)",value:j72id  }, function (data) {
+                location.replace("/TheGrid/MasterView?prefix=@Model.prefix");
+
+            });
+        }
+
+    </script>
+
+}
+
+

@@ -1,0 +1,96 @@
+﻿@model HomeViewModel
+@inject BL.RunningApp _app
+
+@{
+    ViewData["Title"] = "Home Page";
+
+
+}
+@addTagHelper *, UI
+
+
+<div class="jumbotron py-4">
+    <h1 class="display-4">@_app.AppName <small>@_app.AppVersion</small></h1>
+    
+</div>
+<div style="padding:20px;">
+    <h4>Vítej, uživateli [<a href="/Home/MyProfile">@(User.Identity.Name)</a>]!</h4>
+    <hr />
+    <strong>10.08.2020</strong>
+    <ul>
+        <li>Kapacitní plánování akce v akcích i centrálně</li>
+        <li>Rezervace nepersonálních zdrojů v akcích i centrálně</li>
+        <li>Úkoly a lhůty v akcích vč. GRID/SUB-GRID zobrazení</li>
+        
+        <li>Kvůli CSS a Javascript je třeba po aktualizaci v prohlížeči stisknout CTRL+F5</li>
+    </ul>
+    <hr />
+    <strong>03.08.2020</strong>
+    <ul>
+        <li>Založení AKCE</li>
+        <li>Info bublina dle vzoru původního INSPISu</li>
+        <li>Kvůli CSS a Javascript je třeba po aktualizaci v prohlížeči stisknout CTRL+F5</li>
+    </ul>
+    <hr />
+    <strong>31.7.2020</strong>
+    <ul>
+        <li>FULLTEXT</li>
+        <li>Návrhář formuláře</li>
+        <li>Návrhář workflow</li>
+        <li>GRID: Vnitřní filtrovací podmínka v návrháři sloupců, pojmenované GRID šablony + Vypnout/Zapnout spodní panel</li>
+        <li>Spodní záložky v rámci akce</li>
+    </ul>
+    <hr />
+    <strong>Zatím naprosto největší vývoj probíhá v oblasti [Administrace systému] (k 13.7.2020).</strong>
+    <ul>
+        <li>Administrace nikoho moc nezajímá a původně nebyl plán začít s rekonstrukcí administrace.</li>
+        <li>Ale nakonec jsem se tak rozhodl, protože bych neměl čas a sílu se k tomu později vracet. Je to takový nutný základní výškový tábor.</li>
+        <li>Administrace je věcně rozdělěná na 4 části: <a href="/Admin/Users">Uživatelé + Monitoring</a> <a href="/Admin/Ciselniky">Číselníky</a> <a href="/Admin/Forms">Formuláře</a> <a href="/Admin/Workflow">Workflow</a></li>
+        <li>Plus navíc ještě: <a href="/AdminOneForm/Index">Návrhář formuláře</a> a <a href="/AdminOneWorkflow/Index">Návrhář workflow</a></li>
+        <li>Pokrytí nám dopředu neznámých a jednoduchých evidencí bude řešeno obecným návrhářem kategorií/štítků.</li>
+        <li><a href="/Admin/Ciselniky?prefix=o53">Návrhář kategorií</a> <a href="/Admin/Ciselniky?prefix=o51">Položky kategorií</a></li>
+        <li>V administraci je nově i číselník <a href="/Admin/Users?prefix=j40">poštovních účtů</a>. Každý uživatel může mít zde zavedený poštovní účet a tak možnost sledovat odeslanou poštu i ze svého poštovního klienta.</li>
+    </ul>
+    <strong>Trochu změny:</strong>
+    <ul>
+        <li>Co dřív byl [Přehled], nyní je [<a href="/TheGrid/MasterView?prefix=a03">GRID</a>].</li>
+        <li>Motorem vizuální části aplikace jsou obecně konfigurovatelný GRID přehledy přes uživatelský návrhář sloupců.</li>
+        <li>Obecný GRID by měl snižovat potřebu programování proprietálních stránek, byť takových tam bude stejně hodně. Pro každou entitu (i mini tabulky) má uživatel konfigurovatelný a filtrovatelný GRID.</li>
+        <li>Co dřív bylo [Detail], nyní je [<a href="/a03/RecPage">Stránka</a>].</li>
+        <li>Máme 3 klíčové entity, které si zaslouží vlastní domovskou stránku: <a href="/a01/RecPage">Akce</a>, <a href="/a03/RecPage">Instituce</a> a <a href="/j02/RecPage">Člověk</a>.</li>
+
+        <li>Kontextové menu k záznamům je řešeno jednotně přes [Hamburger menu], v gridu funguje i double-click.</li>
+
+
+        <li>Pro hledání akcí/institucí/lidí budeme pracovat s pravým FULL-TEXT indexováním - zatím není zapnuto.</li>
+        <li>Stránky jsou responsivní díky BOOTSTRAP.</li>
+        <li>Zatím platí ambice se zcela obejít bez TELERIK komponent (kromě reportingu).</li>
+    </ul>
+</div>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+        _mainmenu_highlight_current("cmdHome");
+
+        if (location.href.indexOf("Home/Index") == -1) {
+            //úvodní spuštění - default, otestovat domovskou stránku
+        }
+
+        
+    });
+
+
+
+
+
+
+</script>

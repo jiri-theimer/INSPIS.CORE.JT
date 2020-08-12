@@ -1,0 +1,39 @@
+﻿@model UI.Models.Record.f44Record
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutRecord.cshtml";
+    if (Model.Rec == null) return;
+    Model.PageTitle = "Klastr otázek";
+}
+@addTagHelper *, UI
+
+<div class="modal_record_container">
+
+    <div class="form-row">
+        <label class="col-sm-1 col-md-2 col-form-label">Kód:</label>
+        <div class="col-sm-5 col-md-4">
+            <input class="form-control" asp-for="Rec.f44Code" />
+            <span asp-validation-for="Rec.f44Code" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">Název:</label>
+        <div class="col-sm-11 col-md-10">
+            <input class="form-control" asp-for="Rec.f44Name" />
+            <span asp-validation-for="Rec.f44Name" class="text-danger"></span>
+        </div>
+
+    </div>
+    <hr />
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">Index pořadí:</label>
+        <div class="col-sm-1 col-md-1">
+            <mynumber asp-for="Rec.f44Ordinal" decimal-digits="0"></mynumber>
+        </div>
+
+    </div>
+
+
+</div>
+

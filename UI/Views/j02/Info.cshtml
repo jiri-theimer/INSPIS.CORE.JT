@@ -1,0 +1,125 @@
+﻿@model UI.Models.Recpage.j02RecPage
+@inject BL.Factory _f
+
+@{
+    ViewData["Title"] = "Info";
+    Layout = "~/Views/Shared/_LayoutSubform.cshtml";
+    if (Model.Rec == null) return;
+}
+
+@addTagHelper *, UI
+
+<div class="modal_record_container">
+    <div class="form-row">
+        <label class="col-sm-1 col-md-2 col-form-label">Jméno:</label>
+        <div class="col-sm-7 col-md-6">
+            <myval value="@Model.Rec.FullNameAsc"></myval>
+
+        </div>
+        @if (Model.Rec.j07ID > 0)
+        {
+            <div class="col-sm-2 col-md-2">
+                <myval value="@Model.Rec.j07Name" tooltip="Pozice"></myval>
+            </div>
+        }
+        <div class="col-sm-2 col-md-2">
+            <myval value="@Model.Rec.j02PID" tooltip="Osobní ID (kód)"></myval>
+
+        </div>
+        @if (_f.CurrentUser.TestPermission(BO.PermValueEnum.AdminGlobal_Ciselniky))
+        {
+            <div class="colsm-2 col-md-2">
+                <a href="javascript:_window_open('/j02/Record?pid=@(Model.pid)')">Administrace</a>
+            </div>
+        }
+
+    </div>
+    
+    @if (Model.RecJ03 != null)
+    {
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">Uživatelský účet:</label>
+            <div class="col-sm-7 col-md-6">
+                <myval value="@Model.RecJ03.j03Login"></myval>
+
+
+            </div>
+            <div class="col-sm-4 col-md-4">
+                <myval value="@Model.RecJ03.j04Name" tooltip="Aplikační role" hoverprefix="j04" hoverpid="@Model.RecJ03.j04ID"></myval>
+            </div>
+        </div>
+    }
+
+    @if (Model.RecA04 != null)
+    {
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">Inspektorát:</label>
+            <div class="col-sm-7 col-md-6">
+                <myval value="@Model.RecA04.Name"></myval>
+            </div>
+            <div class="col-sm-4 col-md-4">
+                <myval tooltip="Pevný TEL" value="@Model.RecA04.a04Phone"></myval>
+            </div>
+        </div>
+
+    }
+    @if (Model.LisA39 != null)
+    {
+        <div class="py-2">
+            @foreach (var c in Model.LisA39)
+            {
+                <div class="form-row">
+                    <label class="col-sm-1 col-md-2 col-form-label">@(c.a06Name):</label>
+                    <div class="col-sm-7 col-md-6">
+                        <myval datatype="link" linktarget="_top" linkurl="/a03/RecPage?pid=@c.a03ID" value="@c.a03Name" hoverprefix="a03" hoverpid="@c.a03ID"></myval>
+
+                    </div>
+                    <div class="col-sm-2 col-md-2">
+                        <myval value="@c.RoleName" tooltip="Role v instituci"></myval>
+
+                    </div>
+                    <div class="col-sm-2 col-md-2">
+                        <div class="val-readonly rowvalhover">
+                            @if (c.a03REDIZO != null)
+                            {
+                                <span>@c.a03REDIZO</span>
+                                <a class="valhover_tooltip" target="_blank" href="https://portal.csicr.cz/School/@(c.a03REDIZO)">portal</a>
+                                @if (c.a03ICO != null)
+                                {
+                                    <a class="valhover_tooltip" target='_blank' href="https://wwwinfo.mfcr.cz/cgi-bin/ares/darv_sko.cgi?ico=@(c.a03ICO)&jazyk=cz&xml=1">ares</a>
+                                }
+
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+    }
+
+
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">Kontakt:</label>
+        <div class="col-sm-6 col-md-6">
+            <myval datatype="link" linkurl="mailto:@Model.Rec.j02Email" value="@Model.Rec.j02Email"></myval>
+
+
+        </div>
+
+        <div class="col-sm-3 col-md-2">
+            <myval value="@Model.Rec.j02Phone" tooltip="Pevný TEL"></myval>
+
+        </div>
+        <div class="col-sm-2 col-md-2">
+            <myval value="@Model.Rec.j02Mobile" tooltip="Mobilní TEL"></myval>
+
+
+        </div>
+
+
+    </div>
+
+
+    @Html.Raw(Model.TagHtml)
+</div>

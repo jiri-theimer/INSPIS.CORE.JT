@@ -1,0 +1,70 @@
+﻿@model f06Clone
+
+@{
+    ViewData["Title"] = "Kopírovat formulář";
+    Layout = "~/Views/Shared/_LayoutModal.cshtml";
+}
+
+<h4>Zkopírovat formulář</h4>
+<div class="bg-light" style="padding:10px;">
+    <button id="cmdOK" type="button" class="btn btn-success" onclick="ok()">Spustit kopírování</button>
+    <button id="cmdClose" type="button" onclick="_window_close()" class="btn btn-light">Zavřít</button>
+
+</div>
+
+
+<div class="modal_record_container">
+    <div class="form-row">
+        <label class="col-sm-1 col-md-2 col-form-label">Zdrojový formulář:</label>
+        <div class="col-sm-11 col-md-10">
+            <span>@Model.RecSource.f06Name</span>
+            <span>★</span>
+            <span>@Model.RecSource.f12Name</span>
+        </div>
+
+    </div>
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">Název nového formuláře:</label>
+        <div class="col-sm-11 col-md-10">
+            <input class="form-control" asp-for="@Model.DestName" />
+
+        </div>
+
+    </div>
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">STAT kód:</label>
+        <div class="col-sm-4 col-md-3">
+            <input class="form-control" asp-for="@Model.DestExportCode" />
+
+        </div>
+
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+
+
+
+    });
+
+    function ok() {
+        var strName = $("#DestName").val();
+        var strDestExportCode = $("#DestExportCode").val();
+        if (strName == "") {
+            _notify_message("Musíte zadat název cílového formuláře.");
+            return;
+        }
+
+        $.post("/f06/CloneRun", { pid: "@Model.f06ID", destname: strName, destexportcode: strDestExportCode }, function (data) {
+
+            alert(data.pid);
+
+
+        });
+    }
+
+</script>

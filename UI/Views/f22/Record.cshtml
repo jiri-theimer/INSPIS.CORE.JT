@@ -1,0 +1,122 @@
+﻿@model UI.Models.Record.f22Record
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutRecord.cshtml";
+    if (Model.Rec == null) return;
+    Model.PageTitle = "Šablona jednotek odpovědí";
+}
+@addTagHelper *, UI
+
+<input type="hidden" id="hidF21IDs" asp-for="@Model.f21IDs" />
+
+<div class="modal_record_container">
+    <div class="form-row">
+        <label class="col-sm-1 col-md-2 col-form-label">Název:</label>
+        <div class="col-sm-11 col-md-10">
+            <input class="form-control" asp-for="Rec.f22Name" />
+            <span asp-validation-for="Rec.f22Name" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row my-2">
+        <textarea asp-for="Rec.f22Description" class="form-control" placeholder="Popis"></textarea>
+        <span asp-validation-for="Rec.f22Description" class="text-danger"></span>
+    </div>
+
+
+
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">Přidat do seznamu:</label>
+        <div class="col-sm-11 col-md-10">
+            <mycombo entity="f21ReplyUnit" asp-for="@Model.SelectedF21ID" selectedtext="@Model.SelectedF21Name" filter-flag="1" param1="search" placeholder="Vybrat jednotku odpovědi..." event_after_changevalue="handle_f21id_append"></mycombo>
+        </div>
+
+    </div>
+    <button type="button" id="cmdNew" class="btn btn-primary btn-sm" onclick="f21_create()">Vytvořit novou jednotku</button>
+    <button type="button" id="cmdGrid" class="btn btn-secondary btn-sm" onclick="multiselect()">Přidat hromadně přes Grid</button>
+</div>
+
+<div id="divF21" style="margin-top:20px;margin-bottom:20px;"></div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        if ($("#hidF21IDs").val() != "") {
+            refresh_f21_table();
+        }
+
+    });
+
+    function handle_f21id_append(f21id) {
+        if (f21id == "") {
+            _notify_message("Musíte vybrat jednotku odpovědi.");
+            return;
+        }
+        var f21ids = [];
+        if ($("#hidF21IDs").val() != "") f21ids = $("#hidF21IDs").val().split(",");
+        if (f21ids.includes(f21id)) {
+            _notify_message("Tato jednotka již je v seznamu.", "info");
+            return;
+        }
+        f21ids.push(f21id);
+        $("#hidF21IDs").val(f21ids.join(","));
+        refresh_f21_table();
+        _notify_message("Jednotka přidána do seznamu. Je třeba potvrdit tlačítkem [Uložit změny].","info");
+
+    }
+    function handle_f21id_delete(f21id) {
+        var f21ids = [];
+        f21ids = $("#hidF21IDs").val().split(",");
+        var x = f21ids.indexOf(f21id.toString());
+        f21ids.splice(x, 1);
+
+        $("#hidF21IDs").val(f21ids.join(","));
+        refresh_f21_table();
+        _toolbar_warn2save_changes();
+
+    }
+    function handle_f21_edit(f21id) {
+        _edit("f21", f21id, "Jednotka odpovědi");
+    }
+
+    
+
+    function refresh_f21_table() {
+        var url = "@Url.Action("GetWorkTable", "Common")";
+        var pids = $("#hidF21IDs").val();
+
+        if (pids == "") {
+            $("#divF21").html("");
+            
+            return;
+        }
+        $.post(url, { entity: "f21ReplyUnit", tableid: "tabF21IDs", pids: pids, delete_function: "handle_f21id_delete", edit_function:"handle_f21_edit",selectable:true }, function (data) {
+            $("#divF21").html(data);
+            
+
+            
+
+            
+        });
+    }
+
+    
+
+    function multiselect() {
+        _window_open("/Record/GridMultiSelect?prefix=f21");
+    }
+
+
+    function f21_create() {
+        _window_open("/f21/Record?pid=0");
+    }
+
+    function hardrefresh(pid, flag) {
+        handle_f21id_append(pid);
+    }
+
+</script>
+
+
+

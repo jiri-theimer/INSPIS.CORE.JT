@@ -1,0 +1,46 @@
+﻿@model UI.Models.Record.b01Record
+@{
+    Layout = "~/Views/Shared/_LayoutRecord.cshtml";
+    if (Model.Rec == null) return;
+    Model.PageTitle = "Hlavička workflow šablony";
+}
+@addTagHelper *, UI
+
+<div class="modal_record_container">
+    
+    <div class="form-row">
+        <label class="col-sm-1 col-md-2 col-form-label">Název šablony:</label>
+        <div class="col-sm-11 col-md-10">
+            <input class="form-control" asp-for="Rec.b01Name" />
+            <span asp-validation-for="Rec.b01Name" class="text-danger"></span>
+        </div>
+    </div>
+
+    
+
+
+</div>
+
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+
+    });
+
+
+
+
+
+
+</script>
+
+
+
+
+
+

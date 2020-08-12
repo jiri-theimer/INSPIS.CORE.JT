@@ -1,0 +1,144 @@
+﻿@model a41AppendViewModel
+
+@{
+    ViewData["Title"] = "Přidat účastníky akce";
+    Layout = "~/Views/Shared/_LayoutModal.cshtml";
+}
+@addTagHelper *, UI
+
+<h4>Přidat účastníky do akce: @Model.RecA01.a01Signature</h4>
+<div class="bg-light" style="padding:10px;">
+    <button id="cmdSave" type="button" class="btn btn-success" onclick="save()">Uložit změny</button>
+    <button id="cmdClose" type="button" onclick="_window_close()" class="btn btn-light">Zavřít</button>
+
+</div>
+
+<form id="form1" asp-controller="a41" asp-action="Append" method="POST">
+    <input type="hidden" asp-for="@Model.a01ID" />
+
+    <div class="modal_record_container">
+
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">Typ akce:</label>
+            <div class="col-sm-11 col-md-10">
+                <span class="val-readonly">@Model.RecA01.a10Name</span>
+
+            </div>
+        </div>
+
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">Přidat jméno:</label>
+            <div class="col-sm-11 col-md-10">
+                <mycombo entity="j02Person" asp-for="@Model.SelectedJ02ID" selectedtext="@Model.SelectedPerson" filter-flag="1" placeholder="Vybrat osobu..." event_after_changevalue="handle_j02id_append"></mycombo>
+            </div>
+
+        </div>
+
+        <div class="card">
+            <div class="card-header"><img src="/Images/star.png" /> Čeká na uložení</div>
+            <div class="card-body">
+                @for (var i = 0; i < Model.lisA41.Count; i++)
+                {
+                    <div class="row rowvalhover" style="@(Model.lisA41[i].CssTempDisplay)">
+                        <input type="hidden" asp-for="@Model.lisA41[i].a41ID" value="@Model.lisA41[i].a41ID" />
+                        <input type="hidden" asp-for="@Model.lisA41[i].IsTempDeleted" value="@Model.lisA41[i].IsTempDeleted" />
+                        <input type="hidden" asp-for="@Model.lisA41[i].j02ID" value="@Model.lisA41[i].j02ID" />
+                        <input type="hidden" asp-for="@Model.lisA41[i].PersonCombo" value="@Model.lisA41[i].PersonCombo" />
+                        <input type="hidden" asp-for="@Model.lisA41[i].j11ID" value="@Model.lisA41[i].j11ID" />
+                        <input type="hidden" asp-for="@Model.lisA41[i].j11Name" value="@Model.lisA41[i].j11Name" />
+                        <input type="hidden" asp-for="@Model.lisA41[i].a45IsManual" value="@Model.lisA41[i].a45IsManual" />
+
+                        <input type="hidden" asp-for="lisA41[i].TempGuid" value="@Model.lisA41[i].TempGuid" />
+                        <div class="col-sm-4 col-md-4">
+                            @if (Model.lisA41[i].j11ID > 0)
+                            {
+                                <span class="val-readonly">@Model.lisA41[i].j11Name</span>
+                            }
+                            else
+                            {                                
+                                <myval value="@Model.lisA41[i].PersonCombo" hoverprefix="j02" hoverpid="@Model.lisA41[i].j02ID"></myval>
+                            }
+
+
+                        </div>
+
+                        <div class="col-sm-4 col-md-4">
+                            @if (Model.lisA41[i].a45IsManual)
+                            {
+                                <mycombo entity="a45EventRole" asp-for="@Model.lisA41[i].a45ID" selectedtext="@Model.lisA41[i].a45Name" placeholder="Vybrat roli v akci..." view-flag="2" param1="a45IsManual1"></mycombo>
+                            }
+                            else
+                            {
+                                <span class="val-readonly">@Model.lisA41[i].a45Name</span>
+                                <input type="hidden" asp-for="@Model.lisA41[i].a45ID" value="@Model.lisA41[i].a45ID" />
+                                <input type="hidden" asp-for="@Model.lisA41[i].a45Name" value="@Model.lisA41[i].a45Name" />
+                            }
+
+                        </div>
+
+
+                        <div class="col-1">
+                            @if (Model.lisA41[i].a45IsManual)
+                            {
+                                <button type="button" class="btn btn-danger" title="Odstranit řádek" onclick="handle_delete_row('@(Model.lisA41[i].TempGuid)')">x</button>
+                            }
+
+                        </div>
+
+                    </div>
+                }
+            </div>
+        </div>
+
+
+
+        @if (Model.lisA41Saved.Count() > 0)
+        {
+            <div class="card my-2">
+                <div class="card-header">
+                    Již uložení účastníci akce
+                </div>
+                <div class="card-body">
+                    @Html.EditorFor(m => m.lisA41Saved, "~/Views/Shared/_a01UcastniciStatic.cshtml")
+                </div>
+            </div>
+        }
+
+
+    </div>
+</form>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+
+
+
+    });
+
+    function handle_j02id_append(j02id) {
+        if (j02id == "") {
+            _notify_message("Musíte vybrat osobu.");
+            return;
+        }
+        form1.action = "/a41/Append?oper=add";
+        form1.submit();
+
+    }
+    function handle_delete_row(guid) {
+        form1.action = "/a41/Append?oper=delete&guid=" + guid;
+        form1.submit();
+
+    }
+
+    function save() {
+
+        form1.submit();
+
+    }
+
+</script>
+
+
+

@@ -1,0 +1,44 @@
+﻿@model a42CompleteJob
+
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (Model.a42ID == 0) return;
+
+    ViewData["Title"] = "Generování akcí pro INEZ dávku";
+}
+
+@addTagHelper *, UI
+
+
+@if (Model.CurrentRecA03 == null)
+{
+    <button type="button" class="btn btn-primary">Spustit generování</button>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        $.post("/a42/CompleteJob", { prefix: "" }, function (data) {
+
+            $("#layout_sidebar").html(data);
+
+            if (document.getElementById("menu_active_item")) {
+                document.getElementById("menu_active_item").scrollIntoView(true);
+            }
+
+
+
+        });
+
+
+
+        _mainmenu_highlight_current("cmdA01");
+
+
+
+
+    });
+</script>
+

@@ -1,0 +1,57 @@
+﻿@model UI.Models.Record.a01Record
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutRecord.cshtml";
+    if (Model.Rec == null) return;
+    Model.PageTitle = "Upravit základní vlastnosti akce";
+}
+@addTagHelper *, UI
+
+
+    <div class="modal_record_container">
+        <div class="form-row">
+            <label class="col-sm-1 col-md-2 col-form-label">Kód akce:</label>
+            <div class="col-sm-5 col-md-4 val-readonly mx-2">
+                <span>@Model.Rec.a01Signature</span>
+            </div>
+        </div>
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">Typ akce:</label>
+            <div class="col-sm-5 col-md-4 val-readonly mx-2">
+                <span>@Model.Rec.a10Name</span>
+            </div>
+        </div>
+        <div class="form-row  my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">Téma akce:</label>
+            <div class="col-sm-11 col-md-10">
+                <mycombo entity="a08Theme" asp-for="Rec.a08ID" selectedtext="Rec.a08Name" view-flag="2"></mycombo>
+            </div>
+
+        </div>
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">Instituce:</label>
+            <div class="col-sm-11 col-md-10">
+                <mycombo entity="a03Institution" asp-for="Rec.a03ID" selectedtext="Rec.a03Name" filter-flag="1"></mycombo>
+            </div>
+
+        </div>
+
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">GINIS spis:</label>
+            <div class="col-sm-5 col-md-4">
+                <input class="form-control" asp-for="Rec.a01CaseCode" />
+
+            </div>
+
+
+        </div>
+        <mystitky entity="a01Event" asp-for="@Model.TagPids" tagnames="@Model.TagNames" taghtml="@Model.TagHtml"></mystitky>
+
+
+
+    </div>
+
+
+
+

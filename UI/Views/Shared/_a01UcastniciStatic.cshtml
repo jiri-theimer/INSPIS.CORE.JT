@@ -1,0 +1,33 @@
+﻿@model List<BO.a41PersonToEvent>
+
+@{
+    if (Model == null)
+    {
+        return;
+    }
+}
+@addTagHelper *, UI
+
+@foreach (var c in Model)
+{
+    <div class="form-row my-2">
+        <div class="col-sm-2 col-md-2">
+            <label>@(c.a45Name+":")</label>
+            @if (c.a45ID == BO.EventRoleENUM.Vedouci)
+            {
+                <img src="~/images/king.png" />
+            }
+
+        </div>
+        <div class="col-sm-3 col-md-3">
+            @if (c.j11ID > 0)
+            {
+                <myval value="@c.j11Name" hoverprefix="j11" hoverpid="@c.j11ID"></myval>
+            }
+            @if (c.j02ID > 0)
+            {
+                <myval value="@c.PersonAsc" hoverprefix="j02" hoverpid="@c.j02ID"></myval>
+            }
+        </div>
+    </div>
+}

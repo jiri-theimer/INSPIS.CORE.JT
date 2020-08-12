@@ -1,0 +1,89 @@
+﻿@model BO.LoggingUser
+
+@{
+    ViewData["Title"] = "Přihlášení";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+
+    var _returnurl = @Context.Request.Query["returnurl"];
+}
+
+
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="UserLogin">
+            <h2>Přihlášení do aplikace</h2>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="@Model.Login" class="control-label"></label>
+                <input asp-for="@Model.Login" class="form-control" />
+                <span asp-validation-for="@Model.Login" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Password" class="control-label"></label>
+                <input type="password" asp-for="@Model.Password" class="form-control" />
+                <span asp-validation-for="@Model.Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Přihlásit se" class="btn btn-default btn-primary" asp-route-returnurl="@_returnurl" />
+            </div>
+            <div class="form-group">
+
+                <select asp-for="@Model.CookieExpiresInHours" class="form-control">
+                    <option value="1">Trvalé přihlášení (1 hodina)</option>
+                    <option value="2">2 hodiny</option>
+                    <option value="6">6 hodin</option>
+                    <option value="12">12 hodin</option>
+                    <option value="24">24 hodin</option>
+                    <option value="48">48 hodin</option>
+                </select>
+            </div>
+
+            <input type="hidden" asp-for="@Model.Browser_AvailWidth" />
+            <input type="hidden" asp-for="@Model.Browser_AvailHeight" />
+            <input type="hidden" asp-for="@Model.Browser_InnerWidth" />
+            <input type="hidden" asp-for="@Model.Browser_InnerHeight" />
+            <input type="hidden" asp-for="@Model.Browser_UserAgent" />
+            <input type="hidden" asp-for="@Model.Browser_DeviceType" />
+            <input type="hidden" asp-for="@Model.Browser_Host" />
+        </form>
+    </div>
+
+
+
+
+</div>
+
+
+
+@if (Model.Message != null)
+{
+    <div class="alert alert-danger" role="alert">
+        <h4>@Model.Message</h4>
+    </div>
+}
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        $("#Browser_UserAgent").val(navigator.userAgent);
+        $("#Browser_AvailWidth").val(screen.availWidth);
+        $("#Browser_AvailHeight").val(screen.availHeight);
+        $("#Browser_InnerWidth").val(window.innerWidth);
+        $("#Browser_InnerHeight").val(window.innerHeight);
+        $("#Browser_Host").val(location.host);
+
+        var devicetype = "Desktop";
+        if (screen.availHeight > screen.availWidth || screen.width < 800 || screen.height < 600) {   //mobilní zařízení výšku vyšší než šířku
+            devicetype = "Phone";
+        }
+        $("#Browser_DeviceType").val(devicetype);
+
+
+
+
+
+    });
+</script>

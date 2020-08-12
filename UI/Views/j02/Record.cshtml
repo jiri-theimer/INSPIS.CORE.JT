@@ -1,0 +1,70 @@
+﻿@model UI.Models.Record.j02Record
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutRecord.cshtml";
+    if (Model.Rec == null) return;
+    Model.PageTitle = "Osobní profil";
+}
+@addTagHelper *, UI
+
+
+    <div class="modal_record_container">
+
+        <div class="form-row">
+            <div class="col-sm-2 col-md-2">
+                <myautocomplete asp-for="Rec.j02TitleBeforeName" o15flag="1" placeholder="Titul"></myautocomplete>
+
+            </div>
+            <div class="col-sm-3 col-md-3">
+                <input class="form-control" asp-for="Rec.j02FirstName" placeholder="Jméno" />
+                <span asp-validation-for="Rec.j02FirstName" class="text-danger"></span>
+
+            </div>
+            <div class="col-sm-5 col-md-5">
+                <input class="form-control" asp-for="Rec.j02LastName" placeholder="Příjmení" />
+                <span asp-validation-for="Rec.j02LastName" class="text-danger"></span>
+            </div>
+            <div class="col-sm-2 col-md-2">
+                <myautocomplete asp-for="Rec.j02TitleAfterName" o15flag="2"></myautocomplete>
+            </div>
+
+        </div>
+
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">Personální číslo:</label>
+            <div class="col-sm-4 col-md-3">
+                <input class="form-control" asp-for="Rec.j02PID" />
+                <span asp-validation-for="Rec.j02PID" class="text-danger"></span>
+            </div>
+            <label class="col-sm-1 col-md-1 col-form-label">E-mail:</label>
+            <div class="col-sm-4 col-md-4">
+                <input class="form-control" type="email" asp-for="Rec.j02Email" />
+                <span asp-validation-for="Rec.j02Email" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">Mobil:</label>
+            <div class="col-sm-4 col-md-3">
+                <input class="form-control" type="tel" asp-for="Rec.j02Mobile" />
+                <span asp-validation-for="Rec.j02Mobile" class="text-danger"></span>
+            </div>
+            <label class="col-sm-1 col-md-1 col-form-label">Pevný Tel:</label>
+            <div class="col-sm-4 col-md-4">
+                <input class="form-control" type="tel" asp-for="Rec.j02Phone" />
+                <span asp-validation-for="Rec.j02Phone" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-row my-2">
+            <div class="col-sm-3 col-md-3">
+                <input type="checkbox" asp-for="Rec.j02IsInvitedPerson" />
+                <label class="col-form-label" for="Rec_j02IsInvitedPerson">Může být přizvanou osobou v akci</label>
+
+            </div>
+        </div>
+
+
+
+        <mystitky entity="j02Person" asp-for="@Model.TagPids" tagnames="@Model.TagNames" taghtml="@Model.TagHtml"></mystitky>
+    </div>

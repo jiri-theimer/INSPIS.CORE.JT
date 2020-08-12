@@ -1,0 +1,68 @@
+﻿@model UI.Models.Record.a25Record
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutRecord.cshtml";
+    if (Model.Rec == null) return;
+    Model.PageTitle = "Skupina formulářů v akci";
+    if (Model.a01ID>0)
+    {
+        Model.PageTitle += ": " + Model.RecA01.a01Signature;
+    }
+}
+@addTagHelper *, UI
+
+
+
+    <div class="modal_record_container">
+        <input type="hidden" asp-for="@Model.a01ID" />
+        @if (Model.a01ID > 0)
+        {
+            <div class="alert alert-primary" role="alert">
+                <label style="font-weight:bold;">Typ akce:</label>
+                @Model.RecA01.a10Name
+                <label style="font-weight:bold;margin-left:20px;">Téma akce:</label>
+                @Model.RecA01.a08Name
+            </div>
+        }
+
+
+        <div class="form-row">
+            <label class="col-sm-1 col-md-2 col-form-label">Název:</label>
+            <div class="col-sm-11 col-md-10">
+                <input class="form-control" asp-for="Rec.a25Name" />
+                <span asp-validation-for="Rec.a25Name" class="text-danger"></span>
+            </div>
+
+        </div>
+
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">Barva:</label>
+            <div class="col-sm-1 col-md-1">
+                <input type="color" asp-for="Rec.a25Color" />
+            </div>
+            <div class="col-sm-2 col-md-3">
+                <i>Černá = žádná barva!</i>
+            </div>
+        </div>
+
+
+
+        @if (Model.a01ID > 0 && Model.rec_pid == 0)
+        {
+            <div class="card">
+                <div class="card-header">
+                    Zaškrtněte formuláře pro skupinu
+                </div>
+
+                <div class="card-body">
+                    <mycheckboxlist asp-for="@Model.SelectedA11IDs" textfield="FullNameHtml" valuefield="pid" datasource="@Model.lisA11"></mycheckboxlist>
+
+                </div>
+
+            </div>
+        }
+
+
+
+    </div>

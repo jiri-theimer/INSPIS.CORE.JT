@@ -1,0 +1,32 @@
+﻿@inject BL.Factory _f
+
+@{
+    ViewData["Title"] = "Live Chat | Online Podpora";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+}
+
+
+
+<div class="modal_record_container">
+    <h4>Live Chat | Online podpora</h4>
+
+
+    @if (_f.CurrentUser.j03LiveChatTimestamp != null)
+    {
+        <p>Live Chat podpora byla zapnuta, můžete nám něco napsat...:)</p>
+        <p>Od nyní se bude na všech stránkách aplikace vpravo dole zobrazovat chat-box.</p>
+        <p>Po 20ti minutách chat-box automaticky zmizí (pokud ho nevypnete dřív).</p>
+        <p>Chat-box můžete vypnout ručně červeným tlačítkem v levém panelu.</p>
+        
+    }
+    else
+    {
+        <p>Live Chat byl vypnutý.</p>
+    }
+
+</div>
+
+
+

@@ -1,0 +1,86 @@
+﻿@model UI.Models.Record.f18Record
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutRecord.cshtml";
+    if (Model.Rec == null) return;
+    Model.PageTitle = "Segment formuláře";
+}
+@addTagHelper *, UI
+
+<input type="hidden" asp-for="@Model.f06ID" />
+<div class="modal_record_container">
+    <div class="alert alert-primary" role="alert">
+        @Model.RecF06.f06Name
+    </div>
+
+    <div class="form-row">
+        <label class="col-sm-1 col-md-2 col-form-label">Název:</label>
+        <div class="col-sm-11 col-md-10">
+            <input class="form-control" asp-for="Rec.f18Name" />
+            <span asp-validation-for="Rec.f18Name" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">Nadřízený segment:</label>
+        <div class="col-sm-11 col-md-10">
+            <mycombo entity="f18FormSegment" asp-for="Rec.f18ParentID" selectedtext="Rec.ParentName" masterprefix="f06" masterpid="@Model.f06ID"></mycombo>
+        </div>
+    </div>
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">Hlavní text:</label>
+        <div class="col-sm-11 col-md-10">
+            <textarea asp-for="Rec.f18Text" class="form-control" placeholder="Hlavní text"></textarea>
+            <span asp-validation-for="Rec.f18Text" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">Rozšířený text:</label>
+        <div class="col-sm-11 col-md-10">
+            <textarea asp-for="Rec.f18SupportingText" class="form-control" placeholder="Rozšířený text"></textarea>
+            <span asp-validation-for="Rec.f18SupportingText" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">READONLY podmínka:</label>
+        <div class="col-sm-11 col-md-10">
+            <textarea asp-for="Rec.f18ReadonlyExpression" class="form-control" placeholder="READONLY podmínka"></textarea>
+            <span asp-validation-for="Rec.f18ReadonlyExpression" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">Razor šablona:</label>
+        <div class="col-sm-5 col-md-4">
+            <input class="form-control" asp-for="Rec.f18RazorTemplate" />
+        </div>
+        <label class="col-sm-1 col-md-2 col-form-label">Index pořadí:</label>
+        <div class="col-sm-1 col-md-1">
+            <mynumber asp-for="Rec.f18Ordinal" decimal-digits="0"></mynumber>
+        </div>
+
+    </div>
+
+
+
+
+
+</div>
+
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+
+    });
+
+
+
+
+
+
+</script>
+

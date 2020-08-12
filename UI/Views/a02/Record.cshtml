@@ -1,0 +1,34 @@
+﻿@model UI.Models.Record.a02Record
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutRecord.cshtml";
+    if (Model.Rec == null) return;
+    Model.PageTitle = "Přiřazení osoby k inspektorátu";
+}
+@addTagHelper *, UI
+
+    <div class="modal_record_container">
+
+
+        <div class="form-row">
+            <label class="col-sm-1 col-md-2 col-form-label">Jméno:</label>
+            <div class="col-sm-11 col-md-10">
+                <mycombo entity="j02Person" asp-for="Rec.j02ID" selectedtext="Rec.Person" filter-flag="1"></mycombo>
+            </div>
+
+        </div>
+
+        <div class="form-row">
+            <label class="col-sm-1 col-md-2 col-form-label">Inspektorát:</label>
+            <div class="col-sm-11 col-md-10">
+                <mycombo entity="a04Inspectorate" asp-for="Rec.a04ID" selectedtext="Rec.Inspectorate"></mycombo>
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+

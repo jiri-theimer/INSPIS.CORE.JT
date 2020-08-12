@@ -1,0 +1,58 @@
+﻿@model UI.Models.Recpage.f06RecPage
+@inject BL.Factory _f
+
+@{
+    ViewData["Title"] = "Info";
+    Layout = "~/Views/Shared/_LayoutSubform.cshtml";
+
+}
+
+@addTagHelper *, UI
+
+<div class="modal_record_container">
+    <div class="form-row">
+        <div class="col-sm-7 col-md-6">
+            <myval value="@Model.Rec.f06Name"></myval>
+
+        </div>
+        <div class="col-sm-3 col-md-4">
+            <myval value="@Model.Rec.f12Name"></myval>
+
+        </div>
+        @if (_f.CurrentUser.TestPermission(BO.PermValueEnum.FormDesigner))
+        {
+            <div class="colsm-2 col-md-2">
+                <a target="_blank" href="/AdminOneForm/Index?pid=@(Model.pid)')">Návrhář formuláře</a>
+            </div>
+        }
+    </div>
+    @Html.Raw(Model.TagHtml)
+</div>
+<div id="divF19"></div>
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        refresh_f19_table();
+
+    });
+
+
+
+
+    function refresh_f19_table() {
+        var url = "@Url.Action("GetWorkTable", "Common")";
+
+        $.post(url, { entity: "f19Question", master_entity:"f06Form",master_pid:"@Model.pid" }, function (data) {
+            $("#divF19").html(data);
+
+        });
+    }
+
+
+</script>
+
+

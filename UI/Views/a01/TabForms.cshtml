@@ -1,0 +1,86 @@
+﻿@model UI.Models.Tab.a01TabForms
+
+@{
+    ViewData["Title"] = "Formuláře v akci";
+    Layout = "~/Views/Shared/_LayoutSubform.cshtml";
+
+
+}
+@addTagHelper *, UI
+
+
+    <div class="modal_record_container">
+        <div style="margin-bottom:20px;">
+            <button type="button" class="btn btn-primary" onclick="append_f06()">Přidat formuláře</button>
+            <button type="button" class="btn btn-secondary" onclick="append_a25()">Přidat skupinu formulářů</button>
+        </div>
+
+        <table class="table table-sm" style="min-width:1000px;">
+            @foreach (var c in Model.lisA11.Where(p => p.a11IsPoll == false))
+            {
+                <tr>
+                    <td style="width:20px;">
+                        @if (c.isclosed)
+                        {
+                            <img src="~/images/lock.png" />
+                        }
+                        else
+                        {
+                            @if (c.a11IsInProcessing)
+                            {
+                                <img src="~/images/edit.png" />
+                            }
+                        }
+
+                    </td>
+                    <td>
+                        <myval datatype="html" value="@("<a class='mx-2' href=\"javascript:_edit('a11'," + @c.pid.ToString() + ")\">" + c.FormNameHtml+"</a>")" hoverprefix="a11" hoverpid="@c.pid" cmprefix="a11" cmdpid="@c.pid"></myval>
+                        
+                    </td>
+                    <td>
+                        @if (c.a37ID > 0)
+                        {
+                            <div><span style="color:orange;">@c.a37IZO</span> - <span style="color:orange;">@c.a37Name</span></div>
+                        }
+                    </td>
+                    <td>
+                        @if (c.a11Description != null)
+                        {
+                            <pre>@c.a11Description</pre>
+                        }
+
+                    </td>
+                    <td>
+                        @if (c.a25ID > 0)
+                        {
+                            <a title="Skupina formulářů v akci" href="javascript:_window_open('/a25/Record?pid=@c.a25ID&a01id=@Model.RecA01.pid')">@c.a25Name</a>
+                            @if (c.a25Color != null)
+                            {
+                                <span style="background-color:@c.a25Color">🚩</span>
+                            }
+                        }
+
+                    </td>
+                </tr>
+
+            }
+        </table>
+
+
+
+
+
+
+    </div>
+
+
+
+<script type="text/javascript">
+    function append_f06() {
+        _window_open("/a11/Append?a01id=@Model.pid");
+    }
+    function append_a25() {
+        _window_open("/a25/Record?a01id=@Model.pid");
+    }
+</script>
+

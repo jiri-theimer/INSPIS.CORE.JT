@@ -1,0 +1,260 @@
+﻿@model UI.Models.Record.h04Record
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutRecord.cshtml";
+    if (Model.Rec == null) return;
+    Model.PageTitle = Model.SelectedH07Name;
+}
+@addTagHelper *, UI
+
+    <input type="hidden" asp-for="@Model.a01ID" />
+<input type="hidden" id="hidJ02IDs" asp-for="@Model.j02IDs" />
+<input type="hidden" id="hidJ11IDs" asp-for="@Model.j11IDs" />
+
+<div class="modal_record_container">
+    <div class="form-row">
+        <label class="col-sm-1 col-md-2 col-form-label">Název:</label>
+        <div class="col-sm-11 col-md-10">
+            <input class="form-control" asp-for="Rec.h04Name" />
+            <span asp-validation-for="Rec.h04Name" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">Typ:</label>
+        <div class="col-sm-11 col-md-10">
+            <mycombo entity="h07ToDoType" asp-for="@Model.SelectedH07ID" selectedtext="@Model.SelectedH07Name" view-flag="2" event_after_changevalue="handle_h07id_change"></mycombo>
+        </div>
+    </div>
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">Termín:</label>
+        <div class="col-sm-3 col-md-3">
+            <mydate asp-for="@Model.Rec.h04Deadline" include-time="true"></mydate>
+        </div>
+        <label class="col-sm-1 col-md-1 col-form-label">Připomenutí:</label>
+
+        <div class="col-sm-3 col-md-3">
+            <mydate asp-for="@Model.Rec.h04ReminderDate" include-time="true"></mydate>
+        </div>
+
+    </div>
+    @if (Model.SelectedH07ID > 0 && Model.RecH07.h07IsCapacityPlan)
+    {
+        <div class="form-row my-2">
+            <div class="col-sm-4 col-md-4">
+                <input type="checkbox" asp-for="@Model.IsDefineCapacityPlan" />
+                <label class="col-form-label" for="IsDefineCapacityPlan">Definovat kapacitní plán pro příjemce</label>
+            </div>
+        </div>
+        @if (Model.IsDefineCapacityPlan)
+        {
+            <div id="divCapacity" class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Plán od:</label>
+                <div class="col-sm-3 col-md-3">
+                    <mydate asp-for="@Model.Rec.h04CapacityPlanFrom" include-time="true"></mydate>
+                </div>
+                <label class="col-sm-1 col-md-1 col-form-label">Plán do:</label>
+
+                <div class="col-sm-3 col-md-3">
+                    <mydate asp-for="@Model.Rec.h04CapacityPlanUntil" include-time="true"></mydate>
+                </div>
+
+            </div>
+        }
+
+    }
+
+    @if (Model.SelectedH07ID > 0 && Model.RecH07.h07IsToDo)
+    {
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">Stav úkolu:</label>
+            <div class="col-sm-11 col-md-10">
+                @if (Model.rec_pid == 0)
+                {
+                    <mycombo entity="h05ToDoStatus" asp-for="@Model.Rec.h05ID" selectedtext="@Model.Rec.h05Name" view-flag="2" param1="createtodo"></mycombo>
+                }
+                else
+                {
+                    <mycombo entity="h05ToDoStatus" asp-for="@Model.Rec.h05ID" selectedtext="@Model.Rec.h05Name" view-flag="2"></mycombo>
+                }
+
+            </div>
+        </div>
+    }
+
+
+    <div class="form-row my-2">
+        <textarea asp-for="Rec.h04Description" class="form-control" placeholder="Podrobný popis zadání"></textarea>
+        <span asp-validation-for="Rec.h04Description" class="text-danger"></span>
+    </div>
+
+
+    
+
+</div>
+
+<div class="card">
+    <div class="card-header">
+        @if(Model.SelectedH07ID>0 && Model.RecH07.h07IsToDo)
+        {
+            <span>Řešitelé úkolu</span>
+        }
+        else
+        {
+            <span>Příjemci</span>
+        }
+    </div>
+    <div class="card-body">
+
+
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">Přidat řešitele (jméno):</label>
+            <div class="col-sm-11 col-md-10">
+                <mycombo entity="j02Person" asp-for="@Model.SelectedJ02ID" selectedtext="@Model.SelectedPerson" filter-flag="1" placeholder="Vybrat osobní profil..." event_after_changevalue="handle_j02id_append"></mycombo>
+            </div>
+
+        </div>
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">Přidat řešitele (tým):</label>
+            <div class="col-sm-11 col-md-10">
+                <mycombo entity="j11Team" asp-for="@Model.SelectedJ11ID" selectedtext="@Model.SelectedTeam" filter-flag="1" placeholder="Vybrat tým..." event_after_changevalue="handle_j11id_append"></mycombo>
+            </div>
+
+        </div>
+
+        <div id="divJ02" style="margin-top:20px;margin-bottom:20px;"></div>
+        <div id="divJ11"></div>
+    </div>
+</div>
+
+<div class="form-row my-2">
+    <div class="col-sm-4 col-md-4">
+        <input type="checkbox" asp-for="@Model.IsNotifyAfterSave" />
+        <label class="col-form-label" for="IsNotifyAfterSave">Po uložení odeslat příjemcům notifikační zprávu</label>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        if ($("#hidJ02IDs").val() != "") {
+            refresh_j02_table();
+        }
+        if ($("#hidJ11IDs").val() != "") {
+            refresh_j11_table();
+        }
+
+        $("#IsDefineCapacityPlan").on("change", function () {
+            form1.action = "/h04/Record?oper=postback";
+            form1.submit();
+        });
+
+    });
+
+    
+
+    function handle_h07id_change(h07id) {
+        if (h07id == "") {
+            _notify_message("Musíte vybrat typ.");
+            return;
+        }
+        form1.action = "/h04/Record?oper=postback";
+        form1.submit();
+    }
+   
+    function handle_j02id_append(j02id) {
+        if (j02id == "") {
+            _notify_message("Musíte vybrat osobu.");
+            return;
+        }
+        
+        var j02ids = [];
+        if ($("#hidJ02IDs").val() != "") j02ids = $("#hidJ02IDs").val().split(",");
+        if (j02ids.includes(j02id)) {
+            _notify_message("Toto jméno již je v seznamu.", "info");
+            return;
+        }
+        j02ids.push(j02id);
+        $("#hidJ02IDs").val(j02ids.join(","));
+        refresh_j02_table();
+
+    }
+    function handle_j02id_delete(j02id) {
+        var j02ids = [];
+        j02ids = $("#hidJ02IDs").val().split(",");
+        var x = j02ids.indexOf(j02id.toString());
+        j02ids.splice(x, 1);
+
+        $("#hidJ02IDs").val(j02ids.join(","));
+        refresh_j02_table();
+        _toolbar_warn2save_changes();
+
+    }
+
+    function handle_j11id_append(j11id) {
+        if (j11id == "") {
+            _notify_message("Musíte vybrat tým.");
+            return;
+        }
+
+        var ids = [];
+        if ($("#hidJ11IDs").val() != "") ids = $("#hidJ11IDs").val().split(",");
+        if (ids.includes(j11id)) {
+            _notify_message("Tento tým již je v seznamu.", "info");
+            return;
+        }
+        ids.push(j11id);
+        $("#hidJ11IDs").val(ids.join(","));
+        refresh_j11_table();
+
+
+    }
+
+    function handle_j11id_delete(j11id) {
+        var ids = [];
+        ids = $("#hidJ11IDs").val().split(",");
+        var x = ids.indexOf(j11id.toString());
+        ids.splice(x, 1);
+
+        $("#hidJ11IDs").val(ids.join(","));
+        refresh_j11_table();
+        _toolbar_warn2save_changes();
+
+    }
+
+    function refresh_j02_table() {
+        var url = "@Url.Action("GetWorkTable", "Common")";
+        var pids = $("#hidJ02IDs").val();
+
+        if (pids == "") {
+            $("#divJ02").html("");
+
+            return;
+        }
+        $.post(url, { entity: "j02Person", tableid: "tabJ02IDs", pids: pids, delete_function: "handle_j02id_delete" }, function (data) {
+            $("#divJ02").html(data);
+
+        });
+    }
+
+    function refresh_j11_table() {
+        var url = "@Url.Action("GetWorkTable", "Common")";
+        var pids = $("#hidJ11IDs").val();
+
+        if (pids == "") {
+            $("#divJ11").html("");
+
+            return;
+        }
+        $.post(url, { entity: "j11Team", tableid: "tabJ11IDs", pids: pids, delete_function: "handle_j11id_delete" }, function (data) {
+            $("#divJ11").html(data);
+
+        });
+    }
+
+
+
+
+</script>
+

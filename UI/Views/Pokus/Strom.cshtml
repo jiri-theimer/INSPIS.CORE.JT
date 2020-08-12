@@ -1,0 +1,31 @@
+﻿@model UI.Models.Pokus
+
+@{
+    ViewData["Title"] = "Strom";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    
+ }
+
+   
+
+
+@addTagHelper *, UI
+
+
+
+<h1>Strom</h1>
+<button type="button" onclick="pokus()">pokus postback</button>
+<form id="form1" asp-controller="Pokus" asp-action="Strom" method="POST">
+    
+</form>
+    
+
+
+    <script type="text/javascript">
+        
+
+        function pokus() {
+            form1.submit();
+        }
+    </script>

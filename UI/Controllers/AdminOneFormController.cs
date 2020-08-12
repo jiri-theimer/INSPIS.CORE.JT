@@ -1,0 +1,174 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using UI.Models;
+using UI.Models.Record;
+
+namespace UI.Controllers
+{
+    public class AdminOneFormController : BaseController
+    {
+        public IActionResult Index(int f06id,string view)
+        {
+            var v = new AdminOneForm() { f06ID = f06id,view=view };
+            if (string.IsNullOrEmpty(v.view) == true)
+            {
+                v.view = Factory.CBL.LoadUserParam("AdminOneForm-View-", "tree");
+            }
+            else
+            {
+                Factory.CBL.SetUserParam("AdminOneForm-View-", v.view);
+            }
+            if (v.f06ID == 0)
+            {
+                v.f06ID = Factory.CBL.LoadUserParamInt("AdminOneForm-f06ID");
+            }
+            else
+            {
+                if (v.f06ID > 0)
+                {
+                    Factory.CBL.SetUserParam("AdminOneForm-f06ID", v.f06ID.ToString());
+                }
+            }
+            if (v.f06ID == 0)
+            {
+                return RedirectToAction("Forms", "Admin",new { prefix = "f06" });
+            }
+            v.RecF06 = Factory.f06FormBL.Load(v.f06ID);
+            if (v.RecF06 == null)
+            {
+                return this.StopPage(false, "Formulář nelze načíst.");
+            }
+
+            if (v.view=="tree")
+            {
+                inhale_tree(v);
+            }
+            return View(v);
+        }
+
+
+        private void inhale_tree(UI.Models.AdminOneForm v)
+        {
+            v.treeNodes = new List<myTreeNode>();
+            var mq = new BO.myQuery("f18FormSegment");
+            mq.f06id = v.f06ID;
+            var lis = Factory.f18FormSegmentBL.GetList(mq);
+            mq = new BO.myQuery("f19Question");
+            mq.f06id = v.f06ID;
+            var lisF19 = Factory.f19QuestionBL.GetList(mq);
+            mq = new BO.myQuery("f26BatteryBoard");
+            mq.f06id = v.f06ID;
+            var lisF26 = Factory.f26BatteryBoardBL.GetList(mq);
+            int x = 0;
+
+            foreach (var recF18 in lis)
+            {
+                var c = new myTreeNode()
+                {
+                    TreeIndex = recF18.f18TreeIndex*100000,
+                    TreeLevel = recF18.f18TreeLevel,
+                    Text = recF18.f18Name,
+                    TreeIndexFrom = recF18.f18TreeIndexFrom * 100000,
+                    TreeIndexTo = recF18.f18TreeIndexTo * 100000,
+                    Pid = recF18.pid,
+                    ParentPid = recF18.f18ParentID,
+                    Prefix = "f18",
+                    CssClass="f18"
+
+                };
+                if (recF18.isclosed)
+                {
+                    c.CssClass = "closed_item";
+                }
+                v.treeNodes.Add(c);
+                
+                foreach(var recF26 in lisF26.Where(p => p.f18ID == recF18.pid))
+                {
+                                        
+                    var cF26 = new myTreeNode()
+                    {
+                        Pid = recF26.pid,
+                        ParentPid = recF18.f18ID,
+                        Text = recF26.f26Name,
+                        Prefix = "f26",
+                        TreeIndex = c.TreeIndex + 1,
+                        TreeLevel = c.TreeLevel + 1,
+                        TreeIndexFrom = c.TreeIndex + 1,
+                        TreeIndexTo = c.TreeIndex + 1,
+                        ImgUrl = "battery.png"
+                    };
+                    if (recF26.isclosed)
+                    {
+                        cF26.CssClass = "closed_item";
+                    }
+                    v.treeNodes.Add(cF26);
+
+                    x = 0;
+                    foreach (var recF19In in lisF19.Where(p => p.f26ID == cF26.Pid)){
+                        x += 1;
+                        var cIN = new myTreeNode()
+                        {
+                            Pid = recF19In.pid,
+                            ParentPid = cF26.Pid,
+                            Text = recF19In.f19Name,
+                            Prefix = "f19",
+                            TreeIndex = cF26.TreeIndex + x,
+                            TreeLevel = cF26.TreeLevel + 1,
+                            TreeIndexFrom = cF26.TreeIndex + x,
+                            TreeIndexTo = cF26.TreeIndex + x,
+                            ImgUrl = recF19In.Icon
+                        };
+                        if (recF19In.f19Ordinal != 0)
+                        {
+                            cIN.Text += " #" + recF19In.f19Ordinal.ToString();
+                        }
+                        if (recF19In.isclosed)
+                        {
+                            cIN.CssClass = "closed_item";
+                        }
+                        v.treeNodes.Add(cIN);
+                        cF26.TreeIndexTo = cF26.TreeIndexFrom + x;
+                    }
+                }
+
+                x = 0;
+                int intCount = lisF19.Where(p => p.f18ID == recF18.pid && p.f26ID == 0).Count();
+                if (intCount > 0)
+                {
+                    c.TreeIndexTo = c.TreeIndexTo + intCount;
+                    foreach (var recP19 in lisF19.Where(p => p.f18ID == recF18.pid && p.f26ID==0))
+                    {
+                        x += 1;
+                        c = new myTreeNode()
+                        {
+                            Pid = recP19.pid,
+                            ParentPid = recF18.f18ID,
+                            Text = recP19.f19Name,
+                            Prefix = "f19",
+                            TreeIndex = recF18.f18TreeIndex * 100000 + x,
+                            TreeLevel = recF18.f18TreeLevel + 1,
+                            TreeIndexFrom = recF18.f18TreeIndex * 100000 + x,
+                            TreeIndexTo = recF18.f18TreeIndex * 100000 + x,
+                            ImgUrl=recP19.Icon
+                        };
+                        if (recP19.f19Ordinal != 0)
+                        {
+                            c.Text += " #" + recP19.f19Ordinal.ToString();
+                        }
+                        if (recP19.isclosed)
+                        {
+                            c.CssClass = "closed_item";
+                        }
+                        v.treeNodes.Add(c);
+                    }
+                }
+                
+
+            }
+            
+        }
+    }
+}

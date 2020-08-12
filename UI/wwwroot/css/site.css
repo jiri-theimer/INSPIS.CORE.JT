@@ -1,0 +1,1060 @@
+﻿
+body {
+    margin: 0px;
+}
+
+.modal_record_container {
+    max-width: 1050px;
+}
+
+@media only screen and (max-width: 1199px) {
+
+    .modal_record_container {
+        margin: 6px;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+
+    .modal_record_container {
+        margin-top: 20px;
+        margin-left: 20px;
+        margin-right: 6px;
+    }
+}
+
+
+
+select {
+    cursor: pointer;
+}
+
+input[type="radio"] {
+    cursor: pointer;
+}
+
+.skryto {
+    display: none;
+}
+
+tr.isclosed td {
+    text-decoration: line-through;
+}
+
+.closed_item {
+    text-decoration: line-through;
+}
+.f18{
+    color:brown;
+}
+
+tr.isclosed_by_color td {
+    color: gray;
+    font-style: italic;
+}
+
+
+.txz {
+    cursor: default; /*tr řádek pro mycombo*/
+}
+
+.txs {
+    cursor: pointer; /*tr řádek pro mysearch*/
+}
+
+textarea {
+    display: block;
+    overflow: hidden;
+    resize: none;
+    background-color: #ffffcc !important;
+}
+
+.evalarea {
+    background-color: #FFCC66 !important;
+}
+
+
+.inedit {
+    background-color: yellow;
+    border-color: blue;
+}
+
+input[type="radio"] {
+    margin-right: 3px;
+    margin-left: 3px;
+    cursor: pointer;
+}
+
+    input[type="radio"] + label {
+        cursor: pointer;
+    }
+
+
+
+input[type="checkbox"] {
+    margin-right: 3px;
+    margin-left: 3px;
+    cursor: pointer;
+}
+
+    input[type="checkbox"] + label {
+        cursor: pointer;
+    }
+
+        input[type="checkbox"] + label:hover {
+            background-color: aliceblue;
+        }
+
+input:checked + label {
+    color: blue;
+}
+
+
+
+
+.selcell {
+    background-color: #448CCB;
+    color: white;
+}
+.no_clipboard {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10+ and Edge */
+    user-select: none; /* Standard syntax */
+}
+
+
+/*link pro hamburger menu*/
+a.cm {
+    cursor: pointer;
+}
+
+    a.cm:hover {
+        background-color: #ADD8E6;
+    }
+
+
+
+
+
+
+/*zoom okno pro zobrazení INFO detailu na click*/
+#zoom_okno {
+    padding: 1px;
+    margin: 0;
+    border: none;
+    background-color: lightsteelblue;
+    z-index: 1000;
+}
+
+/* ----------------------- Kontextové MENU Zleva doprava ----------------------- */
+.cm_left2right {
+    padding: 6px;
+    margin: 0;
+    border: none;
+    background-color: aliceblue;
+}
+
+    .cm_left2right ul, .cm_left2right li {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .cm_left2right ul {
+        position: relative;
+        z-index: 597;
+        float: left;
+    }
+
+        .cm_left2right ul li {
+            float: left;
+            min-height: 1px;
+            line-height: 1.7em;
+            vertical-align: middle;
+        }
+
+            .cm_left2right ul li.hover, .cm_left2right ul li:hover {
+                position: relative;
+                z-index: 599;
+                cursor: default;
+            }
+
+        .cm_left2right ul ul {
+            visibility: hidden;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 598;
+            width: 100%;
+        }
+
+            .cm_left2right ul ul li {
+                float: none;
+            }
+
+            .cm_left2right ul ul, .cm_left2right ul ul ul {
+                top: -1px;
+                left: 99%;
+            }
+
+        .cm_left2right ul li:hover > ul {
+            visibility: visible;
+        }
+
+        .cm_left2right ul li {
+            float: none;
+        }
+
+    .cm_left2right a {
+        display: block;
+    }
+    /* Custom CSS Styles */
+
+
+    .cm_left2right:after, .cm_left2right ul:after {
+        content: '';
+        display: block;
+        clear: both;
+    }
+
+    .cm_left2right ul {
+        background-color: aliceblue;
+        border: 1px solid #AAAAAA;
+        padding: 4px;
+        width: 300px;
+    }
+
+        .cm_left2right ul li {
+            color: #000;
+            position: relative;
+        }
+
+            .cm_left2right ul li.hover, .cm_left2right ul li:hover {
+                background: #E5E5E5;
+                color: #FFF;
+            }
+
+                .cm_left2right ul li.hover > a, .cm_left2right ul li:hover > a {
+                    color: #2D89EF;
+                    background: #E5E5E5;
+                    border: 1px solid silver;
+                }
+
+        .cm_left2right ul ul {
+            width: 260px;
+        }
+
+    .cm_left2right a {
+        border: 1px solid transparent;
+        padding: 3px 10px;
+    }
+
+        .cm_left2right a:link, .cm_left2right a:visited {
+            color: #000;
+            text-decoration: none;
+        }
+
+        .cm_left2right a:hover {
+            background: #E5E5E5;
+            color: #2D89EF;
+        }
+
+        .cm_left2right a:active {
+            color: #ffa500;
+        }
+
+    .cm_left2right .has-sub:hover > a:after, .cm_left2right .has-sub.hover > a:after {
+        border-color: transparent transparent transparent #FFF;
+    }
+
+    .cm_left2right .has-sub > a:after {
+        content: '';
+        width: 0px;
+        height: 0px;
+        border-style: solid;
+        border-width: 4px 0 4px 4px;
+        border-color: transparent transparent transparent #808080;
+        position: absolute;
+        top: 50%;
+        right: 5%;
+        margin-top: -4px;
+        -webkit-transform: rotate(360deg);
+    }
+
+/*Kontextové MENU pro mobilní zařízení*/
+.cm_mobile {
+    position: absolute;
+    background-color: aliceblue;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    z-index: 999;
+    overflow: auto;
+}
+
+    .cm_mobile ul, #cm_mobile ul li {
+        padding-top: 5px;
+        padding-bottom: 10px;
+        list-style: none;
+    }
+
+
+/*Kontextové MENU zprava do leva*/
+.cm_right2left {
+    padding: 6px;
+    margin: 0;
+    border: none;
+    background-color: aliceblue;
+}
+
+    .cm_right2left ul,
+    .cm_right2left li {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .cm_right2left ul {
+        position: relative;
+        z-index: 597;
+        float: right;
+    }
+
+        .cm_right2left ul li {
+            float: right;
+            min-height: 1px;
+            line-height: 1.5em;
+            vertical-align: middle;
+            text-align: right;
+        }
+
+            .cm_right2left ul li.hover,
+            .cm_right2left ul li:hover {
+                position: relative;
+                z-index: 599;
+                cursor: default;
+            }
+
+        .cm_right2left ul ul {
+            visibility: hidden;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            z-index: 598;
+            width: 100%;
+        }
+
+            .cm_right2left ul ul li {
+                float: none;
+            }
+
+            .cm_right2left ul ul,
+            .cm_right2left ul ul ul {
+                top: -1px;
+                right: 99%;
+            }
+
+        .cm_right2left ul li:hover > ul {
+            visibility: visible;
+        }
+
+        .cm_right2left ul li {
+            float: none;
+        }
+
+    .cm_right2left a {
+        display: block;
+    }
+
+
+    /* Custom CSS Styles */
+
+    .cm_right2left:after,
+    .cm_right2left ul:after {
+        content: '';
+        display: block;
+        clear: both;
+    }
+
+    .cm_right2left ul {
+        background-color: aliceblue;
+        border: 1px solid silver;
+        padding: 4px;
+        width: 300px;
+    }
+
+        .cm_right2left ul li {
+            color: #000;
+            position: relative;
+        }
+
+            .cm_right2left ul li.hover,
+            .cm_right2left ul li:hover {
+                background: #E5E5E5;
+                color: #FFF;
+            }
+
+                .cm_right2left ul li.hover > a,
+                .cm_right2left ul li:hover > a {
+                    color: #2D89EF;
+                    border: 1px solid silver;
+                }
+
+        .cm_right2left ul ul {
+            width: 260px;
+        }
+
+    .cm_right2left a {
+        border: 1px solid transparent;
+        padding: 3px 10px;
+    }
+
+        .cm_right2left a:link,
+        .cm_right2left a:visited {
+            color: #000;
+            text-decoration: none;
+        }
+
+        .cm_right2left a:hover {
+            background: #E5E5E5;
+            color: #2D89EF;
+        }
+
+        .cm_right2left a:active {
+            color: #ffa500;
+        }
+
+    .cm_right2left .has-sub:hover > a:after,
+    .cm_right2left .has-sub.hover > a:after {
+        border-color: transparent transparent transparent #FFF;
+    }
+
+    .cm_right2left .has-sub > a:after {
+        content: '';
+        width: 0px;
+        height: 0px;
+        border-style: solid;
+        border-width: 4px 4px 4px 0px;
+        border-color: transparent #808080 transparent transparent;
+        position: absolute;
+        top: 50%;
+        left: 5%;
+        margin-top: -4px;
+        -webkit-transform: rotate(360deg);
+    }
+
+
+/* ----------------------- Kontextové MENU na stránce RecPage ----------------------- */
+.cm_recpage {
+    margin: 0;
+    border: none;
+}
+
+    .cm_recpage ul, .cm_recpage li {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .cm_recpage ul {
+        position: relative;
+        z-index: 597;
+        float: left;
+    }
+
+        .cm_recpage ul li {
+            float: left;
+            min-height: 1px;
+            line-height: 1.7em;
+            vertical-align: middle;
+        }
+
+            .cm_recpage ul li.hover, .cm_recpage ul li:hover {
+                position: relative;
+                z-index: 599;
+                cursor: default;
+            }
+
+        .cm_recpage ul ul {
+            visibility: hidden;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 598;
+            width: 100%;
+        }
+
+            .cm_recpage ul ul li {
+                float: none;
+            }
+
+            .cm_recpage ul ul, .cm_recpage ul ul ul {
+                top: -1px;
+                left: 99%;
+            }
+
+        .cm_recpage ul li:hover > ul {
+            visibility: visible;
+        }
+
+        .cm_recpage ul li {
+            float: none;
+        }
+
+    .cm_recpage a {
+        display: block;
+    }
+    /* Custom CSS Styles */
+
+
+    .cm_recpage:after, .cm_recpage ul:after {
+        content: '';
+        display: block;
+        clear: both;
+    }
+
+    .cm_recpage ul {
+        border: 1px solid #AAAAAA;
+        padding-top: 4px;
+    }
+
+        .cm_recpage ul li {
+            color: #000;
+            position: relative;
+        }
+
+            .cm_recpage ul li.hover, .cm_recpage ul li:hover {
+                background: #E5E5E5;
+                color: #FFF;
+            }
+
+                .cm_recpage ul li.hover > a, .cm_recpage ul li:hover > a {
+                    color: #2D89EF;
+                    background: #E5E5E5;
+                    border: 1px solid silver;
+                }
+
+        .cm_recpage ul ul {
+            width: 260px;
+        }
+
+    .cm_recpage a {
+        border: 1px solid transparent;
+        padding: 3px 10px;
+    }
+
+        .cm_recpage a:link, .cm_recpage a:visited {
+            color: #000;
+            text-decoration: none;
+        }
+
+        .cm_recpage a:hover {
+            background: #E5E5E5;
+            color: #2D89EF;
+        }
+
+        .cm_recpage a:active {
+            color: #ffa500;
+        }
+
+    .cm_recpage .has-sub:hover > a:after, .cm_recpage .has-sub.hover > a:after {
+        border-color: transparent transparent transparent #FFF;
+    }
+
+    .cm_recpage .has-sub > a:after {
+        content: '';
+        width: 0px;
+        height: 0px;
+        border-style: solid;
+        border-width: 4px 0 4px 4px;
+        border-color: transparent transparent transparent #808080;
+        position: absolute;
+        top: 50%;
+        right: 5%;
+        margin-top: -4px;
+        -webkit-transform: rotate(360deg);
+    }
+
+/*SPLITTER*/
+/* splitter zleva doprava - horizontální*/
+
+.splitter-container-left2right {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid silver;
+    overflow: hidden;
+    /* avoid browser level touch actions */
+    touch-action: none;
+}
+
+.splitter-panel-left {
+    flex: 0 0 auto;
+    /* only manually resize */
+    padding: 0px;
+    width: 300px;
+    min-width: 200px;
+    overflow-y: auto;
+}
+
+.splitter-resizer-left2right {
+    flex: 0 0 auto;
+    width: 6px;
+    background: url(../Images/vsizegrip.png) center center no-repeat #F5F5F5;
+    min-height: 200px;
+    cursor: col-resize;
+}
+
+.splitter-panel-right {
+    flex: 1 1 auto;
+    /* resizable */
+    width: 100%;
+    min-height: 200px;
+    background: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100% 100%"><text fill="gray" x="70%" y="70%" font-family="\'Lucida Grande\', sans-serif" font-size="14" text-anchor="middle">Loading...</text></svg>') 0px 0px no-repeat;
+}
+
+
+/* vertical panel */
+
+.splitter-container-top2bottom {
+    display: flex;
+    flex-direction: column;
+    height: 500px;
+    border: 1px solid silver;
+    overflow: hidden;
+}
+
+.splitter-panel-top {
+    flex: 0 0 auto;
+    /* only manually resize */
+    padding: 0px;
+    height: 400px;
+    width: 100%;
+    min-height: 100px;
+    overflow-y: hidden;
+}
+
+.splitter-resizer-top2bottom {
+    flex: 0 0 auto;
+    height: 6px;
+    background: url(../Images/hsizegrip.png) center center no-repeat #E5E5E5;
+    cursor: row-resize;
+    z-index: 500;
+}
+
+.splitter-panel-bottom {
+    flex: 1 1 auto;
+    /* resizable */
+    padding: 0px;
+    min-height: 300px;
+    background: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100% 100%"><text fill="gray" x="70%" y="70%" font-family="\'Lucida Grande\', sans-serif" font-size="14" text-anchor="middle">Loading...</text></svg>') 0px 0px no-repeat;
+}
+
+
+
+
+
+
+
+
+
+
+
+/*Modální okno - jeho DIV kontejner*/
+/* The Modal (background) */
+#myModalContainer {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    padding-top: 0; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+#myModalContent {
+    background-color: #fefefe;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #888;
+    width: 1000px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    cursor: move;
+}
+
+
+iframe {
+    display: block;
+    background: #000;
+    border: none;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100% 100%"><text fill="silver" x="50%" y="50%" font-family="\'Lucida Grande\', sans-serif" font-size="24" text-anchor="middle">Content...</text></svg>') 0px 0px no-repeat;
+}
+
+a.nav-link:hover {
+    background-color: #F5F5F5;
+}
+
+#navtabs .nav-link {
+    margin-right: 1px;
+}
+
+    #navtabs .nav-link.active {
+        background-color: white;
+        height: 100%;
+    }
+
+a.nav-link-mini { /*context menu link pro velmi nízké okna pod 300px*/
+    margin-left: 6px;
+}
+
+a.grid-link {
+    display:block;
+}
+a.grid-link:hover {
+    background-color: #F5F5F5;
+        
+}
+
+hr.hr-mini { /*používá se v kontextovém menu*/
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+}
+/*box MT štítku (o51)*/
+.tagbox {
+    display: inline-block;
+    min-width: 50px;
+    padding: 3px;
+    font-weight: normal;
+    line-height: 1;
+    text-align: center;
+    border: solid;
+    border-width: 1px;
+    border-color: #CED4DA;
+    vertical-align: middle;
+    border-radius: 4px;
+    color: black;
+    margin-left: 2px;
+}
+
+
+div.dropdown_menu_container {
+    background-color: aliceblue;
+    padding: 6px;
+    min-width: 200px;
+}
+
+
+#mainmenu1 {
+    background-color: #25A0DA;    
+}
+    /* change the brand and text color */
+    #mainmenu1 .navbar-text .navbar-brand {
+        color: white;
+    }
+
+
+    /* change the link color */
+
+    #mainmenu1 .navbar-nav .nav-link {
+        color: #FFFFFF;
+        padding: 6px;
+    }
+    /* change the color of active or hovered links */
+
+    #mainmenu1 .nav-item:hover .nav-link {
+        color: #FFFFFF;
+    }
+
+    #mainmenu1 .active {
+        background-color: gray;
+    }
+
+    #mainmenu1 .nav-link:hover {
+        background-color: royalblue;
+        color: white !important;
+        height: 100%;
+    }
+
+    #mainmenu1 .dropdown-item {
+        padding: 0px 0px 0px 0px;
+        color: #505050;
+    }
+
+
+        #mainmenu1 .dropdown-item .nav-link {
+            padding: 3px 20px 3px 10px;
+        }
+
+            #mainmenu1 .dropdown-item .nav-link:hover {
+                background-color: #2D89EF;
+            }
+
+        #mainmenu1 .dropdown-item.active {
+            padding-top: 3px;
+            padding-bottom: 3px;
+            background-color: gray;
+        }
+
+
+
+    #mainmenu1 .dropdown-divider {
+        margin-top: 2px;
+        margin-bottom: 0px;
+        border-color: #D3D3D3;
+    }
+
+
+.val-readonly {
+    display: block;
+    width: 100%;
+    min-height: calc(1.5em + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5;
+    background-color: #F8F9FA;
+    background-clip: padding-box;
+    border: 1px solid #E5E5E5; /*původní barva byla: #ced4da*/
+    border-radius: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    
+}
+
+
+.val-readonly-wrap {
+    display: block;
+    width: 100%;
+    min-height: calc(1.5em + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5;
+    background-color: #F8F9FA;
+    background-clip: padding-box;
+    border: 1px solid #E5E5E5; /*původní barva byla: #ced4da*/
+    border-radius: 0.25rem;
+}
+
+
+
+
+
+/*2 panely pro rozložení layout stránky*/
+#layout_sidebar {
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    background-color: #F8F9FA;
+    border-right: solid 1px #F5F5F5;
+    overflow-x: hidden;
+    transition: 0.5s;
+}
+
+#layout_main {
+    transition: margin-left .5s;
+    padding: 0px;
+    margin-left: 200px;
+    display: block;
+}
+
+@media screen and (max-width: 1000px) {
+
+    #layout_sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        display: none;
+    }
+
+
+
+    #layout_main {
+        margin-left: 0;
+    }
+}
+
+@media screen and (max-width: 600px) {
+
+    .nonmobile {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+
+    .nontablet {
+        display: none;
+    }
+}
+
+
+button.cmdDropdown {
+    border-radius: 0px;
+    border-top: solid 1px #C8C8C8;
+    border-right: solid 1px #C8C8C8;
+    border-bottom: solid 1px #C8C8C8;
+    border-left: none;
+}
+
+
+.hr-text {
+    display: flex;
+    flex-basis: 100%;
+    align-items: center;
+    color:silver;
+    font-size: 12px;
+    margin: 1px 0px;
+}
+
+    .hr-text::before,
+    .hr-text::after {
+        content: "";
+        flex-grow: 1;
+        background: rgba(0, 0, 0, 0.35);
+        height: 1px;
+        font-size: 0px;
+        line-height: 0px;
+        margin: 0px 2px;
+    }
+
+
+/*myTreeView*/
+ul.tree_ul {
+    list-style-type: none;
+}
+
+    ul.tree_ul > li {
+        cursor: default;
+        margin-top: 3px;
+        margin-bottom:5px;
+    }
+
+.caret {
+    cursor: pointer;
+    -webkit-user-select: none; /* Safari 3.1+ */
+    -moz-user-select: none; /* Firefox 2+ */
+    -ms-user-select: none; /* IE 10+ */
+    user-select: none;
+    padding-right: 6px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+}
+
+    .caret::before {
+        content: "\25B6";
+        color: black;
+        display: inline-block;
+    }
+
+.caret-down::before {
+    -ms-transform: rotate(90deg); /* IE 9 */
+    -webkit-transform: rotate(90deg); /* Safari */
+    transform: rotate(90deg);
+}
+
+.caret:hover {
+    background-color: aliceblue;
+    border:solid 1px silver;
+    border-radius:3px;
+}
+
+.branch_nested {
+    display: none;
+}
+
+.branch_active {
+    display: block;
+}
+
+li.root_nocaret {
+    margin-left: 20px;
+}
+
+div.tabs_container {
+    padding-top: 2px;
+    margin-bottom: 1px;
+    height: 34px;
+    /* background-image: linear-gradient(#E5E5E5, silver);*/
+    background-color: #ADD8E6;
+}
+
+
+
+/* záložky v modálním formuláři */
+div.tabs_container_record {
+    background-color: #ADD8E6;
+    padding-top: 6px;
+    padding-left: 6px;
+    color: black;
+}
+
+    div.tabs_container_record .nav-link {
+        color: black;
+    }
+
+
+.required{
+    color:red;
+}
+
+
+
+.valhover_tooltip {
+    visibility: hidden;
+    font-weight: normal;
+    width: 16px;
+    background-color: darkgray;
+    color:white;
+    text-align: center;
+    border-radius: 4px;
+    padding: 1px 5px;
+    margin-left: 5px;
+    cursor: pointer;
+    /* Position the tooltip */
+    position: sticky;
+    right: 4px;
+    z-index:1000;
+}
+
+    .valhover_tooltip:hover {
+        color: white;
+    }
+
+
+
+    .rowvalhover:hover .valhover_tooltip {
+        visibility: visible;
+    }
+
+
+
+/* qtip - ZOOM vybraného záznamu  
+----------------------------------------------------------*/
+a.reczoom {
+    font: normal 15px Arial bold;
+    padding-left:5px;
+    padding-right:5px;
+    color: blue;
+    background-color:lightblue;
+    border-radius:5px;
+    margin-left:1px;
+    text-decoration: none;
+    cursor: help;
+    visibility:hidden;
+}
+
+.rowvalhover:hover .reczoom {
+    visibility: visible;
+}

@@ -1,0 +1,54 @@
+﻿@model a42RecPage
+
+@{
+    ViewData["Title"] = "Info";
+    Layout = "~/Views/Shared/_LayoutSubform.cshtml";
+    if (Model.Rec == null) return;
+}
+
+@addTagHelper *, UI
+
+<div class="modal_record_container">
+    <div class="form-row">
+        <label class="col-sm-1 col-md-2 col-form-label">Název:</label>
+        <div class="col-sm-8 col-md-7">
+            <span class="val-readonly">@(Model.Rec.a42Name)</span>
+        </div>
+
+    </div>
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">Téma:</label>
+        <div class="col-sm-8 col-md-7">
+
+            <span class="val-readonly">@Model.Rec.a08Name</span>
+        </div>
+
+    </div>
+
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">Období:</label>
+        <div class="col-sm-2 col-md-2">
+
+            <span class="val-readonly">@(BO.BAS.ObjectDate2String(Model.Rec.a42DateFrom))</span>
+        </div>
+        <div class="col-sm-2 col-md-2">
+
+            <span class="val-readonly">@(BO.BAS.ObjectDate2String(Model.Rec.a42DateUntil))</span>
+        </div>
+
+
+    </div>
+
+
+
+    @Html.Raw(Model.TagHtml)
+</div>
+
+@if (Model.Rec.a42Description != null)
+{
+    <hr />
+
+    <pre>@Html.DisplayFor(m => m.Rec.a42Description, new { @class = "val-readonly-wrap" })</pre>
+
+
+}

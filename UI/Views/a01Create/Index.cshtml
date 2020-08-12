@@ -1,0 +1,52 @@
+﻿@model a01CreateViewModel
+@inject BL.RunningApp _app
+
+@{
+    ViewData["Title"] = "Vybrat typ akce";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string _header = "Vyberte typ akce";
+    @if (_app.Implementation == "HD")
+    {
+        _header = "Vyberte typ požadavku";
+    }
+}
+
+@addTagHelper *, UI
+
+    <h4>@_header</h4>
+
+
+<div class="bg-light" style="padding:10px;">
+    <button id="cmdContinue" onclick="gonext()" class="btn btn-primary">Pokračovat</button>
+    <button id="cmdClose" onclick="_window_close()" class="btn btn-light" style="display:none;">Zavřít</button>
+
+
+</div>
+
+
+<div class="modal_record_container">
+    <mycombo entity="a10EventType" asp-for="@Model.a10ID" selectedtext="@Model.a10Name" placeholder="@(_header+"...")"></mycombo>
+
+
+</div>
+
+
+<script type="text/javascript">
+
+    function gonext() {
+        if ($("#a10ID").val() == "0") {
+            _notify_message("Musíte vybrat typ.");
+            return;
+        }
+        location.replace("/a01Create/Index?a10id=" + $("#a10ID").val());
+
+    }
+
+
+
+</script>
+
+
+
+

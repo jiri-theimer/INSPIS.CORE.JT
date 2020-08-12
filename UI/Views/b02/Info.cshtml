@@ -1,0 +1,44 @@
+﻿@model UI.Models.Recpage.b02RecPage
+@inject BL.Factory _f
+@{
+    ViewData["Title"] = "Workflow stav";
+    Layout = "~/Views/Shared/_LayoutSubform.cshtml";
+
+}
+
+@addTagHelper *, UI
+
+    <div class="modal_record_container">
+        <div class="form-row">
+            <label class="col-sm-1 col-md-2 col-form-label">Stav:</label>
+            <div class="col-sm-9 col-md-8">
+                <myval value="@Model.Rec.b02Name"></myval>
+            </div>
+            @if (_f.CurrentUser.TestPermission(BO.PermValueEnum.AdminGlobal_Ciselniky))
+            {
+                <div class="col-sm-2 col-md-2">
+                    <a href="javascript:_window_open('/b02/Record?pid=@(Model.pid)')">Administrace</a>
+                </div>
+            }
+
+        </div>
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">Workflow šablona:</label>
+            <div class="col-sm-11 col-md-10">
+                <myval value="@Model.Rec.b01Name"></myval>
+            </div>
+        </div>
+        <div class="form-row">
+            <label class="col-sm-1 col-md-2 col-form-label">Kód:</label>
+            <div class="col-sm-4 col-md-4">
+                <myval value="@Model.Rec.b02Ident"></myval>
+            </div>
+        </div>
+        <div class="form-row my-2">
+            <div class="col-sm-12 col-md-12" style="background-color:@(Model.Rec.b02Color);">
+                Barva
+
+            </div>
+        </div>
+
+    </div>

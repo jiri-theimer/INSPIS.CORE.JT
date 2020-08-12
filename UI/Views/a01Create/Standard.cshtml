@@ -1,0 +1,345 @@
+﻿@model a01CreateViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (Model.Rec == null) return;
+    ViewData["Title"] = Model.a10Name;
+}
+
+
+@addTagHelper *, UI
+
+
+<h4 class="px-2">@Model.RecA10.a10Name</h4>
+
+<div class="bg-light" style="padding:10px;">
+    <button id="cmdSave" class="btn btn-success">Uložit změny</button>
+    <a id="cmdCancel" href="/a01Create/Index" class="btn btn-light">Zrušit</a>
+
+
+</div>
+
+<form id="form1" asp-controller="a01Create" asp-action="Standard" method="POST">
+    <input type="hidden" asp-for="@Model.a10ID" />
+    <div class="modal_record_container">
+
+        <input type="hidden" asp-for="@Model.ActiveTabIndex" />
+
+        @if (Model.RecA10.a10IsUse_Name)
+        {
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Název akce:</label>
+                <div class="col-sm-3 col-md-3">
+                    <input class="form-control" asp-for="Rec.a01Name" />
+                    <span asp-validation-for="Rec.a01Name" class="text-danger"></span>
+                </div>
+            </div>
+        }
+        @if (Model.RecA10.a10IsUse_A03)
+        {
+            <div class="form-row my-2 my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Instituce:</label>
+                <div class="col-sm-11 col-md-10">
+                    <mycombo entity="a03Institution" asp-for="@Model.a03ID" selectedtext="@Model.Institution" filter-flag="1" event_after_changevalue="a03_change"></mycombo>
+                </div>
+            </div>
+        }
+
+        @if (Model.RecA10.a10IsUse_A08)
+        {
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Téma akce:</label>
+                <div class="col-sm-11 col-md-10">
+                    <mycombo entity="a08Theme" asp-for="Rec.a08ID" selectedtext="Rec.a08Name" masterprefix="a10" masterpid="@Model.a10ID" event_after_changevalue="a08_change"></mycombo>
+                </div>
+            </div>
+        }
+
+        @if (Model.RecA10.a10IsUse_CaseCode)
+        {
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Spisová značka:</label>
+                <div class="col-sm-3 col-md-3">
+                    <input class="form-control" asp-for="Rec.a01CaseCode" />
+                    <span asp-validation-for="Rec.a01CaseCode" class="text-danger"></span>
+                </div>
+            </div>
+        }
+        @if (Model.RecA10.a10IsUse_Period)
+        {
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Plánovaný začátek:</label>
+                <div class="col-sm-2 col-md-2">
+                    <mydate asp-for="@Model.Rec.a01DateFrom"></mydate>
+                </div>
+                <div class="col-1">
+                    Plán.konec:
+                </div>
+                <div class="col-sm-2 col-md-2">
+                    <mydate asp-for="@Model.Rec.a01DateUntil"></mydate>
+                </div>
+            </div>
+        }
+
+
+
+    </div>
+
+    <div class="tabs_container_record">
+        <!-- Tab panes -->
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a id="link_tab1" class="nav-link" data-toggle="tab" href="#tab1" tabindex="-1">Formuláře</a>
+            </li>
+            <li class="nav-item">
+                <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2" tabindex="-1">Okruh účastníků</a>
+            </li>
+            <li class="nav-item">
+                <a id="link_tab3" class="nav-link" data-toggle="tab" href="#tab3" tabindex="-1">Podrobný popis</a>
+            </li>
+
+        </ul>
+    </div>
+
+    <div>
+        <div class="tab-content">
+            <div class="tab-pane" id="tab1" style="max-width:1300px;padding-left:20px;">
+                <p></p>
+                <div class="row">
+
+                    <div class="col-6">
+                        @if (Model.Rec.a08ID > 0)
+                        {
+                            <strong>Dostupné formuláře k tématu:</strong>
+                            @foreach (var c in Model.lisA12)
+                            {
+                                <div class="form-row my-2">
+                                    <div class="col-sm-9 col-md-9">
+                                        @if (c.a12IsRequired)
+                                        {
+                                            <myval datatype="html" value="@("<span style='color:red;'>"+c.f06Name+"</span>")" tooltip="Povinný formulář" hoverprefix="f06" hoverpid="@c.f06ID"></myval>
+                                        }
+                                        else
+                                        {
+                                            <myval value="@c.f06Name" hoverprefix="f06" hoverpid="@c.f06ID"></myval>
+                                        }
+
+
+                                    </div>
+
+                                    <div class="col-sm-2 col-md-2">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn-primary" onclick="f06_append(@c.f06ID,1)">→</button>
+                                            <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="javascript:f06_append(@c.f06ID,4)">4</a>
+                                                <a class="dropdown-item" href="javascript:f06_append(@c.f06ID,5)">5</a>
+                                                <a class="dropdown-item" href="javascript:f06_append(@c.f06ID,6)">6</a>
+                                                <a class="dropdown-item" href="javascript:f06_append(@c.f06ID,7)">7</a>
+                                                <a class="dropdown-item" href="javascript:f06_append(@c.f06ID,8)">8</a>
+                                                <a class="dropdown-item" href="javascript:f06_append(@c.f06ID,9)">9</a>
+                                                <a class="dropdown-item" href="javascript:f06_append(@c.f06ID,10)">10</a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            }
+                        }
+                    </div>
+                    <div class="col-6">
+                        @if (Model.Rec.a08ID == 0)
+                        {
+                            <i>Vyberte téma akce...</i>
+                        }
+                        @if (Model.lisA11.Where(p => p.IsTempDeleted == false).Count() > 0)
+                        {
+                            <strong>Vybrané formuláře:</strong>
+                            <button type="button" class="btn btn-warning btn-sm" onclick="handle_f06_clear()" style="margin-left:50px;">Vyčistit</button>
+                        }
+
+                        @for (var i = 0; i < Model.lisA11.Count; i++)
+                        {
+                            <div class="row" style="@(Model.lisA11[i].CssTempDisplay)">
+
+                                <input type="hidden" asp-for="@Model.lisA11[i].IsTempDeleted" value="@Model.lisA11[i].IsTempDeleted" />
+                                <input type="hidden" asp-for="@Model.lisA11[i].f06ID" value="@Model.lisA11[i].f06ID" />
+                                <input type="hidden" asp-for="@Model.lisA11[i].f06Name" value="@Model.lisA11[i].f06Name" />
+                                <input type="hidden" asp-for="lisA11[i].TempGuid" value="@Model.lisA11[i].TempGuid" />
+                                <div class="col-sm-6 col-md-6">
+                                    <myval value="@Model.lisA11[i].f06Name" hoverprefix="f06" hoverpid="@Model.lisA11[i].f06ID"></myval>
+
+                                </div>
+                                <div class="col-sm-4 col-md-4">
+                                    <input type="text" class="form-control" placeholder="Poznámka" asp-for="@Model.lisA11[i].a11Description" value="@Model.lisA11[i].a11Description" />
+                                </div>
+
+                                <div class="col-1">
+                                    <button type="button" class="btn btn-danger" tabindex="-1" title="Odstranit řádek" onclick="handle_delete_f06('@(Model.lisA11[i].TempGuid)')">x</button>
+
+                                </div>
+
+                            </div>
+                        }
+
+                    </div>
+
+                </div>
+
+
+
+
+            </div>
+            <div class="tab-pane" id="tab2" style="max-width:1000px;padding-left:20px;">
+                <p></p>
+                <div class="my-2">
+                    @if (Model.MasterPrefixComboJ02 == "j02IsInvitedPerson")
+                    {
+                        <mycombo entity="j02Person" asp-for="@Model.SelectedJ02ID" selectedtext="@Model.SelectedPerson" filter-flag="1" placeholder="Přidat přizvanou osobu..." event_after_changevalue="handle_j02id_append" param1="j02IsInvitedPerson"></mycombo>
+                    }
+                    else
+                    {
+                        <mycombo entity="j02Person" asp-for="@Model.SelectedJ02ID" selectedtext="@Model.SelectedPerson" filter-flag="1" placeholder="Přidat jméno..." event_after_changevalue="handle_j02id_append" masterprefix="@Model.MasterPrefixComboJ02" masterpid="@Model.MasterPidComboJ02"></mycombo>
+                    }
+
+
+                </div>
+                <input type="hidden" asp-for="@Model.MasterPidComboJ02" />
+                <select asp-for="@Model.MasterPrefixComboJ02" onchange="handle_queryj02byprefix_change()">
+                    <option value="a04">Pouze můj inspektorát</option>
+                    <option value="a05">Pouze můj kraj</option>
+                    <option value="">Všechny kraje</option>
+                    <option value="j02IsInvitedPerson">Přizvané osoby</option>
+                </select>
+                <hr />
+
+                @for (var i = 0; i < Model.lisA41.Count; i++)
+                {
+                    <div class="row rowvalhover" style="@(Model.lisA41[i].CssTempDisplay)">
+                        <input type="hidden" asp-for="@Model.lisA41[i].a41ID" value="@Model.lisA41[i].a41ID" />
+                        <input type="hidden" asp-for="@Model.lisA41[i].IsTempDeleted" value="@Model.lisA41[i].IsTempDeleted" />
+                        <input type="hidden" asp-for="@Model.lisA41[i].j02ID" value="@Model.lisA41[i].j02ID" />
+                        <input type="hidden" asp-for="@Model.lisA41[i].PersonCombo" value="@Model.lisA41[i].PersonCombo" />
+
+                        <input type="hidden" asp-for="@Model.lisA41[i].a45IsManual" value="@Model.lisA41[i].a45IsManual" />
+
+                        <input type="hidden" asp-for="lisA41[i].TempGuid" value="@Model.lisA41[i].TempGuid" />
+                        <div class="col-sm-4 col-md-4">
+                            <myval value="@Model.lisA41[i].PersonCombo" hoverprefix="j02" hoverpid="@Model.lisA41[i].j02ID"></myval>
+
+
+                        </div>
+
+                        <div class="col-sm-4 col-md-4">
+                            @if (Model.lisA41[i].a45IsManual)
+                            {
+                                <mycombo entity="a45EventRole" asp-for="@Model.lisA41[i].a45ID" selectedtext="@Model.lisA41[i].a45Name" placeholder="Vybrat roli v akci..." view-flag="2" param1="a45IsManual1"></mycombo>
+                            }
+                            else
+                            {
+                                <span class="val-readonly">@Model.lisA41[i].a45Name</span>
+                                <input type="hidden" asp-for="@Model.lisA41[i].a45ID" value="@Model.lisA41[i].a45ID" />
+                                <input type="hidden" asp-for="@Model.lisA41[i].a45Name" value="@Model.lisA41[i].a45Name" />
+                            }
+
+                        </div>
+
+
+                        <div class="col-1">
+                            <button type="button" class="btn btn-danger" title="Odstranit řádek" onclick="handle_delete_j02('@(Model.lisA41[i].TempGuid)')">x</button>
+
+                        </div>
+
+                    </div>
+                }
+
+
+            </div>
+            <div class="tab-pane" id="tab3" style="max-width:1000px;padding-left:20px;">
+                <div class="form-row my-2">
+                    <textarea asp-for="Rec.a01Description" class="form-control" style="height:150px;" placeholder="Podrobný popis"></textarea>
+
+                    <span asp-validation-for="Rec.a01Description" class="text-danger"></span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+
+        $("#cmdSave").click(function () {
+            $(this).text("Processing...");
+            $(this).attr("disabled", true);
+            form1.submit();
+
+
+        });
+
+        $("#tab@(Model.ActiveTabIndex)").attr("class", "tab-pane active");
+
+            $("#link_tab@(Model.ActiveTabIndex)").attr("class", "nav-link active");
+
+            $('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
+                // v e.target.id je id kliknutá záložka
+                var tabindex = e.target.id.substring(e.target.id.length - 1, e.target.id.length);
+                $("#ActiveTabIndex").val(tabindex);
+            })
+
+
+    });
+
+
+    function f06_append(f06id,krat) {
+        form1.action = "/a01Create/Standard?oper=f06_add&f06id="+f06id+"&krat="+krat;
+        form1.submit();
+    }
+    function handle_delete_f06(guid) {
+        form1.action = "/a01Create/Standard?oper=f06_delete&guid=" + guid;
+        form1.submit();
+
+    }
+    function handle_f06_clear() {
+        form1.action = "/a01Create/Standard?oper=f06_clear";
+        form1.submit();
+    }
+
+    function a03_change(a03id) {
+
+    }
+    function a08_change(a08id) {
+        form1.action = "/a01Create/Standard?oper=a08_change";
+        form1.submit();
+    }
+    function handle_j02id_append(j02id) {
+        if (j02id == "") {
+            _notify_message("Musíte vybrat osobu.");
+            return;
+        }
+        form1.action = "/a01Create/Standard?oper=j02_add";
+        form1.submit();
+
+    }
+    function handle_delete_j02(guid) {
+        form1.action = "/a01Create/Standard?oper=j02_delete&guid=" + guid;
+        form1.submit();
+
+    }
+    function handle_queryj02byprefix_change() {
+        form1.action = "/a01Create/Standard?oper=postback";
+        form1.submit();
+    }
+
+    function j02_change(j02id) {
+
+    }
+</script>
+
+
+
+

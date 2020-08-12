@@ -1,0 +1,118 @@
+﻿@model a42CreateTempFinishViewModel
+
+
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (Model.Rec == null) return;
+
+    ViewData["Title"] = "Nový INEZ k vygenerování";
+}
+
+@addTagHelper *, UI
+
+
+    <form id="form1" asp-controller="a42" asp-action="CreateTempFinish" method="POST">
+
+        <div class="bg-light" style="padding:10px;">
+            <button id="cmdComplete" type="submit" class="btn btn-success" asp-route-a42id="@Model.a42ID">Začít generovat akce</button>
+            <a id="cmdCancel" href="/a42/CreatePre" class="btn btn-light">Zrušit</a>
+
+
+        </div>
+
+        <input type="hidden" asp-for="@Model.a42ID" />
+        <input type="hidden" asp-for="@Model.JobGuid" />
+        <input type="hidden" asp-for="@Model.UploadGuid" />
+
+
+        <div class="modal_record_container">
+
+            <div class="form-row">
+                <label class="col-sm-1 col-md-2 col-form-label">INEZ název:</label>
+                <div class="col-sm-6 col-md-5">
+                    <span class="val-readonly">@Model.Rec.a42Name</span>
+                </div>
+
+            </div>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Téma:</label>
+                <div class="col-sm-6 col-md-5">
+                    <span class="val-readonly">@Model.Rec.a08Name</span>
+                </div>
+            </div>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Formuláře:</label>
+                <div class="col-sm-6 col-md-5">
+                    @foreach (var c in Model.lisP85.Where(p=>p.p85Prefix=="a12"))
+                    {
+                        <span class="val-readonly">@c.p85FreeText01</span><br />
+                    }
+                </div>
+
+            </div>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Časový plán:</label>
+                <div class="col-sm-3 col-md-2">
+                    <span class="val-readonly">@(BO.BAS.ObjectDate2String(Model.Rec.a42DateFrom))</span>
+                </div>
+                <div class="col-sm-3 col-md-2">
+                    <span class="val-readonly">@(BO.BAS.ObjectDate2String(Model.Rec.a42DateUntil))</span>
+                </div>
+            </div>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Počet škol (akcí):</label>
+                <div class="col-sm-6 col-md-5">
+                    <span class="val-readonly">@Model.a03Count</span>
+                </div>
+            </div>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Z toho školy bez e-mail adresy:</label>
+                <div class="col-sm-6 col-md-5">
+                    <span class="val-readonly">@Model.a03CountNoEmail</span>
+                </div>
+            </div>
+
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Předmět zprávy:</label>
+                <div class="col-sm-11 col-md-10">
+                    <input class="form-control" asp-for="@Model.MessageSubject" />
+
+                </div>
+
+            </div>
+            <div>
+                <textarea asp-for="@Model.MessageBody" class="form-control" placeholder="Obsah zprávy" style="height:400px;overflow:auto;"></textarea>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Přílohy poštovní zprávy (@Model.lisTempFiles.Count)</div>
+                <div class="card-body">
+                    @foreach(var c in Model.lisTempFiles)
+                    {
+                        <a target="_blank" href="/FileUpload/FileDownloadTempFile?tempfilename=@(c.o27ArchiveFileName)">@(c.o27OriginalFileName)</a>
+                    }
+                </div>
+            </div>
+             
+            <div class="card">
+                <div class="card-header">Příjemci poštovní zprávy (@(Model.lisP85.Where(p=>p.p85Prefix=="x43").Count()))</div>
+                <div class="card-body">
+                    <table class="table table-sm table-hover">
+                        @foreach (var c in Model.lisP85.Where(p => p.p85Prefix == "x43"))
+                        {
+                            <tr>
+                                <td>
+                                    @c.p85FreeText01
+                                </td>
+                                <td>
+                                    @c.p85FreeText02
+                                </td>
+                            </tr>                            
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </form>

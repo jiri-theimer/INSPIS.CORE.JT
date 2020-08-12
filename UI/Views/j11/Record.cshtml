@@ -1,0 +1,131 @@
+﻿@model UI.Models.Record.j11Record
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutRecord.cshtml";
+    if (Model.Rec == null) return;
+    Model.PageTitle = "Tým osob";
+}
+@addTagHelper *, UI
+
+<input type="hidden" id="hidJ02IDs" asp-for="@Model.j02IDs" />
+
+<div class="modal_record_container">
+    <div class="form-row">
+        <label class="col-sm-1 col-md-2 col-form-label">Název:</label>
+        <div class="col-sm-11 col-md-10">
+            <input class="form-control" asp-for="Rec.j11Name" />
+            <span asp-validation-for="Rec.j11Name" class="text-danger"></span>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="form-row my-2">
+        <textarea asp-for="Rec.j11Description" class="form-control" placeholder="Poznámka"></textarea>
+        <span asp-validation-for="Rec.j11Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">Přidat člena týmu:</label>
+        <div class="col-sm-11 col-md-10">
+            <mycombo entity="j02Person" asp-for="@Model.SelectedJ02ID" selectedtext="@Model.SelectedPerson" filter-flag="1" placeholder="Vybrat osobní profil..." event_after_changevalue="handle_j02id_append"></mycombo>
+        </div>
+
+    </div>
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">Přidat členy podle kraje:</label>
+        <div class="col-sm-11 col-md-10">
+            <mycombo entity="a05Region" asp-for="@Model.SelectedA05ID" selectedtext="@Model.SelectedRegion" placeholder="Vybrat kraj..." event_after_changevalue="handle_a05id_append"></mycombo>
+        </div>
+
+    </div>
+    <button type="button" id="cmdGrid" class="btn btn-secondary btn-sm" onclick="multiselect()">Přidat hromadně přes Grid</button>
+</div>
+
+<div id="divJ02" style="margin-top:20px;margin-bottom:20px;"></div>
+<button type="button" id="cmdClear" class="btn btn-warning btn-sm" style="display:none;" onclick="clear_all()">Vyčistit vše</button>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        if ($("#hidJ02IDs").val() != "") {
+            refresh_j02_table();
+        }
+
+    });
+
+    function handle_j02id_append(j02id) {
+        if (j02id == "") {
+            _notify_message("Musíte vybrat osobu.");
+            return;
+        }
+        var j02ids = [];
+        if ($("#hidJ02IDs").val() != "") j02ids = $("#hidJ02IDs").val().split(",");
+        if (j02ids.includes(j02id)) {
+            _notify_message("Tato osoba již je v seznamu.", "info");
+            return;
+        }
+        j02ids.push(j02id);
+        $("#hidJ02IDs").val(j02ids.join(","));
+        refresh_j02_table();
+
+    }
+    function handle_j02id_delete(j02id) {
+        var j02ids = [];
+        j02ids = $("#hidJ02IDs").val().split(",");
+        var x = j02ids.indexOf(j02id.toString());
+        j02ids.splice(x, 1);
+
+        $("#hidJ02IDs").val(j02ids.join(","));
+        refresh_j02_table();
+        _toolbar_warn2save_changes();
+
+    }
+
+    function handle_a05id_append(a05id) {
+        if (a05id == "") {
+            _notify_message("Musíte vybrat kraj.");
+            return;
+        }
+        var j02ids = [];
+        if ($("#hidJ02IDs").val() != "") j02ids = $("#hidJ02IDs").val().split(",");
+
+        $.post("/j11/GetJ02IDsByRegion", { a05id: a05id }, function (data) {
+            j02ids.push(data);
+            $("#hidJ02IDs").val(j02ids.join(","));
+            refresh_j02_table();
+        });
+
+
+
+
+    }
+
+    function refresh_j02_table() {
+        var url = "@Url.Action("GetWorkTable", "Common")";
+        var pids = $("#hidJ02IDs").val();
+
+        if (pids == "") {
+            $("#divJ02").html("");
+            $("#cmdClear").css("display", "none");
+            return;
+        }
+        $.post(url, { entity: "j02Person", tableid: "tabJ02IDs", pids: pids, delete_function: "handle_j02id_delete" }, function (data) {
+            $("#divJ02").html(data);
+            $("#cmdClear").css("display", "block");;
+        });
+    }
+
+    function clear_all() {
+        $("#hidJ02IDs").val("");
+        refresh_j02_table();
+        _toolbar_warn2save_changes();
+    }
+    function multiselect() {
+        _window_open("/Record/GridMultiSelect?prefix=j02");
+    }
+</script>
+

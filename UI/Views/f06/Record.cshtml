@@ -1,0 +1,239 @@
+﻿@model UI.Models.Record.f06Record
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutRecord.cshtml";
+    if (Model.Rec == null) return;
+    Model.PageTitle = "Hlavička formuláře";
+}
+@addTagHelper *, UI
+
+
+<div class="tabs_container_record">
+    <!-- Tab panes -->
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a id="link_tab1" class="nav-link" data-toggle="tab" href="#tab1">Vlastnosti</a>
+        </li>
+        <li class="nav-item">
+            <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2">Přílohy k formuláři</a>
+        </li>
+        <li class="nav-item">
+            <a id="link_tab3" class="nav-link" data-toggle="tab" href="#tab3">Úvodní instrukce</a>
+        </li>
+        <li class="nav-item">
+            <a id="link_tab4" class="nav-link" data-toggle="tab" href="#tab4">Linker vazba</a>
+        </li>
+    </ul>
+</div>
+<input type="hidden" asp-for="@Model.UploadGuid" />
+
+<div class="modal_record_container">
+    <div class="tab-content">
+        <div class="tab-pane" id="tab1">
+            <div class="form-row">
+                <label class="col-sm-1 col-md-2 col-form-label">Název formuláře:</label>
+                <div class="col-sm-9 col-md-8">
+                    <input class="form-control" asp-for="Rec.f06Name" />
+                    <span asp-validation-for="Rec.f06Name" class="text-danger"></span>
+                </div>
+                <div class="col-sm-2 col-md-2">
+                    ID: <span>@(Model.Rec.pid)</span>
+                </div>
+            </div>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Typ formuláře:</label>
+                <div class="col-sm-9 col-md-8">
+                    <mycombo entity="f12FormType" asp-for="Rec.f12ID" selectedtext="@Model.SelectedF12Name" view-flag="2"></mycombo>
+                </div>
+                <label class="col-sm-1 col-md-1 col-form-label">STAT kód:</label>
+                <div class="col-sm-1 col-md-1">
+                    <input class="form-control" asp-for="Rec.f06ExportCode" />
+
+                </div>
+            </div>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Uzamykání:</label>
+                <div class="col-sm-5 col-md-4">
+                    <select asp-for="Rec.f06UserLockFlag" class="form-control">
+                        <option value="NoLockOffer">Bez možnosti, aby uživatel sám uzamknul formulář</option>
+                        <option value="LockOnlyIfValid">Uživatel může uzamknout formulář, pokud je korektně vyplněn</option>
+                        <option value="LockWhenever">Uživatel může uzamknout formulář kdykoliv</option>
+                    </select>
+                </div>
+                <label class="col-sm-1 col-md-1 col-form-label">Ankety:</label>
+                <div class="col-sm-5 col-md-5">
+                    <select asp-for="Rec.f06BindScopeQuery" class="form-control">
+                        <option value="None">Formulář lze přikládat jako ne-anketní i anketní</option>
+                        <option value="DirectOnly">Formulář je pouze ne-anketní</option>
+                        <option value="PollOnly">Formulář je pouze anketní</option>
+
+                    </select>
+                </div>
+            </div>
+            <hr />
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Oprávnění k šifrovaným otázkám:</label>
+                <div class="col-sm-11 col-md-10">
+                    <mycombochecklist asp-for="@Model.j04IDs" entity="j04UserRole" selectedtext="@Model.j04Names" placeholder="Vybrat role..."></mycombochecklist>
+                </div>
+            </div>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Svázané tiskové sestavy:</label>
+                <div class="col-sm-11 col-md-10">
+                    <mycombochecklist asp-for="@Model.x31IDs" entity="x31Report" selectedtext="@Model.x31Names" placeholder="Vybrat sestavy..."></mycombochecklist>
+                </div>
+            </div>
+            <hr />
+            <div class="form-row my-2">
+                <div class="col-sm-4 col-md-4">
+                    <input type="checkbox" asp-for="Rec.f06IsA37Required" />
+                    <label class="col-form-label" for="Rec_f06IsA37Required">Povinná vazba na IZO školy</label>
+                </div>
+                <label class="col-sm-2 col-md-2 col-form-label">Vazba k entitě [Učitel]:</label>
+                <div class="col-sm-6 col-md-6">
+                    <select asp-for="Rec.f06RelationWithTeacher" class="form-control">
+                        <option value="None">Bez povinné vazby na entitu [Učitel]</option>
+                        <option value="All">Povinně založit novou vazbu nebo vybrat z existujících</option>
+                        <option value="OnlyNew">Povinně založit novou vazbu ke škole</option>
+                        <option value="OnlyBoundWithSchool">Povinně vybrat z existujících vazeb ke škole</option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="form-row my-2">
+                <div class="col-sm-4 col-md-4">
+                    <input type="checkbox" asp-for="Rec.f06IsA01ClosedStrict" />
+                    <label class="col-form-label" for="Rec_f06IsA01ClosedStrict">Formulář nelze vyplňovat, pokud je uzavřena jeho akce</label>
+                </div>
+                <div class="col-sm-4 col-md-4">
+                    <input type="checkbox" asp-for="Rec.f06IsA01PeriodStrict" />
+                    <label class="col-form-label" for="Rec_f06IsA01PeriodStrict">Formulář lze vyplňovat pouze v plánovaném období akce</label>
+                </div>
+                <div class="col-sm-4 col-md-4">
+                    <input type="checkbox" asp-for="Rec.f06IsReportDialog" />
+                    <label class="col-form-label" for="Rec_f06IsReportDialog">U vyplňování formuláře nabízet funkci [Tisková sestava]</label>
+                </div>
+
+            </div>
+            <div class="form-row my-2">
+                <div class="col-sm-4 col-md-4">
+                    <input type="checkbox" asp-for="Rec.f06IsWorkflowDialog" />
+                    <label class="col-form-label" for="Rec_f06IsWorkflowDialog">U vyplňování formuláře nabízet funkci [Posunout/doplnit]</label>
+                </div>
+                <div class="col-sm-4 col-md-4">
+                    <input type="checkbox" asp-for="Rec.f06IsExportToDoc" />
+                    <label class="col-form-label" for="Rec_f06IsExportToDoc">Povolit funkci [Exportovat do MS Word]</label>
+                </div>
+
+
+            </div>
+            <hr />
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Razor šablona:</label>
+                <div class="col-sm-7 col-md-6">
+                    <input class="form-control" asp-for="Rec.f06RazorTemplate" />
+
+                </div>
+                <div class="col-sm-4 col-md-4">
+                    <input type="checkbox" asp-for="Rec.f06IsTemplate" />
+                    <label class="col-form-label" for="Rec_f06IsTemplate">Vzorový formulář pro šablony otázek</label>
+                </div>
+            </div>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">Index pořadí:</label>
+                <div class="col-sm-1 col-md-1">
+                    <mynumber asp-for="Rec.f06Ordinal" decimal-digits="0"></mynumber>
+                </div>
+
+            </div>
+        </div>
+        <div class="tab-pane" id="tab2" style="height:500px;">
+            <!-- Tab2 -->
+            <div class="card">
+                <div class="card-header">Povolené přílohy k vyplněnému formuláři v rámci akce</div>
+                <div class="card-body">
+                    <mycombo entity="o13AttachmentType" asp-for="@Model.SelectedO13ID" selectedtext="@Model.TreeItem" placeholder="Vybrat typ přílohy..." event_after_changevalue="handle_o13id_append"></mycombo>
+                    <hr />
+                    @for (var i = 0; i < Model.lisA13.Count; i++)
+                    {
+                        <div class="row" style="@(Model.lisA13[i].CssTempDisplay)">
+                            <input type="hidden" asp-for="lisA13[i].IsTempDeleted" value="@Model.lisA13[i].IsTempDeleted" />
+
+                            <input type="hidden" asp-for="lisA13[i].TempGuid" value="@Model.lisA13[i].TempGuid" />
+                            <div class="col-sm-4 col-md-4">
+                                <mycombo entity="o13AttachmentType" asp-for="lisA13[i].o13ID" selectedtext="lisA13[i].o13Name" placeholder="Vybrat typ přílohy..." view-flag="2"></mycombo>
+                            </div>
+                            <div class="col-sm-2 col-md-2">
+                                <input type="checkbox" id="chk@(Model.lisA13[i].TempGuid)" asp-for="lisA13[i].a13IsRequired" />
+                                <label for="chk@(Model.lisA13[i].TempGuid)">Povinné k zařazení</label>
+                            </div>
+                            <div class="col-1" title="Pořadí mezi formuláři">
+                                <mynumber asp-for="lisA13[i].a13Ordinal" decimal-digits="0"></mynumber>
+                            </div>
+
+                            <div class="col-1">
+                                <button type="button" class="btn btn-danger" title="Odstranit řádek" onclick="handle_delete_row('@(Model.lisA13[i].TempGuid)')">x</button>
+                            </div>
+
+                        </div>
+                    }
+                </div>
+            </div>
+
+
+            
+            <h4>Přímo svázané přílohy k šabloně formuláře (metodiky, návody apod.):</h4>
+
+            <iframe id="fraUpload" src="/FileUpload/Index?prefix=f06&recpid=@(Model.Rec.pid)&guid=@Model.UploadGuid" height="350" scrolling="no"></iframe>
+
+
+
+        </div>
+        <div class="tab-pane" id="tab3">
+            <!-- Tab3 -->
+            <p></p>
+            <textarea asp-for="Rec.f06Hint" class="form-control" placeholder="Úvodní instrukce" style="min-height:100px;"></textarea>
+            <span asp-validation-for="Rec.f06Hint" class="text-danger"></span>
+
+        </div>
+        <div class="tab-pane" id="tab4">
+            <!-- Tab4 -->
+            <p></p>
+
+
+        </div>
+
+    </div>
+
+
+
+</div>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+
+
+
+    });
+
+    function handle_o13id_append(o13id) {
+        if (o13id == "") {
+            _notify_message("Musíte vybrat typ přílohy.");
+            return;
+        }
+
+        form1.action = "/f06/Record?oper=add&o13id=" + o13id;
+        form1.submit();
+    }
+    function handle_delete_row(guid) {
+        form1.action = "/f06/Record?oper=delete&guid=" + guid;
+        form1.submit();
+
+    }
+</script>
+
