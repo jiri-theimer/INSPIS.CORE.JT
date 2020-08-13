@@ -16,6 +16,7 @@ namespace BL
         public int SaveComment(BO.f32FilledValue rec, string strComment);
         public bool Delete(int pid);
         public bool DeleteAllInF19(int f19id, int a11id);
+        public bool DeleteAllInF26(int f26id, int a11id);
     }
     class f32FilledValueBL : BaseBL, If32FilledValueBL
     {

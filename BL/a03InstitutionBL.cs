@@ -134,7 +134,7 @@ namespace BL
                 }
                 if (LoadByRedizo(c.a03REDIZO,c.pid) != null)
                 {
-                    this.AddMessage(string.Format("Hodnota zadaného REDIZO kódu je již použita v jiné instituci: {0}.", LoadByRedizo(c.a03REDIZO, c.pid).a03Name));return false;
+                    this.AddMessageTranslated(string.Format(_mother.tra("Hodnota zadaného REDIZO kódu je již použita v jiné instituci: {0}."), LoadByRedizo(c.a03REDIZO, c.pid).a03Name));return false;
                 }
             }
 

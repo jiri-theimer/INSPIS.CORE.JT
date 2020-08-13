@@ -123,7 +123,7 @@ namespace BL
             }
             if (LoadByCode(rec.x31PID, rec.pid) != null)
             {
-                this.AddMessage(string.Format("V systému existuje jiná sestava s kódem: {0}.", rec.x31PID)); return false;
+                this.AddMessageTranslated(string.Format(_mother.tra("V systému existuje jiná sestava s kódem: {0}."), rec.x31PID)); return false;
             }
 
 

@@ -12,12 +12,69 @@ namespace UI.Controllers
     {
         public IActionResult Dialog(int pid)
         {
-            var v = new WorkflowDialogViewMode() { pid = pid,UploadGuid=BO.BAS.GetGuid() };
-
+            var v = new WorkflowDialogViewMode() { pid = pid,UploadGuid=BO.BAS.GetGuid(),TempGuid=BO.BAS.GetGuid() };
+            
+            RefreshStateDialog(v);            
+            return View(v);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Dialog(Models.WorkflowDialogViewMode v, string oper,int p85id)
+        {
             RefreshStateDialog(v);
+            
+            if (oper == "add_j02" && v.SelectedNomineeJ02ID>0)
+            {
+                if (v.lisTemp.Where(p=>p.p85IsDeleted==false && p.p85Prefix=="j02" && p.p85DataPID == v.SelectedNomineeJ02ID).Count() == 0)
+                {
+                    var c = new BO.p85Tempbox() { p85GUID = v.TempGuid, p85Prefix = "j02", p85DataPID = v.SelectedNomineeJ02ID };
+                    c.p85FreeText01 = Factory.j02PersonBL.Load(v.SelectedNomineeJ02ID).FullNameDesc;
+                    Factory.p85TempboxBL.Save(c);
+                    RefreshStateTemp(v);
+                }                                
+            }
+            if (oper == "add_j11" && v.SelectedNomineeJ11ID>0)
+            {
+                if (v.lisTemp.Where(p => p.p85IsDeleted == false && p.p85Prefix == "j11" && p.p85DataPID == v.SelectedNomineeJ11ID).Count() == 0)
+                {
+                    var c = new BO.p85Tempbox() { p85GUID = v.TempGuid, p85Prefix = "j11", p85DataPID = v.SelectedNomineeJ11ID };
+                    c.p85FreeText01 = Factory.j11TeamBL.Load(v.SelectedNomineeJ11ID).j11Name;
+                    Factory.p85TempboxBL.Save(c);
+                    RefreshStateTemp(v);
+                }                                    
+            }
+            if (oper== "delete_temp_row" && p85id > 0)
+            {
+                Factory.p85TempboxBL.VirtualDelete(p85id);
+                RefreshStateTemp(v);               
+            }
+            if (string.IsNullOrEmpty(oper) == false)
+            {
+                return View(v);
+            }
+            if (ModelState.IsValid)
+            {
+                int intRet = 0;
+                if (v.SelectedB06ID == 0)
+                {
+                    intRet = Factory.a01EventBL.SaveWorkflowComment(v.pid, v.Comment, null);    //pouze zapsat komentář
+                }
+                if (intRet > 0)
+                {
+
+                    v.SetJavascript_CallOnLoad(v.pid);
+                    return View(v);
+                }
+            }
+
+            this.Notify_RecNotSaved();
             return View(v);
         }
 
+        private void RefreshStateTemp(WorkflowDialogViewMode v)
+        {
+            v.lisTemp = Factory.p85TempboxBL.GetList(v.TempGuid, false);
+        }
 
         private void RefreshStateDialog(WorkflowDialogViewMode v)
         {
@@ -29,6 +86,7 @@ namespace UI.Controllers
             mq.MyRecordsDisponible = true;
             mq.CurrentUser = Factory.CurrentUser;
             v.lisA41 = Factory.a41PersonToEventBL.GetList(mq);
+            RefreshStateTemp(v);
 
             mq = new BO.myQuery("b06");
             mq.b02id = v.RecA01.b02ID;
@@ -54,6 +112,15 @@ namespace UI.Controllers
                 var c = new BO.b06WorkflowStep() { b06ID = 0, pid = 0, b06Name = "Doplnit pouze komentář nebo nahrát přílohu" };
                 v.lisB06.Add(c);
             }
+            if (v.SelectedB06ID > 0)
+            {
+                v.RecB06 = Factory.b06WorkflowStepBL.Load(v.SelectedB06ID);
+            }
+            else
+            {
+                v.RecB06 = new BO.b06WorkflowStep() { b06ID = v.SelectedB06ID, pid = v.SelectedB06ID };
+            }
+            
 
         }
 

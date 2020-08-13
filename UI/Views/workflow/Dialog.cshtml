@@ -1,5 +1,6 @@
 ﻿@model UI.Models.WorkflowDialogViewMode
-
+@inject BL.RunningApp _app
+@inject BL.Factory _f
 
 @{
     ViewData["Title"] = "Posunout | Doplnit";
@@ -26,7 +27,7 @@
 
 <div class="bg-light" style="padding:10px;">
     <button id="cmdSave" type="submit" class="btn btn-success">Uložit změny</button>
-    <button type="button" id="cmdClose" onclick="_window_close()" class="btn btn-light">Zavřít</button>
+    <button type="button" id="cmdClose" onclick="_window_close()" class="btn btn-light" lang="uk">Zavřít</button>
 
 </div>
 
@@ -34,9 +35,38 @@
 
     <input type="hidden" asp-for="@Model.pid" />
     <input type="hidden" asp-for="@Model.UploadGuid" />
+    <input type="hidden" asp-for="@Model.TempGuid" />
 
     <div class="modal_record_container">
         <myradiolist asp-for="@Model.SelectedB06ID" datasource="@Model.lisB06" valuefield="pid" textfield="b06Name" event_after_changevalue="b06id_onchange"></myradiolist>
+
+
+        @if (Model.RecB06.b06IsNominee || 1 == 1)
+        {
+            <div class="card">
+                <div class="card-header">
+                    Nominace řešitele
+                    <button type="button" class="btn btn-primary" onclick="myself_nominee_add()">Vybrat sebe</button>
+                </div>
+                <div class="card-body">
+                    <mycombo entity="j02Person" asp-for="@Model.SelectedNomineeJ02ID" selectedtext="@Model.SelectedNomineePerson" filter-flag="1" event_after_changevalue="j02id_nominee_add" placeholder="Vybrat osobu..."></mycombo>
+                    <mycombo entity="j11Team" asp-for="@Model.SelectedNomineeJ11ID" selectedtext="@Model.SelectedNomineeTeam" event_after_changevalue="j11id_nominee_add" placeholder="Vybrat tým..."></mycombo>
+                    <table>
+                        @foreach (var c in Model.lisTemp)
+                        {
+                            <tr>
+                                <td style="font-weight:bold;">
+                                    @c.p85FreeText01
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger" title="Odstranit" onclick="delete_temp_row(@(c.p85ID))">x</button>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+        }
 
         <div class="form-row my-2">
             <textarea asp-for="@Model.Comment" class="form-control" placeholder="Doplnit komentář..." style="height:100px;"></textarea>
@@ -49,7 +79,26 @@
 
 <script type="text/javascript">
     function b06id_onchange(b06id) {
-       
+        form1.action = "/workflow/Dialog?oper=postback";
+        form1.submit();
+    }
+
+    function j02id_nominee_add(j02id) {        
+        form1.action = "/workflow/Dialog?oper=add_j02";
+        form1.submit();
+    }
+    function myself_nominee_add() {
+        $("#SelectedNomineeJ02ID").val(@_f.CurrentUser.j02ID);
+        form1.action = "/workflow/Dialog?oper=add_j02";
+        form1.submit();
+    }
+    function j11id_nominee_add(j11id) {
+        form1.action = "/workflow/Dialog?oper=add_j11";
+        form1.submit();
+    }
+    function delete_temp_row(p85id) {
+        form1.action = "/workflow/Dialog?oper=delete_temp_row&p85id=" + p85id;
+        form1.submit();
     }
 </script>
 

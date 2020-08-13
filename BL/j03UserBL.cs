@@ -125,7 +125,7 @@ namespace BL
             }
             if (LoadByLogin(rec.j03Login, rec.pid) != null)
             {
-                this.AddMessage(string.Format("V systému již existuje jiný uživatel s přihlašovacím jménem [{0}].", rec.j03Login));
+                this.AddMessageTranslated(string.Format(_mother.tra("V systému již existuje jiný uživatel s přihlašovacím jménem [{0}]."), rec.j03Login));
                 return false;
             }
 

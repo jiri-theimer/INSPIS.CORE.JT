@@ -182,7 +182,7 @@ namespace UI.Controllers
                 v.Rec = Factory.a01EventBL.Load(v.pid);
                 if (v.Rec == null)
                 {
-                    this.AddMessage("Záznam nebyl nalezen.");
+                    this.AddMessage(Factory.tra("Záznam nebyl nalezen."));
                     v.pid = 0;
                 }
                 else
@@ -218,12 +218,12 @@ namespace UI.Controllers
         private void RefreshNavTabs(a01RecPage v)
         {
             //v.NavTabs.Add(new NavTab() { Name = "Historie událostí", Entity = "b05Workflow_History", Url = "/TheGrid/SlaveView?prefix=b05" });
-            v.NavTabs.Add(new NavTab() { Name = "Historie událostí", Entity = "viewHistorie", Url = "/a01/TabHistory?pid=" + v.pid.ToString() });
-            v.NavTabs.Add(new NavTab() { Name = "Účastníci akce", Entity = "viewUcastnici", Url = "/a01/TabUcastnici?pid=" + v.pid.ToString() });
-            v.NavTabs.Add(new NavTab() { Name = "Časový plán", Entity = "viewCapacity", Url = "/a35/TabCapacity?pid=" + v.pid.ToString() });
-            v.NavTabs.Add(new NavTab() { Name = "Formuláře", Entity = "viewFormulare", Url = "/a01/TabForms?pid=" + v.pid.ToString() });
-            v.NavTabs.Add(new NavTab() { Name = "Úkoly/Lhůty", Entity = "h04ToDo", Url = "/TheGrid/SlaveView?prefix=h04" });
-            v.NavTabs.Add(new NavTab() { Name = "Související akce", Entity = "a01Event", Url = "/TheGrid/SlaveView?prefix=a01" });
+            v.NavTabs.Add(new NavTab() { Name = Factory.tra("Historie událostí"), Entity = "viewHistorie", Url = "/a01/TabHistory?pid=" + v.pid.ToString() });
+            v.NavTabs.Add(new NavTab() { Name = Factory.tra("Účastníci akce"), Entity = "viewUcastnici", Url = "/a01/TabUcastnici?pid=" + v.pid.ToString() });
+            v.NavTabs.Add(new NavTab() { Name = Factory.tra("Časový plán"), Entity = "viewCapacity", Url = "/a35/TabCapacity?pid=" + v.pid.ToString() });
+            v.NavTabs.Add(new NavTab() { Name = Factory.tra("Formuláře"), Entity = "viewFormulare", Url = "/a01/TabForms?pid=" + v.pid.ToString() });
+            v.NavTabs.Add(new NavTab() { Name = Factory.tra("Úkoly/Lhůty"), Entity = "h04ToDo", Url = "/TheGrid/SlaveView?prefix=h04" });
+            v.NavTabs.Add(new NavTab() { Name = Factory.tra("Související akce"), Entity = "a01Event", Url = "/TheGrid/SlaveView?prefix=a01" });
 
             string strDefTab = Factory.CBL.LoadUserParam("recpage-tab-a01");
             var deftab = v.NavTabs[0];

@@ -76,6 +76,8 @@ namespace UI
                 TempFolder = conf.GetSection("Folders")["Temp"]
                 ,
                 LogFolder = strLogFolder
+                ,
+                TranslatorMode=conf.GetSection("App")["TranslatorMode"]
             });
 
             
@@ -83,6 +85,7 @@ namespace UI
             services.AddSingleton<BL.TheColumnsProvider>();
             services.AddSingleton<BL.ThePeriodProvider>();
             services.AddSingleton<BL.TheGlobalParams>();
+            services.AddSingleton<BL.TheTranslator>();
 
             services.AddScoped<BO.RunningUser, BO.RunningUser>();
             services.AddScoped<BL.Factory, BL.Factory>();

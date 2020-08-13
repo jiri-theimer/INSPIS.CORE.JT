@@ -140,7 +140,7 @@ namespace BL
                 foreach (var recTemp in _mother.p85TempboxBL.GetList(guid))  //test na odstraněné záznamy příloh
                 {
                     if (_mother.CBL.DeleteRecord("o27Attachment", recTemp.p85DataPID) != "1"){
-                        this.AddMessage("Error: DELETE.");
+                        this.AddMessageTranslated("Error: DELETE.");
                         return false;
                     }
                 }

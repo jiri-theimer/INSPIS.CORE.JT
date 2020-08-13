@@ -87,7 +87,7 @@ namespace BL
             }
             if (LoadByCode(rec.a18Code,rec.pid) != null)
             {
-                this.AddMessage(string.Format("Záznam s kódem[{0}] již existuje v záznamu: {1}.", rec.a18Code, LoadByCode(rec.a18Code, rec.pid).a18Name));return false;
+                this.AddMessageTranslated(string.Format(_mother.tra("Záznam s kódem[{0}] již existuje v záznamu: {1}."), rec.a18Code, LoadByCode(rec.a18Code, rec.pid).a18Name));return false;
             }
 
             return true;

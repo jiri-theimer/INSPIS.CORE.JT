@@ -288,7 +288,7 @@ namespace BL
                 catch (Exception ex)
                 {
 
-                    this.AddMessage(ex.Message);
+                    this.AddMessageTranslated(ex.Message);
                     rec.x40ErrorMessage = ex.Message;
                     rec.x40Status = BO.x40StateFlag.Error;
                     ret.pid = SaveX40(m, rec);
@@ -335,7 +335,7 @@ namespace BL
 
         private BO.Result handle_result_error(string strError)
         {
-            this.AddMessage(strError);
+            this.AddMessageTranslated(strError);
             return new BO.Result(true, strError);
         }
 

@@ -129,7 +129,7 @@ namespace BL
             {
                 if (_mother.f06FormBL.Load(recA12.f06ID).f06IsA37Required)
                 {
-                    this.AddMessage(string.Format("Formulář {0} vyžaduje povinně vazbu na IZO školy.",recA12.f06Name)); return 0;
+                    this.AddMessageTranslated(string.Format(_mother.tra("Formulář {0} vyžaduje povinně vazbu na IZO školy."),recA12.f06Name)); return 0;
                 }
             }
             
@@ -144,7 +144,7 @@ namespace BL
                 var recA03 = _mother.a03InstitutionBL.Load(a03id);
                 if (recA03.isclosed)
                 {
-                    this.AddMessage(string.Format("Záznam instituce '{0}' není časově platný.",recA03.NamePlusRedizo)); return 0;
+                    this.AddMessageTranslated(string.Format(_mother.tra("Záznam instituce '{0}' není časově platný."),recA03.NamePlusRedizo)); return 0;
                 }
                 if (recX40.x40RecipientFlag==BO.RecipientFlagEnum.SchoolAdress || recX40.x40RecipientFlag == BO.RecipientFlagEnum.SchoolPlusDirector)
                 {

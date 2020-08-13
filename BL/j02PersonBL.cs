@@ -89,7 +89,7 @@ namespace BL
             }
             if (LoadByEmail(rec.j02Email,rec.pid) != null)
             {
-                this.AddMessage(string.Format("E-mail adresa [{0}] již je obsazena jinou osobou.", rec.j02Email));
+                this.AddMessageTranslated(string.Format(_mother.tra("E-mail adresa [{0}] již je obsazena jinou osobou."), rec.j02Email));
                 return false;
             }
 

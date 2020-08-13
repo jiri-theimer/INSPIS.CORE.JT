@@ -255,25 +255,25 @@ namespace BL
                         case "date":
                             if (c.j73Operator == "INTERVAL" && c.j73Date1 == null && c.j73Date2 == null && c.j73DatePeriodFlag == 0)
                             {
-                                this.AddMessage(string.Format("Filtr řádek [{0}] musí mít alespoň jedno vyplněné datum nebo pojmenované období.", x)); return false;
+                                this.AddMessageTranslated(string.Format(_mother.tra("Filtr řádek [{0}] musí mít alespoň jedno vyplněné datum nebo pojmenované období."), x)); return false;
                             }
                             break;
                         case "string":
                             if (string.IsNullOrEmpty(c.j73Value)==true && (c.j73Operator == "CONTAINS" || c.j73Operator == "STARTS" || c.j73Operator == "EQUAL" || c.j73Operator == "NOT-EQUAL"))
                             {
-                                this.AddMessage(string.Format("Filtr řádek [{0}] obsahuje nevyplněnou hodnotu.", x)); return false;
+                                this.AddMessageTranslated(string.Format(_mother.tra("Filtr řádek [{0}] obsahuje nevyplněnou hodnotu."), x)); return false;
                             }
                             break;
                         case "combo":
                             if (c.j73ComboValue==0 && (c.j73Operator == "EQUAL" || c.j73Operator == "NOT-EQUAL"))
                             {
-                                this.AddMessage(string.Format("Filtr řádek [{0}] obsahuje nevyplněnou hodnotu.", x)); return false;
+                                this.AddMessageTranslated(string.Format(_mother.tra("Filtr řádek [{0}] obsahuje nevyplněnou hodnotu."), x)); return false;
                             }
                             break;
                         case "multi":
                             if (string.IsNullOrEmpty(c.j73Value) == true && (c.j73Operator == "EQUAL" || c.j73Operator == "NOT-EQUAL"))
                             {
-                                this.AddMessage(string.Format("Filtr řádek [{0}] obsahuje nevyplněnou hodnotu.", x)); return false;
+                                this.AddMessageTranslated(string.Format(_mother.tra("Filtr řádek [{0}] obsahuje nevyplněnou hodnotu."), x)); return false;
                             }
                             break;
                     }

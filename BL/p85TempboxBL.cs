@@ -53,8 +53,8 @@ namespace BL
 
         public BO.p85Tempbox VirtualDelete(int intPID)
         {
-            sb("UPDATE p85Tempbox set p85Isdeleted = 1 WHERE p85ID = @pid;");
-            sb(GetSQL1("WHERE a.p85ID=@pid"));
+            sb("UPDATE p85Tempbox set p85Isdeleted=1 WHERE p85ID=@pid;");
+            sb(GetSQL1(" WHERE a.p85ID=@pid"));
             return _db.Load<BO.p85Tempbox>(sbret(), new { pid = intPID });
         }
 

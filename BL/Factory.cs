@@ -14,6 +14,7 @@ namespace BL
         public BL.RunningApp App { get; set; }
         public BL.TheGlobalParams GlobalParams {get;set;}
         public BL.TheEntitiesProvider EProvider { get; set; }
+        public BL.TheTranslator Translator { get; set; }
         
 
         private Ij02PersonBL _j02;
@@ -87,13 +88,14 @@ namespace BL
 
         private IMailBL _mail;
 
-        public Factory(BO.RunningUser c,BL.RunningApp runningapp,BL.TheEntitiesProvider ep,BL.TheGlobalParams gp)
+        public Factory(BO.RunningUser c,BL.RunningApp runningapp,BL.TheEntitiesProvider ep,BL.TheGlobalParams gp,BL.TheTranslator tt)
         {
                         
             this.CurrentUser = c;
             this.App = runningapp;
             this.EProvider = ep;
             this.GlobalParams = gp;
+            this.Translator = tt;
             
             if (c.pid == 0 && string.IsNullOrEmpty(c.j03Login)==false)
             {
@@ -122,7 +124,11 @@ namespace BL
             db.RunSql(s,new {j03id=BO.BAS.TestIntAsDbKey(c.j03ID), useragent = c.j90ClientBrowser,browser= c.j90BrowserFamily,os=c.j90BrowserOS, devicetype=c.j90BrowserDeviceType, devicefamily=c.j90BrowserDeviceFamily,aw=c.j90BrowserAvailWidth,ah=c.j90BrowserAvailHeight,iw=c.j90BrowserInnerWidth,ih=c.j90BrowserInnerHeight,mes=c.j90LoginMessage, loginname=c.j90LoginName, cookieexpire=c.j90CookieExpiresInHours, host=c.j90LocationHost });
         }
 
-
+        public string tra(string strExpression)   //lokalizace do ostatních jazyků
+        {
+            if (this.CurrentUser.j03LangIndex == 0) return strExpression;
+            return this.Translator.DoTranslate(strExpression, this.CurrentUser.j03LangIndex);
+        }
 
         public IDataGridBL gridBL
         {

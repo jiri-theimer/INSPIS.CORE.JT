@@ -11,6 +11,7 @@ namespace BL
         public int Create(BO.a01Event rec, bool bolAutoInitWorkflow, List<BO.a11EventForm> lisA11, List<BO.a41PersonToEvent> lisA41, List<BO.a35PersonEventPlan> lisA35, List<int> a37ids);
         public int SaveA01Record(BO.a01Event rec, BO.a10EventType recA10);
         public BO.a01EventPermission InhalePermission(BO.a01Event rec);
+        public int SaveWorkflowComment(int intA01ID, string strComment, List<int> a45ids_restrict_to);
     }
     class a01EventBL : BaseBL, Ia01EventBL
     {
@@ -156,7 +157,7 @@ namespace BL
             if (lisA41.Where(p => p.IsTempDeleted == false && p.a45ID == BO.EventRoleENUM.PrizvanaOsoba && p.j02IsInvitedPerson==false).Count() > 0)
             {
                 int j02id = lisA41.Where(p => p.IsTempDeleted == false && p.a45ID == BO.EventRoleENUM.PrizvanaOsoba && p.j02IsInvitedPerson == false).First().j02ID;
-                this.AddMessage(string.Format("V obsazení akce je osoba [{0}] zařazena jako 'Přizvaná'. Ale v nastavení osobního profilu není uvedeno, že může být přizvanou osobou.", _mother.j02PersonBL.Load(j02id).FullNameAsc)); return false;
+                this.AddMessageTranslated(string.Format(_mother.tra("V obsazení akce je osoba [{0}] zařazena jako 'Přizvaná'. Ale v nastavení osobního profilu není uvedeno, že může být přizvanou osobou."), _mother.j02PersonBL.Load(j02id).FullNameAsc)); return false;
             }
             return true;
         }
@@ -204,7 +205,7 @@ namespace BL
             {
                 if (lisA11.Where(p => p.f06ID == recA12.f06ID).Count() == 0)
                 {
-                    this.AddMessage(string.Format("Formulář [{0}] je povinný k zařazení do akce.", recA12.f06Name)); return false;
+                    this.AddMessageTranslated(string.Format(_mother.tra("Formulář [{0}] je povinný k zařazení do akce."), recA12.f06Name)); return false;
                 }
             }           
 
@@ -264,7 +265,7 @@ namespace BL
                 var mother = Load(c.a01ParentID);
                 if (mother.a01ParentID > 0)
                 {
-                    this.AddMessage(string.Format(" Akce [{0}] nemůže být nadřízená, protože už sama je podřízená jiné akci", mother.a01Signature)); return false;
+                    this.AddMessageTranslated(string.Format(_mother.tra("Akce [{0}] nemůže být nadřízená, protože už sama je podřízená jiné akci"), mother.a01Signature)); return false;
                 }
             }
 
@@ -275,7 +276,7 @@ namespace BL
                 var lisExist = GetList(mq);
                 if (lisExist.Count() >= recA10.a10OneSchoolInstanceLimit)
                 {
-                    this.AddMessage(string.Format(" U instituce [REDIZO={0}] již existuje akce tohoto typu. Maximální počet akcí pro typ [{1}] je {2}.", lisExist.First().a03REDIZO,recA10.a10Name,recA10.a10OneSchoolInstanceLimit)); return false;
+                    this.AddMessageTranslated(string.Format(_mother.tra("U instituce [REDIZO={0}] již existuje akce tohoto typu. Maximální počet akcí pro typ [{1}] je {2}."), lisExist.First().a03REDIZO,recA10.a10Name,recA10.a10OneSchoolInstanceLimit)); return false;
                 }
             }
 
@@ -316,6 +317,23 @@ namespace BL
         {
 
             return false;
+        }
+
+        public int SaveWorkflowComment(int intA01ID,string strComment,List<int>a45ids_restrict_to)
+        {
+            var c = new BO.b05Workflow_History() { a01ID = intA01ID, b05IsCommentOnly = true, b05IsManualStep = true, b05Comment = strComment, b05IsCommentRestriction = false };
+            if (a45ids_restrict_to !=null && a45ids_restrict_to.Count > 0)
+            {
+                c.b05IsCommentRestriction = true;   //komentář má omezený okruh čtenářů
+            }
+            int intB05ID = _mother.b05Workflow_HistoryBL.Save(c);
+
+            if (c.b05IsCommentRestriction)
+            {
+                _db.RunSql("INSERT INTO b04WorkflowComment_Restriction(b05ID,a45ID) SELECT @pid,a45ID FROM a45EventRole WHERE a45ID IN (" + string.Join(",", a45ids_restrict_to) + ")");
+            }
+
+            return intB05ID;
         }
     }
 }

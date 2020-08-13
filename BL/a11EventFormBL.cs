@@ -79,7 +79,7 @@ namespace BL
             var recF06 = _mother.f06FormBL.Load(c.f06ID);
             if (recF06.f06IsA37Required && c.a37ID == 0)
             {
-                this.AddMessage(string.Format("Formulář [{0}] vyžaduje povinně vazbu na IZO školy.", recF06.f06Name)); return false;
+                this.AddMessageTranslated(string.Format(_mother.tra("Formulář [{0}] vyžaduje povinně vazbu na IZO školy."), recF06.f06Name)); return false;
             }
 
             return true;

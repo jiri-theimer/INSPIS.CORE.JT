@@ -118,7 +118,7 @@ namespace BL
             }
             if (LoadByJ02ID(c.j02ID, c.a01ID,c.pid) != null)
             {
-                this.AddMessage(string.Format("Osoba [{0}] již byla zařazena mezi účastníky této akce.", LoadByJ02ID(c.j02ID,c.a01ID, c.pid).PersonAsc)); return false;
+                this.AddMessageTranslated(string.Format(_mother.tra("Osoba [{0}] již byla zařazena mezi účastníky této akce."), LoadByJ02ID(c.j02ID,c.a01ID, c.pid).PersonAsc)); return false;
             }
 
             return true;

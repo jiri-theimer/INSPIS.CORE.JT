@@ -38,8 +38,12 @@ namespace BL
 
         public void AddMessage(string strMessage, string template = "error")
         {
+            _mother.CurrentUser.AddMessage(_mother.tra(strMessage), template);  //automaticky podléhá překladu do ostatních jazyků
 
-            _mother.CurrentUser.AddMessage(strMessage, template);
+        }
+        public void AddMessageTranslated(string strMessage, string template = "error")
+        {
+            _mother.CurrentUser.AddMessage(strMessage, template);  //nepodléhá překladu do ostatních jazyků
         }
     }
 }
