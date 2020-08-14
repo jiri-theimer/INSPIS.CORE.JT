@@ -11,19 +11,19 @@
 
 <div class="modal_record_container">
     <div class="form-row">
-        <label class="col-sm-1 col-md-2 col-form-label">Typ akce:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typ akce"):</label>
         <div class="col-sm-9 col-md-8">
             <myval value="@Model.Rec.a10Name"></myval>
         </div>
         @if (_f.CurrentUser.TestPermission(BO.PermValueEnum.AdminGlobal_Ciselniky))
         {
             <div class="col-sm-2 col-md-2">
-                <a href="javascript:_window_open('/a10/Record?pid=@(Model.pid)')">Administrace</a>
+                <a href="javascript:_window_open('/a10/Record?pid=@(Model.pid)')">@_f.tra("Administrace")</a>
             </div>
         }
     </div>
     <div class="form-row">
-        <label class="col-sm-1 col-md-2 col-form-label">Workflow šablona:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Workflow šablona"):</label>
         <div class="col-sm-11 col-md-10">
             <myval value="@Model.Rec.b01Name"></myval>
         </div>
@@ -34,62 +34,62 @@
 <hr />
 <div>
     <input type="checkbox" asp-for="Rec.a10IsUse_A08" />
-    <label class="col-form-label" for="Rec_a10IsUse_A08">Vyplňovat [Téma]</label>
+    <label class="col-form-label" for="Rec_a10IsUse_A08">@_f.tra("Vyplňovat [Téma]")</label>
 </div>
 <div>
     <input type="checkbox" asp-for="Rec.a10IsUse_A03" />
-    <label class="col-form-label" for="Rec_a10IsUse_A03">Vyplňovat [Instituce]</label>
+    <label class="col-form-label" for="Rec_a10IsUse_A03">@_f.tra("Vyplňovat [Instituce]")</label>
 </div>
 <div>
     <input type="checkbox" asp-for="Rec.a10IsUse_A41" />
-    <label class="col-form-label" for="Rec_a10IsUse_A41">Vyplňovat [Účastníci akce]</label>
+    <label class="col-form-label" for="Rec_a10IsUse_A41">@_f.tra("Vyplňovat [Účastníci akce]")</label>
 </div>
 <div>
     <input type="checkbox" asp-for="Rec.a10IsUse_A41_Leader" />
-    <label class="col-form-label" for="Rec_a10IsUse_A41_Leader">Povinnost definovat vedoucího akce</label>
+    <label class="col-form-label" for="Rec_a10IsUse_A41_Leader">@_f.tra("Povinnost definovat vedoucího akce")</label>
 </div>
 <hr />
 <div>
     <input type="checkbox" asp-for="Rec.a10IsUse_Period" />
-    <label class="col-form-label" for="Rec_a10IsUse_Period">Vyplňovat plán [Datum od a Datum do]</label>
+    <label class="col-form-label" for="Rec_a10IsUse_Period">@_f.tra("Vyplňovat plán [Datum od a Datum do]")</label>
 </div>
 <div>
     <input type="checkbox" asp-for="Rec.a10IsUse_DeadLine" />
-    <label class="col-form-label" for="Rec_a10IsUse_DeadLine">Vyplňovat [Termín akce]</label>
+    <label class="col-form-label" for="Rec_a10IsUse_DeadLine">@_f.tra("Vyplňovat [Termín akce]")</label>
 </div>
 <div>
     <input type="checkbox" asp-for="Rec.a10IsUse_ReChangeForms" />
-    <label class="col-form-label" for="Rec_a10IsUse_ReChangeForms">Povolit zpětně měnit okruh formulářů v akci</label>
+    <label class="col-form-label" for="Rec_a10IsUse_ReChangeForms">@_f.tra("Povolit zpětně měnit okruh formulářů v akci")</label>
 </div>
 <hr />
 <div>
     <input type="checkbox" asp-for="Rec.a10IsUse_CaseCode" />
-    <label class="col-form-label" for="Rec_a10IsUse_CaseCode">Vyplňovat [GINIS spis]</label>
+    <label class="col-form-label" for="Rec_a10IsUse_CaseCode">@_f.tra("Vyplňovat [Spis]")</label>
 </div>
 <div>
     <input type="checkbox" asp-for="Rec.a10IsUse_Name" />
-    <label class="col-form-label" for="Rec_a10IsUse_Name">Vyplňovat [Název akce]</label>
+    <label class="col-form-label" for="Rec_a10IsUse_Name">@_f.tra("Vyplňovat [Název akce]")</label>
 </div>
 <div>
     <input type="checkbox" asp-for="Rec.a10IsSupportCloning" />
-    <label class="col-form-label" for="Rec_a10IsSupportCloning">Podpora zakládání nových akcí kopírováním</label>
+    <label class="col-form-label" for="Rec_a10IsSupportCloning">@_f.tra("Podpora zakládání nových akcí kopírováním")</label>
 </div>
 <div>
     <input type="checkbox" asp-for="Rec.a10IsUse_Poll" />
-    <label class="col-form-label" for="Rec_a10IsUse_Poll">Povolit [Anketní formuláře]</label>
+    <label class="col-form-label" for="Rec_a10IsUse_Poll">@_f.tra("Povolit [Anketní formuláře]")</label>
 </div>
 <div>
     <input type="checkbox" asp-for="Rec.a10IsUse_K01" />
-    <label class="col-form-label" for="Rec_a10IsUse_K01">Akce patří do modulu [Učitelé]</label>
+    <label class="col-form-label" for="Rec_a10IsUse_K01">@_f.tra("Akce patří do modulu [Učitelé]")</label>
 </div>
 <div>
     <input type="checkbox" asp-for="Rec.a10IsUse_A41_J11" />
-    <label class="col-form-label" for="Rec_a10IsUse_A41_J11">Účastníky akce lze přiřazovat i přes pojmenovaný seznam osob</label>
+    <label class="col-form-label" for="Rec_a10IsUse_A41_J11">@_f.tra("Účastníky akce lze přiřazovat i přes pojmenovaný seznam osob")</label>
 </div>
 
 
 @Html.Raw(Model.TagHtml)
-    </div>
+
 
 
 

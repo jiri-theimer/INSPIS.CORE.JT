@@ -1,5 +1,5 @@
 ﻿@model UI.Models.Tab.a01TabHistory
-
+@inject BL.Factory _f
 @{
     ViewData["Title"] = "Historie událostí";
     Layout = "~/Views/Shared/_LayoutSubform.cshtml";
@@ -14,20 +14,20 @@
 <table class="table table-sm table-hover" style="min-width:1000px;">
     <tr class="bg-light">
         <th>
-            Kdy
+            @_f.tra("Kdy")
         </th>
         <th>
-            Krok
+            @_f.tra("Krok")
         </th>
         <th>
-            Aktuální stav
+            @_f.tra("Aktuální stav")
             <div style="background-color:@(Model.RecA01.b02Color);">
                 @(Model.RecA01.b02Name)
             </div>
 
         </th>
         <th>
-            Změna
+            @_f.tra("Změna")
         </th>
         <th>
 

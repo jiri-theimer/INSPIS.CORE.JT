@@ -1,22 +1,23 @@
 ﻿@model UI.Models.Record.b01Record
+@inject BL.Factory _f
 @{
     Layout = "~/Views/Shared/_LayoutRecord.cshtml";
     if (Model.Rec == null) return;
-    Model.PageTitle = "Hlavička workflow šablony";
+    Model.PageTitle = _f.tra("Hlavička workflow šablony");
 }
 @addTagHelper *, UI
 
 <div class="modal_record_container">
-    
+
     <div class="form-row">
-        <label class="col-sm-1 col-md-2 col-form-label">Název šablony:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název šablony"):</label>
         <div class="col-sm-11 col-md-10">
             <input class="form-control" asp-for="Rec.b01Name" />
             <span asp-validation-for="Rec.b01Name" class="text-danger"></span>
         </div>
     </div>
 
-    
+
 
 
 </div>

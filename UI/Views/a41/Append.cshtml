@@ -1,15 +1,16 @@
 ﻿@model a41AppendViewModel
+@inject BL.Factory _f
 
 @{
-    ViewData["Title"] = "Přidat účastníky akce";
+    ViewData["Title"] = _f.tra("Přidat účastníky akce");
     Layout = "~/Views/Shared/_LayoutModal.cshtml";
 }
 @addTagHelper *, UI
 
 <h4>Přidat účastníky do akce: @Model.RecA01.a01Signature</h4>
 <div class="bg-light" style="padding:10px;">
-    <button id="cmdSave" type="button" class="btn btn-success" onclick="save()">Uložit změny</button>
-    <button id="cmdClose" type="button" onclick="_window_close()" class="btn btn-light">Zavřít</button>
+    <button id="cmdSave" type="button" class="btn btn-success" onclick="save()">@_f.tra("Uložit změny")</button>
+    <button id="cmdClose" type="button" onclick="_window_close()" class="btn btn-light">@_f.tra("Zavřít")</button>
 
 </div>
 
@@ -19,7 +20,7 @@
     <div class="modal_record_container">
 
         <div class="form-row my-2">
-            <label class="col-sm-1 col-md-2 col-form-label">Typ akce:</label>
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typ akce"):</label>
             <div class="col-sm-11 col-md-10">
                 <span class="val-readonly">@Model.RecA01.a10Name</span>
 
@@ -27,15 +28,15 @@
         </div>
 
         <div class="form-row my-2">
-            <label class="col-sm-1 col-md-2 col-form-label">Přidat jméno:</label>
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Přidat jméno"):</label>
             <div class="col-sm-11 col-md-10">
-                <mycombo entity="j02Person" asp-for="@Model.SelectedJ02ID" selectedtext="@Model.SelectedPerson" filter-flag="1" placeholder="Vybrat osobu..." event_after_changevalue="handle_j02id_append"></mycombo>
+                <mycombo entity="j02Person" asp-for="@Model.SelectedJ02ID" selectedtext="@Model.SelectedPerson" filter-flag="1" placeholder="@_f.tra("Vybrat osobu")..." event_after_changevalue="handle_j02id_append"></mycombo>
             </div>
 
         </div>
 
         <div class="card">
-            <div class="card-header"><img src="/Images/star.png" /> Čeká na uložení</div>
+            <div class="card-header"><img src="/Images/star.png" /> @_f.tra("Čeká na uložení")</div>
             <div class="card-body">
                 @for (var i = 0; i < Model.lisA41.Count; i++)
                 {
@@ -55,7 +56,7 @@
                                 <span class="val-readonly">@Model.lisA41[i].j11Name</span>
                             }
                             else
-                            {                                
+                            {
                                 <myval value="@Model.lisA41[i].PersonCombo" hoverprefix="j02" hoverpid="@Model.lisA41[i].j02ID"></myval>
                             }
 
@@ -80,7 +81,7 @@
                         <div class="col-1">
                             @if (Model.lisA41[i].a45IsManual)
                             {
-                                <button type="button" class="btn btn-danger" title="Odstranit řádek" onclick="handle_delete_row('@(Model.lisA41[i].TempGuid)')">x</button>
+                                <button type="button" class="btn btn-danger" title="@_f.tra("Odstranit řádek")" onclick="handle_delete_row('@(Model.lisA41[i].TempGuid)')">x</button>
                             }
 
                         </div>
@@ -96,7 +97,7 @@
         {
             <div class="card my-2">
                 <div class="card-header">
-                    Již uložení účastníci akce
+                    @_f.tra("Již uložení účastníci akce")
                 </div>
                 <div class="card-body">
                     @Html.EditorFor(m => m.lisA41Saved, "~/Views/Shared/_a01UcastniciStatic.cshtml")

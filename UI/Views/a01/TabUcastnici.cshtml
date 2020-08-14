@@ -1,4 +1,5 @@
 ﻿@model UI.Models.Tab.a01TabUcastnici
+@inject BL.Factory _f
 
 @{
     ViewData["Title"] = "Účastníci akce";
@@ -49,7 +50,7 @@
     }
 
 
-    <button type="button" class="btn btn-primary" onclick="append()">Přidat účastníky</button>
+    <button type="button" class="btn btn-primary" onclick="append()">@_f.tra("Přidat účastníky")</button>
 </div>
 
 

@@ -8,19 +8,7 @@ namespace UI.Models
 {
     public class MyToolbarViewModel
     {
-        //private BO.BaseBO _Record;
-        //public BO.BaseBO Record
-        //{
-        //    get
-        //    {
-        //        return _Record;
-        //    }
-        //    set
-        //    {
-        //        _Record = value;
-        //        RefreshState();
-        //    }
-        //}
+      
         public int RecordPID { get; set; }
         public bool RecordIsClosed { get; set; }
         public string RecordEntity { get; set; }

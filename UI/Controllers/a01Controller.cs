@@ -218,12 +218,12 @@ namespace UI.Controllers
         private void RefreshNavTabs(a01RecPage v)
         {
             //v.NavTabs.Add(new NavTab() { Name = "Historie událostí", Entity = "b05Workflow_History", Url = "/TheGrid/SlaveView?prefix=b05" });
-            v.NavTabs.Add(new NavTab() { Name = Factory.tra("Historie událostí"), Entity = "viewHistorie", Url = "/a01/TabHistory?pid=" + v.pid.ToString() });
-            v.NavTabs.Add(new NavTab() { Name = Factory.tra("Účastníci akce"), Entity = "viewUcastnici", Url = "/a01/TabUcastnici?pid=" + v.pid.ToString() });
-            v.NavTabs.Add(new NavTab() { Name = Factory.tra("Časový plán"), Entity = "viewCapacity", Url = "/a35/TabCapacity?pid=" + v.pid.ToString() });
-            v.NavTabs.Add(new NavTab() { Name = Factory.tra("Formuláře"), Entity = "viewFormulare", Url = "/a01/TabForms?pid=" + v.pid.ToString() });
-            v.NavTabs.Add(new NavTab() { Name = Factory.tra("Úkoly/Lhůty"), Entity = "h04ToDo", Url = "/TheGrid/SlaveView?prefix=h04" });
-            v.NavTabs.Add(new NavTab() { Name = Factory.tra("Související akce"), Entity = "a01Event", Url = "/TheGrid/SlaveView?prefix=a01" });
+            v.NavTabs.Add(AddTab("Historie událostí", "viewHistorie", "/a01/TabHistory?pid=" + v.pid.ToString()));
+            v.NavTabs.Add(AddTab("Účastníci akce", "viewUcastnici", "/a01/TabUcastnici?pid=" + v.pid.ToString()));
+            v.NavTabs.Add(AddTab("Časový plán","viewCapacity", "/a35/TabCapacity?pid=" + v.pid.ToString()));
+            v.NavTabs.Add(AddTab("Formuláře", "viewFormulare", "/a01/TabForms?pid=" + v.pid.ToString()));
+            v.NavTabs.Add(AddTab("Úkoly/Lhůty", "h04ToDo", "/TheGrid/SlaveView?prefix=h04"));
+            v.NavTabs.Add(AddTab("Související akce", "a01Event", "/TheGrid/SlaveView?prefix=a01"));
 
             string strDefTab = Factory.CBL.LoadUserParam("recpage-tab-a01");
             var deftab = v.NavTabs[0];

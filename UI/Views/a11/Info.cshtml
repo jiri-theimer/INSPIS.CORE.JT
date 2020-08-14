@@ -20,13 +20,13 @@
         @if (Model.RecPermission.PermValue==BO.a01EventPermissionENUM.ShareTeam_Leader || _f.CurrentUser.TestPermission(BO.PermValueEnum.AdminGlobal_Ciselniky))
         {
             <div class="colsm-2 col-md-2">
-                <a href="javascript:_window_open('/a11/Record?pid=@(Model.pid)')">Upravit</a>
+                <a href="javascript:_window_open('/a11/Record?pid=@(Model.pid)')">@_f.tra("Upravit")</a>
             </div>
         }
     </div>
     
     <div class="form-row">
-        <label class="col-sm-1 col-md-2 col-form-label">Vloženo do akce:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Vloženo do akce"):</label>
         <div class="col-sm-5 col-md-5">
             <myval value="@(Model.Rec.UserInsert+"/"+BO.BAS.ObjectDateTime2String(Model.Rec.DateInsert))"></myval>
         </div>

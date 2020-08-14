@@ -160,14 +160,14 @@ namespace UI.Controllers
 
         private void RefreshNavTabs(a03RecPage v)
         {
-            v.NavTabs.Add(new NavTab() { Name = Factory.App.Terminology_Akce, Entity = "a01Event", Url = "/TheGrid/SlaveView?prefix=a01" });
-            v.NavTabs.Add(new NavTab() { Name = "Kontaktní osoby", Entity = "j02Person", Url = "/TheGrid/SlaveView?prefix=a39" });
-            v.NavTabs.Add(new NavTab() { Name = "Činnosti školy", Entity = "a37InstitutionDepartment", Url = "/TheGrid/SlaveView?prefix=a37" });
-            v.NavTabs.Add(new NavTab() { Name = "Vzdělávací obory", Entity = "a19DomainToInstitutionDepartment", Url = "/TheGrid/SlaveView?prefix=a19" });
-            v.NavTabs.Add(new NavTab() { Name = "Učitelé", Entity = "k01Teacher", Url = "/TheGrid/SlaveView?prefix=k01" });
-            v.NavTabs.Add(new NavTab() { Name = "Školy zřizovatele", Entity = "a03Institution", Url = "/TheGrid/SlaveView?prefix=a03&master_flag=founder" });
-            v.NavTabs.Add(new NavTab() { Name = "INEZ", Entity = "a42Qes", Url = "/TheGrid/SlaveView?prefix=a42" });
-            v.NavTabs.Add(new NavTab() { Name = "Pojmenované seznamy", Entity = "a29InstitutionList", Url = "/TheGrid/SlaveView?prefix=a29" });
+            v.NavTabs.Add(AddTab(Factory.App.Terminology_Akce, "a01Event", "/TheGrid/SlaveView?prefix=a01", false));
+            v.NavTabs.Add(AddTab("Kontaktní osoby", "j02Person", "/TheGrid/SlaveView?prefix=a39"));
+            v.NavTabs.Add(AddTab("Činnosti školy", "a37InstitutionDepartment", "/TheGrid/SlaveView?prefix=a37"));
+            v.NavTabs.Add(AddTab("Vzdělávací obory", "a19DomainToInstitutionDepartment", "/TheGrid/SlaveView?prefix=a19"));
+            v.NavTabs.Add(AddTab("Učitelé", "k01Teacher", "/TheGrid/SlaveView?prefix=k01"));
+            v.NavTabs.Add(AddTab("Školy zřizovatele", "a03Institution", "/TheGrid/SlaveView?prefix=a03&master_flag=founder"));
+            v.NavTabs.Add(AddTab("INEZ", "a42Qes", "/TheGrid/SlaveView?prefix=a42"));
+            v.NavTabs.Add(AddTab("Pojmenované seznamy", "a29InstitutionList", "/TheGrid/SlaveView?prefix=a29"));
 
             string strDefTab = Factory.CBL.LoadUserParam("recpage-tab-a03");
             var deftab = v.NavTabs[0];

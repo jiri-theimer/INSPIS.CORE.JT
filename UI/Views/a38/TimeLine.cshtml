@@ -1,7 +1,8 @@
 ﻿@model UI.Models.a38TimelineViewModel
+@inject BL.Factory _f
 
 @{
-    ViewData["Title"] = "Rezervace neperzonálních zdrojů";
+    ViewData["Title"] = _f.tra("Rezervace neperzonálních zdrojů");
     Layout = "~/Views/Shared/_LayoutModal.cshtml";
 
 
@@ -27,30 +28,30 @@
             }
         </select>
         <select asp-for="@Model.CurMonth" class="form-control" onchange="gomonth(this)">
-            <option value="1">Leden</option>
-            <option value="2">Únor</option>
-            <option value="3">Březen</option>
-            <option value="4">Duben</option>
-            <option value="5">Květen</option>
-            <option value="6">Červen</option>
-            <option value="7">Červenec</option>
-            <option value="8">Srpen</option>
-            <option value="9">Září</option>
-            <option value="10">Říjen</option>
-            <option value="11">Listopad</option>
-            <option value="12">Prosinec</option>
+            <option value="1">@_f.tra("Leden")</option>
+            <option value="2">@_f.tra("Únor")</option>
+            <option value="3">@_f.tra("Březen")</option>
+            <option value="4">@_f.tra("Duben")</option>
+            <option value="5">@_f.tra("Květen")</option>
+            <option value="6">@_f.tra("Červen")</option>
+            <option value="7">@_f.tra("Červenec")</option>
+            <option value="8">@_f.tra("Srpen")</option>
+            <option value="9">@_f.tra("Září")</option>
+            <option value="10">@_f.tra("Říjen")</option>
+            <option value="11">@_f.tra("Listopad")</option>
+            <option value="12">@_f.tra("Prosinec")</option>
         </select>
-        <button type="button" class="btn btn-secondary btn-sm" title="Předchozí měsíc" onclick="goprev()">←</button>
+        <button type="button" class="btn btn-secondary btn-sm" title="@_f.tra("Předchozí měsíc")" onclick="goprev()">←</button>
         <strong class="val-readonly" style="width:200px;text-align:center;">@(Model.CurMonth.ToString()+" - "+Model.CurYear.ToString())</strong>
-        <button type="button" class="btn btn-secondary btn-sm" title="Další měsíc" onclick="gonext()">→</button>
+        <button type="button" class="btn btn-secondary btn-sm" title="@_f.tra("Následující měsíc")" onclick="gonext()">→</button>
     </div>
 
     <div class="col-sm-1 col-md-1">
-        <mycombo entity="a05Region" asp-for="@Model.a05ID" selectedtext="@Model.a05Name" view-flag="2" event_after_changevalue="change_a05id" placeholder="Kraj"></mycombo>
+        <mycombo entity="a05Region" asp-for="@Model.a05ID" selectedtext="@Model.a05Name" view-flag="2" event_after_changevalue="change_a05id" placeholder="@_f.tra("Kraj")"></mycombo>
     </div>
 
     <div class="col-sm-1 col-md-1">
-        <button type="button" id="cmdClose" onclick="_window_close()" class="btn btn-light" style="margin-left:100px;">Zavřít</button>
+        <button type="button" id="cmdClose" onclick="_window_close()" class="btn btn-light" style="margin-left:100px;">@_f.tra("Zavřít")</button>
     </div>
 
 
@@ -63,8 +64,8 @@
         <td class="firstcol_timeline">
         </td>
         <td></td>
-        <td class="timeline_dny">Dní</td>
-        <td class="timeline_dny">Akcí</td>
+        <td class="timeline_dny">@_f.tra("Dní")</td>
+        <td class="timeline_dny">@_f.tra("Akcí")</td>
         @foreach (DateTime d in Model.lisDays)
         {
             strClass = "work-day";
@@ -72,7 +73,7 @@
             {
                 strClass = "nonwork-day";
             }
-            if (Model.lisJ26.Where(p => p.j26Date == d).Count()>0)
+            if (Model.lisJ26.Where(p => p.j26Date == d).Count() > 0)
             {
                 strClass = "holiday";
             }
@@ -92,9 +93,9 @@
             <td>
                 @if (Model.lisTimeLine.Where(p => p.j23ID == recJ23.pid).Count() > 0)
                 {
-                <span>
-                    @recJ23.NamePlusCode
-                </span>
+                    <span>
+                        @recJ23.NamePlusCode
+                    </span>
 
                 }
 

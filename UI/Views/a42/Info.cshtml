@@ -1,4 +1,5 @@
 ﻿@model a42RecPage
+@inject BL.Factory _f
 
 @{
     ViewData["Title"] = "Info";
@@ -10,14 +11,14 @@
 
 <div class="modal_record_container">
     <div class="form-row">
-        <label class="col-sm-1 col-md-2 col-form-label">Název:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
         <div class="col-sm-8 col-md-7">
             <span class="val-readonly">@(Model.Rec.a42Name)</span>
         </div>
 
     </div>
     <div class="form-row my-2">
-        <label class="col-sm-1 col-md-2 col-form-label">Téma:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Téma"):</label>
         <div class="col-sm-8 col-md-7">
 
             <span class="val-readonly">@Model.Rec.a08Name</span>
@@ -26,7 +27,7 @@
     </div>
 
     <div class="form-row my-2">
-        <label class="col-sm-1 col-md-2 col-form-label">Období:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Období"):</label>
         <div class="col-sm-2 col-md-2">
 
             <span class="val-readonly">@(BO.BAS.ObjectDate2String(Model.Rec.a42DateFrom))</span>

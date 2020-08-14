@@ -1,15 +1,16 @@
 ﻿@model a01CreateViewModel
 @inject BL.RunningApp _app
+@inject BL.Factory _f
 
-@{
-    ViewData["Title"] = "Vybrat typ akce";
+@{    
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    string _header = "Vyberte typ akce";
-    @if (_app.Implementation == "HD")
+    string _header = @_f.tra("Vyberte typ akce");
+    if (_app.Implementation == "HD")
     {
-        _header = "Vyberte typ požadavku";
+        _header = @_f.tra("Vyberte typ požadavku");
     }
+    ViewData["Title"] = _header;
 }
 
 @addTagHelper *, UI
@@ -18,8 +19,8 @@
 
 
 <div class="bg-light" style="padding:10px;">
-    <button id="cmdContinue" onclick="gonext()" class="btn btn-primary">Pokračovat</button>
-    <button id="cmdClose" onclick="_window_close()" class="btn btn-light" style="display:none;">Zavřít</button>
+    <button id="cmdContinue" onclick="gonext()" class="btn btn-primary">@_f.tra("Pokračovat")</button>
+    <button id="cmdClose" onclick="_window_close()" class="btn btn-light" style="display:none;">@_f.tra("Zavřít")</button>
 
 
 </div>

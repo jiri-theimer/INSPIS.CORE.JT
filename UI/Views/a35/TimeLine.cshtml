@@ -1,12 +1,14 @@
 ﻿@model UI.Models.a35TimeLineViewModel
+@inject BL.Factory _f
 
 @{
-    ViewData["Title"] = "Časové kapacity inspektorů";
+    ViewData["Title"] = _f.tra("Časové kapacity inspektorů");
     Layout = "~/Views/Shared/_LayoutModal.cshtml";
 
 
     string strClass = "work-day";
     int x = 0;
+    string _akceTra = _f.tra("Akce");
 
 }
 
@@ -24,22 +26,22 @@
             }
         </select>
         <select asp-for="@Model.CurMonth" class="form-control" onchange="gomonth(this)">
-            <option value="1">Leden</option>
-            <option value="2">Únor</option>
-            <option value="3">Březen</option>
-            <option value="4">Duben</option>
-            <option value="5">Květen</option>
-            <option value="6">Červen</option>
-            <option value="7">Červenec</option>
-            <option value="8">Srpen</option>
-            <option value="9">Září</option>
-            <option value="10">Říjen</option>
-            <option value="11">Listopad</option>
-            <option value="12">Prosinec</option>
+            <option value="1">@_f.tra("Leden")</option>
+            <option value="2">@_f.tra("Únor")</option>
+            <option value="3">@_f.tra("Březen")</option>
+            <option value="4">@_f.tra("Duben")</option>
+            <option value="5">@_f.tra("Květen")</option>
+            <option value="6">@_f.tra("Červen")</option>
+            <option value="7">@_f.tra("Červenec")</option>
+            <option value="8">@_f.tra("Srpen")</option>
+            <option value="9">@_f.tra("Září")</option>
+            <option value="10">@_f.tra("Říjen")</option>
+            <option value="11">@_f.tra("Listopad")</option>
+            <option value="12">@_f.tra("Prosinec")</option>
         </select>
-        <button type="button" class="btn btn-secondary btn-sm" title="Předchozí měsíc" onclick="goprev()">←</button>
+        <button type="button" class="btn btn-secondary btn-sm" title="@_f.tra("Předchozí měsíc")" onclick="goprev()">←</button>
         <strong class="val-readonly" style="width:200px;text-align:center;">@(Model.CurMonth.ToString()+" - "+Model.CurYear.ToString())</strong>
-        <button type="button" class="btn btn-secondary btn-sm" title="Další měsíc" onclick="gonext()">→</button>
+        <button type="button" class="btn btn-secondary btn-sm" title="@_f.tra("Následující měsíc")" onclick="gonext()">→</button>
     </div>
 
     <div class="col-sm-1 col-md-1">
@@ -48,17 +50,17 @@
     <div class="col-sm-1 col-md-1">
         <select class="form-control" asp-for="@Model.PersonQueryFlag" onchange="change_personqueryflag(this)">
             <option value="0"></option>
-            <option value="1">Pouze přizvané osoby</option>
+            <option value="1">@_f.tra("Pouze přizvané osoby")</option>
         </select>
     </div>
     <div class="col-sm-1 col-md-1">
         <select class="form-control" asp-for="@Model.A38QueryFlag" onchange="change_a38queryflag(this)">
             <option value="0"></option>
-            <option value="1">Vč. rezervací NZ</option>
+            <option value="1">@_f.tra("Vč. rezervací NZ")</option>
         </select>
     </div>
     <div class="col-sm-1 col-md-1">
-        <button type="button" id="cmdClose" onclick="_window_close()" class="btn btn-light" style="margin-left:100px;">Zavřít</button>
+        <button type="button" id="cmdClose" onclick="_window_close()" class="btn btn-light" style="margin-left:100px;">@_f.tra("Zavřít")</button>
     </div>
 
 
@@ -71,8 +73,8 @@
         <td class="firstcol_timeline">
         </td>
         <td></td>
-        <td class="timeline_dny">Dní</td>
-        <td class="timeline_dny">Akcí</td>
+        <td class="timeline_dny">@_f.tra("Dní")</td>
+        <td class="timeline_dny">@_f.tra("Akcí")</td>
         @foreach (DateTime d in Model.lisDays)
         {
             strClass = "work-day";
@@ -140,65 +142,65 @@
                 {
                     strClass = "nonwork-day";
                 }
-        <td class="@strClass">
-            @if (x > 0)
-            {
-                <div class="a35cell">
-                    @if (x > 1)
+                <td class="@strClass">
+                    @if (x > 0)
                     {
-                        <span style="background-color:pink;padding-left:2px;padding-right:2px;">@x</span>
-                    }
-                </div>
-            }
-
-            @if (Model.A38QueryFlag > 0)
-            {
-                @foreach (var c in Model.lisTimeLineA38.Where(p => p.j02ID == recJ02.j02ID && p.a38PlanDate == d))
-                {
-                    <div class="a38cell">
-
-                    </div>
-                }
-            }
-            @{
-                strClass = "";
-                if (x > 0) strClass = "a35cell";
-            }
-            @if (Model.a05ID > 0)
-            {
-                @foreach (var c in Model.lisH04.Where(p => p.j02ID == recJ02.pid && (p.h04CapacityPlanFrom >= d && p.h04CapacityPlanFrom < d.AddDays(1) || p.h04CapacityPlanUntil >= d && p.h04CapacityPlanUntil < d.AddDays(1))))
-                {
-
-                    if (c.h07IsToDo && c.h04Deadline != null && c.h04Deadline >= d && c.h04Deadline < d.AddDays(1))
-                    {
-                        <div class="@strClass" title="@(c.h07Name+": "+c.h04Name+", Akce: "+c.a01Signature)">
-                            <img src="~/images/todo.png" />
+                        <div class="a35cell">
+                            @if (x > 1)
+                            {
+                                <span style="background-color:pink;padding-left:2px;padding-right:2px;">@x</span>
+                            }
                         </div>
                     }
-                    if (c.h04CapacityPlanFrom != null && c.h04CapacityPlanFrom >= d && c.h04CapacityPlanFrom < d.AddDays(1))
+
+                    @if (Model.A38QueryFlag > 0)
                     {
-                        <div class="@strClass" title="@(c.h07Name+": "+c.h04Name+", Akce: "+c.a01Signature))">
-                            <img src="~/images/todo_start.png" />
-                        </div>
-                    }
-                    else
-                    {
-                        if (c.h04CapacityPlanUntil != null && c.h04CapacityPlanUntil >= d && c.h04CapacityPlanUntil < d.AddDays(1))
+                        @foreach (var c in Model.lisTimeLineA38.Where(p => p.j02ID == recJ02.j02ID && p.a38PlanDate == d))
                         {
-                            <div class="@strClass" title="@(c.h07Name+": "+c.h04Name+", Akce: "+c.a01Signature))">
-                                <img src="~/images/todo_end.png" />
+                            <div class="a38cell">
+
                             </div>
+                        }
+                    }
+                    @{
+                        strClass = "";
+                        if (x > 0) strClass = "a35cell";
+                    }
+                    @if (Model.a05ID > 0)
+                    {
+                        @foreach (var c in Model.lisH04.Where(p => p.j02ID == recJ02.pid && (p.h04CapacityPlanFrom >= d && p.h04CapacityPlanFrom < d.AddDays(1) || p.h04CapacityPlanUntil >= d && p.h04CapacityPlanUntil < d.AddDays(1))))
+                        {
+
+                            if (c.h07IsToDo && c.h04Deadline != null && c.h04Deadline >= d && c.h04Deadline < d.AddDays(1))
+                            {
+                                <div class="@strClass" title="@(c.h07Name+": "+c.h04Name+", "+_akceTra+": "+c.a01Signature)">
+                                    <img src="~/images/todo.png" />
+                                </div>
+                            }
+                            if (c.h04CapacityPlanFrom != null && c.h04CapacityPlanFrom >= d && c.h04CapacityPlanFrom < d.AddDays(1))
+                            {
+                                <div class="@strClass" title="@(c.h07Name+": "+c.h04Name+", "+_akceTra+": "+c.a01Signature))">
+                                    <img src="~/images/todo_start.png" />
+                                </div>
+                            }
+                            else
+                            {
+                                if (c.h04CapacityPlanUntil != null && c.h04CapacityPlanUntil >= d && c.h04CapacityPlanUntil < d.AddDays(1))
+                                {
+                                    <div class="@strClass" title="@(c.h07Name+": "+c.h04Name+", "+_akceTra+": "+c.a01Signature))">
+                                        <img src="~/images/todo_end.png" />
+                                    </div>
+                                }
+                            }
+
+
                         }
                     }
 
 
-                }
-            }
 
 
-
-
-        </td>
+                </td>
             }
         </tr>
     }

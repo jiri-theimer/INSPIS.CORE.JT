@@ -32,6 +32,7 @@ namespace UI.Controllers
             v.j72id = Factory.CBL.LoadUserParamInt("flatview-j72id-" + prefix);
             return View(v);
         }
+        
         public IActionResult MasterView(string prefix,int go2pid)    //grid horní + spodní panel
         {
             TheGridInstanceViewModel v = inhaleGridViewInstance(prefix, go2pid);
@@ -42,43 +43,43 @@ namespace UI.Controllers
             switch (prefix)
             {
                 case "a01":
-                    tabs.Add(new NavTab() { Name = "Info",Entity="viewInfo", Url = "/a01/Info?pid="+ AppendPid2Url(v.go2pid) });
-                    tabs.Add(new NavTab() { Name = "Historie událostí",Entity="viewHistory", Url = "/a01/TabHistory?pid=" + AppendPid2Url(v.go2pid) });
-                    
-                    tabs.Add(new NavTab() { Name="Účastníci akce",Entity = "viewUcastnici", Url = "/a01/TabUcastnici?pid=" + AppendPid2Url(v.go2pid) });
-                    tabs.Add(new NavTab() { Name = "Časový plán", Entity = "viewCapacity", Url = "/a35/TabCapacity?pid=" + AppendPid2Url(v.go2pid) });
-                    tabs.Add(new NavTab() { Name = "Formuláře", Entity = "viewFormulare", Url = "/a01/TabForms?pid=" + AppendPid2Url(v.go2pid) });
+                    tabs.Add(AddTab("Info", "viewInfo", "/a01/Info?pid=" + AppendPid2Url(v.go2pid)));
+                    tabs.Add(AddTab("Historie událostí","viewHistory","/a01/TabHistory?pid=" + AppendPid2Url(v.go2pid)));
+                    tabs.Add(AddTab("Účastníci akce", "viewUcastnici", "/a01/TabUcastnici?pid=" + AppendPid2Url(v.go2pid)));
+                    tabs.Add(AddTab("Časový plán", "viewCapacity","/a35/TabCapacity?pid=" + AppendPid2Url(v.go2pid)));
+
+                    tabs.Add(AddTab("Formuláře", "viewFormulare", "/a01/TabForms?pid=" + AppendPid2Url(v.go2pid)));
 
                     //tabs.Add(new NavTab() { Name = "Přílohy", Entity = "p12ClientTpv", Url = "SlaveView?prefix=p12" });
-                    tabs.Add(new NavTab() { Name = "Úkoly/Lhůty", Entity = "h04ToDo", Url = "SlaveView?prefix=h04" });
-                    tabs.Add(new NavTab() { Name = "Související akce", Entity = "a01Event", Url = "SlaveView?prefix=a01" });
+                    tabs.Add(AddTab("Úkoly/Lhůty","h04ToDo","SlaveView?prefix=h04"));
+                    tabs.Add(AddTab("Související akce", "a01Event", "SlaveView?prefix=a01"));
                     
                     break;
                 case "a03":
-                    tabs.Add(new NavTab() { Name = "Info", Url = "/a03/Info?pid=" + AppendPid2Url(v.go2pid) });
-                    tabs.Add(new NavTab() { Name = "Svázané akce", Entity = "a01Event", Url = "SlaveView?prefix=a01" });
-                    tabs.Add(new NavTab() { Name = "Činnosti školy", Entity = "a37InstitutionDepartment", Url = "SlaveView?prefix=a37" });
-                    tabs.Add(new NavTab() { Name = "Vzdělávací obory", Entity = "a19DomainToInstitutionDepartment", Url = "SlaveView?prefix=a19" });
-                    tabs.Add(new NavTab() { Name = "Kontaktní osoby", Entity = "a39InstitutionPerson", Url = "SlaveView?prefix=a39" });
-                    tabs.Add(new NavTab() { Name = "Učitelé", Entity = "k01Teacher", Url = "SlaveView?prefix=k01" });
-                    tabs.Add(new NavTab() { Name = "INEZ", Entity = "a42Qes", Url = "SlaveView?prefix=a42" });
-                    tabs.Add(new NavTab() { Name = "Pojmenované seznamy", Entity = "a29InstitutionList", Url = "SlaveView?prefix=a29" });
+                    tabs.Add(AddTab("Info", "viewInfo", "/a03/Info?pid=" + AppendPid2Url(v.go2pid)));
+                    tabs.Add(AddTab("Svázané akce", "a01Event", "SlaveView?prefix=a01"));
+                    tabs.Add(AddTab("Činnosti školy", "a37InstitutionDepartment", "SlaveView?prefix=a37"));
+                    tabs.Add(AddTab("Vzdělávací obory","a19DomainToInstitutionDepartment", "SlaveView?prefix=a19"));
+                    tabs.Add(AddTab("Kontaktní osoby","a39InstitutionPerson","SlaveView?prefix=a39"));
+                    tabs.Add(AddTab("Učitelé", "k01Teacher", "SlaveView?prefix=k01"));
+                    tabs.Add(AddTab("INEZ", "a42Qes", "SlaveView?prefix=a42"));
+                    tabs.Add(AddTab( "Pojmenované seznamy",  "a29InstitutionList","SlaveView?prefix=a29"));
 
                     break;
                 case "a42":
-                    tabs.Add(new NavTab() { Name = "Info", Url = "/a42/Info?pid=" + AppendPid2Url(v.go2pid) });
-                    tabs.Add(new NavTab() { Name = "Svázané akce", Entity = "a01Event", Url = "SlaveView?prefix=a01" });
-                    tabs.Add(new NavTab() { Name = "Outbox", Entity = "x40MailQueue", Url = "SlaveView?prefix=x40" });
+                    tabs.Add(AddTab("Info", "viewInfo","/a42/Info?pid=" + AppendPid2Url(v.go2pid)));
+                    tabs.Add(AddTab("Svázané akce", "a01Event", "SlaveView?prefix=a01"));
+                    tabs.Add(AddTab("Outbox", "x40MailQueue","SlaveView?prefix=x40"));
                     break;
                 case "j02":
-                    tabs.Add(new NavTab() { Name = "Info", Url = "/j02/Info?pid=" + AppendPid2Url(v.go2pid) });                    
-                    tabs.Add(new NavTab() { Name = string.Format("{0}: je zakladatelem",Factory.App.Terminology_Akce), Entity = "a01Event", Url = "SlaveView?prefix=a01" });
-                    tabs.Add(new NavTab() { Name = string.Format("{0}: je účastníkem", Factory.App.Terminology_Akce), Entity = "a01Event", Url = "SlaveView?prefix=a01" });
-                    tabs.Add(new NavTab() { Name = "Instituce", Entity = "a03Institution", Url = "SlaveView?prefix=a03" });
-                    tabs.Add(new NavTab() { Name = "Úkoly/Lhůty", Entity = "h04ToDo", Url = "SlaveView?prefix=h04" });
-                    tabs.Add(new NavTab() { Name = "Outbox", Entity = "x40MailQueue", Url = "SlaveView?prefix=x40" });
-                    tabs.Add(new NavTab() { Name = "PING Log", Entity = "j92PingLog", Url = "SlaveView?prefix=j92" });
-                    tabs.Add(new NavTab() { Name = "LOGIN Log", Entity = "j90LoginAccessLog", Url = "SlaveView?prefix=j90" });
+                    tabs.Add(AddTab("Info", "viewInfo", "/j02/Info?pid=" + AppendPid2Url(v.go2pid)));
+                    tabs.Add(AddTab(string.Format(Factory.tra("{0}: je zakladatelem"), Factory.App.Terminology_Akce), "a01Event", "SlaveView?prefix=a01",false));
+                    tabs.Add(AddTab(string.Format(Factory.tra("{0}: je účastníkem"), Factory.App.Terminology_Akce), "a01Event", "SlaveView?prefix=a01", false));
+                    tabs.Add(AddTab("Instituce", "a03Institution", "SlaveView?prefix=a03"));
+                    tabs.Add(AddTab("Úkoly/Lhůty", "h04ToDo", "SlaveView?prefix=h04"));
+                    tabs.Add(AddTab("Outbox", "x40MailQueue", "SlaveView?prefix=x40"));
+                    tabs.Add(AddTab("PING Log", "j92PingLog", "SlaveView?prefix=j92"));
+                    tabs.Add(AddTab("LOGIN Log", "j90LoginAccessLog", "SlaveView?prefix=j90"));
                     break;
                 
                 
@@ -131,7 +132,7 @@ namespace UI.Controllers
             v.master_flag = master_flag;
             if (String.IsNullOrEmpty(v.master_entity) || v.master_pid == 0)
             {
-                Factory.CurrentUser.AddMessage("Musíte vybrat záznam z nadřízeného panelu.");
+                AddMessage("Musíte vybrat záznam z nadřízeného panelu.");
             }
             
             return View(v);
@@ -145,7 +146,7 @@ namespace UI.Controllers
 
             if (v.entity == "")
             {
-                Factory.CurrentUser.AddMessage("Entity for Grid not found.");
+                AddMessage("Entity for Grid not found.");
             }
             if (c.IsGlobalPeriodQuery)
             {
@@ -338,7 +339,7 @@ namespace UI.Controllers
             }
             else
             {
-                this.AddMessage("GRID Error: Dynamic SQL failed.");
+                AddMessage("GRID Error: Dynamic SQL failed.");
             }
 
             if (intVirtualRowsCount > 500)

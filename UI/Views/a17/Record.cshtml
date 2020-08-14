@@ -1,23 +1,24 @@
 ﻿@model UI.Models.Record.a17Record
+@inject BL.Factory _f
 
 @{
 
     Layout = "~/Views/Shared/_LayoutRecord.cshtml";
     if (Model.Rec == null) return;
-    Model.PageTitle = "Typ činnosti";
+    Model.PageTitle = _f.tra("Typ činnosti");
 }
 @addTagHelper *, UI
 
 <div class="modal_record_container">
     <div class="form-row">
-        <label class="col-sm-1 col-md-2 col-form-label">Název:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
         <div class="col-sm-11 col-md-10">
             <input class="form-control" asp-for="Rec.a17Name" />
             <span asp-validation-for="Rec.a17Name" class="text-danger"></span>
         </div>
     </div>
     <div class="form-row my-2">
-        <label class="col-sm-1 col-md-2 col-form-label">UIV kód:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("UIV kód"):</label>
         <div class="col-sm-3 col-md-2">
             <input class="form-control" asp-for="Rec.a17UIVCode" />
         </div>
@@ -26,7 +27,7 @@
 
 
     <div class="form-row my-2">
-        <textarea asp-for="Rec.a17Description" class="form-control" placeholder="Podrobný popis"></textarea>
+        <textarea asp-for="Rec.a17Description" class="form-control" placeholder="@_f.tra("Podrobný popis")"></textarea>
         <span asp-validation-for="Rec.a17Description" class="text-danger"></span>
     </div>
 

@@ -1,4 +1,5 @@
 ﻿@model UI.Models.a38AppendToA01ViewModel
+@inject BL.Factory _f
 
 @{
     ViewData["Title"] = "Rezervace nepersonálního zdroje";
@@ -10,17 +11,17 @@
 @addTagHelper *, UI
 <link rel="stylesheet" href="~/css/tabcapacity.css" />
 
-<h4>Rezervace nepersonálního zdroje v akci: @Model.RecA01.a01Signature</h4>
+<h4>@_f.tra("Rezervace nepersonálního zdroje v akci"): @Model.RecA01.a01Signature</h4>
 
 
 <div class="tabs_container_record">
     <!-- Tab panes -->
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a id="link_tab1" class="nav-link" data-toggle="tab" href="#tab1">Nová rezervace</a>
+            <a id="link_tab1" class="nav-link" data-toggle="tab" href="#tab1">@_f.tra("Nová rezervace")</a>
         </li>
         <li class="nav-item">
-            <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2">Odstranit uložené rezervace</a>
+            <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2">@_f.tra("Odstranit uložené rezervace")</a>
         </li>
     </ul>
 </div>
@@ -28,8 +29,8 @@
 <div class="tab-content">
     <div class="tab-pane" id="tab1">
         <div class="bg-light" style="padding:10px;">
-            <button id="cmdSave" type="submit" class="btn btn-success">Uložit změny</button>
-            <button type="button" id="cmdClose" onclick="_window_close()" class="btn btn-light">Zavřít</button>
+            <button id="cmdSave" type="submit" class="btn btn-success">@_f.tra("Uložit změny")</button>
+            <button type="button" id="cmdClose" onclick="_window_close()" class="btn btn-light">@_f.tra("Zavřít")</button>
 
         </div>
 
@@ -47,19 +48,19 @@
                 <div class="card-body">
                     <div class="form-row">
                         <div class="col-sm-10 col-md-10">
-                            <mycombo entity="j23NonPerson" asp-for="@Model.SelectedJ23ID" selectedtext="@Model.SelectedJ23Name" view-flag="2" masterprefix="a05" masterpid="@Model.a05ID" event_after_changevalue="change_j23id" placeholder="Zdroj"></mycombo>
+                            <mycombo entity="j23NonPerson" asp-for="@Model.SelectedJ23ID" selectedtext="@Model.SelectedJ23Name" view-flag="2" masterprefix="a05" masterpid="@Model.a05ID" event_after_changevalue="change_j23id" placeholder="@_f.tra("Nepersonální zdroj")"></mycombo>
                         </div>
                         <div class="col-sm-2 col-md-2">
-                            <mycombo entity="a05Region" asp-for="@Model.a05ID" selectedtext="@Model.a05Name" view-flag="2" event_after_changevalue="change_a05id" placeholder="Kraj"></mycombo>
+                            <mycombo entity="a05Region" asp-for="@Model.a05ID" selectedtext="@Model.a05Name" view-flag="2" event_after_changevalue="change_a05id" placeholder="@_f.tra("Kraj")"></mycombo>
                         </div>
 
                     </div>
                     <div class="form-row my-2">
                         <div class="col-sm-10 col-md-10">
-                            <mycombo entity="j02Person" asp-for="@Model.SelectedJ02ID" selectedtext="@Model.SelectedPerson" view-flag="2" event_after_changevalue="change_j02id" placeholder="Jméno" masterprefix="a01" masterpid="@Model.pid" param1="without_teams_and_owner"></mycombo>
+                            <mycombo entity="j02Person" asp-for="@Model.SelectedJ02ID" selectedtext="@Model.SelectedPerson" view-flag="2" event_after_changevalue="change_j02id" placeholder="@_f.tra("Jméno")" masterprefix="a01" masterpid="@Model.pid" param1="without_teams_and_owner"></mycombo>
                         </div>
                         <div class="col-sm-2 col-md-2">
-                            <input type="text" asp-for="@Model.a38Location" class="form-control" placeholder="Místo" />
+                            <input type="text" asp-for="@Model.a38Location" class="form-control" placeholder="@_f.tra("Místo")" />
                         </div>
                     </div>
                     @if (Model.SelectedJ02ID > 0)
@@ -86,16 +87,16 @@
                                             @if (Model.CheckedIsDriver == null || Model.CheckedIsDriver.IndexOf(c.pid.ToString() + "-1") > -1)
                                             {
                                                 <input type="radio" class="opgIsDriver" checked="checked" name="opgIsDriver(@c.pid)" id="IsDriver(@c.pid)" value="@(c.pid.ToString()+"-1")" />
-                                                <label for="IsDriver(@c.pid)">Řidič</label>
+                                                <label for="IsDriver(@c.pid)">@_f.tra("Řidič")</label>
                                                 <input type="radio" class="opgIsDriver" name="opgIsDriver(@c.pid)" id="IsNotDriver(@c.pid)" value="@(c.pid.ToString()+"-0")" />
-                                                <label for="IsNotDriver(@c.pid)">Cestující</label>
+                                                <label for="IsNotDriver(@c.pid)">@_f.tra("Cestující")</label>
                                             }
                                             else
                                             {
                                                 <input type="radio" class="opgIsDriver" name="opgIsDriver(@c.pid)" id="IsDriver(@c.pid)" value="@(c.pid.ToString()+"-1")" />
-                                                <label for="IsDriver(@c.pid)">Řidič</label>
+                                                <label for="IsDriver(@c.pid)">@_f.tra("Řidič")</label>
                                                 <input type="radio" class="opgIsDriver" checked="checked" name="opgIsDriver(@c.pid)" id="IsNotDriver(@c.pid)" value="@(c.pid.ToString()+"-0")" />
-                                                <label for="IsNotDriver(@c.pid)">Cestující</label>
+                                                <label for="IsNotDriver(@c.pid)">@_f.tra("Cestující")</label>
                                             }
 
 
@@ -133,11 +134,11 @@
 
         @Html.EditorFor(m => m.CapacityView, "~/Views/Shared/_a01Capacity.cshtml")
 
-    <iframe id="fraA38" style="height:250px;" src="/a38/TimeLine?a05id=@(Model.a05ID)"></iframe>
+        <iframe id="fraA38" style="height:250px;" src="/a38/TimeLine?a05id=@(Model.a05ID)"></iframe>
     </div>
     <div class="tab-pane" id="tab2">
         <table class="table table-hover">
-            @foreach (var c in Model.lisA38.OrderBy(p=>p.a38PlanDate).ThenBy(p=>p.PersonDesc))
+            @foreach (var c in Model.lisA38.OrderBy(p => p.a38PlanDate).ThenBy(p => p.PersonDesc))
             {
                 <tr>
                     <td>
@@ -156,12 +157,12 @@
                             @c.PersonDesc
                         }
                     </td>
-                 
+
                     <td>
                         @c.a38Location
                     </td>
                     <td>
-                        <button type="button" class="btn btn-danger" onclick="delete_record(@c.pid)">Odstranit</button>
+                        <button type="button" class="btn btn-danger" onclick="delete_record(@c.pid)">@_f.tra("Odstranit")</button>
                     </td>
                 </tr>
             }

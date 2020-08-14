@@ -1,10 +1,11 @@
 ﻿@model UI.Models.Record.a08Record
+@inject BL.Factory _f
 
 @{
 
     Layout = "~/Views/Shared/_LayoutRecord.cshtml";
     if (Model.Rec == null) return;
-    Model.PageTitle = "Téma akce";
+    Model.PageTitle = _f.tra("Téma akce");
 }
 @addTagHelper *, UI
 
@@ -13,37 +14,37 @@
 
 <div class="modal_record_container">
     <div class="form-row">
-        <label class="col-sm-1 col-md-2 col-form-label">Název:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
         <div class="col-sm-11 col-md-10">
             <input class="form-control" asp-for="Rec.a08Name" />
             <span asp-validation-for="Rec.a08Name" class="text-danger"></span>
         </div>
     </div>
     <div class="form-row my-2">
-        <textarea asp-for="Rec.a08Description" class="form-control" placeholder="Poznámka"></textarea>
+        <textarea asp-for="Rec.a08Description" class="form-control" placeholder="@_f.tra("Poznámka")"></textarea>
         <span asp-validation-for="Rec.a08Description" class="text-danger"></span>
     </div>
 
 
 
-    
+
 
     <div class="card">
         <div class="card-header">
-            Povolené formuláře k tématu
+            @_f.tra("Povolené formuláře k tématu")
 
         </div>
         <div class="card">
             <div class="row">
                 <div class="col-8">
-                    <mycombo entity="f06Form" asp-for="@Model.SelectedF06ID" selectedtext="@Model.SelectedForm" filter-flag="1" placeholder="Vybrat formulář..." event_after_changevalue="handle_f06id_append"></mycombo>
+                    <mycombo entity="f06Form" asp-for="@Model.SelectedF06ID" selectedtext="@Model.SelectedForm" filter-flag="1" placeholder="@_f.tra("Vybrat formulář")..." event_after_changevalue="handle_f06id_append"></mycombo>
                 </div>
                 <div class="col-2">
-                    <button type="button" id="cmdGrid" class="btn btn-secondary btn-sm" onclick="multiselect()">Přidat formuláře hromadně</button>
+                    <button type="button" id="cmdGrid" class="btn btn-secondary btn-sm" onclick="multiselect()">@_f.tra("Přidat formuláře hromadně")</button>
                 </div>
             </div>
-            
-           
+
+
             <hr />
 
             @for (var i = 0; i < Model.lisA12.Count; i++)
@@ -53,34 +54,34 @@
 
                     <input type="hidden" asp-for="lisA12[i].TempGuid" value="@Model.lisA12[i].TempGuid" />
                     <div class="col-sm-8 col-md-8">
-                        <mycombo entity="f06Form" asp-for="lisA12[i].f06ID" selectedtext="lisA12[i].f06Name" placeholder="Vybrat formulář..."></mycombo>
+                        <mycombo entity="f06Form" asp-for="lisA12[i].f06ID" selectedtext="lisA12[i].f06Name" placeholder="@_f.tra("Vybrat formulář")..."></mycombo>
                     </div>
                     <div class="col-sm-2 col-md-2">
                         <input type="checkbox" id="chk@(Model.lisA12[i].TempGuid)" asp-for="lisA12[i].a12IsRequired" />
-                        <label for="chk@(Model.lisA12[i].TempGuid)">Povinné k zařazení</label>
+                        <label for="chk@(Model.lisA12[i].TempGuid)">@_f.tra("Povinné k zařazení")</label>
                     </div>
-                    <div class="col-1" title="Pořadí mezi formuláři">
+                    <div class="col-1" title="@_f.tra("Pořadí mezi formuláři")">
                         <mynumber asp-for="lisA12[i].a12Ordinal" decimal-digits="0"></mynumber>
                     </div>
                     <div class="col-1">
-                        <button type="button" class="btn btn-danger" title="Odstranit řádek" onclick="handle_delete_row('@(Model.lisA12[i].TempGuid)')">x</button>
+                        <button type="button" class="btn btn-danger" title="@_f.tra("Odstranit řádek")" onclick="handle_delete_row('@(Model.lisA12[i].TempGuid)')">x</button>
                     </div>
 
                 </div>
             }
         </div>
 
-        
+
     </div>
 
-    
+
 </div>
 <input type="hidden" id="hidF06IDs" />
 
 
 
 
-<button type="button" id="cmdClear" class="btn btn-warning btn-sm" style="display:none;" onclick="clear_all()">Vyčistit vše</button>
+<button type="button" id="cmdClear" class="btn btn-warning btn-sm" style="display:none;" onclick="clear_all()">@_f.tra("Vyčistit vše")</button>
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -91,15 +92,15 @@
 
     function handle_f06id_append(f06id) {
         if (f06id == "") {
-            _notify_message("Musíte vybrat formulář.");
+            _notify_message(@_f.tra("Musíte vybrat formulář."));
             return;
         }
 
-        form1.action = "/a08/Record?oper=add&f06id="+f06id;
+        form1.action = "/a08/Record?oper=add&f06id=" + f06id;
         form1.submit();
     }
     function handle_delete_row(guid) {
-        form1.action = "/a08/Record?oper=delete&guid="+guid;
+        form1.action = "/a08/Record?oper=delete&guid=" + guid;
         form1.submit();
 
     }
@@ -119,7 +120,7 @@
         var f06ids = $("#hidF06IDs").val();
         form1.action = "/a08/Record?oper=addmultiple&f06ids=" + f06ids;
         form1.submit();
-        
+
     }
 
 

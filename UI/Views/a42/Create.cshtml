@@ -1,5 +1,5 @@
 ﻿@model a42CreateViewModel
-
+@inject BL.Factory _f
 
 @{
 
@@ -11,13 +11,13 @@
 
 @addTagHelper *, UI
 
-    <script src="~/lib/selection/ds.min.js"></script>
+<script src="~/lib/selection/ds.min.js"></script>
 
 <form id="form1" asp-controller="a42" asp-action="Create" method="POST">
-    <div class="bg-light" style="padding:10px;">        
-        <button type="button" id="cmdSave" class="btn btn-success">Odeslat k vygenerování</button>
-        <a id="cmdCancel" href="/a42/CreatePre" class="btn btn-light">Zrušit</a>
-        
+    <div class="bg-light" style="padding:10px;">
+        <button type="button" id="cmdSave" class="btn btn-success">@_f.tra("Odeslat k vygenerování")</button>
+        <a id="cmdCancel" href="/a42/CreatePre" class="btn btn-light">@_f.tra("Zrušit")</a>
+
 
     </div>
 
@@ -31,13 +31,13 @@
         <!-- Tab panes -->
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a id="link_tab1" class="nav-link" data-toggle="tab" href="#tab1">Krok č.1: <strong>Nový INEZ</strong></a>
+                <a id="link_tab1" class="nav-link" data-toggle="tab" href="#tab1">@_f.tra("Krok č.1: Nový INEZ")</a>
             </li>
             <li class="nav-item">
-                <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2">Krok č.2: Cílové instituce</a>
+                <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2">@_f.tra("Krok č.2: Cílové instituce")</a>
             </li>
             <li class="nav-item">
-                <a id="link_tab3" class="nav-link" data-toggle="tab" href="#tab3">Krok č.3: E-mail zpráva</a>
+                <a id="link_tab3" class="nav-link" data-toggle="tab" href="#tab3">@_f.tra("Krok č.3: E-mail zpráva")</a>
             </li>
 
         </ul>
@@ -50,7 +50,7 @@
                 <!-- Tab1 -->
                 <p></p>
                 <div class="form-row">
-                    <label class="col-sm-1 col-md-2 col-form-label">Název:</label>
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
                     <div class="col-sm-11 col-md-10">
                         <input class="form-control" asp-for="Rec.a42Name" />
                         <span asp-validation-for="Rec.a42Name" class="text-danger"></span>
@@ -58,11 +58,11 @@
 
                 </div>
                 <div class="form-row my-2">
-                    <label class="col-sm-1 col-md-2 col-form-label">Plánované období od:</label>
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Plánované období od"):</label>
                     <div class="col-sm-2 col-md-2">
                         <mydate asp-for="@Model.a42DateFrom" include-time="false"></mydate>
                     </div>
-                    <label class="col-sm-1 col-md-1 col-form-label">Do:</label>
+                    <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Do"):</label>
 
                     <div class="col-sm-2 col-md-2">
                         <mydate asp-for="@Model.a42DateUntil" include-time="false"></mydate>
@@ -71,9 +71,9 @@
                 </div>
 
                 <div class="form-row my-2">
-                    <label class="col-sm-1 col-md-2 col-form-label">Téma akce:</label>
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Téma akce"):</label>
                     <div class="col-sm-11 col-md-10">
-                        <mycombo entity="a08Theme" asp-for="@Model.a08ID" selectedtext="@Model.a08Name" placeholder="Vybrat téma..." event_after_changevalue="handle_a08id_change"></mycombo>
+                        <mycombo entity="a08Theme" asp-for="@Model.a08ID" selectedtext="@Model.a08Name" placeholder="@_f.tra("Vybrat téma")..." event_after_changevalue="handle_a08id_change"></mycombo>
                     </div>
 
 
@@ -98,7 +98,7 @@
                 @if (Model.lisPollA12 != null)
                 {
                     <div class="card">
-                        <div class="card-header">Anketní formuláře</div>
+                        <div class="card-header">@_f.tra("Anketní formuláře")</div>
                         <div class="card-body">
                             @for (var i = 0; i < Model.lisPollA12.Count; i++)
                             {
@@ -123,7 +123,7 @@
 
 
                 <div class="form-row my-2">
-                    <textarea asp-for="Rec.a42Description" class="form-control" style="height:150px;" placeholder="Podrobný popis"></textarea>
+                    <textarea asp-for="Rec.a42Description" class="form-control" style="height:150px;" placeholder="@_f.tra("Podrobný popis")"></textarea>
                     <span asp-validation-for="Rec.a42Description" class="text-danger"></span>
                 </div>
 
@@ -136,9 +136,9 @@
                     <mycombo entity="a29InstitutionList" asp-for="@Model.FilterA29ID" selectedtext="@Model.FilterA29Name" placeholder="Vložit z pojmenovaného seznamu..." event_after_changevalue="handle_a29id_append"></mycombo>
                     <mycombo entity="a42Qes" asp-for="@Model.FilterA42ID" selectedtext="@Model.FilterA42Name" placeholder="Vložit z INEZU..." filter-flag="1" event_after_changevalue="handle_a42id_append"></mycombo>
                     <hr />
-                    <button type="button" id="cmdGrid" class="btn btn-secondary btn-sm" onclick="multiselect()">Přidat hromadně přes Grid</button>
-                    <button type="button" id="cmdClear" class="btn btn-danger btn-sm" style="visibility:hidden;" onclick="clear_all()">Odebrat vše</button>
-                    <button type="button" id="cmdRemoveClosed" class="btn btn-danger btn-sm" style="visibility:hidden;" onclick="handle_remove_closed()">Odebrat neplatné</button>
+                    <button type="button" id="cmdGrid" class="btn btn-secondary btn-sm" onclick="multiselect()">@_f.tra("Přidat hromadně přes Grid")</button>
+                    <button type="button" id="cmdClear" class="btn btn-danger btn-sm" style="visibility:hidden;" onclick="clear_all()">@_f.tra("Odebrat vše")</button>
+                    <button type="button" id="cmdRemoveClosed" class="btn btn-danger btn-sm" style="visibility:hidden;" onclick="handle_remove_closed()">@_f.tra("Odebrat neplatné")</button>
                     <label>Počet cílových institucí:</label><span class="badge" id="a03IDs_Count" style="font-size:120%;">0</span>
                 </div>
 
@@ -148,18 +148,18 @@
             </div>
             <div class="tab-pane" id="tab3">
                 <!-- Tab3 -->
-                <mycombo entity="b65WorkflowMessage" asp-for="@Model.FilterB65ID" selectedtext="@Model.FilterB65Name" placeholder="Šablona e-mail zprávy..." event_after_changevalue="handle_b65id_change"></mycombo>
+                <mycombo entity="b65WorkflowMessage" asp-for="@Model.FilterB65ID" selectedtext="@Model.FilterB65Name" placeholder="@_f.tra("Šablona e-mail zprávy")..." event_after_changevalue="handle_b65id_change"></mycombo>
 
                 <input type="radio" value="SchoolAdress" id="opg1" asp-for="@Model.MessageReceiverFlag">
-                <label for="opg1">Odesílat na e-mail uvedený v profilu školy</label><br>
+                <label for="opg1">@_f.tra("Odesílat na e-mail uvedený v profilu školy")</label><br>
                 <input type="radio" value="DirectorAddress" id="opg2" asp-for="@Model.MessageReceiverFlag">
-                <label for="opg2">Odesílat na e-mail ředitele školy</label><br>
+                <label for="opg2">@_f.tra("Odesílat na e-mail ředitele školy")</label><br>
                 <input type="radio" value="SchoolPlusDirector" id="opg3" asp-for="@Model.MessageReceiverFlag">
-                <label for="opg3">Odesílat na ředitelský i školní e-mail současně</label><br>
+                <label for="opg3">@_f.tra("Odesílat na ředitelský i školní e-mail současně")</label><br>
 
                 <div style="max-width:1000px;padding:20px;">
                     <div class="form-row">
-                        <label class="col-sm-1 col-md-2 col-form-label">Předmět zprávy:</label>
+                        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Předmět zprávy"):</label>
                         <div class="col-sm-11 col-md-10">
                             <input class="form-control" asp-for="@Model.MessageSubject" />
 
@@ -167,7 +167,7 @@
 
                     </div>
                     <div>
-                        <textarea asp-for="@Model.MessageBody" class="form-control" placeholder="Obsah zprávy" style="height:400px;overflow:auto;"></textarea>
+                        <textarea asp-for="@Model.MessageBody" class="form-control" placeholder="@_f.tra("Obsah zprávy")" style="height:400px;overflow:auto;"></textarea>
                     </div>
                 </div>
                 <iframe id="fraUpload" src="/FileUpload/Index?x29id=142&guid=@Model.UploadGuid" height="250" scrolling="no"></iframe>
@@ -233,14 +233,14 @@
             $("#cmdClear").css("visibility", "visible");
             $("#cmdRemoveClosed").css("visibility", "visible");
 
-            
+
             $("#tabA03IDs td").each(function () {
-                $(this).addClass("no_clipboard");                
+                $(this).addClass("no_clipboard");
             });
 
             worktable_setup_selectable("divA03");
             _a03IDsCount = $("#tabA03IDs").find("tr").length-1;
-            
+
             $("#a03IDs_Count").text(_a03IDsCount.toString());
         });
     }
@@ -273,14 +273,14 @@
         for (var i = 0; i < arr.length; i++) {
             if (a03ids.includes(arr[i]+"")==true) {
                 if (!silent) {
-                    _notify_message("Tato instituce již je v seznamu.");
+                    _notify_message("@_f.tra("Tato instituce již je v seznamu.")");
                     return;
                 }
             } else {
                 a03ids.push(arr[i]+"");
             }
             if (a03ids.length > 5000) {
-                _notify_message("Maximální počet cílových institucí v jedné INEZ dávce je 5.000.");
+                _notify_message("@_f.tra("Maximální počet cílových institucí v jedné INEZ dávce je 5.000.")");
                 refresh_a03_table();
                 return;
             }
@@ -334,7 +334,7 @@
 
     function handle_b65id_change(b65id) {
         if (b65id == "") {
-            _notify_message("Musíte vybrat zprávu.");
+            _notify_message("@_f.tra("Musíte vybrat zprávu.")");
             return;
         }
         $.post("/a42/InhaleMessage", { b65id: b65id }, function (data) {
@@ -365,7 +365,7 @@
             _arrSelectedA12IDs.push(arr[i]);
         }
         $("#SelectedA12IDs").val(_arrSelectedA12IDs.join(","));
-        
+
         form1.action = "/a42/Create?oper=postback";
         form1.submit();
 

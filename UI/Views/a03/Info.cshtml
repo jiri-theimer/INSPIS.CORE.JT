@@ -1,4 +1,5 @@
 ﻿@model UI.Models.Recpage.a03RecPage
+@inject BL.Factory _f
 
 @{
     ViewData["Title"] = "Info";
@@ -10,7 +11,7 @@
 
 <div class="modal_record_container">
     <div class="form-row">
-        <label class="col-sm-1 col-md-2 col-form-label">Název:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
         <div class="col-sm-8 col-md-7">
             <myval value="@Model.Rec.a03Name"></myval>
         </div>
@@ -26,7 +27,7 @@
     <div class="form-row my-2">
         @if (Model.Rec.a06ID == 2)
         {
-            <label class="col-sm-1 col-md-2 col-form-label">Kód zřizovatele:</label>
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kód zřizovatele"):</label>
             <div class="col-sm-5 col-md-4">
 
                 <myval value="@Model.Rec.a03FounderCode"></myval>
@@ -34,7 +35,7 @@
         }
         else
         {
-            <label class="col-sm-1 col-md-2 col-form-label">REDIZO/IČ:</label>
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("REDIZO/IČ"):</label>
             <div class="col-sm-5 col-md-4">
                 <div class="val-readonly rowvalhover" title="REDIZO">
                     @if (Model.Rec.a03REDIZO != null)
@@ -52,7 +53,7 @@
         }
 
         <div class="col-sm-2 col-md-2 rowvalhover">
-            <div class="val-readonly rowvalhover" title="IČ">
+            <div class="val-readonly rowvalhover" title="@_f.tra("IČ")">
                 @if (Model.Rec.a03ICO != null)
                 {
                     <span>@Model.Rec.a03ICO</span>
@@ -73,7 +74,7 @@
         </div>
         @if (Model.Rec.a06ID == 1)
         {
-            <label class="col-sm-1 col-md-1 col-form-label">Ředitel:</label>
+            <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Ředitel"):</label>
             <div class="col-sm-3 col-md-3">
                 <span class="val-readonly">@Model.Rec.a03DirectorFullName</span>
             </div>
@@ -82,7 +83,7 @@
     </div>
 
     <div class="form-row" style="margin-top:10px;">
-        <label class="col-sm-1 col-md-2 col-form-label">Kraj:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kraj"):</label>
         <div class="col-sm-5 col-md-4">
 
             <span class="val-readonly">@Model.Rec.a05Name</span>
@@ -90,7 +91,7 @@
 
 
 
-        <div class="col-sm-6 col-md-6" title="Adresa">
+        <div class="col-sm-6 col-md-6" title="@_f.tra("Adresa")">
             <div class="val-readonly rowvalhover">
                 <span>@(Model.Rec.a03Street+", "+Model.Rec.a03PostCode+" "+Model.Rec.a03City)</span>
                 <a class="valhover_tooltip" target='_blank' href="https://mapy.cz/zakladni?q=@(Model.Rec.a03City+"+"+Model.Rec.a03Street)">mapy</a>
@@ -103,7 +104,7 @@
     @if (Model.RecFounder != null)
     {
         <div class="form-row my-2">
-            <label class="col-sm-1 col-md-2 col-form-label">Zřizovatel:</label>
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Zřizovatel"):</label>
             <div class="col-sm-8 col-md-7">
                 <myval datatype="link" value="@Model.RecFounder.a03Name" linkurl="/a03/RecPage?pid=@Model.RecFounder.pid"></myval>
             </div>
@@ -119,7 +120,7 @@
     @if (Model.Rec.a03Email != null || Model.Rec.a03Web != null)
     {
         <div class="form-row my-2">
-            <label class="col-sm-1 col-md-2 col-form-label">Kontakt:</label>
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kontakt"):</label>
             <div class="col-sm-5 col-md-4">
                 <myval datatype="link" value="@Model.Rec.a03Email" linkurl="mailto:@Model.Rec.a03Email"></myval>
 

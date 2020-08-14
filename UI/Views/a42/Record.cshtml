@@ -1,17 +1,18 @@
 ﻿@model UI.Models.Record.a42Record
+@inject BL.Factory _f
 
 @{
 
     Layout = "~/Views/Shared/_LayoutRecord.cshtml";
     if (Model.Rec == null) return;
-    Model.PageTitle = "INEZ";
+    Model.PageTitle = _f.tra("INEZ");
 }
 @addTagHelper *, UI
 
 <div class="modal_record_container">
 
     <div class="form-row">
-        <label class="col-sm-1 col-md-2 col-form-label">Název:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
         <div class="col-sm-11 col-md-10">
             <input class="form-control" asp-for="Rec.a42Name" />
             <span asp-validation-for="Rec.a42Name" class="text-danger"></span>
@@ -19,11 +20,11 @@
 
     </div>
     <div class="form-row my-2">
-        <label class="col-sm-1 col-md-2 col-form-label">Plánované období od:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Plánované období od"):</label>
         <div class="col-sm-2 col-md-2">
             <mydate asp-for="Rec.a42DateFrom" include-time="false"></mydate>
         </div>
-        <label class="col-sm-1 col-md-1 col-form-label">Do:</label>
+        <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Do"):</label>
 
         <div class="col-sm-2 col-md-2">
             <mydate asp-for="Rec.a42DateUntil" include-time="false"></mydate>
@@ -34,7 +35,7 @@
     <mystitky entity="a42Qes" asp-for="@Model.TagPids" tagnames="@Model.TagNames" taghtml="@Model.TagHtml"></mystitky>
 
     <div class="form-row my-2">
-        <textarea asp-for="Rec.a42Description" class="form-control" style="height:150px;" placeholder="Podrobný popis"></textarea>
+        <textarea asp-for="Rec.a42Description" class="form-control" style="height:150px;" placeholder="@_f.tra("Podrobný popis")"></textarea>
         <span asp-validation-for="Rec.a42Description" class="text-danger"></span>
     </div>
 

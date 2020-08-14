@@ -1,52 +1,53 @@
 ﻿@model UI.Models.Record.a05Record
+@inject BL.Factory _f
 
 @{
 
     Layout = "~/Views/Shared/_LayoutRecord.cshtml";
     if (Model.Rec == null) return;
-    Model.PageTitle = "Kraj";
+    Model.PageTitle = _f.tra("Kraj");
 }
 @addTagHelper *, UI
 
-    <div class="modal_record_container">
+<div class="modal_record_container">
 
-        <div class="form-row">
-            <label class="col-sm-1 col-md-2 col-form-label">Název:</label>
-            <div class="col-sm-11 col-md-10">
-                <input class="form-control" asp-for="Rec.a05Name" />
-                <span asp-validation-for="Rec.a05Name" class="text-danger"></span>
-            </div>
-
-        </div>
-        <hr />
-        <div class="form-row my-2">
-            <label class="col-sm-1 col-md-2 col-form-label">Index pořadí:</label>
-            <div class="col-sm-1 col-md-1">
-                <mynumber asp-for="Rec.a05Ordinal" decimal-digits="0"></mynumber>
-            </div>
-
-        </div>
-        <div class="form-row my-2">
-            <label class="col-sm-1 col-md-2 col-form-label">VUSC kód:</label>
-            <div class="col-sm-5 col-md-4">
-                <input class="form-control" asp-for="Rec.a05VUSCCode" />
-                <span asp-validation-for="Rec.a05VUSCCode" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-row my-2">
-            <label class="col-sm-1 col-md-2 col-form-label">UIV kód:</label>
-            <div class="col-sm-5 col-md-4">
-                <input class="form-control" asp-for="Rec.a05UIVCode" />
-                <span asp-validation-for="Rec.a05UIVCode" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-row my-2">
-            <label class="col-sm-1 col-md-2 col-form-label">RZ kód:</label>
-            <div class="col-sm-5 col-md-4">
-                <input class="form-control" asp-for="Rec.a05RZCode" />
-                <span asp-validation-for="Rec.a05RZCode" class="text-danger"></span>
-            </div>
+    <div class="form-row">
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
+        <div class="col-sm-11 col-md-10">
+            <input class="form-control" asp-for="Rec.a05Name" />
+            <span asp-validation-for="Rec.a05Name" class="text-danger"></span>
         </div>
 
     </div>
+    <hr />
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Index pořadí"):</label>
+        <div class="col-sm-1 col-md-1">
+            <mynumber asp-for="Rec.a05Ordinal" decimal-digits="0"></mynumber>
+        </div>
+
+    </div>
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("VUSC kód"):</label>
+        <div class="col-sm-5 col-md-4">
+            <input class="form-control" asp-for="Rec.a05VUSCCode" />
+            <span asp-validation-for="Rec.a05VUSCCode" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("UIV kód"):</label>
+        <div class="col-sm-5 col-md-4">
+            <input class="form-control" asp-for="Rec.a05UIVCode" />
+            <span asp-validation-for="Rec.a05UIVCode" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("RZ kód"):</label>
+        <div class="col-sm-5 col-md-4">
+            <input class="form-control" asp-for="Rec.a05RZCode" />
+            <span asp-validation-for="Rec.a05RZCode" class="text-danger"></span>
+        </div>
+    </div>
+
+</div>
 

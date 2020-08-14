@@ -1,4 +1,5 @@
 ﻿@model UI.Models.Tab.a01TabCapacity
+@inject BL.Factory _f
 
 @{
     ViewData["Title"] = "Časový plán akce";
@@ -8,16 +9,16 @@
 }
 @addTagHelper *, UI
 
-    <link rel="stylesheet" href="~/css/tabcapacity.css" />
+<link rel="stylesheet" href="~/css/tabcapacity.css" />
 
 <div class="modal_record_container">
     <div class="form-row">
-        <label class="col-sm-1 col-md-1 col-form-label">Plán začátek:</label>
+        <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Plán začátek"):</label>
         <div class="col-sm-2 col-md-2">
 
             <myval datatype="date" value="@Model.RecA01.a01DateFrom"></myval>
         </div>
-        <label class="col-sm-1 col-md-1 col-form-label">Plán konec:</label>
+        <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Plán konec"):</label>
         <div class="col-sm-2 col-md-2">
 
             <myval datatype="date" value="@Model.RecA01.a01DateUntil"></myval>
@@ -25,7 +26,7 @@
         @if (Model.PermA01.PermValue == BO.a01EventPermissionENUM.ShareTeam_Leader || Model.PermA01.PermValue == BO.a01EventPermissionENUM.ShareTeam_Owner || Model.PermA01.PermValue == BO.a01EventPermissionENUM.FullAccess)
         {
             <div class="col-sm-2 col-md-2">
-                <button type="button" class="btn btn-primary" onclick="edit()">Upravit</button>
+                <button type="button" class="btn btn-primary" onclick="edit()">@_f.tra("Upravit")</button>
             </div>
         }
 
@@ -34,11 +35,11 @@
 
 @if (Model.IsMonthView)
 {
-<div class="btn-group">
-    <button type="button" class="btn btn-secondary btn-sm" title="Předchozí měsíc" onclick="goprev()">←</button>
-    <strong class="val-readonly" style="width:100px;text-align:center;">@(Model.CurMonth.ToString()+" - "+Model.CurYear.ToString())</strong>
-    <button type="button" class="btn btn-secondary btn-sm" title="Další měsíc" onclick="gonext()">→</button>
-</div>
+    <div class="btn-group">
+        <button type="button" class="btn btn-secondary btn-sm" title="@_f.tra("Předchozí měsíc")" onclick="goprev()">←</button>
+        <strong class="val-readonly" style="width:100px;text-align:center;">@(Model.CurMonth.ToString()+" - "+Model.CurYear.ToString())</strong>
+        <button type="button" class="btn btn-secondary btn-sm" title="@_f.tra("Další měsíc")" onclick="gonext()">→</button>
+    </div>
 }
 
 

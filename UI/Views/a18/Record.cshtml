@@ -1,23 +1,24 @@
 ﻿@model UI.Models.Record.a18Record
+@inject BL.Factory _f
 
 @{
 
     Layout = "~/Views/Shared/_LayoutRecord.cshtml";
     if (Model.Rec == null) return;
-    Model.PageTitle = "Kód vzdělávacího oboru";
+    Model.PageTitle = _f.tra("Kód vzdělávacího oboru");
 }
 @addTagHelper *, UI
 
 <div class="modal_record_container">
     <div class="form-row">
-        <label class="col-sm-1 col-md-2 col-form-label">Název:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
         <div class="col-sm-11 col-md-10">
             <input class="form-control" asp-for="Rec.a18Name" />
             <span asp-validation-for="Rec.a18Name" class="text-danger"></span>
         </div>
     </div>
     <div class="form-row my-2">
-        <label class="col-sm-1 col-md-2 col-form-label">Kód:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kód"):</label>
         <div class="col-sm-3 col-md-2">
             <input class="form-control" asp-for="Rec.a18Code" />
             <span asp-validation-for="Rec.a18Code" class="text-danger"></span>

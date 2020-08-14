@@ -1,9 +1,10 @@
 ﻿@model a01CreateViewModel
+@inject BL.Factory _f
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     if (Model.Rec == null) return;
-    ViewData["Title"] = Model.a10Name;
+    ViewData["Title"] = _f.tra("Založit novou akci");
 }
 
 
@@ -13,8 +14,8 @@
 <h4 class="px-2">@Model.RecA10.a10Name</h4>
 
 <div class="bg-light" style="padding:10px;">
-    <button id="cmdSave" class="btn btn-success">Uložit změny</button>
-    <a id="cmdCancel" href="/a01Create/Index" class="btn btn-light">Zrušit</a>
+    <button id="cmdSave" class="btn btn-success">@_f.tra("Uložit změny")</button>
+    <a id="cmdCancel" href="/a01Create/Index" class="btn btn-light">@_f.tra("Zrušit")</a>
 
 
 </div>
@@ -28,7 +29,7 @@
         @if (Model.RecA10.a10IsUse_Name)
         {
             <div class="form-row my-2">
-                <label class="col-sm-1 col-md-2 col-form-label">Název akce:</label>
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název akce"):</label>
                 <div class="col-sm-3 col-md-3">
                     <input class="form-control" asp-for="Rec.a01Name" />
                     <span asp-validation-for="Rec.a01Name" class="text-danger"></span>
@@ -38,7 +39,7 @@
         @if (Model.RecA10.a10IsUse_A03)
         {
             <div class="form-row my-2 my-2">
-                <label class="col-sm-1 col-md-2 col-form-label">Instituce:</label>
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Instituce"):</label>
                 <div class="col-sm-11 col-md-10">
                     <mycombo entity="a03Institution" asp-for="@Model.a03ID" selectedtext="@Model.Institution" filter-flag="1" event_after_changevalue="a03_change"></mycombo>
                 </div>
@@ -48,7 +49,7 @@
         @if (Model.RecA10.a10IsUse_A08)
         {
             <div class="form-row my-2">
-                <label class="col-sm-1 col-md-2 col-form-label">Téma akce:</label>
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Téma akce"):</label>
                 <div class="col-sm-11 col-md-10">
                     <mycombo entity="a08Theme" asp-for="Rec.a08ID" selectedtext="Rec.a08Name" masterprefix="a10" masterpid="@Model.a10ID" event_after_changevalue="a08_change"></mycombo>
                 </div>
@@ -58,7 +59,7 @@
         @if (Model.RecA10.a10IsUse_CaseCode)
         {
             <div class="form-row my-2">
-                <label class="col-sm-1 col-md-2 col-form-label">Spisová značka:</label>
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Spis"):</label>
                 <div class="col-sm-3 col-md-3">
                     <input class="form-control" asp-for="Rec.a01CaseCode" />
                     <span asp-validation-for="Rec.a01CaseCode" class="text-danger"></span>
@@ -68,12 +69,12 @@
         @if (Model.RecA10.a10IsUse_Period)
         {
             <div class="form-row my-2">
-                <label class="col-sm-1 col-md-2 col-form-label">Plánovaný začátek:</label>
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Plánovaný začátek"):</label>
                 <div class="col-sm-2 col-md-2">
                     <mydate asp-for="@Model.Rec.a01DateFrom"></mydate>
                 </div>
                 <div class="col-1">
-                    Plán.konec:
+                    @_f.tra("Konec"):
                 </div>
                 <div class="col-sm-2 col-md-2">
                     <mydate asp-for="@Model.Rec.a01DateUntil"></mydate>
@@ -89,13 +90,13 @@
         <!-- Tab panes -->
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a id="link_tab1" class="nav-link" data-toggle="tab" href="#tab1" tabindex="-1">Formuláře</a>
+                <a id="link_tab1" class="nav-link" data-toggle="tab" href="#tab1" tabindex="-1">@_f.tra("Formuláře")</a>
             </li>
             <li class="nav-item">
-                <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2" tabindex="-1">Okruh účastníků</a>
+                <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2" tabindex="-1">@_f.tra("Okruh účastníků")</a>
             </li>
             <li class="nav-item">
-                <a id="link_tab3" class="nav-link" data-toggle="tab" href="#tab3" tabindex="-1">Podrobný popis</a>
+                <a id="link_tab3" class="nav-link" data-toggle="tab" href="#tab3" tabindex="-1">@_f.tra("Podrobný popis")</a>
             </li>
 
         </ul>
@@ -110,14 +111,14 @@
                     <div class="col-6">
                         @if (Model.Rec.a08ID > 0)
                         {
-                            <strong>Dostupné formuláře k tématu:</strong>
+                            <strong>@_f.tra("Dostupné formuláře k tématu"):</strong>
                             @foreach (var c in Model.lisA12)
                             {
                                 <div class="form-row my-2">
                                     <div class="col-sm-9 col-md-9">
                                         @if (c.a12IsRequired)
                                         {
-                                            <myval datatype="html" value="@("<span style='color:red;'>"+c.f06Name+"</span>")" tooltip="Povinný formulář" hoverprefix="f06" hoverpid="@c.f06ID"></myval>
+                                            <myval datatype="html" value="@("<span style='color:red;'>"+c.f06Name+"</span>")" tooltip="@_f.tra("Povinný formulářů")" hoverprefix="f06" hoverpid="@c.f06ID"></myval>
                                         }
                                         else
                                         {
@@ -155,8 +156,8 @@
                         }
                         @if (Model.lisA11.Where(p => p.IsTempDeleted == false).Count() > 0)
                         {
-                            <strong>Vybrané formuláře:</strong>
-                            <button type="button" class="btn btn-warning btn-sm" onclick="handle_f06_clear()" style="margin-left:50px;">Vyčistit</button>
+                            <strong>@_f.tra("Vybrané formuláře"):</strong>
+                            <button type="button" class="btn btn-warning btn-sm" onclick="handle_f06_clear()" style="margin-left:50px;">@_f.tra("Vyčistit")</button>
                         }
 
                         @for (var i = 0; i < Model.lisA11.Count; i++)
@@ -207,10 +208,10 @@
                 </div>
                 <input type="hidden" asp-for="@Model.MasterPidComboJ02" />
                 <select asp-for="@Model.MasterPrefixComboJ02" onchange="handle_queryj02byprefix_change()">
-                    <option value="a04">Pouze můj inspektorát</option>
-                    <option value="a05">Pouze můj kraj</option>
-                    <option value="">Všechny kraje</option>
-                    <option value="j02IsInvitedPerson">Přizvané osoby</option>
+                    <option value="a04">@_f.tra("Pouze můj inspektorát")</option>
+                    <option value="a05">@_f.tra("Pouze můj kraj")</option>
+                    <option value="">@_f.tra("Všechny kraje")</option>
+                    <option value="j02IsInvitedPerson">@_f.tra("Přizvané osoby")</option>
                 </select>
                 <hr />
 
@@ -234,7 +235,7 @@
                         <div class="col-sm-4 col-md-4">
                             @if (Model.lisA41[i].a45IsManual)
                             {
-                                <mycombo entity="a45EventRole" asp-for="@Model.lisA41[i].a45ID" selectedtext="@Model.lisA41[i].a45Name" placeholder="Vybrat roli v akci..." view-flag="2" param1="a45IsManual1"></mycombo>
+                                <mycombo entity="a45EventRole" asp-for="@Model.lisA41[i].a45ID" selectedtext="@Model.lisA41[i].a45Name" placeholder="@_f.tra("Vybrat roli v akci")..." view-flag="2" param1="a45IsManual1"></mycombo>
                             }
                             else
                             {
@@ -247,7 +248,7 @@
 
 
                         <div class="col-1">
-                            <button type="button" class="btn btn-danger" title="Odstranit řádek" onclick="handle_delete_j02('@(Model.lisA41[i].TempGuid)')">x</button>
+                            <button type="button" class="btn btn-danger" title="@_f.tra("Odstranit řádek")" onclick="handle_delete_j02('@(Model.lisA41[i].TempGuid)')">x</button>
 
                         </div>
 
@@ -258,7 +259,7 @@
             </div>
             <div class="tab-pane" id="tab3" style="max-width:1000px;padding-left:20px;">
                 <div class="form-row my-2">
-                    <textarea asp-for="Rec.a01Description" class="form-control" style="height:150px;" placeholder="Podrobný popis"></textarea>
+                    <textarea asp-for="Rec.a01Description" class="form-control" style="height:150px;" placeholder="@_f.tra("Podrobný popis")"></textarea>
 
                     <span asp-validation-for="Rec.a01Description" class="text-danger"></span>
                 </div>

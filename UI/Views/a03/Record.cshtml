@@ -1,10 +1,11 @@
 ﻿@model UI.Models.Record.a03Record
+@inject BL.Factory _f
 
 @{
 
     Layout = "~/Views/Shared/_LayoutRecord.cshtml";
     if (Model.Rec == null) return;
-    Model.PageTitle = "Instituce";
+    Model.PageTitle = _f.tra("Instituce");
 }
 @addTagHelper *, UI
 
@@ -13,10 +14,10 @@
     <!-- Tab panes -->
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a id="link_tab1" class="nav-link" data-toggle="tab" href="#tab1">Vlastnosti</a>
+            <a id="link_tab1" class="nav-link" data-toggle="tab" href="#tab1">@_f.tra("Vlastnosti")</a>
         </li>
         <li class="nav-item">
-            <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2">Portál</a>
+            <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2">@_f.tra("Portál")</a>
         </li>
 
     </ul>
@@ -29,7 +30,7 @@
         <div class="tab-pane" id="tab1">
             <!-- Tab1 -->
             <div class="form-row">
-                <label class="col-sm-1 col-md-2 col-form-label">Název:</label>
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
                 <div class="col-sm-8 col-md-7">
                     <input class="form-control" asp-for="Rec.a03Name" />
                     <span asp-validation-for="Rec.a03Name" class="text-danger"></span>
@@ -37,37 +38,37 @@
 
                 <div class="col-sm-3 col-md-3">
                     <input type="checkbox" asp-for="Rec.a03IsTestRecord" />
-                    <label class="col-form-label" for="Rec_a03IsTestRecord">Testovací záznam</label>
+                    <label class="col-form-label" for="Rec_a03IsTestRecord">@_f.tra("Testovací záznam")</label>
 
                 </div>
             </div>
             <div class="form-row my-2">
-                <label class="col-sm-1 col-md-2 col-form-label">REDIZO:</label>
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("REDIZO"):</label>
                 <div class="col-sm-3 col-md-2">
                     <input class="form-control" asp-for="Rec.a03REDIZO" />
                     <span asp-validation-for="Rec.a03REDIZO" class="text-danger"></span>
                 </div>
-                <label class="col-sm-1 col-md-1 col-form-label">IČ:</label>
+                <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("IČ"):</label>
                 <div class="col-sm-2 col-md-2">
                     <input class="form-control" asp-for="Rec.a03ICO" />
                     <span asp-validation-for="Rec.a03ICO" class="text-danger"></span>
                 </div>
-                <label class="col-sm-1 col-md-1 col-form-label">Ředitel:</label>
+                <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Ředitel"):</label>
                 <div class="col-sm-4 col-md-4">
                     <input class="form-control" asp-for="Rec.a03DirectorFullName" />
                     <span asp-validation-for="Rec.a03DirectorFullName" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-row my-2">
-                <label class="col-sm-1 col-md-2 col-form-label">Typ instituce:</label>
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typ instituce"):</label>
                 <div class="col-sm-2 col-md-2">
                     <select asp-for="Rec.a06ID" class="form-control">
                         <option></option>
-                        <option value="1">Škola</option>
-                        <option value="2">Zřizovatel</option>
+                        <option value="1">@_f.tra("Škola")</option>
+                        <option value="2">@_f.tra("Zřizovatel")</option>
                     </select>
                 </div>
-                <label class="col-sm-1 col-md-1 col-form-label">Právní forma:</label>
+                <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Právní forma"):</label>
 
                 <div class="col-sm-7 col-md-7">
                     <mycombo entity="a21InstitutionLegalType" asp-for="Rec.a21ID" selectedtext="Rec.a21Name"></mycombo>
@@ -75,7 +76,7 @@
                 </div>
             </div>
             <div class="form-row my-2">
-                <label class="col-sm-1 col-md-2 col-form-label">Kraj:</label>
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kraj"):</label>
                 <div class="col-sm-7 col-md-6">
                     <mycombo entity="a05Region" asp-for="Rec.a05ID" selectedtext="Rec.a05Name"></mycombo>
 
@@ -83,12 +84,12 @@
             </div>
 
             <div class="form-row my-2">
-                <label class="col-sm-1 col-md-2 col-form-label">Zřizovatel:</label>
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Zřizovatel"):</label>
                 <div class="col-sm-7 col-md-6">
                     <mycombo entity="a03Institution" asp-for="Rec.a03ID_Founder" selectedtext="@Model.FounderName" filter-flag="1" masterprefix="a06" masterpid="2" event_after_changevalue="founder_change"></mycombo>
 
                 </div>
-                <label class="col-sm-1 col-md-1 col-form-label mx-0 px-0">Typ zřizovatele:</label>
+                <label class="col-sm-1 col-md-1 col-form-label mx-0 px-0">@_f.tra("Typ zřizovatele"):</label>
                 <div class="col-sm-3 col-md-3">
                     <mycombo entity="a09FounderType" asp-for="Rec.a09ID" selectedtext="Rec.a09Name" view-flag="2"></mycombo>
 
@@ -96,7 +97,7 @@
             </div>
             <hr />
             <div class="form-row my-2">
-                <label class="col-sm-1 col-md-2 col-form-label">Ulice:</label>
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Ulice"):</label>
                 <div class="col-sm-5 col-md-4">
                     <input class="form-control" asp-for="Rec.a03Street" />
                     <span asp-validation-for="Rec.a03Street" class="text-danger"></span>
@@ -105,14 +106,14 @@
 
             </div>
             <div class="form-row my-2">
-                <label class="col-sm-1 col-md-2 col-form-label">Město:</label>
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Město"):</label>
                 <div class="col-sm-5 col-md-4">
                     <input class="form-control" asp-for="Rec.a03City" />
                     <span asp-validation-for="Rec.a03City" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-row my-2">
-                <label class="col-sm-1 col-md-2 col-form-label">PSČ:</label>
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("PSČ"):</label>
                 <div class="col-sm-1 col-md-1">
                     <input class="form-control" asp-for="Rec.a03PostCode" />
                     <span asp-validation-for="Rec.a03PostCode" class="text-danger"></span>
@@ -120,12 +121,12 @@
             </div>
             <hr />
             <div class="form-row my-2">
-                <label class="col-sm-1 col-md-2 col-form-label">E-mail:</label>
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("E-mail"):</label>
                 <div class="col-sm-5 col-md-4">
                     <input class="form-control" type="email" asp-for="Rec.a03Email" />
                     <span asp-validation-for="Rec.a03Email" class="text-danger"></span>
                 </div>
-                <label class="col-sm-1 col-md-1 col-form-label">WWW:</label>
+                <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("WWW"):</label>
                 <div class="col-sm-5 col-md-5">
                     <input class="form-control" type="url" asp-for="Rec.a03Web" />
                     <span asp-validation-for="Rec.a03Web" class="text-danger"></span>
@@ -133,12 +134,12 @@
 
             </div>
             <div class="form-row my-2">
-                <label class="col-sm-1 col-md-2 col-form-label">Mobil:</label>
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Mobil"):</label>
                 <div class="col-sm-5 col-md-4">
                     <input class="form-control" type="tel" asp-for="Rec.a03Mobile" />
                     <span asp-validation-for="Rec.a03Mobile" class="text-danger"></span>
                 </div>
-                <label class="col-sm-1 col-md-1 col-form-label">Pevný TEL:</label>
+                <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Telefon"):</label>
                 <div class="col-sm-5 col-md-5">
                     <input class="form-control" type="tel" asp-for="Rec.a03Phone" />
                     <span asp-validation-for="Rec.a03Phone" class="text-danger"></span>
@@ -153,8 +154,8 @@
             <!-- Tab2 -->
             <p></p>
             <select asp-for="Rec.a03SchoolPortalFlag" class="form-control">
-                <option value="NotPublish">Škola nepoužívá školní web na portále</option>
-                <option value="Publish">Škola používá (a publikuje) školní web na portále</option>
+                <option value="NotPublish">@_f.tra("Škola nepoužívá školní web na portále")</option>
+                <option value="Publish">@_f.tra("Škola používá (a publikuje) školní web na portále")</option>
             </select>
 
         </div>

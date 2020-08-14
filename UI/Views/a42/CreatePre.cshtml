@@ -1,24 +1,24 @@
 ﻿@model a42CreateViewModel
-
+@inject BL.Factory _f
 
 @{
 
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    ViewData["Title"] = "Nový INEZ: Vybrat typ akce";
+    ViewData["Title"] = _f.tra("Nový INEZ: Vyberte typ akce");
     if (Model == null) return;
 
 }
 
 @addTagHelper *, UI
 
-<h4>Nový INEZ: Vyberte typ akce:</h4>
+<h4>@_f.tra("Nový INEZ: Vyberte typ akce"):</h4>
 
 
 @foreach (var c in Model.lisA10)
 {
-<div>
-    <a class="nav-link font-weight-bold" href="/a42/Create?a10id=@c.pid">@c.a10Name</a>
-</div>
-    
+    <div>
+        <a class="nav-link font-weight-bold" href="/a42/Create?a10id=@c.pid">@c.a10Name</a>
+    </div>
+
 }

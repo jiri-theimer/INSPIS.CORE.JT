@@ -1,4 +1,5 @@
 ﻿@model UI.Models.Tab.a01TabCapacityEdit
+@inject BL.Factory _f
 
 @{
     ViewData["Title"] = "Upravit časový plán akce";
@@ -16,10 +17,10 @@
 @addTagHelper *, UI
 <link rel="stylesheet" href="~/css/tabcapacity.css" />
 
-<h4>Upravit časový plán akce</h4>
+<h4>@_f.tra("Upravit časový plán akce")</h4>
 <div class="bg-light" style="padding:10px;">
-    <button id="cmdSave" type="submit" class="btn btn-success">Uložit změny</button>
-    <button type="button" id="cmdClose" onclick="_window_close()" class="btn btn-light">Zavřít</button>
+    <button id="cmdSave" type="submit" class="btn btn-success">@_f.tra("Uložit změny")</button>
+    <button type="button" id="cmdClose" onclick="_window_close()" class="btn btn-light">@_f.tra("Zavřít")</button>
 
 </div>
 
@@ -30,24 +31,24 @@
     @if (Model.IsMonthView)
     {
         <div class="btn-group">
-            <button type="button" class="btn btn-secondary btn-sm" title="Předchozí měsíc" onclick="goprev()">←</button>
+            <button type="button" class="btn btn-secondary btn-sm" title="@_f.tra("Předchozí měsíc")" onclick="goprev()">←</button>
             <strong class="val-readonly" style="width:100px;text-align:center;">@(Model.CurMonth.ToString()+" - "+Model.CurYear.ToString())</strong>
-            <button type="button" class="btn btn-secondary btn-sm" title="Další měsíc" onclick="gonext()">→</button>
+            <button type="button" class="btn btn-secondary btn-sm" title="@_f.tra("Další měsíc")" onclick="gonext()">→</button>
         </div>
     }
 
     <div class="modal_record_container">
         <div class="form-row">
-            <label class="col-sm-1 col-md-2 col-form-label">Plán začátek:</label>
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Plán začátek"):</label>
             <div class="col-sm-2 col-md-2">
                 <mydate asp-for="@Model.DateFrom"></mydate>
             </div>
-            <label class="col-sm-1 col-md-1 col-form-label">Plán konec:</label>
+            <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Konec"):</label>
             <div class="col-sm-2 col-md-2">
                 <mydate asp-for="@Model.DateUntil"></mydate>
             </div>
             <div class="col-sm-2 col-md-2">
-                <button type="button" class="btn btn-light" onclick="clear_all()">Odškrtni vše</button>
+                <button type="button" class="btn btn-light" onclick="clear_all()">@_f.tra("Odškrtni vše")</button>
             </div>
         </div>
     </div>
@@ -56,7 +57,7 @@
         <tr>
             <td class="firstcol" style="background-color:lightgrey;">
 
-                <span>Pracovních dní: </span>
+                <span>@_f.tra("Pracovních dní"): </span>
                 <span class="badge badge-primary">@(Model.PracovnichDni)</span>
             </td>
             @foreach (string mesic in Model.lisDays.Select(p => p.Month.ToString() + " / " + p.Year.ToString()).Distinct())
@@ -174,10 +175,10 @@
                     </td>
                 }
                 <td>
-                    <button type="button" class="btn btn-sm btn-light" title="Zaškrtni vše" onclick="check_line(@recA41.j02ID)">✔</button>                    
+                    <button type="button" class="btn btn-sm btn-light" title="@_f.tra("Zaškrtni vše")" onclick="check_line(@recA41.j02ID)">✔</button>
                 </td>
                 <td>
-                    <button type="button" class="btn btn-sm btn-light" title="Odšktni vše" onclick="clear_line(@recA41.j02ID)">⌧</button>
+                    <button type="button" class="btn btn-sm btn-light" title="@_f.tra("Odšktni vše")" onclick="clear_line(@recA41.j02ID)">⌧</button>
                 </td>
             </tr>
         }
@@ -236,7 +237,7 @@
             if ($(this).attr("value").indexOf(j02id + "_") > -1) {
                 $(this).prop("checked", true);
             }
-            
+
         });
     }
     function clear_line(j02id) {

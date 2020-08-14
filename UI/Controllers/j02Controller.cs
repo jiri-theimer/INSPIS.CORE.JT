@@ -133,15 +133,15 @@ namespace UI.Controllers
 
         private void RefreshNavTabs(j02RecPage v)
         {
-            v.NavTabs.Add(new NavTab() { Name = string.Format("{0}: je účastníkem", Factory.App.Terminology_Akce), Entity = "a01Event", Url = "/TheGrid/SlaveView?prefix=a01" });
-            v.NavTabs.Add(new NavTab() { Name = string.Format("{0}: je zakladatelem", Factory.App.Terminology_Akce), Entity = "a01Event", Url = "/TheGrid/SlaveView?prefix=a01&master_flag=issuer" });
-            v.NavTabs.Add(new NavTab() { Name = string.Format("{0}: je vedoucím", Factory.App.Terminology_Akce), Entity = "a01Event", Url = "/TheGrid/SlaveView?prefix=a01&master_flag=leader" });
+            v.NavTabs.Add(AddTab(string.Format(Factory.tra("{0}: je účastníkem"),"viewUcastnik", Factory.App.Terminology_Akce), "a01Event", "/TheGrid/SlaveView?prefix=a01",false));
+            v.NavTabs.Add(AddTab( string.Format(Factory.tra("{0}: je zakladatelem"), Factory.App.Terminology_Akce),"a01Event", "/TheGrid/SlaveView?prefix=a01&master_flag=issuer",false));
+            v.NavTabs.Add(AddTab(string.Format(Factory.tra("{0}: je vedoucím"), Factory.App.Terminology_Akce), "a01Event", "/TheGrid/SlaveView?prefix=a01&master_flag=leader",false));
 
-            v.NavTabs.Add(new NavTab() { Name = "Instituce", Entity = "a03Institution", Url = "/TheGrid/SlaveView?prefix=a03" });
-            v.NavTabs.Add(new NavTab() { Name = "Úkoly/Lhůty", Entity = "h04ToDo", Url = "/TheGrid/SlaveView?prefix=h04" });            
-            v.NavTabs.Add(new NavTab() { Name = "Outbox", Entity = "x40MailQueue", Url = "/TheGrid/SlaveView?prefix=x40" });
-            v.NavTabs.Add(new NavTab() { Name = "PING Log", Entity = "j92PingLog", Url = "/TheGrid/SlaveView?prefix=j92" });
-            v.NavTabs.Add(new NavTab() { Name = "LOGIN Log", Entity = "j90LoginAccessLog", Url = "/TheGrid/SlaveView?prefix=j90" });
+            v.NavTabs.Add(AddTab("Instituce", "a03Institution", "/TheGrid/SlaveView?prefix=a03"));
+            v.NavTabs.Add(AddTab("Úkoly/Lhůty", "h04ToDo", "/TheGrid/SlaveView?prefix=h04"));
+            v.NavTabs.Add(AddTab("Outbox", "x40MailQueue", "/TheGrid/SlaveView?prefix=x40"));
+            v.NavTabs.Add(AddTab("PING Log", "j92PingLog", "/TheGrid/SlaveView?prefix=j92"));
+            v.NavTabs.Add(AddTab("LOGIN Log", "j90LoginAccessLog", "/TheGrid/SlaveView?prefix=j90"));
 
 
             string strDefTab = Factory.CBL.LoadUserParam("recpage-tab-j02");

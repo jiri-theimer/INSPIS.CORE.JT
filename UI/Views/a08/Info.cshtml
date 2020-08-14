@@ -2,7 +2,7 @@
 @inject BL.Factory _f
 
 @{
-    ViewData["Title"] = "Téma akce";
+    ViewData["Title"] = _f.tra("Téma akce");
     Layout = "~/Views/Shared/_LayoutSubform.cshtml";
 
 }
@@ -18,13 +18,13 @@
         @if (_f.CurrentUser.TestPermission(BO.PermValueEnum.AdminGlobal_Ciselniky))
         {
             <div class="col-sm-2 col-md-2">
-                <a href="javascript:_window_open('/a08/Record?pid=@(Model.pid)')">Administrace</a>
+                <a href="javascript:_window_open('/a08/Record?pid=@(Model.pid)')">@_f.tra("Administrace")</a>
             </div>
         }
     </div>
     @Html.Raw(Model.TagHtml)
 </div>
-<strong>Povolené formuláře k tématu:</strong>
+<strong>@_f.tra("Povolené formuláře k tématu"):</strong>
 <div id="divA12"></div>
 
 

@@ -1,4 +1,5 @@
 ﻿@model UI.Models.Recpage.a01RecPage
+@inject BL.Factory _f
 
 @{
     ViewData["Title"] = "Info";
@@ -8,106 +9,106 @@
 
 @addTagHelper *, UI
 
-    <div class="modal_record_container">
-        
-        <div class="form-row">
-            <label class="col-sm-1 col-md-2 col-form-label">ID:</label>
-            <div class="col-sm-4 col-md-3">
+<div class="modal_record_container">
 
-                <myval value="@Model.Rec.a01Signature"></myval>
-            </div>
-            <div class="col-sm-1 col-md-1">
+    <div class="form-row">
+        <label class="col-sm-1 col-md-2 col-form-label">>@_f.tra("ID akce"):</label>
+        <div class="col-sm-4 col-md-3">
 
-                <myval value="@Model.Rec.a01SigID"></myval>
-            </div>
-
-            <label class="col-sm-1 col-md-1 col-form-label">Typ:</label>
-            <div class="col-sm-5 col-md-4">
-                <myval value="@Model.Rec.a10Name" hoverprefix="a10" hoverpid="@Model.Rec.a10ID"></myval>
-
-
-            </div>
+            <myval value="@Model.Rec.a01Signature"></myval>
         </div>
-        <div class="form-row my-2">
-            <label class="col-sm-1 col-md-2 col-form-label">Aktuální stav:</label>
-            <div class="col-sm-4 col-md-3">
+        <div class="col-sm-1 col-md-1">
 
-                <myval value="@Model.Rec.b02Name" hoverprefix="b02" hoverpid="@Model.Rec.b02ID"></myval>
+            <myval value="@Model.Rec.a01SigID"></myval>
+        </div>
 
-            </div>
-            <div class="col-sm-1 col-md-1">
-                <myval datatype="html" value="@("<span style='background-color:"+Model.Rec.b02Color+";'>"+Model.Rec.b02Ident+"</span>")"></myval>
+        <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Typ akce"):</label>
+        <div class="col-sm-5 col-md-4">
+            <myval value="@Model.Rec.a10Name" hoverprefix="a10" hoverpid="@Model.Rec.a10ID"></myval>
 
-            </div>
-
-            <label class="col-sm-1 col-md-1 col-form-label">Posl. událost:</label>
-            @if (Model.RecLastEvent != null)
-            {
-                <div class="col-sm-3 col-md-2">
-                    <myval datatype="link" linkurl="/j02/RecPage?pid=@Model.RecLastEvent.j02ID" value="@Model.RecLastEvent.Person" hoverprefix="j02" hoverpid="@Model.RecLastEvent.j02ID"></myval>
-
-
-                </div>
-                <div class="col-sm-2 col-md-2">
-                    <myval datatype="datetime" value="@Model.RecLastEvent.DateInsert"></myval>
-                </div>
-            }
 
         </div>
-        <div class="form-row my-2">
-            <label class="col-sm-1 col-md-2 col-form-label">@(Model.Rec.a06Name+":")</label>
+    </div>
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">@(_f.tra("Aktuální stav")):</label>
+        <div class="col-sm-4 col-md-3">
 
-            @if (Model.Rec.a03ID > 0)
-            {
-                <div class="col-sm-4 col-md-3">
-                    <myval datatype="link" linkurl="/a03/RecPage?pid=@Model.Rec.a03ID" value="@Model.Rec.a03Name" hoverprefix="a03" hoverpid="@Model.Rec.a03ID"></myval>
+            <myval value="@Model.Rec.b02Name" hoverprefix="b02" hoverpid="@Model.Rec.b02ID"></myval>
 
+        </div>
+        <div class="col-sm-1 col-md-1">
+            <myval datatype="html" value="@("<span style='background-color:"+Model.Rec.b02Color+";'>"+Model.Rec.b02Ident+"</span>")"></myval>
 
-                </div>
-                <div class="col-sm-1 col-md-1">
-                    <myval tooltip="REDIZO" value="@Model.Rec.a03REDIZO"></myval>
-                </div>
-            }
-            else
-            {
+        </div>
 
-                <div class="col-sm-5 col-md-4">
-                    <myval value="@Model.Rec.a01InstitutionPlainText"></myval>
-                </div>
-            }
-
-
-            <label class="col-sm-1 col-md-1 col-form-label">Založeno:</label>
+        <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Naposledy"):</label>
+        @if (Model.RecLastEvent != null)
+        {
             <div class="col-sm-3 col-md-2">
-                @if (Model.RecIssuer != null)
-                {
-                    <myval datatype="link" linkurl="/j02/RecPage?pid=@Model.RecIssuer.pid" value="Model.RecIssuer.FullNameAsc" hoverprefix="j02" hoverpid="@Model.RecIssuer.pid"></myval>
-                }
+                <myval datatype="link" linkurl="/j02/RecPage?pid=@Model.RecLastEvent.j02ID" value="@Model.RecLastEvent.Person" hoverprefix="j02" hoverpid="@Model.RecLastEvent.j02ID"></myval>
+
+
             </div>
             <div class="col-sm-2 col-md-2">
-                <myval datatype="datetime" value="@Model.Rec.DateInsert"></myval>
+                <myval datatype="datetime" value="@Model.RecLastEvent.DateInsert"></myval>
             </div>
-        </div>
-        <div class="form-row my-2">
-            <label class="col-sm-1 col-md-2 col-form-label">Téma:</label>
-            <div class="col-sm-5 col-md-4">
+        }
 
-                <myval value="@Model.Rec.a08Name" hoverprefix="a08" hoverpid="@Model.Rec.a08ID"></myval>
-            </div>
-            @if (Model.Rec.a01CaseCode != null && Model.Rec.a01ParentID == 0)
-            {
-                <label class="col-sm-1 col-md-1 col-form-label">GINIS spis:</label>
-                <div class="col-sm-5 col-md-4">
-                    <myval datatype="string" value="@Model.Rec.a01CaseCode"></myval>
-
-                </div>
-
-            }
-
-
-        </div>
-        @Html.Raw(Model.TagHtml)
     </div>
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">@(Model.Rec.a06Name+":")</label>
+
+        @if (Model.Rec.a03ID > 0)
+        {
+            <div class="col-sm-4 col-md-3">
+                <myval datatype="link" linkurl="/a03/RecPage?pid=@Model.Rec.a03ID" value="@Model.Rec.a03Name" hoverprefix="a03" hoverpid="@Model.Rec.a03ID"></myval>
+
+
+            </div>
+            <div class="col-sm-1 col-md-1">
+                <myval tooltip="REDIZO" value="@Model.Rec.a03REDIZO"></myval>
+            </div>
+        }
+        else
+        {
+
+            <div class="col-sm-5 col-md-4">
+                <myval value="@Model.Rec.a01InstitutionPlainText"></myval>
+            </div>
+        }
+
+
+        <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Založeno"):</label>
+        <div class="col-sm-3 col-md-2">
+            @if (Model.RecIssuer != null)
+            {
+                <myval datatype="link" linkurl="/j02/RecPage?pid=@Model.RecIssuer.pid" value="Model.RecIssuer.FullNameAsc" hoverprefix="j02" hoverpid="@Model.RecIssuer.pid"></myval>
+            }
+        </div>
+        <div class="col-sm-2 col-md-2">
+            <myval datatype="datetime" value="@Model.Rec.DateInsert"></myval>
+        </div>
+    </div>
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Téma akce"):</label>
+        <div class="col-sm-5 col-md-4">
+
+            <myval value="@Model.Rec.a08Name" hoverprefix="a08" hoverpid="@Model.Rec.a08ID"></myval>
+        </div>
+        @if (Model.Rec.a01CaseCode != null && Model.Rec.a01ParentID == 0)
+        {
+            <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Spis"):</label>
+            <div class="col-sm-5 col-md-4">
+                <myval datatype="string" value="@Model.Rec.a01CaseCode"></myval>
+
+            </div>
+
+        }
+
+
+    </div>
+    @Html.Raw(Model.TagHtml)
+</div>
 @if (Model.Rec.a01Description != null)
 {
     <div style="border:dashed 1px silver;padding:6px;max-height:200px;overflow:auto;">

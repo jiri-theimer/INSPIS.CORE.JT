@@ -1,7 +1,8 @@
 ﻿@model AdminPage
+@inject BL.Factory _f
 
 @{
-    ViewData["Title"] = "Workflow návrhář";
+    ViewData["Title"] = _f.tra("Workflow návrhář");
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -10,14 +11,14 @@
 
 <div class="row py-3 bg-light m-0">
     <div class="col-auto" style="width:190px;">
-        <a class="cm h4 mx-0" onclick="_cm(event, 'Workflow',0,'@Model.prefix');">☰Workflow</a>
+        <a class="cm h4 mx-0" onclick="_cm(event, 'Workflow',0,'@Model.prefix');">☰@_f.tra("Workflow")</a>
     </div>
     <div class="col-sm-8">
         <mark>@Model.entityTitle</mark>
     </div>
     <div class="col-sm-1"></div>
     <div class="nonmobile nontablet">
-        <a class="btn btn-secondary" href="/Admin/Workflow?prefix=@Model.prefix">Obnovit</a>
+        <a class="btn btn-secondary" href="/Admin/Workflow?prefix=@Model.prefix">@_f.tra("Občerstvit")</a>
     </div>
 
 
@@ -37,7 +38,7 @@
     }
     else
     {
-        <h4 style="margin:20px;">Workflow návrhář</h4>
+        <h4 style="margin:20px;">@_f.tra("Workflow návrhář")</h4>
     }
 
 

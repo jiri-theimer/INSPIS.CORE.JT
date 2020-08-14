@@ -11,7 +11,7 @@
 
 <div class="modal_record_container">
     <div class="form-row">
-        <label class="col-sm-1 col-md-2 col-form-label">Jméno:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Jméno"):</label>
         <div class="col-sm-7 col-md-6">
             <myval value="@Model.Rec.FullNameAsc"></myval>
 
@@ -19,17 +19,17 @@
         @if (Model.Rec.j07ID > 0)
         {
             <div class="col-sm-2 col-md-2">
-                <myval value="@Model.Rec.j07Name" tooltip="Pozice"></myval>
+                <myval value="@Model.Rec.j07Name" tooltip="@_f.tra("Pozice")"></myval>
             </div>
         }
         <div class="col-sm-2 col-md-2">
-            <myval value="@Model.Rec.j02PID" tooltip="Osobní ID (kód)"></myval>
+            <myval value="@Model.Rec.j02PID" tooltip="@_f.tra("Osobní kód")"></myval>
 
         </div>
         @if (_f.CurrentUser.TestPermission(BO.PermValueEnum.AdminGlobal_Ciselniky))
         {
             <div class="colsm-2 col-md-2">
-                <a href="javascript:_window_open('/j02/Record?pid=@(Model.pid)')">Administrace</a>
+                <a href="javascript:_window_open('/j02/Record?pid=@(Model.pid)')">@_f.tra("Administrace")</a>
             </div>
         }
 
@@ -38,14 +38,14 @@
     @if (Model.RecJ03 != null)
     {
         <div class="form-row my-2">
-            <label class="col-sm-1 col-md-2 col-form-label">Uživatelský účet:</label>
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Uživatelský účet"):</label>
             <div class="col-sm-7 col-md-6">
                 <myval value="@Model.RecJ03.j03Login"></myval>
 
 
             </div>
             <div class="col-sm-4 col-md-4">
-                <myval value="@Model.RecJ03.j04Name" tooltip="Aplikační role" hoverprefix="j04" hoverpid="@Model.RecJ03.j04ID"></myval>
+                <myval value="@Model.RecJ03.j04Name" tooltip="@_f.tra("Aplikační role")" hoverprefix="j04" hoverpid="@Model.RecJ03.j04ID"></myval>
             </div>
         </div>
     }
@@ -53,12 +53,12 @@
     @if (Model.RecA04 != null)
     {
         <div class="form-row my-2">
-            <label class="col-sm-1 col-md-2 col-form-label">Inspektorát:</label>
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Inspektorát"):</label>
             <div class="col-sm-7 col-md-6">
                 <myval value="@Model.RecA04.Name"></myval>
             </div>
             <div class="col-sm-4 col-md-4">
-                <myval tooltip="Pevný TEL" value="@Model.RecA04.a04Phone"></myval>
+                <myval tooltip="@_f.tra("Pevný telefon")" value="@Model.RecA04.a04Phone"></myval>
             </div>
         </div>
 
@@ -75,7 +75,7 @@
 
                     </div>
                     <div class="col-sm-2 col-md-2">
-                        <myval value="@c.RoleName" tooltip="Role v instituci"></myval>
+                        <myval value="@c.RoleName" tooltip="@_f.tra("Role v instituci")"></myval>
 
                     </div>
                     <div class="col-sm-2 col-md-2">
@@ -100,7 +100,7 @@
 
 
     <div class="form-row my-2">
-        <label class="col-sm-1 col-md-2 col-form-label">Kontakt:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kontakt"):</label>
         <div class="col-sm-6 col-md-6">
             <myval datatype="link" linkurl="mailto:@Model.Rec.j02Email" value="@Model.Rec.j02Email"></myval>
 
@@ -108,11 +108,11 @@
         </div>
 
         <div class="col-sm-3 col-md-2">
-            <myval value="@Model.Rec.j02Phone" tooltip="Pevný TEL"></myval>
+            <myval value="@Model.Rec.j02Phone" tooltip="@_f.tra("Pevný telefon")"></myval>
 
         </div>
         <div class="col-sm-2 col-md-2">
-            <myval value="@Model.Rec.j02Mobile" tooltip="Mobilní TEL"></myval>
+            <myval value="@Model.Rec.j02Mobile" tooltip="@_f.tra("Mobilní telefon")"></myval>
 
 
         </div>

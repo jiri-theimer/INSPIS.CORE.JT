@@ -1,8 +1,10 @@
 ﻿@model UI.Models.Record.a41Record
+@inject BL.Factory _f
+
 @{
     Layout = "~/Views/Shared/_LayoutRecord.cshtml";
     if (Model.Rec == null) return;
-    Model.PageTitle = "Účastník akce: " + Model.RecA01.a01Signature;
+    Model.PageTitle = _f.tra("Účastník akce")+": " + Model.RecA01.a01Signature;
 }
 @addTagHelper *, UI
 
@@ -11,14 +13,14 @@
     <input type="hidden" asp-for="@Model.Person" />
 
     <div class="form-row">
-        <label class="col-sm-1 col-md-2 col-form-label">Role v akci:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Role v akci"):</label>
         <div class="col-sm-11 col-md-10">
-            <mycombo entity="a45EventRole" asp-for="Rec.a45ID" selectedtext="Rec.a45Name" placeholder="Vybrat roli v akci..." view-flag="2" param1="a45IsManual1"></mycombo>
+            <mycombo entity="a45EventRole" asp-for="Rec.a45ID" selectedtext="Rec.a45Name" placeholder="@_f.tra("Vybrat roli v akci")..." view-flag="2" param1="a45IsManual1"></mycombo>
         </div>
     </div>
 
     <div class="form-row my-2">
-        <label class="col-sm-1 col-md-2 col-form-label">Jméno:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Jméno"):</label>
         <div class="col-sm-11 col-md-10">
             <span class="val-readonly">@Model.Person</span>
         </div>

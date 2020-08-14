@@ -1,4 +1,5 @@
 ﻿@model UI.Models.Tab.a01TabForms
+@inject BL.Factory _f
 
 @{
     ViewData["Title"] = "Formuláře v akci";
@@ -11,8 +12,8 @@
 
     <div class="modal_record_container">
         <div style="margin-bottom:20px;">
-            <button type="button" class="btn btn-primary" onclick="append_f06()">Přidat formuláře</button>
-            <button type="button" class="btn btn-secondary" onclick="append_a25()">Přidat skupinu formulářů</button>
+            <button type="button" class="btn btn-primary" onclick="append_f06()">@_f.tra("Přidat formuláře")</button>
+            <button type="button" class="btn btn-secondary" onclick="append_a25()">@_f.tra("Přidat skupinu formulářů")</button>
         </div>
 
         <table class="table table-sm" style="min-width:1000px;">
@@ -53,7 +54,7 @@
                     <td>
                         @if (c.a25ID > 0)
                         {
-                            <a title="Skupina formulářů v akci" href="javascript:_window_open('/a25/Record?pid=@c.a25ID&a01id=@Model.RecA01.pid')">@c.a25Name</a>
+                            <a title="@_f.tra("Skupina formulářů v akci")" href="javascript:_window_open('/a25/Record?pid=@c.a25ID&a01id=@Model.RecA01.pid')">@c.a25Name</a>
                             @if (c.a25Color != null)
                             {
                                 <span style="background-color:@c.a25Color">🚩</span>

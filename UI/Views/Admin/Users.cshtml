@@ -1,7 +1,8 @@
 ﻿@model AdminPage
+@inject BL.Factory _f
 
 @{
-    ViewData["Title"] = "Uživatelé";
+    ViewData["Title"] = _f.tra("Uživatelé");
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -10,21 +11,21 @@
 
 <div class="row py-3 bg-light m-0">
     <div class="col-auto" style="width:190px;">
-        <a class="cm h4 mx-0" onclick="_cm(event, 'Users',0,'@Model.prefix');">☰Uživatelé</a>
+        <a class="cm h4 mx-0" onclick="_cm(event, 'Users',0,'@Model.prefix');">☰@_f.tra("Uživatelé")</a>
     </div>
     <div class="col-sm-3">
         <mark>@Model.entityTitle</mark>
     </div>
     <div class="col-sm-5">
-        @if (Model.prefix == "j02" || Model.prefix=="j02" || Model.prefix=="j04" || Model.prefix=="j11" || Model.prefix=="j40")
+        @if (Model.prefix == "j02" || Model.prefix == "j02" || Model.prefix == "j04" || Model.prefix == "j11" || Model.prefix == "j40")
         {
-            <button id="cmdNew" type="button" class="btn btn-primary">Nový záznam</button>
+            <button id="cmdNew" type="button" class="btn btn-primary">@_f.tra("Nový záznam")</button>
         }
 
     </div>
     <div class="col-sm-1"></div>
     <div class="nonmobile nontablet">
-        <a class="btn btn-secondary" href="/Admin/Users?prefix=@Model.prefix">Obnovit</a>
+        <a class="btn btn-secondary" href="/Admin/Users?prefix=@Model.prefix">@_f.tra("Občerstvit")</a>
     </div>
 
 
@@ -44,7 +45,7 @@
     }
     else
     {
-        <h4 style="margin:20px;">Správa  a provoz uživatelů</h4>
+        <h4 style="margin:20px;">@_f.tra("Správa  a provoz uživatelů")</h4>
     }
 
 

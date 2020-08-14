@@ -1,44 +1,45 @@
 ﻿@model UI.Models.Record.a29Record
+@inject BL.Factory _f
 
 @{
 
     Layout = "~/Views/Shared/_LayoutRecord.cshtml";
     if (Model.Rec == null) return;
-    Model.PageTitle = "Pojmenovaný seznam institucí";
+    Model.PageTitle = _f.tra("Pojmenovaný seznam institucí");
 }
 @addTagHelper *, UI
 
-    <script src="~/lib/selection/ds.min.js"></script>
+<script src="~/lib/selection/ds.min.js"></script>
 
 <input type="hidden" id="hidA03IDs" asp-for="@Model.a03IDs" />
 
 <div class="modal_record_container">
     <div class="form-row">
-        <label class="col-sm-1 col-md-2 col-form-label">Název:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
         <div class="col-sm-11 col-md-10">
             <input class="form-control" asp-for="Rec.a29Name" />
             <span asp-validation-for="Rec.a29Name" class="text-danger"></span>
         </div>
     </div>
     <div class="form-row my-2">
-        <textarea asp-for="Rec.a29Description" class="form-control" placeholder="Poznámka"></textarea>
+        <textarea asp-for="Rec.a29Description" class="form-control" placeholder="@_f.tra("Poznámka")"></textarea>
         <span asp-validation-for="Rec.a29Description" class="text-danger"></span>
     </div>
 
 
 
     <div class="form-row my-2">
-        <label class="col-sm-1 col-md-2 col-form-label">Přidat do seznamu:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Přidat do seznamu"):</label>
         <div class="col-sm-11 col-md-10">
-            <mycombo entity="a03Institution" asp-for="@Model.SelectedA03ID" selectedtext="@Model.SelectedInstitution" filter-flag="1" placeholder="Vybrat instituci..." event_after_changevalue="handle_a03id_append"></mycombo>
+            <mycombo entity="a03Institution" asp-for="@Model.SelectedA03ID" selectedtext="@Model.SelectedInstitution" filter-flag="1" placeholder="@_f.tra("Vybrat instituci")..." event_after_changevalue="handle_a03id_append"></mycombo>
         </div>
 
     </div>
-    <button type="button" id="cmdGrid" class="btn btn-secondary btn-sm" onclick="multiselect()">Přidat hromadně přes Grid</button>
+    <button type="button" id="cmdGrid" class="btn btn-secondary btn-sm" onclick="multiselect()">@_f.tra("Přidat hromadně přes Grid")</button>
 </div>
 
 <div id="divA03" style="margin-top:20px;margin-bottom:20px;"></div>
-<button type="button" id="cmdClear" class="btn btn-warning btn-sm" style="display:none;" onclick="clear_all()">Vyčistit vše</button>
+<button type="button" id="cmdClear" class="btn btn-warning btn-sm" style="display:none;" onclick="clear_all()">@_f.tra("Vyčistit vše")</button>
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -51,13 +52,13 @@
 
     function handle_a03id_append(a03id) {
         if (a03id == "") {
-            _notify_message("Musíte vybrat instituci.");
+            _notify_message("@_f.tra("Musíte vybrat instituci.")");
             return;
         }
         var a03ids = [];
         if ($("#hidA03IDs").val() != "") a03ids = $("#hidA03IDs").val().split(",");
         if (a03ids.includes(a03id)) {
-            _notify_message("Tato instituce již je v seznamu.", "info");
+            _notify_message("@_f.tra("Tato instituce již je v seznamu.")", "info");
             return;
         }
         a03ids.push(a03id);
@@ -150,7 +151,7 @@
 
                     for (i = 0; i < elements.length; i++) {
                         var rowid = $(elements[i]).attr("data-v");
-                        
+
                         _rowids.push(rowid);
 
                     }
