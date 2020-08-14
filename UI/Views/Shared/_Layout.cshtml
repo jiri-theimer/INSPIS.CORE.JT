@@ -60,7 +60,7 @@
         <nav id="mainmenu1" class="navbar navbar-expand-lg navbar-dark py-1">
             <div class="navbar-nav">
                 <div class="nav-item dropdown">
-                    <a id="cmdGlobalNavigate" class="btn btn-light btn-sm dropdown-toggle" data-toggle="dropdown" role="button" title="Navigace v INSPIS rodině" style="cursor: pointer;">
+                    <a id="cmdGlobalNavigate" class="btn btn-light btn-sm dropdown-toggle" data-toggle="dropdown" role="button" style="cursor: pointer;">
                         <span class="text-primary" style="font-size:140%;">
 
                             ☰@_f.App.AppName
@@ -90,7 +90,7 @@
                 {
                     <div class="navbar-nav">
                         <div class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="javascript:void(0)" onclick="menu_open_by_prefix('Admin')" id="cmdAdmin" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tabindex="-1">ADMINISTRACE</a>
+                            <a class="nav-link dropdown-toggle" href="javascript:void(0)" onclick="menu_open_by_prefix('Admin')" id="cmdAdmin" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tabindex="-1">@_f.tra("ADMINISTRACE")</a>
 
                             <div class="dropdown-menu dropdown_menu_container" id="divMenuAdmin" aria-labelledby="cmdAdmin">Loading...</div>
 
@@ -111,7 +111,7 @@
                 {
                     <div class="navbar-nav">
                         <div class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="javascript:void(0)" onclick="menu_open_by_prefix('A03')" id="cmdA03" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tabindex="-1">INSTITUCE</a>
+                            <a class="nav-link dropdown-toggle" href="javascript:void(0)" onclick="menu_open_by_prefix('A03')" id="cmdA03" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tabindex="-1">@_f.tra("INSTITUCE")</a>
 
                             <div class="dropdown-menu dropdown_menu_container" id="divMenuA03" aria-labelledby="cmdA03">Loading...</div>
                         </div>
@@ -120,7 +120,7 @@
                 @if (_f.CurrentUser.TestPermission(BO.PermValueEnum.Menu_H04) || 1 == 1)
                 {
                     <div class="navbar-nav">
-                        <a id="cmdH04" class="nav-link text-white" href="/TheGrid/FlatView?prefix=h04" tabindex="-1">ÚKOLY</a>
+                        <a id="cmdH04" class="nav-link text-white" href="/TheGrid/FlatView?prefix=h04" tabindex="-1">@_f.tra("ÚKOLY")</a>
 
                     </div>
 
@@ -130,7 +130,7 @@
                 {
                     <div class="navbar-nav">
                         <div class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="javascript:void(0)" onclick="menu_open_by_prefix('J02')" id="cmdJ02" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tabindex="-1">LIDÉ</a>
+                            <a class="nav-link dropdown-toggle" href="javascript:void(0)" onclick="menu_open_by_prefix('J02')" id="cmdJ02" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tabindex="-1">@_f.tra("LIDÉ")</a>
 
                             <div class="dropdown-menu dropdown_menu_container" id="divMenuJ02" aria-labelledby="cmdJ02">Loading...</div>
                         </div>
@@ -141,7 +141,7 @@
                 {
                     <div class="navbar-nav">
                         <div class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="javascript:void(0)" onclick="menu_open_by_prefix('X31')" id="cmdX31" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tabindex="-1">SESTAVY</a>
+                            <a class="nav-link dropdown-toggle" href="javascript:void(0)" onclick="menu_open_by_prefix('X31')" id="cmdX31" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tabindex="-1">@_f.tra("SESTAVY")</a>
 
                             <div class="dropdown-menu dropdown_menu_container" id="divMenuX31" aria-labelledby="cmdX31">Loading...</div>
                         </div>

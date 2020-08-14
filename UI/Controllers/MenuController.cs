@@ -27,20 +27,20 @@ namespace UI.Controllers
 
         public string GlobalNavigateMenu()
         {
-            AMI(string.Format("<img src='{0}'/>",Factory.App.LogoImage), null);
+            AMI_NOTRA(string.Format("<img src='{0}'/>",Factory.App.LogoImage), null);
 
             if (Factory.App.Implementation == "HD")
             {
-                AMI("InspIS DATA", "https://inspis.csicr.cz/app");
+                AMI_NOTRA("InspIS DATA", "https://inspis.csicr.cz/app");
             }
             else
             {
-                AMI("InspIS HELPDESK", "https://helpdesk.csicr.cz/app");
-            }            
-            AMI("InspIS E-LEARNING", "https://elearning.csicr.cz");
-            AMI("InspIS PORTAL", "https://portal.csicr.cz");
-            AMI("InspIS SET", "https://set.csicr.cz");
-            AMI("InspIS ŠVP", "https://svp.csicr.cz/app");
+                AMI_NOTRA("InspIS HELPDESK", "https://helpdesk.csicr.cz/app");
+            }
+            AMI_NOTRA("InspIS E-LEARNING", "https://elearning.csicr.cz");
+            AMI_NOTRA("InspIS PORTAL", "https://portal.csicr.cz");
+            AMI_NOTRA("InspIS SET", "https://set.csicr.cz");
+            AMI_NOTRA("InspIS ŠVP", "https://svp.csicr.cz/app");
             
 
             DIV();
@@ -75,7 +75,7 @@ namespace UI.Controllers
                 if (i == 1) s = "English";
                 if (i == 2) s = "Українська";                
                 if (Factory.CurrentUser.j03LangIndex == i) s += "&#10004;";
-                AMI(s, string.Format("javascript: save_langindex_menu({0})", i));
+                AMI_NOTRA(s, string.Format("javascript: save_langindex_menu({0})", i));
             }
             return FlushResult_NAVLINKs();            
         }
@@ -84,12 +84,12 @@ namespace UI.Controllers
             
             for (int i = 1; i <= 4; i++)
             {
-                string s = "Malé písmo";
-                if (i == 2) s = "Výchozí velikost písma";
-                if (i == 3) s = "Větší";
-                if (i == 4) s = "Velké";
+                string s = Factory.tra("Malé písmo");
+                if (i == 2) s = Factory.tra("Výchozí velikost písma");
+                if (i == 3) s = Factory.tra("Větší");
+                if (i == 4) s = Factory.tra("Velké");
                 if (Factory.CurrentUser.j03FontStyleFlag == i) s += "&#10004;";
-                AMI(s, string.Format("javascript: save_fontstyle_menu({0})",i));
+                AMI_NOTRA(s, string.Format("javascript: save_fontstyle_menu({0})",i));
                 
             }
           
@@ -383,12 +383,12 @@ namespace UI.Controllers
                     AMI("Stránka akce", string.Format("javascript:_location_replace_top('/a01/RecPage?pid={0}')", recA01.pid));
                     if (recA01.isclosed == true)
                     {
-                        AMI("<kbd>Záznam je v archivu.</kbd>", "");
+                        AMI_NOTRA("<kbd>" + Factory.tra("Záznam je v archivu.") + "</kbd>", "");
                     }
                     break;
                 case "a03":
                     var recA03 = Factory.a03InstitutionBL.Load(pid);
-                    AMI("Upravit (<small>vč. Archivovat a Odstranit</small>)", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
+                    AMI("Karta záznamu", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
                     AMI("Kopírovat", string.Format("javascript:_clone('{0}',{1})", prefix, pid));
                     DIV();
                     AMI("Přidat kontaktní osobu", string.Format("javascript: _window_open('/a39/Record?pid=0&a03id={0}')", pid));
@@ -401,12 +401,12 @@ namespace UI.Controllers
                     AMI("Stránka instituce", string.Format("javascript:_location_replace_top('/a03/RecPage?pid={0}')", recA03.pid));
                     if (recA03.isclosed == true)
                     {
-                        AMI("<kbd>Záznam je v archivu.</kbd>","");
+                        AMI_NOTRA("<kbd>"+Factory.tra("Záznam je v archivu.")+"</kbd>", "");
                     }
                     break;
                 case "a11":
                     var recA11 = Factory.a11EventFormBL.Load(pid);
-                    AMI("Upravit formulář v akci (<small>vč. Odstranit</small>)", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
+                    AMI("Karta záznamu", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
                     DIV();
                     AMI("Otestovat vyplnění formuláře", "");
                     AMI("Zobrazit historii přístupů k šifrovaným otázkám", "");
@@ -414,19 +414,19 @@ namespace UI.Controllers
                     break;
                 case "a41":
                     var recA41 = Factory.a41PersonToEventBL.Load(pid);
-                    AMI("Upravit roli v akci (<small>vč. Odstranit</small>)", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
+                    AMI("Karta záznamu", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
                     DIV();
-                    AMI(string.Format("{0}: Osobní stránka", recA41.PersonAsc), string.Format("/j02/RecPage?pid={0}", recA41.j02ID),"_top");
+                    AMI_NOTRA(string.Format("{0}: Osobní stránka", recA41.PersonAsc), string.Format("/j02/RecPage?pid={0}", recA41.j02ID),"_top");
                     break;
                 case "a42":
                     var recA42 = Factory.a42QesBL.Load(pid);
-                    AMI("Upravit hlavičku INEZ (<small>vč. Odstranit</small>)", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
+                    AMI("Karta záznamu", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
                     DIV();
                     AMI("Nový", "javascript:_location_replace_top('/a42/CreatePre')");
                     break;
                 case "a39":
                     var recA39 = Factory.a39InstitutionPersonBL.Load(pid);
-                    AMI("Upravit (<small>vč. Archivovat a Odstranit</small>)", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
+                    AMI("Karta záznamu", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
                     AMI("Kopírovat", string.Format("javascript:_clone('{0}',{1})", prefix, pid));
                     DIV();
                     AMI("Stránka osoby", string.Format("javascript:_location_replace_top('/j02/RecPage?pid={0}')", recA39.j02ID));
@@ -438,11 +438,11 @@ namespace UI.Controllers
                         AMI("Posunout stav úkolu", string.Format("javascript: _window_open('/h04/MoveStatus?pid={0}')", pid));
                         DIV();
                     }
-                    AMI("Upravit (<small>vč. Archivovat a Odstranit</small>)", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
+                    AMI("Karta záznamu", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
                     AMI("Kopírovat", string.Format("javascript:_clone('{0}',{1})", prefix, pid));
                     DIV();
                     
-                    AMI(string.Format("Stránka akce {0}", Factory.a01EventBL.Load(recH04.a01ID).a01Signature), string.Format("javascript:_location_replace_top('/a01/RecPage?pid={0}')", recH04.a01ID));
+                    AMI_NOTRA(string.Format(Factory.tra("Stránka akce {0}"), Factory.a01EventBL.Load(recH04.a01ID).a01Signature), string.Format("javascript:_location_replace_top('/a01/RecPage?pid={0}')", recH04.a01ID));
                     break;
                 case "f06":
                     HEADER(Factory.f06FormBL.Load(pid).f06Name);
@@ -457,7 +457,7 @@ namespace UI.Controllers
                     break;
                 case "f18":
                     HEADER(Factory.f18FormSegmentBL.Load(pid).f18Name);
-                    AMI("Upravit", string.Format("javascript:_edit('f18',{0})", pid));
+                    AMI("Karta záznamu", string.Format("javascript:_edit('f18',{0})", pid));
                     AMI("Kopírovat", string.Format("javascript:_clone('f18',{0})", pid));
                     DIV();
                     AMI("Nová otázka", string.Format("javascript: _window_open('/f19/Record?f18id={0}')", pid));
@@ -491,7 +491,7 @@ namespace UI.Controllers
                     AMI("Záznam bez menu nabídky", "javascript:_notify_message('nic')");
                     break; 
                 default:
-                    AMI("Upravit (<small>vč. Archivovat a Odstranit</small>)", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
+                    AMI("Karta záznamu", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
                     AMI("Kopírovat", string.Format("javascript:_clone('{0}',{1})", prefix, pid));
 
 
@@ -511,8 +511,12 @@ namespace UI.Controllers
 
 
         private void AMI(string strName,string strUrl,string strTarget=null)
-        {
-            _lis.Add(new BO.MenuItem() { Name = strName, Url = strUrl,Target=strTarget });
+        {            
+            _lis.Add(new BO.MenuItem() { Name = Factory.tra(strName), Url = strUrl,Target=strTarget });
+        }
+        private void AMI_NOTRA(string strName, string strUrl, string strTarget = null)
+        {           
+            _lis.Add(new BO.MenuItem() { Name = strName, Url = strUrl, Target = strTarget });
         }
         private void DIV(string strName=null)
         {

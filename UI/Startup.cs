@@ -82,10 +82,11 @@ namespace UI
 
             
             services.AddSingleton<BL.TheEntitiesProvider>();
+            services.AddSingleton<BL.TheTranslator>();
             services.AddSingleton<BL.TheColumnsProvider>();
             services.AddSingleton<BL.ThePeriodProvider>();
             services.AddSingleton<BL.TheGlobalParams>();
-            services.AddSingleton<BL.TheTranslator>();
+            
 
             services.AddScoped<BO.RunningUser, BO.RunningUser>();
             services.AddScoped<BL.Factory, BL.Factory>();
