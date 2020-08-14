@@ -1,4 +1,6 @@
 ﻿@model UI.Models.Record.b06Record
+@inject BL.Factory _f
+
 @{
     Layout = "~/Views/Shared/_LayoutRecord.cshtml";
     if (Model.Rec == null) return;
@@ -13,25 +15,25 @@
     <!-- Tab panes -->
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a id="link_tab1" class="nav-link" data-toggle="tab" href="#tab1">Vlastnosti</a>
+            <a id="link_tab1" class="nav-link" data-toggle="tab" href="#tab1">@_f.tra("Vlastnosti")</a>
         </li>
         <li class="nav-item">
-            <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2">Kdo spouští krok</a>
+            <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2">@_f.tra("Kdo spouští krok")</a>
         </li>
         <li class="nav-item">
-            <a id="link_tab3" class="nav-link" data-toggle="tab" href="#tab3">Notifikace</a>
+            <a id="link_tab3" class="nav-link" data-toggle="tab" href="#tab3">@_f.tra("Notifikace")</a>
         </li>
         <li class="nav-item">
-            <a id="link_tab4" class="nav-link" data-toggle="tab" href="#tab4">Formuláře a přílohy</a>
+            <a id="link_tab4" class="nav-link" data-toggle="tab" href="#tab4">@_f.tra("Formuláře a přílohy")</a>
         </li>
         <li class="nav-item">
-            <a id="link_tab5" class="nav-link" data-toggle="tab" href="#tab5">Přístup k historii</a>
+            <a id="link_tab5" class="nav-link" data-toggle="tab" href="#tab5">@_f.tra("Přístup k historii")</a>
         </li>
         <li class="nav-item">
-            <a id="link_tab6" class="nav-link" data-toggle="tab" href="#tab6">Příkazy</a>
+            <a id="link_tab6" class="nav-link" data-toggle="tab" href="#tab6">@_f.tra("Příkazy")</a>
         </li>
         <li class="nav-item">
-            <a id="link_tab7" class="nav-link" data-toggle="tab" href="#tab7">Úkol</a>
+            <a id="link_tab7" class="nav-link" data-toggle="tab" href="#tab7">@_f.tra("Úkoly")</a>
         </li>
         <li class="nav-item">
             <a id="link_tab8" class="nav-link" data-toggle="tab" href="#tab8">SQL</a>
@@ -47,7 +49,7 @@
                 @Model.RecB02.b02Name
             </div>
             <div class="form-row">
-                <label class="col-sm-1 col-md-2 col-form-label">Název kroku:</label>
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název kroku"):</label>
                 <div class="col-sm-9 col-md-8">
                     <input class="form-control" asp-for="Rec.b06Name" />
                     <span asp-validation-for="Rec.b06Name" class="text-danger"></span>
@@ -58,16 +60,16 @@
             </div>
             <div class="form-row my-2">
 
-                <label class="col-sm-1 col-md-2 col-form-label">Cílový stav:</label>
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Cílový stav"):</label>
                 <div class="col-sm-9 col-md-8">
-                    <mycombo entity="b02WorkflowStatus" asp-for="Rec.b02ID_Target" selectedtext="Rec.TargetStatus" masterprefix="b01" masterpid="@Model.b01ID" placeholder="Vybrat workflow stav..." view-flag="2"></mycombo>
+                    <mycombo entity="b02WorkflowStatus" asp-for="Rec.b02ID_Target" selectedtext="Rec.TargetStatus" masterprefix="b01" masterpid="@Model.b01ID" placeholder="@_f.tra("Vybrat workflow stav")..." view-flag="2"></mycombo>
 
                 </div>
             </div>
             <div class="form-row">
                 <div class="col-sm-4 col-md-4">
                     <input type="checkbox" asp-for="Rec.b06IsManualStep" />
-                    <label class="col-form-label" for="Rec_b06IsManualStep">Workflow krok spouští uživatel ručně</label>
+                    <label class="col-form-label" for="Rec_b06IsManualStep">@_f.tra("Workflow krok spouští uživatel ručně")</label>
                 </div>
             </div>
             @if (Model.Rec.b06IsManualStep)
@@ -75,7 +77,7 @@
                 <div class="form-row my-2">
                     <div class="col-sm-4 col-md-4">
                         <input type="checkbox" asp-for="Rec.b06IsNominee" />
-                        <label class="col-form-label" for="Rec_b06IsNominee">V tomto kroku lze provést nominaci</label>
+                        <label class="col-form-label" for="Rec_b06IsNominee">@_f.tra("V tomto kroku lze provést nominaci")</label>
                     </div>
                 </div>
                 @if (Model.Rec.b06IsNominee)
@@ -84,32 +86,32 @@
                         <div class="card-header">
                             Nastavení nominace
                             <input type="checkbox" asp-for="Rec.b06IsNomineeRequired" />
-                            <label class="col-form-label" for="Rec_b06IsNomineeRequired">Nominace je povinná</label>
+                            <label class="col-form-label" for="Rec_b06IsNomineeRequired">@_f.tra("Nominace je povinná")</label>
                         </div>
                         <div class="card-body">
                             Nominovaný obdrží v akci roli:
                             <br />
-                            <mycombo entity="a45EventRole" asp-for="Rec.a45ID_NomineeTarget" selectedtext="@Model.a45Name_NomineeTarget" placeholder="Vybrat roli..." view-flag="2"></mycombo>
+                            <mycombo entity="a45EventRole" asp-for="Rec.a45ID_NomineeTarget" selectedtext="@Model.a45Name_NomineeTarget" placeholder="@_f.tra("Vybrat roli")..." view-flag="2"></mycombo>
                         </div>
                         <div class="row">
                             <div class="col-4">
-                                Zdroj nabídky osob k nominaci:
+                                @_f.tra("Zdroj nabídky osob k nominaci"):
                             </div>
                             <div class="col-4">
                                 <select asp-for="Rec.x26ID_Nominee_J02" class="form-control">
-                                    <option value="0">Bez možnosti nominovat osobu (jednotlivce)</option>
-                                    <option value="1">Všechny osoby</option>
+                                    <option value="0">@_f.tra("Bez možnosti nominovat osobu (jednotlivce)")</option>
+                                    <option value="1">@_f.tra("Všechny osoby")</option>
                                 </select>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-4">
-                                Zdroj nabídky pojmenovaných seznamů osob k nominaci:
+                                @_f.tra("Zdroj nabídky pojmenovaných seznamů osob k nominaci"):
                             </div>
                             <div class="col-4">
                                 <select asp-for="Rec.x26ID_Nominee_J11" class="form-control">
-                                    <option value="0">Bez možnosti nominovat seznam osob (tým)</option>
-                                    <option value="2">Všechny seznamy (týmy) osob</option>
+                                    <option value="0">@_f.tra("Bez možnosti nominovat seznam osob (tým)")</option>
+                                    <option value="2">@_f.tra("Všechny seznamy (týmy) osob")</option>
                                 </select>
                             </div>
                         </div>
@@ -120,14 +122,14 @@
                 <div class="form-row my-2">
                     <div class="col-sm-4 col-md-4">
                         <input type="checkbox" asp-for="Rec.b06IsCommentRequired" />
-                        <label class="col-form-label" for="Rec_b06IsCommentRequired">Uživatel má povinnost zapsat komentář</label>
+                        <label class="col-form-label" for="Rec_b06IsCommentRequired">@_f.tra("Uživatel má povinnost zapsat komentář")</label>
                     </div>
 
                 </div>
                 <div class="form-row my-2">
                     <div class="col-sm-5 col-md-5">
                         <input type="checkbox" asp-for="Rec.b06IsRunOneInstanceOnly" />
-                        <label class="col-form-label" for="Rec_b06IsRunOneInstanceOnly">Krok je povoleno u akce spustit pouze jednou</label>
+                        <label class="col-form-label" for="Rec_b06IsRunOneInstanceOnly">@_f.tra("Krok je povoleno u akce spustit pouze jednou")</label>
                     </div>
 
                 </div>
@@ -137,21 +139,21 @@
             <div class="form-row my-2">
                 <div class="col-sm-6 col-md-6">
                     <input type="checkbox" asp-for="Rec.b06IsEscalation_Timeout_Total" />
-                    <label class="col-form-label" for="Rec_b06IsEscalation_Timeout_Total">Tento krok se automaticky spustí po uplynutí TOTAL TIMEOUT stavu</label>
+                    <label class="col-form-label" for="Rec_b06IsEscalation_Timeout_Total">@_f.tra("Tento krok se automaticky spustí po uplynutí TOTAL TIMEOUT stavu")</label>
                 </div>
 
             </div>
             <div class="form-row my-2">
                 <div class="col-sm-6 col-md-6">
                     <input type="checkbox" asp-for="Rec.b06IsEscalation_Timeout_SLA" />
-                    <label class="col-form-label" for="Rec_b06IsEscalation_Timeout_SLA">Tento krok se automaticky spustí po uplynutí SLA TIMEOUT stavu</label>
+                    <label class="col-form-label" for="Rec_b06IsEscalation_Timeout_SLA">@_f.tra("Tento krok se automaticky spustí po uplynutí SLA TIMEOUT stavu")</label>
                 </div>
 
             </div>
 
 
             <div class="form-row my-2">
-                <label class="col-sm-2 col-md-3 col-form-label">Pořadí v nabídce kroků pro uživatele:</label>
+                <label class="col-sm-2 col-md-3 col-form-label">@_f.tra("Pořadí v nabídce kroků pro uživatele"):</label>
                 <div class="col-sm-1 col-md-1">
                     <mynumber asp-for="Rec.b06Order" decimal-digits="0"></mynumber>
                 </div>
@@ -166,7 +168,7 @@
             {
                 <p>Vyberte, kdo může spustit tento krok:</p>
                 <div style="width:100%;">
-                    <mycombochecklist asp-for="@Model.b08_a45IDs" entity="a45EventRole" selectedtext="@Model.b08_a45Names" placeholder="Vybrat roli v akci..." event_after_changevalue="b08_change_a45ids"></mycombochecklist>
+                    <mycombochecklist asp-for="@Model.b08_a45IDs" entity="a45EventRole" selectedtext="@Model.b08_a45Names" placeholder="@_f.tra("Vybrat roli v akci")..." event_after_changevalue="b08_change_a45ids"></mycombochecklist>
 
                     @if (Model.b08_a45IDs != null && Model.b08_a45IDs.Contains("99"))
                     {
@@ -187,13 +189,13 @@
 
                 </div>
                 <div style="width:100%;margin-top:10px;">
-                    <mycombochecklist asp-for="@Model.b08_j04IDs" entity="j04UserRole" selectedtext="@Model.b08_j04Names" placeholder="Vybrat aplikační role..."></mycombochecklist>
+                    <mycombochecklist asp-for="@Model.b08_j04IDs" entity="j04UserRole" selectedtext="@Model.b08_j04Names" placeholder="@_f.tra("Vybrat aplikační role")..."></mycombochecklist>
 
                 </div>
             }
             else
             {
-                <i>Krok je nyní nastaven, že ho nespouští uživatel.</i>
+                <i>@_f.tra("Krok je nyní nastaven, že ho nespouští uživatel").</i>
             }
 
 
@@ -202,7 +204,7 @@
         <div class="tab-pane" id="tab3">
             <!-- Tab3 -->
             <p></p>
-            <button type="button" class="btn btn-primary" onclick="handle_b11_append()">Přidat</button>
+            <button type="button" class="btn btn-primary" onclick="handle_b11_append()">@_f.tra("Přidat")</button>
             <table class="table table-hover">
                 @for (var i = 0; i < Model.lisB11.Count; i++)
                 {
@@ -215,17 +217,17 @@
                                     Příjemce zprávy:
                                 </div>
                                 <div class="col-sm-2 col-md-2">
-                                    <mycombo entity="a45EventRole" asp-for="lisB11[i].a45ID" selectedtext="lisB11[i].a45Name" placeholder="Vybrat roli v akci..." view-flag="2"></mycombo>
+                                    <mycombo entity="a45EventRole" asp-for="lisB11[i].a45ID" selectedtext="lisB11[i].a45Name" placeholder="@_f.tra("Vybrat roli v akci")..." view-flag="2"></mycombo>
                                 </div>
                                 <div class="col-sm-4 col-md-4">
-                                    <mycombo entity="j04UserRole" asp-for="lisB11[i].j04ID" selectedtext="lisB11[i].j04Name" placeholder="Vybrat aplikační roli..." view-flag="2"></mycombo>
+                                    <mycombo entity="j04UserRole" asp-for="lisB11[i].j04ID" selectedtext="lisB11[i].j04Name" placeholder="@_f.tra("Vybrat aplikační roli")..." view-flag="2"></mycombo>
                                 </div>
                                 <div class="col-sm-3 col-md-3">
-                                    <mycombo entity="j11Team" asp-for="lisB11[i].j11ID" selectedtext="lisB11[i].j11Name" placeholder="Vybrat tým..." view-flag="2"></mycombo>
+                                    <mycombo entity="j11Team" asp-for="lisB11[i].j11ID" selectedtext="lisB11[i].j11Name" placeholder="@_f.tra("Vybrat tým")..." view-flag="2"></mycombo>
                                 </div>
 
                                 <div class="col-1">
-                                    <button type="button" class="btn btn-danger" title="Odstranit řádek" onclick="handle_delete_b11('@(Model.lisB11[i].TempGuid)')">x</button>
+                                    <button type="button" class="btn btn-danger" title="@_f.tra("Odstranit řádek")" onclick="handle_delete_b11('@(Model.lisB11[i].TempGuid)')">x</button>
                                 </div>
 
                             </div>
@@ -234,7 +236,7 @@
                                     Šablona zprávy:
                                 </div>
                                 <div class="col-sm-6 col-md-6">
-                                    <mycombo entity="b65WorkflowMessage" asp-for="lisB11[i].b65ID" selectedtext="lisB11[i].b65Name" placeholder="Vybrat šablonu poštovní zprávy..." view-flag="2"></mycombo>
+                                    <mycombo entity="b65WorkflowMessage" asp-for="lisB11[i].b65ID" selectedtext="lisB11[i].b65Name" placeholder="@_f.tra("Vybrat šablonu poštovní zprávy")..." view-flag="2"></mycombo>
                                 </div>
                             </div>
                         </td>
@@ -244,23 +246,23 @@
         </div>
         <div class="tab-pane" id="tab4">
             <!-- Tab4 -->
-            <p>Kontrolované typy příloh v tomto kroku:</p>
+            <p>@_f.tra("Kontrolované typy příloh v tomto kroku"):</p>
             <div style="width:100%;">
-                <mycombochecklist asp-for="@Model.o13IDs" entity="o13AttachmentType" selectedtext="@Model.o13Names" placeholder="Vybrat typ přílohy..."></mycombochecklist>
+                <mycombochecklist asp-for="@Model.o13IDs" entity="o13AttachmentType" selectedtext="@Model.o13Names" placeholder="@_f.tra("Vybrat typ přílohy")..."></mycombochecklist>
 
             </div>
 
             <div class="card" style="margin-top:20px;">
                 <div class="card-header">
-                    Kontrolované formuláře v tomto kroku
+                    @_f.tra("Kontrolované formuláře v tomto kroku")
                 </div>
                 <div class="card">
                     <div class="row">
                         <div class="col-8">
-                            <mycombo entity="f06Form" asp-for="@Model.SelectedF06ID" selectedtext="@Model.SelectedForm" filter-flag="1" placeholder="Vybrat formulář..." event_after_changevalue="handle_f06id_append"></mycombo>
+                            <mycombo entity="f06Form" asp-for="@Model.SelectedF06ID" selectedtext="@Model.SelectedForm" filter-flag="1" placeholder="@_f.tra("Vybrat formulář")..." event_after_changevalue="handle_f06id_append"></mycombo>
                         </div>
                         <div class="col-2">
-                            <button type="button" id="cmdGrid" class="btn btn-secondary btn-sm" onclick="multiselect()">Přidat formuláře hromadně</button>
+                            <button type="button" id="cmdGrid" class="btn btn-secondary btn-sm" onclick="multiselect()">@_f.tra("Přidat formuláře hromadně")</button>
                         </div>
                     </div>
 
@@ -274,11 +276,11 @@
 
                             <input type="hidden" asp-for="lisB13[i].TempGuid" value="@Model.lisB13[i].TempGuid" />
                             <div class="col-sm-8 col-md-8">
-                                <mycombo entity="f06Form" asp-for="lisB13[i].f06ID" selectedtext="lisB13[i].f06Name" placeholder="Vybrat formulář..."></mycombo>
+                                <mycombo entity="f06Form" asp-for="lisB13[i].f06ID" selectedtext="lisB13[i].f06Name" placeholder="@_f.tra("Vybrat formulář")..."></mycombo>
                             </div>
 
                             <div class="col-1">
-                                <button type="button" class="btn btn-danger" title="Odstranit řádek" onclick="handle_delete_b13('@(Model.lisB13[i].TempGuid)')">x</button>
+                                <button type="button" class="btn btn-danger" title="@_f.tra("Odstranit řádek")" onclick="handle_delete_b13('@(Model.lisB13[i].TempGuid)')">x</button>
                             </div>
 
                         </div>
@@ -292,26 +294,26 @@
         <div class="tab-pane" id="tab5">
             <!-- Tab5 -->
             <p></p>
-            <p>Zaškrtněte okruh účastníků, kteří v historii uvidí událost tohoto kroku:</p>
+            <p>@_f.tra("Zaškrtněte okruh účastníků, kteří v historii uvidí událost tohoto kroku"):</p>
             <div style="width:100%;">
-                <mycombochecklist asp-for="@Model.b12_j04IDs" entity="j04UserRole" selectedtext="@Model.b12_j04Names" placeholder="Vybrat aplikační role..."></mycombochecklist>
+                <mycombochecklist asp-for="@Model.b12_j04IDs" entity="j04UserRole" selectedtext="@Model.b12_j04Names" placeholder="@_f.tra("Vybrat aplikační role")..."></mycombochecklist>
 
             </div>
             <div style="width:100%;">
-                <mycombochecklist asp-for="@Model.b12_a45IDs" entity="a45EventRole" selectedtext="@Model.b12_a45Names" placeholder="Vybrat roli v akci..."></mycombochecklist>
+                <mycombochecklist asp-for="@Model.b12_a45IDs" entity="a45EventRole" selectedtext="@Model.b12_a45Names" placeholder="@_f.tra("Vybrat roli v akci")..."></mycombochecklist>
 
             </div>
-            <i>Nezaškrtnuto -> Událost kroku v historii bude dostupná všem účastníkům akce.</i>
+            <i>@_f.tra("Nezaškrtnuto -> Událost kroku v historii bude dostupná všem účastníkům akce.")</i>
 
         </div>
         <div class="tab-pane" id="tab6">
             <!--Tab6-->
             <p></p>
-            <button type="button" class="btn btn-primary" onclick="handle_b10_append()">Přidat</button>
+            <button type="button" class="btn btn-primary" onclick="handle_b10_append()">@_f.tra("Přidat")</button>
             <table class="table table-hover">
                 <tr>
-                    <th>Příkaz</th>
-                    <th>Parametr</th>
+                    <th>@_f.tra("Příkaz")</th>
+                    <th>@_f.tra("Parametr")</th>
                     <th></th>
                 </tr>
                 @for (var i = 0; i < Model.lisB10.Count; i++)
@@ -320,7 +322,7 @@
                         <td style="width:45%;">
                             <input type="hidden" asp-for="lisB10[i].IsTempDeleted" value="@Model.lisB10[i].IsTempDeleted" />
                             <input type="hidden" asp-for="lisB10[i].TempGuid" value="@Model.lisB10[i].TempGuid" />
-                            <mycombo entity="b09WorkflowCommandCatalog" asp-for="lisB10[i].b09ID" selectedtext="lisB10[i].b09Name" placeholder="Vybrat příkaz..." view-flag="2" event_after_changevalue="handle_b09id_change"></mycombo>
+                            <mycombo entity="b09WorkflowCommandCatalog" asp-for="lisB10[i].b09ID" selectedtext="lisB10[i].b09Name" placeholder="@_f.tra("Vybrat příkaz")..." view-flag="2" event_after_changevalue="handle_b09id_change"></mycombo>
 
 
 
@@ -337,7 +339,7 @@
 
                         </td>
                         <td style="width:10%;">
-                            <button type="button" class="btn btn-danger" title="Odstranit řádek" onclick="handle_delete_b10('@(Model.lisB10[i].TempGuid)')">x</button>
+                            <button type="button" class="btn btn-danger" title="@_f.tra("Odstranit řádek")" onclick="handle_delete_b10('@(Model.lisB10[i].TempGuid)')">x</button>
                         </td>
                     </tr>
                 }
@@ -349,21 +351,21 @@
             <div class="form-row">
                 <div class="col-sm-4 col-md-4">
                     <input type="checkbox" asp-for="Rec.b06IsToDoGeneration" />
-                    <label class="col-form-label" for="Rec_b06IsToDoGeneration">Krok vygeneruje úkol (lhůtu)</label>
+                    <label class="col-form-label" for="Rec_b06IsToDoGeneration">@_f.tra("Krok vygeneruje úkol (lhůtu)")</label>
                 </div>
             </div>
             @if (Model.Rec.b06IsToDoGeneration)
             {
                 <div class="form-row my-2">
 
-                    <label class="col-sm-1 col-md-2 col-form-label">Typ úkolu (lhůty):</label>
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typ úkolu (lhůty)"):</label>
                     <div class="col-sm-9 col-md-8">
                         <mycombo entity="h07ToDoType" asp-for="Rec.b06ToDo_h07ID" selectedtext="Rec.h07Name" placeholder="Vybrat typ úkolu..." view-flag="2"></mycombo>
 
                     </div>
                 </div>
                 <div class="form-row my-2">
-                    <label class="col-sm-1 col-md-2 col-form-label">Název úkolu (lhůty):</label>
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název úkolu (lhůty)"):</label>
                     <div class="col-sm-11 col-md-10">
                         <input class="form-control" asp-for="Rec.b06ToDo_Name" />
 
@@ -371,7 +373,7 @@
 
                 </div>
                 <div class="form-row my-2">
-                    <label class="col-sm-1 col-md-2 col-form-label">Termín:</label>
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Termín"):</label>
                     <div class="col-sm-1 col-md-1">
                         <mynumber asp-for="Rec.b06ToDo_DeadlineMove" decimal-digits="0"></mynumber>
 
@@ -379,26 +381,26 @@
                     <div class="col-sm-3 col-md-3">
                         dní vůči:
                         <select asp-for="Rec.b06ToDo_DeadlineField">
-                            <option value="a01DateFrom">Plánovaný začátek akce</option>
-                            <option value="a01DateUntil">Plánovaný konec akce</option>
+                            <option value="a01DateFrom">@_f.tra("Plánovaný začátek akce")</option>
+                            <option value="a01DateUntil">@_f.tra("Plánovaný konec akce")</option>
                         </select>
                     </div>
 
                 </div>
                 <div class="form-row my-2">
-                    <label class="col-sm-1 col-md-2 col-form-label">Příjemci:</label>
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Příjemci"):</label>
                     <div class="col-sm-11 col-md-10">
                         <select asp-for="Rec.b06ToDo_ReceiverFlag" class="form-control">
-                            <option value="1">Pouze vedoucí týmu</option>
-                            <option value="2">Pouze vedoucí týmu</option>
-                            <option value="3">Pouze členové týmu</option>
-                            <option value="4">Pouze přizvané osoby týmu</option>
+                            <option value="1">@_f.tra("Pouze vedoucí týmu")</option>
+                            <option value="2">@_f.tra("Pouze vedoucí týmu")</option>
+                            <option value="3">@_f.tra("Pouze členové týmu")</option>
+                            <option value="4">@_f.tra("Pouze přizvané osoby týmu")</option>
                         </select>
                     </div>
 
                 </div>
                 <div class="form-row my-2">
-                    <label class="col-sm-1 col-md-2 col-form-label">Začátek plánu:</label>
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Začátek plánu"):</label>
                     <div class="col-sm-1 col-md-1">
                         <mynumber asp-for="Rec.b06ToDo_CapacityPlanFromMove" decimal-digits="0"></mynumber>
 
@@ -406,13 +408,13 @@
                     <div class="col-sm-3 col-md-3">
                         dní vůči:
                         <select asp-for="Rec.b06ToDo_CapacityPlanFromField">
-                            <option value="a01DateFrom">Plánovaný začátek akce</option>
-                            <option value="a01DateUntil">Plánovaný konec akce</option>
+                            <option value="a01DateFrom">@_f.tra("Plánovaný začátek akce")</option>
+                            <option value="a01DateUntil">@_f.tra("Plánovaný konec akce")</option>
                         </select>
                     </div>
                 </div>
                 <div class="form-row my-2">
-                    <label class="col-sm-1 col-md-2 col-form-label">Konec plánu:</label>
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Konec plánu"):</label>
                     <div class="col-sm-1 col-md-1">
                         <mynumber asp-for="Rec.b06ToDo_CapacityPlanUntilMove" decimal-digits="0"></mynumber>
 
@@ -420,19 +422,19 @@
                     <div class="col-sm-3 col-md-3">
                         dní vůči:
                         <select asp-for="Rec.b06ToDo_CapacityPlanUntilField">
-                            <option value="a01DateFrom">Plánovaný začátek akce</option>
-                            <option value="a01DateUntil">Plánovaný konec akce</option>
+                            <option value="a01DateFrom">@_f.tra("Plánovaný začátek akce")</option>
+                            <option value="a01DateUntil">@_f.tra("Plánovaný konec akce")</option>
                         </select>
                     </div>
                 </div>
                 <div class="form-row my-2">
-                    <textarea asp-for="Rec.b06ToDo_Description" class="form-control" placeholder="Popis zadání úkolu" style="min-height:40px;"></textarea>
+                    <textarea asp-for="Rec.b06ToDo_Description" class="form-control" placeholder="@_f.tra("Popis zadání úkolu")" style="min-height:40px;"></textarea>
 
                 </div>
                 <div class="form-row">
                     <div class="col-sm-4 col-md-4">
                         <input type="checkbox" asp-for="Rec.b06ToDo_IsSendMail" />
-                        <label class="col-form-label" for="Rec_b06ToDo_IsSendMail">Odesílat e-mail notifikaci</label>
+                        <label class="col-form-label" for="Rec_b06ToDo_IsSendMail">@_f.tra("Odesílat e-mail notifikaci")</label>
                     </div>
                 </div>
             }
@@ -442,7 +444,7 @@
             <!-- Tab8:sql -->
             <p></p>
             <div>
-                Validační SQL dotaz testující možnost provedení kroku:
+                @_f.tra("Validační SQL dotaz testující možnost provedení kroku"):
             </div>
             <div>
                 (Pokud SQL vrací hodnotu 1, podmínka je splněna)

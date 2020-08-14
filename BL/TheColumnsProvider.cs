@@ -10,14 +10,16 @@ namespace BL
     {
         private readonly BL.RunningApp _app;
         private readonly BL.TheEntitiesProvider _ep;
+        private readonly BL.TheTranslator _tt;
         private List<BO.TheGridColumn> _lis;        
         private string _lastEntity;
         private string _curEntityAlias;
         
-        public TheColumnsProvider(BL.RunningApp runningapp,BL.TheEntitiesProvider ep)
+        public TheColumnsProvider(BL.RunningApp runningapp,BL.TheEntitiesProvider ep,BL.TheTranslator tt)
         {
             _app = runningapp;
             _ep = ep;
+            _tt = tt;
             _lis = new List<BO.TheGridColumn>();
             SetupPallete();
             Handle_DbOpers();
@@ -107,27 +109,32 @@ namespace BL
                 onecol.VisibleWithinEntityOnly = dbrow["o53Entities"].ToString();
             }
             //Překlad do ostatních jazyků
-            dt = db.GetDataTable("select * from x91Translate WHERE x91Code IS NOT NULL AND x91Page IS NULL");
-            foreach (System.Data.DataRow dbrow in dt.Rows)
-            {                
-                if (_lis.Where(p => p.Field == dbrow["x91Code"].ToString()).Count() > 0)
-                {
-                    onecol= _lis.Where(p => p.Field == dbrow["x91Code"].ToString()).First();
-                    onecol.TranslateLang1 = dbrow["x91Lang1"].ToString();
-                    if (dbrow["x91Lang2"] != System.DBNull.Value)
-                    {
-                        onecol.TranslateLang2 = dbrow["x91Lang2"].ToString();
-                    }
-                    if (dbrow["x91Lang3"] != System.DBNull.Value)
-                    {
-                        onecol.TranslateLang3 = dbrow["x91Lang3"].ToString();
-                    }
+            foreach (var col in _lis)
+            {
+                col.TranslateLang1 = _tt.DoTranslate(col.Header, 1);
+                col.TranslateLang2 = _tt.DoTranslate(col.Header, 2);
+            }
+            //dt = db.GetDataTable("select * from x91Translate WHERE x91Code IS NOT NULL AND x91Page IS NULL");
+            //foreach (System.Data.DataRow dbrow in dt.Rows)
+            //{                
+            //    if (_lis.Where(p => p.Field == dbrow["x91Code"].ToString()).Count() > 0)
+            //    {
+            //        onecol= _lis.Where(p => p.Field == dbrow["x91Code"].ToString()).First();
+            //        onecol.TranslateLang1 = dbrow["x91Lang1"].ToString();
+            //        if (dbrow["x91Lang2"] != System.DBNull.Value)
+            //        {
+            //            onecol.TranslateLang2 = dbrow["x91Lang2"].ToString();
+            //        }
+            //        if (dbrow["x91Lang3"] != System.DBNull.Value)
+            //        {
+            //            onecol.TranslateLang3 = dbrow["x91Lang3"].ToString();
+            //        }
                     
 
 
-                }
+            //    }
                
-            }
+            //}
         }
         private void SetupPallete()
         {
@@ -681,6 +688,11 @@ namespace BL
             AF("x29Entity", "x29Name", "Entita", 1, null, "string", false, true);
             AF("x29Entity", "x29NamePlural", "Plurál", 2);
             AF("x29Entity", "x29IsAttachment", "Přílohy", 2,null,"bool");
+
+            //x91 = entita
+            AF("x91Translate", "x91Code", "Originál", 1, null, "string", false, true);
+            AF("x91Translate", "x91Lang1", "English", 1);
+            AF("x91Translate", "x91Lang2", "Українська", 1);
             
 
 

@@ -22,7 +22,7 @@
         @if (_f.CurrentUser.TestPermission(BO.PermValueEnum.FormDesigner))
         {
             <div class="colsm-2 col-md-2">
-                <a target="_blank" href="/AdminOneForm/Index?pid=@(Model.pid)')">Návrhář formuláře</a>
+                <a target="_blank" href="/AdminOneForm/Index?pid=@(Model.pid)')">@_f.tra("Návrhář formuláře")</a>
             </div>
         }
     </div>

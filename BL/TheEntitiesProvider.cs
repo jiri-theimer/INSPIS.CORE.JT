@@ -169,7 +169,8 @@ namespace BL
 
             AE_TINY("b65WorkflowMessage", "Notifikační zprávy", "Notifikační zpráva");
             AE_TINY("x51HelpCore", "Uživatelská nápověda", "Uživatelská nápověda");
-
+            AE_TINY("x91Translate", "Aplikační překlad", "Aplikační překlad");
+            ByPrefix("x91").IsWithoutValidity = true;
 
         }
 

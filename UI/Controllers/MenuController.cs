@@ -204,6 +204,7 @@ namespace UI.Controllers
             AMI("Dny svátků", url_ciselniky("j26"));
             AMI("AutoComplete položky", url_ciselniky("o15"));
             AMI("Uživatelská nápověda", url_ciselniky("x51"));
+            AMI("Aplikační překlad", url_ciselniky("x91"));
 
             handle_selected_item(prefix);
 
