@@ -1,7 +1,8 @@
 ﻿@model UI.Models.h04MoveStatusViewModel
+@inject BL.Factory _f
 
 @{
-    ViewData["Title"] = "Posunout stav úkolu";
+    ViewData["Title"] = _f.tra("Posunout stav úkolu");
     Layout = "~/Views/Shared/_LayoutModal.cshtml";
 
 
@@ -13,8 +14,8 @@
 <h4>Posunout stav úkolu: @Model.Rec.h04Signature</h4>
 
 <div class="bg-light" style="padding:10px;">
-    <button id="cmdSave" type="submit" class="btn btn-success" onclick="form1.submit()">Uložit změny</button>
-    <button type="button" id="cmdClose" onclick="_window_close()" class="btn btn-light">Zavřít</button>
+    <button id="cmdSave" type="submit" class="btn btn-success" onclick="form1.submit()">@_f.tra("Uložit změny")</button>
+    <button type="button" id="cmdClose" onclick="_window_close()" class="btn btn-light">@_f.tra("Zavřít")</button>
 
 </div>
 <div class="modal_record_container">
@@ -23,7 +24,7 @@
         <input type="hidden" asp-for="@Model.pid" />
 
         <div class="form-row">
-            <label class="col-sm-1 col-md-2 col-form-label">Stav úkolu:</label>
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Stav úkolu"):</label>
             <div class="col-sm-11 col-md-10">
                 <mycombo entity="h05ToDoStatus" asp-for="@Model.SelectedH05ID" selectedtext="@Model.SelectedH05Name" view-flag="2"></mycombo>
             </div>
@@ -32,7 +33,7 @@
         <div class="form-row my-2">
             <div class="col-sm-4 col-md-4">
                 <input type="checkbox" asp-for="@Model.IsNotifyAfterSave" />
-                <label class="col-form-label" for="IsNotifyAfterSave">Po uložení odeslat řešitelům notifikační zprávu</label>
+                <label class="col-form-label" for="IsNotifyAfterSave">@_f.tra("Po uložení odeslat řešitelům notifikační zprávu")</label>
             </div>
         </div>
     </form>

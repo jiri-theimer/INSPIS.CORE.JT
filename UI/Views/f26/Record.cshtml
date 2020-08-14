@@ -1,10 +1,11 @@
 ﻿@model UI.Models.Record.f26Record
+@inject BL.Factory _f
 
 @{
 
     Layout = "~/Views/Shared/_LayoutRecord.cshtml";
     if (Model.Rec == null) return;
-    Model.PageTitle = "Baterie otázek";
+    Model.PageTitle = _f.tra("Baterie otázek");
 }
 @addTagHelper *, UI
 
@@ -16,21 +17,21 @@
     </div>
 
     <div class="form-row">
-        <label class="col-sm-1 col-md-2 col-form-label">Název baterie:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název baterie"):</label>
         <div class="col-sm-11 col-md-10">
             <input class="form-control" asp-for="Rec.f26Name" />
             <span asp-validation-for="Rec.f26Name" class="text-danger"></span>
         </div>
     </div>
     <div class="form-row my-2">
-        <label class="col-sm-1 col-md-2 col-form-label">Segment formuláře:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Segment formuláře"):</label>
         <div class="col-sm-11 col-md-10">
             <mycombo entity="f18FormSegment" asp-for="Rec.f18ID" selectedtext="Rec.f18Name" masterprefix="f06" masterpid="@Model.f06ID"></mycombo>
         </div>
     </div>
     <div class="form-row my-2">
 
-        <label class="col-sm-1 col-md-2 col-form-label">Pořadí v rámci otázek:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Pořadí v rámci otázek"):</label>
         <div class="col-sm-1 col-md-1">
             <mynumber asp-for="Rec.f26Ordinal" decimal-digits="0"></mynumber>
         </div>
@@ -38,28 +39,28 @@
     </div>
 
     <div class="form-row my-2">
-        <label class="col-sm-1 col-md-2 col-form-label">Nadpisy sloupců</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Nadpisy sloupců")</label>
         <div class="col-sm-11 col-md-10">
-            <textarea asp-for="Rec.f26ColumnHeaders" class="form-control" placeholder="Oddělovač je PIPE (|)"></textarea>
+            <textarea asp-for="Rec.f26ColumnHeaders" class="form-control" placeholder="@_f.tra("Oddělovač je PIPE (|)")"></textarea>
             <span asp-validation-for="Rec.f26ColumnHeaders" class="text-danger"></span>
         </div>
     </div>
     <div class="form-row my-2">
-        <label class="col-sm-1 col-md-2 col-form-label">Rozšířený text:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Rozšířený text"):</label>
         <div class="col-sm-11 col-md-10">
             <textarea asp-for="Rec.f26SupportingText" class="form-control"></textarea>
             <span asp-validation-for="Rec.f26SupportingText" class="text-danger"></span>
         </div>
     </div>
     <div class="form-row my-2">
-        <label class="col-sm-1 col-md-2 col-form-label">Nápověda:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Nápověda"):</label>
         <div class="col-sm-11 col-md-10">
             <textarea asp-for="Rec.f26Hint" class="form-control"></textarea>
             <span asp-validation-for="Rec.f26Hint" class="text-danger"></span>
         </div>
     </div>
     <div class="form-row my-2">
-        <label class="col-sm-1 col-md-2 col-form-label">Popis:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Popis"):</label>
         <div class="col-sm-11 col-md-10">
             <textarea asp-for="Rec.f26Description" class="form-control"></textarea>
 

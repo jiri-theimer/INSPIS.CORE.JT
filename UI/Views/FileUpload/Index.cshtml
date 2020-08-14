@@ -1,4 +1,5 @@
 ﻿@model UI.Models.FileUploadViewModel
+@inject BL.Factory _f
 
 @{
 
@@ -7,7 +8,7 @@
 
 
 <div class="modal_record_container">
-    <a class="btn btn-light" href="/FileUpload/DoUpload?Guid=@Model.Guid&x29id=@Model.x29ID&o13id=@Model.o13ID&recpid=@Model.RecPid">Přidat přílohy</a>
+    <a class="btn btn-light" href="/FileUpload/DoUpload?Guid=@Model.Guid&x29id=@Model.x29ID&o13id=@Model.o13ID&recpid=@Model.RecPid">@_f.tra("Přidat přílohy")</a>
 
 
     @Html.EditorFor(m => m, "~/Views/Shared/_lisO27.cshtml")
@@ -26,7 +27,7 @@
     }
 
     function changelabel_saved(fileguid, current_label) {
-        var s = prompt("Zadejte popis/název k příloze.", current_label);
+        var s = prompt("@_f.tra("Zadejte popis/název k příloze.")", current_label);
         if (s != null) {
             $.post("/FileUpload/ChangeFileLabel", { fileguid: fileguid, newlabel: s }, function (data) {
 

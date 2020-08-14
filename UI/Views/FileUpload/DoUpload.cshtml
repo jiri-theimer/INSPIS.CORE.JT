@@ -1,4 +1,5 @@
 ﻿@model FileUploadViewModel
+@inject BL.Factory _f
 
 @{
 
@@ -22,13 +23,13 @@
                 <input type="hidden" asp-for="@Model.RecPid" />
 
                 <div class="form-row">
-                    <label class="col-sm-2 col-md-3 col-form-label col-form-label-sm">Typ přílohy:</label>
+                    <label class="col-sm-2 col-md-3 col-form-label col-form-label-sm">@_f.tra("Typ přílohy"):</label>
                     <div class="col-sm-10 col-md-9">
                         <mydropdown asp-for="@Model.o13ID" datasource="@Model.lisO13" textfield="TreeItem" valuefield="pid"></mydropdown>
                     </div>
                 </div>
                 <div class="form-row my-2">
-                    <label class="col-sm-2 col-md-3 col-form-label col-form-label-sm">Popis/název přílohy:</label>
+                    <label class="col-sm-2 col-md-3 col-form-label col-form-label-sm">@_f.tra("Popis/název přílohy"):</label>
                     <div class="col-sm-10 col-md-9">
                         <input class="form-control form-control-sm" asp-for="@Model.o27Label" />
 
@@ -37,7 +38,7 @@
                 @if (Model.IsUsePressMark == true)
                 {
                     <div class="form-row my-2">
-                        <label class="col-sm-2 col-md-3 col-form-label col-form-label-sm">Číslo jednací:</label>
+                        <label class="col-sm-2 col-md-3 col-form-label col-form-label-sm">@_f.tra("Číslo jednací"):</label>
                         <div class="col-sm-10 col-md-9">
                             <input class="form-control form-control-sm" asp-for="@Model.o27PressMark" />
 
@@ -45,13 +46,13 @@
                     </div>
                 }
 
-                <mark>Soubory sem můžete i přetáhnout myší.</mark>
+                <mark>@_f.tra("Soubory sem můžete i přetáhnout myší.")</mark>
                 <input id="upload1" type="file" name="files" multiple />
 
 
 
 
-                <input type="submit" id="cmdUpload" class="btn btn-primary" value="Nahrát přílohy na server" style="display:none;" />
+                <input type="submit" id="cmdUpload" class="btn btn-primary" value="@_f.tra("Nahrát přílohy na server")" style="display:none;" />
 
 
             </form>
@@ -60,7 +61,7 @@
             @if (Model.lisTempFiles.Count() > 0)
             {
                 <div class="card">
-                    <div class="card-header">Nahrané přílohy: Čeká na uložení</div>
+                    <div class="card-header">@_f.tra("Nahrané přílohy: Čeká na uložení")</div>
                     <div class="card-body py-0 px-0">
                         <table class="table table-hover table-sm">
                             @foreach (var c in Model.lisTempFiles)
@@ -77,7 +78,7 @@
                                         <i>
                                             @if (string.IsNullOrEmpty(c.o27Label) == true)
                                             {
-                                                <a href="javascript:changelabel('@(c.o27ArchiveFileName)','@(c.o27Label)')">Popis/název</a>
+                                                <a href="javascript:changelabel('@(c.o27ArchiveFileName)','@(c.o27Label)')">@_f.tra("Popis/název")</a>
                                             }
                                             else
                                             {
@@ -120,7 +121,7 @@
 
 
     function changelabel(filename, current_label) {
-        var s = prompt("Zadejte popis/název k příloze.", current_label);
+        var s = prompt("@_f.tra("Zadejte popis/název k příloze.")", current_label);
         if (s != null) {
             $.post("/FileUpload/ChangeTempFileLabel", { tempfilename: filename, newlabel: s }, function (data) {
 
@@ -140,7 +141,7 @@
     }
 
     function changelabel_saved(filename, current_label) {
-        var s = prompt("Zadejte popis/název k příloze.", current_label);
+        var s = prompt("@_f.tra("Zadejte popis/název k příloze.")", current_label);
         if (s != null) {
             $.post("/FileUpload/ChangeFileLabel", { fileguid: fileguid, newlabel: s }, function (data) {
 
