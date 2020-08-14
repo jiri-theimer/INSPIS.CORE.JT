@@ -1,9 +1,10 @@
 ﻿@model UI.Models.Record.o53Record
+@inject BL.Factory _f
 
 @{
     Layout = "~/Views/Shared/_LayoutRecord.cshtml";
     if (Model.Rec == null) return;
-    Model.PageTitle = "Kategorie";
+    Model.PageTitle = _f.tra("Kategorie");
 }
 
 @addTagHelper *, UI
@@ -14,7 +15,7 @@
 <div class="modal_record_container">
 
     <div class="form-row">
-        <label class="col-sm-1 col-md-2 col-form-label">Název:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
         <div class="col-sm-11 col-md-10">
             <input class="form-control" asp-for="Rec.o53Name" />
             <span asp-validation-for="Rec.o53Name" class="text-danger"></span>
@@ -22,10 +23,10 @@
     </div>
     <div class="form-row">
         <input asp-for="@Model.Rec.o53IsMultiSelect" />
-        <label for="Rec_o53IsMultiSelect">Při kategorizaci možnost zaškrtnout více položek (checkbox-list)</label>
+        <label for="Rec_o53IsMultiSelect">@_f.tra("Při kategorizaci možnost zaškrtnout více položek (checkbox-list)")</label>
     </div>
     <div class="form-row">
-        <label class="col-sm-1 col-md-2 col-form-label">Index pořadí:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Index pořadí"):</label>
         <div class="col-sm-11 col-md-10">
             <mynumber asp-for="Rec.o53Ordinary" decimal-digits="0"></mynumber>
         </div>
@@ -34,7 +35,7 @@
 
     <div class="card">
         <div class="card-header">
-            Vazba položek skupiny na entity
+            @_f.tra("Vazba položek skupiny na entity")
         </div>
         <div class="card-body">
             <mycheckboxlist asp-for="@Model.SelectedEntities" textfield="AliasPlural" valuefield="x29ID" datasource="@Model.ApplicableEntities"></mycheckboxlist>

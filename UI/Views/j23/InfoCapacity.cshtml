@@ -34,7 +34,7 @@
         @if (_f.CurrentUser.TestPermission(BO.PermValueEnum.AdminGlobal_Ciselniky))
         {
             <div class="colsm-2 col-md-2">
-                <a href="javascript:_window_open('/j23/Record?pid=@(Model.pid)')">Administrace</a>
+                <a href="javascript:_window_open('/j23/Record?pid=@(Model.pid)')">@_f.tra("Administrace")</a>
             </div>
         }
 
@@ -46,13 +46,13 @@
 {
     <table class="table table-striped table-sm table-hover" style="margin-top:10px;">
         <tr style="background-color:silver;">
-            <th>Akce</th>
-            <th>Typ</th>
-            <th>Období</th>
-            <th>Téma</th>
-            <th>Stav</th>
+            <th>@_f.tra("Akce")</th>
+            <th>@_f.tra("Typ")</th>
+            <th>@_f.tra("Období")</th>
+            <th>@_f.tra("Téma")</th>
+            <th>@_f.tra("Stav")</th>
             <th style="width:15px;"></th>
-            <th>Instituce</th>
+            <th>@_f.tra("Instituce")</th>
 
         </tr>
         <tbody>

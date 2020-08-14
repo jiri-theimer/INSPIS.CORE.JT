@@ -16,13 +16,13 @@
         <div class="col-9" style="max-height:200px;overflow-y:auto;">
             <table class="table table-striped table-sm">
                 <tr style="background-color:silver;">
-                    <th>Akce</th>
-                    <th>Typ</th>
-                    <th>Období</th>
-                    <th>Téma</th>
-                    <th>Stav</th>
+                    <th>@_f.tra("Akce")</th>
+                    <th>@_f.tra("Typ")</th>
+                    <th>@_f.tra("Období")</th>
+                    <th>@_f.tra("Téma")</th>
+                    <th>@_f.tra("Stav")</th>
                     <th style="width:15px;"></th>
-                    <th>Instituce</th>
+                    <th>@_f.tra("Instituce")</th>
 
                 </tr>
                 <tbody>
@@ -71,7 +71,7 @@
         <table>
             <tr>
                 <td>
-                    Jméno:
+                    @_f.tra("Jméno"):
                 </td>
                 <td>
                     <myval value="@Model.Rec.FullNameAsc"></myval>
@@ -79,7 +79,7 @@
             </tr>
             <tr>
                 <td>
-                    E-mail:
+                    @_f.tra("E-mail"):
                 </td>
                 <td>
                     <myval datatype="link" linkurl="mailto:@Model.Rec.j02Email" value="@Model.Rec.j02Email"></myval>
@@ -87,7 +87,7 @@
             </tr>
             <tr>
                 <td>
-                    Pozice:
+                    @_f.tra("Pozice"):
                 </td>
                 <td>
                     <myval value="@Model.Rec.j07Name" tooltip="Pozice"></myval>
@@ -95,7 +95,7 @@
             </tr>
             <tr>
                 <td>
-                    Osobní kód:
+                    @_f.tra("Osobní kód"):
                 </td>
                 <td>
                     <myval value="@Model.Rec.j02PID"></myval>
@@ -104,7 +104,7 @@
             @if (Model.RecA04 != null)
             {
                 <tr>
-                    <td>Inspektorát:</td>
+                    <td>@_f.tra("Inspektorát"):</td>
                     <td>
                         <myval value="@Model.RecA04.Name"></myval>
                     </td>
@@ -114,15 +114,15 @@
             @if (Model.RecJ03 != null)
             {
                 <tr>
-                    <td>Login:</td>
+                    <td>@_f.tra("Login"):</td>
                     <td>
                         <myval value="@Model.RecJ03.j03Login"></myval>
                     </td>
                 </tr>
                 <tr>
-                    <td>Aplikační role:</td>
+                    <td>@_f.tra("Aplikační role"):</td>
                     <td>
-                        <myval value="@Model.RecJ03.j04Name" tooltip="Aplikační role" hoverprefix="j04" hoverpid="@Model.RecJ03.j04ID"></myval>
+                        <myval value="@Model.RecJ03.j04Name" tooltip="@_f.tra("Aplikační role")" hoverprefix="j04" hoverpid="@Model.RecJ03.j04ID"></myval>
                     </td>
                 </tr>
             }

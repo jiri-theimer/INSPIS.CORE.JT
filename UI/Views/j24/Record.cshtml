@@ -1,29 +1,30 @@
 ﻿@model UI.Models.Record.j24Record
+@inject BL.Factory _f
 
 @{
 
     Layout = "~/Views/Shared/_LayoutRecord.cshtml";
     if (Model.Rec == null) return;
-    Model.PageTitle = "Typ nepersonálního zdroje";
+    Model.PageTitle = _f.tra("Typ nepersonálního zdroje");
 }
 @addTagHelper *, UI
 
-    <div class="modal_record_container">
+<div class="modal_record_container">
 
-        <div class="form-row">
-            <label class="col-sm-1 col-md-2 col-form-label">Název:</label>
-            <div class="col-sm-11 col-md-10">
-                <input class="form-control" asp-for="Rec.j24Name" />
-                <span asp-validation-for="Rec.j24Name" class="text-danger"></span>
-            </div>
-
-        </div>
-        <div class="form-row my-2">
-            <div class="col-sm-8 col-md-8">
-                <input type="checkbox" asp-for="Rec.j24IsDriver" />
-                <label class="col-form-label" for="Rec_j24IsDriver">Nabízet v rezervaci volbu Řidič/Cestující</label>
-
-            </div>
+    <div class="form-row">
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
+        <div class="col-sm-11 col-md-10">
+            <input class="form-control" asp-for="Rec.j24Name" />
+            <span asp-validation-for="Rec.j24Name" class="text-danger"></span>
         </div>
 
     </div>
+    <div class="form-row my-2">
+        <div class="col-sm-8 col-md-8">
+            <input type="checkbox" asp-for="Rec.j24IsDriver" />
+            <label class="col-form-label" for="Rec_j24IsDriver">@_f.tra("Nabízet v rezervaci volbu Řidič/Cestující")</label>
+
+        </div>
+    </div>
+
+</div>

@@ -1,52 +1,53 @@
 ﻿@model UI.Models.Record.j23Record
+@inject BL.Factory _f
 
 @{
 
     Layout = "~/Views/Shared/_LayoutRecord.cshtml";
     if (Model.Rec == null) return;
-    Model.PageTitle = "Nepersonální zdroj";
+    Model.PageTitle = _f.tra("Nepersonální zdroj");
 }
 @addTagHelper *, UI
 
-    <div class="modal_record_container">
+<div class="modal_record_container">
 
-        <div class="form-row">
-            <label class="col-sm-1 col-md-2 col-form-label">Název zdroje:</label>
-            <div class="col-sm-6 col-md-5">
-                <input class="form-control" asp-for="Rec.j23Name" />
-                <span asp-validation-for="Rec.j23Name" class="text-danger"></span>
-            </div>
-
+    <div class="form-row">
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název zdroje"):</label>
+        <div class="col-sm-6 col-md-5">
+            <input class="form-control" asp-for="Rec.j23Name" />
+            <span asp-validation-for="Rec.j23Name" class="text-danger"></span>
         </div>
 
-        <div class="form-row  my-2">
-            <label class="col-sm-1 col-md-2 col-form-label">Typ zdroje:</label>
-            <div class="col-sm-6 col-md-5">
-                <mycombo entity="j24NonPersonType" asp-for="Rec.j24ID" selectedtext="Rec.j24Name" view-flag="2"></mycombo>
-            </div>
-
-        </div>
-        <div class="form-row  my-2">
-            <label class="col-sm-1 col-md-2 col-form-label">Kraj:</label>
-            <div class="col-sm-6 col-md-5">
-                <mycombo entity="a05Region" asp-for="Rec.a05ID" selectedtext="Rec.a05Name" view-flag="2"></mycombo>
-            </div>
-
-        </div>
-
-      
-        <div class="form-row my-2">
-            <label class="col-sm-1 col-md-2 col-form-label">Kód:</label>
-            <div class="col-sm-3 col-md-2">
-                <input class="form-control" asp-for="Rec.j23Code" />
-                <span asp-validation-for="Rec.j23Code" class="text-danger"></span>
-            </div>
-
-
-        </div>
-        
-        <div class="form-row my-2">
-            <textarea asp-for="Rec.j23Description" class="form-control" placeholder="Podrobný popis"></textarea>
-            <span asp-validation-for="Rec.j23Description" class="text-danger"></span>
-        </div>
     </div>
+
+    <div class="form-row  my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typ zdroje"):</label>
+        <div class="col-sm-6 col-md-5">
+            <mycombo entity="j24NonPersonType" asp-for="Rec.j24ID" selectedtext="Rec.j24Name" view-flag="2"></mycombo>
+        </div>
+
+    </div>
+    <div class="form-row  my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kraj"):</label>
+        <div class="col-sm-6 col-md-5">
+            <mycombo entity="a05Region" asp-for="Rec.a05ID" selectedtext="Rec.a05Name" view-flag="2"></mycombo>
+        </div>
+
+    </div>
+
+
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kód"):</label>
+        <div class="col-sm-3 col-md-2">
+            <input class="form-control" asp-for="Rec.j23Code" />
+            <span asp-validation-for="Rec.j23Code" class="text-danger"></span>
+        </div>
+
+
+    </div>
+
+    <div class="form-row my-2">
+        <textarea asp-for="Rec.j23Description" class="form-control" placeholder="@_f.tra("Podrobný popis")"></textarea>
+        <span asp-validation-for="Rec.j23Description" class="text-danger"></span>
+    </div>
+</div>

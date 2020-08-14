@@ -1,7 +1,8 @@
 ﻿@model TagsBatch
+@inject BL.Factory _f
 
 @{
-    ViewData["Title"] = "Kategorizovat hromadně";
+    ViewData["Title"] = _f.tra("Kategorizovat hromadně");
     Layout = "~/Views/Shared/_LayoutModal.cshtml";
 }
 
@@ -11,71 +12,71 @@
 
 
 
-    <form id="form1" asp-controller="o51" asp-action="Batch" method="POST">
+<form id="form1" asp-controller="o51" asp-action="Batch" method="POST">
 
-        <div class="bg-light" style="padding:10px;">
-            <button type="submit" class="btn btn-primary" asp-route-oper="append" style="display:none;">Záznamům přidat vybrané kategorie</button>
+    <div class="bg-light" style="padding:10px;">
+        <button type="submit" class="btn btn-primary" asp-route-oper="append" style="display:none;">Záznamům přidat vybrané kategorie</button>
 
-            <button type="submit" class="btn btn-success" asp-route-oper="replace">V záznamech aktualizovat zvolenou kategorii</button>
+        <button type="submit" class="btn btn-success" asp-route-oper="replace">V záznamech aktualizovat zvolenou kategorii</button>
 
-            <button type="submit" class="btn btn-warning" asp-route-oper="remove" style="display:none;">V záznamech vyjmout vybrané kategorie</button>
+        <button type="submit" class="btn btn-warning" asp-route-oper="remove" style="display:none;">V záznamech vyjmout vybrané kategorie</button>
 
-            <button type="submit" class="btn btn-danger" asp-route-oper="clear">V záznamech vyčistit všechny položky vybrané kategorie</button>
+        <button type="submit" class="btn btn-danger" asp-route-oper="clear">V záznamech vyčistit všechny položky vybrané kategorie</button>
 
-            <button type="button" onclick="_window_close()" class="btn btn-light">Zavřít</button>
+        <button type="button" onclick="_window_close()" class="btn btn-light">Zavřít</button>
 
 
 
-        </div>
-        <div class="input-group">
-            <div class="card">
-                <div class="card-header">
-                    Vyberte kategorii
-                </div>
-                <div class="card-body">
-                    <myradiolist asp-for="@Model.SelectedO53ID" textfield="o53Name" valuefield="pid" datasource="@Model.lisO53" event_after_changevalue="o53_change"></myradiolist>
-                </div>
+    </div>
+    <div class="input-group">
+        <div class="card">
+            <div class="card-header">
+                Vyberte kategorii
             </div>
-            <div class="card" style="margin-left:10px;">
-                <div class="card-header">
-                    Položky vybrané kategorie
-                </div>
-                <div class="card-body">
-                    @if (Model.RecO53 != null)
+            <div class="card-body">
+                <myradiolist asp-for="@Model.SelectedO53ID" textfield="o53Name" valuefield="pid" datasource="@Model.lisO53" event_after_changevalue="o53_change"></myradiolist>
+            </div>
+        </div>
+        <div class="card" style="margin-left:10px;">
+            <div class="card-header">
+                Položky vybrané kategorie
+            </div>
+            <div class="card-body">
+                @if (Model.RecO53 != null)
+                {
+                    if (Model.RecO53.o53IsMultiSelect)
                     {
-                        if (Model.RecO53.o53IsMultiSelect)
-                        {
-                            <mycheckboxlist asp-for="@Model.SelectedO51IDs" textfield="HtmlText" valuefield="pid" datasource="@Model.ApplicableTags"></mycheckboxlist>
-                        }
-                        else
-                        {
-                            <myradiolist asp-for="@Model.SelectedRadioO51ID" textfield="HtmlText" valuefield="pid" datasource="@Model.ApplicableTags"></myradiolist>
-                        }
+                        <mycheckboxlist asp-for="@Model.SelectedO51IDs" textfield="HtmlText" valuefield="pid" datasource="@Model.ApplicableTags"></mycheckboxlist>
                     }
-                </div>
+                    else
+                    {
+                        <myradiolist asp-for="@Model.SelectedRadioO51ID" textfield="HtmlText" valuefield="pid" datasource="@Model.ApplicableTags"></myradiolist>
+                    }
+                }
             </div>
         </div>
-        
-
-        
-
-
-
-        <input type="hidden" asp-for="@Model.Record_Entity" />
-        <input type="hidden" asp-for="@Model.Record_Pids" />
-        <input type="hidden" asp-for="@Model.j72ID" />
-
-
-    </form>
-
-    <kbd>Vybrané záznamy:</kbd>
-    <div id="divTableRecords"></div>
-    
+    </div>
 
 
 
 
-    <script type="text/javascript">
+
+
+    <input type="hidden" asp-for="@Model.Record_Entity" />
+    <input type="hidden" asp-for="@Model.Record_Pids" />
+    <input type="hidden" asp-for="@Model.j72ID" />
+
+
+</form>
+
+<kbd>Vybrané záznamy:</kbd>
+<div id="divTableRecords"></div>
+
+
+
+
+
+<script type="text/javascript">
     $(document).ready(function () {
 
         $.post("/Common/GetWorkTable", { entity: "@Model.Record_Entity", pids:"@Model.Record_Pids"}, function (data) {
@@ -89,4 +90,4 @@
         form1.action = "/o51/Batch?oper=postback";
         form1.submit();
     }
-    </script>
+</script>

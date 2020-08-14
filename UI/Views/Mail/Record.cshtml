@@ -1,145 +1,146 @@
 ﻿@model UI.Models.x40RecMessage
+@inject BL.Factory _f
 
 @{
-    ViewData["Title"] = "Odeslaná zpráva";
+    ViewData["Title"] = _f.tra("Odeslaná poštovní zpráva");
     Layout = "~/Views/Shared/_LayoutModal.cshtml";
 }
 
 @addTagHelper *, UI
 
 
-    <div class="input-group bg-light" style="padding:10px;">
-        <div>
-            <h4>Odeslaná poštovní zpráva</h4>
+<div class="input-group bg-light" style="padding:10px;">
+    <div>
+        <h4>@ViewData["Title"]</h4>
+    </div>
+    <div style="margin-left:10px;">
+        <button type="button" class="btn btn-primary" onclick="eml()">@_f.tra("Otevřít poštovní zprávu [eml]") (@(BO.BAS.FormatFileSize(Model.Rec.x40EmlFileSize)))</button>
+    </div>
+    <div>
+        <button type="button" class="btn btn-light" onclick="clone()">@_f.tra("Zkopírovat do nové zprávy")</button>
+    </div>
+    <div style="margin-left:10px;">
+        <button type="button" class="btn btn-light" onclick="_window_close()">@_f.tra("Zavřít")</button>
+    </div>
+</div>
+
+
+<div class="modal_record_container">
+
+    <div class="form-row">
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Čas"):</label>
+        <div class="col-sm-11 col-md-10">
+            <span class="form-control bg-light">
+                @Model.Rec.MessageTime
+                <code style="margin-left:40px;">@Model.Rec.StateAlias</code>
+
+            </span>
+
         </div>
-        <div style="margin-left:10px;">
-            <button type="button" class="btn btn-primary" onclick="eml()">Otevřít poštovní zprávu [eml] (@(BO.BAS.FormatFileSize(Model.Rec.x40EmlFileSize)))</button>
+
+    </div>
+    @if (Model.Rec.x40ErrorMessage != null)
+    {
+        <div class="form-row" style="margin-top:10px;">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Chyba"):</label>
+            <div class="col-sm-11 col-md-10">
+                <span class="form-control bg-light text-danger">@Model.Rec.x40ErrorMessage</span>
+
+            </div>
+
         </div>
-        <div>
-            <button type="button" class="btn btn-light" onclick="clone()">Zkopírovat do nové zprávy</button>
-        </div>
-        <div style="margin-left:10px;">
-            <button type="button" class="btn btn-light"  onclick="_window_close()">Zavřít</button>
+    }
+
+    <div class="form-row" style="margin-top:10px;">
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Odesílatel"):</label>
+        <div class="col-sm-11 col-md-10">
+            <span class="form-control bg-light">@Html.Raw(Model.Rec.x40SenderName + " <" + Model.Rec.x40SenderAddress + ">")</span>
         </div>
     </div>
 
+    <div class="form-row" style="margin-top:10px;">
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Komu (To)"):</label>
+        <div class="col-sm-11 col-md-10">
+            <span class="form-control bg-light">@Model.Rec.x40Recipient</span>
 
-        <div class="modal_record_container">
+        </div>
 
-            <div class="form-row">
-                <label class="col-sm-1 col-md-2 col-form-label">Čas:</label>
-                <div class="col-sm-11 col-md-10">
-                    <span class="form-control bg-light">
-                        @Model.Rec.MessageTime
-                        <code style="margin-left:40px;">@Model.Rec.StateAlias</code>
+    </div>
+    <div class="form-row" style="margin-top:10px;">
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kopie (Cc)"):</label>
+        <div class="col-sm-11 col-md-10">
+            <span class="form-control bg-light">@Model.Rec.x40Cc</span>
 
-                    </span>
+        </div>
 
-                </div>
+    </div>
+    <div class="form-row" style="margin-top:10px;">
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Skrytá kopie (Bcc)"):</label>
+        <div class="col-sm-11 col-md-10">
+            <span class="form-control bg-light">@Model.Rec.x40Bcc</span>
 
-            </div>
-            @if (Model.Rec.x40ErrorMessage != null)
-            {
-                <div class="form-row" style="margin-top:10px;">
-                    <label class="col-sm-1 col-md-2 col-form-label">Chyba:</label>
-                    <div class="col-sm-11 col-md-10">
-                        <span class="form-control bg-light text-danger">@Model.Rec.x40ErrorMessage</span>
+        </div>
 
-                    </div>
+    </div>
+    <div class="form-row" style="margin-top:10px;">
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Předmět zprávy"):</label>
+        <div class="col-sm-11 col-md-10">
+            <span class="form-control bg-light">@Model.Rec.x40Subject</span>
 
-                </div>
-            }
+        </div>
 
-            <div class="form-row" style="margin-top:10px;">
-                <label class="col-sm-1 col-md-2 col-form-label">Odesílatel:</label>
-                <div class="col-sm-11 col-md-10">
-                    <span class="form-control bg-light">@Html.Raw(Model.Rec.x40SenderName + " <" + Model.Rec.x40SenderAddress + ">")</span>
-                </div>
-            </div>
-
-            <div class="form-row" style="margin-top:10px;">
-                <label class="col-sm-1 col-md-2 col-form-label">Komu (To):</label>
-                <div class="col-sm-11 col-md-10">
-                    <span class="form-control bg-light">@Model.Rec.x40Recipient</span>
-
-                </div>
-
-            </div>
-            <div class="form-row" style="margin-top:10px;">
-                <label class="col-sm-1 col-md-2 col-form-label">Kopie (Cc):</label>
-                <div class="col-sm-11 col-md-10">
-                    <span class="form-control bg-light">@Model.Rec.x40Cc</span>
-
-                </div>
-
-            </div>
-            <div class="form-row" style="margin-top:10px;">
-                <label class="col-sm-1 col-md-2 col-form-label">Skrytá kopie (Bcc):</label>
-                <div class="col-sm-11 col-md-10">
-                    <span class="form-control bg-light">@Model.Rec.x40Bcc</span>
-
-                </div>
-
-            </div>
-            <div class="form-row" style="margin-top:10px;">
-                <label class="col-sm-1 col-md-2 col-form-label">Předmět zprávy:</label>
-                <div class="col-sm-11 col-md-10">
-                    <span class="form-control bg-light">@Model.Rec.x40Subject</span>
-
-                </div>
-
-            </div>
+    </div>
 
 
-            @if (Model.MimeMessage != null && Model.MimeAttachments.Count() > 0)
-            {
-                <div class="form-row" style="margin-top:10px;">
-                    <label class="col-sm-1 col-md-2 col-form-label">Přílohy:</label>
-                    <div class="col-sm-11 col-md-10">
-                        @foreach (var item in Model.MimeAttachments)
-                        {
-                            <div>
-                                <a target="_blank" href="/FileUpload/FileDownloadTempFile?tempfilename=@(Model.Rec.x40MessageGuid+"_"+item.Value)&guid=@(Model.Rec.x40MessageGuid)&contenttype=@(item.Key)">@(item.Value)</a>
-
-                            </div>
-                        }
-
-
-
-
+    @if (Model.MimeMessage != null && Model.MimeAttachments.Count() > 0)
+    {
+        <div class="form-row" style="margin-top:10px;">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Přílohy"):</label>
+            <div class="col-sm-11 col-md-10">
+                @foreach (var item in Model.MimeAttachments)
+                {
+                    <div>
+                        <a target="_blank" href="/FileUpload/FileDownloadTempFile?tempfilename=@(Model.Rec.x40MessageGuid+"_"+item.Value)&guid=@(Model.Rec.x40MessageGuid)&contenttype=@(item.Key)">@(item.Value)</a>
 
                     </div>
-
-                </div>
-                <div class="form-row" style="margin-top:10px;">
-                    <label class="col-sm-1 col-md-2 col-form-label">Velikost zprávy:</label>
-                    <div class="col-sm-11 col-md-10">
-                        @(BO.BAS.FormatFileSize(Model.Rec.x40EmlFileSize))
-
-                    </div>
-
-                </div>
-
-
-            }
+                }
 
 
 
 
-
-
-            <div class="form-row" style="margin-top:10px;">
-                <textarea asp-for="Rec.x40Body" class="form-control" placeholder="Text zprávy" style="height:200px;"></textarea>
 
             </div>
 
+        </div>
+        <div class="form-row" style="margin-top:10px;">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Velikost zprávy"):</label>
+            <div class="col-sm-11 col-md-10">
+                @(BO.BAS.FormatFileSize(Model.Rec.x40EmlFileSize))
 
+            </div>
 
         </div>
 
 
+    }
 
-        <script type="text/javascript">
+
+
+
+
+
+    <div class="form-row" style="margin-top:10px;">
+        <textarea asp-for="Rec.x40Body" class="form-control" placeholder="@_f.tra("Text zprávy")" style="height:200px;"></textarea>
+
+    </div>
+
+
+
+</div>
+
+
+
+<script type="text/javascript">
     $(document).ready(function () {
 
 
@@ -154,4 +155,4 @@
         location.replace("/Mail/Sendmail?x40id=@Model.Rec.x40ID");
     }
 
-        </script>
+</script>

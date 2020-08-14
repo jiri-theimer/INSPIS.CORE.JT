@@ -1,18 +1,19 @@
 ﻿@model SendMailViewModel
+@inject BL.Factory _f
 
 @{
-    ViewData["Title"] = "Odeslat poštovní zprávu";
+    ViewData["Title"] = _f.tra("Odeslat poštovní zprávu");
     Layout = "~/Views/Shared/_LayoutModal.cshtml";
-    
+
 
 }
 
 @addTagHelper *, UI
 
-<h4>Odeslat poštovní zprávu</h4>
+<h4>@ViewData["Title"]</h4>
 <div class="bg-light" style="padding:10px;">
-    <button id="cmdSave" type="submit" class="btn btn-success">Odeslat</button>
-    <button type="button" id="cmdClose" onclick="_window_close()" class="btn btn-light">Zavřít</button>
+    <button id="cmdSave" type="submit" class="btn btn-success">@_f.tra("Odeslat")</button>
+    <button type="button" id="cmdClose" onclick="_window_close()" class="btn btn-light">@_f.tra("Zavřít")</button>
 
 </div>
 
@@ -28,10 +29,10 @@
         <!-- Tab panes -->
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a id="link_tab1" class="nav-link" data-toggle="tab" href="#tab1">Poštovní zpráva</a>
+                <a id="link_tab1" class="nav-link" data-toggle="tab" href="#tab1">@_f.tra("Poštovní zpráva")</a>
             </li>
             <li class="nav-item">
-                <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2">Cílové instituce</a>
+                <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2">@_f.tra("Cílové instituce")</a>
             </li>
 
         </ul>
@@ -46,14 +47,14 @@
                 <!-- Tab1 -->
                 <p></p>
                 <div class="form-row">
-                    <label class="col-sm-1 col-md-2 col-form-label">Odesílatel:</label>
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Odesílatel"):</label>
                     <div class="col-sm-11 col-md-10">
                         <mycombo entity="j40MailAccount" asp-for="Rec.j40ID" selectedtext="Rec.j40Name" view-flag="2"></mycombo>
                     </div>
                 </div>
 
                 <div class="form-row" style="margin-top:10px;">
-                    <label class="col-sm-1 col-md-2 col-form-label">Komu (To):</label>
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Komu (To)"):</label>
                     <div class="col-sm-11 col-md-10">
                         <input class="form-control" asp-for="Rec.x40Recipient" />
 
@@ -61,7 +62,7 @@
 
                 </div>
                 <div class="form-row" style="margin-top:10px;">
-                    <label class="col-sm-1 col-md-2 col-form-label">V kopii (Cc):</label>
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("V kopii (Cc)"):</label>
                     <div class="col-sm-11 col-md-10">
                         <input class="form-control" asp-for="Rec.x40Cc" />
 
@@ -69,7 +70,7 @@
 
                 </div>
                 <div class="form-row" style="margin-top:10px;">
-                    <label class="col-sm-1 col-md-2 col-form-label">Ve skryté kopii (Bcc):</label>
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Ve skryté kopii (Bcc)"):</label>
                     <div class="col-sm-11 col-md-10">
                         <input class="form-control" asp-for="Rec.x40Bcc" />
 
@@ -78,12 +79,12 @@
                 </div>
 
                 <div class="form-row" style="margin-top:10px;">
-                    <input class="form-control" asp-for="Rec.x40Subject" placeholder="Předmět zprávy" />
+                    <input class="form-control" asp-for="Rec.x40Subject" placeholder="@_f.tra("Předmět zprávy")" />
                 </div>
 
 
                 <div class="form-row" style="margin-top:10px;">
-                    <textarea asp-for="Rec.x40Body" class="form-control" placeholder="Text zprávy" style="height:200px;"></textarea>
+                    <textarea asp-for="Rec.x40Body" class="form-control" placeholder="@_f.tra("Text zprávy")" style="height:200px;"></textarea>
 
                 </div>
                 <iframe id="fraUpload" src="/FileUpload/Index?prefix=j02&guid=@Model.UploadGuid" frameborder="0" height="220" scrolling="no"></iframe>
@@ -121,7 +122,7 @@
 
         $('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
             // v e.target.id je id kliknutá záložka
-            var tabindex = e.target.id.substring(e.target.id.length - 1, e.target.id.length);            
+            var tabindex = e.target.id.substring(e.target.id.length - 1, e.target.id.length);
             $("#ActiveTabIndex").val(tabindex);
 
 
@@ -129,7 +130,7 @@
 
     });
 
-    
+
 
 </script>
 

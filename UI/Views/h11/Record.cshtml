@@ -1,10 +1,11 @@
 ﻿@model UI.Models.Record.h11Record
+@inject BL.Factory _f
 
 @{
 
     Layout = "~/Views/Shared/_LayoutRecord.cshtml";
     if (Model.Rec == null) return;
-    Model.PageTitle = "Článek pro nástěnku";
+    Model.PageTitle = _f.tra("Článek pro nástěnku");
 }
 @addTagHelper *, UI
 
@@ -19,7 +20,7 @@
 
 <div class="modal_record_container">
     <div class="form-row">
-        <label class="col-sm-1 col-md-2 col-form-label">Název článku:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název článku"):</label>
         <div class="col-sm-11 col-md-10">
             <input class="form-control" asp-for="Rec.h11Name" />
             <span asp-validation-for="Rec.h11Name" class="text-danger"></span>
@@ -28,11 +29,11 @@
 
 
     </div>
-    
+
     <div class="form-row my-2">
-        <label class="col-sm-1 col-md-2 col-form-label">Omezit přístup k článku rolím:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Omezit přístup k článku rolím"):</label>
         <div class="col-sm-11 col-md-10">
-            <mycombochecklist asp-for="@Model.j04IDs" entity="j04UserRole" selectedtext="@Model.j04Names" placeholder="Vybrat aplikační role..."></mycombochecklist>
+            <mycombochecklist asp-for="@Model.j04IDs" entity="j04UserRole" selectedtext="@Model.j04Names" placeholder="@_f.tra("Vybrat aplikační role")..."></mycombochecklist>
         </div>
     </div>
 
@@ -51,7 +52,7 @@
 
         $("#editor1").summernote({
             lang: "cs-CZ", // default: 'en-US'
-            placeholder: "Obsah článku",
+            placeholder: "@_f.tra("Obsah článku")",
             tabsize: 2,
             height: hh
         });

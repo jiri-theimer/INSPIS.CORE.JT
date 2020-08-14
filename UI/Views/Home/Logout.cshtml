@@ -1,11 +1,12 @@
-﻿
+﻿@inject BL.Factory _f
+
 @{
-    ViewData["Title"] = "Odhlášení z aplikace";
+    ViewData["Title"] = _f.tra("Odhlášení z aplikace");
     Layout = "~/Views/Shared/_LayoutLogin.cshtml";
 }
 
-<h2>Došlo k odhlášení uživatele</h2>
+<h2>@_f.tra("Došlo k odhlášení uživatele")</h2>
 
-<a asp-action="UserLogin" asp-controller="Login">Přihlásit se</a>
+<a asp-action="UserLogin" asp-controller="Login">@_f.tra("Přihlásit se")</a>
 
 

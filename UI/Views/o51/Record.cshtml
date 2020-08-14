@@ -1,10 +1,11 @@
 ﻿@model UI.Models.Record.o51Record
+@inject BL.Factory _f
 
 @{
 
     Layout = "~/Views/Shared/_LayoutRecord.cshtml";
     if (Model.Rec == null) return;
-
+    Model.PageTitle = _f.tra("Položka kategorie");
 }
 
 @addTagHelper *, UI
@@ -14,7 +15,7 @@
 <div class="modal_record_container">
 
     <div class="form-row">
-        <label class="col-sm-1 col-md-2 col-form-label">Název položky:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název položky"):</label>
         <div class="col-sm-11 col-md-10">
             <input class="form-control" asp-for="Rec.o51Name" />
             <span asp-validation-for="Rec.o51Name" class="text-danger"></span>
@@ -27,14 +28,14 @@
 
 
     <div class="form-row" style="margin-top:10px;">
-        <label class="col-sm-1 col-md-2 col-form-label">Kategorie (skupina):</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kategorie (skupina)"):</label>
         <div class="col-sm-11 col-md-10">
             <mycombo entity="o53TagGroup" asp-for="Rec.o53ID" selectedtext="Rec.o53Name" view-flag="2"></mycombo>
         </div>
     </div>
 
     <div class="form-row">
-        <label class="col-sm-1 col-md-2 col-form-label">Pořadí v rámci kategorie:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Pořadí v rámci kategorie"):</label>
         <div class="col-sm-11 col-md-10">
             <mynumber asp-for="Rec.o51Ordinary" decimal-digits="0"></mynumber>
         </div>
@@ -43,7 +44,7 @@
 
     <div class="form-row">
         <input asp-for="@Model.Rec.o51IsColor" />
-        <label for="Rec_o51IsColor">Položka má vlastní barvu?</label>
+        <label for="Rec_o51IsColor">@_f.tra("Položka má vlastní barvu?")</label>
     </div>
 
     <table id="tabColor">
@@ -66,7 +67,7 @@
 
 
     <div class="form-row" style="display:none;">
-        <label class="col-sm-1 col-md-2 col-form-label">Kód:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kód"):</label>
         <div class="col-sm-4 col-md-4">
             <input class="form-control" asp-for="Rec.o51Code" />
             <span asp-validation-for="Rec.o51Code" class="text-danger"></span>

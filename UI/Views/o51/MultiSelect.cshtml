@@ -1,16 +1,17 @@
 ﻿@model TagsMultiSelect
+@inject BL.Factory _f
 
 @{
-    ViewData["Title"] = "Zatřídit do kategorií";
+    ViewData["Title"] = _f.tra("Zatřídit do kategorií");
     Layout = "~/Views/Shared/_LayoutSubform.cshtml";
 }
 
 @addTagHelper *, UI
 
 <div class="bg-light" style="padding:10px;">
-    <button type="button" onclick="ok()" class="btn btn-success">OK</button>
-    <button type="button" onclick="clear_all()" class="btn btn-light">Vyčistit vše</button>
-    <button type="button" onclick="stitky_zoom_close()" class="btn btn-light">Zavřít</button>
+    <button type="button" onclick="ok()" class="btn btn-success">@_f.tra("OK")</button>
+    <button type="button" onclick="clear_all()" class="btn btn-light">@_f.tra("Vyčistit vše")</button>
+    <button type="button" onclick="stitky_zoom_close()" class="btn btn-light">@_f.tra("Zavřít")</button>
 
 
 

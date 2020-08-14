@@ -2,51 +2,51 @@
 @inject BL.Factory _f
 
 @{
-    ViewData["Title"] = "O aplikaci";
+    ViewData["Title"] = _f.tra("O aplikaci");
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
+@addTagHelper *, UI
 
 <div class="modal_record_container">
-    <h4>O aplikaci</h4>
+    <h4>@_f.tra("O aplikaci")</h4>
 
-    
+
 
     <div class="form-row">
-        <label class="col-sm-1 col-md-2 col-form-label">Název:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
         <div class="col-sm-11 col-md-10">
-            <span class="form-control bg-light">@_app.AppName</span>
-
+            
+            <myval value="@_app.AppName"></myval>
 
         </div>
 
     </div>
 
-    <div class="form-row">
-        <label class="col-sm-1 col-md-2 col-form-label">Verze:</label>
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Verze"):</label>
         <div class="col-sm-11 col-md-10">
-            <span class="form-control bg-light">@(_app.AppVersion+", "+_app.AppBuild)</span>
-
+            
+            <myval value="@(_app.AppVersion+", "+_app.AppBuild)"></myval>
 
         </div>
 
     </div>
 
 
-    
-    <div class="form-row">
-        <label class="col-sm-1 col-md-2 col-form-label">Vývoj:</label>
-        <div class="col-sm-11 col-md-10">
-            <span class="form-control bg-light"><a href="mailto:jiri.theimer@gmail.com">Jiří Theimer</a></span>
 
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Vývoj"):</label>
+        <div class="col-sm-11 col-md-10">
+            
+            <myval value="@("Jiří Theimer")" datatype="link" linkurl="mailto:jiri.theimer@gmail.com"></myval>
 
         </div>
 
     </div>
 
     <div class="form-row" style="margin-top:20px;">
-        <label class="col-sm-1 col-md-2 col-form-label">Technická podpora:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Technická podpora"):</label>
         <div class="col-sm-11 col-md-10">
             @if (_f.CurrentUser.j03LiveChatTimestamp == null)
             {

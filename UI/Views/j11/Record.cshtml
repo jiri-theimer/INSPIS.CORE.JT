@@ -1,10 +1,11 @@
 ﻿@model UI.Models.Record.j11Record
+@inject BL.Factory _f
 
 @{
 
     Layout = "~/Views/Shared/_LayoutRecord.cshtml";
     if (Model.Rec == null) return;
-    Model.PageTitle = "Tým osob";
+    Model.PageTitle = _f.tra("Tým osob");
 }
 @addTagHelper *, UI
 
@@ -12,7 +13,7 @@
 
 <div class="modal_record_container">
     <div class="form-row">
-        <label class="col-sm-1 col-md-2 col-form-label">Název:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
         <div class="col-sm-11 col-md-10">
             <input class="form-control" asp-for="Rec.j11Name" />
             <span asp-validation-for="Rec.j11Name" class="text-danger"></span>
@@ -24,29 +25,29 @@
 
 
     <div class="form-row my-2">
-        <textarea asp-for="Rec.j11Description" class="form-control" placeholder="Poznámka"></textarea>
+        <textarea asp-for="Rec.j11Description" class="form-control" placeholder="@_f.tra("Poznámka")"></textarea>
         <span asp-validation-for="Rec.j11Description" class="text-danger"></span>
     </div>
 
     <div class="form-row my-2">
-        <label class="col-sm-1 col-md-2 col-form-label">Přidat člena týmu:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Přidat člena týmu"):</label>
         <div class="col-sm-11 col-md-10">
-            <mycombo entity="j02Person" asp-for="@Model.SelectedJ02ID" selectedtext="@Model.SelectedPerson" filter-flag="1" placeholder="Vybrat osobní profil..." event_after_changevalue="handle_j02id_append"></mycombo>
+            <mycombo entity="j02Person" asp-for="@Model.SelectedJ02ID" selectedtext="@Model.SelectedPerson" filter-flag="1" placeholder="@_f.tra("Vybrat osobní profil")..." event_after_changevalue="handle_j02id_append"></mycombo>
         </div>
 
     </div>
     <div class="form-row my-2">
-        <label class="col-sm-1 col-md-2 col-form-label">Přidat členy podle kraje:</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Přidat členy podle kraje"):</label>
         <div class="col-sm-11 col-md-10">
-            <mycombo entity="a05Region" asp-for="@Model.SelectedA05ID" selectedtext="@Model.SelectedRegion" placeholder="Vybrat kraj..." event_after_changevalue="handle_a05id_append"></mycombo>
+            <mycombo entity="a05Region" asp-for="@Model.SelectedA05ID" selectedtext="@Model.SelectedRegion" placeholder="@_f.tra("Vybrat kraj")..." event_after_changevalue="handle_a05id_append"></mycombo>
         </div>
 
     </div>
-    <button type="button" id="cmdGrid" class="btn btn-secondary btn-sm" onclick="multiselect()">Přidat hromadně přes Grid</button>
+    <button type="button" id="cmdGrid" class="btn btn-secondary btn-sm" onclick="multiselect()">@_f.tra("Přidat hromadně přes Grid")</button>
 </div>
 
 <div id="divJ02" style="margin-top:20px;margin-bottom:20px;"></div>
-<button type="button" id="cmdClear" class="btn btn-warning btn-sm" style="display:none;" onclick="clear_all()">Vyčistit vše</button>
+<button type="button" id="cmdClear" class="btn btn-warning btn-sm" style="display:none;" onclick="clear_all()">@_f.tra("Vyčistit vše")</button>
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -65,7 +66,7 @@
         var j02ids = [];
         if ($("#hidJ02IDs").val() != "") j02ids = $("#hidJ02IDs").val().split(",");
         if (j02ids.includes(j02id)) {
-            _notify_message("Tato osoba již je v seznamu.", "info");
+            _notify_message("@_f.tra("Tato osoba již je v seznamu.")", "info");
             return;
         }
         j02ids.push(j02id);

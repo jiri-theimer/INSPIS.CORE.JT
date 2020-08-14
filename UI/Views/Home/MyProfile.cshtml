@@ -2,7 +2,7 @@
 @inject BL.Factory _f
 
 @{
-    ViewData["Title"] = "Můj profil";
+    ViewData["Title"] = _f.tra("Můj profil");
     Layout = "~/Views/Shared/_Layout.cshtml";
 
 
@@ -18,12 +18,12 @@
         <form id="form1" asp-controller="Home" asp-action="MyProfile" method="POST">
             <div class="card">
                 <div class="card-header">
-                    <button type="submit" class="btn btn-success">Uložit změny</button>
+                    <button type="submit" class="btn btn-success">@_f.tra("Uložit změny")</button>
                 </div>
                 <div class="card-body">
 
                     <div class="form-row">
-                        <label class="col-sm-1 col-md-2 col-form-label">E-mail:</label>
+                        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("E-mail"):</label>
                         <div class="col-sm-10 col-md-9">
                             <input class="form-control" asp-for="@Model.EmailAddres" />
                             <span asp-validation-for="@Model.EmailAddres" class="text-danger"></span>
@@ -31,7 +31,7 @@
                     </div>
                     <div class="form-row">
                         <input asp-for="@Model.IsGridClipboard" />
-                        <label for="IsGridClipboard">Podporovat clipboard v textech Grid přehledu (schránka Ctrl+C & Ctrl+V)?</label>
+                        <label for="IsGridClipboard">@_f.tra("Podporovat clipboard v textech Grid přehledu (schránka Ctrl+C & Ctrl+V)?")</label>
                     </div>
 
                 </div>
@@ -39,7 +39,7 @@
         </form>
 
         <div class="form-row my-2">
-            <label class="col-sm-1 col-md-2 col-form-label">E-mail:</label>
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("E-mail"):</label>
             <div class="col-sm-11 col-md-10">
                 <myval value="@Model.RecJ02.j02Email"></myval>
                 
@@ -52,7 +52,7 @@
         {
 
             <div class="form-row">
-                <label class="col-sm-1 col-md-2 col-form-label">Uživatel:</label>
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Uživatel"):</label>
                 <div class="col-sm-11 col-md-10">
                     <myval value="@Model.CurrentUser.j03Login"></myval>
                     
@@ -60,7 +60,7 @@
 
             </div>
             <div class="form-row">
-                <label class="col-sm-1 col-md-2 col-form-label">Aplikační role:</label>
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Aplikační role"):</label>
                 <div class="col-sm-11 col-md-10">
 
                     <myval value="@Model.RecJ03.j04Name"></myval>
@@ -74,7 +74,7 @@
         @if (Model.RecJ02 != null)
         {
             <div class="form-row" style="margin-top:10px;">
-                <label class="col-sm-1 col-md-2 col-form-label">Jméno:</label>
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Jméno"):</label>
                 <div class="col-sm-11 col-md-10">
 
                     <myval value="@Model.RecJ02.FullNameAsc"></myval>
@@ -82,7 +82,7 @@
 
             </div>
             <div class="form-row">
-                <label class="col-sm-1 col-md-2 col-form-label">ID:</label>
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Osobní kód"):</label>
                 <div class="col-sm-11 col-md-10">
                     <myval value="@Model.RecJ02.j02PID"></myval>
                     
@@ -92,7 +92,7 @@
             @if (Model.RecJ02.a04ID > 0)
             {
                 <div class="form-row">
-                    <label class="col-sm-1 col-md-2 col-form-label">Inspektorát:</label>
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Inspektorát"):</label>
                     <div class="col-sm-11 col-md-10">
 
                         <myval value="@Model.RecJ02.a04City"></myval>
@@ -100,7 +100,7 @@
 
                 </div>
                 <div class="form-row">
-                    <label class="col-sm-1 col-md-2 col-form-label">Kraj:</label>
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kraj"):</label>
                     <div class="col-sm-11 col-md-10">
 
                         <span class="form-control bg-light">@(Model.RecJ02.a05ID)</span>
@@ -109,7 +109,7 @@
                 </div>
             }
             <div class="form-row">
-                <label class="col-sm-1 col-md-2 col-form-label">TEL:</label>
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Pevný telefon"):</label>
                 <div class="col-sm-11 col-md-10">
 
                     <myval value="@Model.RecJ02.j02Phone"></myval>
@@ -117,7 +117,7 @@
 
             </div>
             <div class="form-row">
-                <label class="col-sm-1 col-md-2 col-form-label">Mobil:</label>
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Mobilní telefon"):</label>
                 <div class="col-sm-11 col-md-10">
 
                     <myval value="@Model.RecJ02.j02Mobile"></myval>
