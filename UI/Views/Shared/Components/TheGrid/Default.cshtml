@@ -1,4 +1,5 @@
 ﻿@model UI.Models.TheGridViewModel
+@inject BL.Factory _f
 @{
 
     string _strStyle = "";
@@ -48,7 +49,7 @@
             <tr id="tr_header_query">
 
                 <th colspan="3">
-                    <button id="cmdDestroyFilter" type="button" class="btn btn-danger py-0 px-3" onclick="tg_filter_clear()" style="display:none;" title="Vyčistit sloupcový filtr">
+                    <button id="cmdDestroyFilter" type="button" class="btn btn-danger py-0 px-3" onclick="tg_filter_clear()" style="display:none;" title="@_f.tra("Vyčistit sloupcový filtr")">
                         &#128473;
                     </button>
                 </th>
@@ -140,49 +141,49 @@
                 <input type="text" id="qryval1" autocomplete="off" class="form-control form-control-sm" onkeydown="return tg_qryval_keydown(event)" />
                 <label for="qryval2">do: </label>
                 <input type="text" id="qryval2" autocomplete="off" class="form-control form-control-sm" onkeydown="return tg_qryval_keydown(event)" />
-                <button type="button" class="btn btn-primary btn-sm" onclick="tg_filter_ok()">OK</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="tg_filter_ok()">@_f.tra("OK")</button>
             </div>
             <div id="tg_div_filter_radios">
                 <div cstring="1" cnumber="1" cdate="1" cbool="1">
-                    <input type='radio' id="chkf0" value='0' name='chlfilter' onchange='tg_filter_radio_change(this)' /><label for='chkf0' style="font-weight: bold;">Nefiltrovat</label>
+                    <input type='radio' id="chkf0" value='0' name='chlfilter' onchange='tg_filter_radio_change(this)' /><label for='chkf0' style="font-weight: bold;">@_f.tra("Nefiltrovat")</label>
                 </div>
                 <div cstring="1">
-                    <input type='radio' id="chkf3" value='3' name='chlfilter' onchange='tg_filter_radio_change(this)' /><label for='chkf3'>Obsahuje</label>
+                    <input type='radio' id="chkf3" value='3' name='chlfilter' onchange='tg_filter_radio_change(this)' /><label for='chkf3'>@_f.tra("Obsahuje")</label>
                 </div>
                 <div cdate="1" cnumber="1">
-                    <input type='radio' id="chkf4" value='4' name='chlfilter' onchange='tg_filter_radio_change(this)' /><label for='chkf4'>Interval (od-do)</label>
+                    <input type='radio' id="chkf4" value='4' name='chlfilter' onchange='tg_filter_radio_change(this)' /><label for='chkf4'>@_f.tra("Interval (od-do)")</label>
                 </div>
                 <div cstring="1" cnumber="1" cdate="1">
-                    <input type='radio' id="chkf1" value='1' name='chlfilter' onchange='tg_filter_radio_change(this)' /><label for='chkf1'>Je prázdné</label>
+                    <input type='radio' id="chkf1" value='1' name='chlfilter' onchange='tg_filter_radio_change(this)' /><label for='chkf1'>@_f.tra("Je prázdné")</label>
                 </div>
                 <div cstring="1" cnumber="1" cdate="1">
-                    <input type='radio' id="chkf2" value='2' name='chlfilter' onchange='tg_filter_radio_change(this)' /><label for='chkf2'>Není prázdné</label>
+                    <input type='radio' id="chkf2" value='2' name='chlfilter' onchange='tg_filter_radio_change(this)' /><label for='chkf2'>@_f.tra("Není prázdné")</label>
                 </div>
 
                 <div cnumber="1">
-                    <input type='radio' id="chkf10" value='10' name='chlfilter' onchange='tg_filter_radio_change(this)' /><label for='chkf10'>Je větší než nula</label>
+                    <input type='radio' id="chkf10" value='10' name='chlfilter' onchange='tg_filter_radio_change(this)' /><label for='chkf10'>@_f.tra("Je větší než nula")</label>
                 </div>
                 <div cnumber="1">
-                    <input type='radio' id="chkf11" value='11' name='chlfilter' onchange='tg_filter_radio_change(this)' /><label for='chkf11'>Je nula nebo prázdné</label>
+                    <input type='radio' id="chkf11" value='11' name='chlfilter' onchange='tg_filter_radio_change(this)' /><label for='chkf11'>@_f.tra("Je nula nebo prázdné")</label>
                 </div>
                 <div cstring="1">
-                    <input type='radio' id="chkf5" value='5' name='chlfilter' onchange='tg_filter_radio_change(this)' /><label for='chkf5'>Začíná na</label>
+                    <input type='radio' id="chkf5" value='5' name='chlfilter' onchange='tg_filter_radio_change(this)' /><label for='chkf5'>@_f.tra("Začíná na")</label>
                 </div>
                 <div cstring="1">
-                    <input type='radio' id="chkf6" value='6' name='chlfilter' onchange='tg_filter_radio_change(this)' /><label for='chkf6'>Je rovno</label>
+                    <input type='radio' id="chkf6" value='6' name='chlfilter' onchange='tg_filter_radio_change(this)' /><label for='chkf6'>@_f.tra("Je rovno")</label>
                 </div>
                 <div cstring="1">
-                    <input type='radio' id="chkf7" value='7' name='chlfilter' onchange='tg_filter_radio_change(this)' /><label for='chkf7'>Není rovno</label>
+                    <input type='radio' id="chkf7" value='7' name='chlfilter' onchange='tg_filter_radio_change(this)' /><label for='chkf7'>@_f.tra("Není rovno")</label>
                 </div>
                 <div cbool="1">
-                    <input type='radio' id="chkf8" value='8' name='chlfilter' onchange='tg_filter_radio_change(this)' /><label for='chkf8'>ANO (zaškrtnuto)</label>
+                    <input type='radio' id="chkf8" value='8' name='chlfilter' onchange='tg_filter_radio_change(this)' /><label for='chkf8'>@_f.tra("ANO (zaškrtnuto)")</label>
                 </div>
                 <div cbool="1">
-                    <input type='radio' id="chkf9" value='9' name='chlfilter' onchange='tg_filter_radio_change(this)' /><label for='chkf9'>NE (nezaškrtnuto)</label>
+                    <input type='radio' id="chkf9" value='9' name='chlfilter' onchange='tg_filter_radio_change(this)' /><label for='chkf9'>@_f.tra("NE (nezaškrtnuto)")</label>
                 </div>
             </div>
             <code>
-                &#128161;<i>Pro [Obsahuje/Začíná na/Rovná se/Nerovná se] lze zadávat středník jak oddělovač více hodnot (podmínka OR)</i>
+                &#128161;<i>@_f.tra("Pro [Obsahuje/Začíná na/Rovná se/Nerovná se] lze zadávat středník jak oddělovač více hodnot (podmínka OR)")</i>
             </code>
         </div>
 

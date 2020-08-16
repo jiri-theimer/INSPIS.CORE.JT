@@ -526,7 +526,7 @@ namespace UI.Controllers
         {
             int intPageSize = _grid.GridState.j75PageSize;
 
-            _s.Append("<select title='Stránkování záznamů' onchange='tg_pagesize(this)'>");            
+            _s.Append("<select title='"+Factory.tra("Stránkování záznamů")+"' onchange='tg_pagesize(this)'>");            
             render_select_option("50", "50", intPageSize.ToString());
             render_select_option("100", "100", intPageSize.ToString());
             render_select_option("200", "200", intPageSize.ToString());
@@ -545,12 +545,12 @@ namespace UI.Controllers
                 return;
             }
 
-            _s.Append("<button title='První' class='btn btn-light tgp' style='margin-left:6px;' onclick='tg_pager(\n0\n)'>&lt;&lt;</button>");
+            _s.Append("<button title='"+Factory.tra("První")+"' class='btn btn-light tgp' style='margin-left:6px;' onclick='tg_pager(\n0\n)'>&lt;&lt;</button>");
 
             int intCurIndex = _grid.GridState.j75CurrentPagerIndex;
             int intPrevIndex = intCurIndex - intPageSize;
             if (intPrevIndex < 0) intPrevIndex = 0;
-            _s.Append(string.Format("<button title='Předchozí' class='btn btn-light tgp' style='margin-right:10px;' onclick='tg_pager(\n{0}\n)'>&lt;</button>", intPrevIndex));
+            _s.Append(string.Format("<button title='"+Factory.tra("Předchozí")+"' class='btn btn-light tgp' style='margin-right:10px;' onclick='tg_pager(\n{0}\n)'>&lt;</button>", intPrevIndex));
 
             if (intCurIndex >= intPageSize * 10)
             {
@@ -597,10 +597,10 @@ namespace UI.Controllers
 
             int intNextIndex = intCurIndex + intPageSize;
             if (intNextIndex + 1>intRowsCount) intNextIndex = intRowsCount-intPageSize;
-            _s.Append(string.Format("<button type='button' title='Další' class='btn btn-light tgp' style='margin-left:10px;' onclick='tg_pager(\n{0}\n)'>&gt;</button>", intNextIndex));
+            _s.Append(string.Format("<button type='button' title='"+Factory.tra("Další")+"' class='btn btn-light tgp' style='margin-left:10px;' onclick='tg_pager(\n{0}\n)'>&gt;</button>", intNextIndex));
 
             int intLastIndex = intRowsCount - (intRowsCount % intPageSize);  //% je zbytek po celočíselném dělení
-            _s.Append(string.Format("<button type='button' title='Poslední' class='btn btn-light tgp' onclick='tg_pager(\n{0}\n)'>&gt;&gt;</button>", intLastIndex));
+            _s.Append(string.Format("<button type='button' title='"+Factory.tra("Poslední")+"' class='btn btn-light tgp' onclick='tg_pager(\n{0}\n)'>&gt;&gt;</button>", intLastIndex));
 
             RenderPanelsSwitchFlag();
         }
@@ -616,11 +616,11 @@ namespace UI.Controllers
                     case "j02":
                         if (_grid.GridState.MasterViewFlag==2)
                         {
-                            _s.Append("<button type='button' class='btn btn-secondary btn-sm mx-4' onclick='tg_switchflag(\""+_grid.Entity.Substring(0, 3)+"\",0)'>Vypnout spodní panel</button>");
+                            _s.Append("<button type='button' class='btn btn-secondary btn-sm mx-4' onclick='tg_switchflag(\""+_grid.Entity.Substring(0, 3)+"\",0)'>"+Factory.tra("Vypnout spodní panel")+"</button>");
                         }
                         else
                         {
-                            _s.Append("<button type='button' class='btn btn-secondary btn-sm mx-4' onclick='tg_switchflag(\"" + _grid.Entity.Substring(0, 3) + "\",1)'>Zapnout spodní panel</button>");
+                            _s.Append("<button type='button' class='btn btn-secondary btn-sm mx-4' onclick='tg_switchflag(\"" + _grid.Entity.Substring(0, 3) + "\",1)'>"+Factory.tra("Zapnout spodní panel")+"</button>");
                         }
                         break;
                 }
