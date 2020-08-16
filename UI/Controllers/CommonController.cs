@@ -66,7 +66,7 @@ namespace UI.Controllers
             var mq = new BO.myQuery(entity);
             mq.SetPids(pids);
 
-            var grid = Factory.gridBL.LoadTheGridState(entity, Factory.CurrentUser.pid, master_entity);
+            var grid = Factory.j72TheGridTemplateBL.LoadState(entity, Factory.CurrentUser.pid, master_entity);
 
             if (grid == null)
             {
@@ -75,10 +75,10 @@ namespace UI.Controllers
             else
             {
                 mq.explicit_columns = _colsProvider.ParseTheGridColumns(mq.Prefix, grid.j72Columns,Factory.CurrentUser.j03LangIndex);
-                mq.explicit_orderby = grid.j72SortDataField;
-                if (grid.j72SortDataField !=null && grid.j72SortOrder != null)
+                mq.explicit_orderby = grid.j75SortDataField;
+                if (grid.j75SortDataField !=null && grid.j75SortOrder != null)
                 {
-                    mq.explicit_orderby += " " + grid.j72SortOrder;
+                    mq.explicit_orderby += " " + grid.j75SortOrder;
                 }
 
             }

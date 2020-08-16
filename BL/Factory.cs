@@ -23,7 +23,7 @@ namespace BL
         private Ij24NonPersonTypeBL _j24;
         private Ij25NonPersonPlanReasonBL _j25;
         private Ij26HolidayBL _j26;
-
+        private Ij72TheGridTemplateBL _j72;
         private Ia01EventBL _a01;
         private Ia02InspectorBL _a02;
         private Ia03InstitutionBL _a03;
@@ -337,6 +337,14 @@ namespace BL
             {
                 if (_j26 == null) _j26 = new j26HolidayBL(this);
                 return _j26;
+            }
+        }
+        public Ij72TheGridTemplateBL j72TheGridTemplateBL
+        {
+            get
+            {
+                if (_j72 == null) _j72 = new j72TheGridTemplateBL(this);
+                return _j72;
             }
         }
         public Ia25EventFormGroupBL a25EventFormGroupBL

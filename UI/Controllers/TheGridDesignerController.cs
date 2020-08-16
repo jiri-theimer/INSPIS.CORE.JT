@@ -20,7 +20,7 @@ namespace UI.Controllers
         public IActionResult Index(int j72id)
         {
             var v = new Models.TheGridDesignerViewModel();
-            v.Rec = Factory.gridBL.LoadTheGridState(j72id);
+            v.Rec = Factory.j72TheGridTemplateBL.Load(j72id);
             if (v.Rec == null)
             {
                 return RecNotFound(v);
@@ -37,7 +37,7 @@ namespace UI.Controllers
                     v.j04Names = string.Join(",", lis.Select(p => p.j04Name));
                 }
 
-                v.lisJ73 = Factory.gridBL.GetList_j73(v.Rec).ToList();
+                v.lisJ73 = Factory.j72TheGridTemplateBL.GetList_j73(v.Rec.pid,v.Rec.j72Entity.Substring(0,3)).ToList();
                 foreach (var c in v.lisJ73)
                 {
                     c.TempGuid = BO.BAS.GetGuid();
@@ -60,27 +60,27 @@ namespace UI.Controllers
             }
             if (oper == "saveas" && j72name != null)
             {
-                var recJ72 = Factory.gridBL.LoadTheGridState(v.Rec.pid);
-                var lisJ73 = Factory.gridBL.GetList_j73(recJ72).ToList();
+                var recJ72 = Factory.j72TheGridTemplateBL.Load(v.Rec.pid);
+                var lisJ73 = Factory.j72TheGridTemplateBL.GetList_j73(recJ72.pid,recJ72.j72Entity.Substring(0,3)).ToList();
                 recJ72.j72IsSystem = false; recJ72.j72ID = 0; recJ72.pid = 0; recJ72.j72Name = j72name; recJ72.j03ID = Factory.CurrentUser.pid;
                 List<int> j04ids = BO.BAS.ConvertString2ListInt(v.j04IDs);
                 List<int> j11ids = BO.BAS.ConvertString2ListInt(v.j11IDs);
-                var intJ72ID = Factory.gridBL.SaveTheGridState(recJ72, lisJ73, j04ids,j11ids);
+                var intJ72ID = Factory.j72TheGridTemplateBL.Save(recJ72, lisJ73, j04ids,j11ids);
                 return RedirectToActionPermanent("Index", new { j72id = intJ72ID });
             }
             if (oper == "rename" && j72name != null)
             {
-                var recJ72 = Factory.gridBL.LoadTheGridState(v.Rec.pid);
+                var recJ72 = Factory.j72TheGridTemplateBL.Load(v.Rec.pid);
                 recJ72.j72Name = j72name;
-                var intJ72ID = Factory.gridBL.SaveTheGridState(recJ72, null, null,null);
+                var intJ72ID = Factory.j72TheGridTemplateBL.Save(recJ72, null, null,null);
                 return RedirectToActionPermanent("Index", new { j72id = intJ72ID });
             }
             if (oper == "delete" && v.HasOwnerPermissions)
             {
                 if (Factory.CBL.DeleteRecord("j72", v.Rec.pid) == "1")
                 {
-                    v.Rec.pid = Factory.gridBL.LoadTheGridState(v.Rec.j72Entity, Factory.CurrentUser.pid, v.Rec.j72MasterEntity).pid;
-                    v.SetJavascript_CallOnLoad(v.Rec.pid);
+                    v.Rec.pid = Factory.j72TheGridTemplateBL.LoadState(v.Rec.j72Entity, Factory.CurrentUser.pid, v.Rec.j72MasterEntity).pid;
+                    v.SetJavascript_CallOnLoad(v.Rec.j72ID);
                     return View(v);
                 }
             }
@@ -126,28 +126,32 @@ namespace UI.Controllers
             if (ModelState.IsValid)
             {
 
-                var c = Factory.gridBL.LoadTheGridState(v.Rec.pid);
-                c.j72Columns = v.Rec.j72Columns;
-                c.j72Filter = "";   //automaticky vyčistit aktuální sloupcový filtr
-                c.j72CurrentPagerIndex = 0;
-                c.j72CurrentRecordPid = 0;
-                c.j72IsPublic = v.Rec.j72IsPublic;
-                if (c.j72SortDataField != null)
+                var recJ72 = Factory.j72TheGridTemplateBL.Load(v.Rec.pid);
+                var gridState = Factory.j72TheGridTemplateBL.LoadState(v.Rec.pid, Factory.CurrentUser.pid);
+                recJ72.j72Columns = v.Rec.j72Columns;
+                recJ72.j72IsPublic = v.Rec.j72IsPublic;
+
+                gridState.j75Filter = "";   //automaticky vyčistit aktuální sloupcový filtr
+                gridState.j75CurrentPagerIndex = 0;
+                gridState.j75CurrentRecordPid = 0;
+                
+                if (gridState.j75SortDataField != null)
                 {
-                    if (c.j72Columns.IndexOf(c.j72SortDataField) == -1)
+                    if (recJ72.j72Columns.IndexOf(gridState.j75SortDataField) == -1)
                     { //vyčistit sort field, pokud se již nenachází ve vybraných sloupcích
-                        c.j72SortDataField = "";
-                        c.j72SortOrder = "";
+                        gridState.j75SortDataField = "";
+                        gridState.j75SortOrder = "";
                     }
                 }
                 List<int> j04ids = BO.BAS.ConvertString2ListInt(v.j04IDs);
                 List<int> j11ids = BO.BAS.ConvertString2ListInt(v.j11IDs);
-                int intJ72ID = Factory.gridBL.SaveTheGridState(c, v.lisJ73.Where(p => p.j73ID > 0 || p.IsTempDeleted == false).ToList(), j04ids,j11ids);
+                int intJ72ID = Factory.j72TheGridTemplateBL.Save(recJ72, v.lisJ73.Where(p => p.j73ID > 0 || p.IsTempDeleted == false).ToList(), j04ids,j11ids);
                 if (intJ72ID > 0)
                 {
-                    if (c.j72MasterEntity == null)
+                    Factory.j72TheGridTemplateBL.SaveState(gridState,Factory.CurrentUser.pid);
+                    if (recJ72.j72MasterEntity == null)
                     {
-                        Factory.CBL.SetUserParam("masterview-j72id-" + c.j72Entity.Substring(0, 3), intJ72ID.ToString());
+                        Factory.CBL.SetUserParam("masterview-j72id-" + recJ72.j72Entity.Substring(0, 3), intJ72ID.ToString());
                     }
 
                     v.SetJavascript_CallOnLoad(v.Rec.pid);

@@ -7,10 +7,14 @@ namespace BL
 {
     public interface Ij72TheGridTemplateBL
     {
-        public BO.j72TheGridTemplate Load(int intJ72ID);
+        public BO.j72TheGridTemplate Load(int j72id);
+
+        public BO.TheGridState LoadState(int j72id, int j03id);
+        public BO.TheGridState LoadState(string strEntity, int j03id, string strMasterEntity);
         public int Save(BO.j72TheGridTemplate rec, List<BO.j73TheGridQuery> lisJ73, List<int> j04ids, List<int> j11ids);
+        public int SaveState(BO.TheGridState rec, int j03id);
         public IEnumerable<BO.j72TheGridTemplate> GetList(string strEntity, int intJ03ID, string strMasterEntity);
-        public IEnumerable<BO.j73TheGridQuery> GetList_j73(BO.j72TheGridTemplate rec);
+        public IEnumerable<BO.j73TheGridQuery> GetList_j73(int j72id,string prefix);
 
 
     }
@@ -23,13 +27,76 @@ namespace BL
 
         }
 
-        public BO.j72TheGridTemplate Load(int intJ72ID)
+        private string GetSQL1(string strAppend = null)
         {
-            return _db.Load<BO.j72TheGridTemplate>(string.Format("SELECT a.*,{0} FROM j72TheGridTemplate a WHERE a.j72ID=@j72id", _db.GetSQL1_Ocas("j72")), new { j72id = intJ72ID });
+            sb("SELECT a.*,");
+            sb(_db.GetSQL1_Ocas("j72"));
+            sb(" FROM j72TheGridTemplate a LEFT OUTER JOIN j75TheGridState j75 ON a.j72ID=j75.j72ID");
+            sb(strAppend);
+            return sbret();
+        }
+        private string GetSQL2(int j72id,string strAppend = null)
+        {
+            sb("SELECT a.*,j75.j75ID,");
+            sb("j75.j75SortDataField,j75.j75SortOrder,j75.j75PageSize,j75.j75CurrentPagerIndex,j75.j75Filter,j75.j75HeightPanel1,j75.j75ColumnsGridWidth,j75.j75ColumnsReportWidth,");
+
+            sb(_db.GetSQL1_Ocas("j72"));
+            if (j72id > 0)
+            {
+                sb(" FROM j72TheGridTemplate a LEFT OUTER JOIN (select * from j75TheGridState WHERE j03ID=@j03id AND j72ID=@j72id) j75 ON a.j72ID=j75.j72ID");
+            }
+            else
+            {
+                sb(" FROM j72TheGridTemplate a LEFT OUTER JOIN (select * from j75TheGridState WHERE j03ID=@j03id) j75 ON a.j72ID=j75.j72ID");                
+            }
+            
+            sb(strAppend);
+            return sbret();
         }
 
 
+        public BO.j72TheGridTemplate Load(int j72id)
+        {
+            return _db.Load<BO.j72TheGridTemplate>(GetSQL1(" WHERE a.j72ID=@j72id"), new { j72id = j72id });
+        }
+        public BO.TheGridState LoadState(int j72id,int j03id)
+        {
+            return _db.Load<BO.TheGridState>(GetSQL2(j72id," WHERE a.j72ID=@j72id"), new { j72id = j72id,j03id=j03id });
+        }
+        public BO.TheGridState LoadState(string strEntity, int j03id, string strMasterEntity)
+        {   //načtení systémového gridu: j72IsSystem=1
+            if (String.IsNullOrEmpty(strMasterEntity))
+            {
+                return _db.Load<BO.TheGridState>(GetSQL2(0," WHERE a.j72IsSystem=1 AND a.j72Entity=@entity AND a.j03ID=@j03id AND a.j72MasterEntity IS NULL"), new { entity = strEntity, j03id = j03id });
+            }
+            else
+            {
+                return _db.Load<BO.TheGridState>(GetSQL2(0," WHERE a.j72IsSystem=1 AND a.j72Entity=@entity AND a.j03ID=@j03id AND a.j72MasterEntity=@masterentity"), new { entity = strEntity, j03id = j03id, masterentity = strMasterEntity });
+            }
 
+        }
+
+        public int SaveState(BO.TheGridState rec,int j03id)
+        {
+            rec.pid = rec.j75ID;
+            if (rec.j75PageSize < 0) rec.j75PageSize = 100;
+
+            var p = new DL.Params4Dapper();
+            p.AddInt("pid", rec.j75ID);
+            p.AddInt("j72ID", rec.j72ID, true);
+            p.AddInt("j03ID",j03id , true);
+            p.AddInt("j75PageSize", rec.j75PageSize);
+            p.AddInt("j75CurrentPagerIndex", rec.j75CurrentPagerIndex);
+            p.AddInt("j75CurrentRecordPid", rec.j75CurrentRecordPid);
+            p.AddString("j75SortDataField", rec.j75SortDataField);
+            p.AddString("j75SortOrder", rec.j75SortOrder);
+            p.AddString("j75Filter", rec.j75Filter);
+            p.AddInt("j75HeightPanel1", rec.j75HeightPanel1);
+
+            int intJ75ID = _db.SaveRecord("j75TheGridState", p.getDynamicDapperPars(), rec,false,true);
+
+            return intJ75ID;
+        }
 
 
         public int Save(BO.j72TheGridTemplate rec, List<BO.j73TheGridQuery> lisJ73, List<int> j04ids, List<int> j11ids)
@@ -116,7 +183,7 @@ namespace BL
                     }
 
                 }
-                if (GetList_j73(Load(intJ72ID)).Count() > 0)
+                if (GetList_j73(intJ72ID,rec.j72Entity.Substring(0,3)).Count() > 0)
                 {
                     _db.RunSql("UPDATE j72TheGridTemplate set j72HashJ73Query=1 WHERE j72ID=@pid", new { pid = intJ72ID });
                 }
@@ -208,14 +275,14 @@ namespace BL
 
 
 
-        public IEnumerable<BO.j73TheGridQuery> GetList_j73(BO.j72TheGridTemplate rec)
+        public IEnumerable<BO.j73TheGridQuery> GetList_j73(int j72id,string prefix)
         {
             string s = "SELECT a.* FROM j73TheGridQuery a WHERE a.j72ID=@j72id ORDER BY a.j73Ordinal";
 
-            var lis = _db.GetList<BO.j73TheGridQuery>(s, new { j72id = rec.j72ID });
+            var lis = _db.GetList<BO.j73TheGridQuery>(s, new { j72id =j72id });
             if (lis.Count() > 0)
             {
-                var lisQueryFields = new BL.TheQueryFieldProvider(rec.j72Entity.Substring(0, 3)).getPallete();
+                var lisQueryFields = new BL.TheQueryFieldProvider(prefix).getPallete();
                 foreach (var c in lis.Where(p => p.j73Column != null))
                 {
                     if (lisQueryFields.Where(p => p.Field == c.j73Column).Count() > 0)

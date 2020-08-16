@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using UI.Models;
 using System.ComponentModel;
+using BO;
 
 namespace UI.Controllers
 {
@@ -168,24 +169,24 @@ namespace UI.Controllers
 
         public TheGridOutput HandleTheGridFilter(TheGridUIContext tgi, List<BO.TheGridColumnFilter> filter)
         {
-            var cJ72 = this.Factory.gridBL.LoadTheGridState(tgi.j72id);
-            cJ72.j72MasterPID = tgi.master_pid;
-            cJ72.j72ContextMenuFlag = tgi.contextmenuflag;
-            cJ72.OnDblClick = tgi.ondblclick;
+            var gridState = this.Factory.j72TheGridTemplateBL.LoadState(tgi.j72id,Factory.CurrentUser.pid);
+            gridState.MasterPID = tgi.master_pid;
+            gridState.ContextMenuFlag = tgi.contextmenuflag;
+            gridState.OnDblClick = tgi.ondblclick;
             var lis = new List<string>();
             foreach (var c in filter)
             {                
                 lis.Add(c.field + "###" + c.oper + "###" + c.value);
                 
             }
-            cJ72.j72CurrentPagerIndex = 0; //po změně filtrovací podmínky je nutné vyčistit paměť stránky
-            cJ72.j72CurrentRecordPid = 0;
+            gridState.j75CurrentPagerIndex = 0; //po změně filtrovací podmínky je nutné vyčistit paměť stránky
+            gridState.j75CurrentRecordPid = 0;
+
+            gridState.j75Filter = string.Join("$$$", lis);
             
-            cJ72.j72Filter = string.Join("$$$", lis);
-            
-            if (this.Factory.gridBL.SaveTheGridState(cJ72,null,null,null) > 0)
+            if (this.Factory.j72TheGridTemplateBL.SaveState(gridState,Factory.CurrentUser.pid) > 0)
             {
-                return render_thegrid_html(cJ72);
+                return render_thegrid_html(gridState);
             }
             else
             {
@@ -195,38 +196,38 @@ namespace UI.Controllers
         //public TheGridOutput HandleTheGridOper(int j72id,string oper,string key,string value, int master_pid,int contextmenuflag)
         public TheGridOutput HandleTheGridOper(TheGridUIContext tgi)
         {
-            var cJ72 = this.Factory.gridBL.LoadTheGridState(tgi.j72id);
-            cJ72.j72MasterPID = tgi.master_pid;
-            cJ72.j72ContextMenuFlag = tgi.contextmenuflag;
-            cJ72.j72MasterFlag = tgi.master_flag;
-            cJ72.OnDblClick = tgi.ondblclick;
+            var gridState = this.Factory.j72TheGridTemplateBL.LoadState(tgi.j72id, Factory.CurrentUser.pid);
+            gridState.MasterPID = tgi.master_pid;
+            gridState.ContextMenuFlag = tgi.contextmenuflag;
+            gridState.MasterFlag = tgi.master_flag;
+            gridState.OnDblClick = tgi.ondblclick;
             switch (tgi.key)
             {
                 
                 case "pagerindex":
-                    cJ72.j72CurrentPagerIndex = BO.BAS.InInt(tgi.value);
+                    gridState.j75CurrentPagerIndex = BO.BAS.InInt(tgi.value);
                     break;
                 case "pagesize":
-                    cJ72.j72PageSize = BO.BAS.InInt(tgi.value);
+                    gridState.j75PageSize = BO.BAS.InInt(tgi.value);
                     break;
                 case "sortfield":
-                    if (cJ72.j72SortDataField != tgi.value)
+                    if (gridState.j75SortDataField != tgi.value)
                     {
-                        cJ72.j72SortOrder = "asc";
-                        cJ72.j72SortDataField = tgi.value;
+                        gridState.j75SortOrder = "asc";
+                        gridState.j75SortDataField = tgi.value;
                     }
                     else
                     {
-                        if (cJ72.j72SortOrder == "desc")
+                        if (gridState.j75SortOrder == "desc")
                         {
-                            cJ72.j72SortDataField = "";//vyčisitt třídění, třetí stav
-                            cJ72.j72SortOrder = "";
+                            gridState.j75SortDataField = "";//vyčisitt třídění, třetí stav
+                            gridState.j75SortOrder = "";
                         }
                         else
                         {
-                            if (cJ72.j72SortOrder == "asc")
-                            {                                
-                                cJ72.j72SortOrder = "desc";
+                            if (gridState.j75SortOrder == "asc")
+                            {
+                                gridState.j75SortOrder = "desc";
                             }
                         }
                     }
@@ -237,9 +238,9 @@ namespace UI.Controllers
                     break;
             }
 
-            if (this.Factory.gridBL.SaveTheGridState(cJ72,null,null,null)> 0)
+            if (this.Factory.j72TheGridTemplateBL.SaveState(gridState,Factory.CurrentUser.pid)> 0)
             {
-                return render_thegrid_html(cJ72);
+                return render_thegrid_html(gridState);
             }
             else
             {
@@ -253,83 +254,83 @@ namespace UI.Controllers
         public TheGridOutput GetHtml4TheGrid(TheGridUIContext tgi) //Vrací HTML zdroj tabulky pro TheGrid v rámci j72TheGridState
         {
             
-            var cJ72 = this.Factory.gridBL.LoadTheGridState(tgi.j72id);
-            if (cJ72 == null)
+            var gridState = this.Factory.j72TheGridTemplateBL.LoadState(tgi.j72id,Factory.CurrentUser.pid);
+            if (gridState == null)
             {
                 return render_thegrid_error(string.Format("Nelze načíst grid state s id!", tgi.j72id.ToString()));
                 
-            }            
-            cJ72.j72CurrentRecordPid = tgi.go2pid;
-            cJ72.j72MasterPID = tgi.master_pid;
-            cJ72.j72ContextMenuFlag = tgi.contextmenuflag;
-            cJ72.OnDblClick = tgi.ondblclick;
+            }
+            gridState.j75CurrentRecordPid = tgi.go2pid;
+            gridState.MasterPID = tgi.master_pid;
+            gridState.ContextMenuFlag = tgi.contextmenuflag;
+            gridState.OnDblClick = tgi.ondblclick;
 
 
-            return render_thegrid_html(cJ72);
+            return render_thegrid_html(gridState);
         }
         
-        private System.Data.DataTable prepare_datatable(ref BO.myQuery mq, BO.j72TheGridTemplate cJ72)
+        private System.Data.DataTable prepare_datatable(ref BO.myQuery mq, BO.TheGridState gridState)
         {            
             
-            mq.explicit_columns = _colsProvider.ParseTheGridColumns(mq.Prefix,cJ72.j72Columns,Factory.CurrentUser.j03LangIndex);
-            if (string.IsNullOrEmpty(cJ72.j72SortDataField)==false)
+            mq.explicit_columns = _colsProvider.ParseTheGridColumns(mq.Prefix, gridState.j72Columns,Factory.CurrentUser.j03LangIndex);
+            if (string.IsNullOrEmpty(gridState.j75SortDataField)==false)
             {
                 
-                mq.explicit_orderby = _colsProvider.ByUniqueName(cJ72.j72SortDataField).getFinalSqlSyntax_ORDERBY() + " " + cJ72.j72SortOrder;
+                mq.explicit_orderby = _colsProvider.ByUniqueName(gridState.j75SortDataField).getFinalSqlSyntax_ORDERBY() + " " + gridState.j75SortOrder;
             }          
-            if (String.IsNullOrEmpty(cJ72.j72Filter) == false)
+            if (String.IsNullOrEmpty(gridState.j75Filter) == false)
             {
-                mq.TheGridFilter = _colsProvider.ParseAdhocFilterFromString(cJ72.j72Filter, mq.explicit_columns);
+                mq.TheGridFilter = _colsProvider.ParseAdhocFilterFromString(gridState.j75Filter, mq.explicit_columns);
             }
             mq.lisPeriods = _pp.getPallete();
 
-            if (string.IsNullOrEmpty(cJ72.j72MasterEntity) && Factory.EProvider.ByPrefix(mq.Prefix).IsGlobalPeriodQuery)
+            if (string.IsNullOrEmpty(gridState.j72MasterEntity) && Factory.EProvider.ByPrefix(mq.Prefix).IsGlobalPeriodQuery)
             {
                 BO.ThePeriod per = InhaleGridPeriodDates();
                 mq.global_d1 = per.d1;
                 mq.global_d2 = per.d2;
             }
-            if (cJ72.j72HashJ73Query)
+            if (gridState.j72HashJ73Query)
             {
-                mq.lisJ73 = Factory.gridBL.GetList_j73(cJ72);
+                mq.lisJ73 = Factory.j72TheGridTemplateBL.GetList_j73(gridState.j72ID,gridState.j72Entity.Substring(0,3));
             }
-            mq.InhaleMasterEntityQuery(cJ72.j72MasterEntity, cJ72.j72MasterPID,cJ72.j72MasterFlag);
+            mq.InhaleMasterEntityQuery(gridState.j72MasterEntity, gridState.MasterPID,gridState.MasterFlag);
 
             return Factory.gridBL.GetList(mq);
         }
         
-        public TheGridOutput render_thegrid_html(BO.j72TheGridTemplate cJ72)
+        public TheGridOutput render_thegrid_html(BO.TheGridState gridState)
         {
             var ret = new TheGridOutput();
-            _grid = new TheGridViewModel() { Entity = cJ72.j72Entity };
-            _grid.GridState = cJ72;
+            _grid = new TheGridViewModel() { Entity = gridState.j72Entity };
+            _grid.GridState = gridState;
 
-            ret.sortfield = cJ72.j72SortDataField;
-            ret.sortdir = cJ72.j72SortOrder;
+            ret.sortfield = gridState.j75SortDataField;
+            ret.sortdir = gridState.j75SortOrder;
             
-            var mq = new BO.myQuery(cJ72.j72Entity);
+            var mq = new BO.myQuery(gridState.j72Entity);
             
             
-            _grid.Columns =_colsProvider.ParseTheGridColumns(mq.Prefix,cJ72.j72Columns, Factory.CurrentUser.j03LangIndex);            
+            _grid.Columns =_colsProvider.ParseTheGridColumns(mq.Prefix,gridState.j72Columns, Factory.CurrentUser.j03LangIndex);            
 
             mq.explicit_columns = _grid.Columns;
                         
-            if (String.IsNullOrEmpty(cJ72.j72Filter) == false)
+            if (String.IsNullOrEmpty(gridState.j75Filter) == false)
             {
-                mq.TheGridFilter = _colsProvider.ParseAdhocFilterFromString(cJ72.j72Filter, mq.explicit_columns);
+                mq.TheGridFilter = _colsProvider.ParseAdhocFilterFromString(gridState.j75Filter, mq.explicit_columns);
             }
             mq.lisPeriods = _pp.getPallete();
-            if (string.IsNullOrEmpty(cJ72.j72MasterEntity) && Factory.EProvider.ByPrefix(mq.Prefix).IsGlobalPeriodQuery)
+            if (string.IsNullOrEmpty(gridState.j72MasterEntity) && Factory.EProvider.ByPrefix(mq.Prefix).IsGlobalPeriodQuery)
             {
                 BO.ThePeriod per = InhaleGridPeriodDates();
                 mq.global_d1 = per.d1;
                 mq.global_d2 = per.d2;
             }
-            if (cJ72.j72HashJ73Query)
+            if (gridState.j72HashJ73Query)
             {
-                mq.lisJ73 = Factory.gridBL.GetList_j73(cJ72);
+                mq.lisJ73 = Factory.j72TheGridTemplateBL.GetList_j73(gridState.j72ID,gridState.j72Entity.Substring(0,3));
             }
-            mq.InhaleMasterEntityQuery(cJ72.j72MasterEntity, cJ72.j72MasterPID,cJ72.j72MasterFlag);
+            mq.InhaleMasterEntityQuery(gridState.j72MasterEntity, gridState.MasterPID,gridState.MasterFlag);
                         
             var dtFooter = Factory.gridBL.GetList(mq, true);            
             int intVirtualRowsCount = 0;
@@ -344,29 +345,29 @@ namespace UI.Controllers
 
             if (intVirtualRowsCount > 500)
             {   //dotazy nad 500 záznamů budou mít zapnutý OFFSET režim stránkování
-                mq.OFFSET_PageSize = cJ72.j72PageSize;
-                mq.OFFSET_PageNum = cJ72.j72CurrentPagerIndex / cJ72.j72PageSize;
+                mq.OFFSET_PageSize = gridState.j75PageSize;
+                mq.OFFSET_PageNum = gridState.j75CurrentPagerIndex / gridState.j75PageSize;
             }
 
             //třídění řešit až po spuštění FOOTER summary DOTAZu
-            if (String.IsNullOrEmpty(cJ72.j72SortDataField) == false && _grid.Columns.Where(p => p.UniqueName == cJ72.j72SortDataField).Count() > 0)
+            if (String.IsNullOrEmpty(gridState.j75SortDataField) == false && _grid.Columns.Where(p => p.UniqueName == gridState.j75SortDataField).Count() > 0)
             {
-                var c = _grid.Columns.Where(p => p.UniqueName == cJ72.j72SortDataField).First();
-                mq.explicit_orderby = c.getFinalSqlSyntax_ORDERBY() + " " + cJ72.j72SortOrder;
+                var c = _grid.Columns.Where(p => p.UniqueName == gridState.j75SortDataField).First();
+                mq.explicit_orderby = c.getFinalSqlSyntax_ORDERBY() + " " + gridState.j75SortOrder;
             }
 
             var dt = Factory.gridBL.GetList(mq);
             
             
 
-            if (_grid.GridState.j72CurrentRecordPid > 0 && intVirtualRowsCount > cJ72.j72PageSize)
+            if (_grid.GridState.j75CurrentRecordPid > 0 && intVirtualRowsCount > gridState.j75PageSize)
             {
                 //aby se mohlo skočit na cílový záznam, je třeba najít stránku, na které se záznam nachází
-                System.Data.DataRow[] recs = dt.Select("pid=" + _grid.GridState.j72CurrentRecordPid.ToString());
+                System.Data.DataRow[] recs = dt.Select("pid=" + _grid.GridState.j75CurrentRecordPid.ToString());
                 if (recs.Count() > 0)
                 {
                     var intIndex = dt.Rows.IndexOf(recs[0]);
-                    _grid.GridState.j72CurrentPagerIndex = intIndex-(intIndex % _grid.GridState.j72PageSize);
+                    _grid.GridState.j75CurrentPagerIndex = intIndex-(intIndex % _grid.GridState.j75PageSize);
                 }
             }
 
@@ -398,8 +399,8 @@ namespace UI.Controllers
             }
             else
             {   //bez OFFSET               
-                intStartIndex = _grid.GridState.j72CurrentPagerIndex;
-                intEndIndex = intStartIndex + _grid.GridState.j72PageSize - 1;
+                intStartIndex = _grid.GridState.j75CurrentPagerIndex;
+                intEndIndex = intStartIndex + _grid.GridState.j75PageSize - 1;
                 if (intEndIndex + 1 > intRows) intEndIndex = intRows - 1;
             }
 
@@ -441,7 +442,7 @@ namespace UI.Controllers
                 }
                 
                 
-                if (_grid.GridState.j72ContextMenuFlag > 0)
+                if (_grid.GridState.ContextMenuFlag > 0)
                 {
                     _s.Append(string.Format("<td class='td2' style='width:20px;'><a class='cm' onclick='tg_cm(event)'>&#9776;</a></td>"));      //hamburger menu
                 }
@@ -523,7 +524,7 @@ namespace UI.Controllers
 
         private void RENDER_PAGER(int intRowsCount) //pager má maximálně 10 čísel, j72PageNum začíná od 0
         {
-            int intPageSize = _grid.GridState.j72PageSize;
+            int intPageSize = _grid.GridState.j75PageSize;
 
             _s.Append("<select title='Stránkování záznamů' onchange='tg_pagesize(this)'>");            
             render_select_option("50", "50", intPageSize.ToString());
@@ -546,7 +547,7 @@ namespace UI.Controllers
 
             _s.Append("<button title='První' class='btn btn-light tgp' style='margin-left:6px;' onclick='tg_pager(\n0\n)'>&lt;&lt;</button>");
 
-            int intCurIndex = _grid.GridState.j72CurrentPagerIndex;
+            int intCurIndex = _grid.GridState.j75CurrentPagerIndex;
             int intPrevIndex = intCurIndex - intPageSize;
             if (intPrevIndex < 0) intPrevIndex = 0;
             _s.Append(string.Format("<button title='Předchozí' class='btn btn-light tgp' style='margin-right:10px;' onclick='tg_pager(\n{0}\n)'>&lt;</button>", intPrevIndex));
@@ -643,7 +644,7 @@ namespace UI.Controllers
         public string getHTML_ContextMenu(int j72id)
         {
             var sb = new System.Text.StringBuilder();
-            BO.j72TheGridTemplate c = Factory.gridBL.LoadTheGridState(j72id);
+            var recJ72 = Factory.j72TheGridTemplateBL.LoadState(j72id,Factory.CurrentUser.pid);
                    
             sb.AppendLine("<div style='background-color:#ADD8E6;padding-left:10px;font-weight:bold;'>"+Factory.tra("VYBRANÉ (zaškrtlé) záznamy")+"</div>");
             sb.AppendLine("<div style='padding-left:10px;'>");
@@ -651,7 +652,7 @@ namespace UI.Controllers
             sb.AppendLine(string.Format("<a style='margin-left:20px;' href='javascript:tg_export(\"csv\",\"selected\")'>"+Factory.tra("CSV Export")+"</a>", j72id));
             sb.AppendLine("</div>");
 
-            if ("j02,a01,a03,f06".Contains(c.j72Entity.Substring(0, 3)))
+            if ("j02,a01,a03,f06".Contains(recJ72.j72Entity.Substring(0, 3)))
             {
                 sb.AppendLine("<hr class='hr-mini' />");
                 sb.AppendLine("<a class='nav-link' href='javascript:tg_tagging();'>" + Factory.tra("Hromadná kategorizace záznamů")+"★</a>");
@@ -659,26 +660,24 @@ namespace UI.Controllers
             }
 
 
-            //sb.AppendLine("<hr />");
+            sb.AppendLine(string.Format("<div style='margin-top:20px;background-color:#ADD8E6;padding-left:10px;font-weight:bold;'>GRID <kbd>{0}</kbd></div>", Factory.EProvider.ByTable(recJ72.j72Entity).AliasPlural));
 
-            sb.AppendLine(string.Format("<div style='margin-top:20px;background-color:#ADD8E6;padding-left:10px;font-weight:bold;'>GRID <kbd>{0}</kbd></div>", Factory.EProvider.ByTable(c.j72Entity).AliasPlural));
-
-            var lis = Factory.gridBL.GetList_j72(c.j72Entity, c.j03ID, c.j72MasterEntity);
+            var lis = Factory.j72TheGridTemplateBL.GetList(recJ72.j72Entity, recJ72.j03ID, recJ72.j72MasterEntity);
             sb.AppendLine("<table style='width:100%;margin-bottom:20px;'>");
-            foreach (var rec in lis)
+            foreach (var c in lis)
             {
                 sb.AppendLine("<tr>");
-                if (rec.j72IsSystem)
+                if (c.j72IsSystem)
                 {
-                    rec.j72Name = Factory.tra("Výchozí GRID");
+                    c.j72Name = Factory.tra("Výchozí GRID");
                 }
-                if (rec.pid == c.pid)
+                if (c.pid == recJ72.pid)
                 {
-                    rec.j72Name += " ✔";
+                    c.j72Name += " ✔";
                 }
-                sb.Append(string.Format("<td><a class='nav-link py-0' href='javascript:change_grid({0})'>{1}</a></td>", rec.pid, rec.j72Name));
+                sb.Append(string.Format("<td><a class='nav-link py-0' href='javascript:change_grid({0})'>{1}</a></td>", c.pid, c.j72Name));
 
-                sb.AppendLine(string.Format("<td style='width:30px;'><a title='Grid Návrhář' class='nav-link py-0' href='javascript:_window_open(\"/TheGridDesigner/Index?j72id={0}\",2);'><img src='/Images/setting.png'/></a></td>", rec.pid));
+                sb.AppendLine(string.Format("<td style='width:30px;'><a title='Grid Návrhář' class='nav-link py-0' href='javascript:_window_open(\"/TheGridDesigner/Index?j72id={0}\",2);'><img src='/Images/setting.png'/></a></td>", c.pid));
                 sb.AppendLine("</tr>");
             }
             sb.AppendLine("</table>");
@@ -703,11 +702,11 @@ namespace UI.Controllers
 
         public FileResult GridExport(string format,int j72id,int master_pid,string master_entity,string pids,string master_flag)
         {
-            BO.j72TheGridTemplate cJ72 = this.Factory.gridBL.LoadTheGridState(j72id);
-            cJ72.j72MasterEntity = master_entity;
-            cJ72.j72MasterPID = master_pid;
-            cJ72.j72MasterFlag = master_flag;
-            var mq = new BO.myQuery(cJ72.j72Entity);
+            var gridState = this.Factory.j72TheGridTemplateBL.LoadState(j72id,Factory.CurrentUser.pid);
+            gridState.j72MasterEntity = master_entity;
+            gridState.MasterPID = master_pid;
+            gridState.MasterFlag = master_flag;
+            var mq = new BO.myQuery(gridState.j72Entity);
             
             if (String.IsNullOrEmpty(pids) == false)
             {
@@ -715,7 +714,7 @@ namespace UI.Controllers
             }
             
            
-            System.Data.DataTable dt = prepare_datatable(ref mq,cJ72);
+            System.Data.DataTable dt = prepare_datatable(ref mq,gridState);
             string filepath = Factory.App.TempFolder+"\\"+BO.BAS.GetGuid()+"."+ format;
 
             var cExport = new UI.dataExport();

@@ -161,7 +161,7 @@ namespace BL
             AE_TINY("x24DataType", "Datové typy", "Datový typ");
             AE_TINY("b09WorkflowCommandCatalog", "WORKFLOW příkazy", "WORKFLOW příkaz");
             ByPrefix("b09").IsWithoutValidity = true;
-            AE_TINY("j72TheGridState", "Grid", "Grid");
+            AE_TINY("j72TheGridTemplate", "Grid", "Grid");
             ByPrefix("j72").IsWithoutValidity = true;
 
             AE("x27EvalFunction", "EVAL funkce", "EVAL funkce", "x27EvalFunction a", "a.x27Ordinal", "a.x27Ordinal");
