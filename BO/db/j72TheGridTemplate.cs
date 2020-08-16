@@ -2,7 +2,7 @@
 
 namespace BO
 {
-    public class j72TheGridState : BaseBO
+    public class j72TheGridTemplate : BaseBO
     {
         [Key]
         public int j72ID { get; set; }

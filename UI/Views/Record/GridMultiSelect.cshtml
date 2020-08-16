@@ -1,7 +1,8 @@
 ﻿@model GridMultiSelect
+@inject BL.Factory _f
 
 @{
-    ViewData["Title"] = "Vybrat záznamy";
+    ViewData["Title"] = _f.tra("Vybrat záznamy");
     Layout = "~/Views/Shared/_LayoutModal.cshtml";
 }
 
@@ -10,10 +11,10 @@
 @addTagHelper *,UI
 
 <div class="bg-light" style="padding:10px;">
-    <button id="cmdOK" onclick="ok()" class="btn btn-success">Vybrat</button>
-    <button id="cmdClose" onclick="_window_close()" class="btn btn-light">Zavřít</button>
+    <button id="cmdOK" onclick="ok()" class="btn btn-success">@_f.tra("Vybrat")</button>
+    <button id="cmdClose" onclick="_window_close()" class="btn btn-light">@_f.tra("Zavřít")</button>
     <mark>@(Model.entityTitle)</mark>
-    <i style="margin-left:20px;">Vyberte jeden nebo více záznamů...</i>
+    <i style="margin-left:20px;">@_f.tra("Vyberte jeden nebo více záznamů")...</i>
 
 </div>
 
@@ -30,7 +31,7 @@
     function ok() {
         var pids = $("#tg_selected_pids").val();
         if (pids === "") {
-            _notify_message("Musíte vybrat minimálně jeden záznam.");
+            _notify_message("@_f.tra("Musíte vybrat minimálně jeden záznam.")");
             return;
         }
 

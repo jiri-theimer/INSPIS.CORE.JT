@@ -146,7 +146,7 @@ namespace UI.Controllers
 
             if (v.entity == "")
             {
-                AddMessage("Entity for Grid not found.");
+                AddMessage("Grid entita nebyla nalezena.");
             }
             if (c.IsGlobalPeriodQuery)
             {
@@ -268,7 +268,7 @@ namespace UI.Controllers
             return render_thegrid_html(cJ72);
         }
         
-        private System.Data.DataTable prepare_datatable(ref BO.myQuery mq, BO.j72TheGridState cJ72)
+        private System.Data.DataTable prepare_datatable(ref BO.myQuery mq, BO.j72TheGridTemplate cJ72)
         {            
             
             mq.explicit_columns = _colsProvider.ParseTheGridColumns(mq.Prefix,cJ72.j72Columns,Factory.CurrentUser.j03LangIndex);
@@ -298,7 +298,7 @@ namespace UI.Controllers
             return Factory.gridBL.GetList(mq);
         }
         
-        public TheGridOutput render_thegrid_html(BO.j72TheGridState cJ72)
+        public TheGridOutput render_thegrid_html(BO.j72TheGridTemplate cJ72)
         {
             var ret = new TheGridOutput();
             _grid = new TheGridViewModel() { Entity = cJ72.j72Entity };
@@ -643,18 +643,18 @@ namespace UI.Controllers
         public string getHTML_ContextMenu(int j72id)
         {
             var sb = new System.Text.StringBuilder();
-            BO.j72TheGridState c = Factory.gridBL.LoadTheGridState(j72id);
+            BO.j72TheGridTemplate c = Factory.gridBL.LoadTheGridState(j72id);
                    
-            sb.AppendLine("<div style='background-color:#ADD8E6;padding-left:10px;font-weight:bold;'>VYBRANÉ (zaškrtlé) záznamy</div>");
+            sb.AppendLine("<div style='background-color:#ADD8E6;padding-left:10px;font-weight:bold;'>"+Factory.tra("VYBRANÉ (zaškrtlé) záznamy")+"</div>");
             sb.AppendLine("<div style='padding-left:10px;'>");
-            sb.AppendLine(string.Format("<a href='javascript:tg_export(\"xlsx\",\"selected\")'>MS-EXCEL Export</a>", j72id));
-            sb.AppendLine(string.Format("<a style='margin-left:20px;' href='javascript:tg_export(\"csv\",\"selected\")'>CSV Export</a>", j72id));
+            sb.AppendLine(string.Format("<a href='javascript:tg_export(\"xlsx\",\"selected\")'>" + Factory.tra("MS-EXCEL Export")+"</a>", j72id));
+            sb.AppendLine(string.Format("<a style='margin-left:20px;' href='javascript:tg_export(\"csv\",\"selected\")'>"+Factory.tra("CSV Export")+"</a>", j72id));
             sb.AppendLine("</div>");
 
-            if ("j02,p51,p41,p10,p11,p12,p13,p18,p19,p26,p28,p21,o23".Contains(c.j72Entity.Substring(0, 3)))
+            if ("j02,a01,a03,f06".Contains(c.j72Entity.Substring(0, 3)))
             {
                 sb.AppendLine("<hr class='hr-mini' />");
-                sb.AppendLine("<a class='nav-link' href='javascript:tg_tagging();'>Hromadná kategorizace záznamů★</a>");
+                sb.AppendLine("<a class='nav-link' href='javascript:tg_tagging();'>" + Factory.tra("Hromadná kategorizace záznamů")+"★</a>");
 
             }
 
@@ -670,7 +670,7 @@ namespace UI.Controllers
                 sb.AppendLine("<tr>");
                 if (rec.j72IsSystem)
                 {
-                    rec.j72Name = "Výchozí GRID";
+                    rec.j72Name = Factory.tra("Výchozí GRID");
                 }
                 if (rec.pid == c.pid)
                 {
@@ -686,24 +686,24 @@ namespace UI.Controllers
             
 
             sb.AppendLine("<div style='padding-left:10px;'>");
-            sb.AppendLine(string.Format("<a href='javascript:tg_export(\"xlsx\")'>MS-EXCEL Export (vše)</a>", j72id));
-            sb.AppendLine(string.Format("<a style='margin-left:20px;' href='javascript:tg_export(\"csv\")'>CSV Export (vše)</a>", j72id));
+            sb.AppendLine(string.Format("<a href='javascript:tg_export(\"xlsx\")'>" + Factory.tra("MS-EXCEL Export (vše)")+"</a>", j72id));
+            sb.AppendLine(string.Format("<a style='margin-left:20px;' href='javascript:tg_export(\"csv\")'>" + Factory.tra("CSV Export (vše)")+"</a>", j72id));
             sb.AppendLine("</div>");
 
 
 
             sb.AppendLine("<hr class='hr-mini' />");
-            sb.AppendLine("<a  href='javascript:tg_select(20)'>Vybrat prvních 20</a>⌾");
-            sb.AppendLine("<a  href='javascript:tg_select(50)'>Vybrat prvních 50</a>⌾");
-            sb.AppendLine("<a href='javascript:tg_select(100)'>Vybrat prvních 100</a>⌾");
-            sb.AppendLine("<a href='javascript:tg_select(1000)'>Vybrat všechny záznamy na stránce</a>");
+            sb.AppendLine("<a  href='javascript:tg_select(20)'>" + Factory.tra(string.Format("Vybrat prvních {0}",20))+"</a>⌾");
+            sb.AppendLine("<a  href='javascript:tg_select(50)'>" + Factory.tra(string.Format("Vybrat prvních {0}", 50)) +"</a>⌾");
+            sb.AppendLine("<a href='javascript:tg_select(100)'>" + Factory.tra(string.Format("Vybrat prvních {0}", 100)) +"</a>⌾");
+            sb.AppendLine("<a href='javascript:tg_select(1000)'>" + Factory.tra("Vybrat všechny záznamy na stránce")+"</a>");
 
             return sb.ToString();
         }
 
         public FileResult GridExport(string format,int j72id,int master_pid,string master_entity,string pids,string master_flag)
         {
-            BO.j72TheGridState cJ72 = this.Factory.gridBL.LoadTheGridState(j72id);
+            BO.j72TheGridTemplate cJ72 = this.Factory.gridBL.LoadTheGridState(j72id);
             cJ72.j72MasterEntity = master_entity;
             cJ72.j72MasterPID = master_pid;
             cJ72.j72MasterFlag = master_flag;

@@ -12,7 +12,7 @@ namespace UI.Models
         public string MasterEntity { get; set; }
         public string MasterFlag { get; set; }
         public string ondblclick { get; set; }
-        public BO.j72TheGridState GridState { get; set; }
+        public BO.j72TheGridTemplate GridState { get; set; }
         
         public IEnumerable<BO.TheGridColumn> Columns { get; set; }
 

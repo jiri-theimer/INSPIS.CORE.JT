@@ -122,7 +122,7 @@ namespace UI.Controllers
                 v.Rec = Factory.a03InstitutionBL.Load(v.pid);
                 if (v.Rec == null)
                 {
-                    this.AddMessage("Záznam nebyl nalezen.");
+                    this.Notify_RecNotSaved();                    
                     v.pid = 0;
                 }
                 else

@@ -13,8 +13,8 @@ namespace UI.Controllers
     {
         public IActionResult InfoCapacity(int pid,int m,int y)
         {
-            var v = new j02InfoCapacity() { pid = pid };           
-            v.Rec = Factory.j02PersonBL.Load(v.pid);            
+            var v = new j02InfoCapacity() { pid = pid };
+            v.Rec = Factory.j02PersonBL.Load(v.pid);
             if (v.Rec.a04ID > 0)
             {
                 v.RecA04 = Factory.a04InspectorateBL.Load(v.Rec.a04ID);
@@ -91,7 +91,7 @@ namespace UI.Controllers
                 v.Rec = Factory.j02PersonBL.Load(v.pid);
                 if (v.Rec == null)
                 {
-                    this.AddMessage("Záznam nebyl nalezen.");
+                    this.Notify_RecNotSaved();
                     v.pid = 0;
                 }
                 else
@@ -133,7 +133,7 @@ namespace UI.Controllers
 
         private void RefreshNavTabs(j02RecPage v)
         {
-            v.NavTabs.Add(AddTab(string.Format(Factory.tra("{0}: je účastníkem"),"viewUcastnik", Factory.App.Terminology_Akce), "a01Event", "/TheGrid/SlaveView?prefix=a01",false));
+            v.NavTabs.Add(AddTab(string.Format(Factory.tra("{0}: je účastníkem"), Factory.App.Terminology_Akce), "a01Event", "/TheGrid/SlaveView?prefix=a01",false));
             v.NavTabs.Add(AddTab( string.Format(Factory.tra("{0}: je zakladatelem"), Factory.App.Terminology_Akce),"a01Event", "/TheGrid/SlaveView?prefix=a01&master_flag=issuer",false));
             v.NavTabs.Add(AddTab(string.Format(Factory.tra("{0}: je vedoucím"), Factory.App.Terminology_Akce), "a01Event", "/TheGrid/SlaveView?prefix=a01&master_flag=leader",false));
 

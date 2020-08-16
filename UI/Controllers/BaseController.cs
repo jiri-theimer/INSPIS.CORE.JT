@@ -65,7 +65,7 @@ namespace UI.Controllers
                     {
                         
                         modelErrors.Add(modelError.ErrorMessage);
-                        Factory.CurrentUser.AddMessage("Kontrola chyb: "+modelError.ErrorMessage);
+                        Factory.CurrentUser.AddMessage(Factory.tra("Kontrola chyb")+": "+modelError.ErrorMessage);
                     }
                 }
             }
@@ -107,23 +107,27 @@ namespace UI.Controllers
 
         public ViewResult RecNotFound(UI.Models.BaseRecordViewModel v)
         {
-            Factory.CurrentUser.AddMessage("Hledaný záznam neexistuje!","error");            
+            AddMessage("Hledaný záznam neexistuje!","error");            
             return View(v);
         }
         public ViewResult RecNotFound(UI.Models.BaseViewModel v)
         {
-            Factory.CurrentUser.AddMessage("Hledaný záznam neexistuje!", "error");
+            AddMessage("Hledaný záznam neexistuje!", "error");
             return View(v);
         }
 
         public void Notify_RecNotSaved()
         {
-            Factory.CurrentUser.AddMessage("Záznam zatím nebyl uložen.", "warning");
+            AddMessage("Záznam zatím nebyl uložen.", "warning");
         }
 
         public void AddMessage(string strMessage,string template="error")
         {
             
+            Factory.CurrentUser.AddMessage(Factory.tra(strMessage), template);
+        }
+        public void AddMessageTranslated(string strMessage, string template = "error")
+        {
             Factory.CurrentUser.AddMessage(strMessage, template);
         }
         public bool TUP(BO.PermValueEnum oneperm)

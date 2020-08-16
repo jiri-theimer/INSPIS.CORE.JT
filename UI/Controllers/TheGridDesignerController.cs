@@ -172,7 +172,7 @@ namespace UI.Controllers
             var mq = new BO.myQuery(v.Rec.j72Entity);
             var ce = Factory.EProvider.ByPrefix(mq.Prefix);
             v.Relations = Factory.EProvider.getApplicableRelations(mq.Prefix); //návazné relace
-            v.Relations.Insert(0, new BO.EntityRelation() { TableName = ce.TableName, AliasSingular = ce.AliasSingular, SqlFrom = ce.SqlFromGrid, RelName = "a" });   //primární tabulka a
+            v.Relations.Insert(0, new BO.EntityRelation() { TableName = ce.TableName, AliasSingular = ce.AliasSingular, SqlFrom = ce.SqlFromGrid, RelName = "a",Translate1=ce.TranslateLang1,Translate2=ce.TranslateLang2 });   //primární tabulka a
 
             v.AllColumns = _colsProvider.AllColumns().ToList();
             v.AllColumns.RemoveAll(p => p.VisibleWithinEntityOnly != null && p.VisibleWithinEntityOnly.Contains(v.Rec.j72Entity.Substring(0, 3)) == false);    //nepatřičné kategorie/štítky

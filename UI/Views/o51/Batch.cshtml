@@ -15,15 +15,15 @@
 <form id="form1" asp-controller="o51" asp-action="Batch" method="POST">
 
     <div class="bg-light" style="padding:10px;">
-        <button type="submit" class="btn btn-primary" asp-route-oper="append" style="display:none;">Záznamům přidat vybrané kategorie</button>
+        <button type="submit" class="btn btn-primary" asp-route-oper="append" style="display:none;">@_f.tra("Záznamům přidat vybrané kategorie")</button>
 
-        <button type="submit" class="btn btn-success" asp-route-oper="replace">V záznamech aktualizovat zvolenou kategorii</button>
+        <button type="submit" class="btn btn-success" asp-route-oper="replace">@_f.tra("V záznamech aktualizovat zvolenou kategorii")</button>
 
-        <button type="submit" class="btn btn-warning" asp-route-oper="remove" style="display:none;">V záznamech vyjmout vybrané kategorie</button>
+        <button type="submit" class="btn btn-warning" asp-route-oper="remove" style="display:none;">@_f.tra("V záznamech vyjmout vybrané kategorie")</button>
 
-        <button type="submit" class="btn btn-danger" asp-route-oper="clear">V záznamech vyčistit všechny položky vybrané kategorie</button>
+        <button type="submit" class="btn btn-danger" asp-route-oper="clear">@_f.tra("V záznamech vyčistit všechny položky vybrané kategorie")</button>
 
-        <button type="button" onclick="_window_close()" class="btn btn-light">Zavřít</button>
+        <button type="button" onclick="_window_close()" class="btn btn-light">@_f.tra("Zavřít")</button>
 
 
 
@@ -31,7 +31,7 @@
     <div class="input-group">
         <div class="card">
             <div class="card-header">
-                Vyberte kategorii
+                @_f.tra("Vyberte kategorii")
             </div>
             <div class="card-body">
                 <myradiolist asp-for="@Model.SelectedO53ID" textfield="o53Name" valuefield="pid" datasource="@Model.lisO53" event_after_changevalue="o53_change"></myradiolist>
@@ -39,7 +39,7 @@
         </div>
         <div class="card" style="margin-left:10px;">
             <div class="card-header">
-                Položky vybrané kategorie
+                @_f.tra("Položky vybrané kategorie")
             </div>
             <div class="card-body">
                 @if (Model.RecO53 != null)

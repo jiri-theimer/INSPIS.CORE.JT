@@ -31,6 +31,8 @@ namespace BO
         }
 
         public string AliasSingular { get; set; }
+        public string Translate1 { get; set; }
+        public string Translate2 { get; set; }
 
         public string SqlFrom { get; set; }
 

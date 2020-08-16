@@ -182,7 +182,7 @@ namespace UI.Controllers
                 v.Rec = Factory.a01EventBL.Load(v.pid);
                 if (v.Rec == null)
                 {
-                    this.AddMessage(Factory.tra("Záznam nebyl nalezen."));
+                    this.Notify_RecNotSaved();
                     v.pid = 0;
                 }
                 else

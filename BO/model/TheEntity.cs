@@ -10,6 +10,10 @@ namespace BO
         private string _TableName;        
         public string AliasSingular { get; set; }
         public string AliasPlural { get; set; }
+
+        public string TranslateLang1 { get; set; }
+        public string TranslateLang2 { get; set; }
+        public string TranslateLang3 { get; set; }
         public bool IsGlobalPeriodQuery { get; set; }
         public string SqlFromGrid { get; set; } //kořenová from klauzule pro GRID sql dotaz
        

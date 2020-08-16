@@ -8,10 +8,12 @@ namespace BL
     public class TheEntitiesProvider
     {
         private readonly BL.RunningApp _app;
+        private readonly BL.TheTranslator _tt;
         private List<BO.TheEntity> _lis;
-        public TheEntitiesProvider(BL.RunningApp runningapp)
+        public TheEntitiesProvider(BL.RunningApp runningapp, BL.TheTranslator tt)
         {
             _app = runningapp;
+            _tt = tt;
 
             SetupPallete();
 
@@ -176,18 +178,22 @@ namespace BL
 
         private void AE(string strTabName, string strPlural, string strSingular, string strSqlFromGrid, string strSqlOrderByCombo, string strSqlOrderBy = null)
         {
+            
             if (strSqlOrderBy == null) strSqlOrderBy = "a." + strTabName.Substring(0, 3) + "ID DESC";
-            _lis.Add(new BO.TheEntity() { TableName = strTabName, AliasPlural = strPlural, AliasSingular = strSingular, SqlFromGrid = strSqlFromGrid, SqlOrderByCombo = strSqlOrderByCombo, SqlOrderBy = strSqlOrderBy });
+            BO.TheEntity c = new BO.TheEntity() { TableName = strTabName, AliasPlural = strPlural, AliasSingular = strSingular, SqlFromGrid = strSqlFromGrid, SqlOrderByCombo = strSqlOrderByCombo, SqlOrderBy = strSqlOrderBy };
+            c.TranslateLang1 = _tt.DoTranslate(strPlural, 1);
+            c.TranslateLang2 = _tt.DoTranslate(strPlural, 2);
+            _lis.Add(c);
 
         }
         private void AE_TINY(string strTabName, string strPlural, string strSingular)
         {
 
-            _lis.Add(new BO.TheEntity() { TableName = strTabName, AliasPlural = strPlural, AliasSingular = strSingular, SqlFromGrid = strTabName + " a", SqlOrderByCombo = "a." + strTabName.Substring(0, 3) + "Name", SqlOrderBy = "a." + strTabName.Substring(0, 3) + "ID DESC" });
+            _lis.Add(new BO.TheEntity() { TableName = strTabName, AliasPlural = strPlural, AliasSingular = strSingular, SqlFromGrid = strTabName + " a", SqlOrderByCombo = "a." + strTabName.Substring(0, 3) + "Name", SqlOrderBy = "a." + strTabName.Substring(0, 3) + "ID DESC",TranslateLang1= _tt.DoTranslate(strPlural, 1),TranslateLang2= _tt.DoTranslate(strPlural, 2) });
         }
         private BO.EntityRelation getREL(string strTabName, string strRelName, string strSingular, string strSqlFrom, string strDependOnRel = null)
         {
-            return new BO.EntityRelation() { TableName = strTabName, RelName = strRelName, AliasSingular = strSingular, SqlFrom = strSqlFrom, RelNameDependOn = strDependOnRel };
+            return new BO.EntityRelation() { TableName = strTabName, RelName = strRelName, AliasSingular = strSingular, SqlFrom = strSqlFrom, RelNameDependOn = strDependOnRel,Translate1=_tt.DoTranslate(strSingular,1), Translate2 = _tt.DoTranslate(strSingular, 2) };
 
 
 
@@ -197,10 +203,7 @@ namespace BL
         {
             
             var lis = new List<BO.EntityRelation>();
-            BO.TheEntity ce = ByPrefix(strPrimaryPrefix);
-
-            //lis.Add(new BO.EntityRelation() { IsPrimaryTable = true, TableName = ce.TableName, AliasSingular = ce.AliasSingular, RelName = "a", SqlFrom = ce.SqlFromGrid });
-
+            BO.TheEntity ce = ByPrefix(strPrimaryPrefix);           
 
             switch (strPrimaryPrefix)
             {

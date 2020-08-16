@@ -146,18 +146,18 @@ namespace UI.Controllers
         }
         public string AdminUsers(string prefix)
         {
-            DIV("Správa uživatelů");
+            DIV_TRANS("Správa uživatelů");
             AMI("Uživatelské účty", url_users("j03"));
             AMI("Aplikační role", url_users("j04"));
-            DIV("Osobní profily");
+            DIV_TRANS("Osobní profily");
             AMI("Osobní profily", url_users("j02"));
             AMI("Týmy osob", url_users("j11"));
-            DIV("Provoz");
+            DIV_TRANS("Provoz");
             AMI("PING Log", url_users("j92"));
             AMI("Kdo je právě online (+-2 minuty)", url_users("j92"));
             AMI("LOGIN Log", url_users("j90"));
             AMI("WORKFLOW Log", url_users("b05"));
-            DIV("Pošta");
+            DIV_TRANS("Pošta");
             AMI("Poštovní účty", url_users("j40"));
             AMI("OUTBOX", url_users("x40"));
 
@@ -167,7 +167,7 @@ namespace UI.Controllers
         }
         public string AdminCiselniky(string prefix)
         {
-            DIV("Kategorie");
+            DIV_TRANS("Kategorie");
             AMI("Kategorie (Skupiny položek)", url_ciselniky("o53"));
             AMI("Položky kategorií", url_ciselniky("o51"));
             
@@ -175,29 +175,29 @@ namespace UI.Controllers
             AMI("Osoby v inspektorátech", url_ciselniky("a02"));
             AMI("Inspektoráty", url_ciselniky("a04"));
             AMI("Kraje", url_ciselniky("a05"));
-            DIV("Nepersonální zdroje");
+            DIV_TRANS("Nepersonální zdroje");
             AMI("Zdroje", url_ciselniky("j23"));
             AMI("Typy zdrojů", url_ciselniky("j24"));
             AMI("Důvody rezervace", url_ciselniky("j25"));
-            DIV("Instituce");
+            DIV_TRANS("Instituce");
             AMI("Pojmenované seznamy institucí", url_ciselniky("a29"));
             AMI("Typy zřizovatelů", url_ciselniky("a09"));
             AMI("Typy činností", url_ciselniky("a17"));
             AMI("Kódy vzdělávacích oborů", url_ciselniky("a18"));
             AMI("Školní informační systémy (SIS)", url_ciselniky("a70"));
-            DIV("Akce");
+            DIV_TRANS("Akce");
             AMI("Typy akcí", url_ciselniky("a10"));
             AMI("Témata akcí", url_ciselniky("a08"));
 
-            
 
-            DIV("Úkoly/Lhůty");
+
+            DIV_TRANS("Úkoly/Lhůty");
             AMI("Typy úkolů a lhůt", url_ciselniky("h07"));
-            DIV("Pevné tiskové sestavy");
+            DIV_TRANS("Pevné tiskové sestavy");
             AMI("Report šablony", url_ciselniky("x31"));
             AMI("Report kategorie", url_ciselniky("x32"));
 
-            DIV("Ostatní");
+            DIV_TRANS("Ostatní");
             AMI("Typy příloh", url_ciselniky("o13"));
             AMI("Šablony notifikačních zpráv", url_ciselniky("b65"));
             AMI("Články pro nástěnku", url_ciselniky("h11"));
@@ -521,6 +521,10 @@ namespace UI.Controllers
         private void DIV(string strName=null)
         {
             _lis.Add(new BO.MenuItem() { IsDivider = true, Name = BO.BAS.OM2(strName,30) });
+        }
+        private void DIV_TRANS(string strName = null)
+        {
+            _lis.Add(new BO.MenuItem() { IsDivider = true, Name = BO.BAS.OM2(Factory.tra(strName), 30) });
         }
         private void HEADER(string strName)
         {

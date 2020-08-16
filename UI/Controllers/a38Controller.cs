@@ -61,14 +61,14 @@ namespace UI.Controllers
                     var recA35 = Factory.a35PersonEventPlanBL.Load(intA35ID);
                     if (v.lisA38.Where(p => p.j02ID == recA35.j02ID && p.a38PlanDate == recA35.a35PlanDate && p.j23ID == v.SelectedJ23ID).Count() > 0)
                     {
-                        this.AddMessage(string.Format("[{0}] má pro den [{1}] a zdroj [{2}] již uloženou rezervaci.", recA35.PersonAsc, recA35.a35PlanDate, v.SelectedJ23Name));
+                        this.AddMessageTranslated(string.Format("[{0}] má pro den [{1}] a zdroj [{2}] již uloženou rezervaci.", recA35.PersonAsc, recA35.a35PlanDate, v.SelectedJ23Name));
                         bolIsOK = false;
                     }                    
                     if (drivers.Where(p => p == recA35.pid.ToString() + "-1").Count() > 0)
                     {
                         if (v.lisA38.Where(p => p.a38PlanDate == recA35.a35PlanDate && p.j23ID == v.SelectedJ23ID && p.a38IsDriver == true).Count() > 0)
                         {
-                            this.AddMessage(string.Format("Pro den [{0}] a zdroj [{1}] již existuje rezervace s řidičem.", recA35.a35PlanDate, v.SelectedJ23Name));
+                            this.AddMessageTranslated(string.Format("Pro den [{0}] a zdroj [{1}] již existuje rezervace s řidičem.", recA35.a35PlanDate, v.SelectedJ23Name));
                             bolIsOK = false;
                         }
                     }
