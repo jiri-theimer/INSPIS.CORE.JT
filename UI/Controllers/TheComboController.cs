@@ -96,7 +96,19 @@ namespace UI.Controllers
             s.Append("<thead><tr>");
             foreach (var col in cols)
             {
-                s.Append(string.Format("<th>{0}</th>", col.Header));
+                switch (Factory.CurrentUser.j03LangIndex)
+                {
+                    case 1:
+                        s.Append(string.Format("<th>{0}</th>", col.TranslateLang1));
+                        break;
+                    case 2:
+                        s.Append(string.Format("<th>{0}</th>", col.TranslateLang2));
+                        break;
+                    default:
+                        s.Append(string.Format("<th>{0}</th>", col.Header));
+                        break;
+                }
+                
             }
             s.Append(string.Format("</tr></thead><tbody id='{0}_tbody'>", tableid));
             string strTrClass = "";
@@ -247,38 +259,38 @@ namespace UI.Controllers
         {
             var setting = LoadMySearchSetting();
             var sb = new System.Text.StringBuilder();
-
+            
             sb.AppendLine("<div style='padding:20px;'>");
-            sb.Append("<h5>FULLTEXT nastavení</h5>");
+            sb.Append("<h5>"+Factory.tra("FULLTEXT nastavení")+"</h5>");
             sb.Append("<hr>");
             if (entity.Substring(0, 3) == "a01")
             {
-                sb.Append("U hledání akcí systém pracuje s poli: <b>[Signatura], [Kód spisu], [Jméno vedoucího akce], [Jméno člena akce], [Název školy], [REDIZO]</b>.");
+                sb.Append(Factory.tra("U hledání akcí systém pracuje s poli:")+"<b>"+"[Signatura], [Kód spisu], [Jméno vedoucího akce], [Jméno člena akce], [Název školy], [REDIZO]"+"</b>.");
             }
             if (entity.Substring(0, 3) == "a03")
             {
-                sb.Append("U hledání institucí systém pracuje s poli: <b>[Název školy], [REDIZO],[IZO činnosti školy] [IČ], [Obec], [Ulice]</b>.");
+                sb.Append(Factory.tra("U hledání institucí systém pracuje s poli:")+ "<b>"+Factory.tra("[Název školy], [REDIZO],[IZO činnosti školy] [IČ], [Obec], [Ulice]")+"</b>.");
             }
             if (entity.Substring(0, 3) == "j02")
             {
-                sb.Append("U hledání osoby systém pracuje s poli: <b>[Jméno], [Příjmení], [E-mail], [Osobní číslo]</b>.");
+                sb.Append(Factory.tra("U hledání osoby systém pracuje s poli:")+" <b>"+Factory.tra("[Jméno], [Příjmení], [E-mail], [Osobní číslo]")+"</b>.");
             }
             sb.Append("<br>");
-            sb.Append("<span class='text-danger'>Fulltext hledání funguje na principu shody celých slov!</span>");
-            sb.Append("<br><span class='text-success'>Mezera mezi slovy je operátor 'and', můžete psát mezi slovy i přímo 'or'.</span>");
-            sb.Append("<br><span class='text-info'>Narozdíl od GRID filtrování, kde se pracuje s částečnou shodou (LIKE).</span>");
+            sb.Append("<span class='text-danger'>"+Factory.tra("Fulltext hledání funguje na principu shody celých slov!")+"</span>");
+            sb.Append("<br><span class='text-success'>"+Factory.tra("Mezera mezi slovy je operátor 'and', můžete psát mezi slovy i přímo 'or'.")+"</span>");
+            sb.Append("<br><span class='text-info'>"+Factory.tra("Narozdíl od GRID filtrování, kde se pracuje s částečnou shodou (LIKE).")+"</span>");
             sb.Append("<hr>");
-            sb.Append("<label>Zobrazovat maximálně </label><select id='mysearch_toprecs'>");
+            sb.Append("<label>"+Factory.tra("Zobrazovat maximálně")+" </label><select id='mysearch_toprecs'>");
             sb.Append(basUI.render_select_option("20", "20", setting.TopRecs.ToString()));
             sb.Append(basUI.render_select_option("50", "50", setting.TopRecs.ToString()));
             sb.Append(basUI.render_select_option("100", "100", setting.TopRecs.ToString()));
-            sb.Append("</select> záznamů.<br>");
+            sb.Append("</select> "+Factory.tra("záznamů")+".<br>");
 
-            sb.Append("<label>Uzavřené záznamy odlišovat: </label><select id='mysearch_closedrecs'>");
-            sb.Append(basUI.render_select_option("isclosed", "Přeškrtlé", setting.ClosedRecsClass));
-            sb.Append(basUI.render_select_option("isclosed_by_color", "Barvou", setting.ClosedRecsClass));
+            sb.Append("<label>"+Factory.tra("Uzavřené záznamy odlišovat:")+" </label><select id='mysearch_closedrecs'>");
+            sb.Append(basUI.render_select_option("isclosed", Factory.tra("Přeškrtlé"), setting.ClosedRecsClass));
+            sb.Append(basUI.render_select_option("isclosed_by_color", Factory.tra("Barvou"), setting.ClosedRecsClass));
             sb.Append("</select>.");
-            sb.AppendLine("<button type='button' class='btn btn-primary' onclick='mysearch_save_setting()'>Uložit nastavení</button>");
+            sb.AppendLine("<button type='button' class='btn btn-primary' onclick='mysearch_save_setting()'>"+Factory.tra("Uložit nastavení")+"</button>");
 
 
             sb.AppendLine("</div>");
@@ -307,7 +319,7 @@ namespace UI.Controllers
 
             if (searchstring == null || searchstring.Length <= 3)
             {
-                s.AppendLine("<small style='margin-left:10px;'>Musíte zadat minimálně 4 znaky.</small>");
+                s.AppendLine("<small style='margin-left:10px;'>"+Factory.tra("Musíte zadat minimálně 4 znaky.")+"</small>");
                 return s.ToString();
             }
 
@@ -315,11 +327,11 @@ namespace UI.Controllers
             {
                 if (intRows >= mq.TopRecordsOnly)
                 {
-                    s.AppendLine(string.Format("<small style='margin-left:10px;'>Zobrazeno prvních {0} záznamů. Zpřesněte filtrovací podmínku.</small>", intRows));
+                    s.AppendLine(string.Format("<small style='margin-left:10px;'>"+Factory.tra("Zobrazeno prvních {0} záznamů. Zpřesněte filtrovací podmínku.")+"</small>", intRows));
                 }
                 else
                 {
-                    s.AppendLine(string.Format("<small style='margin-left:10px;'>Počet záznamů: {0}.</small>", intRows));
+                    s.AppendLine(string.Format("<small style='margin-left:10px;'>"+Factory.tra("Počet záznamů: {0}.")+"</small>", intRows));
                 }
 
             }
@@ -329,7 +341,20 @@ namespace UI.Controllers
             s.Append("<thead><tr>");
             foreach (var col in cols)
             {
-                s.Append(string.Format("<th>{0}</th>", col.Header));
+                
+                switch (Factory.CurrentUser.j03LangIndex)
+                {
+                    case 1:
+                        s.Append(string.Format("<th>{0}</th>", col.TranslateLang1));
+                        break;
+                    case 2:
+                        s.Append(string.Format("<th>{0}</th>", col.TranslateLang2));
+                        break;
+                    default:
+                        s.Append(string.Format("<th>{0}</th>", col.Header));
+                        break;
+                }
+
             }
             s.Append(string.Format("</tr></thead><tbody id='{0}_tbody'>", "hovado"));
             string strTrClass = "";
