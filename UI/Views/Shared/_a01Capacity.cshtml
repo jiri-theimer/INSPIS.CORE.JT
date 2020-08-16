@@ -1,5 +1,5 @@
 ﻿@model UI.Models.Tab.a01TabCapacity
-
+@inject BL.Factory _f 
 @{
     if (Model == null || Model.RecA01 == null)
     {
@@ -18,7 +18,7 @@
     <tr>
         <td class="firstcol" style="background-color:lightgrey;">
 
-            <span>Pracovních dní: </span>
+            <span>@_f.tra("Pracovních dní"): </span>
             <span class="badge badge-primary">@(Model.PracovnichDni)</span>
         </td>
         @foreach (string mesic in Model.lisDays.Select(p => p.Month.ToString() + " / " + p.Year.ToString()).Distinct())
