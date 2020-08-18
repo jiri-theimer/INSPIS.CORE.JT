@@ -19,7 +19,7 @@
             <myval value="@Model.Rec.f12Name"></myval>
 
         </div>
-        @if (_f.CurrentUser.TestPermission(BO.PermValueEnum.FormDesigner))
+        @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.FormDesigner))
         {
             <div class="colsm-2 col-md-2">
                 <a target="_blank" href="/AdminOneForm/Index?pid=@(Model.pid)')">@_f.tra("Návrhář formuláře")</a>

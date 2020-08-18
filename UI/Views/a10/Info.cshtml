@@ -15,7 +15,7 @@
         <div class="col-sm-9 col-md-8">
             <myval value="@Model.Rec.a10Name"></myval>
         </div>
-        @if (_f.CurrentUser.TestPermission(BO.PermValueEnum.AdminGlobal_Ciselniky))
+        @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.AdminGlobal_Ciselniky))
         {
             <div class="col-sm-2 col-md-2">
                 <a href="javascript:_window_open('/a10/Record?pid=@(Model.pid)')">@_f.tra("Administrace")</a>

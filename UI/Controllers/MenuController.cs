@@ -99,17 +99,17 @@ namespace UI.Controllers
         {
             AMI("Uživatelé", "/Admin/Users");
             AMI("Číselníky", "/Admin/Ciselniky");
-            if (TUP(BO.PermValueEnum.AdminGlobal_Ciselniky))
+            if (TUP(BO.j05PermValuEnum.AdminGlobal_Ciselniky))
             {
                 //AMI("Číselníky", "/Admin/Index");
             }
           
-            if (TUP(BO.PermValueEnum.FormDesigner))
+            if (TUP(BO.j05PermValuEnum.FormDesigner))
             {
                 AMI("Formuláře", "/Admin/Forms");
                 AMI("Návrhář formuláře", "/AdminOneForm/Index");
             }
-            if (TUP(BO.PermValueEnum.WorkflowDesigner))
+            if (TUP(BO.j05PermValuEnum.WorkflowDesigner))
             {
                 AMI("Workflow", "/Admin/Workflow");
                 AMI("Návrhář workflow", "/AdminOneWorkflow/Index");
@@ -243,7 +243,7 @@ namespace UI.Controllers
                 DIV();
             }
             AMI("Stránka", "/a01/RecPage");
-            if (TUP(BO.PermValueEnum.A01Grid))
+            if (TUP(BO.j05PermValuEnum.A01Grid))
             {
                 if (Factory.CBL.LoadUserParamBool("grid-a01-show11", true))
                 {
@@ -271,7 +271,7 @@ namespace UI.Controllers
         }
         public string A03Menu()
         {
-            if (TUP(BO.PermValueEnum.A03Admin)==true)
+            if (TUP(BO.j05PermValuEnum.A03Admin)==true)
             {
                 AMI("Nový", "javascript:_edit('a03',0,'Založit instituci')");
                 DIV();
@@ -314,11 +314,11 @@ namespace UI.Controllers
         }
         public string X31Menu()
         {
-            if (TUP(BO.PermValueEnum.Menu_Reports))
+            if (TUP(BO.j05PermValuEnum.Menu_Reports))
             {
                 AMI("Pevné tiskové sestavy", "/Home/About");
             }
-            if (TUP(BO.PermValueEnum.Menu_Analyze))
+            if (TUP(BO.j05PermValuEnum.Menu_Analyze))
             {
                 AMI("Statistiky", "/Home/About");
             }

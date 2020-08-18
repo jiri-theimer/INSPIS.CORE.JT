@@ -287,7 +287,7 @@ namespace BL
         {
             BO.a01EventPermission ret = new BO.a01EventPermission() { PermValue = BO.a01EventPermissionENUM.NoAccess };
 
-            if (_mother.CurrentUser.TestPermission(BO.PermValueEnum.AdminGlobal))
+            if (_mother.CurrentUser.TestPermission(BO.j05PermValuEnum.AdminGlobal))
             {
                 ret.PermValue = BO.a01EventPermissionENUM.FullAccess;    //administrátor - automaticky nejvyšší práva k akci
                 ret.IsRecordOwner = true;
@@ -302,7 +302,7 @@ namespace BL
                 }
                 else
                 {
-                    if (_mother.CurrentUser.TestPermission(BO.PermValueEnum.FormReadonlyPreview))
+                    if (_mother.CurrentUser.TestPermission(BO.j05PermValuEnum.FormReadonlyPreview))
                     {
                         ret.PermValue = BO.a01EventPermissionENUM.ReadOnlyAccess;    //oprávnění číst všechny formulář - readonly náhled
                     }

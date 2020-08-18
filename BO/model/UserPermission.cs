@@ -11,7 +11,7 @@ namespace BO
         PORTAL = 3
     }
 
-    public enum PermValueEnum
+    public enum j05PermValuEnum
     {
         AdminGlobal = 1,
         FormDesigner = 2,
@@ -75,7 +75,7 @@ namespace BO
     public class UserPermission
     {
         public string Name { get; set; }        
-        public PermValueEnum Value { get; set; }
+        public j05PermValuEnum Value { get; set; }
         public bool IsSelected { get; set; }
 
 

@@ -26,7 +26,7 @@
             <myval value="@Model.Rec.j02PID" tooltip="@_f.tra("Osobní kód")"></myval>
 
         </div>
-        @if (_f.CurrentUser.TestPermission(BO.PermValueEnum.AdminGlobal_Ciselniky))
+        @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.AdminGlobal_Ciselniky))
         {
             <div class="colsm-2 col-md-2">
                 <a href="javascript:_window_open('/j02/Record?pid=@(Model.pid)')">@_f.tra("Administrace")</a>

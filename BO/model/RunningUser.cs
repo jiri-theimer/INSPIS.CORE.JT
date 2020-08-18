@@ -59,7 +59,7 @@ namespace BO
             }
         }
 
-        public bool TestPermission(BO.PermValueEnum oneperm)
+        public bool TestPermission(BO.j05PermValuEnum oneperm)
         {
             if (_WasInitTesting == false)
             {
@@ -87,8 +87,8 @@ namespace BO
             {
                 return true;
             }
-            if (TestPermission(PermValueEnum.H11Admin)) return true;
-            if (TestPermission(PermValueEnum.AdminGlobal_Ciselniky)) return true;
+            if (TestPermission(j05PermValuEnum.H11Admin)) return true;
+            if (TestPermission(j05PermValuEnum.AdminGlobal_Ciselniky)) return true;
 
             return false;
 

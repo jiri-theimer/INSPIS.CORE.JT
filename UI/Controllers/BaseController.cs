@@ -16,7 +16,7 @@ namespace UI.Controllers
     {
         
         public BL.Factory Factory;
-        public BO.PermValueEnum MustHavePerm;
+        public BO.j05PermValuEnum MustHavePerm;
                
 
         //Test probíhá před spuštěním každé Akce!
@@ -130,7 +130,7 @@ namespace UI.Controllers
         {
             Factory.CurrentUser.AddMessage(strMessage, template);
         }
-        public bool TUP(BO.PermValueEnum oneperm)
+        public bool TUP(BO.j05PermValuEnum oneperm)
         {
             return Factory.CurrentUser.TestPermission(oneperm);
         }
