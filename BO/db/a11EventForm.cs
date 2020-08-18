@@ -39,7 +39,8 @@ namespace BO
         public DateTime f06ValidFrom;
         public DateTime f06ValidUntil;
         public bool f06IsA01ClosedStrict;
-
+        public bool f06IsA01PeriodStrict;
+        public int f06UserLockFlag;
         public string FormNameHtml
         {
             get

@@ -28,7 +28,7 @@ namespace BL
         {
             sb("SELECT a.*,");
             sb(_db.GetSQL1_Ocas("a11", false, false,true));
-            sb(",a11_f06.f06Name,a11_f06.f06IsA01ClosedStrict,a11_f06.f06ValidFrom,a11_f06.f06ValidUntil");
+            sb(",a11_f06.f06Name,a11_f06.f06IsA01ClosedStrict,a11_f06.f06ValidFrom,a11_f06.f06ValidUntil,a11_f06.f06IsA01PeriodStrict,a11_f06.f06UserLockFlag");
             sb(",a11_a01.a01ValidUntil,a11_a01.a01ValidFrom,a11_a01.a01IsClosed,a11_a01.a01IsAllFormsClosed");
             sb(",a37.a37IZO,a37.a37Name,a37.a37IZO,a25.a25Name,a25.a25Color");
             sb(" FROM a11EventForm a INNER JOIN f06Form a11_f06 ON a.f06ID=a11_f06.f06ID INNER JOIN a01Event a11_a01 ON a.a01ID=a11_a01.a01ID");
