@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BL
 {
@@ -14,6 +15,7 @@ namespace BL
         public void AppendAccessToLog(List<BO.f32FilledValue> lisF32, string strURL);
         public IEnumerable<BO.j95FormAccessLog> GetList_J95(int a11id, int intTopRecs);
         public bool ValidateBeforeSave(BO.a11EventForm c);
+        public bool TestUserAccessToEncryptedFormValues(int a11id, int f06id);
     }
     class a11EventFormBL : BaseBL, Ia11EventFormBL
     {
@@ -30,7 +32,7 @@ namespace BL
             sb(_db.GetSQL1_Ocas("a11", false, false,true));
             sb(",a11_f06.f06Name,a11_f06.f06IsA01ClosedStrict,a11_f06.f06ValidFrom,a11_f06.f06ValidUntil,a11_f06.f06IsA01PeriodStrict,a11_f06.f06UserLockFlag");
             sb(",a11_a01.a01ValidUntil,a11_a01.a01ValidFrom,a11_a01.a01IsClosed,a11_a01.a01IsAllFormsClosed");
-            sb(",a37.a37IZO,a37.a37Name,a37.a37IZO,a25.a25Name,a25.a25Color");
+            sb(",a11_a01.a03ID,a37.a37IZO,a37.a37Name,a37.a37IZO,a25.a25Name,a25.a25Color");
             sb(" FROM a11EventForm a INNER JOIN f06Form a11_f06 ON a.f06ID=a11_f06.f06ID INNER JOIN a01Event a11_a01 ON a.a01ID=a11_a01.a01ID");
             sb(" LEFT OUTER JOIN a25EventFormGroup a25 ON a.a25ID=a25.a25ID");
             sb(" LEFT OUTER JOIN a37InstitutionDepartment a37 ON a.a37ID=a37.a37ID");
@@ -119,6 +121,42 @@ namespace BL
         {
             string s = string.Format("SELECT TOP {0} a.*,j03.j03Login,f19.f19Name FROM j95FormAccessLog a INNER JOIN j03User j03 ON a.j03ID=j03.j03ID LEFT OUTER JOIN f19Question f19 ON a.f19ID=f19.f19ID LEFT OUTER JOIN f32FilledValue f32 ON a.f32ID=f32.f32ID WHERE a.a11ID=@pid ORDER BY a.j95ID DESC", intTopRecs);
             return _db.GetList<BO.j95FormAccessLog>(s, new { pid = a11id });
+        }
+
+        public bool TestUserAccessToEncryptedFormValues(int a11id,int f06id)
+        {
+            if (_mother.CurrentUser.TestPermission(BO.j05PermValuEnum.Read_Encrypted_FormValues))
+            {
+                return true;    //přístup k šifrovaným datům vyplývá z globální role
+            }
+            var lis = _mother.f06FormBL.GetListF07(f06id);
+            var recJ04 = _mother.j04UserRoleBL.Load(_mother.CurrentUser.j04ID);
+            switch (recJ04.j04RelationFlag)
+            {
+                case BO.j04RelationFlagEnum.NoRelation:     //přístup ke všem datům v systému
+                    if (lis.Where(p => p.j04ID == recJ04.pid).Count() > 0)
+                    {
+                        return true;
+                    }
+                    break;
+                case BO.j04RelationFlagEnum.A03:
+                    var recA11 = Load(a11id);
+                    var mq = new BO.myQuery("a39");
+                    mq.j02id = _mother.CurrentUser.j02ID;
+                    mq.a03id = recA11.a03ID;
+                    var lisA39 = _mother.a39InstitutionPersonBL.GetList(mq);
+                    foreach(var c in lisA39)
+                    {
+                        if (lis.Where(p => p.j04ID == c.j04ID_Explicit).Count() > 0)
+                        {
+                            return true;    //školní role má oprávnění ke čtení šifrovaných odpovědí
+                        }
+                    }
+                    break;
+                default:
+                    return false;
+            }
+            return false;
         }
     }
 }

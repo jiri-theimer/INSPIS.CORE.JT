@@ -11,6 +11,7 @@ namespace BL
         public BO.f06Form Load(int pid);
         public IEnumerable<BO.f06Form> GetList(BO.myQuery mq);
         public IEnumerable<BO.a13AttachmentToForm> GetListA13(int f06id);
+        public IEnumerable<BO.f07Form_UserRole_EncryptedPermission> GetListF07(int f06id);
         public int Save(BO.f06Form rec, List<int> j04ids, List<int> x31ids, List<BO.a13AttachmentToForm> lisA13);
         public BO.Result CloneF06(BO.f06Form recOrig, string destname, string destexportcode);
 
@@ -290,6 +291,12 @@ namespace BL
                 return pids.Where(p => p.OrigPid == origpid && p.Prefix==prefix).First().NewPid;
             }
             return 0;
+        }
+
+        public IEnumerable<BO.f07Form_UserRole_EncryptedPermission> GetListF07(int f06id)
+        {
+            
+            return _db.GetList<BO.f07Form_UserRole_EncryptedPermission>("select * FROM f07Form_UserRole_EncryptedPermission WHERE f06ID=@f06id", new { f06id = f06id });
         }
 
     }

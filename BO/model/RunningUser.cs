@@ -18,6 +18,7 @@ namespace BO
         public int j04ID { get; set; }
         public string j04RoleValue { get;set;}
         
+
         public bool j03IsMustChangePassword { get; set; }
         public int j03FontStyleFlag { get; set; }
     

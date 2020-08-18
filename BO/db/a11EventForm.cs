@@ -30,11 +30,12 @@ namespace BO
         public bool a01IsAllFormsClosed;
         public bool a01IsClosed;
         public DateTime a01ValidFrom;
-        public DateTime a01ValidUntil;
+        public DateTime a01ValidUntil;        
         public string f06Name { get; set; } //combo
         public string a37Name { get; set; } //combo
         public string a37IZO;
         public string a25Name { get; set; } //combo
+        public int a03ID;
         public string a25Color;
         public DateTime f06ValidFrom;
         public DateTime f06ValidUntil;
