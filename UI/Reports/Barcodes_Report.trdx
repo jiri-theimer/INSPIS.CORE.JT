@@ -1,0 +1,998 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report DataSourceName="sqlDataSource1" Width="194mm" UnitOfMeasure="Mm" Name="BarcodesReport" Zoom="0.6666667" SnapToGrid="False" SnapToSnapLines="False" SnapGridSize="0.1cm" xmlns="http://schemas.telerik.com/reporting/2020/2.0">
+  <DataSources>
+    <SqlDataSource QueryDesignerState="null" ParameterValues="null" ConnectionString="Telerik.Reporting.Examples.CSharp.Properties.Settings.TelerikConnectionString" SelectCommand="select * from j02Person where j02ID=@pid" Name="sqlDataSource1">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Int32" Name="@pid">
+          <Value>
+            <String>= Parameters.pid.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <DetailSection KeepTogether="False" Height="311.81mm" Name="detail">
+      <Items>
+        <Table DataSourceName="sqlDataSource1" Width="7.638in" Height="31.181cm" Left="0in" Top="0in" Name="table2">
+          <Body>
+            <Cells>
+              <TableCell RowIndex="5" ColumnIndex="1" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="0.729cm" Left="0in" Top="0in" Name="textBox69" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="5" ColumnIndex="3" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="0.729cm" Left="0in" Top="0in" Name="textBox71" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="6" ColumnIndex="1" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="22.85mm" Left="0in" Top="0in" Name="textBox74" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="6" ColumnIndex="3" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="22.85mm" Left="0in" Top="0in" Name="textBox76" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="7" ColumnIndex="1" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="0.729cm" Left="0in" Top="0in" Name="textBox79" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="7" ColumnIndex="3" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="0.729cm" Left="0in" Top="0in" Name="textBox81" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="8" ColumnIndex="1" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="22.36mm" Left="0in" Top="0in" Name="textBox84" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="8" ColumnIndex="3" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="22.36mm" Left="0in" Top="0in" Name="textBox86" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="9" ColumnIndex="1" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="0.729cm" Left="0in" Top="0in" Name="textBox89" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="9" ColumnIndex="3" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="0.729cm" Left="0in" Top="0in" Name="textBox91" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="10" ColumnIndex="1" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="22.85mm" Left="0in" Top="0in" Name="textBox94" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="10" ColumnIndex="3" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="22.85mm" Left="0in" Top="0in" Name="textBox96" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="11" ColumnIndex="1" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="0.729cm" Left="0in" Top="0in" Name="textBox99" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="11" ColumnIndex="3" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="0.729cm" Left="0in" Top="0in" Name="textBox101" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="12" ColumnIndex="1" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="22.36mm" Left="0in" Top="0in" Name="textBox104" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="12" ColumnIndex="3" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="22.36mm" Left="0in" Top="0in" Name="textBox106" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="13" ColumnIndex="1" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="0.729cm" Left="0in" Top="0in" Name="textBox109" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="13" ColumnIndex="3" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="0.729cm" Left="0in" Top="0in" Name="textBox111" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="14" ColumnIndex="1" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="22.85mm" Left="0in" Top="0in" Name="textBox114" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="14" ColumnIndex="3" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="22.85mm" Left="0in" Top="0in" Name="textBox116" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="15" ColumnIndex="1" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="0.729cm" Left="0in" Top="0in" Name="textBox119" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="15" ColumnIndex="3" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="0.729cm" Left="0in" Top="0in" Name="textBox121" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="16" ColumnIndex="1" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="22.85mm" Left="0in" Top="0in" Name="textBox124" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="16" ColumnIndex="3" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="22.85mm" Left="0in" Top="0in" Name="textBox126" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="17" ColumnIndex="1" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="0.729cm" Left="0in" Top="0in" Name="textBox129" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="17" ColumnIndex="3" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="0.729cm" Left="0in" Top="0in" Name="textBox131" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="18" ColumnIndex="1" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="22.85mm" Left="0in" Top="0in" Name="textBox134" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="18" ColumnIndex="3" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="22.85mm" Left="0in" Top="0in" Name="textBox136" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="16" ColumnIndex="2" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <Barcode Width="5.8cm" Height="22.85mm" Left="0in" Top="0in" Value="0123456789" Name="barcode41">
+                    <Style>
+                      <BorderStyle Top="None" Bottom="None" />
+                      <Padding Bottom="0.3cm" />
+                    </Style>
+                    <Encoder>
+                      <PostnetEncoder />
+                    </Encoder>
+                  </Barcode>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="18" ColumnIndex="0" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <Barcode Width="5.8cm" Height="22.85mm" Left="0in" Top="0in" Value="1200000789" Name="barcode43">
+                    <Style>
+                      <BorderStyle Top="None" Bottom="None" />
+                      <Padding Bottom="0.3cm" />
+                    </Style>
+                    <Encoder>
+                      <UPCEEncoder />
+                    </Encoder>
+                  </Barcode>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="18" ColumnIndex="2" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <Barcode Width="5.8cm" Height="22.85mm" Left="0in" Top="0in" Value="12" Name="barcode45">
+                    <Style>
+                      <BorderStyle Top="None" Bottom="None" />
+                      <Padding Bottom="0.3cm" />
+                    </Style>
+                    <Encoder>
+                      <UPCSupplement2Encoder />
+                    </Encoder>
+                  </Barcode>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="18" ColumnIndex="4" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <Barcode Width="5.8cm" Height="22.85mm" Left="0in" Top="0in" Value="01234" Name="barcode44">
+                    <Style>
+                      <BorderStyle Top="None" Bottom="None" />
+                      <Padding Bottom="0.3cm" />
+                    </Style>
+                    <Encoder>
+                      <UPCSupplement5Encoder />
+                    </Encoder>
+                  </Barcode>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="16" ColumnIndex="4" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <Barcode Width="5.8cm" Height="22.85mm" Left="0in" Top="0in" Value="0123456789" Name="barcode46">
+                    <Style>
+                      <BorderStyle Top="None" Bottom="None" />
+                      <Padding Bottom="0.3cm" />
+                    </Style>
+                    <Encoder>
+                      <UPCAEncoder />
+                    </Encoder>
+                  </Barcode>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="15" ColumnIndex="2" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="5.8cm" Height="0.729cm" Left="0in" Top="0in" Value="Postnet" Name="textBox95">
+                    <Style>
+                      <BorderStyle Top="Solid" Bottom="Solid" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="15" ColumnIndex="4" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="5.8cm" Height="0.729cm" Left="0in" Top="0in" Value="UPCA" Name="textBox98">
+                    <Style>
+                      <BorderStyle Top="Solid" Bottom="Solid" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="17" ColumnIndex="0" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="5.8cm" Height="0.729cm" Left="0in" Top="0in" Value="UPCE" Name="textBox97">
+                    <Style>
+                      <BorderStyle Top="Solid" Bottom="Solid" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="17" ColumnIndex="2" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="5.8cm" Height="0.729cm" Left="0in" Top="0in" Value="UPCSupplement2" Name="textBox102">
+                    <Style>
+                      <BorderStyle Top="Solid" Bottom="Solid" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="17" ColumnIndex="4" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="5.8cm" Height="0.729cm" Left="0in" Top="0in" Value="UPCSupplement5" Name="textBox100">
+                    <Style>
+                      <BorderStyle Top="Solid" Bottom="Solid" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="2" ColumnIndex="1" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="22.85mm" Left="0cm" Top="0cm" Name="textBox7" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="2" ColumnIndex="3" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="22.85mm" Left="0cm" Top="0cm" Name="textBox9" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="1" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="7.29mm" Left="0cm" Top="0cm" Name="textBox12" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="3" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="7.29mm" Left="0cm" Top="0cm" Name="textBox14" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="0" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="5.8cm" Height="7.29mm" Left="0cm" Top="0cm" Value="DataMatrix" Name="textBox1">
+                    <Style>
+                      <BorderStyle Top="None" Bottom="Solid" />
+                      <BorderColor Top="Black" Bottom="Black" />
+                      <BorderWidth Top="1pt" Bottom="1pt" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="2" ColumnIndex="0" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <Barcode Width="5.8cm" Height="22.85mm" Left="0cm" Top="0cm" Value="= Parameters.pid.Value" Stretch="True" Name="barcode25">
+                    <Style>
+                      <BorderStyle Top="None" Bottom="None" />
+                      <BorderColor Top="Black" Bottom="Black" Left="Black" Right="Black" />
+                      <BorderWidth Top="1pt" Bottom="1pt" Left="1pt" Right="1pt" />
+                      <Padding Top="2.5mm" Bottom="2.5mm" />
+                    </Style>
+                    <Encoder>
+                      <DataMatrixEncoder />
+                    </Encoder>
+                  </Barcode>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="3" ColumnIndex="0" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="5.8cm" Height="0.729cm" Left="0cm" Top="0cm" Value="PDF417" Name="textBox4">
+                    <Style>
+                      <BorderStyle Top="Solid" Bottom="Solid" />
+                      <BorderColor Top="Black" Bottom="Black" />
+                      <BorderWidth Top="1pt" Bottom="1pt" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="4" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="5.8cm" Height="7.29mm" Left="0cm" Top="0cm" Value="QR Code" Name="textBox10">
+                    <Style>
+                      <BorderStyle Top="None" Bottom="Solid" />
+                      <BorderColor Top="Black" Bottom="Black" />
+                      <BorderWidth Top="1pt" Bottom="1pt" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="2" ColumnIndex="4" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <Barcode Width="5.8cm" Height="22.85mm" Left="0cm" Top="0cm" Value="= Parameters.hovado.Value" Stretch="True" Name="barcode26">
+                    <Style>
+                      <BorderStyle Top="None" Bottom="None" />
+                      <BorderColor Top="Black" Bottom="Black" Left="Black" Right="Black" />
+                      <BorderWidth Top="1pt" Bottom="1pt" Left="1pt" Right="1pt" />
+                      <Padding Top="0cm" Bottom="0cm" />
+                    </Style>
+                    <Encoder>
+                      <QRCodeEncoder Version="3" />
+                    </Encoder>
+                  </Barcode>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="2" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="5.8cm" Height="7.29mm" Left="0cm" Top="0cm" Value="DataMatrix" Name="textBox8">
+                    <Style>
+                      <BorderStyle Top="None" Bottom="Solid" />
+                      <BorderColor Top="Black" Bottom="Black" />
+                      <BorderWidth Top="1pt" Bottom="1pt" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="2" ColumnIndex="2" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <Barcode Width="5.8cm" Height="22.85mm" Left="0cm" Top="0cm" Value="= Parameters.hovado.Value" Stretch="True" Name="barcode1">
+                    <Style>
+                      <BorderStyle Top="None" Bottom="None" />
+                      <BorderColor Top="Black" Bottom="Black" Left="Black" Right="Black" />
+                      <BorderWidth Top="1pt" Bottom="1pt" Left="1pt" Right="1pt" />
+                      <Padding Left="2.5mm" Right="2.5mm" Top="2.5mm" Bottom="2.5mm" />
+                    </Style>
+                    <Encoder>
+                      <DataMatrixEncoder SymbolSize="RectangleAuto" />
+                    </Encoder>
+                  </Barcode>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="3" ColumnIndex="1" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="0.729cm" Left="0cm" Top="0cm" Name="textBox5">
+                    <Style>
+                      <BorderColor Top="Black" Bottom="Black" />
+                      <BorderWidth Top="1pt" Bottom="1pt" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="3" ColumnIndex="3" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="0.729cm" Left="0cm" Top="0cm" Name="textBox11">
+                    <Style>
+                      <BorderColor Top="Black" Bottom="Black" />
+                      <BorderWidth Top="1pt" Bottom="1pt" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="3" ColumnIndex="2" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="5.8cm" Height="0.729cm" Left="0in" Top="0in" Value="Codabar" Name="textBox15">
+                    <Style>
+                      <BorderStyle Top="Solid" Bottom="Solid" />
+                      <BorderColor Top="Black" />
+                      <BorderWidth Top="1pt" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="3" ColumnIndex="4" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="5.8cm" Height="0.729cm" Left="0in" Top="0in" Value="Code11" Name="textBox6">
+                    <Style>
+                      <BorderStyle Top="Solid" Bottom="Solid" />
+                      <BorderColor Top="Black" />
+                      <BorderWidth Top="1pt" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="4" ColumnIndex="4" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <Barcode Width="5.8cm" Height="22.36mm" Left="0in" Top="0in" Value="0123456789" Name="barcode27">
+                    <Style>
+                      <BorderStyle Top="None" Bottom="None" />
+                      <Padding Bottom="0.3cm" />
+                    </Style>
+                    <Encoder>
+                      <Code11Encoder />
+                    </Encoder>
+                  </Barcode>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="5" ColumnIndex="0" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="5.8cm" Height="0.729cm" Left="0in" Top="0in" Value="Code25Standard" Name="textBox13">
+                    <Style>
+                      <BorderStyle Top="Solid" Bottom="Solid" />
+                      <BorderColor Top="Black" />
+                      <BorderWidth Top="1pt" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="6" ColumnIndex="0" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <Barcode Width="5.8cm" Height="22.85mm" Left="0in" Top="0in" Value="01234567" Name="barcode3">
+                    <Style>
+                      <BorderStyle Top="None" Bottom="None" />
+                      <Padding Bottom="0.3cm" />
+                    </Style>
+                    <Encoder>
+                      <Code25StandardEncoder />
+                    </Encoder>
+                  </Barcode>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="5" ColumnIndex="2" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="5.8cm" Height="0.729cm" Left="0in" Top="0in" Value="Code25Interleaved" Name="textBox2">
+                    <Style>
+                      <BorderStyle Top="Solid" Bottom="Solid" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="6" ColumnIndex="2" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <Barcode Width="5.8cm" Height="22.85mm" Left="0in" Top="0in" Value="0123456789" Name="barcode30">
+                    <Style>
+                      <BorderStyle Top="None" Bottom="None" />
+                      <Padding Bottom="0.3cm" />
+                    </Style>
+                    <Encoder>
+                      <Code25InterleavedEncoder />
+                    </Encoder>
+                  </Barcode>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="5" ColumnIndex="4" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="5.8cm" Height="0.729cm" Left="0in" Top="0in" Value="Code39" Name="textBox3">
+                    <Style>
+                      <BorderStyle Top="Solid" Bottom="Solid" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="6" ColumnIndex="4" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <Barcode Width="5.8cm" Height="22.85mm" Left="0in" Top="0in" Value="0123456" Name="barcode2">
+                    <Style>
+                      <BorderStyle Top="None" Bottom="None" />
+                      <Padding Bottom="0.3cm" />
+                    </Style>
+                    <Encoder>
+                      <Code39Encoder />
+                    </Encoder>
+                  </Barcode>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="7" ColumnIndex="0" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="5.8cm" Height="0.729cm" Left="0in" Top="0in" Value="Code39Extended" Name="textBox16">
+                    <Style>
+                      <BorderStyle Top="Solid" Bottom="Solid" />
+                      <BorderColor Top="Black" />
+                      <BorderWidth Top="1pt" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="8" ColumnIndex="0" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <Barcode Width="5.8cm" Height="22.36mm" Left="0in" Top="0in" Value="0123456" Name="barcode4">
+                    <Style>
+                      <BorderStyle Top="None" Bottom="None" />
+                      <Padding Bottom="0.3cm" />
+                    </Style>
+                    <Encoder>
+                      <Code39ExtendedEncoder />
+                    </Encoder>
+                  </Barcode>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="7" ColumnIndex="2" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="5.8cm" Height="0.729cm" Left="0in" Top="0in" Value="Code93" Name="textBox17">
+                    <Style>
+                      <BorderStyle Top="Solid" Bottom="Solid" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="8" ColumnIndex="2" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <Barcode Width="5.8cm" Height="22.36mm" Left="0in" Top="0in" Value="0123456789" Name="barcode31">
+                    <Style>
+                      <BorderStyle Top="None" Bottom="None" />
+                      <Padding Bottom="0.3cm" />
+                    </Style>
+                    <Encoder>
+                      <Code93Encoder />
+                    </Encoder>
+                  </Barcode>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="7" ColumnIndex="4" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="5.8cm" Height="0.729cm" Left="0in" Top="0in" Value="Code93Extended" Name="textBox18">
+                    <Style>
+                      <BorderStyle Top="Solid" Bottom="Solid" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="8" ColumnIndex="4" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <Barcode Width="5.8cm" Height="22.36mm" Left="0in" Top="0in" Value="0123456789" Name="barcode32">
+                    <Style>
+                      <BorderStyle Top="None" Bottom="None" />
+                      <Padding Bottom="0.3cm" />
+                    </Style>
+                    <Encoder>
+                      <Code93ExtendedEncoder />
+                    </Encoder>
+                  </Barcode>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="9" ColumnIndex="0" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="5.8cm" Height="0.729cm" Left="0in" Top="0in" Value="Code128" Name="textBox19">
+                    <Style>
+                      <BorderStyle Top="Solid" Bottom="Solid" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="10" ColumnIndex="0" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <Barcode Width="5.8cm" Height="22.85mm" Left="0in" Top="0in" Value="0123456789" Name="barcode33">
+                    <Style>
+                      <BorderStyle Top="None" Bottom="None" />
+                      <Padding Bottom="0.3cm" />
+                    </Style>
+                    <Encoder>
+                      <Code128Encoder />
+                    </Encoder>
+                  </Barcode>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="9" ColumnIndex="2" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="5.8cm" Height="0.729cm" Left="0in" Top="0in" Value="Code128A" Name="textBox20">
+                    <Style>
+                      <BorderStyle Top="Solid" Bottom="Solid" />
+                      <BorderColor Top="Black" />
+                      <BorderWidth Top="1pt" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="10" ColumnIndex="2" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <Barcode Width="5.8cm" Height="22.85mm" Left="0in" Top="0in" Value="01234567" Name="barcode34">
+                    <Style>
+                      <BorderStyle Top="None" Bottom="None" />
+                      <Padding Bottom="0.3cm" />
+                    </Style>
+                    <Encoder>
+                      <Code128AEncoder />
+                    </Encoder>
+                  </Barcode>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="9" ColumnIndex="4" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="5.8cm" Height="0.729cm" Left="0in" Top="0in" Value="Code128B" Name="textBox21">
+                    <Style>
+                      <BorderStyle Top="Solid" Bottom="Solid" />
+                      <BorderColor Top="Black" />
+                      <BorderWidth Top="1pt" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="10" ColumnIndex="4" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <Barcode Width="5.8cm" Height="22.85mm" Left="0in" Top="0in" Value="01234567" Name="barcode36">
+                    <Style>
+                      <BorderStyle Top="None" Bottom="None" />
+                      <Padding Bottom="0.3cm" />
+                    </Style>
+                    <Encoder>
+                      <Code128BEncoder />
+                    </Encoder>
+                  </Barcode>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="11" ColumnIndex="0" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="5.8cm" Height="0.729cm" Left="0in" Top="0in" Value="Code128C" Name="textBox22">
+                    <Style>
+                      <BorderStyle Top="Solid" Bottom="Solid" />
+                      <BorderColor Top="Black" />
+                      <BorderWidth Top="1pt" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="12" ColumnIndex="0" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <Barcode Width="5.8cm" Height="22.36mm" Left="0in" Top="0in" Value="0123456789" Name="barcode35">
+                    <Style>
+                      <BorderStyle Top="None" Bottom="None" />
+                      <Padding Bottom="0.3cm" />
+                    </Style>
+                    <Encoder>
+                      <Code128CEncoder />
+                    </Encoder>
+                  </Barcode>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="11" ColumnIndex="2" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="5.8cm" Height="0.729cm" Left="0in" Top="0in" Value="CodeMSI" Name="textBox23">
+                    <Style>
+                      <BorderStyle Top="Solid" Bottom="Solid" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="12" ColumnIndex="2" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <Barcode Width="5.8cm" Height="22.36mm" Left="0in" Top="0in" Value="012345678" Name="barcode38">
+                    <Style>
+                      <BorderStyle Top="None" Bottom="None" />
+                      <Padding Bottom="0.3cm" />
+                    </Style>
+                    <Encoder>
+                      <CodeMSIEncoder />
+                    </Encoder>
+                  </Barcode>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="11" ColumnIndex="4" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="5.8cm" Height="0.729cm" Left="0in" Top="0in" Value="EAN8" Name="textBox24">
+                    <Style>
+                      <BorderStyle Top="Solid" Bottom="Solid" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="12" ColumnIndex="4" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <Barcode Width="5.8cm" Height="22.36mm" Left="0in" Top="0in" Value="0123456" Name="barcode37">
+                    <Style>
+                      <BorderStyle Top="None" Bottom="None" />
+                      <Padding Bottom="0.3cm" />
+                    </Style>
+                    <Encoder>
+                      <EAN8Encoder />
+                    </Encoder>
+                  </Barcode>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="13" ColumnIndex="0" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="5.8cm" Height="0.729cm" Left="0in" Top="0in" Value="EAN13" Name="textBox25">
+                    <Style>
+                      <BorderStyle Top="Solid" Bottom="Solid" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="14" ColumnIndex="0" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <Barcode Width="5.8cm" Height="22.85mm" Left="0in" Top="0in" Value="012345678912" Name="barcode39">
+                    <Style>
+                      <BorderStyle Top="None" Bottom="None" />
+                      <Padding Bottom="0.3cm" />
+                    </Style>
+                    <Encoder>
+                      <EAN13Encoder />
+                    </Encoder>
+                  </Barcode>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="13" ColumnIndex="2" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="5.8cm" Height="0.729cm" Left="0in" Top="0in" Value="EAN128" Name="textBox26">
+                    <Style>
+                      <BorderStyle Top="Solid" Bottom="Solid" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="14" ColumnIndex="2" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <Barcode Width="5.8cm" Height="22.85mm" Left="0in" Top="0in" Value="0123456789" Name="barcode40">
+                    <Style>
+                      <BorderStyle Top="None" Bottom="None" />
+                      <Padding Bottom="0.3cm" />
+                    </Style>
+                    <Encoder>
+                      <EAN128Encoder />
+                    </Encoder>
+                  </Barcode>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="13" ColumnIndex="4" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="5.8cm" Height="0.729cm" Left="0cm" Top="0cm" Value="IntelligentMail" Name="textBox27">
+                    <Style>
+                      <BorderStyle Top="Solid" Bottom="Solid" />
+                      <BorderColor Top="Black" Bottom="Black" />
+                      <BorderWidth Top="1pt" Bottom="1pt" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="4" ColumnIndex="3" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="22.36mm" Left="-15mm" Top="-15mm" Name="textBox30" StyleName="">
+                    <Style>
+                      <Padding Bottom="0.3cm" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="14" ColumnIndex="4" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <Barcode Width="5.8cm" Height="22.85mm" Left="0cm" Top="0cm" Value="01234567890123456789" Name="barcode6">
+                    <Style>
+                      <BorderStyle Top="None" Bottom="None" />
+                      <Padding Bottom="0.3cm" />
+                    </Style>
+                    <Encoder>
+                      <IntelligentMailEncoder />
+                    </Encoder>
+                  </Barcode>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="15" ColumnIndex="0" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="5.8cm" Height="0.729cm" Left="0cm" Top="0cm" Value="Planet" Name="textBox28">
+                    <Style>
+                      <BorderStyle Top="Solid" Bottom="Solid" />
+                      <BorderColor Top="Black" Bottom="Black" />
+                      <BorderWidth Top="1pt" Bottom="1pt" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="4" ColumnIndex="1" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="22.36mm" Left="-15mm" Top="-15mm" Name="textBox31" StyleName="">
+                    <Style>
+                      <Padding Bottom="0.3cm" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="16" ColumnIndex="0" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <Barcode Width="5.8cm" Height="22.85mm" Left="0cm" Top="0cm" Value="01234567890" Name="barcode5">
+                    <Style>
+                      <BorderStyle Top="None" Bottom="None" />
+                      <Padding Bottom="0.3cm" />
+                    </Style>
+                    <Encoder>
+                      <PlanetEncoder />
+                    </Encoder>
+                  </Barcode>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="1" ColumnIndex="0" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="5.8cm" Height="26.83mm" Left="0cm" Top="0cm" Value="PID JE: {Parameters.pid.Value}" Name="textBox29" StyleName="">
+                    <Style>
+                      <BorderStyle Bottom="Solid" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="1" ColumnIndex="1" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="26.83mm" Left="0cm" Top="0cm" Name="textBox32" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="1" ColumnIndex="2" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="5.8cm" Height="26.83mm" Left="0cm" Top="0cm" Value="Kdo je hovado: {Parameters.hovado.Value}" Name="textBox33" StyleName="">
+                    <Style>
+                      <BorderStyle Bottom="Solid" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="1" ColumnIndex="3" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1cm" Height="26.83mm" Left="0cm" Top="0cm" Name="textBox34" StyleName="" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="1" ColumnIndex="4" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="5.8cm" Height="26.83mm" Left="0cm" Top="0cm" Value="Datum je:{Parameters.datum.Value}" Name="textBox35" StyleName="">
+                    <Style>
+                      <BorderStyle Bottom="Solid" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="4" ColumnIndex="0" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="5.8cm" Height="22.36mm" Left="-13.23mm" Top="-13.23mm" Value="Osoba: {Fields.j02LastName}" Name="textBox36" StyleName="">
+                    <Style>
+                      <Padding Top="0.25cm" Bottom="0.25cm" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="4" ColumnIndex="2" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="5.8cm" Height="22.36mm" Left="-13.23mm" Top="-13.23mm" Value="Křestní jméno: {Fields.j02FirstName}" Name="textBox37" StyleName="">
+                    <Style>
+                      <Padding Bottom="0.3cm" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+            </Cells>
+            <Columns>
+              <Column Width="5.8cm" />
+              <Column Width="1cm" />
+              <Column Width="5.8cm" />
+              <Column Width="1cm" />
+              <Column Width="5.8cm" />
+            </Columns>
+            <Rows>
+              <Row Height="7.29mm" />
+              <Row Height="26.83mm" />
+              <Row Height="22.85mm" />
+              <Row Height="0.729cm" />
+              <Row Height="22.36mm" />
+              <Row Height="0.729cm" />
+              <Row Height="22.85mm" />
+              <Row Height="0.729cm" />
+              <Row Height="22.36mm" />
+              <Row Height="0.729cm" />
+              <Row Height="22.85mm" />
+              <Row Height="0.729cm" />
+              <Row Height="22.36mm" />
+              <Row Height="0.729cm" />
+              <Row Height="22.85mm" />
+              <Row Height="0.729cm" />
+              <Row Height="22.85mm" />
+              <Row Height="0.729cm" />
+              <Row Height="22.85mm" />
+            </Rows>
+          </Body>
+          <Corner />
+          <RowGroups>
+            <TableGroup Name="group21" />
+            <TableGroup Name="group19" />
+            <TableGroup Name="group20" />
+            <TableGroup Name="group" />
+            <TableGroup Name="group1" />
+            <TableGroup Name="group5" />
+            <TableGroup Name="group6" />
+            <TableGroup Name="group7" />
+            <TableGroup Name="group8" />
+            <TableGroup Name="group9" />
+            <TableGroup Name="group10" />
+            <TableGroup Name="group11" />
+            <TableGroup Name="group12" />
+            <TableGroup Name="group13" />
+            <TableGroup Name="group14" />
+            <TableGroup Name="group15" />
+            <TableGroup Name="group16" />
+            <TableGroup Name="group17" />
+            <TableGroup Name="group18" />
+          </RowGroups>
+          <ColumnGroups>
+            <TableGroup Name="tableGroup">
+              <ReportItem>
+                <TextBox Width="19.401cm" Height="0.598in" Left="0in" Top="0in" Value="= Parameters.pid.Value" Name="textBox66" StyleName="Header">
+                  <Style>
+                    <BorderStyle Bottom="Ridge" />
+                    <BorderWidth Bottom="3pt" />
+                  </Style>
+                </TextBox>
+              </ReportItem>
+              <ChildGroups>
+                <TableGroup Name="group3" />
+                <TableGroup Name="tableGroup1" />
+                <TableGroup Name="group2" />
+                <TableGroup Name="group4" />
+                <TableGroup Name="tableGroup2" />
+              </ChildGroups>
+            </TableGroup>
+          </ColumnGroups>
+        </Table>
+      </Items>
+    </DetailSection>
+  </Items>
+  <PageSettings PaperKind="A4" Landscape="False" ContinuousPaper="False">
+    <Margins>
+      <MarginsU Left="0.3in" Right="0.3in" Top="0.2in" Bottom="0.1in" />
+    </Margins>
+  </PageSettings>
+  <StyleSheet>
+    <StyleRule>
+      <Style>
+        <Padding Left="2pt" Right="2pt" />
+      </Style>
+      <Selectors>
+        <TypeSelector Type="TextItemBase" />
+        <TypeSelector Type="HtmlTextBox" />
+      </Selectors>
+    </StyleRule>
+    <StyleRule>
+      <Style Color="Black" TextAlign="Left">
+        <Font Name="Segoe UI Light" Size="25pt" Bold="True" />
+      </Style>
+      <Selectors>
+        <StyleSelector Type="ReportItemBase" StyleName="Header" />
+      </Selectors>
+    </StyleRule>
+    <StyleRule>
+      <Style BackgroundColor="Transparent" Color="177, 161, 82" TextAlign="Center" VerticalAlign="Middle">
+        <Font Name="Segoe UI Light" Size="13pt" Bold="True" />
+        <BorderStyle Default="None" Top="None" />
+        <BorderColor Default="Black" />
+      </Style>
+      <Selectors>
+        <TypeSelector Type="TextBox" />
+      </Selectors>
+    </StyleRule>
+    <StyleRule>
+      <Style TextAlign="Center" VerticalAlign="Bottom">
+        <Font Name="Segoe UI" Size="9pt" Bold="True" />
+        <BorderStyle Top="Solid" Bottom="Solid" />
+        <BorderWidth Default="0.5pt" />
+        <Padding Top="0.3cm" Bottom="0.5cm" />
+      </Style>
+      <Selectors>
+        <TypeSelector Type="Barcode" />
+      </Selectors>
+    </StyleRule>
+  </StyleSheet>
+  <ReportParameters>
+    <ReportParameter Name="pid" Type="Integer" />
+    <ReportParameter Name="hovado" />
+    <ReportParameter Name="datum" Type="DateTime" />
+  </ReportParameters>
+</Report>

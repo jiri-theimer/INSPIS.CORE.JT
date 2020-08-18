@@ -10,7 +10,10 @@ namespace UI.Controllers
 {
     public class PokusController : BaseController
     {
-       
+        public IActionResult PokusReport()
+        {
+            return View();
+        }
         public IActionResult Strom()
         {
             var v = new UI.Models.Pokus();

@@ -1,0 +1,74 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Telerik HTML5 Report Viewer Demo in ASP.NET Core</title>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <link href="https://kendo.cdn.telerik.com/2020.1.114/styles/kendo.common.min.css" rel="stylesheet" />
+    <link href="https://kendo.cdn.telerik.com/2020.1.114/styles/kendo.blueopal.min.css" rel="stylesheet" />
+
+    <script src="/js/site.js" asp-append-version="true"></script>
+
+    <script src="/api/reports/resources/js/telerikReportViewer"></script>
+
+    <style>
+        #reportViewer1 {
+            position: absolute;
+            left: 5px;
+            right: 5px;
+            top: 50px;
+            bottom: 5px;
+            overflow: hidden;
+            font-family: Verdana, Arial;
+        }
+    </style>
+
+</head>
+<body>
+    <textarea id="json"></textarea>
+
+    <div id="reportViewer1">
+        loading...
+    </div>
+
+    <script>
+
+        $(document).ready(function () {
+            var d = new Date("1973-08-21");
+
+            var qs = QueryStringToJSON();
+            document.getElementById('json').innerText = JSON.stringify(qs);
+
+            $("#reportViewer1")
+                .telerik_ReportViewer({
+                    serviceUrl: "api/reports/",
+                    reportSource: {
+                        report: "Barcodes_Report.trdx",                        
+                        parameters: { pid: _get_request_param("pid"), hovado: 'já', datum: d, d1: d, d2: d }
+                    },
+                    viewMode: telerikReportViewer.ViewModes.INTERACTIVE,
+                    scaleMode: telerikReportViewer.ScaleModes.SPECIFIC,
+                    scale: 1.0,
+                    enableAccessibility: false,
+                    sendEmail: { enabled: false }
+                });
+        });
+
+
+        function QueryStringToJSON() {
+            var pairs = location.search.slice(1).split('&');
+
+            var result = {};
+            pairs.forEach(function (pair) {
+                pair = pair.split('=');
+                result[pair[0]] = decodeURIComponent(pair[1] || '');
+            });
+
+            return JSON.parse(JSON.stringify(result));
+        }
+    </script>
+</body>
+</html>

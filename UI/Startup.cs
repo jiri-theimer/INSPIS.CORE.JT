@@ -12,6 +12,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Telerik.Reporting.Services;
+using Telerik.Reporting.Services.AspNetCore;
 
 namespace UI
 {
@@ -21,7 +24,7 @@ namespace UI
         {
             Configuration = configuration;
         }
-      
+
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -35,9 +38,9 @@ namespace UI
                      config.Cookie.SameSite = SameSiteMode.None;
                      config.SlidingExpiration = true;
                      config.ExpireTimeSpan = TimeSpan.FromHours(24);
-                     config.Cookie.Name = "CormenCloudCore";
+                     config.Cookie.Name = "InspisCloudCore";
                      config.ReturnUrlParameter = "returnurl";
-                     config.LoginPath = "/Login/UserLogin";                     
+                     config.LoginPath = "/Login/UserLogin";
                  });
 
             services.Configure<Microsoft.Extensions.WebEncoders.WebEncoderOptions>(options =>
@@ -45,7 +48,14 @@ namespace UI
                 options.TextEncoderSettings = new System.Text.Encodings.Web.TextEncoderSettings(System.Text.Unicode.UnicodeRanges.All);
             });
 
+            services.AddControllers();      //kvùli telerik reporting
             services.AddControllersWithViews();
+            services.Configure<IISServerOptions>(options =>
+            {
+                options.AllowSynchronousIO = true;      //kvùli telerik reporting
+            });
+
+            services.AddRazorPages().AddNewtonsoftJson();   //kvùli telerik reporting
 
             var conf = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
             var strLogFolder = conf.GetSection("Folders")["Log"];
@@ -69,7 +79,7 @@ namespace UI
                 ,
                 LogoImage = conf.GetSection("App")["LogoImage"]
                 ,
-                Implementation= conf.GetSection("App")["Implementation"]
+                Implementation = conf.GetSection("App")["Implementation"]
                 ,
                 UploadFolder = conf.GetSection("Folders")["Upload"]
                 ,
@@ -77,17 +87,23 @@ namespace UI
                 ,
                 LogFolder = strLogFolder
                 ,
-                TranslatorMode=conf.GetSection("App")["TranslatorMode"]
+                TranslatorMode = conf.GetSection("App")["TranslatorMode"]
             });
 
-            
+
             services.AddSingleton<BL.TheEntitiesProvider>();
             services.AddSingleton<BL.TheTranslator>();
             services.AddSingleton<BL.TheColumnsProvider>();
             services.AddSingleton<BL.ThePeriodProvider>();
             services.AddSingleton<BL.TheGlobalParams>();
             
-
+            services.TryAddSingleton<IReportServiceConfiguration>(sp =>
+            new ReportServiceConfiguration
+            {
+                ReportingEngineConfiguration = ConfigurationHelper.ResolveConfiguration(sp.GetService<IWebHostEnvironment>()),HostAppId = "ReportingCore3App",Storage = new Telerik.Reporting.Cache.File.FileStorage(),
+                ReportSourceResolver = new UriReportSourceResolver(System.IO.Path.Combine(sp.GetService<IWebHostEnvironment>().ContentRootPath, "Reports"))
+            });
+           
             services.AddScoped<BO.RunningUser, BO.RunningUser>();
             services.AddScoped<BL.Factory, BL.Factory>();
         }
