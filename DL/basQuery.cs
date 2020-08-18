@@ -197,6 +197,7 @@ namespace DL
                 }
                 if (mq.Prefix == "a25") AQ(ref lis, "a.a25ID IN (select a25ID FROM a11EventForm WHERE a01ID=@a01id)", "a01id", mq.a01id);
                 if (mq.Prefix == "f06") AQ(ref lis, "a.f06ID IN (select f06ID FROM a11EventForm WHERE a01ID=@a01id)", "a01id", mq.a01id);
+                if (mq.Prefix == "o27") AQ(ref lis, "a.x29ID=101 AND a.o27DataPID=@a01id", "a01id", mq.a01id);
 
             }
             if (mq.a01parentid > 0)
@@ -221,6 +222,7 @@ namespace DL
                 if (mq.Prefix == "k01") AQ(ref lis, "a03_k02.a03ID=@a03id", "a03id", mq.a03id);
                 if (mq.Prefix == "a29") AQ(ref lis, "a.a29ID IN (select a29ID FROM a43InstitutionToList WHERE a03ID=@a03id)", "a03id", mq.a03id);
                 if (mq.Prefix == "a42") AQ(ref lis, "a.a42ID IN (select a42ID FROM a01Event WHERE a03ID=@a03id)", "a03id", mq.a03id);
+                if (mq.Prefix == "o27") AQ(ref lis, "a.x29ID=101 AND a.o27DataPID IN (select a01ID FROM a01Event WHERE a03ID=@a03id)", "a03id", mq.a03id);
             }
             if (mq.a03id_founder > 0)
             {
@@ -260,6 +262,7 @@ namespace DL
                 if (mq.Prefix == "a01") AQ(ref lis, "a.a42ID=@a42id", "a42id", mq.a42id);
                 if (mq.Prefix == "a03") AQ(ref lis, "a.a03ID IN (select a03ID FROM a01Event WHERE a42ID=@a42id)", "a42id", mq.a42id);
                 if (mq.Prefix == "x40") AQ(ref lis, "a.x29ID=101 AND a.x40DataPid IN (select a01ID FROM a01Event WHERE a42ID=@a42id)", "a42id", mq.a42id);
+                if (mq.Prefix == "o27") AQ(ref lis, "a.x29ID=142 AND a.o27DataPID=@a42id", "a42id", mq.a42id);
 
             }
             if (mq.b01id > 0)
@@ -291,8 +294,13 @@ namespace DL
                 if (mq.Prefix == "f18") AQ(ref lis, "a.f06ID=@f06id", "f06id", mq.f06id);
                 if (mq.Prefix == "f19") AQ(ref lis, "a.f18ID IN (SELECT f18ID FROM f18FormSegment WHERE f06ID=@f06id)", "f06id", mq.f06id);
                 if (mq.Prefix == "f32") AQ(ref lis, "a11.f06ID=@f06id", "f06id", mq.f06id);
-                if (mq.Prefix == "xx1") AQ(ref lis, "f18.f06ID=@f06id", "f18id", mq.f18id); //f21ReplyUnitJoinedF19: GetListJoinedF19
+                if (mq.Prefix == "xx1") AQ(ref lis, "f18.f06ID=@f06id", "f06id", mq.f06id); //f21ReplyUnitJoinedF19: GetListJoinedF19
                 if (mq.Prefix == "f31") AQ(ref lis, "a11.f06ID=@f06id", "f06id", mq.f06id);
+                if (mq.Prefix == "o27") AQ(ref lis, "a.x29ID=406 AND a.o27DataPID=@f06id", "f06id", mq.f06id);
+            }
+            if (mq.f32id > 0)
+            {
+                if (mq.Prefix == "o27") AQ(ref lis, "a.x29ID=432 AND a.o27DataPID=@f32id", "f32id", mq.f32id);
             }
             if (mq.f18id > 0)
             {
@@ -300,6 +308,7 @@ namespace DL
                 if (mq.Prefix == "f32") AQ(ref lis, "f19.f18ID=@f18id", "f18id", mq.f18id);
                 if (mq.Prefix == "xx1") AQ(ref lis, "f19.f18ID=@f18id", "f18id", mq.f18id); //f21ReplyUnitJoinedF19: GetListJoinedF19
                 if (mq.Prefix == "f31") AQ(ref lis, "f19.f18ID=@f18id", "f18id", mq.f18id);
+                if (mq.Prefix == "o27") AQ(ref lis, "a.x29ID=418 AND a.o27DataPID=@f18id", "f18id", mq.f18id);
             }
             if (mq.f21id > 0)
             {
@@ -319,6 +328,7 @@ namespace DL
                 if (mq.Prefix == "f21") AQ(ref lis, "a.f21ID IN (SELECT f21ID FROM f20ReplyUnitToQuestion WHERE f19ID=@f19id)", "f19id", mq.f19id);
                 if (mq.Prefix == "xx1") AQ(ref lis, "f20.f19ID=@f19id", "f19id", mq.f19id); //f21ReplyUnitJoinedF19: GetListJoinedF19
                 if (mq.Prefix == "f32" || mq.Prefix=="f31") AQ(ref lis, "a.f19ID=@f19id", "f19id", mq.f19id);
+                if (mq.Prefix == "o27") AQ(ref lis, "a.x29ID=419 AND a.o27DataPID=@f19id", "f19id", mq.f19id);
             }
             if (mq.f19ids !=null && mq.f19ids.Count > 0)
             {
@@ -355,6 +365,7 @@ namespace DL
                 if (mq.Prefix == "j90" || mq.Prefix == "j92") AQ(ref lis, "a.j03ID IN (select j03ID FROM j03User WHERE j02ID=@j02id)", "j02id", mq.j02id);
 
                 if (mq.Prefix == "x40") AQ(ref lis, "a.j03ID_Creator IN (select j03ID FROM j03User WHERE j02ID=@j02id)", "j02id", mq.j02id);
+                if (mq.Prefix == "o27") AQ(ref lis, "a.x29ID=502 AND a.o27DataPID=@j02id", "j02id", mq.j02id);
 
             }
             if (mq.j02id_leader > 0)

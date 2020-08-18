@@ -10,7 +10,7 @@ namespace BL
         public BO.f19Question Load(int pid);
         public IEnumerable<BO.f19Question> GetList(BO.myQuery mq);
         public int Save(BO.f19Question rec, List<int> f21ids);
-
+        public IEnumerable<BO.f27LinkUrl> GetList_AllF27();
 
     }
     class f19QuestionBL : BaseBL, If19QuestionBL
@@ -275,6 +275,12 @@ namespace BL
             {
 
             }
+        }
+
+        public IEnumerable<BO.f27LinkUrl> GetList_AllF27()
+        {
+            
+            return _db.GetList<BO.f27LinkUrl>("select a.*,"+ _db.GetSQL1_Ocas("f27")+" FROM f27LinkUrl a");
         }
 
     }

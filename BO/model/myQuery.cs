@@ -107,6 +107,7 @@ namespace BO
         public int f25id { get; set; }
         public int f26id { get; set; }
         public int f29id { get; set; }
+        public int f32id { get; set; }
         public int h04id { get; set; }
         public int h11id { get; set; }
         public int a10id { get; set; }

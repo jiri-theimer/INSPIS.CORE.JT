@@ -11,6 +11,7 @@ namespace BL
         public BO.o27Attachment LoadByGuid(string guid);
         
         public IEnumerable<BO.o27Attachment> GetList(BO.myQuery mq, string tempguid);
+        public IEnumerable<BO.o27Attachment> GetList_f19Inf18(int f18id);
         public BO.o27Attachment InhaleFileByInfox(string strInfoxFullPath);
         public List<BO.o27Attachment> GetTempFiles( string strTempGUID);
         public int Save(BO.o27Attachment rec);
@@ -61,6 +62,11 @@ namespace BL
                 fq.FinalSql += " AND a.o27ID NOT IN (select p85DataPID FROM p85Tempbox WHERE p85Guid=@guid)";
             }
             return _db.GetList<BO.o27Attachment>(fq.FinalSql, fq.Parameters);
+        }
+        public IEnumerable<BO.o27Attachment> GetList_f19Inf18(int f18id)
+        {
+            string s = GetSQL1(" WHERE a.x29ID=419 AND a.o27DataPID IN (SELECT f19ID FROM f19Question WHERE f18ID=@f18id)");
+            return _db.GetList<BO.o27Attachment>(s, new { f18id = f18id });
         }
 
 
