@@ -13,5 +13,9 @@ namespace UI.Models.Record
 
         public string j04IDs { get; set; }
         public string j04Names { get; set; }
+
+        public string UploadGuid { get; set; }
+
+        public BO.o27Attachment RecO27 { get; set; }
     }
 }

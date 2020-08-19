@@ -12,7 +12,7 @@ namespace UI.Controllers
     {
         public IActionResult Record(int pid, bool isclone)
         {
-            var v = new x31Record() { rec_pid = pid, rec_entity = "x31" };
+            var v = new x31Record() { rec_pid = pid, rec_entity = "x31",UploadGuid=BO.BAS.GetGuid() };
             v.Rec = new BO.x31Report();
             if (v.rec_pid > 0)
             {
@@ -30,18 +30,23 @@ namespace UI.Controllers
                 mq.x31id = v.rec_pid;                
                 v.j04IDs = string.Join(",", Factory.j04UserRoleBL.GetList(mq).Select(p => p.pid));
                 v.j04Names = string.Join(",", Factory.j04UserRoleBL.GetList(mq).Select(p => p.j04Name));
+
+                
+
             }
             v.Toolbar = new MyToolbarViewModel(v.Rec);
             if (isclone)
             {
                 v.MakeClone();
             }
+            RefreshState(v);
             return View(v);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Record(Models.Record.x31Record v)
         {
+            RefreshState(v);
             if (ModelState.IsValid)
             {
                 BO.x31Report c = new BO.x31Report();
@@ -59,14 +64,34 @@ namespace UI.Controllers
                 c.pid = Factory.x31ReportBL.Save(c, x32ids,j04ids);
                 if (c.pid > 0)
                 {
+                    if (Factory.o27AttachmentBL.SaveSingleUpload(v.UploadGuid, 931, c.pid))
+                    {
+                        v.SetJavascript_CallOnLoad(c.pid);
+                        return View(v);
+                    }
 
-                    v.SetJavascript_CallOnLoad(c.pid);
-                    return View(v);
+                    
                 }
             }
             this.Notify_RecNotSaved();
             return View(v);
 
+        }
+
+        private void RefreshState(x31Record v)
+        {
+            if (v.rec_pid > 0)
+            {
+                var mq = new BO.myQuery("o27");
+                mq.recpid = v.rec_pid;
+                mq.x29id = 931;
+                var lisO27 = Factory.o27AttachmentBL.GetList(mq, null);
+                if (lisO27.Count() > 0)
+                {
+                    v.RecO27 = lisO27.First();
+                }
+            }
+            
         }
     }
 }

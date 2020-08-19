@@ -45,6 +45,48 @@ namespace UI.Controllers
             }
             
         }
+        public IActionResult SingleUpload(string guid)
+        {
+            if (string.IsNullOrEmpty(guid) == true)
+            {
+                return this.StopPageSubform("guid missing");
+            }
+            var v = new FileUploadSingleViewModel() { Guid = guid };
+            v.lisTempFiles = Factory.o27AttachmentBL.GetTempFiles(v.Guid);
+            return View(v);
+        }
+        [HttpPost]
+        public async Task<IActionResult> SingleUpload(FileUploadSingleViewModel v, List<IFormFile> files)
+        {
+
+            var tempDir = Factory.App.TempFolder + "\\";
+
+            foreach (var formFile in files)
+            {
+                if (formFile.Length > 0)
+                {
+                    // full path to file in temp location
+                    //var strTempFullPath = Path.GetTempFileName();
+                    //příklad infox: image/png|99330|2019-11-13_104250.png|8ab14290cd8d4a929d518d2f9e663ecd_2019-11-13_104250.png|8ab14290cd8d4a929d518d2f9e663ecd|1|Popisek|Číslo jednací|101
+
+                    var strTempFullPath = tempDir + v.Guid + "_" + formFile.FileName;
+                    
+
+                    System.IO.File.WriteAllText(tempDir + v.Guid + ".infox", formFile.ContentType + "|" + formFile.Length.ToString() + "|" + formFile.FileName + "|" + v.Guid + "_" + formFile.FileName + "|" + v.Guid + "|0|||0");
+
+
+                    using (var stream = new FileStream(strTempFullPath, FileMode.Create))
+                    {
+                        await formFile.CopyToAsync(stream);
+                    }
+                }
+            }
+
+            v.lisTempFiles = Factory.o27AttachmentBL.GetTempFiles(v.Guid);
+            return View(v);
+            
+        }
+
         public IActionResult DoUpload(string guid, int x29id,string prefix,int o13id,int recpid)
         {
             if (x29id == 0 || string.IsNullOrEmpty(guid)==true)

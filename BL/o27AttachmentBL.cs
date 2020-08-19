@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -16,6 +17,7 @@ namespace BL
         public List<BO.o27Attachment> GetTempFiles( string strTempGUID);
         public int Save(BO.o27Attachment rec);
         public bool SaveChangesAndUpload(string guid, int x29id, int recpid);
+        public bool SaveSingleUpload(string guid, int x29id, int recpid);
         public List<BO.o27Attachment> CopyTempFiles2Upload(string strTempGUID);
         public string GetUploadFolder(int o13id);
         public bool CopyOneTempFile2Upload(string strTempFileName, string strDestFolderName, string strDestFileName);
@@ -119,6 +121,64 @@ namespace BL
 
             return intPID;
         }
+
+        public bool SaveSingleUpload(string guid, int x29id, int recpid)
+        {
+            using (var sc = new System.Transactions.TransactionScope()) //podléhá jedné transakci
+            {
+                var recs4upload = new List<BO.o27Attachment>();
+                var mq = new BO.myQuery("o27");
+                mq.recpid = recpid;
+                mq.x29id = x29id;
+                var lisO27Saved = GetList(mq,null);
+
+                mq = new BO.myQuery("o13");
+                var lisO13 = _mother.o13AttachmentTypeBL.GetList(mq).Where(p => p.x29ID == x29id);
+                if (lisO13.Count() == 0)
+                {
+                    this.AddMessage("Nelze najít vhodný typ dokumentu.");return false;                    
+                }
+                if (GetTempFiles(guid).Count > 0)
+                {
+                    foreach (var recO27 in GetTempFiles(guid))
+                    {
+                        recO27.x29ID = x29id;
+                        recO27.o27DataPID = recpid;
+                        recO27.o13ID = lisO13.First().pid;
+                        recO27.o27ArchiveFolder = GetUploadFolder(recO27.o13ID);
+                        recO27.o27ArchiveFileName = recO27.o27OriginalFileName;
+
+                        if (lisO27Saved.Count() > 0)
+                        {
+                            recO27.pid = lisO27Saved.First().pid;   //natvrdo přepsat stávající záznam dokumentu
+                            recO27.o27ID = recO27.pid;
+                        }
+                        var intO27ID = Save(recO27);
+                        if (intO27ID > 0)
+                        {
+                            recs4upload.Add(recO27);
+                            
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                }
+                
+                sc.Complete();
+
+                foreach (var rec in recs4upload)
+                {
+                    //soubor na serveru se ukládá pod jeho originálním fyzickým názvem
+                    CopyOneTempFile2Upload(guid+"_"+rec.o27OriginalFileName, rec.o27ArchiveFolder, rec.o27OriginalFileName);
+                }
+            }
+
+
+            return true;
+        }
+
 
         public bool SaveChangesAndUpload(string guid,int x29id,int recpid)
         {
@@ -233,7 +293,7 @@ namespace BL
         public List<BO.o27Attachment> GetTempFiles(string strTempGUID)
         {
             var lisO27 = new List<BO.o27Attachment>();
-            foreach (string file in System.IO.Directory.EnumerateFiles(_mother.App.TempFolder, strTempGUID + "_*.infox", System.IO.SearchOption.TopDirectoryOnly))
+            foreach (string file in System.IO.Directory.EnumerateFiles(_mother.App.TempFolder, strTempGUID + "*.infox", System.IO.SearchOption.TopDirectoryOnly))
             {
                 var rec = InhaleFileByInfox(file);
                 if (System.IO.File.Exists(_mother.App.TempFolder + "\\" + rec.o27ArchiveFileName) == true)
@@ -267,7 +327,7 @@ namespace BL
         public List<BO.o27Attachment> CopyTempFiles2Upload(string strTempGUID)
         {
             var lisO27 = new List<BO.o27Attachment>();
-            foreach (string file in System.IO.Directory.EnumerateFiles(_mother.App.TempFolder, strTempGUID + "_*.infox", System.IO.SearchOption.TopDirectoryOnly))
+            foreach (string file in System.IO.Directory.EnumerateFiles(_mother.App.TempFolder, strTempGUID + "*.infox", System.IO.SearchOption.TopDirectoryOnly))
             {
                 BO.o27Attachment rec = InhaleFileByInfox(file);
                 if (rec.o13ID > 0)

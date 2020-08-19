@@ -7,6 +7,10 @@
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
+
+    <script src="/js/reporting/resources.en.js"></script>
+    <script src="/js/reporting/resources.cs.js"></script>
+
     <link href="https://kendo.cdn.telerik.com/2020.1.114/styles/kendo.common.min.css" rel="stylesheet" />
     <link href="https://kendo.cdn.telerik.com/2020.1.114/styles/kendo.blueopal.min.css" rel="stylesheet" />
 
@@ -28,7 +32,7 @@
 
 </head>
 <body>
-    <textarea id="json"></textarea>
+    
 
     <div id="reportViewer1">
         loading...
@@ -39,18 +43,18 @@
         $(document).ready(function () {
             var d = new Date("1973-08-21");
 
-            var qs = QueryStringToJSON();
-            document.getElementById('json').innerText = JSON.stringify(qs);
+            //var qs = QueryStringToJSON();
+            //document.getElementById('json').innerText = JSON.stringify(qs);
 
             $("#reportViewer1")
                 .telerik_ReportViewer({
                     serviceUrl: "api/reports/",
                     reportSource: {
                         report: "Barcodes_Report.trdx",                        
-                        parameters: { pid: _get_request_param("pid"), hovado: 'já', datum: d, d1: d, d2: d }
+                        parameters: { pid: _get_request_param("pid"), hovado: 'já', datum: d }
                     },
                     viewMode: telerikReportViewer.ViewModes.INTERACTIVE,
-                    scaleMode: telerikReportViewer.ScaleModes.SPECIFIC,
+                    scaleMode: telerikReportViewer.ScaleModes.SPECIFIC,                   
                     scale: 1.0,
                     enableAccessibility: false,
                     sendEmail: { enabled: false }
