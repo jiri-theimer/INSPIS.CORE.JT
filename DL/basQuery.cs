@@ -198,6 +198,10 @@ namespace DL
                 if (mq.Prefix == "a25") AQ(ref lis, "a.a25ID IN (select a25ID FROM a11EventForm WHERE a01ID=@a01id)", "a01id", mq.a01id);
                 if (mq.Prefix == "f06") AQ(ref lis, "a.f06ID IN (select f06ID FROM a11EventForm WHERE a01ID=@a01id)", "a01id", mq.a01id);
                 if (mq.Prefix == "o27") AQ(ref lis, "a.x29ID=101 AND a.o27DataPID=@a01id", "a01id", mq.a01id);
+                if (mq.Prefix == "x31")
+                {
+                    AQ(ref lis, "(a.x31IsAllA10IDs=1 OR a.x31ID IN (SELECT a23.x31ID FROM a01Event a01 INNER JOIN a10EventType a10 ON a01.a10ID=a10.a10ID INNER JOIN a23EventType_Report a23 ON a10.a10ID=a23.a10ID WHERE a01.a01ID=@a01id)) AND (a.x31IsAllA08IDs=1 OR a.x31ID IN (SELECT a27.x31ID FROM a01Event a01 INNER JOIN a08Theme a08 ON a01.a08ID=a08.a08ID INNER JOIN a27EventTheme_Report a27 ON a08.a08ID=a27.a08ID WHERE a01.a01ID=@a01id))", "a01id", mq.a01id);
+                }
 
             }
             if (mq.a01parentid > 0)
@@ -434,8 +438,8 @@ namespace DL
             }
             if (mq.x29id > 0)
             {
-                if (mq.Prefix == "o13") AQ(ref lis, "a.x29ID=@x29id", "x29id", mq.x29id);
-                if (mq.Prefix == "o27") AQ(ref lis, "a.x29ID=@x29id", "x29id", mq.x29id);
+                if (mq.Prefix == "o13" || mq.Prefix=="o27" || mq.Prefix == "x31") AQ(ref lis, "a.x29ID=@x29id", "x29id", mq.x29id);
+                
             }
             if (mq.recpid > 0)
             {
@@ -470,6 +474,10 @@ namespace DL
             if (mq.Prefix=="x24" && mq.param1== "textbox")
             {
                 AQ(ref lis, "a.x24ID IN (1,2,3,4,5)", "", null);    //filtr v datovém typu otázky pro TEXTBOX
+            }
+            if (mq.Prefix=="x31" && mq.param1== "x31Is4SingleRecord=1")
+            {
+                AQ(ref lis, "a.x31Is4SingleRecord=1", "", null);    //pouze kontextové sestavy
             }
 
             if (mq.TheGridFilter != null)

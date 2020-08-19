@@ -10,6 +10,14 @@ namespace UI.Controllers
 {
     public class x31Controller : BaseController
     {
+        public IActionResult ReportModal(int pid, string prefix)
+        {
+            var v = new ReportModalViewModel() { rec_pid = pid, rec_prefix = "x31" };
+
+            v.x29ID = Factory.EProvider.ByPrefix(prefix).x29ID;
+            return View(v);
+        }
+
         public IActionResult Record(int pid, bool isclone)
         {
             var v = new x31Record() { rec_pid = pid, rec_entity = "x31",UploadGuid=BO.BAS.GetGuid() };

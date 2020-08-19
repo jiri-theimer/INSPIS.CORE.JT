@@ -342,6 +342,7 @@ namespace UI.Controllers
                     var permA01 = Factory.a01EventBL.InhalePermission(recA01);                    
                     AMI("Posunout/Doplnit", string.Format("javascript: _window_open('/workflow/Dialog?pid={0}')", pid));
                     AMI("Nahrát přílohu", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
+                    AMI("Tisková sestava", string.Format("javascript: _window_open('/x31/ReportModal?pid={0}&prefix=a01',2)", pid));
                     DIV();
                     if (permA01.PermValue == a01EventPermissionENUM.ShareTeam_Leader || permA01.PermValue == a01EventPermissionENUM.ShareTeam_Owner || permA01.PermValue == a01EventPermissionENUM.FullAccess)
                     {
