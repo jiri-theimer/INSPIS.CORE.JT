@@ -57,7 +57,7 @@ namespace UI.Controllers
             {
                 v.RecX31 = Factory.x31ReportBL.Load(v.SelectedX31ID);
                 v.SelectedReport = v.RecX31.x31Name;
-
+                
                 var mq = new BO.myQuery("o27");
                 mq.recpid = v.SelectedX31ID;
                 mq.x29id = 931;

@@ -9,6 +9,10 @@ namespace BO
 {
     public class BASFILE
     {
+        public static FileInfo GetFileInfo(string strFullPath)
+        {
+            return new FileInfo(strFullPath);
+        }
 
         public static void SaveStream2File(String strDestFullPath, Stream inputStream)
         {

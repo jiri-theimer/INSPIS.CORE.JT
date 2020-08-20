@@ -18,6 +18,7 @@ namespace BL
         public int Save(BO.o27Attachment rec);
         public bool SaveChangesAndUpload(string guid, int x29id, int recpid);
         public bool SaveSingleUpload(string guid, int x29id, int recpid);
+        public int UploadAndSaveOneFile(BO.o27Attachment rec, string strOrigFileName, string strSourceFullPath, string strExplicitArchiveFileName = null);
         public List<BO.o27Attachment> CopyTempFiles2Upload(string strTempGUID);
         public string GetUploadFolder(int o13id);
         public bool CopyOneTempFile2Upload(string strTempFileName, string strDestFolderName, string strDestFileName);
@@ -120,6 +121,51 @@ namespace BL
 
 
             return intPID;
+        }
+
+        public int UploadAndSaveOneFile(BO.o27Attachment rec,string strOrigFileName,string strSourceFullPath,string strExplicitArchiveFileName = null)
+        {
+            if (rec.x29ID == 0 && rec.o13ID>0)
+            {
+                rec.x29ID = _mother.o13AttachmentTypeBL.Load(rec.o13ID).x29ID;
+            }
+            if (string.IsNullOrEmpty(strOrigFileName) == true)
+            {
+                rec.o27OriginalFileName = BO.BASFILE.GetFileInfo(strSourceFullPath).Name;
+            }
+            else
+            {
+                rec.o27OriginalFileName = strOrigFileName;
+            }
+            
+            rec.o27OriginalExtension = BO.BASFILE.GetFileInfo(strSourceFullPath).Extension;
+            rec.o27FileSize = Convert.ToInt32(BO.BASFILE.GetFileInfo(strSourceFullPath).Length);            
+            
+            if (string.IsNullOrEmpty(strExplicitArchiveFileName) == false)
+            {
+                rec.o27ArchiveFileName = strExplicitArchiveFileName;
+            }
+            if (string.IsNullOrEmpty(rec.o27ArchiveFileName))
+            {
+                rec.o27ArchiveFileName = rec.o27OriginalFileName ;
+            }
+            if (ValidateBeforeSave(rec) == false)
+            {
+                return 0;
+            }
+            rec.o27ArchiveFolder = GetUploadFolder(rec.o13ID);
+            if (!System.IO.Directory.Exists(_mother.App.UploadFolder + "\\" + rec.o27ArchiveFolder))
+            {
+                System.IO.Directory.CreateDirectory(_mother.App.UploadFolder + "\\" + rec.o27ArchiveFolder);
+            }
+            var intO27ID = Save(rec);
+            if (intO27ID > 0)
+            {
+                System.IO.File.Copy(strSourceFullPath, _mother.App.UploadFolder + "\\" + rec.o27ArchiveFolder+"\\"+rec.o27ArchiveFileName, true);
+            }
+
+            return intO27ID;
+
         }
 
         public bool SaveSingleUpload(string guid, int x29id, int recpid)
@@ -236,7 +282,10 @@ namespace BL
             {
                 this.AddMessage("Chybí vyplnit [o27ArchiveFileName]."); return false;
             }
-            
+            if (string.IsNullOrEmpty(rec.o27OriginalFileName))
+            {
+                this.AddMessage("Chybí vyplnit [o27OriginalFileName]."); return false;
+            }
 
 
             return true;

@@ -42,6 +42,13 @@ namespace UI.Controllers
             return View(v);
         }
 
+        public int test1()
+        {
+            var c = Factory.a11EventFormBL.LoadPoll(646278, "7076");
+
+            return c.pid;
+        }
+
 
         private void RefreshState(UI.Models.Pokus v)
         {

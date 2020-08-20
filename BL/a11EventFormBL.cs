@@ -7,6 +7,8 @@ namespace BL
     public interface Ia11EventFormBL
     {
         public BO.a11EventForm Load(int pid);
+        public BO.a11EventForm LoadPoll(string signature, string pin, int a11id_exclude = 0);
+        public BO.a11EventForm LoadPoll(int a01id, string pin, int a11id_exclude = 0);
         public IEnumerable<BO.a11EventForm> GetList(BO.myQuery mq);
         public int Save(BO.a11EventForm rec);
         public void LockUnLockPolls(int a01id, bool bolLock);
@@ -44,6 +46,30 @@ namespace BL
         public BO.a11EventForm Load(int pid)
         {
             return _db.Load<BO.a11EventForm>(GetSQL1(" WHERE a.a11ID=@pid"), new { pid = pid });
+        }
+        public BO.a11EventForm LoadPoll(string signature,string pin,int a11id_exclude = 0)
+        {
+            if (a11id_exclude > 0)
+            {
+                return _db.Load<BO.a11EventForm>(GetSQL1(" WHERE a.a11IsPoll=1 AND a.a11AccessToken=@pin AND a11_a01.a01Signature=@signature AND a.a11ID<>@a11id_exclude"), new { signature = signature, pin = pin, a11id_exclude = a11id_exclude });                
+            }
+            else
+            {
+                return _db.Load<BO.a11EventForm>(GetSQL1(" WHERE a.a11IsPoll=1 AND a.a11AccessToken=@pin AND a11_a01.a01Signature=@signature"), new { signature = signature, pin = pin });
+            }
+            
+        }
+        public BO.a11EventForm LoadPoll(int a01id, string pin, int a11id_exclude = 0)
+        {
+            if (a11id_exclude > 0)
+            {
+                return _db.Load<BO.a11EventForm>(GetSQL1(" WHERE a.a11IsPoll=1 AND a.a11AccessToken=@pin AND a.a01ID=@a01id AND a.a11ID<>@a11id_exclude"), new { a01id = a01id, pin = pin, a11id_exclude = a11id_exclude });
+            }
+            else
+            {
+                return _db.Load<BO.a11EventForm>(GetSQL1(" WHERE a.a11IsPoll=1 AND a.a11AccessToken=@pin AND a.a01ID=@a01id"), new { a01id = a01id, pin = pin });
+            }
+                
         }
 
         public IEnumerable<BO.a11EventForm> GetList(BO.myQuery mq)
