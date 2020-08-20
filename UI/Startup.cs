@@ -85,6 +85,8 @@ namespace UI
                 ,
                 TempFolder = conf.GetSection("Folders")["Temp"]
                 ,
+                ReportFolder = conf.GetSection("Folders")["Report"]
+                ,
                 LogFolder = strLogFolder
                 ,
                 TranslatorMode = conf.GetSection("App")["TranslatorMode"]
@@ -101,7 +103,7 @@ namespace UI
             new ReportServiceConfiguration
             {
                 ReportingEngineConfiguration = ConfigurationHelper.ResolveConfiguration(sp.GetService<IWebHostEnvironment>()),HostAppId = "ReportingCore3App",Storage = new Telerik.Reporting.Cache.File.FileStorage(),
-                ReportSourceResolver = new UriReportSourceResolver(System.IO.Path.Combine(sp.GetService<IWebHostEnvironment>().ContentRootPath, "Reports"))
+                ReportSourceResolver = new UriReportSourceResolver(conf.GetSection("Folders")["Report"])
             });
            
             services.AddScoped<BO.RunningUser, BO.RunningUser>();

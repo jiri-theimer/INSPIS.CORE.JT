@@ -10,12 +10,68 @@ namespace UI.Controllers
 {
     public class x31Controller : BaseController
     {
-        public IActionResult ReportModal(int pid, string prefix)
+        public IActionResult ReportModal(int pid, string prefix,int x31id)
         {
-            var v = new ReportModalViewModel() { rec_pid = pid, rec_prefix = "x31" };
+            var v = new ReportModalViewModel() { rec_pid = pid, rec_prefix = prefix };
+            if (string.IsNullOrEmpty(v.rec_prefix)==true || v.rec_pid == 0)
+            {
+                return StopPage(true, "pid or prefix missing");
+            }
+            if (x31id == 0)
+            {
+                if (v.rec_prefix == "a01")
+                {
+                    var recA01 = Factory.a01EventBL.Load(v.rec_pid);
+                    v.UserParamKey = "ReportModal-" + prefix + "-" + recA01.a10ID.ToString() + "-x31id";                    
+                }
+                else
+                {
+                    v.UserParamKey = "ReportModal-" + prefix + "-x31id";                    
+                }
+                x31id = Factory.CBL.LoadUserParamInt(v.UserParamKey);
 
-            v.x29ID = Factory.EProvider.ByPrefix(prefix).x29ID;
+            }
+            v.SelectedX31ID = x31id;
+            
+                        
+            RefreshStateReportModal(v);
             return View(v);
+        }
+        [HttpPost]
+        public IActionResult ReportModal(ReportModalViewModel v,string oper)
+        {
+            RefreshStateReportModal(v);
+
+            if (oper == "change_x31id" && v.SelectedX31ID>0)
+            {
+                Factory.CBL.SetUserParam(v.UserParamKey, v.SelectedX31ID.ToString());
+            }
+            
+            return View(v);
+        }
+
+        private void RefreshStateReportModal(ReportModalViewModel v)
+        {
+            v.x29ID = Factory.EProvider.ByPrefix(v.rec_prefix).x29ID;
+            if (v.SelectedX31ID > 0)
+            {
+                v.RecX31 = Factory.x31ReportBL.Load(v.SelectedX31ID);
+                v.SelectedReport = v.RecX31.x31Name;
+
+                var mq = new BO.myQuery("o27");
+                mq.recpid = v.SelectedX31ID;
+                mq.x29id = 931;
+                var lisO27 = Factory.o27AttachmentBL.GetList(mq, null);
+                if (lisO27.Count() > 0)
+                {
+                    v.ReportFileName = lisO27.First().o27OriginalFileName;
+                }
+                else
+                {
+                    this.AddMessage("Na serveru nelze dohledat soubor šablony zvolené tiskové sestavy.");
+                }
+            }            
+
         }
 
         public IActionResult Record(int pid, bool isclone)

@@ -20,10 +20,6 @@
 
     <link rel="stylesheet" href="~/css/site.css" />
 
-
-</head>
-
-<body>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/modal_bootstrap/bootstrap-show-modal.js"></script>
@@ -32,11 +28,43 @@
     <script src="~/lib/datepicker/bootstrap-datepicker.cs.min.js"></script>
     <script src="~/lib/qtip/jquery.qtip.min.js"></script>
 
+    <script src="/js/reporting/resources.en.js"></script>
+    <script src="/js/reporting/resources.cs.js"></script>
+
+    <link href="https://kendo.cdn.telerik.com/2020.1.114/styles/kendo.common.min.css" rel="stylesheet" />
+    <link href="https://kendo.cdn.telerik.com/2020.1.114/styles/kendo.blueopal.min.css" rel="stylesheet" />
+
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/mycombo.js" asp-append-version="true"></script>
 
     <script src="~/js/contextmenu.js" asp-append-version="true"></script>
     <script src="~/js/mycontrols.js" asp-append-version="true"></script>
+
+    <script src="/api/reports/resources/js/telerikReportViewer"></script>
+
+    <style>
+        #reportViewer1 {
+            position: absolute;
+            left: 5px;
+            right: 5px;
+            top: 50px;
+            bottom: 5px;
+            overflow: hidden;
+            font-family: Verdana, Arial;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="reportViewer1">
+        @if(Model.ReportFileName != null)
+        {
+            <text>
+            loading...
+            </text>
+        }
+        
+    </div>
 
     <script type="text/javascript">
         @if(Model.Javascript_CallOnLoad != null)
@@ -48,23 +76,53 @@
     </script>
 
 
+    <form id="form1" asp-controller="x31" asp-action="ReportModal" method="POST">
+        <input type="hidden" asp-for="@Model.rec_prefix" />
+        <input type="hidden" asp-for="@Model.rec_pid" />
+        <input type="hidden" asp-for="@Model.UserParamKey" />
 
-    <div class="modal_record_container">
-        <div class="form-row">
-            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Tisková sestava"):</label>
-            <div class="col-sm-11 col-md-10">
-                <mycombo entity="x31Report" asp-for="@Model.SelectedX31ID" selectedtext="@Model.SelectedReport" view-flag="2" masterprefix="a01" masterpid="@Model.rec_pid" param1="x31Is4SingleRecord=1"></mycombo>
+        <div class="modal_record_container">
+            <div class="form-row">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Tisková sestava"):</label>
+                <div class="col-sm-10 col-md-9">
+                    <mycombo entity="x31Report" asp-for="@Model.SelectedX31ID" selectedtext="@Model.SelectedReport" view-flag="2" masterprefix="a01" masterpid="@Model.rec_pid" param1="x31Is4SingleRecord=1" event_after_changevalue="x31id_change"></mycombo>
+                </div>
+                <div class="col-sm-1 col-md-1">
+                    <button id="cmdClose" type="button" onclick="window.parent._window_close()" class="btn btn-secondary">@_f.tra("Zavřít")</button>
+                </div>
             </div>
-
         </div>
-    </div>
 
-
-        <script type="text/javascript">
+    </form>
+    <script type="text/javascript">
 
 
     $(document).ready(function ()
     {
+       @if(Model.ReportFileName != null)
+       {
+           <text>
+        $("#reportViewer1")
+            .telerik_ReportViewer(
+                {
+                serviceUrl: "/api/reports/",
+                reportSource: {
+                report: "@Model.ReportFileName",
+                parameters: { pid: @Model.rec_pid }
+                },
+                viewMode: telerikReportViewer.ViewModes.INTERACTIVE,
+                scaleMode: telerikReportViewer.ScaleModes.SPECIFIC,
+                scale: 1.0,
+                enableAccessibility: false,
+                sendEmail: { enabled: false }
+                }
+            );
+
+            </text>
+       }
+
+
+
 
 
         @if (_f.CurrentUser.Messages4Notify != null) {
@@ -81,11 +139,14 @@
 
 
 
+        function x31id_change(x31id) {
+            form1.action = "/x31/ReportModal?oper=change_x31id";
+            form1.submit();
+        }
 
 
 
-
-        </script>
+    </script>
 
 
 </body>
