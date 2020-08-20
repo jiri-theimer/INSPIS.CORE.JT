@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ClosedXML;
 using Microsoft.AspNetCore.Mvc;
 using UI.Models;
 using UI.Models.Record;
@@ -10,9 +11,100 @@ namespace UI.Controllers
 {
     public class x31Controller : BaseController
     {
-        public IActionResult ReportModal(int pid, string prefix,int x31id)
+        private readonly BL.ThePeriodProvider _pp;
+        public x31Controller(BL.ThePeriodProvider pp)
+        {            
+            _pp = pp;
+        }
+
+        public IActionResult ReportNoContext(int x31id)
         {
-            var v = new ReportModalViewModel() { rec_pid = pid, rec_prefix = prefix };
+            var v = new ReportNoContextViewModel();
+                      
+            v.SelectedX31ID = x31id;
+            RefreshStateReportNoContext(v);
+
+            if (v.SelectedX31ID > 0)
+            {
+                
+                
+                //xmlReportSource.Xml = strXmlContent;
+               
+                //var reportPackager = new Telerik.Reporting.ReportPackager();
+                //using (var sourceStream = System.IO.File.OpenRead(v.ReportFileName))
+                //{
+                //    var report = (Telerik.Reporting.Report)reportPackager.UnpackageDocument(sourceStream);
+                //    this.AddMessage(report.ReportParameters.Count().ToString());
+                //}
+
+                //var uriReportSource = new Telerik.Reporting.UriReportSource();
+                //uriReportSource.Uri = v.ReportFileName;
+
+
+
+            }
+
+            return View(v);
+        }
+        [HttpPost]
+        public IActionResult ReportNoContext(ReportNoContextViewModel v, string oper)
+        {
+            RefreshStateReportNoContext(v);
+
+            
+            return View(v);
+        }
+        private void RefreshStateReportNoContext(ReportNoContextViewModel v)
+        {
+            if (v.SelectedX31ID > 0)
+            {
+                v.RecX31 = Factory.x31ReportBL.Load(v.SelectedX31ID);
+                v.SelectedReport = v.RecX31.x31Name;
+
+                var mq = new BO.myQuery("o27");
+                mq.recpid = v.SelectedX31ID;
+                mq.x29id = 931;
+                var lisO27 = Factory.o27AttachmentBL.GetList(mq, null);
+                if (lisO27.Count() > 0)
+                {
+                    v.ReportFileName = lisO27.First().o27ArchiveFileName;
+                    if (!System.IO.File.Exists(Factory.App.ReportFolder + "\\" + v.ReportFileName))
+                    {
+                        v.ReportFileName = lisO27.First().o27OriginalFileName;
+                    }
+                    if (System.IO.File.Exists(Factory.App.ReportFolder + "\\" + v.ReportFileName))
+                    {
+                        var xmlReportSource = new Telerik.Reporting.XmlReportSource();
+                        var strXmlContent = System.IO.File.ReadAllText(Factory.App.ReportFolder + "\\" + v.ReportFileName);
+                        if (strXmlContent.Contains("datFrom") && strXmlContent.Contains("datUntil"))
+                        {
+                            v.IsPeriodFilter = true;
+                            v.PeriodFilter = new PeriodViewModel();
+                            v.PeriodFilter.IsShowButtonRefresh = true;
+                            var per = InhalePeriodFilter();
+                            v.PeriodFilter.PeriodValue = per.pid;
+                            v.PeriodFilter.d1 = per.d1;
+                            v.PeriodFilter.d2 = per.d2;
+                        }
+                        else
+                        {
+                            v.IsPeriodFilter = false;
+                        }
+                    }
+                    
+                }
+                else
+                {
+                    this.AddMessage("Na serveru nelze dohledat soubor šablony zvolené tiskové sestavy.");                    
+                }
+            }
+
+        }
+
+
+        public IActionResult ReportContext(int pid, string prefix,int x31id)
+        {
+            var v = new ReportContextViewModel() { rec_pid = pid, rec_prefix = prefix };
             if (string.IsNullOrEmpty(v.rec_prefix)==true || v.rec_pid == 0)
             {
                 return StopPage(true, "pid or prefix missing");
@@ -22,11 +114,11 @@ namespace UI.Controllers
                 if (v.rec_prefix == "a01")
                 {
                     var recA01 = Factory.a01EventBL.Load(v.rec_pid);
-                    v.UserParamKey = "ReportModal-" + prefix + "-" + recA01.a10ID.ToString() + "-x31id";                    
+                    v.UserParamKey = "ReportContext-" + prefix + "-" + recA01.a10ID.ToString() + "-x31id";                    
                 }
                 else
                 {
-                    v.UserParamKey = "ReportModal-" + prefix + "-x31id";                    
+                    v.UserParamKey = "ReportContext-" + prefix + "-x31id";                    
                 }
                 x31id = Factory.CBL.LoadUserParamInt(v.UserParamKey);
 
@@ -34,13 +126,13 @@ namespace UI.Controllers
             v.SelectedX31ID = x31id;
             
                         
-            RefreshStateReportModal(v);
+            RefreshStateReportContext(v);
             return View(v);
         }
         [HttpPost]
-        public IActionResult ReportModal(ReportModalViewModel v,string oper)
+        public IActionResult ReportContext(ReportContextViewModel v,string oper)
         {
-            RefreshStateReportModal(v);
+            RefreshStateReportContext(v);
 
             if (oper == "change_x31id" && v.SelectedX31ID>0)
             {
@@ -50,7 +142,7 @@ namespace UI.Controllers
             return View(v);
         }
 
-        private void RefreshStateReportModal(ReportModalViewModel v)
+        private void RefreshStateReportContext(ReportContextViewModel v)
         {
             v.x29ID = Factory.EProvider.ByPrefix(v.rec_prefix).x29ID;
             if (v.SelectedX31ID > 0)
@@ -64,7 +156,11 @@ namespace UI.Controllers
                 var lisO27 = Factory.o27AttachmentBL.GetList(mq, null);
                 if (lisO27.Count() > 0)
                 {
-                    v.ReportFileName = lisO27.First().o27OriginalFileName;
+                    v.ReportFileName = lisO27.First().o27ArchiveFileName;
+                    if (!System.IO.File.Exists(Factory.App.ReportFolder+"\\"+ v.ReportFileName))
+                    {
+                        v.ReportFileName = lisO27.First().o27OriginalFileName;
+                    }
                 }
                 else
                 {
@@ -157,5 +253,25 @@ namespace UI.Controllers
             }
             
         }
+
+
+        private BO.ThePeriod InhalePeriodFilter()
+        {
+            var ret = _pp.ByPid(0);
+            int x = Factory.CBL.LoadUserParamInt("report-period-value");
+            if (x > 0)
+            {
+                ret = _pp.ByPid(x);
+            }
+            else
+            {
+                ret.d1 = Factory.CBL.LoadUserParamDate("report-period-d1");
+                ret.d2 = Factory.CBL.LoadUserParamDate("report-period-d2");
+
+            }
+            
+            return ret;
+        }
+
     }
 }

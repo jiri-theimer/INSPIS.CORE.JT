@@ -666,6 +666,13 @@ namespace BL
             AF("x31Report", "x31Description", "Popis");
             AppendTimestamp("x31Report");
 
+            //z01 = pevné tiskové sestavy pro tisk
+            AF("z01_core_view_reports", "x31Name", "Tisková sestava", 1, null, "string", false, true);
+            AF("z01_core_view_reports", "x31PID", "Kód sestavy", 2);
+            AF("z01_core_view_reports", "Categories", "Kategorie", 1, "dbo._core_x31_get_category_inline(a.x31ID)");
+            AF("z01_core_view_reports", "x31Description", "Popis",1);
+            
+
             //x32 = kategorie sestav
             AF("x32ReportType", "TreeItem", "Kategorie sestavy", 1, "case when a.x32TreeLevel > 1 then replace(space(2 * (a.x32TreeLevel - 1)), ' ', '-') else '' END + a.x32Name", "string", false, true);
             AF("x32ReportType", "x32Name", "Název", 2);            

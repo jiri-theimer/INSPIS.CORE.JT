@@ -316,7 +316,7 @@ namespace UI.Controllers
         {
             if (TUP(BO.j05PermValuEnum.Menu_Reports))
             {
-                AMI("Pevné tiskové sestavy", "/Home/About");
+                AMI("Pevné tiskové sestavy", "/TheGrid/FlatView?prefix=z01");
             }
             if (TUP(BO.j05PermValuEnum.Menu_Analyze))
             {
@@ -342,7 +342,7 @@ namespace UI.Controllers
                     var permA01 = Factory.a01EventBL.InhalePermission(recA01);                    
                     AMI("Posunout/Doplnit", string.Format("javascript: _window_open('/workflow/Dialog?pid={0}')", pid));
                     AMI("Nahrát přílohu", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
-                    AMI("Tisková sestava", string.Format("javascript: _window_open('/x31/ReportModal?pid={0}&prefix=a01',2)", pid));
+                    AMI("Tisková sestava", string.Format("javascript: _window_open('/x31/ReportContext?pid={0}&prefix=a01',2)", pid));
                     DIV();
                     if (permA01.PermValue == a01EventPermissionENUM.ShareTeam_Leader || permA01.PermValue == a01EventPermissionENUM.ShareTeam_Owner || permA01.PermValue == a01EventPermissionENUM.FullAccess)
                     {
@@ -485,7 +485,9 @@ namespace UI.Controllers
                     AMI("Kopírovat workflow šablonu", string.Format("javascript:_clone('b01',{0})", pid));
 
                     break;
-
+                case "z01":
+                    AMI("Náhled tiskové sestavy", string.Format("javascript: _window_open('/x31/ReportNoContext?x31id={0}',2)", pid));
+                    break;
                 case "j90":
                 case "j92":
                 case "p44":

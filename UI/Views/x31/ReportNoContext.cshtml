@@ -1,4 +1,4 @@
-﻿@model ReportModalViewModel
+﻿@model ReportNoContextViewModel
 @inject BL.Factory _f
 
 @{
@@ -41,30 +41,39 @@
     <script src="~/js/mycontrols.js" asp-append-version="true"></script>
 
     <script src="/api/reports/resources/js/telerikReportViewer"></script>
+    @if (Model.IsPeriodFilter)
+    {
+        <style>
+            #reportViewer1 {
+                position: absolute;
+                left: 5px;
+                right: 5px;
+                top: 70px;
+                bottom: 3px;
+                overflow: hidden;
+                font-family: Verdana, Arial;
+            }
+        </style>
+    }
+    else
+    {
+        <style>
+            #reportViewer1 {
+                position: absolute;
+                left: 5px;
+                right: 5px;
+                top: 50px;
+                bottom: 3px;
+                overflow: hidden;
+                font-family: Verdana, Arial;
+            }
+        </style>
+    }
 
-    <style>
-        #reportViewer1 {
-            position: absolute;
-            left: 5px;
-            right: 5px;
-            top: 50px;
-            bottom: 5px;
-            overflow: hidden;
-            font-family: Verdana, Arial;
-        }
-    </style>
 </head>
 
 <body>
-    <div id="reportViewer1">
-        @if(Model.ReportFileName != null)
-        {
-            <text>
-            loading...
-            </text>
-        }
-        
-    </div>
+
 
     <script type="text/javascript">
         @if(Model.Javascript_CallOnLoad != null)
@@ -74,31 +83,57 @@
 
     }
     </script>
+    <div>
+        <form id="form1" asp-controller="x31" asp-action="ReportNoContext" method="POST">
 
+            <input type="hidden" asp-for="@Model.IsPeriodFilter" />
 
-    <form id="form1" asp-controller="x31" asp-action="ReportModal" method="POST">
-        <input type="hidden" asp-for="@Model.rec_prefix" />
-        <input type="hidden" asp-for="@Model.rec_pid" />
-        <input type="hidden" asp-for="@Model.UserParamKey" />
-
-        <div class="modal_record_container">
             <div class="form-row">
-                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Tisková sestava"):</label>
-                <div class="col-sm-10 col-md-9">
-                    <mycombo entity="x31Report" asp-for="@Model.SelectedX31ID" selectedtext="@Model.SelectedReport" view-flag="2" masterprefix="a01" masterpid="@Model.rec_pid" param1="x31Is4SingleRecord=1" event_after_changevalue="x31id_change"></mycombo>
+                <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Tisková sestava"):</label>
+                <div class="col-sm-10 col-md-10">
+
+                    <mycombo entity="z01_core_view_reports" asp-for="@Model.SelectedX31ID" selectedtext="@Model.SelectedReport" view-flag="1" event_after_changevalue="x31id_change"></mycombo>
                 </div>
                 <div class="col-sm-1 col-md-1">
                     <button id="cmdClose" type="button" onclick="window.parent._window_close()" class="btn btn-secondary">@_f.tra("Zavřít")</button>
                 </div>
             </div>
-        </div>
+            @if (Model.IsPeriodFilter)
+            {
+                @Html.EditorFor(m => m.PeriodFilter, "~/Views/Shared/_Period.cshtml")
+                
+            }
 
-    </form>
+        </form>
+    </div>
+
+    <div id="reportViewer1">
+        @if (Model.ReportFileName != null)
+        {
+            <text>
+                loading...
+            </text>
+        }
+
+    </div>
+
     <script type="text/javascript">
 
 
     $(document).ready(function ()
     {
+        var d1;
+        var d2;
+
+        @if(Model.PeriodFilter != null)
+        {
+            <text>
+            d1 = new Date("@Model.PeriodFilter.d1_iso");
+            d2 = new Date("@Model.PeriodFilter.d2_iso");
+            </text>
+        }
+        
+
        @if(Model.ReportFileName != null)
        {
            <text>
@@ -106,10 +141,10 @@
             .telerik_ReportViewer(
                 {
                 serviceUrl: "/api/reports/",
-                reportSource: {
-                report: "@Model.ReportFileName",
-                parameters: { pid: @Model.rec_pid }
-                },
+                    reportSource: {
+                        report: "@Model.ReportFileName",
+                        parameters: { j02id: @_f.CurrentUser.j02ID, a05id: @_f.CurrentUser.a05ID, datFrom: d1, datUntil: d2}
+                    },
                 viewMode: telerikReportViewer.ViewModes.INTERACTIVE,
                 scaleMode: telerikReportViewer.ScaleModes.SPECIFIC,
                 scale: 1.0,
@@ -135,13 +170,41 @@
 
 
 
+        $("#PeriodValue").on("change", function () {
+            $.post("/Common/SetUserParam", { key: "report-period-value",value:$(this).val()  }, function (data) {
+                form1.action = "/x31/ReportNoContext?oper=change_period";
+                form1.submit();
+
+            });
+        });
+        $("#cmdRefreshPeriod").on("click", function () {
+            var k = [];
+            var v = [];
+            k.push("report-period-value");
+            v.push($("#PeriodValue").val());
+            k.push("report-period-d1");
+            v.push($("#d1helper").val());
+            k.push("report-period-d2");
+            v.push($("#d2helper").val());
+
+
+            $.post("/Common/SetUserParams", { keys: k, values:v  }, function (data) {
+                location.replace("/x31/ReportNoContext?x31id=@Model.SelectedX31ID");
+
+            });
+
+        });
+
+
     });
 
 
 
         function x31id_change(x31id) {
-            form1.action = "/x31/ReportModal?oper=change_x31id";
+            form1.action = "/x31/ReportNoContext?oper=change_x31id";
             form1.submit();
+
+
         }
 
 

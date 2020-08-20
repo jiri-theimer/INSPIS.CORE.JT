@@ -122,6 +122,11 @@ namespace DL
                 AQ(ref lis, "a." + mq.Prefix + "ValidUntil>GETDATE()", "", null);
                
             }
+            if (mq.Prefix == "x31")
+            {
+                AQ(ref lis, "a.x31ReportFormat=1", "", null);    //pouze TELERIK sestavy
+            }
+
             if (mq.IsRecordValid == false)
             {
                 AQ(ref lis, "GETDATE() NOT BETWEEN a." + mq.Prefix + "ValidFrom AND a." + mq.Prefix + "ValidUntil", "", null);

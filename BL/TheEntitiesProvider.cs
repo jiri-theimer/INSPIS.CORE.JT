@@ -167,6 +167,7 @@ namespace BL
             AE("x27EvalFunction", "EVAL funkce", "EVAL funkce", "x27EvalFunction a", "a.x27Ordinal", "a.x27Ordinal");
 
             AE_TINY("x31Report", "Pevné tiskové sestavy", "Pevná tisková sestava");
+            AE("z01_core_view_reports", "Pevné tiskové sestavy", "Tisková sestava", "z01_core_view_reports a", "a.x31Name", "a.x31Name");
             AE("x32ReportType", "Kategorie sestav", "Kategorie sestavy", "x32ReportType a", "a.x32TreeIndex", "a.x32TreeIndex");
 
             AE_TINY("b65WorkflowMessage", "Notifikační zprávy", "Notifikační zpráva");
@@ -346,6 +347,7 @@ namespace BL
                     lis.Add(getREL("o53TagGroup", "o51_o53", "Kategorie", "LEFT OUTER JOIN o53TagGroup o51_o53 ON a.o53ID=o51_o53.o53ID"));
                     break;
                 case "x31":
+                case "z01":
                     lis.Add(getREL("x29Entity", "x31_x29", "Entita", "LEFT OUTER JOIN x29Entity x31_x29 ON a.x29ID=x31_x29.x29ID"));
                     break;
                 //lis.Add(getREL("j02Person", "o51_owner", "Vlastník záznamu", getOwnerSql("o51")));
