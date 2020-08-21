@@ -11,9 +11,9 @@ namespace UI.Controllers
 {
     public class x51Controller : BaseController
     {
-        public IActionResult Index(string viewurl)
+        public IActionResult Index(string viewurl, string pagetitle)
         {
-            var v = new x51RecPage() { InputViewUrl = viewurl };
+            var v = new x51RecPage() { InputViewUrl = viewurl,PageTitle=pagetitle };
             if (string.IsNullOrEmpty(viewurl)==false)
             {
                 v.Rec = Factory.x51HelpCoreBL.LoadByViewUrl(v.InputViewUrl);
@@ -29,7 +29,7 @@ namespace UI.Controllers
             }
             return View(v);
         }
-        public IActionResult Record(int pid, bool isclone,string viewurl,string source)
+        public IActionResult Record(int pid, bool isclone,string viewurl,string source,string pagetitle)
         {
             var v = new x51Record() { rec_pid = pid, rec_entity = "x51",Source=source };
             v.Rec = new BO.x51HelpCore();
@@ -45,6 +45,7 @@ namespace UI.Controllers
             else
             {
                 v.Rec.x51ViewUrl = viewurl;
+                v.Rec.x51Name = pagetitle;
             }
             v.Toolbar = new MyToolbarViewModel(v.Rec);
             if (isclone)

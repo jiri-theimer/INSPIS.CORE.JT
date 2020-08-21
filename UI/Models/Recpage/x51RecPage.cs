@@ -9,10 +9,12 @@ namespace UI.Models.Recpage
     {
         public BO.x51HelpCore Rec { get; set; }
         public string InputViewUrl { get; set; }
+        
         public string HtmlContent { get; set; }
 
         public string TagHtml { get; set; }
 
         public string Source { get; set; }
+        public string PageTitle { get; set; }
     }
 }

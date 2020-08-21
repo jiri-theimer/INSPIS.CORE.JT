@@ -61,7 +61,7 @@ namespace UI.Controllers
             AMI("Odeslat zprávu", "javascript:_sendmail()");
             AMI("Změnit přístupové heslo", "/Home/ChangePassword");
             DIV();
-            AMI("Nápověda", "javascript:_helppage()");
+            AMI("Nápověda", "javascript:_helppage_layout()");
             AMI("O aplikaci", "/Home/About");
             DIV();
             AMI("Odhlásit se", "/Home/logout");

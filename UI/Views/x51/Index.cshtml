@@ -19,6 +19,7 @@
                 <i>
                     @Model.InputViewUrl
                 </i>
+               
                 @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.AdminGlobal_Ciselniky))
                 {
 
@@ -35,11 +36,15 @@
             <div class="row">
                 <div class="col">
                     <h4>@Model.InputViewUrl</h4>
+
+                </div>
+                <div class="col">
+                    <code>@Model.PageTitle</code>
                 </div>
                 <div class="col">
                     @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.AdminGlobal_Ciselniky))
                     {
-                        <a class="btn btn-primary" href="/x51/Record?source=helppage&pid=0&viewurl=@Model.InputViewUrl">@_f.tra("Založit záznam nápovědy")</a>
+                        <a class="btn btn-primary" href="/x51/Record?source=helppage&pid=0&viewurl=@Model.InputViewUrl&pagetitle=@Model.PageTitle">@_f.tra("Založit záznam nápovědy")</a>
 
                     }
                 </div>
