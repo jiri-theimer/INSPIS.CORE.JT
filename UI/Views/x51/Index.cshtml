@@ -1,0 +1,61 @@
+﻿@model UI.Models.Recpage.x51RecPage
+@inject BL.Factory _f
+
+@{
+    ViewData["Title"] = _f.tra("Nápověda");
+    Layout = "~/Views/Shared/_LayoutSubform.cshtml";
+
+}
+
+@addTagHelper *, UI
+
+<div class="bg-light">
+    @if (Model.Rec != null)
+    {
+
+        <div style="padding:10px;">
+            <h4>@Model.Rec.x51Name</h4>
+            <div>
+                <i>
+                    @Model.InputViewUrl
+                </i>
+                @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.AdminGlobal_Ciselniky))
+                {
+
+                    <a class="btn btn-primary" style="margin-left:20px;" href="/x51/Record?source=helppage&pid=@(Model.Rec.pid)">@_f.tra("Upravit")</a>
+
+                }
+            </div>
+        </div>
+
+    }
+    else
+    {
+        <div class="bg-light">
+            <div class="row">
+                <div class="col">
+                    <h4>@Model.InputViewUrl</h4>
+                </div>
+                <div class="col">
+                    @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.AdminGlobal_Ciselniky))
+                    {
+                        <a class="btn btn-primary" href="/x51/Record?source=helppage&pid=0&viewurl=@Model.InputViewUrl">@_f.tra("Založit záznam nápovědy")</a>
+
+                    }
+                </div>
+            </div>
+            
+            
+        </div>
+
+
+    }
+
+</div>
+
+
+@if (Model.Rec != null)
+{
+    @Html.Raw(Model.HtmlContent)
+}
+

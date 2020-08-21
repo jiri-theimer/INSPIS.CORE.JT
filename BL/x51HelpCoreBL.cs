@@ -7,6 +7,7 @@ namespace BL
     public interface Ix51HelpCoreBL
     {
         public BO.x51HelpCore Load(int pid);
+        public BO.x51HelpCore LoadByViewUrl(string viewurl);
         public string LoadHtmlContent(int pid);
         public IEnumerable<BO.x51HelpCore> GetList(BO.myQuery mq);
         public int Save(BO.x51HelpCore rec);
@@ -33,6 +34,10 @@ namespace BL
         public BO.x51HelpCore Load(int pid)
         {
             return _db.Load<BO.x51HelpCore>(GetSQL1(" WHERE a.x51ID=@pid"), new { pid = pid });
+        }
+        public BO.x51HelpCore LoadByViewUrl(string viewurl)
+        {
+            return _db.Load<BO.x51HelpCore>(GetSQL1(" WHERE a.[x51ViewUrl] LIKE '%'+@url+'%'"), new { url = viewurl });
         }
         public string LoadHtmlContent(int pid)
         {

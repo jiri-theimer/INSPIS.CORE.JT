@@ -60,6 +60,8 @@ namespace UI.Controllers
             AMI("Můj profil", "/Home/MyProfile");
             AMI("Odeslat zprávu", "javascript:_sendmail()");
             AMI("Změnit přístupové heslo", "/Home/ChangePassword");
+            DIV();
+            AMI("Nápověda", "javascript:_helppage()");
             AMI("O aplikaci", "/Home/About");
             DIV();
             AMI("Odhlásit se", "/Home/logout");
@@ -487,6 +489,11 @@ namespace UI.Controllers
                     break;
                 case "z01":
                     AMI("Náhled tiskové sestavy", string.Format("javascript: _window_open('/x31/ReportNoContext?x31id={0}',2)", pid));
+                    if (Factory.CurrentUser.TestPermission(j05PermValuEnum.AdminGlobal))
+                    {
+                        DIV();
+                        AMI("Administrace", string.Format("javascript:_edit('x31',{0})", pid));
+                    }
                     break;
                 case "j90":
                 case "j92":

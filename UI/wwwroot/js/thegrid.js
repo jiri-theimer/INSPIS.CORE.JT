@@ -901,6 +901,10 @@ function tg_dblclick(row) {
         location.replace("/AdminOneWorkflow/Index?b01id=" + pid);
         return;
     }
+    if (prefix === "z01") {
+        _window_open("/x31/ReportNoContext?x31id=" + pid,2);
+        return;
+    }
     _edit(prefix, pid);
 }
 

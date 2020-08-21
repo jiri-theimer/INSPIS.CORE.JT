@@ -94,8 +94,9 @@
 
                     <mycombo entity="z01_core_view_reports" asp-for="@Model.SelectedX31ID" selectedtext="@Model.SelectedReport" view-flag="1" event_after_changevalue="x31id_change"></mycombo>
                 </div>
-                <div class="col-sm-1 col-md-1">
+                <div class="col-sm-1 col-md-1 btn-group">
                     <button id="cmdClose" type="button" onclick="window.parent._window_close()" class="btn btn-secondary">@_f.tra("Zavřít")</button>
+                    <button type="button" onclick="_helppage()" title="@_f.tra("Nápověda")" class="btn btn-light"><b>?</b></button>
                 </div>
             </div>
             @if (Model.IsPeriodFilter)

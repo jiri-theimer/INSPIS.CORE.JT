@@ -707,3 +707,8 @@ function _init_qtip_onpage() {
 }
 
 
+function _helppage() {
+    
+    var viewurl = window.location.pathname.split('?')[0];
+    window.open("/x51/Index?viewurl="+viewurl, "_blank");
+}

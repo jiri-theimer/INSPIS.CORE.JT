@@ -5,14 +5,33 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using UI.Models;
 using UI.Models.Record;
+using UI.Models.Recpage;
 
 namespace UI.Controllers
 {
     public class x51Controller : BaseController
     {
-        public IActionResult Record(int pid, bool isclone)
+        public IActionResult Index(string viewurl)
         {
-            var v = new x51Record() { rec_pid = pid, rec_entity = "x51" };
+            var v = new x51RecPage() { InputViewUrl = viewurl };
+            if (string.IsNullOrEmpty(viewurl)==false)
+            {
+                v.Rec = Factory.x51HelpCoreBL.LoadByViewUrl(v.InputViewUrl);
+                if (v.Rec != null)
+                {
+                    v.HtmlContent = Factory.x51HelpCoreBL.LoadHtmlContent(v.Rec.pid);
+
+                    var tg = Factory.o51TagBL.GetTagging("x51", v.Rec.pid);
+                    v.TagHtml = tg.TagHtml;
+                }
+                
+
+            }
+            return View(v);
+        }
+        public IActionResult Record(int pid, bool isclone,string viewurl,string source)
+        {
+            var v = new x51Record() { rec_pid = pid, rec_entity = "x51",Source=source };
             v.Rec = new BO.x51HelpCore();
             if (v.rec_pid > 0)
             {
@@ -22,6 +41,10 @@ namespace UI.Controllers
                     return RecNotFound(v);
                 }
                 v.HtmlContent = Factory.x51HelpCoreBL.LoadHtmlContent(v.rec_pid);
+            }
+            else
+            {
+                v.Rec.x51ViewUrl = viewurl;
             }
             v.Toolbar = new MyToolbarViewModel(v.Rec);
             if (isclone)
@@ -50,7 +73,10 @@ namespace UI.Controllers
                 c.pid = Factory.x51HelpCoreBL.Save(c);
                 if (c.pid > 0)
                 {
-
+                    if (v.Source == "helppage")
+                    {
+                        return RedirectToAction("Index",new { viewurl = c.x51ViewUrl }) ;
+                    }
                     v.SetJavascript_CallOnLoad(c.pid);
                     return View(v);
                 }

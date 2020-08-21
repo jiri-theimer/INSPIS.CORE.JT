@@ -668,6 +668,7 @@ namespace BL
 
             //z01 = pevné tiskové sestavy pro tisk
             AF("z01_core_view_reports", "x31Name", "Tisková sestava", 1, null, "string", false, true);
+            AF("z01_core_view_reports", "Preview", "Náhled", 2, "'<a class='+char(34)+'grid-link'+char(34)+' href='+char(34)+'javascript:report_nocontext('+convert(varchar(10),a.x31ID)+')'+CHAR(34)+'>Náhled</a>'");
             AF("z01_core_view_reports", "x31PID", "Kód sestavy", 2);
             AF("z01_core_view_reports", "Categories", "Kategorie", 1, "dbo._core_x31_get_category_inline(a.x31ID)");
             AF("z01_core_view_reports", "x31Description", "Popis",1);
