@@ -102,8 +102,8 @@ namespace UI
             services.TryAddSingleton<IReportServiceConfiguration>(sp =>
             new ReportServiceConfiguration
             {
-                ReportingEngineConfiguration = ConfigurationHelper.ResolveConfiguration(sp.GetService<IWebHostEnvironment>()),HostAppId = "ReportingCore3App",Storage = new Telerik.Reporting.Cache.File.FileStorage(),
-                ReportSourceResolver = new UriReportSourceResolver(conf.GetSection("Folders")["Report"])
+                ReportingEngineConfiguration = ConfigurationHelper.ResolveConfiguration(sp.GetService<IWebHostEnvironment>()),HostAppId = "ReportingCore3App",Storage = new Telerik.Reporting.Cache.File.FileStorage(),                
+                ReportSourceResolver = new UriReportSourceResolver(conf.GetSection("Folders")["Report"])    //.AddFallbackResolver(new TypeReportSourceResolver().AddFallbackResolver(new UI.Controllers.CustomReportSourceResolver()))
             });
            
             services.AddScoped<BO.RunningUser, BO.RunningUser>();
@@ -139,6 +139,7 @@ namespace UI
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllers(); //kvùli teleri reporting
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

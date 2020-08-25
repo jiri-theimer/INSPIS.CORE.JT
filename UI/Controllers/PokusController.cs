@@ -6,12 +6,81 @@ using Microsoft.AspNetCore.Mvc;
 using UI.Models;
 using UI.Models.Record;
 
+using System.IO;
+using System.IO.Packaging;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
+
+
 namespace UI.Controllers
 {
     public class PokusController : BaseController
     {
-        public IActionResult PokusReport()
+        public IActionResult PokusWord()
         {
+            System.IO.File.Copy("c:\\temp\\hovado2.docx", "c:\\temp\\hovado3.docx", true);
+            Package wordPackage = Package.Open("c:\\temp\\hovado3.docx", FileMode.Open, FileAccess.ReadWrite);
+
+            var fields = new List<string>() { "a04city", "a04Name","a03name","a04street","a04phone","a04email" };
+
+            using (WordprocessingDocument wordDocument = WordprocessingDocument.Open(wordPackage))
+            {                
+                var body = wordDocument.MainDocumentPart.Document.Body;
+                var allParas = wordDocument.MainDocumentPart.Document.Descendants<DocumentFormat.OpenXml.Wordprocessing.Text>();
+                foreach (var item in allParas)
+                {
+                    foreach(var fld in fields)
+                    {
+                        if (item.Text.Contains("«" + fld + "»",StringComparison.OrdinalIgnoreCase) || item.Text.Contains("<" + fld + ">", StringComparison.OrdinalIgnoreCase))
+                        {
+                            item.Text = item.Text.Replace("<" + fld + ">", "##"+fld,StringComparison.OrdinalIgnoreCase).Replace("«" + fld + "»", "##"+fld, StringComparison.OrdinalIgnoreCase);
+                            
+                        }
+                    }
+                    
+                }
+                foreach (HeaderPart headerPart in wordDocument.MainDocumentPart.HeaderParts)
+                {
+                    Header header = headerPart.Header;
+                    var allHeaderParas = header.Descendants<Text>();
+                    foreach (var item in allHeaderParas)
+                    {
+                        foreach (var fld in fields)
+                        {
+                            if (item.Text.Contains("«" + fld + "»", StringComparison.OrdinalIgnoreCase) || item.Text.Contains("<" + fld + ">", StringComparison.OrdinalIgnoreCase))
+                            {
+                                item.Text = item.Text.Replace("<" + fld + ">", "##" + fld).Replace("«" + fld + "»", "##" + fld);
+
+                            }
+                        }
+
+                    }
+
+                }
+
+                foreach (FooterPart footerPart in wordDocument.MainDocumentPart.FooterParts)
+                {
+                    Footer footer = footerPart.Footer;
+                    var allFooterParas = footer.Descendants<Text>();
+                    foreach (var item in allFooterParas)
+                    {
+                        foreach (var fld in fields)
+                        {
+                            if (item.Text.Contains("«" + fld + "»", StringComparison.OrdinalIgnoreCase) || item.Text.Contains("<" + fld + ">", StringComparison.OrdinalIgnoreCase))
+                            {
+                                item.Text = item.Text.Replace("<" + fld + ">", "##" + fld).Replace("«" + fld + "»", "##" + fld);
+
+                            }
+                        }
+
+                    }
+
+                }
+
+                  
+                    wordDocument.MainDocumentPart.Document.Save();
+            }
+
             return View();
         }
         public IActionResult Strom()
@@ -27,10 +96,10 @@ namespace UI.Controllers
             c.a11ID = 0;
 
 
-            var x = Factory.f32FilledValueBL.Save(c,true);
-            
+            var x = Factory.f32FilledValueBL.Save(c, true);
 
-           
+
+
 
             return View(v);
         }

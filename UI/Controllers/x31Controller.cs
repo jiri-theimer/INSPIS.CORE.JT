@@ -4,8 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using ClosedXML;
 using Microsoft.AspNetCore.Mvc;
+
+using System.IO;
+using System.IO.Packaging;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
+
 using UI.Models;
 using UI.Models.Record;
+using System.Data;
 
 namespace UI.Controllers
 {
@@ -26,14 +33,19 @@ namespace UI.Controllers
 
             if (v.SelectedX31ID > 0)
             {
+
+
+                var xx = new Telerik.Reporting.SqlDataSource();
                 
-                
+
+
                 //xmlReportSource.Xml = strXmlContent;
-               
+
                 //var reportPackager = new Telerik.Reporting.ReportPackager();
                 //using (var sourceStream = System.IO.File.OpenRead(v.ReportFileName))
                 //{
                 //    var report = (Telerik.Reporting.Report)reportPackager.UnpackageDocument(sourceStream);
+                    
                 //    this.AddMessage(report.ReportParameters.Count().ToString());
                 //}
 
@@ -138,6 +150,10 @@ namespace UI.Controllers
             {
                 Factory.CBL.SetUserParam(v.UserParamKey, v.SelectedX31ID.ToString());
             }
+            if (oper== "generate_docx")
+            {
+                Handle_DocMailMerge(v);
+            }
             
             return View(v);
         }
@@ -149,17 +165,15 @@ namespace UI.Controllers
             {
                 v.RecX31 = Factory.x31ReportBL.Load(v.SelectedX31ID);
                 v.SelectedReport = v.RecX31.x31Name;
-                
-                var mq = new BO.myQuery("o27");
-                mq.recpid = v.SelectedX31ID;
-                mq.x29id = 931;
-                var lisO27 = Factory.o27AttachmentBL.GetList(mq, null);
-                if (lisO27.Count() > 0)
+
+                var recO27 = Factory.x31ReportBL.LoadReportDoc(v.SelectedX31ID);
+               
+                if (recO27 !=null)
                 {
-                    v.ReportFileName = lisO27.First().o27ArchiveFileName;
+                    v.ReportFileName = recO27.o27ArchiveFileName;
                     if (!System.IO.File.Exists(Factory.App.ReportFolder+"\\"+ v.ReportFileName))
                     {
-                        v.ReportFileName = lisO27.First().o27OriginalFileName;
+                        v.ReportFileName = recO27.o27OriginalFileName;
                     }
                 }
                 else
@@ -242,14 +256,7 @@ namespace UI.Controllers
         {
             if (v.rec_pid > 0)
             {
-                var mq = new BO.myQuery("o27");
-                mq.recpid = v.rec_pid;
-                mq.x29id = 931;
-                var lisO27 = Factory.o27AttachmentBL.GetList(mq, null);
-                if (lisO27.Count() > 0)
-                {
-                    v.RecO27 = lisO27.First();
-                }
+                v.RecO27 = Factory.x31ReportBL.LoadReportDoc(v.rec_pid);               
             }
             
         }
@@ -271,6 +278,101 @@ namespace UI.Controllers
             }
             
             return ret;
+        }
+
+        private void handle_merge_value(Text item,DataTable dt)
+        {
+            string strVal = "";
+            DataRow dr = dt.Rows[0];
+
+            foreach (DataColumn col in dt.Columns)
+            {
+
+                if (item.Text.Contains("«" + col.ColumnName + "»", StringComparison.OrdinalIgnoreCase) || item.Text.Contains("<" + col.ColumnName + ">", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (dr[col] == null)
+                    {
+                        strVal = "";
+                    }
+                    else
+                    {
+                        switch (col.DataType.Name.ToString())
+                        {
+                            case "DateTime":
+                                strVal = BO.BAS.ObjectDate2String(dr[col]);
+                                break;
+                            case "Decimal":
+                            case "Double":
+                                strVal = BO.BAS.Number2String(Convert.ToDouble(dr[col]));
+                                break;
+                            default:
+                                strVal = dr[col].ToString();
+                                break;
+                        }
+                        
+                    }
+                    item.Text = item.Text.Replace("<" + col.ColumnName + ">", strVal, StringComparison.OrdinalIgnoreCase).Replace("«" + col.ColumnName + "»", strVal, StringComparison.OrdinalIgnoreCase);
+
+                }
+            }
+        }
+        private void Handle_DocMailMerge(ReportContextViewModel v)
+        {
+            var recO27 = Factory.x31ReportBL.LoadReportDoc(v.RecX31.pid);
+            if (recO27 == null)
+            {
+                this.AddMessage("Na serveru nelze dohledat soubor šablony zvolené tiskové sestavy.");
+            }
+           
+            var dt = Factory.gridBL.GetList4MailMerge(v.rec_prefix,v.rec_pid);
+            if (dt.Rows.Count == 0)
+            {
+                this.AddMessage("Na vstupu chybí záznam.");
+            }
+            DataRow dr = dt.Rows[0];
+
+            string strTempPath = Factory.App.TempFolder + "\\" + BO.BAS.GetGuid() + ".docx";
+            System.IO.File.Copy(Factory.App.ReportFolder+"\\"+recO27.o27ArchiveFileName, strTempPath, true);
+            Package wordPackage = Package.Open(strTempPath, FileMode.Open, FileAccess.ReadWrite);
+
+            using (WordprocessingDocument wordDocument = WordprocessingDocument.Open(wordPackage))
+            {
+                var body = wordDocument.MainDocumentPart.Document.Body;
+                var allParas = wordDocument.MainDocumentPart.Document.Descendants<DocumentFormat.OpenXml.Wordprocessing.Text>();
+                
+                foreach (var item in allParas)
+                {
+                    handle_merge_value(item, dt);
+                    
+
+                }
+                foreach (HeaderPart headerPart in wordDocument.MainDocumentPart.HeaderParts)
+                {
+                    Header header = headerPart.Header;
+                    var allHeaderParas = header.Descendants<Text>();
+                    foreach (var item in allHeaderParas)
+                    {
+                        handle_merge_value(item, dt);
+
+                    }
+
+                }
+
+                foreach (FooterPart footerPart in wordDocument.MainDocumentPart.FooterParts)
+                {
+                    Footer footer = footerPart.Footer;
+                    var allFooterParas = footer.Descendants<Text>();
+                    foreach (var item in allFooterParas)
+                    {
+                        handle_merge_value(item, dt);
+
+                    }
+
+                }
+
+
+                wordDocument.MainDocumentPart.Document.Save();
+            }
         }
 
     }

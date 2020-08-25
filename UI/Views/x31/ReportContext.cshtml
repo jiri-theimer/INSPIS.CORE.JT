@@ -56,15 +56,15 @@
 </head>
 
 <body>
-    <div id="reportViewer1">
-        @if(Model.ReportFileName != null)
-        {
-            <text>
+    @if (Model.ReportFileName != null && Model.RecX31.x31ReportFormat == BO.x31ReportFormatEnum.Telerik)
+    {
+        <div id="reportViewer1">
+
             loading...
-            </text>
-        }
-        
-    </div>
+
+        </div>
+    }
+
 
     <script type="text/javascript">
         @if(Model.Javascript_CallOnLoad != null)
@@ -85,24 +85,29 @@
             <div class="form-row">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Tisková sestava"):</label>
                 <div class="col-sm-10 col-md-9">
-                    
-                    <mycombo entity="x31Report" asp-for="@Model.SelectedX31ID" selectedtext="@Model.SelectedReport" view-flag="2" masterprefix="a01" masterpid="@Model.rec_pid" param1="x31Is4SingleRecord=1" event_after_changevalue="x31id_change"></mycombo>
+
+                    <mycombo entity="x31Report" asp-for="@Model.SelectedX31ID" selectedtext="@Model.SelectedReport" view-flag="2" masterprefix="@Model.rec_prefix" masterpid="@Model.rec_pid" param1="x31Is4SingleRecord=1" event_after_changevalue="x31id_change"></mycombo>
                 </div>
                 <div class="col-sm-1 col-md-1 btn-group">
                     <button id="cmdClose" type="button" onclick="window.parent._window_close()" class="btn btn-secondary">@_f.tra("Zavřít")</button>
                     <button type="button" onclick="_helppage()" title="@_f.tra("Nápověda")" class="btn btn-light"><b>?</b></button>
                 </div>
-                
+
             </div>
+            @if (Model.RecX31 != null && Model.RecX31.x31ReportFormat == BO.x31ReportFormatEnum.DOC)
+            {
+                <button id="cmdMailMerge" type="button" class="btn btn-primary" onclick="generate_docx()">Vygenerovat dokument</button>
+            }
         </div>
 
     </form>
+
     <script type="text/javascript">
 
 
     $(document).ready(function ()
     {
-       @if(Model.ReportFileName != null)
+       @if(Model.ReportFileName != null && Model.RecX31.x31ReportFormat==BO.x31ReportFormatEnum.Telerik)
        {
            <text>
         $("#reportViewer1")
@@ -147,7 +152,10 @@
             form1.submit();
         }
 
-
+        function generate_docx() {            
+            form1.action = "/x31/ReportContext?oper=generate_docx";
+            form1.submit();
+        }
 
     </script>
 

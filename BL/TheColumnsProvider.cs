@@ -663,6 +663,7 @@ namespace BL
             
             AF("x31Report", "Roles", "Oprávnění", 2, "dbo._core_x31_get_role_inline(a.x31ID)");
             AF("x31Report", "Categories", "Kategorie", 1, "dbo._core_x31_get_category_inline(a.x31ID)");
+            AF("x31Report", "RepFormat", "Formát", 1, "case a.x31ReportFormat when 1 then 'REP' when 2 then 'DOCX' when 3 then 'XLSX' when 4 then 'MSREP' end");
             AF("x31Report", "x31Description", "Popis");
             AppendTimestamp("x31Report");
 

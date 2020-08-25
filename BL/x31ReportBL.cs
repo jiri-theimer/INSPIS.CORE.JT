@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace BL
@@ -10,6 +11,7 @@ namespace BL
         public BO.x31Report LoadByCode(string code, int pid_exclude);
         public IEnumerable<BO.x31Report> GetList(BO.myQuery mq);
         public int Save(BO.x31Report rec, List<int> x32ids, List<int> j04ids);
+        public BO.o27Attachment LoadReportDoc(int x31id);
 
     }
     class x31ReportBL : BaseBL, Ix31ReportBL
@@ -128,6 +130,21 @@ namespace BL
 
 
             return true;
+        }
+
+        public BO.o27Attachment LoadReportDoc(int x31id)
+        {
+            var mq = new BO.myQuery("o27");
+            mq.recpid = x31id;
+            mq.x29id = 931;
+            var lisO27 = _mother.o27AttachmentBL.GetList(mq, null);
+            
+            if (lisO27.Count() > 0)
+            {
+                return lisO27.First();
+            }
+
+            return null;
         }
 
     }
