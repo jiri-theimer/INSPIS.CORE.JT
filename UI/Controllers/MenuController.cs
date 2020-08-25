@@ -401,11 +401,20 @@ namespace UI.Controllers
                         AMI("Přidat vzdělávací obor", string.Format("javascript: _window_open('/a19/Record?pid=0&a03id={0}')", pid));
                     }
                     DIV();
+                    AMI("Tisková sestava", string.Format("javascript: _window_open('/x31/ReportContext?pid={0}&prefix=a03',2)", pid));
                     AMI("Stránka instituce", string.Format("javascript:_location_replace_top('/a03/RecPage?pid={0}')", recA03.pid));
                     if (recA03.isclosed == true)
                     {
                         AMI_NOTRA("<kbd>"+Factory.tra("Záznam je v archivu.")+"</kbd>", "");
                     }
+                    break;
+                case "j02":
+                    var recJ02 = Factory.j02PersonBL.Load(pid);
+                    AMI("Karta záznamu", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
+                    AMI("Kopírovat", string.Format("javascript:_clone('{0}',{1})", prefix, pid));
+                    DIV();
+                    AMI("Tisková sestava", string.Format("javascript: _window_open('/x31/ReportContext?pid={0}&prefix=j02',2)", pid));
+                    AMI("Stránka osoby", string.Format("javascript:_location_replace_top('/j02/RecPage?pid={0}')",pid));
                     break;
                 case "a11":
                     var recA11 = Factory.a11EventFormBL.Load(pid);

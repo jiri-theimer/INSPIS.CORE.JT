@@ -19,5 +19,7 @@ namespace UI.Models
         public string rec_prefix { get; set; }
         public string UserParamKey { get; set; }
 
+        public string GeneratedTempFileName { get; set; }
+
     }
 }

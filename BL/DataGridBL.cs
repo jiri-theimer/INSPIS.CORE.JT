@@ -40,10 +40,10 @@ namespace BL
                     sb.Append(" LEFT OUTER JOIN a08Theme a08 ON a.a08ID=a08.a08ID");
                     sb.Append(" LEFT OUTER JOIN b02WorkflowStatus b02 ON a.b02ID=b02.b02ID");
                     sb.Append(" LEFT OUTER JOIN j02Person issuer ON a.j02ID_Issuer=issuer.j02ID");
-                    sb.Append(" LEFT OUTER JOIN a21InstitutionLegalType a21 ON a03.a03a21ID=a21.a21ID");
+                    sb.Append(" LEFT OUTER JOIN a21InstitutionLegalType a21 ON a03.a21ID=a21.a21ID");
                     sb.Append(" LEFT OUTER JOIN a03Institution zri on a03.a03ID_Founder=zri.a03ID");
-                    sb.Append(" LEFT OUTER JOIN a05Region a05 ON a03.a03a05ID=a05.a05ID");
-                    sb.Append(" LEFT OUTER JOIN (select * FROM a04Inspectorate WHERE a04IsRegional=1) a04 ON a03.a03a05ID=a04.a05ID");
+                    sb.Append(" LEFT OUTER JOIN a05Region a05 ON a03.a05ID=a05.a05ID");
+                    sb.Append(" LEFT OUTER JOIN (select * FROM a04Inspectorate WHERE a04IsRegional=1) a04 ON a03.a05ID=a04.a05ID");
                     break;
                 case "a03":
                     sb.Append("a.a03ICO,a.a03REDIZO,a.a03Name,a.a03City,a.a03DateInsert,a.a03UserInsert,a.a03ValidFrom,a.a03ValidUntil,a.a03Street,a.a03PostCode,a.a03Phone,a.a03Mobile,a.a03Fax,a.a03Email,a.a03Web,a.a03DateUpdate,a.a03UserUpdate,a.a03ID_Founder,a.a03IsTestRecord,a.a03FounderCode,a.a03DirectorFullName");

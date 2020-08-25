@@ -149,10 +149,15 @@ namespace UI.Controllers
             if (oper == "change_x31id" && v.SelectedX31ID>0)
             {
                 Factory.CBL.SetUserParam(v.UserParamKey, v.SelectedX31ID.ToString());
+                v.GeneratedTempFileName = "";
             }
             if (oper== "generate_docx")
             {
-                Handle_DocMailMerge(v);
+                v.GeneratedTempFileName=Handle_DocMailMerge(v);
+                if (string.IsNullOrEmpty(v.GeneratedTempFileName) == false)
+                {
+                    this.AddMessage("Dokument byl vygenerován.", "info");
+                }
             }
             
             return View(v);
@@ -316,22 +321,34 @@ namespace UI.Controllers
                 }
             }
         }
-        private void Handle_DocMailMerge(ReportContextViewModel v)
+        private string Handle_DocMailMerge(ReportContextViewModel v)
         {
             var recO27 = Factory.x31ReportBL.LoadReportDoc(v.RecX31.pid);
             if (recO27 == null)
             {
-                this.AddMessage("Na serveru nelze dohledat soubor šablony zvolené tiskové sestavy.");
+                this.AddMessage("Na serveru nelze dohledat soubor šablony zvolené tiskové sestavy.");return "";
             }
            
             var dt = Factory.gridBL.GetList4MailMerge(v.rec_prefix,v.rec_pid);
             if (dt.Rows.Count == 0)
             {
-                this.AddMessage("Na vstupu chybí záznam.");
+                this.AddMessage("Na vstupu chybí záznam.");return "";
             }
             DataRow dr = dt.Rows[0];
-
-            string strTempPath = Factory.App.TempFolder + "\\" + BO.BAS.GetGuid() + ".docx";
+            var strFileName = BO.BAS.GetGuid() + ".docx";
+            switch (v.rec_prefix)
+            {
+                case "a01":
+                    strFileName=dr["a01Signature"]+"_"+ BO.BAS.GetGuid() + ".docx";
+                    break;
+                case "a03":
+                    strFileName = dr["a03REDIZO"] + "_" + BO.BAS.GetGuid() + ".docx";
+                    break;
+                case "j02":
+                    strFileName = dr["j02LastName"]+"_"+ dr["j02FirstName"] + "_" + BO.BAS.GetGuid() + ".docx";
+                    break;
+            }
+            string strTempPath = Factory.App.TempFolder + "\\" + strFileName;
             System.IO.File.Copy(Factory.App.ReportFolder+"\\"+recO27.o27ArchiveFileName, strTempPath, true);
             Package wordPackage = Package.Open(strTempPath, FileMode.Open, FileAccess.ReadWrite);
 
@@ -373,7 +390,10 @@ namespace UI.Controllers
 
                 wordDocument.MainDocumentPart.Document.Save();
             }
+            return strFileName;
         }
+
+        
 
     }
 }

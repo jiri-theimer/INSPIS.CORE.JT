@@ -80,13 +80,14 @@
         <input type="hidden" asp-for="@Model.rec_prefix" />
         <input type="hidden" asp-for="@Model.rec_pid" />
         <input type="hidden" asp-for="@Model.UserParamKey" />
+        <input type="hidden" asp-for="@Model.GeneratedTempFileName" />
 
         <div class="modal_record_container">
             <div class="form-row">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Tisková sestava"):</label>
                 <div class="col-sm-10 col-md-9">
 
-                    <mycombo entity="x31Report" asp-for="@Model.SelectedX31ID" selectedtext="@Model.SelectedReport" view-flag="2" masterprefix="@Model.rec_prefix" masterpid="@Model.rec_pid" param1="x31Is4SingleRecord=1" event_after_changevalue="x31id_change"></mycombo>
+                    <mycombo entity="x31Report" asp-for="@Model.SelectedX31ID" selectedtext="@Model.SelectedReport" view-flag="2" masterprefix="x29" masterpid="@Model.x29ID" param1="x31Is4SingleRecord=1" event_after_changevalue="x31id_change"></mycombo>
                 </div>
                 <div class="col-sm-1 col-md-1 btn-group">
                     <button id="cmdClose" type="button" onclick="window.parent._window_close()" class="btn btn-secondary">@_f.tra("Zavřít")</button>
@@ -96,7 +97,11 @@
             </div>
             @if (Model.RecX31 != null && Model.RecX31.x31ReportFormat == BO.x31ReportFormatEnum.DOC)
             {
-                <button id="cmdMailMerge" type="button" class="btn btn-primary" onclick="generate_docx()">Vygenerovat dokument</button>
+                <button type="button" class="btn btn-primary" onclick="generate_docx()">Vygenerovat dokument</button>
+            }
+            @if (string.IsNullOrEmpty(Model.GeneratedTempFileName)==false)
+            {
+                <a type="button" class="btn btn-success" href="/FileUpload/FileDownloadTempFile?tempfilename=@Model.GeneratedTempFileName" target="_blank">Stáhnout vygenerovaný dokument</a>
             }
         </div>
 
