@@ -16,6 +16,18 @@ namespace BO
             s = s.Replace("'", "");
             return "'" + s + "'";
         }
+        public static string GD(DateTime? d)
+        {
+            if (d == null)
+            {
+                return "NULL";
+            }
+            return "CONVERT(datetime,'" + ObjectDate2String(d, "dd.MM.yyyy") + "',104)";
+        }
+        public static string GN(double n)
+        {
+            return n.ToString().Replace(",", ".");
+        }
         public static string IIFS(bool b,string value_true,string value_false)
         {
             if (b)

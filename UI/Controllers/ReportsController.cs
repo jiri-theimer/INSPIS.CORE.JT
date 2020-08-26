@@ -65,7 +65,13 @@ namespace UI.Controllers
                 BL.Factory f = new BL.Factory(cu, _app, null, null, null);
                 if (intJ72ID > 0)
                 {
-                    reportXml = reportXml.Replace("1=1", "a.a03ID=18046");
+                    var recJ72 = f.j72TheGridTemplateBL.Load(intJ72ID);                    
+                    var mq = new BO.myQuery(recJ72.j72Entity);
+                    mq.lisJ73= f.j72TheGridTemplateBL.GetList_j73(intJ72ID, recJ72.j72Entity.Substring(0, 3));
+
+                    DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql("", mq, cu);
+                    File.WriteAllText("c:\\temp\\hovado.txt", fq.SqlWhere);
+                    reportXml = reportXml.Replace("1=1", fq.SqlWhere);
                 }
                 
             }
