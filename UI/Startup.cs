@@ -102,8 +102,8 @@ namespace UI
             services.TryAddSingleton<IReportServiceConfiguration>(sp =>
             new ReportServiceConfiguration
             {
-                ReportingEngineConfiguration = ConfigurationHelper.ResolveConfiguration(sp.GetService<IWebHostEnvironment>()),HostAppId = "ReportingCore3App",Storage = new Telerik.Reporting.Cache.File.FileStorage(),                
-                ReportSourceResolver = new UriReportSourceResolver(conf.GetSection("Folders")["Report"])    //.AddFallbackResolver(new TypeReportSourceResolver().AddFallbackResolver(new UI.Controllers.CustomReportSourceResolver()))
+                ReportingEngineConfiguration = ConfigurationHelper.ResolveConfiguration(sp.GetService<IWebHostEnvironment>()),HostAppId = "ReportingCore3App",Storage = new Telerik.Reporting.Cache.File.FileStorage()
+                //ReportSourceResolver = new UriReportSourceResolver(conf.GetSection("Folders")["Report"])    //.AddFallbackResolver(new TypeReportSourceResolver())
             });
            
             services.AddScoped<BO.RunningUser, BO.RunningUser>();

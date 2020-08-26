@@ -104,7 +104,8 @@
     }
 </style>
 
-<h4>@_f.tra("GRID") [@_header]
+<h4>
+    @_f.tra("GRID") [@_header]
     @_f.tra("Návrhář"):
     @if (Model.Rec.j72IsSystem == false)
     {
@@ -173,36 +174,36 @@
                                         break;
                                 }
                             </span>
-    
-                                <ul class="collapsed">
+
+                            <ul class="collapsed">
                                 @foreach (var col in Model.AllColumns.Where(p => p.Entity == rel.TableName))
                                 {
                                     strUniqueName = rel.RelName + "__" + col.Entity + "__" + col.Field;
                                     strClass = "field";
                                     if (col.IsTimestamp) strClass += " timestamp";
 
-                                <li class="tree_item">
-                                    <span class="symbol">@Html.Raw(col.getSymbol())</span>
-                                    @switch (_f.CurrentUser.j03LangIndex)
-                            {
-                                        case 1:
-                                            <span data-field="@(strUniqueName)" class="@strClass">@col.TranslateLang1</span>
-                                            break;
-                                        case 2:
-                                            <span data-field="@(strUniqueName)" class="@strClass">@col.TranslateLang2</span>
-                                            break;
-                                        default:
-                                            <span data-field="@(strUniqueName)" class="@strClass">@col.Header</span>
-                                            break;
-                                    }
-                                    
-
-                                    <button type="button" data-entity="@(rel.RelName+"__"+col.Entity)" data-field="@(strUniqueName)" title="Přidat" style="font-size:150%;" class="btn btn-primary py-0 button_field_append">
-                                        →
-                                    </button>
+                                    <li class="tree_item">
+                                        <span class="symbol">@Html.Raw(col.getSymbol())</span>
+                                        @switch (_f.CurrentUser.j03LangIndex)
+                                        {
+                                            case 1:
+                                                <span data-field="@(strUniqueName)" class="@strClass">@col.TranslateLang1</span>
+                                                break;
+                                            case 2:
+                                                <span data-field="@(strUniqueName)" class="@strClass">@col.TranslateLang2</span>
+                                                break;
+                                            default:
+                                                <span data-field="@(strUniqueName)" class="@strClass">@col.Header</span>
+                                                break;
+                                        }
 
 
-                                </li>
+                                        <button type="button" data-entity="@(rel.RelName+"__"+col.Entity)" data-field="@(strUniqueName)" title="Přidat" style="font-size:150%;" class="btn btn-primary py-0 button_field_append">
+                                            →
+                                        </button>
+
+
+                                    </li>
                                 }
                             </ul>
                         </li>
@@ -234,7 +235,7 @@
         </div>
     </div>
     @if (Model.lisQueryFields.Count() > 0)
-                                        {
+    {
         <div class="card">
             <div class="card-header"><img src="/Images/query.png" /> @_f.tra("GRID vnitřní filtrovací podmínka")</div>
             <div class="card-body">
@@ -267,42 +268,42 @@
                         <div class="col-sm-1 col-md-1">
                             <select asp-for="@Model.lisJ73[i].j73Operator" class="form-control" onchange="handle_queryoperator_change(this)">
                                 @if (Model.lisJ73[i].FieldType == "number")
-                                        {
+                                {
                                     <option value="INTERVAL">@_f.tra("Je interval")</option>
                                     <option value="GREATERZERO">@_f.tra("Je větší než nula")</option>
                                     <option value="ISNULLORZERO">@_f.tra("Je nula nebo prázdné")</option>
                                 }
-                                        @if (Model.lisJ73[i].FieldType == "date")
-                                        {
+                                @if (Model.lisJ73[i].FieldType == "date")
+                                {
                                     <option value="INTERVAL">@_f.tra("Je interval")</option>
-                                        }
-                                        @if (Model.lisJ73[i].FieldType != "date" && Model.lisJ73[i].FieldType != "number")
-                                        {
+                                }
+                                @if (Model.lisJ73[i].FieldType != "date" && Model.lisJ73[i].FieldType != "number")
+                                {
                                     <option value="EQUAL">@_f.tra("Je rovno")</option>
-                                        }
-                                        @if (Model.lisJ73[i].FieldType != "bool" && Model.lisJ73[i].FieldType != "number" && Model.lisJ73[i].FieldType != "date")
-                                        {
+                                }
+                                @if (Model.lisJ73[i].FieldType != "bool" && Model.lisJ73[i].FieldType != "number" && Model.lisJ73[i].FieldType != "date" && Model.lisJ73[i].FieldType != "bool1")
+                                {
                                     <option value="NOT-EQUAL">@_f.tra("Není rovno")</option>
-                                        }
+                                }
 
-                                        @if (Model.lisJ73[i].FieldType != "bool")
-                                        {
+                                @if (Model.lisJ73[i].FieldType != "bool" && Model.lisJ73[i].FieldType != "bool1")
+                                {
                                     <option value="ISNULL">@_f.tra("Je prázdné")</option>
                                     <option value="NOT-ISNULL">@_f.tra("Není prázdné")</option>
-                                        }
+                                }
 
-                                        @if (Model.lisJ73[i].FieldType == "string")
-                                        {
+                                @if (Model.lisJ73[i].FieldType == "string")
+                                {
                                     <option value="CONTAINS">@_f.tra("Obsahuje")</option>
                                     <option value="STARTS">@_f.tra("Začíná na")</option>
-                                        }
+                                }
 
                             </select>
                         </div>
 
                         @if (Model.lisJ73[i].j73Operator != "ISNULL" && Model.lisJ73[i].j73Operator != "NOT-ISNULL" && Model.lisJ73[i].j73Operator != "GREATERZERO" && Model.lisJ73[i].j73Operator != "ISNULLORZERO")
-                                        {
-                                            @if (Model.lisJ73[i].FieldType == "combo")
+                        {
+                            @if (Model.lisJ73[i].FieldType == "combo")
                             {
                                 <div class="col-sm-5 col-md-5">
                                     <mycombo asp-for="@Model.lisJ73[i].j73ComboValue" entity="@Model.lisJ73[i].FieldEntity" selectedtext="@Model.lisJ73[i].j73ValueAlias" filter-flag="1" masterprefix="@Model.lisJ73[i].MasterPrefix" masterpid="@Model.lisJ73[i].MasterPid"></mycombo>
@@ -310,20 +311,20 @@
                                 </div>
                             }
                             @if (Model.lisJ73[i].FieldType == "multi")
-                                        {
+                            {
                                 <div class="col-sm-5 col-md-5">
                                     <mycombochecklist asp-for="@Model.lisJ73[i].j73Value" selectedtext="@Model.lisJ73[i].j73ValueAlias" entity="@Model.lisJ73[i].FieldEntity" masterprefix="@Model.lisJ73[i].MasterPrefix" masterpid="@Model.lisJ73[i].MasterPid"></mycombochecklist>
 
                                 </div>
                             }
                             @if (Model.lisJ73[i].FieldType == "string")
-                                        {
+                            {
                                 <div class="col-sm-5 col-md-5">
                                     <input class="form-control" asp-for="@Model.lisJ73[i].j73Value" />
                                 </div>
                             }
                             @if (Model.lisJ73[i].FieldType == "number")
-                                        {
+                            {
                                 <div class="col-sm-1 col-md-1">
                                     <mynumber asp-for="@Model.lisJ73[i].j73Num1"></mynumber>
                                 </div>
@@ -335,7 +336,7 @@
 
                             }
                             @if (Model.lisJ73[i].FieldType == "date")
-                                        {
+                            {
                                 <div class="col-sm-2 col-md-2" title="@_f.tra("Pojmenované období")">
                                     <mydropdown asp-for="@Model.lisJ73[i].j73DatePeriodFlag" datasource="@Model.lisPeriods" valuefield="pid" textfield="Header" isfirstemptyrow="false"></mydropdown>
 
@@ -352,11 +353,21 @@
 
                             }
                             @if (Model.lisJ73[i].FieldType == "bool")
-                                        {
+                            {
                                 <div class="col-sm-3 col-md-3">
                                     <select asp-for="@Model.lisJ73[i].j73Value" class="form-control">
                                         <option value="1">@_f.tra("ANO")</option>
                                         <option value="0">@_f.tra("NE")</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-2 col-md-2"></div>
+                            }
+                            @if (Model.lisJ73[i].FieldType == "bool1")
+                            {
+                                <div class="col-sm-3 col-md-3">
+                                    <select asp-for="@Model.lisJ73[i].j73Value" class="form-control">
+                                        <option value="1">@_f.tra("ANO")</option>
+
                                     </select>
                                 </div>
                                 <div class="col-sm-2 col-md-2"></div>
@@ -388,7 +399,7 @@
     }
 
     @if (Model.HasOwnerPermissions)
-                                        {
+    {
         <div class="card">
             <div class="card-header">
                 @_f.tra("Nasdílet GRID pro ostatní uživatele")

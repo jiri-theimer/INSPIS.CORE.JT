@@ -120,7 +120,7 @@
                 {
                 serviceUrl: "/api/reports/",
                 reportSource: {
-                    report: "@Model.ReportFileName",
+                    report: "@(Model.ReportFileName+"###"+_f.CurrentUser.j03Login)",
                     parameters: { pid: @Model.rec_pid }
                 },
                 viewMode: telerikReportViewer.ViewModes.INTERACTIVE,
@@ -157,7 +157,7 @@
             form1.submit();
         }
 
-        function generate_docx() {            
+        function generate_docx() {
             form1.action = "/x31/ReportContext?oper=generate_docx";
             form1.submit();
         }

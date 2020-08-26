@@ -83,9 +83,9 @@ namespace DL
                         {
                             strOper = "<>";
                         }
-                        if (c.FieldType == "bool")
+                        if (c.FieldType == "bool" || c.FieldType == "bool1")
                         {
-                            AQ(ref lis, strField + " " + strOper+ " "+c.j73Value, "", null, strAndOrZleva, c.j73BracketLeft, c.j73BracketRight);
+                            AQ(ref lis, c.WrapFilter(strField + " " + strOper+ " "+c.j73Value), "", null, strAndOrZleva, c.j73BracketLeft, c.j73BracketRight);
                         }
                         if (c.FieldType == "string")
                         {

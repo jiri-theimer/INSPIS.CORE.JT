@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace UI.Models
 {
-    public class ReportNoContextViewModel: BaseViewModel
+    public class ReportNoContextViewModel : BaseViewModel
     {
-        
+
         public BO.x31Report RecX31 { get; set; }
         public string ReportFileName { get; set; }
 
@@ -19,6 +19,10 @@ namespace UI.Models
         public DateTime d2 { get; set; }
 
         public PeriodViewModel PeriodFilter { get; set; }
+
+        public string SelectedJ72ID{get;set;}
+       
+        public IEnumerable<BO.j72TheGridTemplate> lisJ72 { get; set; }
 
     }
 }

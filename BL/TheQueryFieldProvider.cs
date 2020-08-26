@@ -93,6 +93,29 @@ namespace BL
                     of = AF("a01Event", "a41owner-j02ID","j02ID", "Vlastník", "j02Person", null, "combo");                    
                     of.SqlWrapper = "a.a01ID IN (select a01ID FROM a41PersonToEvent WHERE a45ID=5 AND #filter#)";
 
+                    AF("a01Event", "JeNadrizena", "(case when a.a01ChildsCount>0 AND a.a01ParentID IS NULL then 1 else 0 end)", "Akce je [Nadřízená]", null, null, "bool");                    
+
+                    AF("a01Event", "JePodrizena", "(case when a.a01ParentID IS NOT NULL then 1 else 0 end)", "Akce je [Podřízená]", null, null, "bool");
+                    AF("a01Event", "JeUzamknuta", "a.a01IsAllFormsClosed", "Akce je [Uzamknutá]", null, null, "bool");
+
+                    of=AF("a01Event", "a41in-a45ID", "a45ID", "Akce s obsazenou rolí", "a45EventRole",null, "combo");
+                    of.SqlWrapper = "a.a01ID IN (select a01ID FROM a41PersonToEvent WHERE #filter#)";
+
+                    of = AF("a01Event", "a41notin-a45ID", "a45ID", "Akce s neobsazenou rolí", "a45EventRole", null, "combo");
+                    of.SqlWrapper = "a.a01ID NOT IN (select a01ID FROM a41PersonToEvent WHERE #filter#)";
+
+                    of=AF("a01Event", "ObsahujeAnketniFormular", "JeAnketa", "Akce obsahuje minimálně jeden anketní formulář", null, null, "bool1");
+                    of.SqlWrapper = "a.a01ID IN (select a01ID FROM a11EventForm WHERE a11IsPoll=1)";
+
+                    of = AF("a01Event", "ObsahujeRozepsanyFormular", "JeRozepsanyFormular", "Akce s minimálně jedním rozepsaným formulářem", null, null, "bool1");
+                    of.SqlWrapper = "a.a01ID IN (SELECT a01ID FROM a11EventForm WHERE a11ProcessingStart IS NOT NULL AND a11IsLocked=0)";
+
+                    of = AF("a01Event", "JeTestovaciSkola", "a01_a03.a03IsTestRecord", "Akce s testovacími školami", null, null, "bool");
+                    //of.SqlWrapper = "a.a03ID IN (SELECT a03ID FROM a03Institution WHERE a03IsTestRecord=1)";
+
+                    of = AF("a01Event", "JeCallcentrumPozadavek", "JeCallcentrumPozadavek", "CALL-CENTRUM požadavek", null, null, "bool1");
+                    of.SqlWrapper = "a.a01Name LIKE 'CALL-CENTRUM'";
+
                     break;
                 default:
                     break;

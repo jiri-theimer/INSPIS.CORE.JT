@@ -41,14 +41,14 @@
     <script src="~/js/mycontrols.js" asp-append-version="true"></script>
 
     <script src="/api/reports/resources/js/telerikReportViewer"></script>
-    @if (Model.IsPeriodFilter)
+    @if (Model.IsPeriodFilter || Model.lisJ72 !=null)
     {
         <style>
             #reportViewer1 {
                 position: absolute;
                 left: 5px;
                 right: 5px;
-                top: 70px;
+                top: 100px;
                 bottom: 3px;
                 overflow: hidden;
                 font-family: Verdana, Arial;
@@ -99,10 +99,26 @@
                     <button type="button" onclick="_helppage()" title="@_f.tra("Nápověda")" class="btn btn-light"><b>?</b></button>
                 </div>
             </div>
+            @if (Model.lisJ72 != null)
+            {
+                <div class="form-row">
+                    <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Pojmenovaný GRID filtr"):</label>
+                    <div class="col-sm-5 col-md-5">
+                        <mydropdown asp-for="@Model.SelectedJ72ID" datasource="@Model.lisJ72" textfield="j72Name" valuefield="pid" isfirstemptyrow="true" event_after_changevalue="j72id_change"></mydropdown>
+
+                    </div>
+                    <div class="col-sm-1 col-md-1 btn-group">
+                        <button id="cmdRefresh" type="button" onclick="refresh()" class="btn btn-primary">@_f.tra("Občerstvit")</button>
+
+                    </div>
+                </div>
+            }
+
+
             @if (Model.IsPeriodFilter)
             {
                 @Html.EditorFor(m => m.PeriodFilter, "~/Views/Shared/_Period.cshtml")
-                
+
             }
 
         </form>
@@ -142,14 +158,14 @@
         $("#reportViewer1")
             .telerik_ReportViewer(
                 {
-                serviceUrl: "/api/reports/",
+                serviceUrl: "/api/reports",
                     reportSource: {
-                        report: "@Model.ReportFileName",
+                        report: "@(Model.ReportFileName+"###"+_f.CurrentUser.j03Login+"###"+Model.SelectedJ72ID)",
                         parameters: { j02id: @_f.CurrentUser.j02ID, a05id: @_f.CurrentUser.a05ID, datFrom: d1, datUntil: d2}
                     },
                 viewMode: telerikReportViewer.ViewModes.INTERACTIVE,
                 scaleMode: telerikReportViewer.ScaleModes.SPECIFIC,
-                scale: 1.0,
+                scale: 1.0,                
                 enableAccessibility: false,
                 sendEmail: { enabled: false }
                 }
@@ -209,7 +225,14 @@
 
         }
 
-
+        function j72id_change(j72id) {
+            form1.action = "/x31/ReportNoContext?oper=change_j72id";
+            form1.submit();
+        }
+        function refresh() {
+            form1.action = "/x31/ReportNoContext?oper=postback";
+            form1.submit();
+        }
 
     </script>
 

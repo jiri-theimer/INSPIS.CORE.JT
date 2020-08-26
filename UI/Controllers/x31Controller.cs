@@ -31,36 +31,14 @@ namespace UI.Controllers
             v.SelectedX31ID = x31id;
             RefreshStateReportNoContext(v);
 
-            if (v.SelectedX31ID > 0)
-            {
-
-
-                var xx = new Telerik.Reporting.SqlDataSource();
-                
-
-
-                //xmlReportSource.Xml = strXmlContent;
-
-                //var reportPackager = new Telerik.Reporting.ReportPackager();
-                //using (var sourceStream = System.IO.File.OpenRead(v.ReportFileName))
-                //{
-                //    var report = (Telerik.Reporting.Report)reportPackager.UnpackageDocument(sourceStream);
-                    
-                //    this.AddMessage(report.ReportParameters.Count().ToString());
-                //}
-
-                //var uriReportSource = new Telerik.Reporting.UriReportSource();
-                //uriReportSource.Uri = v.ReportFileName;
-
-
-
-            }
+          
 
             return View(v);
         }
         [HttpPost]
         public IActionResult ReportNoContext(ReportNoContextViewModel v, string oper)
         {
+            
             RefreshStateReportNoContext(v);
 
             
@@ -73,16 +51,14 @@ namespace UI.Controllers
                 v.RecX31 = Factory.x31ReportBL.Load(v.SelectedX31ID);
                 v.SelectedReport = v.RecX31.x31Name;
 
-                var mq = new BO.myQuery("o27");
-                mq.recpid = v.SelectedX31ID;
-                mq.x29id = 931;
-                var lisO27 = Factory.o27AttachmentBL.GetList(mq, null);
-                if (lisO27.Count() > 0)
+                var recO27 = Factory.x31ReportBL.LoadReportDoc(v.SelectedX31ID);
+                               
+                if (recO27 !=null)
                 {
-                    v.ReportFileName = lisO27.First().o27ArchiveFileName;
+                    v.ReportFileName = recO27.o27ArchiveFileName;
                     if (!System.IO.File.Exists(Factory.App.ReportFolder + "\\" + v.ReportFileName))
                     {
-                        v.ReportFileName = lisO27.First().o27OriginalFileName;
+                        v.ReportFileName = recO27.o27OriginalFileName;
                     }
                     if (System.IO.File.Exists(Factory.App.ReportFolder + "\\" + v.ReportFileName))
                     {
@@ -101,6 +77,14 @@ namespace UI.Controllers
                         else
                         {
                             v.IsPeriodFilter = false;
+                        }
+                        if (strXmlContent.Contains("1=1"))
+                        {
+                            v.lisJ72 = Factory.j72TheGridTemplateBL.GetList("a01Event", Factory.CurrentUser.pid, null).Where(p => p.j72HashJ73Query == true);
+                            foreach(var c in v.lisJ72.Where(p => p.j72IsSystem == true))
+                            {
+                                c.j72Name = Factory.tra("Výchozí GRID");
+                            }
                         }
                     }
                     
