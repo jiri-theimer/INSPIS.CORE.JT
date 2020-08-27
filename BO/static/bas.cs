@@ -16,6 +16,15 @@ namespace BO
             s = s.Replace("'", "");
             return "'" + s + "'";
         }
+        public static string GSS(string s)
+        {
+            if (string.IsNullOrEmpty(s) == true)
+            {
+                return "";
+            }
+            s = s.Replace("'", "").Replace("--", "##");
+            return s;
+        }
         public static string GD(DateTime? d)
         {
             if (d == null)

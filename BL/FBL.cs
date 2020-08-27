@@ -13,12 +13,18 @@ namespace BL
         public BO.a45EventRole LoadA45(int a45id);
         public IEnumerable<BO.SysDbObject> GetList_SysObjects();
         public void GenerateCreateUpdateScript(IEnumerable<BO.SysDbObject> lis);
+        public IEnumerable<BO.j05Permission> GetListJ05();
     }
     class FBL:BaseBL,IFBL
     {       
         public FBL(BL.Factory mother):base(mother)
         {               
             
+        }
+
+        public IEnumerable<BO.j05Permission> GetListJ05()
+        {                       
+            return _db.GetList<BO.j05Permission>("SELECT * FROM j05Permission ORDER BY j05Order");
         }
 
         public IEnumerable<BO.GetString> GetListAutoComplete(int intO15Flag)
@@ -87,6 +93,8 @@ namespace BL
                 System.IO.File.WriteAllText(_mother.App.TempFolder + "\\sql_sp_funct_views.sql", sb.ToString());
             }
         }
+
+
 
     }
 }

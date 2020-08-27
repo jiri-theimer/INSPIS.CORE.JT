@@ -117,7 +117,7 @@
                         </div>
                     </div>
                 }
-                @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.Menu_H04) || 1 == 1)
+                @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.Menu_H04))
                 {
                     <div class="navbar-nav">
                         <a id="cmdH04" class="nav-link text-white" href="/TheGrid/FlatView?prefix=h04" tabindex="-1">@_f.tra("ÚKOLY")</a>

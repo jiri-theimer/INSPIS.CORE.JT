@@ -1,10 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace BO
 {
-    public enum PermFlagEnum
+    
+   
+    public class j05Permission
+    {
+        [Key]
+        public int j05ID { get; set; }
+        public string j05Name { get; set; }
+        public int j05Value { get; set; }
+        public int j05Order { get; set; }
+        public j05PermFlagEnum j05PermFlag { get; set; }
+    }
+
+
+    public enum j05PermFlagEnum
     {
         EPIS1 = 1,
         EPIS2 = 2,
@@ -63,22 +74,4 @@ namespace BO
         Read_Personal_K01_Statistics = 49,   //přístup k personálním datům o učitelích ve Statistikách
         AdminGlobal_Ciselniky = 50             //Správce číselníků
     }
-
-    //public enum UserPermFlag
-    //{
-    //    MasterAdmin=1,
-    //    MasterReader=2,
-    //    ClientAdmin=4,
-    //    ClientReader=8
-
-    //}
-    public class UserPermission
-    {
-        public string Name { get; set; }        
-        public j05PermValuEnum Value { get; set; }
-        public bool IsSelected { get; set; }
-
-
-    }
-
 }

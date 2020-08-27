@@ -1,0 +1,108 @@
+﻿@model UI.Models.Recpage.j04RecPage
+@inject BL.Factory _f
+
+@{
+    ViewData["Title"] = "Info";
+    Layout = "~/Views/Shared/_LayoutSubform.cshtml";
+}
+
+
+    <div class="modal_record_container">
+        <div class="form-row">
+            <div class="col-sm-3 col-md-2">
+                <myval value="@Model.Rec.j04Name"></myval>
+
+            </div>
+            <div class="col-sm-2 col-md-2">
+                <myval value="@Model.Rec.j04Aspx_PersonalPage"></myval>
+
+            </div>
+
+            @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.AdminGlobal_Ciselniky))
+            {
+                <div class="colsm-2 col-md-2">
+                    <a href="javascript:_window_open('/j04/Record?pid=@(Model.pid)')">@_f.tra("Administrace")</a>
+                </div>
+            }
+        </div>
+        <div class="form-row my-2">
+            <div class="col-sm-4 col-md-4">
+                <input type="checkbox" asp-for="Rec.j04IsAllowInSchoolAdmin" />
+                <label class="col-form-label" for="Rec_j04IsAllowInSchoolAdmin">@_f.tra("Role dostupná ve správě školních účtů")</label>
+            </div>
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Vztah role k portálu"):</label>
+            <div class="col-sm-4 col-md-4">
+                <select asp-for="@Model.Rec.j04PortalFaceFlag" class="form-control" disabled="disabled">
+                    <option value="CSI">ČŠI uživatel</option>
+                    <option value="School">@_f.tra("Škola")</option>
+                    <option value="Founder">@_f.tra("Zřizovatel školy")</option>
+                    <option value="Anonymous">@_f.tra("Veřejnost")</option>
+                </select>
+
+            </div>
+        </div>
+        <div class="form-row my-2">
+            <div class="col-sm-4 col-md-4">
+                <input type="checkbox" asp-for="Rec.j04IsAllowedAllEventTypes" />
+                <label class="col-form-label" for="Rec_j04IsAllowedAllEventTypes">@_f.tra("Možnost zakládat i číst všechny typy akcí")</label>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                @_f.tra("Oprávnění aplikační role")
+            </div>
+            <div class="car-body">
+                <table>
+                    <tr style="vertical-align:top;">
+                        <td>
+                            @foreach (var c in Model.lisJ05)
+                            {
+                                <div>
+                                    @c.j05Name
+                                </div>
+                            }
+                        </td>
+                        <td>
+                            @foreach (var c in Model.lisJ08)
+                            {
+                            <div style="border-bottom:solid 1px gray;">
+                                @c.a10Name
+                                <br />
+                                @if (c.j08IsAllowedCreate)
+                                {
+                                    <input type="checkbox" asp-for="@c.j08IsAllowedCreate" />
+                                    <label class="col-form-label">@_f.tra("Oprávnění zakládat akce")</label>
+                                }
+                                @if (c.j08IsLeader)
+                                {
+                                    <input type="checkbox" asp-for="@c.j08IsLeader" />
+                                    <label class="col-form-label">@_f.tra("Oprávnění vedoucího akce")</label>
+                                }
+                                @if (c.j08IsAllowedRead)
+                                {
+                                    <input type="checkbox" asp-for="@c.j08IsAllowedRead" />
+                                    <label class="col-form-label">@_f.tra("Oprávnění číst všechny akce v systému")</label>
+                                }
+                                @if (c.j08IsMember)
+                                {
+                                    <input type="checkbox" asp-for="@c.j08IsMember" />
+                                    <label class="col-form-label">@_f.tra("Oprávnění člena akce")</label>
+                                }
+
+
+
+
+                            </div>
+                            }
+                        </td>
+                    </tr>
+                </table>
+                
+            </div>
+        </div>
+
+
+
+    </div>
+

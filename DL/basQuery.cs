@@ -42,12 +42,12 @@ namespace DL
                         break;
                     case "CONTAINS":
                         //AQ(ref lis, strField + " LIKE '%'+@expr" + ss + "+'%'", "expr" + ss, c.j73Value, strAndOrZleva, c.j73BracketLeft, c.j73BracketRight);
-                        AQ(ref lis, strField + " LIKE '%" + c.j73Value + "+%'", null, null, strAndOrZleva, c.j73BracketLeft, c.j73BracketRight);
+                        AQ(ref lis, strField + " LIKE '%" + BO.BAS.GSS(c.j73Value) + "+%'", null, null, strAndOrZleva, c.j73BracketLeft, c.j73BracketRight);
                        
                         break;
                     case "STARTS":
                         //AQ(ref lis, strField + " LIKE @expr" + ss + "+'%'", "expr" + ss, c.j73Value, strAndOrZleva, c.j73BracketLeft, c.j73BracketRight);
-                        AQ(ref lis, strField + " LIKE " + c.j73Value + "+%'", null, null, strAndOrZleva, c.j73BracketLeft, c.j73BracketRight);
+                        AQ(ref lis, strField + " LIKE '" + BO.BAS.GSS(c.j73Value) + "+%'", null, null, strAndOrZleva, c.j73BracketLeft, c.j73BracketRight);
 
                         break;
                     case "INTERVAL":
@@ -98,7 +98,7 @@ namespace DL
                         if (c.FieldType == "string")
                         {
                             //AQ(ref lis, strField + " " + strOper + " @expr" + ss, "expr" + ss, c.j73Value, strAndOrZleva, c.j73BracketLeft, c.j73BracketRight);
-                            AQ(ref lis, strField + " "+ strOper+" '" + c.j73Value+"'", null,null, strAndOrZleva, c.j73BracketLeft, c.j73BracketRight);
+                            AQ(ref lis, strField + " "+ strOper+" '" + BO.BAS.GSS(c.j73Value)+"'", null,null, strAndOrZleva, c.j73BracketLeft, c.j73BracketRight);
                         }
                         if (c.FieldType == "combo")
                         {
