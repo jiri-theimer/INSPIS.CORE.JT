@@ -264,8 +264,8 @@ namespace UI.Controllers
                 AMI("INEZ: Grid", "/TheGrid/MasterView?prefix=a42");
                 AMI("INEZ: Nový", "/a42/CreatePre");
                 DIV();
-                AMI("Časové kapacity inspektorů", "/a35/TimeLine","_blank");
-                AMI("Rezervace nepersonálních zdrojů", "/a38/TimeLine", "_blank");                
+                AMI("Časové kapacity inspektorů", "/a35/TimeLine",null,null,"_blank");
+                AMI("Rezervace nepersonálních zdrojů", "/a38/TimeLine",null,null, "_blank");                
                 
             }            
 
@@ -341,9 +341,27 @@ namespace UI.Controllers
                 case "a01":
                     var recA01 = Factory.a01EventBL.Load(pid);
                     var recA10 = Factory.a10EventTypeBL.Load(recA01.a10ID);
-                    var permA01 = Factory.a01EventBL.InhalePermission(recA01);                    
-                    AMI("Posunout/Doplnit", string.Format("javascript: _window_open('/workflow/Dialog?pid={0}')", pid));
-                    AMI("Nahrát přílohu", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
+                    var permA01 = Factory.a01EventBL.InhalePermission(recA01);
+                    if (recA01.a01ChildsCount > 0)
+                    {
+                        AMI_NOTRA(Factory.tra("Podřízené akce") + "<img src='/Images/child.png'/>", null, null, "Nadrizena");
+                        RenderPodrizeneAkce(recA01.pid, "Nadrizena",recA01);
+                    }
+                    if (recA01.a01ParentID > 0)
+                    {
+                        AMI_NOTRA(Factory.tra("Nadřízená akce")+ "<img src='/Images/mother.png'/>", string.Format("javascript:_location_replace_top('/a01/RecPage?pid={0}')", recA01.a01ParentID),null,"Nadrizena");
+
+                        
+                        RenderPodrizeneAkce(recA01.a01ParentID, "Nadrizena",recA01);
+                        
+                    }
+                    else
+                    {
+                        AMI("Posunout/Doplnit", string.Format("javascript: _window_open('/workflow/Dialog?pid={0}')", pid));
+                        AMI("Nahrát přílohu", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
+                    }
+                    
+                    
                     AMI("Tisková sestava", string.Format("javascript: _window_open('/x31/ReportContext?pid={0}&prefix=a01',2)", pid));
                     DIV();
                     if (permA01.PermValue == a01EventPermissionENUM.ShareTeam_Leader || permA01.PermValue == a01EventPermissionENUM.ShareTeam_Owner || permA01.PermValue == a01EventPermissionENUM.FullAccess)
@@ -377,11 +395,21 @@ namespace UI.Controllers
                     AMI("Nový úkol (lhůta)", string.Format("javascript: _window_open('/h04/Record?pid=0&a01id={0}')", pid));
                     AMI("Vyhledat související akci", string.Format("javascript: _window_open('/h04/Record?pid=0&a01id={0}')", pid));
 
-                    AMI("Kopírovat akci", string.Format("javascript: _window_open('/h04/Record?pid=0&a01id={0}')", pid));
-                    AMI("Upravit základní vlastnosti (kartu)", string.Format("javascript: _window_open('/a01/Record?pid={0}')", pid));
-                    AMI("Nenávratně odstranit akci", string.Format("javascript: _window_open('/a01/Record?pid={0}')", pid));
-                    DIV();
-                    
+                    if (permA01.PermValue == a01EventPermissionENUM.ShareTeam_Leader || permA01.PermValue == a01EventPermissionENUM.ShareTeam_Owner || permA01.PermValue == a01EventPermissionENUM.FullAccess)
+                    {
+                        if (recA01.a01ParentID == 0)
+                        {
+                            AMI("Kopírovat akci", string.Format("javascript: _window_open('/h04/Record?pid=0&a01id={0}')", pid));
+                        }
+                        AMI("Upravit základní vlastnosti (kartu)", string.Format("javascript: _window_open('/a01/Record?pid={0}')", pid));
+                    }
+
+                    if (permA01.PermValue == a01EventPermissionENUM.FullAccess)
+                    {
+                        AMI("Nenávratně odstranit akci", string.Format("javascript: _window_open('/a01/Record?pid={0}')", pid));
+                    }
+                        
+                  
                     DIV();
                     AMI("Stránka akce", string.Format("javascript:_location_replace_top('/a01/RecPage?pid={0}')", recA01.pid));
                     if (recA01.isclosed == true)
@@ -428,7 +456,7 @@ namespace UI.Controllers
                     var recA41 = Factory.a41PersonToEventBL.Load(pid);
                     AMI("Karta záznamu", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
                     DIV();
-                    AMI_NOTRA(string.Format("{0}: Osobní stránka", recA41.PersonAsc), string.Format("/j02/RecPage?pid={0}", recA41.j02ID),"_top");
+                    AMI_NOTRA(string.Format("{0}: Osobní stránka", recA41.PersonAsc), string.Format("/j02/RecPage?pid={0}", recA41.j02ID),null,null,"_top");
                     break;
                 case "a42":
                     var recA42 = Factory.a42QesBL.Load(pid);
@@ -528,18 +556,46 @@ namespace UI.Controllers
             return FlushResult_UL();
         }
 
-
-        private void AMI(string strName,string strUrl,string strTarget=null)
-        {            
-            _lis.Add(new BO.MenuItem() { Name = Factory.tra(strName), Url = strUrl,Target=strTarget });
-        }
-        private void AMI_NOTRA(string strName, string strUrl, string strTarget = null)
-        {           
-            _lis.Add(new BO.MenuItem() { Name = strName, Url = strUrl, Target = strTarget });
-        }
-        private void DIV(string strName=null)
+        private void RenderPodrizeneAkce(int intParentA01ID,string strMenuParentID,BO.a01Event recCurrentA01)
         {
-            _lis.Add(new BO.MenuItem() { IsDivider = true, Name = BO.BAS.OM2(strName,30) });
+            var strName = recCurrentA01.a01Signature+ "<img src='/Images/mother.png'/>";
+            if (intParentA01ID != recCurrentA01.pid)
+            {
+                strName = Factory.a01EventBL.Load(intParentA01ID).a01Signature+ "<img src='/Images/mother.png'/>";
+            }
+            else
+            {
+                strName += " ✓";
+            }
+
+            AMI(strName, string.Format("javascript:_location_replace_top('/a01/RecPage?pid={0}')", intParentA01ID), "Nadrizena");
+
+            DIV(null, "Nadrizena");
+            var mq = new BO.myQuery("a01");
+            mq.a01parentid = intParentA01ID;
+            var lisChilds = Factory.a01EventBL.GetList(mq);
+            foreach (var c in lisChilds)
+            {
+                strName = c.a10Name + ": " + c.a01Signature + "<img src='/Images/child.png'/>";
+                if (c.pid == recCurrentA01.pid)
+                {
+                    strName += " ✓";
+                }
+                AMI(strName, string.Format("javascript:_location_replace_top('/a01/RecPage?pid={0}')", c.pid), strMenuParentID);
+            }
+        }
+
+        private void AMI(string strName,string strUrl, string strParentID = null,string strID=null, string strTarget = null)
+        {            
+            _lis.Add(new BO.MenuItem() { Name = Factory.tra(strName), Url = strUrl,Target=strTarget,ID=strID,ParentID=strParentID });
+        }
+        private void AMI_NOTRA(string strName, string strUrl, string strParentID = null, string strID = null, string strTarget = null)
+        {           
+            _lis.Add(new BO.MenuItem() { Name = strName, Url = strUrl, Target = strTarget, ID = strID, ParentID = strParentID });
+        }
+        private void DIV(string strName=null, string strParentID = null)
+        {
+            _lis.Add(new BO.MenuItem() { IsDivider = true, Name = BO.BAS.OM2(strName,30),ParentID=strParentID });
         }
         private void DIV_TRANS(string strName = null)
         {
@@ -555,7 +611,7 @@ namespace UI.Controllers
             var sb = new System.Text.StringBuilder();
 
             sb.AppendLine("<ul style='border:0px;'>");
-            foreach(var c in _lis)
+            foreach(var c in _lis.Where(p=>p.ParentID==null))
             {                
                 if (c.IsDivider==true)
                 {
@@ -582,15 +638,45 @@ namespace UI.Controllers
                         {
                             strStyle = " style='background-color: #ADD8E6;' id='menu_active_item'";
                         }
+                        bool bolHasChilds = false;
+                        if (c.ID != null && _lis.Where(p => p.ParentID == c.ID).Count() > 0)
+                        {
+                            bolHasChilds = true;
+                            c.Name += "<span style='float:right;'> ▶</span>";
+                        }
+
                         if (c.Url == null)
                         {
-                            sb.Append(string.Format("<li{0}>{1}</li>", strStyle, c.Name));
+                            sb.Append(string.Format("<li{0}><a>{1}</a>", strStyle, c.Name));
                         }
                         else
-                        {
+                        {                            
                             if (c.Target != null) c.Target = " target='" + c.Target + "'";
-                            sb.Append(string.Format("<li{0}><a href=\"{1}\"{2}>{3}</a></li>", strStyle, c.Url,c.Target, c.Name));
+                            sb.Append(string.Format("<li{0}><a href=\"{1}\"{2}>{3}</a>", strStyle, c.Url, c.Target, c.Name));
+                                                       
+                            
                         }
+                        if (bolHasChilds)
+                        {
+                            //podřízené nabídky -> druhá úroveň »
+                            sb.Append("<ul style='background-color:#90EE90;margin-left:2px;padding:6px;'>");
+                            foreach (var cc in _lis.Where(p => p.ParentID == c.ID))
+                            {
+                                if (cc.IsDivider)
+                                {
+                                    sb.Append("<li><hr></li>");  //divider
+                                }
+                                else
+                                {
+                                    if (cc.Target != null) cc.Target = " target='" + cc.Target + "'";
+                                    sb.Append(string.Format("<li><a href=\"{0}\"{1}>{2}</a></li>", cc.Url, cc.Target, cc.Name));
+                                }
+
+                            }
+                            sb.Append("</ul>");
+                        }
+
+                        sb.Append("</li>");
                     }
                     
                 }                                

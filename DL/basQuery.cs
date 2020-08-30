@@ -194,7 +194,7 @@ namespace DL
             {
                 if (mq.Prefix == "b05") AQ(ref lis, "a.a01ID=@a01id", "a01id", mq.a01id);
                 if (mq.Prefix == "a41" || mq.Prefix == "a11" || mq.Prefix=="a35" || mq.Prefix=="a38" || mq.Prefix=="h04") AQ(ref lis, "a.a01ID=@a01id", "a01id", mq.a01id);
-                if (mq.Prefix == "a01") AQ(ref lis, "(a.a01ParentID=@a01id OR a.a01ID IN (select a01ID_Left FROM a24EventRelation WHERE a01ID_Left=@a01id) OR a.a01ID IN (select a01ID_Right FROM a24EventRelation WHERE a01ID_Right=@a01id))", "a01id", mq.a01id);   //související akce
+                if (mq.Prefix == "a01") AQ(ref lis, "(a.a01ParentID=@a01id OR a.a01ID IN (select a01ID_Left FROM a24EventRelation WHERE a01ID_Left=@a01id) OR a.a01ID IN (select a01ID_Right FROM a24EventRelation WHERE a01ID_Right=@a01id)) AND a.a01ID<>@a01id", "a01id", mq.a01id);   //související akce
                 if (mq.Prefix == "j02")
                 {
                    if (mq.param1== "without_teams_and_owner")
@@ -218,7 +218,7 @@ namespace DL
             }
             if (mq.a01parentid > 0)
             {
-                if (mq.Prefix == "a01") AQ(ref lis, "a.a01ParentID=@a01id", "a01parentid", mq.a01parentid);   //podřízené akce
+                if (mq.Prefix == "a01") AQ(ref lis, "a.a01ParentID=@a01parentid", "a01parentid", mq.a01parentid);   //podřízené akce
             }
             if (mq.Prefix == "a45" && mq.param1 == "a45IsManual1")
             {

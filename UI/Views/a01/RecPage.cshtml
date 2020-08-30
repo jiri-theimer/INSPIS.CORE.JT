@@ -17,6 +17,14 @@
         @if (Model.pid > 0)
         {
             <a class="cm h4 mx-1" title="Menu" onclick="_cm(event, 'a01',@Model.Rec.pid);">☰@Model.Rec.a01Signature</a>
+            @if (Model.Rec.a01ChildsCount > 0)
+            {
+                <img src="~/images/mother.png" title="@_f.tra("Nadřízená akce")" />
+            }
+            @if (Model.Rec.a01ParentID > 0)
+            {
+                <img src="~/images/child.png" title="@_f.tra("Podřízená akce")" />
+            }
         }
 
     </div>

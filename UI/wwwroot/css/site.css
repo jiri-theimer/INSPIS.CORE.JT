@@ -858,7 +858,7 @@ div.dropdown_menu_container {
     left: 0;
     background-color: #F8F9FA;
     border-right: solid 1px #F5F5F5;
-    overflow-x: hidden;
+    overflow-x:visible;
     transition: 0.5s;
 }
 
