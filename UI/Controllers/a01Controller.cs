@@ -21,6 +21,7 @@ namespace UI.Controllers
             {
                 return this.StopPageSubform("pid is missing");
             }
+            v.IsGridView = Factory.CBL.LoadUserParamBool("TabForms-IsGridView", false);
             v.RecA01 = Factory.a01EventBL.Load(v.pid);
             var mq = new BO.myQuery("a11");
             mq.a01id = v.pid;

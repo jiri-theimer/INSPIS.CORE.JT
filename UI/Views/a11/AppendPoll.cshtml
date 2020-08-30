@@ -31,8 +31,9 @@
         </div>
 
         <div class="card">
-            <div class="card-header">                
-                <button type="button" class="btn btn-success" onclick="handle_f06id_append()">@_f.tra("Uložit formuláře do akce")</button>
+            <div class="card-header">
+                @_f.tra("Vybrat formulář")
+                <button type="button" class="btn btn-success" onclick="handle_f06id_append()">@_f.tra("Uložit do akce")</button>
             </div>
             <div class="card-body">
                 <div class="form-row my-2">
@@ -79,6 +80,9 @@
 
 </form>
 
+<vc:the-grid entity="a11EventForm" j72id="0" go2pid="0" master_entity="a01Event" master_pid="@Model.RecA01.pid" contextmenuflag="1" ondblclick="tg_dblclick" master_flag="poll" masterviewflag="3"></vc:the-grid>
+
+
 <script type="text/javascript">
     $(document).ready(function () {
 
@@ -94,7 +98,7 @@
         form1.submit();
 
     }
-   
+
 
     function lock() {
         form1.action = "/a11/AppendPoll?oper=lock";
@@ -106,5 +110,15 @@
     }
     function report() {
         _window_open("/x31/ReportContext?prefix=a01&pid=@Model.RecA01.pid");
+    }
+
+
+    /*automaticky volaná událost z thegrid controlu*/
+    function thegrid_handle_event(event_name, pid) {
+
+    }
+
+    function hardrefresh() {
+        location.replace(location.href);
     }
 </script>

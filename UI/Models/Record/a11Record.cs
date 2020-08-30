@@ -12,7 +12,7 @@ namespace UI.Models.Record
         public BO.a01Event RecA01 { get; set; }
         public BO.f06Form RecF06 { get; set; }
 
-       
+      
         public string a37Name { get; set; }
     }
 }

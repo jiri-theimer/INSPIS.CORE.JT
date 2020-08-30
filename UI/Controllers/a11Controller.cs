@@ -36,7 +36,7 @@ namespace UI.Controllers
                     return RecNotFound(v);
                 }
                 v.a01ID = v.Rec.a01ID;
-                
+              
             }
             if (v.a01ID == 0)
             {
@@ -64,6 +64,10 @@ namespace UI.Controllers
                 c.a25ID = v.Rec.a25ID;
                 c.k01ID = v.Rec.k01ID;
                 c.a11TeacherPID = v.Rec.a11TeacherPID;
+                if (c.a11IsPoll)
+                {
+                    c.a11AccessToken = v.Rec.a11AccessToken;
+                }
 
                 c.pid = Factory.a11EventFormBL.Save(c);
                 if (c.pid > 0)
@@ -227,6 +231,22 @@ namespace UI.Controllers
             RefreshStateAppendPoll(v);
             if (oper == "postback")
             {
+                return View(v);
+            }
+            if (oper == "lock" || oper=="unlock")
+            {
+                foreach(var c in v.lisA11Saved)
+                {
+                    if (oper == "lock")
+                    {
+                        c.a11IsLocked = true;
+                    }
+                    else
+                    {
+                        c.a11IsLocked = false;
+                    }
+                    Factory.a11EventFormBL.Save(c);
+                }
                 return View(v);
             }
             if (oper == "add")

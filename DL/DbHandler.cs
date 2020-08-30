@@ -320,7 +320,7 @@ namespace DL
                     }
 
                 case "a11":
-                    string s = "a.a11ID as pid,dbo._core_a11_isclosed(a.a11IsLocked,a.a11IsLockedByWorkflow,a11_f06.f06ValidFrom,a11_f06.f06ValidUntil,a11_f06.f06IsA01ClosedStrict,a11_f06.f06IsA01PeriodStrict,a11_a01.a01IsAllFormsClosed,a11_a01.a01IsClosed,a11_a01.a01ValidFrom,a11_a01.a01ValidUntil) as isclosed";
+                    string s = "a.a11ID as pid,dbo._core_a11_isclosed(a.a11IsLocked,a.a11IsLockedByWorkflow,a11_f06.f06ValidFrom,a11_f06.f06ValidUntil,a11_f06.f06IsA01ClosedStrict,a11_f06.f06IsA01PeriodStrict,a11_a01.a01IsAllFormsClosed,a11_a01.a01IsClosed,a11_a01.a01ValidFrom,a11_a01.a01ValidUntil) as isclosed,case when a.a11IsInProcessing=1 then 'yellow' end as bgcolor";
                     if (isthegrid == true)
                     {
                         return s;

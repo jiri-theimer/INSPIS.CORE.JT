@@ -3,40 +3,55 @@
 @{
     Layout = "~/Views/Shared/_LayoutRecord.cshtml";
     if (Model.Rec == null) return;
-    Model.PageTitle = _f.tra("Formulář v akci") + ": "+Model.RecA01.a01Signature;
+    Model.PageTitle = _f.tra("Formulář v akci") + ": " + Model.RecA01.a01Signature;
 }
 @addTagHelper *, UI
 
-<div class="modal_record_container">
-    <input type="hidden" asp-for="@Model.a01ID" />
+    <div class="modal_record_container">
+        <input type="hidden" asp-for="@Model.a01ID" />
 
-    <div class="alert alert-primary" role="alert">
-        @Html.Raw(Model.Rec.FullNameHtml)
-    </div>
-
-    <div class="form-row">
-        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Činnost (součást) školy"):</label>
-        <div class="col-sm-11 col-md-10">
-            <mycombo entity="a37InstitutionDepartment" asp-for="Rec.a37ID" selectedtext="Rec.a37Name" view-flag="2" masterprefix="a03" masterpid="@Model.RecA01.a03ID"></mycombo>
+        <div class="alert alert-primary" role="alert">
+            @Html.Raw(Model.Rec.FullNameHtml)
         </div>
-    </div>
-    <div class="form-row my-2">
-        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Skupina formulářů v akci"):</label>
-        <div class="col-sm-11 col-md-10">
-            <mycombo entity="a25EventFormGroup" asp-for="Rec.a25ID" selectedtext="Rec.a25Name" view-flag="2" masterprefix="a01" masterpid="@Model.RecA01.pid"></mycombo>
+
+        <div class="form-row">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Činnost (součást) školy"):</label>
+            <div class="col-sm-11 col-md-10">
+                <mycombo entity="a37InstitutionDepartment" asp-for="Rec.a37ID" selectedtext="Rec.a37Name" view-flag="2" masterprefix="a03" masterpid="@Model.RecA01.a03ID"></mycombo>
+            </div>
         </div>
-    </div>
-    <div class="form-row my-2">
-        <input type="checkbox" asp-for="Rec.a11IsLocked" />
-        <label for="Rec_a11IsLocked">Uzamknuto</label>
-    </div>
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Skupina formulářů v akci"):</label>
+            <div class="col-sm-11 col-md-10">
+                <mycombo entity="a25EventFormGroup" asp-for="Rec.a25ID" selectedtext="Rec.a25Name" view-flag="2" masterprefix="a01" masterpid="@Model.RecA01.pid"></mycombo>
+            </div>
+        </div>
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Učitel školy"):</label>
+            <div class="col-sm-11 col-md-10">
+                <mycombo entity="k01Teacher" asp-for="Rec.k01ID" selectedtext="Rec.k01FullName_Desc" view-flag="2" masterprefix="a03" masterpid="@Model.RecA01.a03ID"></mycombo>
+            </div>
+        </div>
+        @if (Model.Rec.a11IsPoll)
+        {
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("PIN"):</label>
+                <div class="col-sm-2 col-md-2">
+                    <input type="text" class="form-control" asp-for="Rec.a11AccessToken" />
+                </div>
+            </div>
+        }
+        <div class="form-row my-2">
+            <input type="checkbox" asp-for="Rec.a11IsLocked" />
+            <label for="Rec_a11IsLocked">Uzamknuto</label>
+        </div>
 
-    <div class="form-row my-2">
-        <textarea asp-for="Rec.a11Description" class="form-control" placeholder="@_f.tra("Poznámka")"></textarea>
-        <span asp-validation-for="Rec.a11Description" class="text-danger"></span>
-    </div>
+        <div class="form-row my-2">
+            <textarea asp-for="Rec.a11Description" class="form-control" placeholder="@_f.tra("Poznámka")"></textarea>
+            <span asp-validation-for="Rec.a11Description" class="text-danger"></span>
+        </div>
 
-</div>
+    </div>
 
 
 

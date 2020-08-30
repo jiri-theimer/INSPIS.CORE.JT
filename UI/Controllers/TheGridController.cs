@@ -432,7 +432,7 @@ namespace UI.Controllers
                     _s.Append("<td class='td0' style='width:20px;'></td>");
                 }
 
-                if (mq.Prefix=="a01" && dbRow["bgcolor"] != System.DBNull.Value)
+                if ((mq.Prefix=="a01" || mq.Prefix=="a11") && dbRow["bgcolor"] != System.DBNull.Value)
                 {
                     _s.Append(string.Format("<td class='td1' style='width:20px;background-color:{0}'></td>", dbRow["bgcolor"]));
                 }

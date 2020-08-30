@@ -10,14 +10,31 @@
 @addTagHelper *, UI
 
 
+<div class="modal_record_container">
+    <div style="margin-bottom:20px;">
+        @if (Model.IsGridView)
+        {
+            <button type="button" class="btn btn-dark" onclick="change_view('0')">@_f.tra("Vypnout GRID zobrazení")</button>
+        }
+        else
+        {
+            <button type="button" class="btn btn-dark" onclick="change_view('1')">@_f.tra("Přepnout na GRID")</button>
+        }
+
+        <button type="button" class="btn btn-primary" onclick="append_f06()">@_f.tra("Přidat formuláře")</button>
+        <button type="button" class="btn btn-info" onclick="append_poll()">@_f.tra("Přidat anketní formuláře")</button>
+        <button type="button" class="btn btn-secondary" onclick="append_a25()">@_f.tra("Přidat skupinu formulářů")</button>
+
+    </div>
+</div>
+@if (Model.IsGridView == true)
+{
+    <vc:the-grid entity="a11EventForm" j72id="0" go2pid="0" master_entity="a01Event" master_pid="@Model.RecA01.pid" contextmenuflag="1" ondblclick="tg_dblclick" master_flag="" masterviewflag="3"></vc:the-grid>
+
+}
+else
+{
     <div class="modal_record_container">
-        <div style="margin-bottom:20px;">
-            <button type="button" class="btn btn-primary" onclick="append_f06()">@_f.tra("Přidat formuláře")</button>
-            <button type="button" class="btn btn-info" onclick="append_poll()">@_f.tra("Přidat anketní formuláře")</button>
-            <button type="button" class="btn btn-secondary" onclick="append_a25()">@_f.tra("Přidat skupinu formulářů")</button>
-
-        </div>
-
         <table class="table table-sm" style="min-width:1000px;">
             @foreach (var c in Model.lisA11.Where(p => p.a11IsPoll == false))
             {
@@ -38,7 +55,7 @@
                     </td>
                     <td>
                         <myval datatype="html" value="@("<a class='mx-2' href=\"javascript:_edit('a11'," + @c.pid.ToString() + ")\">" + c.FormNameHtml+"</a>")" hoverprefix="a11" hoverpid="@c.pid" cmprefix="a11" cmdpid="@c.pid"></myval>
-                        
+
                     </td>
                     <td>
                         @if (c.a37ID > 0)
@@ -68,17 +85,20 @@
 
             }
         </table>
-
-
-
-
-
-
     </div>
+}
 
 
 
-    <script type="text/javascript">
+
+
+
+
+
+
+
+
+<script type="text/javascript">
     function append_f06() {
         _window_open("/a11/Append?a01id=@Model.pid");
     }
@@ -86,7 +106,18 @@
         _window_open("/a25/Record?a01id=@Model.pid");
     }
     function append_poll() {
-        _window_open("/a11/AppendPoll?a01id=@Model.pid");
+        _window_open("/a11/AppendPoll?a01id=@Model.pid",2);
     }
-    </script>
+    function change_view(is_grid) {
+        $.post("/Common/SetUserParam", { key: "TabForms-IsGridView", value: is_grid  }, function (data) {
+                location.replace("/a01/TabForms?pid=@Model.RecA01.pid");
+
+            });
+    }
+
+    /*automaticky volaná událost z thegrid controlu*/
+    function thegrid_handle_event(event_name, pid) {
+
+    }
+</script>
 

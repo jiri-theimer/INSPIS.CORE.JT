@@ -84,7 +84,7 @@ namespace BL
             AE("a08Theme", "Témata akcí", "Téma akce", "a08Theme a", "a.a08Name");
             AE("a09FounderType", "Typy zřizovatelů", "Typ zřizovatele", "a09FounderType a", "a.a09Ordinal", "a.a09Ordinal");
             AE("a10EventType", "Typy akcí", "Typ akce", "a10EventType a", "a.a10Name");
-            AE("a11EventForm", "Formuláře v akci", "Formulář v akci", "a11EventForm a", "a.a11ID");
+            AE("a11EventForm", "Formuláře v akci", "Formulář v akci", "a11EventForm a INNER JOIN a01Event a11_a01 ON a.a01ID=a11_a01.a01ID", "a.a11ID");
             ByPrefix("a11").IsWithoutValidity = true;
             AE("a17DepartmentType", "Typy činností", "Typ činnosti", "a17DepartmentType a","a.a17Name","a.a17Name");
             AE("a18DepartmentDomain", "Kódy vzdělávacích oborů", "Kód vzdělávacího oboru", "a18DepartmentDomain a", "a.a18Name");
@@ -257,6 +257,12 @@ namespace BL
                 case "a10":
                     lis.Add(getREL("b01WorkflowTemplate", "a10_b01", "Workflow šablona", "LEFT OUTER JOIN b01WorkflowTemplate a10_b01 ON a.b01ID=a10_b01.b01ID"));
 
+                    break;
+                case "a11":
+                    lis.Add(getREL("f06Form", "a11_f06", "Formulář", "LEFT OUTER JOIN f06Form a11_f06 ON a.f06ID=a11_f06.f06ID"));
+                    lis.Add(getREL("a37InstitutionDepartment", "a11_a37", "Činnost školy", "LEFT OUTER JOIN a37InstitutionDepartment a11_a37 ON a.a37ID = a11_a37.a37ID"));
+                    lis.Add(getREL("a25EventFormGroup", "a11_a25", "Skupina formulářů", "LEFT OUTER JOIN a25EventFormGroup a11_a25 ON a.a25ID=a11_a25.a25ID"));
+                    lis.Add(getREL("k01Teacher", "a11_k01", "Učitel", "LEFT OUTER JOIN k01Teacher a11_k01 ON a.k01ID=a11_k01.k01ID"));
                     break;
                 case "a19":
                     lis.Add(getREL("a37InstitutionDepartment", "a19_a37", "Činnost školy", "INNER JOIN a37InstitutionDepartment a19_a37 ON a.a37ID = a19_a37.a37ID"));

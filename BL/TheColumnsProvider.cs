@@ -259,6 +259,15 @@ namespace BL
             AF("a10EventType", "a10Description", "Popis");
             AppendTimestamp("a10EventType");
 
+            //a11 = formulář v akci
+            AF("a11EventForm", "a11AccessToken", "PIN",2);
+            AF("a11EventForm", "a11Description", "Poznámka", 2);
+            AF("a11EventForm", "a11IsLocked", "Uzamknuto",1,null,"bool");
+            AF("a11EventForm", "a11IsPoll", "Anketní", 0, null, "bool");
+            AF("a11EventForm", "a11ProcessingStart", "První odpověď", 1, null, "datetime");
+            AF("a11EventForm", "a11ProcessingLast", "Poslední odpověď", 1, null, "datetime");
+            AppendTimestamp("a11EventForm");
+
             //a25 = skupina formulářů v rámci akce
             AF("a25EventFormGroup","a25Name","Skupina formulářů",1, null, "string", false, true);            
             AF("a25EventFormGroup", "a25Color", "🚩", 1, "case when a.a25Color IS NOT NULL then '<div style='+char(34)+'background-color:'+a.a25Color+';'+char(34)+'>&nbsp;</div>' end");
@@ -792,6 +801,9 @@ namespace BL
                     break;
                 case "a10":
                     ret.Add(InhaleColumn4Relation("a10_b01", "b01WorkflowTemplate", "b01Name", rels, bolComboColumns));
+                    break;
+                case "a11":
+                    ret.Add(InhaleColumn4Relation("a11_f06", "f06Form", "f06Name", rels, bolComboColumns));
                     break;
                 case "a19":
                     ret.Add(InhaleColumn4Relation("a19_a37", "a37InstitutionDepartment", "a37Name", rels, bolComboColumns));

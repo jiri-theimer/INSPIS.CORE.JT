@@ -112,6 +112,7 @@ namespace BO
         public int h11id { get; set; }
         public int a10id { get; set; }
         public int a11id { get; set; }
+        public BO.BooleanQueryMode a11ispoll { get; set; }
         public int a08id { get; set; }
         public int x31id { get; set; }
         public int x29id { get; set; }
@@ -148,6 +149,10 @@ namespace BO
             {
                 case "a01":
                     this.a01id = master_pid;
+                    if (master_flag == "poll")
+                    {
+                        this.a11ispoll = BO.BooleanQueryMode.TrueQuery;   //pouze anketní formuláře
+                    }
                     break;
                 case "a03":
                     switch (master_flag)
@@ -162,8 +167,7 @@ namespace BO
                     break;
                 case "a10":
                     this.a10id = master_pid;
-                    break;
-
+                    break;                
                 case "a08":
                     this.a08id = master_pid;
                     break;

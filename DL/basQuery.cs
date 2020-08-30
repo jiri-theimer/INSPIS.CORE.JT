@@ -406,6 +406,10 @@ namespace DL
             {
                 if (mq.Prefix == "f32") AQ(ref lis, "a.a11ID=@a11id", "a11id", mq.a11id);
             }
+            if (mq.Prefix=="a11" && mq.a11ispoll == BO.BooleanQueryMode.TrueQuery)
+            {
+                AQ(ref lis, "a.a11IsPoll=1", null, null);
+            }
             if (mq.HiddenQuestions == BO.BooleanQueryMode.FalseQuery)   //vyloučit skryté otázky
             {
                 AQ(ref lis, "NOT EXISTS (SELECT 1 FROM f35FilledQuestionHidden f35 WHERE a.a11ID=f35.a11ID AND a.f19ID=f35.f19ID AND f35.f35IsHidden=1)", "", null);
