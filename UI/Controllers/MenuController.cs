@@ -375,6 +375,11 @@ namespace UI.Controllers
                             AMI("Přidat formuláře", string.Format("javascript: _window_open('/a11/Append?a01id={0}')", pid));
                             AMI("Přidat skupinu formulářů", string.Format("javascript: _window_open('/a25/Record?a01id={0}')", pid));
                         }
+                        if (recA10.a10IsUse_Poll)
+                        {                            
+                            AMI("Anketní formuláře", string.Format("javascript: _window_open('/a11/AppendPoll?a01id={0}',2)", pid));
+                            AMI("Založit+notifikovat anketu", string.Format("javascript: _window_open('/a01/Record?pid=0&a03id={0}')", pid));
+                        }
                         if (recA10.a10IsUse_Period && recA01.a01ParentID == 0)
                         {
                             DIV();
@@ -384,16 +389,11 @@ namespace UI.Controllers
                         }
                     }
                     
-                    if (recA10.a10IsUse_Poll)
-                    {
-                        DIV();
-                        AMI("Anketní formuláře", string.Format("javascript: _window_open('/a01/Record?pid=0&a03id={0}')", pid));
-                        AMI("Založit+notifikovat anketu", string.Format("javascript: _window_open('/a01/Record?pid=0&a03id={0}')", pid));                        
-                    }
+                    
 
                     DIV();
                     AMI("Nový úkol (lhůta)", string.Format("javascript: _window_open('/h04/Record?pid=0&a01id={0}')", pid));
-                    AMI("Vyhledat související akci", string.Format("javascript: _window_open('/h04/Record?pid=0&a01id={0}')", pid));
+                    AMI("Zadat související akci", string.Format("javascript: _window_open('/h04/Record?pid=0&a01id={0}')", pid));
 
                     if (permA01.PermValue == a01EventPermissionENUM.ShareTeam_Leader || permA01.PermValue == a01EventPermissionENUM.ShareTeam_Owner || permA01.PermValue == a01EventPermissionENUM.FullAccess)
                     {

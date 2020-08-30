@@ -201,5 +201,111 @@ namespace UI.Controllers
             v.lisA11Saved = Factory.a11EventFormBL.GetList(mq);
 
         }
+
+        //ANKETNí formuláře
+        //Přidat anketní formuláře do akce:
+        public IActionResult AppendPoll(int a01id)
+        {
+            var v = new a11AppendPollViewModel() { a01ID = a01id, SelectedKolikrat = 1 };
+            if (v.a01ID == 0)
+            {
+                return this.StopPage(true, "a01id missing");
+            }
+            RefreshStateAppendPoll(v);
+            if (v.RecA01 == null)
+            {
+                return RecNotFound(v);
+            }
+
+
+            return View(v);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AppendPoll(Models.a11AppendPollViewModel v, string oper, string guid)
+        {
+            RefreshStateAppendPoll(v);
+            if (oper == "postback")
+            {
+                return View(v);
+            }
+            if (oper == "add")
+            {
+                if (v.SelectedF06ID > 0 && v.SelectedKolikrat > 0)
+                {
+                    var intMinToken = v.AccessTokenMinValue;
+                    v.lisA11 = new List<BO.a11EventForm>();
+                    for (int i = 1; i <= v.SelectedKolikrat; i++)
+                    {
+                        var c = new BO.a11EventForm();
+                        c.a01ID = v.RecA01.pid;
+                        c.a11IsPoll = true;
+                        if (intMinToken <= 0)
+                        {
+                            c.a11AccessToken = GetRandomToken();
+                        }
+                        else
+                        {
+                            c.a11AccessToken = (BO.BAS.RightString("0000" + (intMinToken + i - 1).ToString(),4));
+                        }                        
+                        c.f06ID = v.SelectedF06ID;
+                        c.f06Name = v.SelectedForm;
+                        c.a25ID = v.SelectedA25ID;
+                        c.a25Name = v.SelectedA25Name;
+                        c.a37ID = v.SelectedA37ID;
+                        c.a37Name = v.SelectedA37Name;
+                        c.a11Description = v.a11Description;
+                        c.k01ID = v.SelectedK01ID;
+                        v.lisA11.Add(c);                                                
+                    }
+                    foreach(var c in v.lisA11)
+                    {
+                        if (!Factory.a11EventFormBL.ValidateBeforeSave(c))
+                        {
+                            return View(v);
+                        }
+                    }
+                    foreach (var c in v.lisA11)
+                    {
+                        Factory.a11EventFormBL.Save(c);
+                    }
+                    RefreshStateAppendPoll(v);
+                    return View(v);
+                }
+                else
+                {
+                    this.AddMessage("Musíte vybrat formulář.");
+                }
+
+                return View(v);
+            }
+            if (oper == "delete")
+            {
+                v.lisA11.First(p => p.TempGuid == guid).IsTempDeleted = true;
+                return View(v);
+            }
+            
+
+            
+            return View(v);
+        }
+
+        private void RefreshStateAppendPoll(a11AppendPollViewModel v)
+        {
+            v.RecA01 = Factory.a01EventBL.Load(v.a01ID);
+
+            
+            var mq = new BO.myQuery("a11");
+            mq.a01id = v.a01ID;
+            
+            v.lisA11Saved = Factory.a11EventFormBL.GetList(mq).Where(p=>p.a11IsPoll==true);
+
+        }
+
+        private string GetRandomToken()
+        {
+            var c = new Random();            
+            return BO.BAS.RightString("0000" + c.Next(1, 9999).ToString(),4);
+        }
     }
 }

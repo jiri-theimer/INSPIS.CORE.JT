@@ -1,0 +1,110 @@
+﻿@model a11AppendPollViewModel
+@inject BL.Factory _f
+
+@{
+    ViewData["Title"] = _f.tra("Přidat anketní formuláře do akce");
+    Layout = "~/Views/Shared/_LayoutModal.cshtml";
+}
+@addTagHelper *, UI
+
+<h4>@_f.tra("Přidat anketní formuláře do akce") @(": "+Model.RecA01.a01Signature)</h4>
+<div class="bg-light" style="padding:10px;">
+    <button id="cmdLock" type="button" class="btn btn-light" onclick="report()">@_f.tra("Tisková sestava")</button>
+    <button id="cmdLock" type="button" class="btn btn-secondary" onclick="lock()">@_f.tra("Uzamknout všechny ankety v akci")</button>
+    <button id="cmdUnlock" type="button" class="btn btn-secondary" onclick="unlock()">@_f.tra("Odemknout všechny ankety v akci")</button>
+    <button id="cmdClose" type="button" onclick="_window_close()" class="btn btn-light">@_f.tra("Zavřít")</button>
+    <button type="button" onclick="_helppage()" class="btn btn-light"><b>? </b>@_f.tra("Nápověda")</button>
+</div>
+
+
+<form id="form1" asp-controller="a11" asp-action="Append" method="POST">
+    <input type="hidden" asp-for="@Model.a01ID" />
+
+    <div class="modal_record_container">
+        <div class="alert alert-primary" role="alert">
+            <label style="font-weight:bold;">@_f.tra("Typ akce"):</label>
+            @Model.RecA01.a10Name
+            <label style="font-weight:bold;margin-left:20px;">@_f.tra("Téma akce"):</label>
+            @Model.RecA01.a08Name
+            <label style="font-weight:bold;margin-left:20px;">@(Model.RecA01.a06Name+":")</label>
+            @Model.RecA01.a03Name
+        </div>
+
+        <div class="card">
+            <div class="card-header">                
+                <button type="button" class="btn btn-success" onclick="handle_f06id_append()">@_f.tra("Uložit formuláře do akce")</button>
+            </div>
+            <div class="card-body">
+                <div class="form-row my-2">
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Vybrat anketní formulář"):</label>
+                    <div class="col-sm-9 col-md-8">
+                        <mycombo entity="f06Form" asp-for="@Model.SelectedF06ID" selectedtext="@Model.SelectedForm" placeholder="@_f.tra("Vybrat formulář")..." masterprefix="a08" masterpid="@Model.RecA01.a08ID" param1="poll"></mycombo>
+                    </div>
+                    <div class="col-sm-1 col-md-1">@_f.tra("Kolikrát"):</div>
+                    <div class="col-sm-1 col-md-1">
+                        <mynumber asp-for="@Model.SelectedKolikrat" decimal-digits="0"></mynumber>
+                    </div>
+                </div>
+                <div class="form-row my-2">
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Činnost (součást) školy"):</label>
+                    <div class="col-sm-8 col-md-7">
+                        <mycombo entity="a37InstitutionDepartment" asp-for="@Model.SelectedA37ID" selectedtext="@Model.SelectedA37Name" view-flag="2" masterprefix="a03" masterpid="@Model.RecA01.a03ID"></mycombo>
+                    </div>
+                    <div class="col-sm-2 col-md-2">@_f.tra("PIN hodnota začíná od"):</div>
+                    <div class="col-sm-1 col-md-1">
+                        <mynumber asp-for="@Model.AccessTokenMinValue" decimal-digits="0"></mynumber>
+                    </div>
+                </div>
+                <div class="form-row my-2">
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Učitel školy"):</label>
+                    <div class="col-sm-6 col-md-5">
+                        <mycombo entity="k01Teacher" asp-for="@Model.SelectedK01ID" selectedtext="@Model.SelectedK01fullname_desc" view-flag="2" masterprefix="a03" masterpid="@Model.RecA01.a03ID"></mycombo>
+                    </div>
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Skupina formulářů v akci"):</label>
+                    <div class="col-sm-4 col-md-3">
+                        <mycombo entity="a25EventFormGroup" asp-for="@Model.SelectedA25ID" selectedtext="@Model.SelectedA25Name" view-flag="2" masterprefix="a01" masterpid="@Model.RecA01.pid"></mycombo>
+                    </div>
+                </div>
+
+                <div class="form-row my-2">
+                    <input type="text" asp-for="@Model.a11Description" class="form-control" placeholder="@_f.tra("Poznámka")" />
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+
+</form>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+
+
+
+    });
+
+    function handle_f06id_append() {
+
+        form1.action = "/a11/AppendPoll?oper=add";
+        form1.submit();
+
+    }
+   
+
+    function lock() {
+        form1.action = "/a11/AppendPoll?oper=lock";
+        form1.submit();
+    }
+    function unlock() {
+        form1.action = "/a11/AppendPoll?oper=unlock";
+        form1.submit();
+    }
+    function report() {
+        _window_open("/x31/ReportContext?prefix=a01&pid=@Model.RecA01.pid");
+    }
+</script>

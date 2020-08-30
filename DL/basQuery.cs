@@ -491,6 +491,10 @@ namespace DL
             {
                 AQ(ref lis, "a.x31Is4SingleRecord=1", "", null);    //pouze kontextové sestavy
             }
+            if (mq.Prefix == "f06" && mq.param1 == "poll")
+            {
+                AQ(ref lis, "a.f06BindScopeQuery IN (0,2)", "", null);    //formuláře použitelné jako anketní
+            }
 
             if (mq.TheGridFilter != null)
             {

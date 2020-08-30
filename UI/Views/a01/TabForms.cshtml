@@ -13,7 +13,9 @@
     <div class="modal_record_container">
         <div style="margin-bottom:20px;">
             <button type="button" class="btn btn-primary" onclick="append_f06()">@_f.tra("Přidat formuláře")</button>
+            <button type="button" class="btn btn-info" onclick="append_poll()">@_f.tra("Přidat anketní formuláře")</button>
             <button type="button" class="btn btn-secondary" onclick="append_a25()">@_f.tra("Přidat skupinu formulářů")</button>
+
         </div>
 
         <table class="table table-sm" style="min-width:1000px;">
@@ -76,12 +78,15 @@
 
 
 
-<script type="text/javascript">
+    <script type="text/javascript">
     function append_f06() {
         _window_open("/a11/Append?a01id=@Model.pid");
     }
     function append_a25() {
         _window_open("/a25/Record?a01id=@Model.pid");
     }
-</script>
+    function append_poll() {
+        _window_open("/a11/AppendPoll?a01id=@Model.pid");
+    }
+    </script>
 
