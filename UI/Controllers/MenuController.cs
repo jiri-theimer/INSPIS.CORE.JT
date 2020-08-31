@@ -372,7 +372,7 @@ namespace UI.Controllers
                     else
                     {
                         AMI("Posunout/Doplnit", string.Format("javascript: _window_open('/workflow/Dialog?pid={0}')", pid));
-                        AMI("Nahrát přílohu", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
+                        AMI("Nahrát přílohu", string.Format("javascript:_window_open('/a01/AddAttachment?pid={0}')", pid));
                     }
                     
                     

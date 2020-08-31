@@ -13,7 +13,26 @@ namespace UI.Controllers
 {
     public class a01Controller : BaseController
     {
-        
+        public IActionResult AddAttachment(int pid)
+        {
+            var v = new a01AddAttachment() { a01id = pid,UploadGuid=BO.BAS.GetGuid() };
+            if (v.a01id == 0)
+            {
+                return this.StopPageSubform("pid is missing");
+            }
+
+            RefreshStateAddAttachment(v);
+            return View(v);
+        }
+
+        private void RefreshStateAddAttachment(a01AddAttachment v)
+        {
+            v.RecA01 = Factory.a01EventBL.Load(v.a01id);
+
+            
+        }
+
+
         public IActionResult TabForms(int pid)
         {
             var v = new a01TabForms() { pid = pid };
