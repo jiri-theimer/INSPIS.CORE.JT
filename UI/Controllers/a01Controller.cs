@@ -23,6 +23,7 @@ namespace UI.Controllers
             }
             v.IsGridView = Factory.CBL.LoadUserParamBool("TabForms-IsGridView", false);
             v.RecA01 = Factory.a01EventBL.Load(v.pid);
+            v.RecA10 = Factory.a10EventTypeBL.Load(v.RecA01.a10ID);
             var mq = new BO.myQuery("a11");
             mq.a01id = v.pid;
             v.lisA11 = Factory.a11EventFormBL.GetList(mq);

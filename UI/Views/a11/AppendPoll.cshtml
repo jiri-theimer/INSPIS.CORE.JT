@@ -12,6 +12,7 @@
     <button id="cmdLock" type="button" class="btn btn-light" onclick="report()">@_f.tra("Tisková sestava")</button>
     <button id="cmdLock" type="button" class="btn btn-secondary" onclick="lock()">@_f.tra("Uzamknout všechny ankety v akci")</button>
     <button id="cmdUnlock" type="button" class="btn btn-secondary" onclick="unlock()">@_f.tra("Odemknout všechny ankety v akci")</button>
+    <button id="cmdUnlock" type="button" class="btn btn-danger" onclick="deletepolls()">@_f.tra("Odstranit zaškrtlé ankety")</button>
     <button id="cmdClose" type="button" onclick="_window_close()" class="btn btn-light">@_f.tra("Zavřít")</button>
     <button type="button" onclick="_helppage()" class="btn btn-light"><b>? </b>@_f.tra("Nápověda")</button>
 </div>
@@ -106,6 +107,16 @@
     }
     function unlock() {
         form1.action = "/a11/AppendPoll?oper=unlock";
+        form1.submit();
+    }
+    function deletepolls() {
+        var pids = $("#tg_selected_pids").val();
+        if (pids === "") {
+            _notify_message("@_f.tra("Musíte vybrat minimálně jeden záznam.")");
+            return;
+        }
+        
+        form1.action = "/a11/AppendPoll?oper=delete&pids="+pids;
         form1.submit();
     }
     function report() {

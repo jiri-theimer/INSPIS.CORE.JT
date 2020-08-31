@@ -26,6 +26,8 @@ namespace UI.Views.Shared.TagHelpers
 
         [HtmlAttributeName("isfirstemptyrow")]
         public bool IsFirstEmptyRow { get; set; }
+        [HtmlAttributeName("firstemptyrowtext")]
+        public string FirstEmptyRowText { get; set; }
 
         [HtmlAttributeName("ismultiple")]
         public bool IsMultiple { get; set; }
@@ -80,7 +82,7 @@ namespace UI.Views.Shared.TagHelpers
             sb.Append(">");
             if (this.IsFirstEmptyRow)
             {
-                sb.AppendLine("<option></option>");
+                sb.AppendLine("<option>"+this.FirstEmptyRowText+"</option>");
             }
             foreach (var item in lisDatasource)
             {

@@ -22,7 +22,12 @@
         }
 
         <button type="button" class="btn btn-primary" onclick="append_f06()">@_f.tra("Přidat formuláře")</button>
-        <button type="button" class="btn btn-info" onclick="append_poll()">@_f.tra("Přidat anketní formuláře")</button>
+        @if (Model.RecA10.a10IsUse_Poll)
+        {
+            <button type="button" class="btn btn-info" onclick="append_poll()">@_f.tra("Přidat anketní formuláře")</button>
+            <button type="button" class="btn btn-info" onclick="append_pollwizard()">@_f.tra("Přidat anketu s notifikací")</button>
+        }
+
         <button type="button" class="btn btn-secondary" onclick="append_a25()">@_f.tra("Přidat skupinu formulářů")</button>
 
     </div>
@@ -107,6 +112,9 @@ else
     }
     function append_poll() {
         _window_open("/a11/AppendPoll?a01id=@Model.pid",2);
+    }
+    function append_pollwizard() {
+        _window_open("/a11/AppendPollWizard?a01id=@Model.pid");
     }
     function change_view(is_grid) {
         $.post("/Common/SetUserParam", { key: "TabForms-IsGridView", value: is_grid  }, function (data) {

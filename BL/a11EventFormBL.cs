@@ -81,6 +81,10 @@ namespace BL
 
         public int Save(BO.a11EventForm rec)
         {
+            if (!ValidateBeforeSave(rec))
+            {
+                return 0;
+            }
             var p = new DL.Params4Dapper();
             p.AddInt("pid", rec.a11ID);            
             p.AddInt("a01ID", rec.a01ID, true);
@@ -105,6 +109,14 @@ namespace BL
 
         public bool ValidateBeforeSave(BO.a11EventForm c)
         {
+            if (c.a01ID == 0)
+            {
+                this.AddMessageTranslated("a01id missing."); return false;
+            }
+            if (c.f06ID == 0)
+            {
+                this.AddMessage("Na vstupu chybí formulář.");return false;
+            }
             var recF06 = _mother.f06FormBL.Load(c.f06ID);
             if (recF06.f06IsA37Required && c.a37ID == 0)
             {

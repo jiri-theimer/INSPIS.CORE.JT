@@ -226,7 +226,7 @@ namespace UI.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AppendPoll(Models.a11AppendPollViewModel v, string oper, string guid)
+        public IActionResult AppendPoll(Models.a11AppendPollViewModel v, string oper, string guid,string pids)
         {
             RefreshStateAppendPoll(v);
             if (oper == "postback")
@@ -247,6 +247,15 @@ namespace UI.Controllers
                     }
                     Factory.a11EventFormBL.Save(c);
                 }
+                return View(v);
+            }
+            if (oper=="delete" && pids != ""){
+                var a11ids = BO.BAS.ConvertString2ListInt(pids);
+                for(int i = 0; i <= a11ids.Count - 1; i++)
+                {
+                    Factory.CBL.DeleteRecord("a11", a11ids[i]);
+                }
+                RefreshStateAppendPoll(v);
                 return View(v);
             }
             if (oper == "add")
@@ -320,6 +329,99 @@ namespace UI.Controllers
             
             v.lisA11Saved = Factory.a11EventFormBL.GetList(mq).Where(p=>p.a11IsPoll==true);
 
+        }
+
+
+        //Průvodce pro anketní formulář
+        //Plus notifikační zpráva
+        public IActionResult AppendPollWizard(int a01id)
+        {
+            var v = new a11AppendPollWizardViewModel() { a01ID = a01id,AccessToken=GetRandomToken()};
+            if (v.a01ID == 0)
+            {
+                return this.StopPage(true, "a01id missing");
+            }
+            RefreshStateAppendPollWizard(v);
+            if (v.RecA01 == null)
+            {
+                return RecNotFound(v);
+            }
+
+
+            return View(v);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AppendPollWizard(Models.a11AppendPollWizardViewModel v, string oper)
+        {
+            RefreshStateAppendPollWizard(v);
+            if (oper == "postback")
+            {
+                return View(v);
+            }
+
+            if (oper == "email")
+            {
+                if (v.SelectedEmail != null)
+                {
+                    v.EmailAddress = v.SelectedEmail;
+                }                
+                return View(v);
+            }
+
+            if (ModelState.IsValid)
+            {
+                if (string.IsNullOrEmpty(v.AccessToken) || v.AccessToken.Length <4)
+                {
+                    this.AddMessage("Přístupový PIN je příliš krátký.");return View(v);
+                }
+                var c = new BO.a11EventForm();
+                c.a01ID = v.RecA01.pid;
+                c.a11IsPoll = true;
+                c.a11AccessToken = v.AccessToken;
+                c.f06ID = v.SelectedF06ID;
+                c.f06Name = v.SelectedForm;                
+                c.a37ID = v.SelectedA37ID;
+                c.a37Name = v.SelectedA37Name;
+                c.a11Description = v.a11Description;
+               
+
+                c.pid = Factory.a11EventFormBL.Save(c);
+                if (c.pid > 0)
+                {
+
+                    v.SetJavascript_CallOnLoad(c.pid);
+                    return View(v);
+                }
+
+            }
+
+
+            this.Notify_RecNotSaved();
+            return View(v);
+
+        }
+
+        private void RefreshStateAppendPollWizard(a11AppendPollWizardViewModel v)
+        {
+            v.RecA01 = Factory.a01EventBL.Load(v.a01ID);
+
+            v.lisEmails = new List<BO.StringPair>();
+            
+            var mq = new BO.myQuery("a39");
+            mq.a03id = v.RecA01.a03ID;
+            var lisA39 = Factory.a39InstitutionPersonBL.GetList(mq).Where(p => p.j02Email != null);
+            foreach (var c in lisA39.OrderBy(p=>p.Person))
+            {
+                v.lisEmails.Add(new BO.StringPair() { Key = c.j02Email, Value = c.Person + " [" + c.j02Email + "]" });
+            }
+
+        }
+
+
+        public BO.b65WorkflowMessage GetWorkflowMessage(int b65id)
+        {
+            return Factory.b65WorkflowMessageBL.Load(b65id);
         }
 
         private string GetRandomToken()

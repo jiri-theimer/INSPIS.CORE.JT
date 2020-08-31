@@ -342,6 +342,20 @@ namespace UI.Controllers
                     var recA01 = Factory.a01EventBL.Load(pid);
                     var recA10 = Factory.a10EventTypeBL.Load(recA01.a10ID);
                     var permA01 = Factory.a01EventBL.InhalePermission(recA01);
+                    if (recA10.a10Aspx_Framework == "a01_framework_general_institution.aspx")
+                    {
+                        //akce s jednoduchým menu jako ÚRAZ
+                        AMI("Posunout/Doplnit", string.Format("javascript: _window_open('/workflow/Dialog?pid={0}')", pid));
+                        AMI("Tisková sestava", string.Format("javascript: _window_open('/x31/ReportContext?pid={0}&prefix=a01',2)", pid));
+                        if (recA01.a42ID > 0)
+                        {
+                            if (string.IsNullOrEmpty(Factory.a42QesBL.Load(recA01.a42ID).f06IDs_Poll )==false)
+                            {
+                                AMI("Anketní formuláře", string.Format("javascript: _window_open('/a11/AppendPoll?a01id={0}',2)", pid));
+                            }
+                        }
+                        break;
+                    }
                     if (recA01.a01ChildsCount > 0)
                     {
                         AMI_NOTRA(Factory.tra("Podřízené akce") + "<img src='/Images/child.png'/>", null, null, "Nadrizena");
@@ -378,7 +392,7 @@ namespace UI.Controllers
                         if (recA10.a10IsUse_Poll)
                         {                            
                             AMI("Anketní formuláře", string.Format("javascript: _window_open('/a11/AppendPoll?a01id={0}',2)", pid));
-                            AMI("Založit+notifikovat anketu", string.Format("javascript: _window_open('/a01/Record?pid=0&a03id={0}')", pid));
+                            AMI("Založit+notifikovat anketu", string.Format("javascript: _window_open('/a11/AppendPollWizard?a01id={0}')", pid));
                         }
                         if (recA10.a10IsUse_Period && recA01.a01ParentID == 0)
                         {
