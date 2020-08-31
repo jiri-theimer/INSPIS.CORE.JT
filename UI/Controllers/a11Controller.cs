@@ -375,6 +375,10 @@ namespace UI.Controllers
                 {
                     this.AddMessage("Přístupový PIN je příliš krátký.");return View(v);
                 }
+                if (string.IsNullOrEmpty(v.EmailAddress))
+                {
+                    this.AddMessage("Není vyplněn příjemce (e-mail adresa) poštovní zprávy.");return View(v);
+                }
                 var c = new BO.a11EventForm();
                 c.a01ID = v.RecA01.pid;
                 c.a11IsPoll = true;
@@ -389,7 +393,13 @@ namespace UI.Controllers
                 c.pid = Factory.a11EventFormBL.Save(c);
                 if (c.pid > 0)
                 {
-
+                    //odeslat zprávu mailem
+                    var dt = Factory.gridBL.GetList4MailMerge("a11", c.pid);
+                    var cMerge = new BO.CLS.MergeContent();
+                    var strBody = cMerge.GetMergedContent(v.MessageBody, dt);
+                    
+                    var ret=Factory.MailBL.SendMessage(0, v.EmailAddress, "", v.MessageSubject, strBody, false, 111, c.pid);
+                    
                     v.SetJavascript_CallOnLoad(c.pid);
                     return View(v);
                 }
