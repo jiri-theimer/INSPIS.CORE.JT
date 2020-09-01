@@ -284,6 +284,7 @@ namespace DL
             return 0;
         }
 
+        
         public bool RunSql(string strSQL, object param = null)
         {
             using (SqlConnection con = new SqlConnection(_conString))
@@ -422,6 +423,53 @@ namespace DL
             }
 
 
+        }
+
+
+        public string ParseMergeSQL(string strSQL, string strPIDValue,string par1=null,string par2=null)
+        {
+            strSQL = strSQL.Replace("#pid#", strPIDValue, StringComparison.OrdinalIgnoreCase);
+            strSQL = strSQL.Replace("[%pid%]", strPIDValue, StringComparison.OrdinalIgnoreCase);
+            if (par1 != null)
+            {
+                par1 = OcistitSQL(par1);
+                strSQL = strSQL.Replace("#par1#", par1, StringComparison.OrdinalIgnoreCase);
+            }
+            if (par2 != null)
+            {
+                par2 = OcistitSQL(par2);
+                strSQL = strSQL.Replace("#par2#", par2, StringComparison.OrdinalIgnoreCase);
+            }            
+            return OcistitSQL(strSQL);
+        }
+        private string OcistitSQL(string strSQL)
+        {
+            strSQL = strSQL.Replace("/*", "");
+            strSQL = strSQL.Replace("*/", "");
+            strSQL = strSQL.Replace("--", "");
+            strSQL = strSQL.Replace("drop ", "", StringComparison.OrdinalIgnoreCase);
+            strSQL = strSQL.Replace("truncate ", "", StringComparison.OrdinalIgnoreCase);
+            strSQL = strSQL.Replace("delete ", "", StringComparison.OrdinalIgnoreCase);
+
+            return strSQL;
+        }
+
+        public int GetIntegerFromSql(string strSQL)
+        {
+            var dt = GetDataTable(strSQL);
+            if (dt.Rows.Count == 0)
+            {
+                return 0;
+            }
+            try
+            {
+                return Convert.ToInt32(dt.Rows[0][0]);
+            }
+            catch
+            {
+                return 0;
+            }
+            
         }
 
     }

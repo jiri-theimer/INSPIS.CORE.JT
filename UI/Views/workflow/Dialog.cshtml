@@ -26,7 +26,7 @@
 </h4>
 
 <div class="bg-light" style="padding:10px;">
-    <button id="cmdSave" type="submit" class="btn btn-success">Uložit změny</button>
+    <button id="cmdSave" type="button" class="btn btn-success" onclick="run()">Uložit změny</button>
     <button type="button" id="cmdClose" onclick="_window_close()" class="btn btn-light" lang="uk">Zavřít</button>
     <button type="button" onclick="_helppage()" class="btn btn-light"><b>? </b>@_f.tra("Nápověda")</button>
 
@@ -42,7 +42,7 @@
         <myradiolist asp-for="@Model.SelectedB06ID" datasource="@Model.lisB06" valuefield="pid" textfield="b06Name" event_after_changevalue="b06id_onchange"></myradiolist>
 
 
-        @if (Model.RecB06.b06IsNominee || 1 == 1)
+        @if (Model.RecB06.b06IsNominee)
         {
             <div class="card">
                 <div class="card-header">
@@ -99,6 +99,10 @@
     }
     function delete_temp_row(p85id) {
         form1.action = "/workflow/Dialog?oper=delete_temp_row&p85id=" + p85id;
+        form1.submit();
+    }
+
+    function run() {        
         form1.submit();
     }
 </script>

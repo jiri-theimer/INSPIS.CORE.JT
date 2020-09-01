@@ -57,7 +57,11 @@ namespace UI.Controllers
                 int intRet = 0;
                 if (v.SelectedB06ID == 0)
                 {
-                    intRet = Factory.a01EventBL.SaveWorkflowComment(v.pid, v.Comment, null);    //pouze zapsat komentář
+                    intRet = Factory.WorkflowBL.SaveWorkflowComment(v.pid, v.Comment, null);    //pouze zapsat komentář
+                }
+                else
+                {
+
                 }
                 if (intRet > 0)
                 {

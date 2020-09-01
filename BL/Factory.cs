@@ -87,6 +87,7 @@ namespace BL
         private Ix51HelpCoreBL _x51;
 
         private IMailBL _mail;
+        private IWorkflowBL _workflow;
 
         public Factory(BO.RunningUser c,BL.RunningApp runningapp,BL.TheEntitiesProvider ep,BL.TheGlobalParams gp,BL.TheTranslator tt)
         {
@@ -648,6 +649,14 @@ namespace BL
             {
                 if (_mail == null) _mail = new MailBL(this);
                 return _mail;
+            }
+        }
+        public IWorkflowBL WorkflowBL
+        {
+            get
+            {
+                if (_workflow == null) _workflow = new WorkflowBL(this);
+                return _workflow;
             }
         }
     }

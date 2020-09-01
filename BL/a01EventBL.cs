@@ -10,8 +10,8 @@ namespace BL
         public IEnumerable<BO.a01Event> GetList(BO.myQuery mq);
         public int Create(BO.a01Event rec, bool bolAutoInitWorkflow, List<BO.a11EventForm> lisA11, List<BO.a41PersonToEvent> lisA41, List<BO.a35PersonEventPlan> lisA35, List<int> a37ids);
         public int SaveA01Record(BO.a01Event rec, BO.a10EventType recA10);
-        public BO.a01EventPermission InhalePermission(BO.a01Event rec);
-        public int SaveWorkflowComment(int intA01ID, string strComment, List<int> a45ids_restrict_to);
+        public BO.a01EventPermission InhalePermission(BO.a01Event rec);        
+
     }
     class a01EventBL : BaseBL, Ia01EventBL
     {
@@ -319,21 +319,8 @@ namespace BL
             return false;
         }
 
-        public int SaveWorkflowComment(int intA01ID,string strComment,List<int>a45ids_restrict_to)
-        {
-            var c = new BO.b05Workflow_History() { a01ID = intA01ID, b05IsCommentOnly = true, b05IsManualStep = true, b05Comment = strComment, b05IsCommentRestriction = false };
-            if (a45ids_restrict_to !=null && a45ids_restrict_to.Count > 0)
-            {
-                c.b05IsCommentRestriction = true;   //komentář má omezený okruh čtenářů
-            }
-            int intB05ID = _mother.b05Workflow_HistoryBL.Save(c);
+        
 
-            if (c.b05IsCommentRestriction)
-            {
-                _db.RunSql("INSERT INTO b04WorkflowComment_Restriction(b05ID,a45ID) SELECT @pid,a45ID FROM a45EventRole WHERE a45ID IN (" + string.Join(",", a45ids_restrict_to) + ")");
-            }
-
-            return intB05ID;
-        }
+        
     }
 }
