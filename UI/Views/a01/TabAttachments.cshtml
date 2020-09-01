@@ -20,6 +20,9 @@
     @foreach (var c in Model.lisO27)
     {
     <tr>
+        <td style="width:20px;">            
+            <a class="cm" onclick="_cm(event, 'o27' ,@c.pid)">☰</a>
+        </td>
         <td>
             @c.o13Name
         </td>
@@ -30,10 +33,12 @@
         <td>
             @(BO.BAS.FormatFileSize(c.o27FileSize))
         </td>
-        <td>
-            <i>
-                @c.o27Label
-            </i>
+        <td style="font-style:italic;">
+            @c.o27Label
+            @if(c.o27Description != null)
+            {
+                <pre>@c.o27Description</pre>
+            }           
         </td>
         <td>
             @c.o27PressMark
@@ -48,5 +53,18 @@
 <script type="text/javascript">
     function append() {
         _window_open("/a01/AddAttachment?pid=@Model.pid");
+    }
+
+
+    function changelabel(fileguid, current_label) {
+        var s = prompt("@_f.tra("Zadejte popis/název k příloze.")", current_label);
+        if (s != null) {
+            $.post("/FileUpload/ChangeFileLabel", { fileguid: fileguid, newlabel: s }, function (data) {
+
+                //frmUpload.submit();
+                location.reload(location.href);
+
+            });
+        }
     }
 </script>

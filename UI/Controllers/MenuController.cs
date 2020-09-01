@@ -525,7 +525,9 @@ namespace UI.Controllers
                     break;
                 case "o27":
                     var recO27 = Factory.o27AttachmentBL.Load(pid);
-                    
+                    AMI("Karta záznamu", string.Format("javascript:_edit('o27',{0})", pid));
+                    DIV();
+                    AMI("Otevřít/Stáhnout dokument", string.Format("/FileUpload/FileDownloadInline?downloadguid={0}", recO27.o27DownloadGUID),null,null,"_blank");
                     break;
                 case "b01":
                     HEADER(Factory.b01WorkflowTemplateBL.Load(pid).b01Name);

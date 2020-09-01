@@ -91,8 +91,10 @@ namespace UI.Controllers
                 return this.StopPageSubform("pid is missing");
             }
             v.RecA01 = Factory.a01EventBL.Load(v.pid);
+            v.PermA01 = Factory.a01EventBL.InhalePermission(v.RecA01);
             var mq = new BO.myQuery("o27");
             mq.a01id = v.pid;
+            mq.IsRecordValid = true;
             v.lisO27 = Factory.o27AttachmentBL.GetList(mq, null).OrderByDescending(p => p.pid);
             return View(v);
         }

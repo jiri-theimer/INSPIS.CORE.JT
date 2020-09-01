@@ -1,0 +1,47 @@
+﻿@model UI.Models.Record.o27Record
+@inject BL.Factory _f
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutRecord.cshtml";
+    if (Model.Rec == null) return;
+    Model.PageTitle = _f.tra("Dokument");
+}
+@addTagHelper *, UI
+
+    <div class="modal_record_container">
+
+        <div class="form-row">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
+            <div class="col-sm-11 col-md-10">
+                <input class="form-control" asp-for="Rec.o27Label" />
+
+            </div>
+
+        </div>
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typ"):</label>
+            <div class="col-sm-11 col-md-10">
+                <myval value="@Model.Rec.o13Name"></myval>
+            </div>
+        </div>
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Soubor"):</label>
+            <div class="col-sm-11 col-md-10">
+                <myval value="@Model.Rec.o27OriginalFileName" linktarget="_blank" datatype="link" linkurl="/FileUpload/FileDownloadInline?downloadguid=@Model.Rec.o27DownloadGUID"></myval>
+            </div>
+        </div>
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Velikost"):</label>
+            <div class="col-sm-11 col-md-10">
+                <myval value="@(BO.BAS.FormatFileSize(Model.Rec.o27FileSize))"></myval>
+            </div>
+        </div>
+
+        <div class="form-row my-2">
+            <textarea asp-for="Rec.o27Description" class="form-control" placeholder="@_f.tra("Podrobný popis")"></textarea>
+            <span asp-validation-for="Rec.o27Description" class="text-danger"></span>
+        </div>
+
+    </div>
+

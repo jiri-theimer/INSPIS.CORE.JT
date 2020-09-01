@@ -109,6 +109,7 @@ namespace BL
                 rec.o27DownloadGUID = BO.BAS.GetGuid();
             }
             p.AddString("o27DownloadGUID", rec.o27DownloadGUID);
+            p.AddString("o27Description", rec.o27Description);
 
             p.AddString("o27ArchivePdfFileName", rec.o27ArchivePdfFileName);
 
