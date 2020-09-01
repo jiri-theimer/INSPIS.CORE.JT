@@ -102,8 +102,7 @@ namespace UI.Controllers
         }
         [HttpPost]
         public async Task<IActionResult> DoUpload(FileUploadViewModel v,List<IFormFile> files)
-        {
-                                   
+        {                                   
             var tempDir = Factory.App.TempFolder + "\\";
 
             foreach (var formFile in files)
@@ -117,7 +116,7 @@ namespace UI.Controllers
                     var strTempFullPath = tempDir + v.Guid + "_" + formFile.FileName;
                     if (v.o27Label != null)
                     {
-                        v.o27Label = v.o27Label.Replace("|", "/");
+                        v.o27Label = v.o27Label.Replace("|", "");
                     }
                     else
                     {
@@ -125,7 +124,7 @@ namespace UI.Controllers
                     }
                     if (v.o27PressMark != null)
                     {
-                        v.o27PressMark = v.o27PressMark.Replace("|", "/");
+                        v.o27PressMark = v.o27PressMark.Replace("|", "");
                     }
                     else
                     {
@@ -238,14 +237,15 @@ namespace UI.Controllers
             {
                 newlabel = "";
             }
+            newlabel = newlabel.Replace("|", "");
             string strInfoxFullPath = Factory.App.TempFolder + "\\" + tempfilename + ".infox";
             var rec = Factory.o27AttachmentBL.InhaleFileByInfox(strInfoxFullPath);
             if (rec == null)
             {
                 return new BO.Result(true, "infox is null");
             }
-
-            System.IO.File.WriteAllText(strInfoxFullPath, rec.o27ContentType + "|" + rec.o27FileSize.ToString() + "|" + rec.o27OriginalFileName + "|" + rec.o27GUID + "_" + rec.o27OriginalFileName + "|" + rec.o27GUID + "|" + rec.o13ID.ToString() + "|" + newlabel + "|" + rec.o27PressMark);
+            //System.IO.File.WriteAllText(Factory.App.TempFolder + "\\" + tempfilename + ".popis", newlabel);
+            System.IO.File.WriteAllText(strInfoxFullPath, rec.o27ContentType + "|" + rec.o27FileSize.ToString() + "|" + rec.o27OriginalFileName + "|" + rec.o27GUID + "_" + rec.o27OriginalFileName + "|" + rec.o27GUID + "|" + rec.o13ID.ToString() + "|" + newlabel + "|" + rec.o27PressMark+"|"+rec.x29ID.ToString());
 
             return new BO.Result(false);
         }
@@ -255,7 +255,8 @@ namespace UI.Controllers
             {
                 newlabel = "";
             }
-            
+            newlabel = newlabel.Replace("|", "");
+
             var rec = Factory.o27AttachmentBL.LoadByGuid(fileguid);
             if (rec == null)
             {

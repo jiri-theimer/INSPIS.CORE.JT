@@ -16,6 +16,7 @@
 
 <form id="form1" asp-controller="a01" asp-action="AddAttachment" method="POST">
     <input type="hidden" asp-for="@Model.a01id" />
+    <input type="hidden" asp-for="@Model.UploadGuid" />
     <div class="modal_record_container">
         <div class="alert alert-primary" role="alert">
             <label style="font-weight:bold;">@_f.tra("Typ akce"):</label>

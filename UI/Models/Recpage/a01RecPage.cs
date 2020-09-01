@@ -8,6 +8,7 @@ namespace UI.Models.Recpage
     public class a01RecPage:BaseViewModel
     {
         public BO.a01Event Rec { get; set; }
+        public BO.a10EventType RecA10 { get; set; }
         
         public BO.b05Workflow_History RecLastEvent { get; set; }
         public BO.j02Person RecIssuer { get; set; }

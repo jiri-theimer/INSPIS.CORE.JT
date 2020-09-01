@@ -24,6 +24,28 @@ namespace UI.Controllers
             RefreshStateAddAttachment(v);
             return View(v);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddAttachment(a01AddAttachment v)
+        {
+            RefreshStateAddAttachment(v);
+            if (ModelState.IsValid)
+            {
+                bool b=Factory.o27AttachmentBL.SaveChangesAndUpload(v.UploadGuid, 101, v.RecA01.pid);
+                
+                if (b)
+                {
+
+                    v.SetJavascript_CallOnLoad(v.RecA01.pid);
+                    return View(v);
+                }
+
+            }
+
+
+            this.Notify_RecNotSaved();
+            return View(v);
+        }
 
         private void RefreshStateAddAttachment(a01AddAttachment v)
         {
@@ -59,6 +81,19 @@ namespace UI.Controllers
             var mq = new BO.myQuery("a41");
             mq.a01id = v.pid;
             v.lisA41 = Factory.a41PersonToEventBL.GetList(mq);
+            return View(v);
+        }
+        public IActionResult TabAttachments(int pid)
+        {
+            var v = new a01TabAttachments() { pid = pid };
+            if (v.pid == 0)
+            {
+                return this.StopPageSubform("pid is missing");
+            }
+            v.RecA01 = Factory.a01EventBL.Load(v.pid);
+            var mq = new BO.myQuery("o27");
+            mq.a01id = v.pid;
+            v.lisO27 = Factory.o27AttachmentBL.GetList(mq, null).OrderByDescending(p => p.pid);
             return View(v);
         }
         public IActionResult TabHistory(int pid)
@@ -212,6 +247,7 @@ namespace UI.Controllers
                     {
                         Factory.CBL.SetUserParam("a01-RecPage-pid", pid.ToString());
                     }
+                    v.RecA10 = Factory.a10EventTypeBL.Load(v.Rec.a10ID);
                     v.RecLastEvent = Factory.b05Workflow_HistoryBL.LoadLast(v.pid);
                     v.RecIssuer = Factory.j02PersonBL.Load(v.Rec.j02ID_Issuer);
 
@@ -239,11 +275,25 @@ namespace UI.Controllers
         private void RefreshNavTabs(a01RecPage v)
         {
             //v.NavTabs.Add(new NavTab() { Name = "Historie událostí", Entity = "b05Workflow_History", Url = "/TheGrid/SlaveView?prefix=b05" });
-            v.NavTabs.Add(AddTab("Historie událostí", "viewHistorie", "/a01/TabHistory?pid=" + v.pid.ToString()));
-            v.NavTabs.Add(AddTab("Účastníci akce", "viewUcastnici", "/a01/TabUcastnici?pid=" + v.pid.ToString()));
-            v.NavTabs.Add(AddTab("Časový plán","viewCapacity", "/a35/TabCapacity?pid=" + v.pid.ToString()));
+            if (v.Rec.a01ParentID == 0)
+            {
+                v.NavTabs.Add(AddTab("Historie událostí", "viewHistorie", "/a01/TabHistory?pid=" + v.pid.ToString()));
+            }            
+            if (v.RecA10.a10IsUse_A41)
+            {
+                v.NavTabs.Add(AddTab("Účastníci akce", "viewUcastnici", "/a01/TabUcastnici?pid=" + v.pid.ToString()));
+            }
+            if (v.RecA10.a10IsUse_Period && v.Rec.a01ParentID==0)
+            {
+                v.NavTabs.Add(AddTab("Časový plán", "viewCapacity", "/a35/TabCapacity?pid=" + v.pid.ToString()));
+            }            
             v.NavTabs.Add(AddTab("Formuláře", "viewFormulare", "/a01/TabForms?pid=" + v.pid.ToString()));
             v.NavTabs.Add(AddTab("Úkoly/Lhůty", "h04ToDo", "/TheGrid/SlaveView?prefix=h04"));
+            if (v.Rec.a01ParentID == 0)
+            {
+                v.NavTabs.Add(AddTab("Přílohy", "viewAttachments", "/a01/TabAttachments?pid=" + v.pid.ToString()));
+            }
+            
             v.NavTabs.Add(AddTab("Související akce", "a01Event", "/TheGrid/SlaveView?prefix=a01"));
 
             string strDefTab = Factory.CBL.LoadUserParam("recpage-tab-a01");

@@ -125,8 +125,8 @@
         if (s != null) {
             $.post("/FileUpload/ChangeTempFileLabel", { tempfilename: filename, newlabel: s }, function (data) {
 
-                frmUpload.submit();
-
+                //frmUpload.submit();
+                location.reload(location.href);
 
             });
         }

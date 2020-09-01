@@ -1,0 +1,52 @@
+﻿@model UI.Models.Tab.a01TabAttachments
+@inject BL.Factory _f
+
+@{
+    ViewData["Title"] = "Přílohy";
+    Layout = "~/Views/Shared/_LayoutSubform.cshtml";
+
+
+}
+@addTagHelper *, UI
+
+<div class="modal_record_container">
+
+    <button type="button" class="btn btn-primary" onclick="append()">@_f.tra("Nahrát přílohu")</button>
+
+</div>
+
+<table class="table table-sm table-hover" style="min-width:800px;">
+
+    @foreach (var c in Model.lisO27)
+    {
+    <tr>
+        <td>
+            @c.o13Name
+        </td>
+
+        <td>
+            <a target="_blank" href="/FileUpload/FileDownloadInline?downloadguid=@c.o27DownloadGUID">@c.o27OriginalFileName</a>
+        </td>
+        <td>
+            @(BO.BAS.FormatFileSize(c.o27FileSize))
+        </td>
+        <td>
+            <i>
+                @c.o27Label
+            </i>
+        </td>
+        <td>
+            @c.o27PressMark
+        </td>
+        <td>
+            @(c.UserInsert+"/"+BO.BAS.ObjectDateTime2String(c.DateInsert))
+        </td>
+    </tr>
+    }
+</table>
+
+<script type="text/javascript">
+    function append() {
+        _window_open("/a01/AddAttachment?pid=@Model.pid");
+    }
+</script>
