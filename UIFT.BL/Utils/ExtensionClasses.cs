@@ -58,10 +58,9 @@ namespace UIFT
         {
             if (!string.IsNullOrEmpty(stringToEvaluate))
             {
-                /*TODO
-                BL.IEvaluatorBL evaluator = factory.get_Evaluator(a11id);
-                object ret = evaluator.TryEval(stringToEvaluate);*/
-                object ret = null;
+                var evaluator = new EVAL.Evaluator(factory, a11id);
+                object ret = evaluator.TryEval(stringToEvaluate);
+                
                 if (ret != null) // evaluator vratil nejaky vysledek
                 {
                     if (ret is bool)

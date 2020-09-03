@@ -23,11 +23,9 @@ namespace UIFT.Repository
         public BO.f32FilledValue PerQuestion(BO.f19Question otazka, IEnumerable<BO.f21ReplyUnitJoinedF19> odpovedi, IEnumerable<BO.f32FilledValue> vyplneneOdpovedi, bool saveAnswerToDB = true)
         {
             // spust evaluator na default value
-            /*TODO
-            BL.IEvaluatorBL evaluator = this.repository.BL.get_Evaluator(this.repository.a11id);
-            object ret = evaluator.TryEval(otazka.f19DefaultValue);*/
-            object ret = null;
-
+            var evaluator = new EVAL.Evaluator(repository.BL, repository.a11id);
+            object ret = evaluator.TryEval(otazka.f19DefaultValue);
+            
             if (ret != null) // evaluator vratil nejaky vysledek
             {
                 // vraceny retezec nesmi byt prazdny

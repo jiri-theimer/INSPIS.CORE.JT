@@ -32,7 +32,7 @@ namespace UIFT.Models
         /// <summary>
         /// Seznam best practices k segmentu
         /// </summary>
-        //TODO
+        //TODO bestPractices
         //public IEnumerable<BO.f30BestPracticesToSegment> BestPractices { get; set; }
         public IEnumerable<object> BestPractices { get; set; }
     }

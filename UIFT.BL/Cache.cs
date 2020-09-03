@@ -171,7 +171,7 @@ namespace UIFT.Repository
         public IEnumerable<BO.f30BestPracticesToSegment> f18FormSegmentBLGetList_f30(int f18id)
         {
             return new List<BO.f30BestPracticesToSegment>();
-            /*TODO f18segment
+            /*TODO best practices
             return factory.f18FormSegmentBL.GetList_f30(new BO.myQuery
             {
                 f18id = f18id

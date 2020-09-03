@@ -115,8 +115,7 @@ namespace UIFT.Models
 
                 if (!string.IsNullOrEmpty(otazka.f19EvalListSource))
                 {
-                    /*TODO
-                    BL.IEvaluatorBL evaluator = repository.BL.get_Evaluator(repository.a11id);
+                    var evaluator = new EVAL.Evaluator(repository.BL, repository.a11id);
                     object ret = evaluator.TryEval(otazka.f19EvalListSource);
                     if (ret != null)
                     {
@@ -128,7 +127,7 @@ namespace UIFT.Models
                                 otazkaDerived.EvalSource.Add(arr[0], arr[1]);
                             }
                         }
-                    }*/
+                    }
                 }
             }
 
