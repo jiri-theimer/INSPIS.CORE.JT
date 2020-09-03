@@ -16,6 +16,14 @@ namespace UI.Controllers
 {
     public class PokusController : BaseController
     {
+        public IActionResult Evaluator()
+        {
+            var v = new UI.Models.Pokus();
+            var c = new EVAL.Evaluator(Factory, 1640734);
+            var s=c.TryEval("a03institution_s('a03Name')");
+            this.AddMessage(s.ToString());
+            return View(v);
+        }
         public IActionResult PokusWord()
         {
             System.IO.File.Copy("c:\\temp\\hovado2.docx", "c:\\temp\\hovado3.docx", true);

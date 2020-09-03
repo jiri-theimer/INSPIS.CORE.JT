@@ -301,7 +301,9 @@ namespace UI.Controllers
             else
             {
                 AMI("Grid 1", "/TheGrid/FlatView?prefix=j02");
-            }           
+            }
+            DIV();
+            AMI("Učitelé", "/TheGrid/FlatView?prefix=k01");
 
             return FlushResult_NAVLINKs();
         }
@@ -551,6 +553,7 @@ namespace UI.Controllers
                 case "j90":
                 case "j92":
                 case "p44":
+                case "k01":
                     AMI("Záznam bez menu nabídky", "javascript:_notify_message('nic')");
                     break; 
                 default:
