@@ -37,6 +37,10 @@ namespace BO
         public string a25Name { get; set; } //combo
         public string k01FullName_Desc { get; set; }    //combo
         public int a03ID;
+        public int a08ID;
+        public int a17ID;
+        public int b02ID;
+        public int a10ID;
         public string a25Color;
         public DateTime f06ValidFrom;
         public DateTime f06ValidUntil;

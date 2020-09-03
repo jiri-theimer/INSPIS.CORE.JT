@@ -45,5 +45,10 @@ namespace BL
         {
             _mother.CurrentUser.AddMessage(strMessage, template);  //nepodléhá překladu do ostatních jazyků
         }
+
+        public void ChangeDB(string strConString)
+        {
+            //zatím prázdné - pouze kvůli kompatibilitě syntaxe s původním EPIS
+        }
     }
 }

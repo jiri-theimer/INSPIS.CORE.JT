@@ -16,6 +16,8 @@ namespace BO
         public int a19StudyLanguage { get; set; }
         public int a19StudyPlatform { get; set; }
 
+        public string a18Code;
+        public string a18Name;
         public string a18CodePlusName { get; set; }
         public string a37Name;
         public string a37IZO;

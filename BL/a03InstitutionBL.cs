@@ -2,7 +2,7 @@
 
 namespace BL
 {
-    public interface Ia03InstitutionBL
+    public interface Ia03InstitutionBL: BaseInterface
     {
         public BO.a03Institution Load(int pid);
         public BO.a03Institution LoadByRedizo(string redizo, int pid_exclude);

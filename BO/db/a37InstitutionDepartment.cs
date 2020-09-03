@@ -3,7 +3,7 @@
 
 namespace BO
 {
-    public class a37InstitutionDepartment:BaseBO
+    public class a37InstitutionDepartment : BaseBO
     {
         [Key]
         public int a37ID { get; set; }
@@ -24,5 +24,14 @@ namespace BO
         public string a03REDIZO;
         public string a17Name { get; set; }//combo
         public string a17UIVCode;
+
+        public string IzoWithName
+        {
+            get
+            {
+                return this.a37Name + " ("+this.a37IZO + ")";
+            }
+        }
+
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BL
 {
-    public interface Ia08ThemeBL
+    public interface Ia08ThemeBL: BaseInterface
     {
         public BO.a08Theme Load(int pid);
         public IEnumerable<BO.a08Theme> GetList(BO.myQuery mq);

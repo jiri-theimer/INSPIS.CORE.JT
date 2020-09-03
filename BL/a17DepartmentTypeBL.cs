@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BL
 {
-    public interface Ia17DepartmentTypeBL
+    public interface Ia17DepartmentTypeBL: BaseInterface
     {
         public BO.a17DepartmentType Load(int pid);
         public IEnumerable<BO.a17DepartmentType> GetList(BO.myQuery mq);

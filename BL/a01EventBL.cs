@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace BL
 {
-    public interface Ia01EventBL
+    public interface Ia01EventBL:BaseInterface
     {
         public BO.a01Event Load(int pid);
         public IEnumerable<BO.a01Event> GetList(BO.myQuery mq);

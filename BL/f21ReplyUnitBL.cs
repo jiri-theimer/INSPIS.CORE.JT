@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BL
 {
-    public interface If21ReplyUnitBL
+    public interface If21ReplyUnitBL: BaseInterface
     {
         public BO.f21ReplyUnit Load(int pid);
         public IEnumerable<BO.f21ReplyUnit> GetList(BO.myQuery mq);

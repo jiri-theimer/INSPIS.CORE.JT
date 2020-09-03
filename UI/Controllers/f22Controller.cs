@@ -14,6 +14,7 @@ namespace UI.Controllers
         {
             var v = new f22Record() { rec_pid = pid, rec_entity = "f22" };
             v.Rec = new BO.f22ReplySet();
+            
             if (v.rec_pid > 0)
             {
                 v.Rec = Factory.f22ReplySetBL.Load(v.rec_pid);

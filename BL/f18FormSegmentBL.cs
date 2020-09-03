@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BL
 {
-    public interface If18FormSegmentBL
+    public interface If18FormSegmentBL: BaseInterface
     {
         public BO.f18FormSegment Load(int pid);
         public IEnumerable<BO.f18FormSegment> GetList(BO.myQuery mq);

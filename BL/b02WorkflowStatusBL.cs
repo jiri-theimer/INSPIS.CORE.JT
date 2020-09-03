@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BL
 {
-    public interface Ib02WorkflowStatusBL
+    public interface Ib02WorkflowStatusBL: BaseInterface
     {
         public BO.b02WorkflowStatus Load(int pid);
         public IEnumerable<BO.b02WorkflowStatus> GetList(BO.myQuery mq);

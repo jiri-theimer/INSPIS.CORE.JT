@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BL
 {
-    public interface If32FilledValueBL
+    public interface If32FilledValueBL: BaseInterface
     {
         public BO.f32FilledValue Load(int pid);
         public BO.f32FilledValue Load(int a11id, int f19id, int f21id = 0);

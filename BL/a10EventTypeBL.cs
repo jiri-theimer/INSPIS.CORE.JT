@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BL
 {
-    public interface Ia10EventTypeBL
+    public interface Ia10EventTypeBL:BaseInterface
     {
         public BO.a10EventType Load(int pid);
         public IEnumerable<BO.a10EventType> GetList(BO.myQuery mq);

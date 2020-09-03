@@ -14,16 +14,17 @@ namespace BL
         public IEnumerable<BO.SysDbObject> GetList_SysObjects();
         public void GenerateCreateUpdateScript(IEnumerable<BO.SysDbObject> lis);
         public IEnumerable<BO.j05Permission> GetListJ05();
+        public IEnumerable<BO.iSETSchoolClass> GetList_SchoolClasses(string strREDIZO, string strSchoolYear);
     }
-    class FBL:BaseBL,IFBL
-    {       
-        public FBL(BL.Factory mother):base(mother)
-        {               
-            
+    class FBL : BaseBL, IFBL
+    {
+        public FBL(BL.Factory mother) : base(mother)
+        {
+
         }
 
         public IEnumerable<BO.j05Permission> GetListJ05()
-        {                       
+        {
             return _db.GetList<BO.j05Permission>("SELECT * FROM j05Permission ORDER BY j05Order");
         }
 
@@ -38,7 +39,7 @@ namespace BL
         }
         public BO.a45EventRole LoadA45(int a45id)
         {
-            return _db.Load<BO.a45EventRole>("SELECT a.*,"+_db.GetSQL1_Ocas("a45",false,false)+" FROM a45EventRole a WHERE a.a45ID=@pid", new { pid = a45id });
+            return _db.Load<BO.a45EventRole>("SELECT a.*," + _db.GetSQL1_Ocas("a45", false, false) + " FROM a45EventRole a WHERE a.a45ID=@pid", new { pid = a45id });
         }
 
         public BO.x26ComboSource LoadX26(int x26id)
@@ -50,11 +51,11 @@ namespace BL
         {
             string s = "SELECT ID,name,xtype,schema_ver as version,convert(text,null) as content FROM sysobjects WHERE rtrim(xtype) IN ('V','FN','P','TR','IF') AND name not like 'dt_%' and name not like 'zzz%' and (name not like 'sys%' or name not like 'system_%') order by xtype,name";
             var lis = _db.GetList<BO.SysDbObject>(s);
-            foreach(var c in lis)
+            foreach (var c in lis)
             {
                 string strContent = "";
-                var dt = _db.GetDataTable("select colid,text FROM syscomments where id="+c.ID.ToString()+" order by colid");
-                foreach(DataRow dbrow in dt.Rows)
+                var dt = _db.GetDataTable("select colid,text FROM syscomments where id=" + c.ID.ToString() + " order by colid");
+                foreach (DataRow dbrow in dt.Rows)
                 {
                     strContent += dbrow["text"];
                 }
@@ -67,7 +68,7 @@ namespace BL
         public void GenerateCreateUpdateScript(IEnumerable<BO.SysDbObject> lis)
         {
             var sb = new System.Text.StringBuilder();
-            foreach(var c in lis)
+            foreach (var c in lis)
             {
                 sb.AppendLine("if exists(select 1 from sysobjects where id = object_id('" + c.Name + "') and type = '" + c.xType + "')");
                 switch (c.xType)
@@ -92,6 +93,17 @@ namespace BL
 
                 System.IO.File.WriteAllText(_mother.App.TempFolder + "\\sql_sp_funct_views.sql", sb.ToString());
             }
+        }
+
+        public IEnumerable<BO.iSETSchoolClass> GetList_SchoolClasses(string strREDIZO, string strSchoolYear)
+        {
+            sb("select c.ClassId, c.Name as ClassName, c.Grade as ClassGrade, c.Status as ClassStatus from [10.230.138.203].NIQESPROD.dbo.Class c");
+            sb(" join [10.230.138.203].NIQESPROD.dbo.Subject s on s.SubjectId=c.SchoolId");
+            sb(" join [10.230.138.203].NIQESPROD.dbo.SchoolYear sy on c.SchoolYearId=sy.SchoolYearId");
+            sb(" where s.Redizo = @redizo and c.IsActive = 1 AND sy.Name=@schoolyear AND c.IsStudyGroup=0 AND c.Status=2");
+
+            return _db.GetList<BO.iSETSchoolClass>(sbret(), new { redizo = strREDIZO, schoolyear = strSchoolYear });
+
         }
 
 

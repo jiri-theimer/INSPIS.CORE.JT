@@ -6,7 +6,7 @@ using System.Threading.Tasks.Sources;
 
 namespace BL
 {
-    public interface If06FormBL
+    public interface If06FormBL:BaseInterface
     {
         public BO.f06Form Load(int pid);
         public IEnumerable<BO.f06Form> GetList(BO.myQuery mq);

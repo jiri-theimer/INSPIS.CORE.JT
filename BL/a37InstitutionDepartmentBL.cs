@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BL
 {
-    public interface Ia37InstitutionDepartmentBL
+    public interface Ia37InstitutionDepartmentBL: BaseInterface
     {
         public BO.a37InstitutionDepartment Load(int pid);
         public IEnumerable<BO.a37InstitutionDepartment> GetList(BO.myQuery mq);

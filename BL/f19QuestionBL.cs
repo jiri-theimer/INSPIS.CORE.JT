@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BL
 {
-    public interface If19QuestionBL
+    public interface If19QuestionBL: BaseInterface
     {
         public BO.f19Question Load(int pid);
         public IEnumerable<BO.f19Question> GetList(BO.myQuery mq);

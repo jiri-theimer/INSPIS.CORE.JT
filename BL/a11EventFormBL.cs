@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace BL
 {
-    public interface Ia11EventFormBL
+    public interface Ia11EventFormBL:BaseInterface
     {
         public BO.a11EventForm Load(int pid);
         public BO.a11EventForm LoadPoll(string signature, string pin, int a11id_exclude = 0);
@@ -34,7 +34,7 @@ namespace BL
             sb(_db.GetSQL1_Ocas("a11", false, false,true));
             sb(",a11_f06.f06Name,a11_f06.f06IsA01ClosedStrict,a11_f06.f06ValidFrom,a11_f06.f06ValidUntil,a11_f06.f06IsA01PeriodStrict,a11_f06.f06UserLockFlag");
             sb(",a11_a01.a01ValidUntil,a11_a01.a01ValidFrom,a11_a01.a01IsClosed,a11_a01.a01IsAllFormsClosed");
-            sb(",a11_a01.a03ID,a37.a37IZO,a37.a37Name,a37.a37IZO,a25.a25Name,a25.a25Color");
+            sb(",a11_a01.a03ID,a37.a37IZO,a37.a37Name,a37.a37IZO,a25.a25Name,a25.a25Color,a37.a17ID,a11_a01.a08ID,a11_a01.b02ID,a11_a01.a10ID");
             sb(",k01.k01LastName+' '+k01.k01FirstName as k01FullName_Desc");
             sb(" FROM a11EventForm a INNER JOIN f06Form a11_f06 ON a.f06ID=a11_f06.f06ID INNER JOIN a01Event a11_a01 ON a.a01ID=a11_a01.a01ID");
             sb(" LEFT OUTER JOIN a25EventFormGroup a25 ON a.a25ID=a25.a25ID");

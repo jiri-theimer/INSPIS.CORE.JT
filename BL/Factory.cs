@@ -88,6 +88,7 @@ namespace BL
 
         private IMailBL _mail;
         private IWorkflowBL _workflow;
+        private Ik01TeacherBL _k01;
 
         public Factory(BO.RunningUser c,BL.RunningApp runningapp,BL.TheEntitiesProvider ep,BL.TheGlobalParams gp,BL.TheTranslator tt)
         {
@@ -130,6 +131,7 @@ namespace BL
             if (this.CurrentUser.j03LangIndex == 0) return strExpression;
             return this.Translator.DoTranslate(strExpression, this.CurrentUser.j03LangIndex);
         }
+        
 
         public IDataGridBL gridBL
         {
@@ -640,6 +642,14 @@ namespace BL
             {
                 if (_x51 == null) _x51 = new x51HelpCoreBL(this);
                 return _x51;
+            }
+        }
+        public Ik01TeacherBL k01TeacherBL
+        {
+            get
+            {
+                if (_k01 == null) _k01 = new k01TeacherBL(this);
+                return _k01;
             }
         }
 
