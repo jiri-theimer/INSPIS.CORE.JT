@@ -47,6 +47,16 @@ namespace BL
                 _db.RunSql(_db.ParseMergeSQL(recB06.b06RunSQL, rec.pid.ToString()));
             }
 
+            if (recB06 != null)
+            {
+                RunB09Commands(rec, recB06.pid, recB06.b02ID_Target);
+            }
+            else
+            {
+                RunB09Commands(rec, 0, 0);
+            }
+            
+
             return rec.pid;
         }
 
@@ -254,7 +264,21 @@ namespace BL
             if (intB02ID_Target > 0)
             {
                 //spuštění případných příkazů spojených s cílovým statusem
-
+                foreach (var prikaz in _mother.b02WorkflowStatusBL.GetListB10(intB02ID_Target).Where(p => p.b09SQL != null))
+                {
+                    _db.RunSql(_db.ParseMergeSQL(prikaz.b09SQL, rec.pid.ToString(), prikaz.b10Parameter1, prikaz.b10Parameter2));
+                    if (rec.a01ChildsCount > 0 && rec.a01ParentID == 0)
+                    {
+                        //spuštění SQL příkazů podřízených dětí vůči matce
+                        var mq = new BO.myQuery("a01");
+                        mq.a01parentid = rec.pid;
+                        var lisChilds = _mother.a01EventBL.GetList(mq);
+                        foreach (var c in lisChilds)
+                        {
+                            _db.RunSql(_db.ParseMergeSQL(prikaz.b09SQL, c.pid.ToString(), prikaz.b10Parameter1, prikaz.b10Parameter2));
+                        }
+                    }
+                }
             }
         }
     }
