@@ -9,10 +9,12 @@
 
     Private _ServiceUser As BO.RunningUser
 
-    Public Sub New(ServiceUser As BO.RunningUser, intA11ID As Integer)
+
+    Public Sub New(Factory As BL.Factory, intA11ID As Integer)
         _a11ID = intA11ID
-        _ServiceUser = ServiceUser
-        _Factory = New BL.Factory(ServiceUser, Nothing, Nothing, Nothing, Nothing)
+        _Factory = Factory
+        _ServiceUser = Factory.CurrentUser
+        '_Factory = New BL.Factory(ServiceUser, , Nothing, Nothing, Nothing)
 
     End Sub
 

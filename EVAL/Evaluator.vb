@@ -1,33 +1,36 @@
-﻿Public Interface IEvaluatorBL
-    ''' <summary>
-    ''' Pokud evaluátor vyhodnotí výraz strExpression jako chybný, popis chyby najdeš v ErrorMessage.
-    ''' Obor funkcí, které podporuje evaluátor je v třídě EvalFunctions.
-    ''' </summary>
-    ''' <returns>Pokud evaluátor vyhodnotí výraz strExpression jako chybný, vrací NOTHING</returns>
-    ''' <param name="strExpression">Výraz, který bude evaluován. Ve výrazu můžeš používat pouze funkce deklarované ve třídě EvalFunctions!</param>
-    Function TryEval(ByVal strExpression As String) As Object
+﻿'Public Interface IEvaluatorBL
+'    ''' <summary>
+'    ''' Pokud evaluátor vyhodnotí výraz strExpression jako chybný, popis chyby najdeš v ErrorMessage.
+'    ''' Obor funkcí, které podporuje evaluátor je v třídě EvalFunctions.
+'    ''' </summary>
+'    ''' <returns>Pokud evaluátor vyhodnotí výraz strExpression jako chybný, vrací NOTHING</returns>
+'    ''' <param name="strExpression">Výraz, který bude evaluován. Ve výrazu můžeš používat pouze funkce deklarované ve třídě EvalFunctions!</param>
+'    Function TryEval(ByVal strExpression As String) As Object
 
-    ReadOnly Property ErrorMessage As String
-End Interface
+'    ReadOnly Property ErrorMessage As String
+'End Interface
 
-Class Evaluator
-    Implements IEvaluatorBL
+Public Class Evaluator
+    ''Implements IEvaluatorBL
     Private mParser As parser
     Private mExtraFunctions As Object
     Private _A11ID As Integer
     Private _Error As String
     Private _ServiceUser As BO.RunningUser
+    Private _Factory As BL.Factory
 
 
-    Public Sub New(ServiceUser As BO.RunningUser, intA11ID As Integer)
+    Public Sub New(Factory As BL.Factory, intA11ID As Integer)
         _A11ID = intA11ID
-        _ServiceUser = ServiceUser
+        _Factory = Factory
+        _ServiceUser = Factory.CurrentUser
+
         mParser = New parser(Me)
 
     End Sub
 
 
-    Public Function TryEval(str As String) As Object Implements IEvaluatorBL.TryEval
+    Public Function TryEval(str As String) As Object ''Implements IEvaluatorBL.TryEval
         Try
             Return Eval(str)
         Catch ex As Exception
@@ -42,7 +45,7 @@ Class Evaluator
     End Function
 
 
-    Public ReadOnly Property ErrorMessage As String Implements IEvaluatorBL.ErrorMessage
+    Public ReadOnly Property ErrorMessage As String ''Implements IEvaluatorBL.ErrorMessage
         Get
             Return _Error
         End Get
@@ -364,7 +367,7 @@ Class Evaluator
         Private mEvalFunctions As EvalFunctions
 
         Sub New(ByVal evaluator As Evaluator)
-            mEvalFunctions = New EvalFunctions(evaluator._ServiceUser, evaluator._A11ID)
+            mEvalFunctions = New EvalFunctions(evaluator._Factory, evaluator._A11ID)
             mEvaluator = evaluator
         End Sub
 

@@ -29,6 +29,7 @@
   <ItemGroup>
     <ProjectReference Include="..\BL\BL.csproj" />
     <ProjectReference Include="..\BO\BO.csproj" />
+    <ProjectReference Include="..\EVAL\EVAL.vbproj" />
   </ItemGroup>
 
 </Project>
