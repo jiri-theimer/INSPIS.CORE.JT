@@ -1,0 +1,26 @@
+﻿@model UIFT.Models.Otazka
+@inject UIFT.Repository.RepositoryFactory factory
+@{
+    var rep = factory.Get();
+}
+<div class="layout_@(Model.Base.f19IsHorizontalDisplay ? "horizontal" : "vertical")">
+    @foreach (BO.f21ReplyUnit unit in Model.Odpovedi)
+    {
+        bool check = false;
+        if (Model.VyplneneOdpovedi.Exists(t => t.f21ID == unit.pid))
+        {
+            check = Model.VyplneneOdpovedi.First(t => t.f21ID == unit.pid).Value == factory.GetGlobalParams("FT_CheckboxAnswerTrueValue");
+        }
+        int prevent = unit.f21IsNegation ? 1 : Model.Base.f19CHLMaxAnswers;
+        <label>
+            <input type="checkbox" value="@unit.pid" id="Answer_@(Model.PID)_@(unit.pid)" name="Answer_@(Model.PID)" data-answer='{ "state":1,"f21id":@unit.pid,"prevent":@prevent }' data-comment="@unit.f21IsCommentAllowed" @(check ? "checked" : "") @(Model.ReadOnly ? "disabled=disabled" : "") />
+            @unit.f21Name
+        </label>
+    }
+</div>
+@Html.Partial("_Komentare", Model, new ViewDataDictionary(new Microsoft.AspNetCore.Mvc.ModelBinding.EmptyModelMetadataProvider(), new Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary()) { { "showCommentAnswer", true } })
+
+@if (!Model.ReadOnly)
+{
+    <a class="clearAnswer" title="@rep.BL.tra("Vrátit otázku do výchozího stavu")" href="#">[ @rep.BL.tra("vyčistit") ]</a>
+}

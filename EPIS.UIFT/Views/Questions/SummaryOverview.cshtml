@@ -1,0 +1,23 @@
+﻿@model UIFT.Models.IOtazka
+@inject UIFT.Repository.RepositoryFactory factory
+@{
+    var rep = factory.Get();
+    string odpoved = "";
+    bool userEdited = false;
+
+    if (Model.VyplneneOdpovedi.Count > 0)
+    {
+        odpoved = Model.VyplneneOdpovedi[0].Value;
+        userEdited = !Model.VyplneneOdpovedi[0].f32IsFilledByEval;
+    }
+}
+<div class="summary1" id="Answer_@(Model.PID)_default">@Html.Raw(userEdited ? Model.VyplneneOdpovedi[0].f32Comment : odpoved)</div>
+
+<div class="summary3">
+    <button style="display:@(userEdited ? "none" : "block");" type="button" class="buttonSmall buttonIcon btnSummaryEdit"><span></span>@rep.BL.tra("Upravit text")</button>
+    <button style="display:@(userEdited ? "block" : "none");" type="button" class="buttonSmall buttonIcon btnSummaryDefault"><span></span>@rep.BL.tra("Použít výchozí text")</button>
+</div>
+
+<div class="summary2" data-visible="@(userEdited ? "true" : "false")">
+    <div class="editor" contenteditable="@(Model.ReadOnly ? "false" : "true")" id="Answer_@(Model.PID)" data-answer='{ "f21id":@Model.Odpovedi[0].pid }' style="min-width:300px;min-height:100px;">@Html.Raw(odpoved)</div>
+</div>

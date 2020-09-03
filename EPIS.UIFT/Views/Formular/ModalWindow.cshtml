@@ -1,0 +1,43 @@
+﻿@model Formular
+@inject UIFT.Repository.RepositoryFactory factory
+@{
+    var persistentData = this.Context.Items["PersistantData"] as UIFT.PersistantDataStorage;
+    var rep = factory.Get();
+}
+@section Header
+{
+    @if (Model.AktualniOtazka > 0)
+    { // pokud ma byt pri startu naskrolovano na nekterou z  otazek
+        <script type="text/javascript">UIFT.ActualQuestion=@(Model.AktualniOtazka);</script>
+    }
+}
+
+<!-- HEADER -->
+<div id="header">
+    <div id="header2">
+        <!-- ikona pro mobilni menu -->
+        <a href="#" id="mobileMenu"></a>
+        <div class="headerClose">[ <a href="javascript:parent.FormularClose();">@rep.BL.tra("zavřít okno")</a> ]</div>
+        <img src="~/css/images/logo.png?v=4" alt="Logo" class="logo" />
+        <p class="appName">@rep.BL.tra("EPIS")</p>
+    </div>
+</div>
+
+<!-- SIDE MENU -->
+<div id="menuContainer">
+    <div id="menuTitle">@rep.BL.tra("Části formuláře")<p>@Model.Base.f06Name</p></div>
+    <div id="segmentsTreeContainer">
+        <div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
+        <div class="viewport">
+            @Html.SekceTree(Model.Tree, persistentData.a11id, Model.AktualniSekce)
+        </div>
+    </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="contentContainer">
+    <!-- kontajner pro obsah formulare -->
+    <div id="contentContainerInner"></div>
+
+    <div class="clr"></div>
+</div>

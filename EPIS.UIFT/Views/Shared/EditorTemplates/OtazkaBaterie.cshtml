@@ -1,0 +1,52 @@
+﻿@model UIFT.Models.OtazkaBaterie
+@inject UIFT.Repository.RepositoryFactory factory
+@{
+    var rep = factory.Get();
+    int r = 0;
+}
+<div id="otazka-@Model.PID" data-question='@Model.GetJsonData()' class="@Model.GetCssClasses()" @(Model.IsHidden ? "style=display:none;" : "")>
+    <div class="otazkaName @(string.IsNullOrEmpty(Model.Hint) ? "" : "otazkaNameHint")" title='@Model.Hint'>
+        @Model.Name
+    @if (!string.IsNullOrEmpty(Model.SupportingText))
+    {
+        <p class="otazkaSuppText">@Model.SupportingText</p>
+    }
+    @if (Model.IsRequired)
+    {
+        <p class="otazkaRequired">@rep.BL.tra("* Tato otázka je povinná k vyplnění")</p>
+    }
+    @if (!string.IsNullOrEmpty(Model.Hint)) // hint - napoveda
+    {
+        <span class="iconHint"></span>
+    }
+</div>
+
+@Html.Partial("_PublikovatOtazku", Model)
+
+<div class="odpovedContainer">
+
+    <table cellspacing="0" class="tabBattery">
+        @if (Model.Sloupce != null)
+        {
+            <tr class="batteryFirstRow">
+                <th class="chessEmptyCell">&nbsp;</th>
+                @foreach (string column in Model.Sloupce)
+                {
+                    <th>@Html.Raw(column == string.Empty ? "&nbsp;" : column)</th>
+                }
+            </tr>
+        }
+        @foreach (UIFT.Models.IOtazka otazka in Model.Otazky)
+        {
+            <tr id="otazka-@(otazka.PID)" class="@(++r % 2 == 0 ? "alt" : "") @(otazka.IsRequired ? "isRequired" : "")" data-question='@otazka.GetJsonData()' @(otazka.IsHidden ? "style=display:none;" : "")>
+                @Html.Partial("~/Views/Questions/Battery" + otazka.ViewName + ".cshtml", otazka)
+            </tr>
+        }
+    </table>
+
+    @if (!Model.ReadOnly)
+    {
+        <a class="clearAnswer clearAnswerBaterie" title="Vrátit otázku do výchozího stavu" href="#">[ @rep.BL.tra("vyčistit") ]</a>
+    }
+</div>
+</div>

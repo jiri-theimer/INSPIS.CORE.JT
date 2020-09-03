@@ -1,0 +1,28 @@
+﻿@model LoginModel
+@inject UIFT.Repository.RepositoryFactory factory
+@{
+    var rep = factory.Get();
+}
+<div class="loginBox1">
+    <h1><img src="~/css/images/logo.png?v=4" alt="Logo" class="logo" /></h1>
+
+    <div id="loginBox">
+        @using (Html.BeginForm("Login", "Login", FormMethod.Post, new { autocomplete = "off" }))
+        {
+            <p><label>@rep.BL.tra("ID akce:") </label>@Html.TextBoxFor(t => t.Akce)</p>
+            <p><label>@rep.BL.tra("PIN:") </label>@Html.TextBoxFor(t => t.PIN, null, new { autocomplete = "off" })</p>
+            if (!ViewData.ModelState.IsValid)
+            {
+                <div id="loginError">@Html.ValidationSummary()</div>
+            }
+            <p><button type="submit" class="buttonSmall">@rep.BL.tra("Přihlásit se")</button></p>
+        }
+    </div>
+</div>
+<p class="loginBox2">Build: @Html.AppVersion()</p>
+
+<script type="text/javascript">
+    $(function () {
+        $("#akce").focus();
+    });
+</script>

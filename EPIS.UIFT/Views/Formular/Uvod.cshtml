@@ -1,0 +1,31 @@
+﻿@model UIFT.Models.Formular
+@inject UIFT.Repository.RepositoryFactory factory
+@{
+    Layout = null;
+    var rep = factory.Get();
+}
+<h2 class="title1">@Model.Base.f06Name</h2>
+@if (!string.IsNullOrEmpty(Model.Base.f06Description))
+{
+    <div class="sekceText">@Model.Base.f06Description</div>
+}
+@if (!string.IsNullOrEmpty(Model.Base.f06Hint))
+{
+    <div class="sekceText">@Html.Raw(Model.Base.f06Hint.Replace("\n", "<br/>"))</div>
+}
+
+@if (Model.Prilohy.Count > 0)
+{
+    <div class="attachments formularPrilohy">
+        <p>@rep.BL.tra("Přílohy ke stažení:")</p>
+        <ul>
+        @foreach (BO.o27Attachment priloha in Model.Prilohy)
+        {
+            @Html.Partial("_Priloha", priloha)
+        }
+        </ul>
+    </div>
+}
+<div id="bottomNavigation" class="sekceNav">
+    <a href="javascript:UIFT.Navigation('next');" class="navNext">@rep.BL.tra("NA ZAČÁTEK DOTAZNÍKU") &raquo;</a>
+</div>

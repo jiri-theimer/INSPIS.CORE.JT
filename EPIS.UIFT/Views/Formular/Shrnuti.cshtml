@@ -1,0 +1,56 @@
+﻿@model UIFT.Models.ShrnutiResult
+@inject UIFT.Repository.RepositoryFactory factory
+@{
+    Layout = null;
+
+    var rep = factory.Get();
+    var persistentData = this.Context.Items["PersistantData"] as UIFT.PersistantDataStorage;
+
+    bool showLock = false;
+    if (persistentData.FormLockFlag == BO.f06UserLockFlagEnum.LockWhenever
+        || (persistentData.FormLockFlag == BO.f06UserLockFlagEnum.LockOnlyIfValid && Model.Success))
+    {
+        showLock = true;
+    }
+}
+<h2 class="title1">@rep.BL.tra("Kontrola formuláře")</h2>
+@if (!Model.Success)
+{
+    <p class="shrnutiReq">@rep.BL.tra("Některé otázky ještě nebyly zodpovězeny nebo jejich odpověď není platná:")</p>
+    <ul id="shrnutiErrors">
+        @foreach (ShrnutiResultItem item in Model.Items)
+        {
+            <li>
+                <span></span>
+                @rep.BL.tra("Otázka") <a href="#" data-otazka="@item.OtazkaId" data-sekce="@item.SekceId" title="@rep.BL.tra("Přejít na otázku")">@item.Otazka</a> @rep.BL.tra("v části") <a href="#" data-sekce="@item.SekceId" title="@rep.BL.tra("Přejít na část")">@item.Sekce</a>:
+                @if (string.IsNullOrEmpty(item.Message))
+                {
+                    @rep.BL.tra("Tato otázka je povinná!")
+                }
+                else
+                {
+                    @item.Message
+                }
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p class="shrnutiOK">@rep.BL.tra("Ve formuláři nebyly nalezeny žádné problémy.")</p>
+    if (!string.IsNullOrEmpty(Model.WorkflowMessage))
+    {
+        <p class="shrnutiWorkflowMsg">@Html.Raw(Model.WorkflowMessage)</p>
+        <p class="shrnutiWorkflowA">
+            <a href="@(factory.GetGlobalParams("BaseURL_EPIS1"))/workflow_dialog_general.aspx?pid=@(persistentData.a01id)" target="_blank"><span></span>@rep.BL.tra("Posunout/doplnit")</a>
+        </p>
+    }
+}
+
+@if (showLock && !persistentData.IsPreview)
+{ // zamykaci cudlik
+    <p class="shrnutiButton"><button type="button" class="buttonBig">@rep.BL.tra("Uzamknout formulář *")</button></p>
+    <p class="shrnutiHint">@rep.BL.tra("* Po uzamčení formuláře nebude možno provádět další změny v odpovědích.")</p>
+}
+
+<script type="text/javascript">UIFT.InitShrnuti();</script>

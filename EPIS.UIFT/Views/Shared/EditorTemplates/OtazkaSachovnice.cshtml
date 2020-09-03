@@ -1,0 +1,46 @@
+﻿@model UIFT.Models.OtazkaSachovnice
+@inject UIFT.Repository.RepositoryFactory factory
+@{
+    var rep = factory.Get();
+}
+<div id="otazka-@Model.PID" data-question='@Model.GetJsonData()' class="@Model.GetCssClasses()" @(Model.IsHidden ? "style=display:none;" : "")>
+    <div class="otazkaName @(string.IsNullOrEmpty(Model.Hint) ? "" : "otazkaNameHint")">
+        @Model.Name
+    @if (!string.IsNullOrEmpty(Model.SupportingText))
+    {
+        <p class="otazkaSuppText">@Model.SupportingText</p>
+    }
+    @if (Model.IsRequired)
+    {
+        <p class="otazkaRequired">@rep.BL.tra("* Tato otázka je povinná k vyplnění")</p>
+    }
+</div>
+
+@Html.Partial("_PublikovatOtazku", Model)
+
+<div class="odpovedContainer">
+
+    <table cellspacing="0" class="tabChessboard">
+        <tr>
+            <th class="chessEmptyCell">&nbsp;</th>
+            @foreach (string column in Model.Sloupce)
+            {
+                <th>@(column == string.Empty ? "&nbsp;" : column)</th>
+            }
+        </tr>
+        @for (int radek = 1; radek <= Model.Radky.Length; radek++)
+        {
+            string text = Model.Radky[radek - 1];
+            <tr class="@(radek % 2 == 0 ? "alt" : "")">
+                <td class="chessRowHeader">@(text == string.Empty ? "&nbsp;" : text)</td>
+                @for (int sloupec = 1; sloupec <= Model.Sloupce.Length; sloupec++)
+                {
+                    UIFT.Models.Otazka otazka = Model.Otazky.Find(t => t.Base.f19ChessColumn == sloupec && t.Base.f19ChessRow == radek);
+                    <td>@Html.Partial("~/Views/Questions/" + otazka.ViewName + ".cshtml", otazka)</td>
+                }
+            </tr>
+        }
+    </table>
+
+</div>
+</div>

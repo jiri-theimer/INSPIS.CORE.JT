@@ -1,0 +1,45 @@
+﻿@inject UIFT.Repository.RepositoryFactory factory
+@{
+    Layout = null;
+    var rep = factory.Get();
+
+    string webRoot = Url.Content("~/");
+    if (webRoot == "/") { webRoot = ""; }
+
+    var parsistenData = this.Context.Items["PersistantData"] as UIFT.PersistantDataStorage;
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>@rep.BL.tra("InspIS | Formuláře")</title>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <meta http-equiv="Cache-Control" content="must-revalidate, post-check=0, pre-check=0" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="Wed, 26 Feb 2000 23:59:59 GMT" />
+
+    <meta http-equiv="Content-Language" content="cs" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <meta name="description" content="InspIS DATA" />
+    <meta name="Author" content="CleverApp" />
+
+    <link rel="stylesheet" href="~/css/uift.min.css">
+    <script type="text/javascript" src="~/ckeditor/ckeditor.js?v=457"></script>
+    <script type="text/javascript" src="~/js/uift.min.js?v=1"></script>
+    <script type="text/javascript" src="~/js/uift.layout.window.js"></script>
+    <script type="text/javascript">
+        UIFT.WebRoot = "@webRoot";
+        UIFT.a11id = @parsistenData.a11id;
+    </script>
+
+</head>
+
+<body>
+    <div id="modal">
+        @RenderBody()
+    </div>
+</body>
+</html>

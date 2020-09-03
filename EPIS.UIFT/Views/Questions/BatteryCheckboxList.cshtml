@@ -1,0 +1,21 @@
+﻿@model UIFT.Models.Otazka
+@inject UIFT.Repository.RepositoryFactory factory
+<td class="chessRowHeader @(string.IsNullOrEmpty(Model.Hint) ? "" : "otazkaNameHint")" title='@Model.Hint'>
+    @Model.Name
+    @if (!string.IsNullOrEmpty(Model.SupportingText)) // pomocny text
+    {
+        <p class="otazkaSuppText">@Model.SupportingText</p>
+    }
+</td>
+@foreach (BO.f21ReplyUnit unit in Model.Odpovedi)
+{
+    bool check = false;
+    if (Model.VyplneneOdpovedi.Exists(t => t.f21ID == unit.f21ID))
+    {
+        check = Model.VyplneneOdpovedi.First(t => t.f21ID == unit.f21ID).Value == factory.GetGlobalParams("FT_CheckboxAnswerTrueValue");
+    }
+    int prevent = unit.f21IsNegation ? 1 : Model.Base.f19CHLMaxAnswers;
+    <td>
+        <input type="checkbox" value="@unit.pid" id="Answer_@(Model.PID)_@(unit.pid)" name="Answer_@(Model.PID)" data-answer='{ "state":1,"f19id":@Model.PID,"f21id":@unit.pid,"prevent":@prevent }' @(check ? "checked" : "") @(Model.ReadOnly ? "disabled=disabled" : "") />
+    </td>
+}

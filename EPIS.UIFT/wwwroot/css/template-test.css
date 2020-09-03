@@ -1,0 +1,45 @@
+﻿.sekceTemplate-test {
+    padding-top: 24px;
+}
+.sekceTemplate-test .otazkaContainer {
+    border: 0;
+    margin: 0;
+}
+.sekceTemplate-test fieldset > .otazkaContainer, .sekceTemplate-test fieldset > div {
+    margin: 12px;
+    clear: both;
+}
+.sekceTemplate-test .odpovedContainer {
+    padding: 0;
+    line-height: 30px;
+}
+.sekceTemplate-test input[type="text"] {
+    width: 350px;
+}
+.sekceTemplate-test input[type="text"].hasDatepicker {
+    width: 100px;
+}
+.sekceTemplate-test fieldset > div > label {
+    float: left;
+    width: 300px;
+    line-height: 30px;
+    display: block;
+}
+div.statId_psc input[type="text"], div.statId_osoba_psc input[type="text"], div.statId_zz_psc input[type="text"] {
+    width: 80px;
+    margin-right: 18px;
+    float: left;
+}
+.statId_mesto input[type="text"], .statId_osoba_mesto input[type="text"], .statId_zz_mesto input[type="text"] {
+    width: 238px;
+}
+div.statId_trida, div.statId_rocnik {
+    padding-left: 24px;
+    display: inline;
+}
+div.statId_osoba_narozeni, div.statId_osoba_narozeni .odpovedContainer, div.statId_trida .odpovedContainer, div.statId_rocnik .odpovedContainer {
+    display: inline;
+}
+div.statId_trida input[type="text"], div.statId_rocnik input[type="text"] {
+    width: 41px;
+}

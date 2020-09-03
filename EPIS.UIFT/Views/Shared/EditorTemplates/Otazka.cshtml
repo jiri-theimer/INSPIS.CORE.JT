@@ -1,0 +1,37 @@
+﻿@model UIFT.Models.IOtazka
+@inject UIFT.Repository.RepositoryFactory factory
+@{
+    var rep = factory.Get();
+}
+<div id="otazka-@Model.PID" data-question='@Model.GetJsonData()' class="@Model.GetCssClasses()" @(Model.IsHidden ? "style=display:none;" : "")>
+    <div class="otazkaName @(string.IsNullOrEmpty(Model.Hint) ? "" : "otazkaNameHint")" title='@Model.Hint'>
+        @Model.Name
+    @if (!string.IsNullOrEmpty(Model.SupportingText)) // pomocny text
+    {
+        <p class="otazkaSuppText">@Model.SupportingText</p>
+    }
+    @if (!string.IsNullOrEmpty(Model.Hint)) // hint - napoveda
+    {
+        <span class="iconHint"></span>
+    }
+</div>
+
+@Html.Partial("_PublikovatOtazku", Model)
+
+@if (Model.Prilohy.Count > 0) // prilohy k segmentu
+{
+    <div class="attachments otazkaPrilohy">
+        <p>@rep.BL.tra("Přílohy ke stažení:")</p>
+        <ul>
+            @foreach (BO.o27Attachment priloha in Model.Prilohy)
+            {
+                @Html.Partial("_Priloha", priloha)
+            }
+        </ul>
+    </div>
+}
+
+<div class="odpovedContainer">
+    @Html.Partial(string.Format("~/Views/Questions/{0}.cshtml", Model.ViewName), Model)
+</div>
+</div>

@@ -1,0 +1,26 @@
+﻿@model UIFT.Models.IOtazka
+@inject UIFT.Repository.RepositoryFactory factory
+@{
+    string odpoved = Model.VyplneneOdpovedi.Count > 0 ? Model.VyplneneOdpovedi[0].Value : "";
+    var rep = factory.Get();
+    
+}
+<select name="Answer_@(Model.PID)" id="Answer_@(Model.PID)" data-answer='{ "state":1,"f21id":@Model.Odpovedi[0].pid }' @(Model.ReadOnly ? "disabled=disabled" : "")>
+    <option value="">@rep.BL.tra("Nevyplněno")</option>
+    @if (odpoved == factory.GetGlobalParams("FT_CheckboxAnswerTrueValue"))
+    {
+        <option value="@factory.GetGlobalParams("FT_CheckboxAnswerTrueValue")" selected>@rep.BL.tra("Ano")</option>
+    }
+    else
+    {
+        <option value="@factory.GetGlobalParams("FT_CheckboxAnswerTrueValue")">@rep.BL.tra("Ano")</option>
+    }
+    @if (odpoved == factory.GetGlobalParams("FT_CheckboxAnswerFalseValue"))
+    {
+        <option value="@factory.GetGlobalParams("FT_CheckboxAnswerFalseValue")" selected>@rep.BL.tra("Ne")</option>
+    }
+    else
+    {
+        <option value="@factory.GetGlobalParams("FT_CheckboxAnswerFalseValue")">@rep.BL.tra("Ne")</option>
+    }
+</select>

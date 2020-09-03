@@ -1,0 +1,59 @@
+﻿@model UIFT.Models.IOtazka
+@{
+    string odpoved = Model.VyplneneOdpovedi.Count > 0 ? Model.VyplneneOdpovedi[0].Value : "";
+    var persistentData = this.Context.Items["PersistantData"] as UIFT.PersistantDataStorage;
+
+    // format cisla s oddelovaci
+    if (!string.IsNullOrEmpty(odpoved))
+    {
+        if (Model.ReplyType == BO.x24DataTypeEnum.tInteger)
+        {
+            int o1;
+            if (int.TryParse(odpoved, out o1))
+            {
+                odpoved = o1.ToString("### ### ### ##0").Trim();
+            }
+        }
+        else
+        {
+            decimal o2;
+            if (decimal.TryParse(odpoved, out o2))
+            {
+                odpoved = o2.ToString("### ### ### ##0.####").Trim();
+            }
+        }
+    }
+
+    // vytvoreni atributu
+    string attrs = "";
+    if (Model.Odpovedi.Count > 0)
+    {
+        if (!string.IsNullOrEmpty(Model.Odpovedi[0].f21MinValue))
+        {
+            attrs += " min=" + Model.Odpovedi[0].f21MinValue;
+        }
+        if (!string.IsNullOrEmpty(Model.Odpovedi[0].f21MaxValue))
+        {
+            attrs += " max=" + Model.Odpovedi[0].f21MaxValue;
+        }
+    }
+    attrs += " maxlength=12";
+}
+<td class="chessRowHeader @(string.IsNullOrEmpty(Model.Hint) ? "" : "otazkaNameHint")" title='@Model.Hint'>
+    @Model.Name
+    @if (!string.IsNullOrEmpty(Model.SupportingText)) // pomocny text
+    {
+        <p class="otazkaSuppText">@Model.SupportingText</p>
+    }
+</td>
+
+<td>
+    @if (persistentData.IsEncrypted && Model.IsEncrypted)
+    {
+        <input type="text" value="******" class="input_encrypted encrypted_numeric" disabled="disabled" />
+    }
+    else
+    {
+        <input type="text" class="numeric" name="Answer_@(Model.PID)" id="Answer_@(Model.PID)" data-answer='{ "f19id":@Model.PID, "f21id":@Model.Odpovedi[0].pid }' value="@odpoved" @attrs @(Model.ReadOnly ? "readonly=true" : "") />
+    }
+</td>

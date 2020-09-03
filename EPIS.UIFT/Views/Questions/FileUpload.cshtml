@@ -1,0 +1,19 @@
+﻿@model UIFT.Models.Otazka
+@inject UIFT.Repository.RepositoryFactory factory
+@{
+    var rep = factory.Get();
+    var persistentData = this.Context.Items["PersistantData"] as UIFT.PersistantDataStorage;
+}
+<button type="button" id="Answer_@(Model.PID)" class="btnUpload buttonIcon buttonBig" data-upload='{ "multiple": @(Model.Base.f19MaxUploadFiles > 0 ? "false" : "true"), "maxFiles": @Model.Base.f19MaxUploadFiles, "extensions": "", "maxSize": @(Model.MaxAllowedSize) }'>
+    <span></span>@rep.BL.tra("Přidat soubor")
+</button>
+
+<form id="Answer_@(Model.PID)_frm" class="frmUpload" enctype="multipart/form-data">
+    @foreach (BO.f32FilledValue odpoved in Model.VyplneneOdpovedi)
+    {
+        foreach (BO.o27Attachment att in Model.VyplneneOdpovediSoubory.Where(t => t.o27DataPID == odpoved.pid))
+        {
+            @Html.FileUploadRow(persistentData.a11id, att.o27DownloadGUID, att.o27FileSize, att.o27OriginalFileName)
+        }
+    }
+</form>

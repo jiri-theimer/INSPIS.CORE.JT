@@ -1,0 +1,22 @@
+﻿@model UIFT.Models.IOtazka
+@inject UIFT.Repository.RepositoryFactory factory
+@{
+    var rep = factory.Get();
+    int odpoved = Model.VyplneneOdpovedi.Count > 0 ? Model.VyplneneOdpovedi[0].f21ID : 0;
+}
+<div class="layout_@(((Otazka)Model).Base.f19IsHorizontalDisplay ? "horizontal" : "vertical")">
+    @foreach (BO.f21ReplyUnit unit in Model.Odpovedi)
+    {
+        <label>
+            <input type="radio" value="@unit.pid" id="Answer_@(Model.PID)_@(unit.pid)" name="Answer_@(Model.PID)" data-answer='{ "state":1,"f21id":@unit.pid }' data-comment="@unit.f21IsCommentAllowed" @(odpoved == unit.pid ? "checked" : "") @(Model.ReadOnly ? "disabled=disabled" : "") />
+            @unit.f21Name
+        </label>
+    }
+</div>
+
+@Html.Partial("_Komentare", Model)
+
+@if (!Model.ReadOnly)
+{
+    <a class="clearAnswer" title="@rep.BL.tra("Vrátit otázku do výchozího stavu")" href="#">[ @rep.BL.tra("vyčistit") ]</a>
+}

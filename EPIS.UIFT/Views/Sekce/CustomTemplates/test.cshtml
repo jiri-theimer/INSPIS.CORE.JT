@@ -1,0 +1,69 @@
+﻿@model List<UIFT.Models.Sekce>
+@{
+    Layout = null;
+}
+<div class="sekceTemplate-test">
+    <fieldset>
+        <legend><span>Právnická osoba vykonávající činnost školy nebo školského zařízení</span></legend>
+        @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "redizo"), "RED IZO:")
+        @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "nazev"), "Název:")
+        @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "ulice"), "Ulice:")
+        <div>
+            <label>PSČ / Město:</label>
+            @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "psc"))
+            @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "mesto"))
+        </div>
+        @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "ic"), "IČ:")
+        @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "skola"), "Škola, školské zařízení:")
+    </fieldset>
+
+    <fieldset>
+        <legend><span>Informace o zraněném</span></legend>
+        @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "osoba_jmeno"), "Jméno a příjmení zraněného:")
+        @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "osoba_ulice"), "Ulice:")
+        <div>
+            <label>PSČ / Město:</label>
+            @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "osoba_psc"))
+            @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "osoba_mesto"))
+        </div>
+        <div>
+            <label>Datum narození:</label>
+            @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "osoba_narozeni"))
+            @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "trida"), "Třída: ")
+            @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "rocnik"), "Ročník: ")
+        </div>
+        
+        <div class="separator">Jméno a příjmení a místo trvalého pobytu zákonného zástupce</div>
+
+        @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "zz_jmeno"), "Jméno a příjmení:")
+        @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "zz_ulice"), "Ulice:")
+        <div>
+            <label>PSČ / Město:</label>
+            @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "zz_psc"))
+            @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "zz_mesto"))
+        </div>
+        
+        @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "zz_vyrozumen"), "Zákonný zástupce vyrozuměn:")
+        @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "zz_datum"), "Datum a čas:")
+        @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "zz_zpusob"), "Způsob:")
+    </fieldset>
+
+    <fieldset>
+        <legend><span>Popis události</span></legend>
+        @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "uraz_cas"), "Datum a čas úrazu:")
+        @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "uraz_misto"), "Místo úrazu:")
+        @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "zdrav_zar"), "Zdravotnické zařízení, kde byl zraněný ošetřen, léčen:")
+        @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "smrtelny"), "Šlo o úraz smrtelný:")
+        @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "popis"), "Popis události:")
+        @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "cast_tela"), "Zraněná část těla:")
+        @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "pricina"), "Předpokádaná příčina úrazu:")
+        @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "zavineni"), "Lze předpokládat zavinění zraněného?")
+        @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "zavineni_jine"), "Lze předpokládat zavinění jiné osoby?")
+        @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "zpusoben_osobou"), "Byl úraz způsoben nebo ovlivněn jinou osobou?")
+        @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "zivly"), "Vznikl následkem spolupůsobení přírodních živlů?")
+        @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "zvirata"), "Vznikl následkem spolupůsobení zvířat?")
+        @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "vec"), "Věc, kterou bylo zranění bezprostředně způsobeno:")
+        @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "opatreni"), "Preventivní opatření, které mělo úrazu předejít a bylo školou nebo školským zařízením přijato v době před úrazem:")
+        @Html.EditorForOtazkaBasic(Model[0].Otazky.FirstOrDefault(t2 => t2.StatID == "cinnost"), "Druh činnosti:")
+    </fieldset>
+</div>

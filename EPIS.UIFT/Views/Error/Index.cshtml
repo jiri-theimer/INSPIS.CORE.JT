@@ -1,0 +1,20 @@
+﻿@inject UIFT.Repository.RepositoryFactory factory
+@{
+    var rep = factory.Get();
+}
+<!-- HEADER -->
+<div id="header">
+    <div id="header2">
+        <img src="~/css/images/logo.png?v=4" alt="Logo" class="logo" />
+    </div>
+</div>
+
+<div class="errorHandler">
+    <h1>@rep.BL.tra("Akci nebylo možné provést:")</h1>
+    <p>@ViewBag.Message</p>
+</div>
+
+<!-- FOOTER -->
+<div id="footer">
+    Build: @Html.AppVersion()
+</div>

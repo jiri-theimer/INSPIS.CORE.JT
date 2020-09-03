@@ -1,0 +1,11 @@
+﻿@model UIFT.Models.IOtazka
+
+<div id="otazka-@Model.PID" data-question='@Model.GetJsonData()' class="@Model.GetCssClasses()" @(Model.IsHidden ? "style=display:none;" : "")>
+    @if (ViewData.ContainsKey("label"))
+    {
+        <label for="Answer_@Model.PID">@ViewData["label"]</label>
+    }
+    <div class="odpovedContainer">
+    @Html.Partial(string.Format("~/Views/Questions/{0}.cshtml", Model.ViewName), Model)
+    </div>
+</div>

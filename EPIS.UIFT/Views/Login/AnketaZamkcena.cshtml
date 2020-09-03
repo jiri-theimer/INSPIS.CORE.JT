@@ -1,0 +1,20 @@
+﻿@inject UIFT.Repository.RepositoryFactory factory
+@{
+    var rep = factory.Get();
+}
+<!-- HEADER -->
+<div id="header">
+    <div id="header2">
+        <img src="~/css/images/logo.png?v=4" alt="Logo" class="logo" />
+    </div>
+</div>
+
+<div class="errorHandler">
+    <h1>@rep.BL.tra("Anketa byla zamkčena")</h1>
+    <p><a href="@Url.Action("Index", "Login")">@rep.BL.tra("Kliknutím zde")</a> @rep.BL.tra("přejdete na přihlašovací obrazovku k další anketě.")</p>
+</div>
+
+<!-- FOOTER -->
+<div id="footer">
+    Build: @Html.AppVersion()
+</div>

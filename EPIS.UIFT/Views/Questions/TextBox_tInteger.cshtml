@@ -1,0 +1,50 @@
+﻿@model UIFT.Models.IOtazka
+@inject UIFT.Repository.RepositoryFactory factory
+@{
+    var rep = factory.Get();
+    var persistentData = this.Context.Items["PersistantData"] as UIFT.PersistantDataStorage;
+    string odpoved = Model.VyplneneOdpovedi.Count > 0 ? Model.VyplneneOdpovedi[0].Value : "";
+
+    // format cisla s oddelovaci
+    if (!string.IsNullOrEmpty(odpoved))
+    {
+        if (Model.ReplyType == BO.x24DataTypeEnum.tInteger)
+        {
+            int o1;
+            if (int.TryParse(odpoved, out o1))
+            {
+                odpoved = o1.ToString("### ### ### ##0").Trim();
+            }
+        }
+        else
+        {
+            decimal o2;
+            if (decimal.TryParse(odpoved, out o2))
+            {
+                odpoved = o2.ToString("### ### ### ##0.####").Trim();
+            }
+        }
+    }
+
+    // vytvoreni atributu
+    string attrs = "";
+    if (Model.Odpovedi.Count > 0)
+    {
+        if (!string.IsNullOrEmpty(Model.Odpovedi[0].f21MinValue))
+        {
+            attrs += $" {rep.BL.tra("min")}=" + Model.Odpovedi[0].f21MinValue;
+        }
+        if (!string.IsNullOrEmpty(Model.Odpovedi[0].f21MaxValue))
+        {
+            attrs += $" {rep.BL.tra("max")}=" + Model.Odpovedi[0].f21MaxValue;
+        }
+    }
+}
+@if (persistentData.IsEncrypted && Model.IsEncrypted)
+{
+    <input type="text" value="******" class="input_encrypted encrypted_numeric" disabled="disabled" />
+}
+else
+{
+    <input type="text" class="numeric" name="Answer_@(Model.PID)" id="Answer_@(Model.PID)" data-answer='{ "f19id":@Model.PID, "f21id":@Model.Odpovedi[0].pid }' value="@odpoved" @attrs @(Model.ReadOnly ? "readonly=true" : "") maxlength="@(Model.MaxAllowedSize > 0 ? Model.MaxAllowedSize : 12)" />
+}
