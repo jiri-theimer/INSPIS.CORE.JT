@@ -1,51 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
+using System.Threading.Tasks;
 
-namespace BL
+namespace UI
 {
-    public interface IFormValidationBL
-    {       
-        public List<BO.ItemValidationResult> GetValidateResult(int a11id);
-
-    }
-    class FormValidationBL : BaseBL, IFormValidationBL
+    public class FormValidation
     {
-        public FormValidationBL(BL.Factory mother) : base(mother)
+        private BL.Factory _Factory { get; set; }
+        
+        public FormValidation(BL.Factory f)
         {
-
+            _Factory = f;
+            
         }
+
         private bool TryEval(int a11id, string strExpression)
         {
             if (string.IsNullOrEmpty(strExpression)) return false;
-            return true;
+
+            var evaluator = new EVAL.Evaluator(_Factory, a11id);
+            if (Convert.ToBoolean(evaluator.TryEval(strExpression)))
+            {
+                return true;
+            }
+
+            return false;
         }
+
         public List<BO.ItemValidationResult> GetValidateResult(int a11id)
         {
             var OdpovediSChybou = new List<BO.ItemValidationResult>();
 
-            var cA11 = _mother.a11EventFormBL.Load(a11id);
+            var cA11 = _Factory.a11EventFormBL.Load(a11id);
             if (cA11 == null)
             {
-                var c = new BO.ItemValidationResult() { OtazkaId = 666, Otazka = "Není otázka", SekceId = 666, Sekce = "", Message = _mother.tra("Tato akce neobsahuje vazbu ani na jeden formulář!") };
+                var c = new BO.ItemValidationResult() { OtazkaId = 666, Otazka = "Není otázka", SekceId = 666, Sekce = "", Message ="Tato akce neobsahuje vazbu ani na jeden formulář!" };
                 OdpovediSChybou.Add(c);
                 return OdpovediSChybou;
             }
             //natahnout segmenty - sekce
             var mq = new BO.myQuery("f18");
             mq.f06id = cA11.f06ID;
-            var segmenty = _mother.f18FormSegmentBL.GetList(mq);
+            var segmenty = _Factory.f18FormSegmentBL.GetList(mq);
             //seznam vsech otazek
             mq = new BO.myQuery("f19");
             mq.f06id = cA11.f06ID;
-            var otazky = _mother.f19QuestionBL.GetList(mq);
+            var otazky = _Factory.f19QuestionBL.GetList(mq);
             //seznam vsech jiz vyplnenych odpovedi ve formulari
             mq = new BO.myQuery("f32");
             mq.a11id = a11id;
-            var vyplneneOdpovedi = _mother.f32FilledValueBL.GetList(mq);
+            var vyplneneOdpovedi = _Factory.f32FilledValueBL.GetList(mq);
 
             //projit vsechny povinne otazky
             foreach (var otazka in otazky.Where(p => p.f19IsRequired == true || string.IsNullOrEmpty(p.f19RequiredExpression) == false))
@@ -80,7 +85,7 @@ namespace BL
                     }
                     if (b)
                     {
-                        var c = new BO.ItemValidationResult() { OtazkaId = otazka.pid, Otazka = otazka.f19Name, SekceId = otazka.f18ID, Sekce = otazka.f18Name, Message = _mother.tra("Povinná otázka") };
+                        var c = new BO.ItemValidationResult() { OtazkaId = otazka.pid, Otazka = otazka.f19Name, SekceId = otazka.f18ID, Sekce = otazka.f18Name, Message = _Factory.tra("Povinná otázka") };
                         OdpovediSChybou.Add(c);
                     }
                 }
@@ -114,7 +119,7 @@ namespace BL
                     var regex = new System.Text.RegularExpressions.Regex(otazka.f19Regex);
                     if (regex.IsMatch(odp.Value) == false)
                     {
-                        var c = new BO.ItemValidationResult() { OtazkaId = otazka.pid, Otazka = otazka.f19Name, SekceId = otazka.f18ID, Sekce = otazka.f18Name, Message = _mother.tra("Otázka nemá správný formát") + ": " + otazka.f19Regex };
+                        var c = new BO.ItemValidationResult() { OtazkaId = otazka.pid, Otazka = otazka.f19Name, SekceId = otazka.f18ID, Sekce = otazka.f18Name, Message = _Factory.tra("Odpověď nemá správný formát") + ": " + otazka.f19Regex };
                         OdpovediSChybou.Add(c);
                     }
                 }
@@ -122,5 +127,6 @@ namespace BL
 
             return OdpovediSChybou;
         }
+
     }
 }
