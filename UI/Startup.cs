@@ -15,14 +15,19 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Telerik.Reporting.Services;
 using Telerik.Reporting.Services.AspNetCore;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace UI
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IWebHostEnvironment env)
         {
-            Configuration = configuration;
+            Configuration = new ConfigurationBuilder()
+                 .SetBasePath(env.ContentRootPath)
+                 .AddJsonFile("appsettings.json", false, true)
+                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true)
+                 .Build();
         }
 
         public IConfiguration Configuration { get; }
@@ -30,6 +35,10 @@ namespace UI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDataProtection()
+                .PersistKeysToFileSystem(new System.IO.DirectoryInfo(Configuration.GetSection("Authentication")["KeyPath"]))
+                .SetApplicationName(Configuration.GetSection("Authentication")["AppName"]);
+            
             services.AddAuthentication("CookieAuthentication")
                  .AddCookie("CookieAuthentication", config =>
                  {
@@ -38,7 +47,7 @@ namespace UI
                      config.Cookie.SameSite = SameSiteMode.None;
                      config.SlidingExpiration = true;
                      config.ExpireTimeSpan = TimeSpan.FromHours(24);
-                     config.Cookie.Name = "InspisCloudCore";
+                     config.Cookie.Name = Configuration.GetSection("Authentication")["CookieName"];
                      config.ReturnUrlParameter = "returnurl";
                      config.LoginPath = "/Login/UserLogin";
                  });
@@ -57,8 +66,8 @@ namespace UI
 
             services.AddRazorPages().AddNewtonsoftJson();   //kvùli telerik reporting
 
-            var conf = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-            var strLogFolder = conf.GetSection("Folders")["Log"];
+            
+            var strLogFolder = Configuration.GetSection("Folders")["Log"];
             if (string.IsNullOrEmpty(strLogFolder))
             {
                 strLogFolder = System.IO.Directory.GetCurrentDirectory() + "\\Logs";
@@ -69,27 +78,27 @@ namespace UI
 
             services.AddSingleton<BL.RunningApp>(x => new BL.RunningApp()
             {
-                ConnectString = conf.GetSection("ConnectionStrings")["AppConnection"]
+                ConnectString = Configuration.GetSection("ConnectionStrings")["AppConnection"]
                 ,
-                AppName = conf.GetSection("App")["Name"]
+                AppName = Configuration.GetSection("App")["Name"]
                 ,
-                AppVersion = conf.GetSection("App")["Version"]
+                AppVersion = Configuration.GetSection("App")["Version"]
                 ,
                 AppBuild = "build: " + BO.BAS.ObjectDateTime2String(versionTime)
                 ,
-                LogoImage = conf.GetSection("App")["LogoImage"]
+                LogoImage = Configuration.GetSection("App")["LogoImage"]
                 ,
-                Implementation = conf.GetSection("App")["Implementation"]
+                Implementation = Configuration.GetSection("App")["Implementation"]
                 ,
-                UploadFolder = conf.GetSection("Folders")["Upload"]
+                UploadFolder = Configuration.GetSection("Folders")["Upload"]
                 ,
-                TempFolder = conf.GetSection("Folders")["Temp"]
+                TempFolder = Configuration.GetSection("Folders")["Temp"]
                 ,
-                ReportFolder = conf.GetSection("Folders")["Report"]
+                ReportFolder = Configuration.GetSection("Folders")["Report"]
                 ,
                 LogFolder = strLogFolder
                 ,
-                TranslatorMode = conf.GetSection("App")["TranslatorMode"]
+                TranslatorMode = Configuration.GetSection("App")["TranslatorMode"]
             });
 
 
