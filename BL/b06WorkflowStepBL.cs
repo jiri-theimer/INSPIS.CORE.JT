@@ -271,7 +271,7 @@ namespace BL
         }
         public IEnumerable<BO.b10WorkflowCommandCatalog_Binding> GetListB10(int b06id)
         {
-            sb("SELECT a.*,b09.b09Name,b09.b09ParametersCount,");
+            sb("SELECT a.*,b09.b09Name,b09.b09ParametersCount,b09.b09SQL,");
             sb(_db.GetSQL1_Ocas("b10", false, false, false));
             sb(" FROM b10WorkflowCommandCatalog_Binding a");
             sb(" INNER JOIN b09WorkflowCommandCatalog b09 ON a.b09ID=b09.b09ID");

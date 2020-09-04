@@ -16,6 +16,8 @@ namespace BO
         public string b09Name { get; set; } //combo
         public int b09ParametersCount { get; set; }
 
+        public string b09SQL;
+
         public bool IsTempDeleted { get; set; }
         public string TempGuid { get; set; }
         public string CssTempDisplay

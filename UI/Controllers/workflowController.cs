@@ -61,7 +61,22 @@ namespace UI.Controllers
                 }
                 else
                 {
-
+                    //Validace uvnitř WorkflowBL v sobě nemá kontrolu vyplnění formulářů!
+                    var lisNeed2Validate = Factory.WorkflowBL.GetForms4Validation(v.RecA01, v.RecB06);
+                    foreach (var recA11 in lisNeed2Validate)
+                    {
+                        var cValidate = new FormValidation(Factory);
+                        var ret = cValidate.GetValidateResult(recA11.pid).Take(20);
+                        if (ret.Count() > 0)
+                        {
+                            foreach (var err in ret)
+                            {
+                                this.AddMessageTranslated(recA11.f06Name + " | " + err.Sekce + " / " + err.Otazka + "<hr>" + err.Message);
+                            }
+                            return View(v);
+                        }                                                
+                    }
+                    intRet = Factory.WorkflowBL.RunWorkflowStep(v.RecA01, v.RecB06, null, v.Comment, v.UploadGuid, true);
                 }
                 if (intRet > 0)
                 {
