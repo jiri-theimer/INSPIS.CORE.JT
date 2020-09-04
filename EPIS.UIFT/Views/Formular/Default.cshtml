@@ -1,0 +1,76 @@
+﻿@model Formular
+@inject UIFT.Repository.RepositoryFactory factory
+@{
+    var persistentData = this.Context.Items["PersistantData"] as UIFT.PersistantDataStorage;
+    var user = this.User as UIFT.Security.UIFTUser;
+    var rep = factory.Get();
+}
+@section Header
+{
+    @if (Model.AktualniOtazka > 0)
+    { // pokud ma byt pri startu naskrolovano na nekterou z  otazek
+        <script type="text/javascript">UIFT.ActualQuestion=@(Model.AktualniOtazka);</script>
+    }
+}
+
+<!-- HEADER -->
+<div id="header">
+    <div id="header2">
+        <!-- ikona pro mobilni menu -->
+        <a href="#" id="mobileMenu"></a>
+
+        <!-- zavrit okno / odhlasit se -->
+        @if (persistentData.a11IsPoll)
+        {
+            <a href="javascript:UIFT.Logout();" class="headerClose"><span></span>@rep.BL.tra("Odhlásit se")</a>
+        }
+        else
+        {
+            <a href="javascript:UIFT.CloseWindow();" class="headerClose"><span></span>@rep.BL.tra("Zavřít okno")</a>
+        }
+        <!-- info o uzivateli -->
+        <div class="userInfo">@rep.BL.tra("Přihlášený uživatel:")<br /><strong>@user.Jmeno</strong></div>
+        <!-- workflow -->
+        @if (Model.Base.f06IsReportDialog)
+        {
+            <a class="headerWF" id="headerWF_report" href="@(factory.GetGlobalParams("BaseURL_EPIS1"))/reports_context.aspx?x29id=101&pid=@(persistentData.a01id)" target="_blank"><span></span>@rep.BL.tra("Tisková sestava")</a>
+        }
+        @if (Model.Base.f06IsWorkflowDialog)
+        {
+            <a class="headerWF" id="headerWF_move" href="@(factory.GetGlobalParams("BaseURL_EPIS1"))/workflow_dialog_general.aspx?pid=@(persistentData.a01id)" target="_blank"><span></span>@rep.BL.tra("Posunout/doplnit")</a>
+        }
+
+        <!-- LOGO -->
+        <img src="~/css/images/logo.png?v=4" alt="EPIS" class="logo" />
+    </div>
+</div>
+
+<!-- SIDE MENU -->
+<div id="menuContainer">
+    <div id="menuTitle">@rep.BL.tra("Části formuláře")<p>@Model.Base.f06Name</p></div>
+    <div id="segmentsTreeContainer">
+        <div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
+        <div class="viewport">
+            @Html.SekceTree(Model.Tree, persistentData.a11id, Model.AktualniSekce)
+        </div>
+    </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="contentContainer">
+    <!-- kontajner pro obsah formulare -->
+    <div id="contentContainerInner"></div>
+
+    <div class="clr"></div>
+
+    <!-- FOOTER -->
+    <div id="footer">
+        @if (Model.Base.f06IsExportToDoc)
+        {
+            <a id="aExportWord" href="@Url.Action("WordDialog", "Export")"><span></span>@rep.BL.tra("Exportovat do MS Word")</a>
+        }
+        <p>
+            Build: @Html.AppVersion()
+        </p>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+﻿@model BO.o27Attachment
+@inject UIFT.Repository.RepositoryFactory factory
+@{
+    var rep = factory.Get();
+    var parsistenData = this.Context.Items["PersistantData"] as UIFT.PersistantDataStorage;
+}
+<li>
+    <span class="iconFile"></span>
+    <a href="@Url.Action("Get", "Files", new { a11id = parsistenData.a11id, id = Model.o27GUID })" title="@rep.BL.tra("Stáhnout soubor")">@(string.IsNullOrEmpty(Model.o27Label) ? Model.o27OriginalFileName : Model.o27Label)</a>
+    &nbsp;<span>(@Math.Ceiling(Model.o27FileSize / 1000d) kB)</span>
+</li>

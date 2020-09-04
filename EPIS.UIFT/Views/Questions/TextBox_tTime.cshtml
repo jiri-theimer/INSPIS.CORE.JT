@@ -1,0 +1,25 @@
+﻿@model UIFT.Models.IOtazka
+@inject UIFT.Repository.RepositoryFactory factory
+@{
+    var rep = factory.Get();
+    var persistentData = this.Context.Items["PersistantData"] as UIFT.PersistantDataStorage;
+    int f21id = Model.Odpovedi[0].pid;
+
+    DateTime? odpoved = null;
+    if (Model.VyplneneOdpovedi.Count > 0)
+    {
+        DateTime x;
+        if (DateTime.TryParse("2000-01-01 " + Model.VyplneneOdpovedi[0].Value, out x))
+        {
+            odpoved = x;
+        }
+    }
+}
+@if (persistentData.IsEncrypted && Model.IsEncrypted)
+{
+    <input type="text" value="******" class="input_encrypted encrypted_time" disabled="disabled" />
+}
+else
+{
+    <input type="text" name="Answer_@(Model.PID)" id="Answer_@(Model.PID)_time" data-answer='{ "f19id":@Model.PID, "f21id":@f21id }' value="@(odpoved.HasValue ? odpoved.Value.ToString(factory.GetGlobalParams("UIFT_TimeFormat")) : "")" maxlength="5" @(Model.ReadOnly ? "readonly=true" : "") title="@rep.BL.tra("Čas vyberte z předvolené nabídky nebo vepište vlastní do textového pole.")" />
+}

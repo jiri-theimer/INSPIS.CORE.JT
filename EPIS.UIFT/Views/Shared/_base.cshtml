@@ -1,0 +1,61 @@
+﻿@inject AppConfiguration configuration
+@inject UIFT.Repository.RepositoryFactory factory
+@{
+    Layout = null;
+    var rep = factory.Get();
+
+    string webRoot = Url.Content("~/");
+    if (webRoot.EndsWith("/")) { webRoot = webRoot.Remove(webRoot.Length - 1); }
+
+    var persistentData = this.Context.Items["PersistantData"] as UIFT.PersistantDataStorage;
+}
+<!DOCTYPE html>
+
+<!--[if lt IE 9]> <html lang="cs-cz" id="fullpage"  class="layout-@(ViewBag.Layout) template-@(ViewBag.FormularTemplate) ie8"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html lang="cs-cz" id="fullpage" class="layout-@(ViewBag.Layout) template-@(ViewBag.FormularTemplate)">
+ <!--<![endif]-->
+
+<head>
+    <title>@rep.BL.tra("InspIS | Formuláře")</title>
+
+    <!--[if lte IE 9]><meta http-equiv="X-UA-Compatible" content="IE=edge" /><![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="shortcut icon" href="@(webRoot)/Content/favicon.ico" />
+
+    <meta name="description" content="" />
+    <meta name="Author" content="CleverApp" />
+
+    <link rel="stylesheet" href="~/css/uift.min.css">
+    <script type="text/javascript" src="~/ckeditor/ckeditor.js?v=457"></script>
+    <script type="text/javascript" src="~/js/uift.min.js?v=1"></script>
+    <script type="text/javascript" src="~/js/layout.full.js?v=2"></script>
+    <script type="text/javascript">
+        UIFT.WebRoot = "@webRoot";
+        UIFT.a11id = @(persistentData != null ? persistentData.a11id : 0);
+        UIFT.maxUploadFileSize = @configuration.MaxFileUploadSize;
+    </script>
+
+    @RenderSection("Header", false)
+
+</head>
+
+<body>
+    <div id="scrollIndicator"></div>
+
+    @RenderBody()
+    @Html.AntiForgeryToken()
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', '@(configuration.GA)', 'auto');
+        ga('send', 'pageview');
+    </script>
+</body>
+</html>

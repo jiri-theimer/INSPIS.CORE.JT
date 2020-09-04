@@ -1,0 +1,22 @@
+﻿@model UIFT.Models.IOtazka
+@inject UIFT.Repository.RepositoryFactory factory
+@{
+    var rep = factory.Get();
+    int odpoved = Model.VyplneneOdpovedi.Count > 0 ? Model.VyplneneOdpovedi[0].f21ID : 0;
+}
+<select name="Answer_@(Model.PID)" id="Answer_@(Model.PID)" data-answer='{"state":1}' @(Model.ReadOnly ? "disabled=disabled" : "")>
+    <option value="">@rep.BL.tra("-- vyberte --")</option>
+@foreach (BO.f21ReplyUnit unit in Model.Odpovedi)
+{
+    if (odpoved == unit.pid)
+    {
+        <option value="@unit.pid" selected data-comment="@unit.f21IsCommentAllowed">@unit.f21Name</option>
+    }
+    else
+    {
+        <option value="@unit.pid" data-comment="@unit.f21IsCommentAllowed">@unit.f21Name</option>
+    }
+}
+</select>
+
+@Html.Partial("_Komentare", Model)

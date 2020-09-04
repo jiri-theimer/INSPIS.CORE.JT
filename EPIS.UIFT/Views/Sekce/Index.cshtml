@@ -1,0 +1,14 @@
+﻿@model List<UIFT.Models.Sekce>
+@inject UIFT.Repository.RepositoryFactory factory
+@{
+    Layout = null;
+    var rep = factory.Get();
+}
+@foreach (Sekce sekce in Model)
+{
+    @Html.EditorFor(t => sekce)
+}
+<div id="bottomNavigation" class="sekceNav">
+    <a href="javascript:UIFT.Navigation('next');" class="navNext">@rep.BL.tra("DALŠÍ ČÁST") &raquo;</a>
+    <a href="javascript:UIFT.Navigation('prev');" class="navPrev">&laquo; @rep.BL.tra("PŘEDCHOZÍ ČÁST")</a>
+</div>

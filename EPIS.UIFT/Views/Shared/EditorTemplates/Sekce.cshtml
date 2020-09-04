@@ -1,0 +1,73 @@
+﻿@model UIFT.Models.Sekce
+@inject UIFT.Repository.RepositoryFactory factory
+@{
+    Layout = null;
+    var rep = factory.Get();
+
+    var parsistenData = this.Context.Items["PersistantData"] as UIFT.PersistantDataStorage;
+}
+
+<div id="sekce-@Model.Base.pid" class="sekceContainer">
+    <h2 class="title1 sekceName">@Model.Base.f18Name</h2>
+    @if (!string.IsNullOrEmpty(Model.Base.f18Text)) // hlavni text segmentu
+    {
+        <div class="sekceText">@Model.Base.f18Text</div>
+    }
+    @if (!string.IsNullOrEmpty(Model.Base.f18SupportingText)) // pomocny text k segmentu
+    {
+        <p class="sekceSuppText">@Model.Base.f18SupportingText</p>
+    }
+    @if (Model.Prilohy.Count > 0) // prilohy k segmentu
+    {
+        <div class="attachments sekcePrilohy">
+            <p>@rep.BL.tra("Přílohy ke stažení:")</p>
+            <ul>
+                @foreach (BO.o27Attachment priloha in Model.Prilohy)
+                {
+                    @Html.Partial("_Priloha", priloha)
+                }
+            </ul>
+        </div>
+    }
+    @if (Model.BestPractices.Count() > 0)
+    {
+        <div class="bestPractices sekcePrilohy">
+            <p>@rep.BL.tra("Příklady dobré praxe:")</p>
+            <ul>
+                @foreach (BO.f30BestPracticesToSegment bp in Model.BestPractices)
+                {
+                    <li><span class="iconModal"></span><a href="@Url.RouteUrl("preview", new { action = "Sekce", a11id = bp.a11ID, id = bp.f18ID })" target="_blank">@bp.f28Description</a></li>
+                }
+            </ul>
+        </div>
+    }
+
+    @if (Model.IsReadOnly)
+    {
+        // cely segment je RO
+        <div class="segmentRO">@rep.BL.tra("V této části formuláře aktuálně není povolen zápis nebo změna odpovědí.")</div>
+    }
+
+    @if (!parsistenData.IsPreview)
+    {
+        <div id="topNavigation" class="sekceNav">
+            <a href="javascript:UIFT.Navigation('next');" class="navNext">@rep.BL.tra("DALŠÍ ČÁST") &raquo;</a>
+            <a href="javascript:UIFT.Navigation('prev');" class="navPrev">&laquo; @rep.BL.tra("PŘEDCHOZÍ ČÁST")</a>
+        </div>
+    }
+
+    @foreach (UIFT.Models.IOtazka otazka in Model.Otazky)
+    {
+        string editor = "Otazka";
+        if (otazka.GetType() == typeof(OtazkaBaterie))
+        {
+            editor = "OtazkaBaterie";
+        }
+        else if (otazka.GetType() == typeof(OtazkaSachovnice))
+        {
+            editor = "OtazkaSachovnice";
+        }
+
+        @Html.EditorFor(t => otazka, editor)
+    }
+</div>

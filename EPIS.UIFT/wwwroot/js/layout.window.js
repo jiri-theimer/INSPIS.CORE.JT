@@ -1,0 +1,1 @@
+$((function(){$(".otazkaNameHint").tooltip({position:{my:"left+24 top-6",at:"left bottom"}})}));

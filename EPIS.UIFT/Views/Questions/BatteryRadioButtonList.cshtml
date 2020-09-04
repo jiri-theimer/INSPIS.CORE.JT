@@ -1,0 +1,17 @@
+﻿@model UIFT.Models.IOtazka
+@{
+    int odpoved = Model.VyplneneOdpovedi.Count > 0 ? Model.VyplneneOdpovedi[0].f21ID : 0;
+}
+<td class="chessRowHeader @(string.IsNullOrEmpty(Model.Hint) ? "" : "otazkaNameHint")" title='@Model.Hint'>
+    @Model.Name
+    @if (!string.IsNullOrEmpty(Model.SupportingText)) // pomocny text
+    {
+        <p class="otazkaSuppText">@Model.SupportingText</p>
+    }
+</td>
+@foreach (BO.f21ReplyUnit unit in Model.Odpovedi)
+{
+    <td>
+        <input type="radio" value="@unit.pid" id="Answer_@(Model.PID)_@(unit.pid)" name="Answer_@(Model.PID)" data-answer='{ "state":1,"f19id":@Model.PID,"f21id":@unit.pid }' @(odpoved == unit.pid ? "checked" : "") @(Model.ReadOnly ? "disabled=disabled" : "") />
+   </td>
+}

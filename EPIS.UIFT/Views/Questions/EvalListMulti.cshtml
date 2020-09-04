@@ -1,0 +1,20 @@
+﻿@model UIFT.Models.Otazka
+@{
+    Dictionary<string, string> evalSource = ((UIFT.Models.Otazka)Model).EvalSource;
+    int f21id = Model.Odpovedi[0].pid;
+
+    // vyplnena odpoved
+    string[] odpovedi = Model.VyplneneOdpovedi.Count > 0 ? (Model.VyplneneOdpovedi[0].Value ?? "").Split('|') : new string[0];
+}
+<div class="layout_@(Model.Base.f19IsHorizontalDisplay ? "horizontal" : "vertical")">
+    @foreach (KeyValuePair<string, string> pair in evalSource)
+    {
+        bool check = odpovedi.Contains(pair.Key);
+        <label>
+            <input type="checkbox" value="@pair.Key" id="Answer_@(Model.PID)_@(pair.Key)" name="Answer_@(Model.PID)" data-answer='{ "state":1,"f21id":@f21id }' data-comment="False" @(check ? "checked" : "") @(Model.ReadOnly ? "disabled=disabled" : "") />
+            @pair.Value
+        </label>
+    }
+</div>
+
+@Html.Partial("_Komentare", Model, new ViewDataDictionary(new Microsoft.AspNetCore.Mvc.ModelBinding.EmptyModelMetadataProvider(), new Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary()) { { "showCommentAnswer", true } })

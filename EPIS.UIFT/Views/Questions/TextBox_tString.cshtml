@@ -1,0 +1,32 @@
+﻿@model UIFT.Models.IOtazka
+@{
+    var persistentData = this.Context.Items["PersistantData"] as UIFT.PersistantDataStorage;
+    string odpoved = Model.VyplneneOdpovedi.Count > 0 ? Model.VyplneneOdpovedi[0].Value : "";
+}
+@if (persistentData.IsEncrypted && Model.IsEncrypted)
+{
+    <input type="text" value="******" class="input_encrypted" disabled="disabled" />
+}
+else
+{
+    if (Model.IsMultiselect)
+    {
+        <textarea rows="3" name="Answer_@(Model.PID)" id="Answer_@(Model.PID)" data-answer='{ "state":1, "f19id":@Model.PID, "f21id":@Model.Odpovedi[0].pid }' @(Model.ReadOnly ? "readonly=true" : "")>@odpoved</textarea>
+    }
+    else if (Model.ReadOnly)
+    {
+        if (odpoved.IsValidUrl())
+        {
+            <input type="hidden" name="Answer_@(Model.PID)" id="Answer_@(Model.PID)" value="@odpoved" data-answer='{ "state":1, "f19id":@Model.PID, "f21id":@Model.Odpovedi[0].pid }' />
+            <a href="@odpoved" target="_blank">@odpoved</a>
+        }
+        else
+        {
+            <input type="text" name="Answer_@(Model.PID)" id="Answer_@(Model.PID)" value="@odpoved" data-answer='{ "state":1, "f19id":@Model.PID, "f21id":@Model.Odpovedi[0].pid }' readonly="readonly" />
+        }
+    }
+    else
+    {
+        <input type="text" name="Answer_@(Model.PID)" id="Answer_@(Model.PID)" value="@odpoved" data-answer='{ "state":1, "f19id":@Model.PID, "f21id":@Model.Odpovedi[0].pid }' maxlength="@(Model.MaxAllowedSize > 0 ? Model.MaxAllowedSize : 255)" />
+    }
+}

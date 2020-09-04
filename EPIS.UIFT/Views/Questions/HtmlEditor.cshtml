@@ -1,0 +1,5 @@
+﻿@model UIFT.Models.IOtazka
+@{
+    string odpoved = Model.VyplneneOdpovedi.Count > 0 ? Model.VyplneneOdpovedi[0].Value : "";
+}
+<div class="editor" contenteditable="true" id="Answer_@(Model.PID)" data-answer='{ "state":1, "f21id":@Model.Odpovedi[0].pid }' style="min-width:300px;min-height:100px;">@Html.Raw(odpoved)</div>

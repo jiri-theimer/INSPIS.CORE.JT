@@ -1,0 +1,22 @@
+﻿@model UIFT.Models.IOtazka
+@{
+    string odpoved = Model.VyplneneOdpovedi.Count > 0 ? Model.VyplneneOdpovedi[0].Value : "";
+    var persistentData = this.Context.Items["PersistantData"] as UIFT.PersistantDataStorage;
+}
+<td class="chessRowHeader @(string.IsNullOrEmpty(Model.Hint) ? "" : "otazkaNameHint")" title='@Model.Hint'>
+    @Model.Name
+    @if (!string.IsNullOrEmpty(Model.SupportingText)) // pomocny text
+    {
+        <p class="otazkaSuppText">@Model.SupportingText</p>
+    }
+</td>
+<td>
+    @if (persistentData.IsEncrypted && Model.IsEncrypted)
+    {
+        <input type="text" value="******" class="input_encrypted" disabled="disabled" />
+    }
+    else
+    {
+        <input type="text" name="Answer_@(Model.PID)" id="Answer_@(Model.PID)" value="@odpoved" data-answer='{ "state":1, "f19id":@Model.PID, "f21id":@Model.Odpovedi[0].pid }' maxlength="255" @(Model.ReadOnly ? "readonly=true" : "") />
+    }
+</td>

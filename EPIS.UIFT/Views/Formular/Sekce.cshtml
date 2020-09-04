@@ -1,0 +1,8 @@
+﻿@model List<UIFT.Models.Sekce>
+@{
+    Layout = null;
+}
+@foreach (Sekce sekce in Model)
+{
+    @Html.EditorFor(t => sekce)
+}
