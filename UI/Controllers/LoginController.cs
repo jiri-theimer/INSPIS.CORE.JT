@@ -31,7 +31,7 @@ namespace UI.Controllers
         private async void TryLogout()
         {
             //await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            await HttpContext.SignOutAsync("CookieAuthentication");
+            await HttpContext.SignOutAsync("Identity.Application");
 
 
 

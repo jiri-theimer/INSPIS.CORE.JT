@@ -31,7 +31,7 @@ namespace UI.Controllers
         public async Task<IActionResult> Logout()
         {
             //await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            await HttpContext.SignOutAsync("CookieAuthentication");
+            await HttpContext.SignOutAsync("Identity.Application");
             
             return View();
 

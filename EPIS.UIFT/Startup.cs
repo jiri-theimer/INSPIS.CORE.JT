@@ -65,6 +65,7 @@ namespace UIFT
                 .AddCookie("Identity.Application", config =>
                 {
                     config.Cookie.Name = AppConfig.Authentication.CookieName;
+                    config.Cookie.Domain = AppConfig.Authentication.Domain;
                     config.Cookie.Path = "/";
                     config.Cookie.HttpOnly = true;
                     config.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;

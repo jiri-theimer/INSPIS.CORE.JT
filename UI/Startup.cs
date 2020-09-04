@@ -39,15 +39,17 @@ namespace UI
                 .PersistKeysToFileSystem(new System.IO.DirectoryInfo(Configuration.GetSection("Authentication")["KeyPath"]))
                 .SetApplicationName(Configuration.GetSection("Authentication")["AppName"]);
             
-            services.AddAuthentication("CookieAuthentication")
-                 .AddCookie("CookieAuthentication", config =>
+            services.AddAuthentication("Identity.Application")
+                 .AddCookie("Identity.Application", config =>
                  {
                      config.Cookie.HttpOnly = true;
                      config.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
-                     config.Cookie.SameSite = SameSiteMode.None;
+                     config.Cookie.SameSite = SameSiteMode.Lax;
                      config.SlidingExpiration = true;
                      config.ExpireTimeSpan = TimeSpan.FromHours(24);
                      config.Cookie.Name = Configuration.GetSection("Authentication")["CookieName"];
+                     config.Cookie.Path = "/";
+                     config.Cookie.Domain = Configuration.GetSection("Authentication")["Domain"];
                      config.ReturnUrlParameter = "returnurl";
                      config.LoginPath = "/Login/UserLogin";
                  });
