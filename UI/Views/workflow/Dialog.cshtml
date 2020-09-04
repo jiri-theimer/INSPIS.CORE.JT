@@ -26,7 +26,7 @@
 </h4>
 
 <div class="bg-light" style="padding:10px;">
-    <button id="cmdSave" type="button" class="btn btn-success" onclick="run()">Uložit změny</button>
+    <button id="cmdSave" type="button" class="btn btn-success">Uložit změny</button>
     <button type="button" id="cmdClose" onclick="_window_close()" class="btn btn-light" lang="uk">Zavřít</button>
     <button type="button" onclick="_helppage()" class="btn btn-light"><b>? </b>@_f.tra("Nápověda")</button>
 
@@ -68,6 +68,15 @@
                 </div>
             </div>
         }
+        @if(string.IsNullOrEmpty(Model.FormValidationErrorMessage)==false)
+        {
+            <div class="card">
+                <div class="card-header">@_f.tra("Zjištěné nedostatky ve vyplňovaných formulářích")</div>
+                <div class="card-body">
+                    @Html.Raw(Model.FormValidationErrorMessage)
+                </div>
+            </div>
+        }
 
         <div class="form-row my-2">
             <textarea asp-for="@Model.Comment" class="form-control" placeholder="Doplnit komentář..." style="height:100px;"></textarea>
@@ -79,6 +88,17 @@
 </form>
 
 <script type="text/javascript">
+    $(document).ready(function () {
+        
+        $("#cmdSave").click(function () {
+            $(this).text("Processing...");
+            $(this).attr("disabled", true);
+            form1.submit();
+
+        });
+
+    })
+
     function b06id_onchange(b06id) {
         form1.action = "/workflow/Dialog?oper=postback";
         form1.submit();
@@ -105,6 +125,8 @@
     function run() {        
         form1.submit();
     }
+
+   
 </script>
 
 

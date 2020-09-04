@@ -29,6 +29,7 @@ namespace UI.Models
         public int SelectedNomineeJ11ID { get; set; }
         public string SelectedNomineeTeam { get; set; }
 
+        public string FormValidationErrorMessage { get; set; }
 
     }
 }
