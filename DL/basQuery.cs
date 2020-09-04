@@ -308,7 +308,7 @@ namespace DL
             {
                 if (mq.Prefix == "j04") AQ(ref lis, "a.j04ID IN (select j04ID FROM f07Form_UserRole_EncryptedPermission WHERE f06ID=@f06id)", "f06id", mq.f06id);
                 if (mq.Prefix == "x31") AQ(ref lis, "a.x31ID IN (select x31ID FROM f08Form_Report WHERE f06ID=@f06id)", "f06id", mq.f06id);
-                if (mq.Prefix == "f18") AQ(ref lis, "a.f06ID=@f06id", "f06id", mq.f06id);
+                if (mq.Prefix == "f18" || mq.Prefix=="a11") AQ(ref lis, "a.f06ID=@f06id", "f06id", mq.f06id);
                 if (mq.Prefix == "f19") AQ(ref lis, "a.f18ID IN (SELECT f18ID FROM f18FormSegment WHERE f06ID=@f06id)", "f06id", mq.f06id);
                 if (mq.Prefix == "f32") AQ(ref lis, "a11.f06ID=@f06id", "f06id", mq.f06id);
                 if (mq.Prefix == "xx1") AQ(ref lis, "f18.f06ID=@f06id", "f06id", mq.f06id); //f21ReplyUnitJoinedF19: GetListJoinedF19
