@@ -48,6 +48,13 @@ namespace UIFT
                     options.JsonSerializerOptions.IgnoreNullValues = true;
                 });
 
+            // CSRF
+            services.AddAntiforgery(options =>
+            {
+                options.FormFieldName = "__UiftCsrfToken";
+                options.HeaderName = "UiftCsrf";
+            });
+
             // autentizace
             services.AddDataProtection()
                 .PersistKeysToFileSystem(new System.IO.DirectoryInfo(AppConfig.Authentication.KeyPath))

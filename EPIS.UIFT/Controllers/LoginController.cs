@@ -50,6 +50,7 @@ namespace UIFT.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(Models.LoginModel model)
         {
             var rep = Factory.Get();

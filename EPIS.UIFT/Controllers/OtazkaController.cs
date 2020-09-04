@@ -20,7 +20,7 @@ namespace UIFT.Controllers
         /// { f19id = f19id, success = true, defaultValues = defaultVals }
         /// </returns>
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public ActionResult Komentar(int f19id, int f21id, string value)
         {
             bool b = this.UiRepository.SaveKomentar(ref f19id, ref f21id, ref value);
@@ -50,7 +50,7 @@ namespace UIFT.Controllers
         /// <param name="value">true / false</param>
         /// <returns>JSON: { success = b, message = this.UiRepository.LastError }</returns>
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public ActionResult PublikovaniOtazky(int f19id, int f25id, int f26id, bool value)
         {
             // zkus publikovat otazku
@@ -65,7 +65,7 @@ namespace UIFT.Controllers
         /// <param name="f19id">ID otazky</param>
         /// <returns>JSON: { success = b, message = this.UiRepository.LastError }</returns>
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public ActionResult Vycisteni(int f19id, int f26id = 0)
         {
             bool b = false;
@@ -87,7 +87,7 @@ namespace UIFT.Controllers
         /// <returns>JSON: { inputID = inputID, success = ret, message = this.UiRepository.LastError }</returns>
         //[ValidateInput(false)]
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public ActionResult Ulozeni(string inputID, int f19id, int f21id, string value, bool? filledByEval, string alias = "")
         {
             // instance otazky
@@ -176,7 +176,6 @@ namespace UIFT.Controllers
         /// Kliknuti na otazku typu button
         /// </summary>
         /// <param name="f19id"></param>
-        /// <returns></returns>
         public ActionResult Button(int f19id, string inputID)
         {
             // instance otazky

@@ -62,6 +62,10 @@ $.ajaxSetup({
         
         settings.url = url;
 
+        var e = $('input[name="__UiftCsrfToken"]').val();
+        
+        jqXHR.setRequestHeader("UiftCsrf", e);
+
         return settings;
     },
     error: function (event, jqXHR, ajaxSettings, thrownError) {

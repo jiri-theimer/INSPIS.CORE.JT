@@ -3,12 +3,14 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-	"css-bundle": "shx cat ./css/reset.css ./css/jquery.jgrowl.css ./css/jquery.loading.css ./css/jquery.timepicker.css ./css/jquery.ui-1.10.3.custom.css ./css/styles.css ./css/template-test.css  > ./css/uift.css",
+    "css-bundle": "shx cat ./css/reset.css ./css/jquery.jgrowl.css ./css/jquery.loading.css ./css/jquery.timepicker.css ./css/jquery.ui-1.10.3.custom.css ./css/styles.css ./css/template-test.css  > ./css/uift.css",
     "css-minify": "cleancss --level 1 --output ./css/uift.min.css ./css/uift.css",
-	"js-bundle": "shx cat ./jssrc/jquery-1.10.2.js ./jssrc/jquery-ui-1.10.3.custom.js ./jssrc/jquery.iframe-transport.js ./jssrc/jquery.fileupload.js ./jssrc/jquery.fileupload-process.js ./jssrc/jquery.fileupload-validate.js ./jssrc/jquery.jgrowl.js ./jssrc/jquery.loading.js ./jssrc/jquery.numericInput.js ./jssrc/jquery.timepicker.js ./jssrc/jquery.tinyscrollbar.js ./jssrc/jquery.toDictionary.js ./jssrc/format.js ./jssrc/autosize.js ./jssrc/uift.base.js ./jssrc/uift.setup.js ./jssrc/uift.utils.js ./jssrc/uift.initCheckboxList.js ./jssrc/uift.initQuestion.js ./jssrc/uift.initSummaryOverview.js ./jssrc/uift.initUpload.js ./jssrc/uift.mobileMenu.js ./jssrc/uift.readOnlyQuestion.js ./jssrc/uift.requiredQuestion.js ./jssrc/uift.js > ./js/uift.js",
-	"js-minify": "terser ./js/uift.js --output ./js/uift.min.js -c -m --keep_fname: /./",
-	"js-layout1": "terser ./jssrc/layout.window.js --output ./js/layout.window.js -c -m --keep_fname: /./",
-	"js-layout2": "terser ./jssrc/layout.full.js --output ./js/layout.full.js -c -m --keep_fname: /./"
+    "js-bundle": "shx cat ./jssrc/jquery-1.10.2.js ./jssrc/jquery-ui-1.10.3.custom.js ./jssrc/jquery.iframe-transport.js ./jssrc/jquery.fileupload.js ./jssrc/jquery.fileupload-process.js ./jssrc/jquery.fileupload-validate.js ./jssrc/jquery.jgrowl.js ./jssrc/jquery.loading.js ./jssrc/jquery.numericInput.js ./jssrc/jquery.timepicker.js ./jssrc/jquery.tinyscrollbar.js ./jssrc/jquery.toDictionary.js ./jssrc/format.js ./jssrc/autosize.js ./jssrc/uift.base.js ./jssrc/uift.setup.js ./jssrc/uift.utils.js ./jssrc/uift.initCheckboxList.js ./jssrc/uift.initQuestion.js ./jssrc/uift.initSummaryOverview.js ./jssrc/uift.initUpload.js ./jssrc/uift.mobileMenu.js ./jssrc/uift.readOnlyQuestion.js ./jssrc/uift.requiredQuestion.js ./jssrc/uift.js > ./js/uift.js",
+    "js-minify": "terser ./js/uift.js --output ./js/uift.min.js -c -m --keep_fname: /./",
+    "js-layout1": "terser ./jssrc/layout.window.js --output ./js/layout.window.js -c -m --keep_fname: /./",
+    "js-layout2": "terser ./jssrc/layout.full.js --output ./js/layout.full.js -c -m --keep_fname: /./",
+	"build-js": "npm-run-all js-bundle js-minify js-layout1 js-layout2",
+	"build": "npm-run-all css-bundle css-minify js-bundle js-minify js-layout1 js-layout2"
   },
   "devDependencies": {
     "babel-cli": "6.26.0",
