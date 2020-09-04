@@ -9,7 +9,7 @@
 
 <h4>@_f.tra("Přidat formuláře do akce") @(": "+Model.RecA01.a01Signature)</h4>
 <div class="bg-light" style="padding:10px;">
-    <button id="cmdSave" type="button" class="btn btn-success" onclick="save()">@_f.tra("Uložit změny")</button>
+    <button id="cmdSave" type="button" class="btn btn-success">@_f.tra("Uložit změny")</button>
     <button id="cmdClose" type="button" onclick="_window_close()" class="btn btn-light">@_f.tra("Zavřít")</button>
     <button type="button" onclick="_helppage()" class="btn btn-light"><b>? </b>@_f.tra("Nápověda")</button>
 </div>
@@ -130,7 +130,12 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
+        $("#cmdSave").click(function () {
+            $(this).text("Processing...");
+            $(this).attr("disabled", true);
+            form1.submit();
 
+        });
 
 
 
@@ -148,11 +153,7 @@
 
     }
 
-    function save() {
-
-        form1.submit();
-
-    }
+    
 
 </script>
 

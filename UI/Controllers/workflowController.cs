@@ -57,26 +57,35 @@ namespace UI.Controllers
                 int intRet = 0;
                 if (v.SelectedB06ID == 0)
                 {
-                    intRet = Factory.WorkflowBL.SaveWorkflowComment(v.pid, v.Comment, null);    //pouze zapsat komentář
+                    intRet = Factory.WorkflowBL.SaveWorkflowComment(v.pid, v.Comment,v.UploadGuid, null);    //pouze zapsat komentář
                 }
                 else
-                {
-                    //Validace uvnitř WorkflowBL v sobě nemá kontrolu vyplnění formulářů!
-                    var lisNeed2Validate = Factory.WorkflowBL.GetForms4Validation(v.RecA01, v.RecB06);
+                {                    
+                    var lisNeed2Validate = Factory.WorkflowBL.GetForms4Validation(v.RecA01, v.RecB06);  //Validace uvnitř WorkflowBL v sobě nemá kontrolu vyplnění formulářů!
+                    v.FormValidationErrorMessage = "";
                     foreach (var recA11 in lisNeed2Validate)
                     {
                         var cValidate = new FormValidation(Factory);
                         var ret = cValidate.GetValidateResult(recA11.pid).Take(20);
                         if (ret.Count() > 0)
                         {
+                            v.FormValidationErrorMessage += "<strong style='color:green;'>" + recA11.f06Name + "</strong>";
                             foreach (var err in ret)
                             {
-                                this.AddMessageTranslated(recA11.f06Name + " | " + err.Sekce + " / " + err.Otazka + "<hr>" + err.Message);
+                                v.FormValidationErrorMessage+="<br><code>" +err.Message+"</code>: "+ err.Sekce + " / " + err.Otazka+" ("+err.OtazkaId.ToString()+")<hr>";
                             }
                             return View(v);
                         }                                                
                     }
-                    intRet = Factory.WorkflowBL.RunWorkflowStep(v.RecA01, v.RecB06, null, v.Comment, v.UploadGuid, true);
+                    var lisNominee = new List<BO.a41PersonToEvent>();
+                    foreach (var cTemp in v.lisTemp.Where(p => p.p85Prefix == "j02" || p.p85Prefix == "j11"))
+                    {
+                        var c = new BO.a41PersonToEvent() { a01ID = v.RecA01.pid,j02ID=cTemp.p85DataPID,j11ID=cTemp.p85DataPID, b06ID_NomineeSource=v.RecB06.pid, a41IsAllocateAllPeriod=true };
+                        c.a45ID = (BO.EventRoleENUM)v.RecB06.a45ID_NomineeTarget;
+                        lisNominee.Add(c);
+                    }
+                    if (lisNominee.Count() == 0) lisNominee = null;
+                    intRet = Factory.WorkflowBL.RunWorkflowStep(v.RecA01, v.RecB06, lisNominee, v.Comment, v.UploadGuid, true);
                 }
                 if (intRet > 0)
                 {
@@ -110,7 +119,7 @@ namespace UI.Controllers
             mq = new BO.myQuery("b06");
             mq.b02id = v.RecA01.b02ID;
             if (mq.b02id == 0) mq.b02id = -1;   //akce nemá nahozený workflow stav!!
-            var lisB06 = Factory.b06WorkflowStepBL.GetList(mq).OrderBy(p => p.b06Order);
+            var lisB06 = Factory.b06WorkflowStepBL.GetList(mq).OrderBy(p => p.b06Order).Where(p => p.b06IsManualStep == true);
 
             v.lisB06 = new List<BO.b06WorkflowStep>();
             foreach (var c in lisB06)

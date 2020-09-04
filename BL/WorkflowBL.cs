@@ -10,7 +10,7 @@ namespace BL
     public interface IWorkflowBL
     {
 
-        public int SaveWorkflowComment(int intA01ID, string strComment, List<int> a45ids_restrict_to);
+        public int SaveWorkflowComment(int intA01ID, string strComment,string strUploadGUID, List<int> a45ids_restrict_to);
         public int RunWorkflowStep(BO.a01Event rec, BO.b06WorkflowStep recB06, List<BO.a41PersonToEvent> lisNominee, string strComment, string strUploadGUID, bool bolManualStep);
         public List<BO.a11EventForm> GetForms4Validation(BO.a01Event rec, BO.b06WorkflowStep recB06);
     }
@@ -26,6 +26,10 @@ namespace BL
             if (ValidateWorkflowStepBeforeRun(rec, recB06, lisNominee, strComment, strUploadGUID, bolManualStep) == false)
             {
                 return 0;
+            }
+            if (string.IsNullOrEmpty(strUploadGUID) == false)
+            {
+                _mother.o27AttachmentBL.SaveChangesAndUpload(strUploadGUID, 101, rec.pid);
             }
 
             if (recB06.b02ID_Target > 0)
@@ -220,8 +224,12 @@ namespace BL
             return true;
         }
 
-        public int SaveWorkflowComment(int intA01ID, string strComment, List<int> a45ids_restrict_to)
+        public int SaveWorkflowComment(int intA01ID, string strComment,string strUploadGUID, List<int> a45ids_restrict_to)
         {
+            if (string.IsNullOrEmpty(strComment) || strComment.Trim().Length<5)
+            {
+                this.AddMessage("Délka komentáře je příliš malá.");return 0;
+            }
             var c = new BO.b05Workflow_History() { a01ID = intA01ID, b05IsCommentOnly = true, b05IsManualStep = true, b05Comment = strComment, b05IsCommentRestriction = false };
             if (a45ids_restrict_to != null && a45ids_restrict_to.Count > 0)
             {
@@ -232,6 +240,10 @@ namespace BL
             if (c.b05IsCommentRestriction)
             {
                 _db.RunSql("INSERT INTO b04WorkflowComment_Restriction(b05ID,a45ID) SELECT @pid,a45ID FROM a45EventRole WHERE a45ID IN (" + string.Join(",", a45ids_restrict_to) + ")");
+            }
+            if (string.IsNullOrEmpty(strUploadGUID) == false)
+            {
+                _mother.o27AttachmentBL.SaveChangesAndUpload(strUploadGUID, 101, intA01ID);
             }
 
             return intB05ID;

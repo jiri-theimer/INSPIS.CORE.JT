@@ -31,6 +31,10 @@ namespace UI.Controllers
             RefreshStateAddAttachment(v);
             if (ModelState.IsValid)
             {
+                if (Factory.o27AttachmentBL.GetTempFiles(v.UploadGuid).Count() == 0)
+                {
+                    this.AddMessage("Chybí nahrát alespoň jedna příloha.");return View(v);
+                }
                 bool b=Factory.o27AttachmentBL.SaveChangesAndUpload(v.UploadGuid, 101, v.RecA01.pid);
                 
                 if (b)
