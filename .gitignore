@@ -344,3 +344,4 @@ log/
 temp/
 upload/
 export/
+*.Development.json
