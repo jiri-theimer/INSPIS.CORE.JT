@@ -51,10 +51,7 @@ namespace BL
             {
                 RunB09Commands(rec, recB06.pid, recB06.b02ID_Target);
             }
-            else
-            {
-                RunB09Commands(rec, 0, 0);
-            }
+           
             
 
             return rec.pid;

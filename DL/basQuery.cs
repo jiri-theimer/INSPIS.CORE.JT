@@ -233,6 +233,7 @@ namespace DL
             {
                 if (mq.Prefix == "j02") AQ(ref lis, "a.j02ID IN (select j02ID FROM a39InstitutionPerson WHERE a03ID=@a03id)", "a03id", mq.a03id);
                 if (mq.Prefix == "a01" || mq.Prefix == "a37" || mq.Prefix == "a39") AQ(ref lis, "a.a03ID=@a03id", "a03id", mq.a03id);
+                if (mq.Prefix == "a11") AQ(ref lis, "a11_a01.a03ID=@a03id", "a03id", mq.a03id);
 
                 if (mq.Prefix == "a19") AQ(ref lis, "a.a37ID IN (select a37ID FROM a37InstitutionDepartment WHERE a03ID=@a03id)", "a03id", mq.a03id);
                 if (mq.Prefix == "k01") AQ(ref lis, "a03_k02.a03ID=@a03id", "a03id", mq.a03id);
