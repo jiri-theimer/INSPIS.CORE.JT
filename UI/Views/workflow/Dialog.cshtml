@@ -71,7 +71,7 @@
         @if(string.IsNullOrEmpty(Model.FormValidationErrorMessage)==false)
         {
             <div class="card">
-                <div class="card-header">@_f.tra("Zjištěné nedostatky ve vyplňovaných formulářích")</div>
+                <div class="card-header text-danger">@_f.tra("Zjištěné nedostatky ve vyplňovaných formulářích")</div>
                 <div class="card-body">
                     @Html.Raw(Model.FormValidationErrorMessage)
                 </div>
