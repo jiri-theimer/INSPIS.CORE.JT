@@ -85,7 +85,7 @@ namespace UI
                     }
                     if (b)
                     {
-                        var c = new BO.ItemValidationResult() { OtazkaId = otazka.pid, Otazka = otazka.f19Name, SekceId = otazka.f18ID, Sekce = otazka.f18Name, Message = _Factory.tra("Povinná otázka") };
+                        var c = new BO.ItemValidationResult() {a11ID=a11id,f06ID=cA11.f06ID,f06Name=cA11.f06Name, OtazkaId = otazka.pid, Otazka = otazka.f19Name, SekceId = otazka.f18ID, Sekce = otazka.f18Name, Message = _Factory.tra("Povinná otázka") };
                         OdpovediSChybou.Add(c);
                     }
                 }
@@ -104,7 +104,7 @@ namespace UI
                 {
                     if (TryEval(a11id, otazka.f19CancelValidateExpression))
                     {
-                        var c = new BO.ItemValidationResult() { OtazkaId = otazka.pid, Otazka = otazka.f19Name, SekceId = otazka.f18ID, Sekce = otazka.f18Name, Message = otazka.f19CancelValidateExpression_Message };
+                        var c = new BO.ItemValidationResult() { a11ID = a11id, f06ID = cA11.f06ID, f06Name = cA11.f06Name, OtazkaId = otazka.pid, Otazka = otazka.f19Name, SekceId = otazka.f18ID, Sekce = otazka.f18Name, Message = otazka.f19CancelValidateExpression_Message };
                         OdpovediSChybou.Add(c);
                     }
                 }
@@ -119,7 +119,7 @@ namespace UI
                     var regex = new System.Text.RegularExpressions.Regex(otazka.f19Regex);
                     if (regex.IsMatch(odp.Value) == false)
                     {
-                        var c = new BO.ItemValidationResult() { OtazkaId = otazka.pid, Otazka = otazka.f19Name, SekceId = otazka.f18ID, Sekce = otazka.f18Name, Message = _Factory.tra("Odpověď nemá správný formát") + ": " + otazka.f19Regex };
+                        var c = new BO.ItemValidationResult() { a11ID = a11id, f06ID = cA11.f06ID, f06Name = cA11.f06Name, OtazkaId = otazka.pid, Otazka = otazka.f19Name, SekceId = otazka.f18ID, Sekce = otazka.f18Name, Message = _Factory.tra("Odpověď nemá správný formát") + ": " + otazka.f19Regex };
                         OdpovediSChybou.Add(c);
                     }
                 }

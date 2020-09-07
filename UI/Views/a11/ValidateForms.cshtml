@@ -1,0 +1,83 @@
+﻿@model a11ValidateForms
+@inject BL.Factory _f
+
+@{
+    ViewData["Title"] = _f.tra("Kontrola vyplnění formulářů");
+    Layout = "~/Views/Shared/_LayoutModal.cshtml";
+    int _lastF06ID = 0;
+}
+@addTagHelper *, UI
+
+@if (Model.a01ID > 0)
+{
+    <h4>@_f.tra("Kontrola vyplnění formulářů v akci") @(": "+Model.RecA01.a01Signature)</h4>
+}
+else
+{
+    <h4>@_f.tra("Kontrola vyplnění vybraného formuláře")</h4>
+}
+
+<div class="bg-light" style="padding:10px;">
+    <button id="cmdRun" onclick="run()" type="button" class="btn btn-primary">@_f.tra("Spustit kontrolu")</button>
+    <button id="cmdClose" type="button" onclick="_window_close()" class="btn btn-light">@_f.tra("Zavřít")</button>
+    <button type="button" onclick="_helppage()" class="btn btn-light"><b>? </b>@_f.tra("Nápověda")</button>
+</div>
+
+@if (Model.lisResult.Count == 0 && Model.lisA11.Count()>0)
+{
+    <h4>Bez chyby.</h4>
+}
+@if (Model.lisA11.Count() == 0)
+{
+    <h4 class="text-danger">@_f.tra("Ani jeden formulář ke kontrole!")</h4>
+}
+<table class="table table-hover">
+    @foreach (var c in Model.lisResult)
+    {
+        @if (c.f06ID != _lastF06ID)
+        {
+            <tr>
+                <td colspan="4">
+                    <strong style="color:green;">@c.f06Name</strong>
+                </td>
+            </tr>
+        }
+        <tr>
+            <td>
+                <code>@c.Message</code>
+            </td>
+            <td>
+                @c.Sekce
+            </td>
+            <td>
+                @c.Otazka
+            </td>
+            <td>
+                @c.OtazkaId
+            </td>
+        </tr>
+
+        _lastF06ID = c.f06ID;
+    }
+</table>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+
+
+
+    });
+
+    function run() {
+        location.replace(location.href);
+
+
+    }
+
+
+
+
+
+</script>

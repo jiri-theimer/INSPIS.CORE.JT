@@ -40,7 +40,7 @@ namespace UI
                      config.ExpireTimeSpan = TimeSpan.FromHours(24);
                      config.Cookie.Name = "InspisCloudCore";
                      config.ReturnUrlParameter = "returnurl";
-                     config.LoginPath = "/Login/UserLogin";
+                     config.LoginPath = "/Login/UserLogin";                     
                  });
 
             services.Configure<Microsoft.Extensions.WebEncoders.WebEncoderOptions>(options =>
@@ -90,6 +90,8 @@ namespace UI
                 LogFolder = strLogFolder
                 ,
                 TranslatorMode = conf.GetSection("App")["TranslatorMode"]
+                ,
+                UiftUrl = conf.GetSection("UIFT")["Url"]
             });
 
 

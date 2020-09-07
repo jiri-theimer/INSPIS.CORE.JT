@@ -6,11 +6,45 @@ using Microsoft.AspNetCore.Mvc;
 using UI.Models;
 using UI.Models.Record;
 using UI.Models.Recpage;
+using UI.Models.Tab;
 
 namespace UI.Controllers
 {
     public class a11Controller : BaseController
     {
+        public IActionResult ValidateForms(int pid,int a01id)
+        {
+            var v = new a11ValidateForms() { pid = pid,a01ID=a01id };
+            var mq = new BO.myQuery("a11");
+            if (v.pid > 0)
+            {
+                var recA11 = Factory.a11EventFormBL.Load(pid);
+                v.RecA01 = Factory.a01EventBL.Load(recA11.a01ID);
+                mq.pids = new List<int> { pid };                
+                
+            }
+            else
+            {
+                v.RecA01 = Factory.a01EventBL.Load(a01id);                
+                mq.a01id = a01id;
+            }
+
+
+            v.lisA11 = Factory.a11EventFormBL.GetList(mq);
+            v.lisResult = new List<BO.ItemValidationResult>();
+            foreach(var recA11 in v.lisA11)
+            {
+                var cValidate = new FormValidation(Factory);
+                var lis=cValidate.GetValidateResult(recA11.pid);
+                foreach(var c in lis)
+                {
+                    v.lisResult.Add(c);
+                }
+            }
+            
+
+            return View(v);
+        }
         public IActionResult Info(int pid)
         {
             var v = new a11RecPage() { pid = pid };

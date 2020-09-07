@@ -61,6 +61,8 @@ namespace UI.Controllers
             AMI("Odeslat zprávu", "javascript:_sendmail()");
             AMI("Změnit přístupové heslo", "/Home/ChangePassword");
             DIV();
+            AMI("Vyplnit anketní formulář", Factory.App.UiftUrl,null,null,"_blank");
+            DIV();
             AMI("Nápověda", "javascript:_helppage_layout()");
             AMI("O aplikaci", "/Home/About");
             DIV();
@@ -302,8 +304,8 @@ namespace UI.Controllers
             {
                 AMI("Grid 1", "/TheGrid/FlatView?prefix=j02");
             }
-            DIV();
-            AMI("Učitelé", "/TheGrid/FlatView?prefix=k01");
+            //DIV();
+            //AMI("Učitelé", "/TheGrid/FlatView?prefix=k01");
 
             return FlushResult_NAVLINKs();
         }
@@ -379,22 +381,29 @@ namespace UI.Controllers
                     
                     
                     AMI("Tisková sestava", string.Format("javascript: _window_open('/x31/ReportContext?pid={0}&prefix=a01',2)", pid));
-                    DIV();
+                  
                     if (permA01.PermValue == a01EventPermissionENUM.ShareTeam_Leader || permA01.PermValue == a01EventPermissionENUM.ShareTeam_Owner || permA01.PermValue == a01EventPermissionENUM.FullAccess)
                     {
+                        
+                        if (recA10.a10IsUse_ReChangeForms || recA10.a10IsUse_Poll)
+                        {
+                            AMI("Formuláře", null, null, "Formulare");
+                        }                            
+                        if (recA10.a10IsUse_ReChangeForms)
+                        {
+                            AMI("Přidat formuláře", string.Format("javascript: _window_open('/a11/Append?a01id={0}')", pid), "Formulare");
+                            AMI("Přidat skupinu formulářů", string.Format("javascript: _window_open('/a25/Record?a01id={0}')", pid), "Formulare");
+                            AMI("Otestovat vyplnění formulářů v akci", string.Format("javascript: _window_open('/a11/ValidateForms?a01id={0}')", pid), "Formulare");
+                        }
+                        if (recA10.a10IsUse_Poll)
+                        {
+                            DIV(null, "Formulare");
+                            AMI("Anketní formuláře", string.Format("javascript: _window_open('/a11/AppendPoll?a01id={0}',2)", pid), "Formulare");
+                            AMI("Založit+notifikovat anketu", string.Format("javascript: _window_open('/a11/AppendPollWizard?a01id={0}')", pid), "Formulare");
+                        }
                         if (recA10.a10IsUse_A41 && recA01.a01ParentID == 0)
                         {
                             AMI("Přidat účastníky akce", string.Format("javascript: _window_open('/a41/Append?a01id={0}')", pid));
-                        }
-                        if (recA10.a10IsUse_ReChangeForms)
-                        {
-                            AMI("Přidat formuláře", string.Format("javascript: _window_open('/a11/Append?a01id={0}')", pid));
-                            AMI("Přidat skupinu formulářů", string.Format("javascript: _window_open('/a25/Record?a01id={0}')", pid));
-                        }
-                        if (recA10.a10IsUse_Poll)
-                        {                            
-                            AMI("Anketní formuláře", string.Format("javascript: _window_open('/a11/AppendPoll?a01id={0}',2)", pid));
-                            AMI("Založit+notifikovat anketu", string.Format("javascript: _window_open('/a11/AppendPollWizard?a01id={0}')", pid));
                         }
                         if (recA10.a10IsUse_Period && recA01.a01ParentID == 0)
                         {
@@ -403,6 +412,8 @@ namespace UI.Controllers
                             AMI("Časové kapacity inspektorů", string.Format("javascript: _window_open('/a35/TimeLine?a05id={0}',2)", recA01.a05ID));
                             AMI("Rezervace nepersonálního zdroje", string.Format("javascript: _window_open('/a38/AppendToA01?pid={0}',2)", pid));                            
                         }
+
+                        
                     }
                     
                     
@@ -411,23 +422,24 @@ namespace UI.Controllers
                     AMI("Nový úkol (lhůta)", string.Format("javascript: _window_open('/h04/Record?pid=0&a01id={0}')", pid));
                     AMI("Zadat související akci", string.Format("javascript: _window_open('/h04/Record?pid=0&a01id={0}')", pid));
 
+
+                    AMI("Záznam akce", null, null, "Zaznam");
                     if (permA01.PermValue == a01EventPermissionENUM.ShareTeam_Leader || permA01.PermValue == a01EventPermissionENUM.ShareTeam_Owner || permA01.PermValue == a01EventPermissionENUM.FullAccess)
                     {
                         if (recA01.a01ParentID == 0)
                         {
-                            AMI("Kopírovat akci", string.Format("javascript: _window_open('/h04/Record?pid=0&a01id={0}')", pid));
+                            AMI("Kopírovat akci", string.Format("javascript: _window_open('/h04/Record?pid=0&a01id={0}')", pid), "Zaznam");
                         }
-                        AMI("Upravit základní vlastnosti (kartu)", string.Format("javascript: _window_open('/a01/Record?pid={0}')", pid));
+                        AMI("Upravit základní vlastnosti (kartu)", string.Format("javascript: _window_open('/a01/Record?pid={0}')", pid), "Zaznam");
                     }
 
                     if (permA01.PermValue == a01EventPermissionENUM.FullAccess)
                     {
-                        AMI("Nenávratně odstranit akci", string.Format("javascript: _window_open('/a01/Record?pid={0}')", pid));
+                        AMI("Nenávratně odstranit akci", string.Format("javascript: _window_open('/a01/Record?pid={0}')", pid), "Zaznam");
+                        DIV(null, "Zaznam");
                     }
-                        
-                  
-                    DIV();
-                    AMI("Stránka akce", string.Format("javascript:_location_replace_top('/a01/RecPage?pid={0}')", recA01.pid));
+                    
+                    AMI("Stránka akce", string.Format("javascript:_location_replace_top('/a01/RecPage?pid={0}')", recA01.pid), "Zaznam");
                     if (recA01.isclosed == true)
                     {
                         AMI_NOTRA("<kbd>" + Factory.tra("Záznam je v archivu.") + "</kbd>", "");
@@ -464,7 +476,15 @@ namespace UI.Controllers
                     var recA11 = Factory.a11EventFormBL.Load(pid);
                     AMI("Karta záznamu", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
                     DIV();
-                    AMI("Otestovat vyplnění formuláře", "");
+                    if (recA11.isclosed==false)
+                    {
+                        AMI("Vyplnit formulář", Factory.App.UiftUrl + "/Formular/" + pid.ToString(), null, null, "_blank");
+                    }
+                    AMI("Náhled vyplněného formuláře", Factory.App.UiftUrl + "/Preview/Formular/" + pid.ToString(), null, null, "_blank");
+                    DIV();
+                    AMI("Otestovat vyplnění formuláře", string.Format("javascript: _window_open('/a11/ValidateForms?pid={0}')", pid));
+                    AMI("Otestovat vyplnění všech formulářů v akci", string.Format("javascript: _window_open('/a11/ValidateForms?a01id={0}')", recA11.a01ID));
+                    DIV();
                     AMI("Zobrazit historii přístupů k šifrovaným otázkám", "");
                     AMI("Vyčistit data ve formuláři (nenávratně)", "");
                     break;

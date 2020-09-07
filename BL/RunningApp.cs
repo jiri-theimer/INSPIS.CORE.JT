@@ -22,6 +22,8 @@ namespace BL
 
         public string Implementation { get; set; }  //HD nebo prázdno
 
+        public string UiftUrl { get; set; } //url pro spouštění UIFT
+
         public string Terminology_Akce
         {
             get

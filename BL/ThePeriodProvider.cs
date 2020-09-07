@@ -19,24 +19,24 @@ namespace BL
         private void SetupPallete()
         {
             _lis.Add(new BO.ThePeriod() { pid = 0, PeriodName = "--Pojmenované období--", PeriodInterval = "" });
-            AF(10);
-            AF(11);
-            
-            AF(20);
-            AF(21);
-            
-            AF(30);
-            AF(31);
-            AF(33); AF(34); AF(35); AF(36);
-            AF(40); AF(41);
-            AF(50); AF(51);
+            AF(11); //včera
+            AF(10); //dnes
+            AF(12); //zítra
 
-            //budoucnost:
-            AF(12);
-            AF(22);
-            AF(32);
-            AF(42);
-            AF(52);
+            AF(21); //minulý týden
+            AF(20); //tento týden
+            AF(22); //příští týden
+            AF(23); //příští 2 týdny
+            AF(24); //příští 3 týdny
+
+            AF(31); //minulý měsíc
+            AF(30); //tento měsíc
+            AF(32); //příští měsíc
+            AF(33); AF(34); AF(35); AF(36);
+
+            AF(41); AF(40); AF(42);
+
+            AF(51); AF(50); AF(52);
         }
 
         public List<BO.ThePeriod> getPallete()
@@ -89,6 +89,16 @@ namespace BL
                     strName = "Příští týden";
                     d1 = FirstDateInWeek(DateTime.Today.AddDays(7));
                     d2 = d1.AddDays(6);
+                    break;
+                case 23:
+                    strName = "Příští 2 týdny";
+                    d1 = FirstDateInWeek(DateTime.Today.AddDays(7));
+                    d2 = d1.AddDays(13);
+                    break;
+                case 24:
+                    strName = "Příští 3 týdny";
+                    d1 = FirstDateInWeek(DateTime.Today.AddDays(7));
+                    d2 = d1.AddDays(20);
                     break;
                 case 30:
                     strName = "Tento měsíc";

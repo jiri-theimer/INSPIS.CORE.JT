@@ -31,6 +31,15 @@
             <myval value="@(Model.Rec.UserInsert+"/"+BO.BAS.ObjectDateTime2String(Model.Rec.DateInsert))"></myval>
         </div>
     </div>
+    <div class="form-row my-2">
+        @if (Model.Rec.a11IsPoll == false && Model.Rec.isclosed == false)
+        {
+            <a href="@(_f.App.UiftUrl+"/Formular/"+Model.Rec.pid.ToString())" style="margin-right:20px;" target="_blank">@_f.tra("Vyplnit")</a>
+        }
+        <a href="@(_f.App.UiftUrl+"/Preview/Formular/"+Model.Rec.pid.ToString())" style="margin-right:20px;" target="_blank">@_f.tra("Náhled")</a>
+
+        <a href="javascript:_window_open('/a11/ValidateForms?pid=@Model.Rec.pid')">@_f.tra("Otestovat vyplnění formuláře")</a>
+    </div>
   
 </div>
 
