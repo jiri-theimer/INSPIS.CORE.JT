@@ -56,5 +56,11 @@ namespace UIFT.Controllers
 
             return View(template, model);
         }
+
+        [IsPreview]
+        public ActionResult Preview(int id)
+        {
+            return Index(id);
+        }
     }
 }

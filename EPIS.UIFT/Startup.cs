@@ -65,6 +65,7 @@ namespace UIFT
                 .AddCookie("Identity.Application", config =>
                 {
                     config.Cookie.Name = AppConfig.Authentication.CookieName;
+                    config.Cookie.Domain = AppConfig.Authentication.Domain;
                     config.Cookie.Path = "/";
                     config.Cookie.HttpOnly = true;
                     config.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
@@ -170,9 +171,9 @@ namespace UIFT
                 // preview otazek a sekci
                 endpoints.MapControllerRoute(
                     name: "preview",
-                    pattern: "Preview/{action}/{a11id}/{id?}",
+                    pattern: "Preview/{action}/{a11id}",
                     defaults: new { controller = "Preview" },
-                    constraints: new { action = "Formular|Sekce|Otazka", a11id = @"\d+", id = @"^$|\d+" }
+                    constraints: new { a11id = @"\d+", action = "Formular|Sekce|Otazka" }
                 );
 
                 // export
@@ -187,7 +188,7 @@ namespace UIFT
                     name: "ajax_calls",
                     pattern: "{a11id}/{controller}/{action}/{id?}",
                     defaults: new { action = "Index" },
-                    constraints: new { a11id = @"\d+" }
+                    constraints: new { a11id = @"\d+", id = @"^$|\d+" }
                 );
 
                 endpoints.MapControllerRoute(

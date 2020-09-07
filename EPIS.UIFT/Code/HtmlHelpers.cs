@@ -69,22 +69,23 @@ namespace UIFT.HtmlHelpers
         /// Helper na vytvoreni stromove struktury sekci.
         /// </summary>
         /// <param name="sekce">List sekci na 1 urovni stromu</param>
-        public static HtmlString SekceTree(this IHtmlHelper helper, List<Models.Sekce> sekce, int a11id, int selectedId = 0)
+        public static HtmlString SekceTree(this IHtmlHelper helper, List<Models.Sekce> sekce, int selectedId = 0)
         {
             var fac = (UIFT.Repository.RepositoryFactory)helper.ViewContext.HttpContext.RequestServices.GetService(typeof(UIFT.Repository.RepositoryFactory));
             var bl = fac.Get().BL;
             var generator = (LinkGenerator)helper.ViewContext.HttpContext.RequestServices.GetService(typeof(LinkGenerator));
-            
+            var storage = (PersistantDataStorage)helper.ViewContext.HttpContext.Items["PersistantData"];
+
             StringBuilder html = new StringBuilder("<ul id=\"segmentsTree\" class=\"level-0\">");
-            
+
             // prvni uzel ve stromu - odkaz na uvod dotazniku
-            html.AppendFormat("<li id=\"menusekce-0\" data-id=\"0\"{1}><a href=\"{0}\">{2}</a></li>", generator.GetPathByAction("Uvod", "Formular", new { a11id = a11id }), selectedId == 0 ? " class=\"sel\"" : "", bl.tra("Úvod (informace k vyplňování)"));
+            html.AppendFormat("<li id=\"menusekce-0\" data-id=\"0\"{1}><a href=\"{0}\">{2}</a></li>", generator.GetPathByAction("Uvod", "Formular", new { a11id = storage.a11id }), selectedId == 0 ? " class=\"sel\"" : "", bl.tra("Úvod (informace k vyplňování)"));
 
             // vytvorit strom
-            SekceTreeRecursiveHelper(generator, html, sekce, ref a11id, ref selectedId);
+            SekceTreeRecursiveHelper(generator, html, sekce, storage, ref selectedId);
 
             // posledni uzel ve stromu - odkaz na shrnuti
-            html.AppendFormat("<li id=\"menusekce-00\" data-id=\"00\"><a href=\"{0}\">{1}</a></li>", generator.GetPathByAction("Shrnuti", "Formular", new { a11id = a11id }), bl.tra("Kontrola formuláře"));
+            html.AppendFormat("<li id=\"menusekce-00\" data-id=\"00\"><a href=\"{0}\">{1}</a></li>", generator.GetPathByAction("Shrnuti", "Formular", new { a11id = storage.a11id }), bl.tra("Kontrola formuláře"));
 
             html.Append("</ul>");
 
@@ -96,7 +97,7 @@ namespace UIFT.HtmlHelpers
         /// </summary>
         /// <param name="html">Aktualne vytvoreny HTML string se stromem</param>
         /// <param name="node">Seznam sekci pro aktualni cykl</param>
-        private static void SekceTreeRecursiveHelper(LinkGenerator generator, StringBuilder html, List<Models.Sekce> node, ref int a11id, ref int selectedId)
+        private static void SekceTreeRecursiveHelper(LinkGenerator generator, StringBuilder html, List<Models.Sekce> node, PersistantDataStorage storage, ref int selectedId)
         {
             foreach (Models.Sekce sekce in node)
             {
@@ -112,13 +113,16 @@ namespace UIFT.HtmlHelpers
                 if (sekce.Otazky.Count == 0)
                     html.AppendFormat("<strong>{0}</strong>", sekce.Base.f18Name);
                 else // jinka udelat jako odkaz na sekci
-                    html.AppendFormat("<a href=\"{1}\"><span></span>{0}</a>", sekce.Base.f18Name, generator.GetPathByAction("Index", "Sekce", new { a11id = a11id, id = sekce.Base.pid }));
-                
+                {
+                    string url = generator.GetPathByAction(storage.IsPreview ? "Preview" : "Index", "Sekce", new { a11id = storage.a11id, id = sekce.Base.pid });
+                    html.AppendFormat("<a href=\"{1}\"><span></span>{0}</a>", sekce.Base.f18Name, url);
+                }
+
                 // obsahuje podsekce
                 if (sekce.SubSekce.Count > 0)
                 {
                     html.AppendFormat("<ul class=\"level-{0}{1}\">", sekce.Base.f18TreeLevel, sekce.Otazky.Count == 0 ? " noBorder" : "");
-                    SekceTreeRecursiveHelper(generator, html, sekce.SubSekce, ref a11id, ref selectedId);
+                    SekceTreeRecursiveHelper(generator, html, sekce.SubSekce, storage, ref selectedId);
                     html.Append("</ul>");
                 }
                 html.Append("</li>");

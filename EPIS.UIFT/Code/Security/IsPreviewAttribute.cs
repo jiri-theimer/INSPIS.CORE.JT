@@ -7,16 +7,8 @@ namespace UIFT
     /// </summary>
     public class IsPreviewAttribute : Attribute
     {
-        private bool _preview;
-
-        public IsPreviewAttribute(bool isPreview)
+        public IsPreviewAttribute()
         {
-            _preview = isPreview;
-        }
-
-        public bool Preview
-        {
-            get { return _preview; }
         }
     }
 }

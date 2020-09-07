@@ -4,49 +4,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace UIFT.Controllers
 {
-    public class FormularController : BaseController
+    public class FormularController : BaseFormularController
     {
         public ActionResult Index(int sekce = 0, int otazka = 0, [Range(1,2)] int layout = 1, [Range(1,2)] int template = 1)
         {
-            // vytvoreni instance formulare
-            Models.Formular formular = this.UiRepository.GetFormular(this.PersistantData.f06id);
-
-            // ulozit informace o formulari do persistent data
-            PersistantDataStorage newStorage = this.PersistantData;
-            newStorage.Layout = (FormularLayoutTypes)layout;
-            newStorage.Template = (FormularTemplateTypes)template;
-            this.PersistantData = newStorage;
-            
-            // pokud formular nebyl nalezen, presmeruj uzivatele na odpovidajici view
-            if (formular == null)
-            {
-                return RedirectToAction("Index", "Error", new { code = 11 });
-            }
-
-            // predvybrana otazka
-            if (otazka > 0)
-            {
-                Models.IOtazka selOtazka = formular.Otazky.Find(t => t.PID == otazka);
-                if (selOtazka != null)
-                {
-                    formular.AktualniOtazka = selOtazka.PID;
-                    formular.AktualniSekce = selOtazka.IdSekce;
-                }
-            }
-            // predvybrana sekce
-            else if (sekce > 0)
-            {
-                if (formular.Sekce.Exists(t => t.Base.pid == sekce))
-                    formular.AktualniSekce = sekce;
-            }
-
-            // informace o layoutu
-            ViewBag.Layout = Convert.ToInt32(this.PersistantData.Layout);
-
-            // template formulare
-            ViewBag.FormularTemplate = Convert.ToInt32(this.PersistantData.Template);
-
-            return View(this.PersistantData.Template.ToString(), formular);
+            return base.BaseIndex(sekce, otazka, layout, template);
         }
 
         /// <summary>

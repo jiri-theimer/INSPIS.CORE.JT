@@ -51,7 +51,9 @@ namespace UIFT.Security
                         var repository = factory.Get(a11id);
                         repository.BL.InhaleUserByLogin(runningUser.j03Login);
 
-                        CreateUser(repository);
+                        bool isPreview = executingEnpoint.Metadata.Any(t => t.GetType() == typeof(IsPreviewAttribute));
+
+                        CreateUser(repository, isPreview);
                     }
 
                     // problem v kontrole prihlaseni
@@ -105,9 +107,8 @@ namespace UIFT.Security
             }
         }
 
-        private void CreateUser(UIFT.Repository.Repository repository)
+        private void CreateUser(UIFT.Repository.Repository repository, bool preview)
         {
-            bool preview = false;
             // uzivatel v BL neexistuje
             if (repository.BL.CurrentUser == null)
             {

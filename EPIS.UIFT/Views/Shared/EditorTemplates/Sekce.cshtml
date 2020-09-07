@@ -36,7 +36,7 @@
             <ul>
                 @foreach (BO.f30BestPracticesToSegment bp in Model.BestPractices)
                 {
-                    <li><span class="iconModal"></span><a href="@Url.RouteUrl("preview", new { action = "Sekce", a11id = bp.a11ID, id = bp.f18ID })" target="_blank">@bp.f28Description</a></li>
+                    <li><span class="iconModal"></span><a href="@Url.Action("Sekce", "Preview", new { a11id = bp.a11ID, id = bp.f18ID })" target="_blank">@bp.f28Description</a></li>
                 }
             </ul>
         </div>
