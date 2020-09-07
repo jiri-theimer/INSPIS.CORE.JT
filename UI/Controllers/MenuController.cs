@@ -607,7 +607,7 @@ namespace UI.Controllers
                 strName += " ✓";
             }
 
-            AMI(strName, string.Format("javascript:_location_replace_top('/a01/RecPage?pid={0}')", intParentA01ID), "Nadrizena");
+            AMI_NOTRA(strName, string.Format("javascript:_location_replace_top('/a01/RecPage?pid={0}')", intParentA01ID), "Nadrizena");
 
             DIV(null, "Nadrizena");
             var mq = new BO.myQuery("a01");
