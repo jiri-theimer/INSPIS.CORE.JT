@@ -1,0 +1,82 @@
+﻿@model UI.Models.Tab.a01TabSouvisejici
+@inject BL.Factory _f
+
+@{
+    ViewData["Title"] = "Související akce";
+    Layout = "~/Views/Shared/_LayoutSubform.cshtml";
+
+
+}
+@addTagHelper *, UI
+
+
+
+<div class="modal_record_container">
+    <div style="margin-bottom:20px;">
+        @if (Model.IsGridView)
+        {
+            <button type="button" class="btn btn-dark" onclick="change_view('0')">@_f.tra("Vypnout GRID zobrazení")</button>
+        }
+        else
+        {
+            <button type="button" class="btn btn-dark" onclick="change_view('1')">@_f.tra("Přepnout na GRID")</button>
+        }
+
+        <button type="button" class="btn btn-primary" onclick="append()">@_f.tra("Přidat související akci")</button>
+
+
+    </div>
+</div>
+
+@if (Model.IsGridView == true)
+{
+    <vc:the-grid entity="a01Event" j72id="0" go2pid="0" master_entity="a01Event" master_pid="@Model.RecA01.pid" contextmenuflag="1" ondblclick="tg_dblclick" master_flag="" masterviewflag="3"></vc:the-grid>
+
+}
+else
+{
+    <div class="modal_record_container">
+        <table class="table table-sm" style="min-width:1000px;">
+            @foreach (var c in Model.lisA24)
+            {
+                <tr>
+
+                    <td>
+                        <myval value="@c.SignaturePlusType_Left" datatype="link" linkurl="/a01/RecPage?pid=@c.a01ID_Left" linktarget="_top" cmprefix="a01" cmdpid="@c.a01ID_Left" hoverprefix="a01" hoverpid="@c.a01ID_Left"></myval>
+
+                    </td>
+                    <td>
+                        @c.a46Name
+                    </td>
+                    <td>
+                        <myval value="@c.SignaturePlusType_Right" datatype="link" linkurl="/a01/RecPage?pid=@c.a01ID_Right" linktarget="_top" cmprefix="a01" cmdpid="@c.a01ID_Right" hoverprefix="a01" hoverpid="@c.a01ID_Right"></myval>
+                    </td>
+
+
+                </tr>
+
+            }
+        </table>
+    </div>
+}
+
+
+
+
+<script type="text/javascript">
+    function append() {
+        _window_open("/a11/Append?a01id=@Model.pid");
+    }
+   
+    function change_view(is_grid) {
+        $.post("/Common/SetUserParam", { key: "TabSouvisejici-IsGridView", value: is_grid  }, function (data) {
+                location.replace("/a01/TabSouvisejici?pid=@Model.RecA01.pid");
+
+            });
+    }
+
+    /*automaticky volaná událost z thegrid controlu*/
+    function thegrid_handle_event(event_name, pid) {
+
+    }
+</script>

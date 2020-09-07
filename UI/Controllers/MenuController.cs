@@ -344,6 +344,7 @@ namespace UI.Controllers
             {
                 case "a01":
                     var recA01 = Factory.a01EventBL.Load(pid);
+                    HEADER(recA01.a01Signature);
                     var recA10 = Factory.a10EventTypeBL.Load(recA01.a10ID);
                     var permA01 = Factory.a01EventBL.InhalePermission(recA01);
                     if (recA10.a10Aspx_Framework == "a01_framework_general_institution.aspx")

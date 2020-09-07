@@ -58,7 +58,22 @@ namespace UI.Controllers
             
         }
 
-
+        public IActionResult TabSouvisejici(int pid)
+        {
+            var v = new a01TabSouvisejici() { pid = pid };
+            if (v.pid == 0)
+            {
+                return this.StopPageSubform("pid is missing");
+            }
+            v.IsGridView = Factory.CBL.LoadUserParamBool("TabSouvisejici-IsGridView", false);
+            v.RecA01 = Factory.a01EventBL.Load(v.pid);
+            if (v.IsGridView == false)
+            {
+                v.lisA24 = Factory.a01EventBL.GetList_a24(v.pid);
+            }
+            
+            return View(v);
+        }
         public IActionResult TabForms(int pid)
         {
             var v = new a01TabForms() { pid = pid };
@@ -322,8 +337,13 @@ namespace UI.Controllers
                 }
                 v.NavTabs.Add(AddTab("Přílohy", "viewAttachments", "/a01/TabAttachments?pid=" + v.pid.ToString(),true,strBadge));
             }
-            
-            v.NavTabs.Add(AddTab("Související akce", "a01Event", "/TheGrid/SlaveView?prefix=a01"));
+
+            strBadge = null;
+            if (c.a01_souvisejici>0 || c.a01_podrizene > 0)
+            {
+                strBadge = c.a01_podrizene.ToString() + " + " + c.a01_souvisejici.ToString();
+            }
+            v.NavTabs.Add(AddTab("Související akce", "a01Event", "/a01/TabSouvisejici?pid="+v.pid.ToString(),true,strBadge));
 
             string strDefTab = Factory.CBL.LoadUserParam("recpage-tab-a01");
             var deftab = v.NavTabs[0];

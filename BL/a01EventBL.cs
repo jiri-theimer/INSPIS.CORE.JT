@@ -12,6 +12,7 @@ namespace BL
         public int SaveA01Record(BO.a01Event rec, BO.a10EventType recA10);
         public BO.a01EventPermission InhalePermission(BO.a01Event rec);
         public BO.a01RecordSummary LoadSummary(int pid);
+        public IEnumerable<BO.a24EventRelation> GetList_a24(int pid);
 
     }
     class a01EventBL : BaseBL, Ia01EventBL
@@ -51,6 +52,17 @@ namespace BL
         {
             DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.a01Event>(fq.FinalSql, fq.Parameters);
+        }
+        public IEnumerable<BO.a24EventRelation> GetList_a24(int pid)
+        {
+            sb("SELECT a.*,");
+            sb("a01left.a01Signature as a01Signature_Left,a01right.a01Signature as a01Signature_Right,a46.a46Name,a10left.a10Name as a10Name_Left,a10right.a10Name as a10Name_Right,a46.a46DirectionFlag,");
+            sb(_db.GetSQL1_Ocas("a24", true, true));
+            sb(" FROM a24EventRelation a INNER JOIN a01Event a01left ON a.a01ID_Left=a01left.a01ID INNER JOIN a10EventType a10left ON a01left.a10ID=a10left.a10ID");
+            sb(" INNER JOIN a01Event a01right ON a.a01ID_Right=a01right.a01ID INNER JOIN a10EventType a10right ON a01right.a10ID=a10right.a10ID");
+            sb(" INNER JOIN a46EventParentType a46 ON a.a46ID=a46.a46ID");
+            sb(" WHERE a.a01ID_Left=@pid OR a.a01ID_Right=@pid");
+            return _db.GetList<BO.a24EventRelation>(sbret(), new { pid = pid });
         }
 
         public int Create(BO.a01Event rec, bool bolAutoInitWorkflow, List<BO.a11EventForm> lisA11, List<BO.a41PersonToEvent> lisA41, List<BO.a35PersonEventPlan> lisA35, List<int> a37ids)

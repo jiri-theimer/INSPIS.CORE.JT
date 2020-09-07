@@ -101,6 +101,8 @@ namespace UI
                 LogFolder = strLogFolder
                 ,
                 TranslatorMode = Configuration.GetSection("App")["TranslatorMode"]
+                ,
+                UiftUrl= Configuration.GetSection("UIFT")["Url"]
             });
 
 

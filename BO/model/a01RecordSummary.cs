@@ -12,5 +12,7 @@ namespace BO
         public int h04_closed;
         public int o27_count;
         public int a41_count;
+        public int a01_souvisejici;
+        public int a01_podrizene;
     }
 }
