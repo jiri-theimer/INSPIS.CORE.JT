@@ -22,6 +22,9 @@ namespace UI.Views.Shared.TagHelpers
         [HtmlAttributeName("placeholder")]
         public string PlaceHolder { get; set; }
 
+        [HtmlAttributeName("event_after_search")]
+        public string Event_After_Search { get; set; }
+
 
         private System.Text.StringBuilder _sb;
         public override void Process(TagHelperContext context, TagHelperOutput output)
@@ -50,7 +53,7 @@ namespace UI.Views.Shared.TagHelpers
             sb("");
             _sb.Append(string.Format("var c{0}=", strControlID));
             _sb.Append("{");
-            _sb.Append(string.Format("controlid: '{0}',posturl: '/TheCombo/GetHtml4Search',entity:'{1}'", strControlID, this.Entity));
+            _sb.Append(string.Format("controlid: '{0}',posturl: '/TheCombo/GetHtml4Search',entity:'{1}',on_after_search: '{2}'", strControlID, this.Entity,this.Event_After_Search));
             _sb.Append("};");
 
             sb("");

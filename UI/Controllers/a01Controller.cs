@@ -13,6 +13,57 @@ namespace UI.Controllers
 {
     public class a01Controller : BaseController
     {
+        public IActionResult AddSouvisejici(int pid)
+        {
+            var v = new a01AddSouvisejici() { a01id = pid };
+            if (v.a01id == 0)
+            {
+                return this.StopPageSubform("pid is missing");
+            }
+
+            RefreshStateAddSouvisejici(v);
+            return View(v);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddSouvisejici(a01AddSouvisejici v,string oper,int a01id)
+        {
+            if (oper == "add_a01id")
+            {
+                v.SelectedA01ID = a01id;
+                return View(v);
+            }
+            RefreshStateAddSouvisejici(v);
+            
+            if (ModelState.IsValid)
+            {
+
+                var c = new BO.a24EventRelation();
+                
+                
+                if (c.pid > 0)
+                {
+                    
+                    v.SetJavascript_CallOnLoad(c.pid);
+                    return View(v);
+                }
+
+            }
+
+
+            this.Notify_RecNotSaved();
+            return View(v);
+        }
+        private void RefreshStateAddSouvisejici(a01AddSouvisejici v)
+        {
+            v.RecA01 = Factory.a01EventBL.Load(v.a01id);
+            if (v.SelectedA01ID > 0)
+            {
+                v.RecA01Selected= Factory.a01EventBL.Load(v.SelectedA01ID);
+            }
+
+        }
+
         public IActionResult AddAttachment(int pid)
         {
             var v = new a01AddAttachment() { a01id = pid,UploadGuid=BO.BAS.GetGuid() };

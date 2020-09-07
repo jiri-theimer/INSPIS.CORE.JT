@@ -496,11 +496,16 @@ function mysearch_init(c) {
                 $("#divData" + c.controlid).css("height", "500px");
             }
 
-            $("#hovado .txs").on("click", function () {
-                //record_was_selected(this);
+            $("#hovado .txs").on("click", function () {                
                 var pid = $(this).attr("data-v");
-                location.replace("/" + c.entity.substring(0, 3) + "/Recpage?pid=" + pid);
+                
+                if (c.on_after_search !== "") {
+                    eval(c.on_after_search + "('" + pid + "')");
+                } else {
+                    location.replace("/" + c.entity.substring(0, 3) + "/Recpage?pid=" + pid);
+                }
 
+                
             });
 
 

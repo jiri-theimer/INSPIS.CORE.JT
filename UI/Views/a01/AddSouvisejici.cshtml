@@ -1,0 +1,65 @@
+﻿@model a01AddSouvisejici
+@inject BL.Factory _f
+
+@{
+    ViewData["Title"] = _f.tra("Zadat související akci");
+    Layout = "~/Views/Shared/_LayoutModal.cshtml";
+}
+@addTagHelper *, UI
+
+<h4>@_f.tra("Zadat související akci") @(": "+Model.RecA01.a01Signature)</h4>
+<div class="bg-light" style="padding:10px;">
+    <button id="cmdSave" type="button" class="btn btn-success">@_f.tra("Uložit změny")</button>
+    <button id="cmdClose" type="button" onclick="_window_close()" class="btn btn-light">@_f.tra("Zavřít")</button>
+    <button type="button" onclick="_helppage()" class="btn btn-light"><b>? </b>@_f.tra("Nápověda")</button>
+</div>
+
+
+<form id="form1" asp-controller="a01" asp-action="AddSouvisejici" method="POST">
+    <input type="hidden" asp-for="@Model.SelectedA01ID" />
+
+    <div class="modal_record_container">
+        <div class="alert alert-primary" role="alert">
+            <label style="font-weight:bold;">@_f.tra("Typ akce"):</label>
+            @Model.RecA01.a10Name
+            <label style="font-weight:bold;margin-left:20px;">@_f.tra("Téma akce"):</label>
+            @Model.RecA01.a08Name
+            <label style="font-weight:bold;margin-left:20px;">@(Model.RecA01.a06Name+":")</label>
+            @Model.RecA01.a03Name
+        </div>
+
+        <div>
+            <mysearch asp-for="@Model.SearchBox" entity="a01Event" placeholder="@_f.tra("Najít akci")..." event_after_search="a01id_on_search"></mysearch>
+        </div>
+        @if (Model.RecA01Selected != null)
+        {
+            <div class="alert alert-info" role="alert">
+                <label style="font-weight:bold;">@(Model.RecA01Selected.a01Signature+":")</label>                
+                @Model.RecA01Selected.a10Name
+                <label style="font-weight:bold;margin-left:20px;">@_f.tra("Téma akce"):</label>
+                @Model.RecA01Selected.a08Name
+                <label style="font-weight:bold;margin-left:20px;">@(Model.RecA01.a06Name+":")</label>
+                @Model.RecA01Selected.a03Name
+            </div>
+        }
+    </div>
+
+</form>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+
+    });
+
+    function a01id_on_search(a01id) {
+
+        form1.action = "/a01/AddSouvisejici?oper=add_a01id&a01id=" + a01id;
+        form1.submit();
+
+    }
+
+
+
+</script>

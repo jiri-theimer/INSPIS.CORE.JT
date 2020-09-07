@@ -421,7 +421,7 @@ namespace UI.Controllers
 
                     DIV();
                     AMI("Nový úkol (lhůta)", string.Format("javascript: _window_open('/h04/Record?pid=0&a01id={0}')", pid));
-                    AMI("Zadat související akci", string.Format("javascript: _window_open('/h04/Record?pid=0&a01id={0}')", pid));
+                    AMI("Zadat související akci", string.Format("javascript: _window_open('/a01/AddSouvisejici?pid={0}')", pid));
 
 
                     AMI("Záznam akce", null, null, "Zaznam");
