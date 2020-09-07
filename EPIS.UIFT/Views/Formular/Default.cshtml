@@ -47,11 +47,11 @@
 
 <!-- SIDE MENU -->
 <div id="menuContainer">
-    <div id="menuTitle">@rep.BL.tra("Části formuláře")<p>@Model.Base.f06Name</p></div>
+    <div id="menuTitle">@rep.BL.tra("Části formuláře")<p>@Model.Base.f06Name<span style="opacity:0.5;font-weight:400;font-size:10px;"> @(persistentData.IsPreview ? rep.BL.tra("(náhled)") : "")</span></p></div>
     <div id="segmentsTreeContainer">
         <div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
         <div class="viewport">
-            @Html.SekceTree(Model.Tree, persistentData.a11id, Model.AktualniSekce)
+            @Html.SekceTree(Model.Tree, Model.AktualniSekce)
         </div>
     </div>
 </div>

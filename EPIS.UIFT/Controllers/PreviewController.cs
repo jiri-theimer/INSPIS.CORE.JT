@@ -1,30 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace UIFT.Controllers
 {
-    public class PreviewController : BaseController
+    public class PreviewController : BaseFormularController
     {
         /// <summary>
         /// Preview celeho formulare
         /// </summary>
-        //[RefreshSecurityCookie(true)]
-        [IsPreview(true)]
+        [IsPreview]
         public ActionResult Formular()
         {
-            // set Formular/Index call as preview
-            /*if (!this.HttpContext.Items.ContainsKey("SECURITY_PREVIEW"))
-                this.HttpContext.Items.Add("SECURITY_PREVIEW", true);*/
-
-            return RedirectToAction("Index", "Formular");
+            return base.BaseIndex(0, 0, 1, 1);
         }
 
         /// <summary>
         /// Zobrazeni sekce formulare
         /// </summary>
         /// <param name="id">f18id</param>
-        //[RefreshSecurityCookie(true)]
-        [IsPreview(true)]
+        [IsPreview]
         public ActionResult Sekce(int id)
         {
             Models.Sekce model = this.UiRepository.GetSekce(id, this.PersistantData.f06id, true);
@@ -40,8 +35,7 @@ namespace UIFT.Controllers
         /// Zobrazeni otazky ve formulare
         /// </summary>
         /// <param name="id">f19id</param>
-        //[RefreshSecurityCookie(true)]
-        [IsPreview(true)]
+        [IsPreview]
         public ActionResult Otazka(int id)
         {
             // !!!TODO

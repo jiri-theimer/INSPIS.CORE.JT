@@ -28930,19 +28930,21 @@ $.ajaxSetup({
     beforeSend: function (jqXHR, settings) {
         /* normalize url */
         var url = settings.url;
-        /* odstranit root url, pokud je soucasti url */
-        if (url.substr(0, UIFT.WebRoot.length) == UIFT.WebRoot && UIFT.WebRoot != "") {
-            url = url.substr(UIFT.WebRoot.length);
+        if (!url.startsWith("http")) {
+            /* odstranit root url, pokud je soucasti url */
+            if (url.substr(0, UIFT.WebRoot.length) == UIFT.WebRoot && UIFT.WebRoot != "") {
+                url = url.substr(UIFT.WebRoot.length);
+            }
+            /* odstranit a11id pokud je soucasti url */
+            if (url.substr(1, UIFT.a11id.toString().length) == UIFT.a11id) {
+                url = url.substr(UIFT.a11id.toString().length + 1);
+            }
+            /* vytvorit nove url */
+            url = UIFT.WebRoot + "/" + UIFT.a11id + url;
         }
-        /* odstranit a11id pokud je soucasti url */
-        if (url.substr(1, UIFT.a11id.toString().length) == UIFT.a11id) {
-            url = url.substr(UIFT.a11id.toString().length + 1);
-        }
-        /* vytvorit nove url */
-        url = UIFT.WebRoot + "/" + UIFT.a11id + url;
-        
-        settings.url = url;
 
+        settings.url = url;
+        
         var e = $('input[name="__UiftCsrfToken"]').val();
         
         jqXHR.setRequestHeader("UiftCsrf", e);
