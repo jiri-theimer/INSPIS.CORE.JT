@@ -10,7 +10,8 @@ namespace BL
         public IEnumerable<BO.a01Event> GetList(BO.myQuery mq);
         public int Create(BO.a01Event rec, bool bolAutoInitWorkflow, List<BO.a11EventForm> lisA11, List<BO.a41PersonToEvent> lisA41, List<BO.a35PersonEventPlan> lisA35, List<int> a37ids);
         public int SaveA01Record(BO.a01Event rec, BO.a10EventType recA10);
-        public BO.a01EventPermission InhalePermission(BO.a01Event rec);        
+        public BO.a01EventPermission InhalePermission(BO.a01Event rec);
+        public BO.a01RecordSummary LoadSummary(int pid);
 
     }
     class a01EventBL : BaseBL, Ia01EventBL
@@ -40,6 +41,10 @@ namespace BL
         public BO.a01Event Load(int pid)
         {
             return _db.Load<BO.a01Event>(GetSQL1(" WHERE a.a01ID=@pid"), new { pid = pid });
+        }
+        public BO.a01RecordSummary LoadSummary(int pid)
+        {
+            return _db.Load<BO.a01RecordSummary>("EXEC dbo._core_a01_summary @j03id,@pid,null", new { j03id=_mother.CurrentUser.pid,pid = pid });
         }
 
         public IEnumerable<BO.a01Event> GetList(BO.myQuery mq)

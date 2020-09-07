@@ -136,13 +136,13 @@ namespace UI.Controllers
         }
 
 
-        public NavTab AddTab(string strName, string strEntity, string strUrl,bool istranslate=true)
+        public NavTab AddTab(string strName, string strEntity, string strUrl,bool istranslate=true,string strBadge=null)
         {
             if (istranslate)
             {
                 strName = Factory.tra(strName);
             }
-            return new NavTab() { Name = strName, Entity = strEntity, Url = strUrl };
+            return new NavTab() { Name = strName, Entity = strEntity, Url = strUrl,Badge=strBadge };
         }
     }
 }

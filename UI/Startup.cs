@@ -38,7 +38,7 @@ namespace UI
                      config.Cookie.SameSite = SameSiteMode.None;
                      config.SlidingExpiration = true;
                      config.ExpireTimeSpan = TimeSpan.FromHours(24);
-                     config.Cookie.Name = "InspisCloudCore";
+                     config.Cookie.Name = "InspisAuth";
                      config.ReturnUrlParameter = "returnurl";
                      config.LoginPath = "/Login/UserLogin";                     
                  });
