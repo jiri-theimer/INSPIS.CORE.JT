@@ -16,11 +16,12 @@
 
 
 <form id="form1" asp-controller="a01" asp-action="AddSouvisejici" method="POST">
-    <input type="hidden" asp-for="@Model.SelectedA01ID" />
+    <input type="hidden" asp-for="@Model.a01id" />
+    <input type="hidden" asp-for="@Model.SelectedA01ID" value="@Model.SelectedA01ID" />
 
     <div class="modal_record_container">
         <div class="alert alert-primary" role="alert">
-            <label style="font-weight:bold;">@_f.tra("Typ akce"):</label>
+            <label style="font-weight:bold;">@(Model.RecA01.a01Signature+":")</label>
             @Model.RecA01.a10Name
             <label style="font-weight:bold;margin-left:20px;">@_f.tra("Téma akce"):</label>
             @Model.RecA01.a08Name
@@ -34,32 +35,101 @@
         @if (Model.RecA01Selected != null)
         {
             <div class="alert alert-info" role="alert">
-                <label style="font-weight:bold;">@(Model.RecA01Selected.a01Signature+":")</label>                
+                <label style="font-weight:bold;">@(Model.RecA01Selected.a01Signature+":")</label>
                 @Model.RecA01Selected.a10Name
                 <label style="font-weight:bold;margin-left:20px;">@_f.tra("Téma akce"):</label>
                 @Model.RecA01Selected.a08Name
-                <label style="font-weight:bold;margin-left:20px;">@(Model.RecA01.a06Name+":")</label>
+                <label style="font-weight:bold;margin-left:20px;">@(Model.RecA01Selected.a06Name+":")</label>
                 @Model.RecA01Selected.a03Name
+                <hr />
+
+                <select asp-for="@Model.SelectedA46ID" class="form-control">
+                    <option value="4">@_f.tra("Je podřízena vůči") @(Model.RecA01.a01Signature)</option>
+                    <option value="1">@_f.tra("Závisí na")  @(Model.RecA01.a01Signature)</option>
+                    <option value="2">@_f.tra("Je duplikátem")  @(Model.RecA01.a01Signature)</option>
+                    <option value="3">@_f.tra("Souvisí s")  @(Model.RecA01.a01Signature)</option>
+                </select>
+            </div>
+            <div class="form-row my-2">
+                <textarea asp-for="@Model.a24Description" class="form-control" placeholder="@_f.tra("Poznámka k vazbě")"></textarea>
+
             </div>
         }
     </div>
 
 </form>
 
+<div class="card">
+    <div class="card-header">
+        @_f.tra("Již uložené vazby")
+    </div>
+    <div class="card-body">
+        <table class="table table-sm table-hover">
+            @foreach (var c in Model.lisA24)
+            {
+                <tr>
+
+                    <td>
+                        @if (c.a01ID_Left == Model.RecA01.pid)
+                        {
+                            <span style="background-color:#CCE5FF;">@c.SignaturePlusType_Left</span>
+                        }
+                        else
+                        {
+                            @c.SignaturePlusType_Left
+                        }
+                    </td>
+                    <td>
+                        @c.a46Name
+                    </td>
+                    <td>
+                        @if (c.a01ID_Right == Model.RecA01.pid)
+                        {
+                            <span style="background-color:#CCE5FF;">@c.SignaturePlusType_Right</span>
+                        }
+                        else
+                        {
+                            @c.SignaturePlusType_Right
+                        }
+
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger" title="@_f.tra("Odstranit vazbu")" onclick="handle_delete_row(@(c.pid))">x</button>
+                    </td>
+
+                </tr>
+
+            }
+        </table>
+    </div>
+
+</div>
+
 <script type="text/javascript">
     $(document).ready(function () {
+        $("#cmdSave").click(function () {
+            $(this).text("Processing...");
+            $(this).attr("disabled", true);
+            form1.submit();
 
+        });
 
 
     });
 
     function a01id_on_search(a01id) {
 
-        form1.action = "/a01/AddSouvisejici?oper=add_a01id&a01id=" + a01id;
+        form1.action = "/a01/AddSouvisejici?oper=add_a01id&pid=" + a01id;
         form1.submit();
 
     }
+    function handle_delete_row(a24id) {
+        if (confirm("@_f.tra("Opravdu odstranit tuto vazbu?")")) {
+            form1.action = "/a01/AddSouvisejici?oper=delete&pid=" + a24id;
+            form1.submit();
+        }
 
+    }
 
 
 </script>

@@ -15,6 +15,8 @@ namespace UI.Models
         public string SearchBox { get; set; }
         public int SelectedA46ID { get; set; }
         public string a24Description { get; set; }
+
+        public IEnumerable<BO.a24EventRelation> lisA24 { get; set; }
         
     }
 }

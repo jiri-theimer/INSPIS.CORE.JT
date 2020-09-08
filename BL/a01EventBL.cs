@@ -13,6 +13,7 @@ namespace BL
         public BO.a01EventPermission InhalePermission(BO.a01Event rec);
         public BO.a01RecordSummary LoadSummary(int pid);
         public IEnumerable<BO.a24EventRelation> GetList_a24(int pid);
+        public int SaveA24Record(BO.a24EventRelation rec);
 
     }
     class a01EventBL : BaseBL, Ia01EventBL
@@ -63,6 +64,30 @@ namespace BL
             sb(" INNER JOIN a46EventParentType a46 ON a.a46ID=a46.a46ID");
             sb(" WHERE a.a01ID_Left=@pid OR a.a01ID_Right=@pid");
             return _db.GetList<BO.a24EventRelation>(sbret(), new { pid = pid });
+        }
+        public int SaveA24Record(BO.a24EventRelation rec)
+        {            
+            if (rec.a01ID_Left==0 || rec.a01ID_Right == 0)
+            {
+                this.AddMessage("Chybí vazba na vyhledanou akci.");return 0;
+            }
+            if (rec.a46ID == 0)
+            {
+                this.AddMessage("Chybí druh vazby na akci."); return 0;
+            }
+            if (rec.a01ID_Left == rec.a01ID_Right)
+            {
+                this.AddMessage("Akce nemůže být svázána sama na sebe."); return 0;
+            }
+            var p = new DL.Params4Dapper();
+            p.AddInt("pid", rec.a24ID);
+            p.AddInt("a46ID", rec.a46ID, true);
+            p.AddInt("a01ID_Left", rec.a01ID_Left, true);
+            p.AddInt("a01ID_Right", rec.a01ID_Right, true);
+            p.AddString("a24Description", rec.a24Description);          
+            
+            int intPID = _db.SaveRecord("a24EventRelation", p.getDynamicDapperPars(), rec);
+            return intPID;
         }
 
         public int Create(BO.a01Event rec, bool bolAutoInitWorkflow, List<BO.a11EventForm> lisA11, List<BO.a41PersonToEvent> lisA41, List<BO.a35PersonEventPlan> lisA35, List<int> a37ids)

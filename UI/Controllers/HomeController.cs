@@ -173,30 +173,42 @@ namespace UI.Controllers
             var v = new ChangePasswordViewModel();
             if (Factory.CurrentUser.j03IsMustChangePassword)
             {
-                Factory.CurrentUser.AddMessage("Administrátor nastavil, že si musíte změnit přihlašovací heslo.", "info");
+                this.AddMessage("Administrátor nastavil, že si musíte změnit přihlašovací heslo.", "info");
             }
             return View(v);
         }
         [HttpPost]
         public IActionResult ChangePassword(Models.ChangePasswordViewModel v)
-        {
+        {            
+            var c = new BO.CLS.PasswordChecker();
+            var res = c.CheckPassword(v.NewPassword, Factory.App.PasswordMinLength, Factory.App.PasswordMaxLength, Factory.App.PasswordRequireDigit, Factory.App.PasswordRequireUppercase, Factory.App.PasswordRequireLowercase, Factory.App.PasswordRequireNonAlphanumeric);
+            if (res.Flag == BO.ResultEnum.Failed)
+            {
+                this.AddMessage(res.Message); return View(v);
+            }
+            if (v.NewPassword != v.VerifyPassword)
+            {
+                this.AddMessage("Heslo nesouhlasí s jeho ověřením."); return View(v);
+            }
+
             var cJ03 = Factory.j03UserBL.Load(Factory.CurrentUser.pid);
             var lu = new BO.LoggingUser();
-            var ret = lu.ValidateChangePassword(v.NewPassword, v.CurrentPassword, v.VerifyPassword,cJ03);
-            if (ret.Flag == BO.ResultEnum.Success)
+            
+            res=lu.VerifyHash(v.CurrentPassword, cJ03.j03Login, cJ03);            
+            if (res.Flag == BO.ResultEnum.Success)
             {
                 cJ03.j03PasswordHash = lu.Pwd2Hash(v.NewPassword, cJ03);
                 cJ03.j03IsMustChangePassword = false;
                 if (Factory.j03UserBL.Save(cJ03) > 0)
                 {
-                    Factory.CurrentUser.AddMessage("Heslo bylo změněno.", "info");
+                    this.AddMessage("Heslo bylo změněno.", "info");
                     return RedirectToAction("Index");
                 }
                              
             }
             else
             {
-                Factory.CurrentUser.AddMessage(ret.Message);            
+                this.AddMessage(res.Message);            
             }
             return View(v);
 

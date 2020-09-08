@@ -19,18 +19,32 @@ namespace UI.Controllers
             if (v.a01id == 0)
             {
                 return this.StopPageSubform("pid is missing");
-            }
-
+            }            
             RefreshStateAddSouvisejici(v);
+            var perm = Factory.a01EventBL.InhalePermission(v.RecA01);
+            if (perm.PermValue == BO.a01EventPermissionENUM.FullAccess || perm.PermValue == BO.a01EventPermissionENUM.ShareTeam_Owner || perm.PermValue == BO.a01EventPermissionENUM.ShareTeam_Leader)
+            {
+            }
+            else
+            {
+                return this.StopPage(true, "Funkce je dostupná pouze vedoucímu týmu nebo administrátorovi.");
+            }
             return View(v);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddSouvisejici(a01AddSouvisejici v,string oper,int a01id)
+        public IActionResult AddSouvisejici(a01AddSouvisejici v,string oper,int pid)
         {
             if (oper == "add_a01id")
             {
-                v.SelectedA01ID = a01id;
+                v.SelectedA01ID = pid;
+                RefreshStateAddSouvisejici(v);
+                return View(v);
+            }
+            if (oper == "delete")
+            {
+                Factory.CBL.DeleteRecord("a24", pid);
+                RefreshStateAddSouvisejici(v);
                 return View(v);
             }
             RefreshStateAddSouvisejici(v);
@@ -38,12 +52,10 @@ namespace UI.Controllers
             if (ModelState.IsValid)
             {
 
-                var c = new BO.a24EventRelation();
-                
-                
+                var c = new BO.a24EventRelation() { a01ID_Left = v.SelectedA01ID, a01ID_Right = v.RecA01.pid,a46ID=v.SelectedA46ID };
+                c.pid = Factory.a01EventBL.SaveA24Record(c);                
                 if (c.pid > 0)
-                {
-                    
+                {                    
                     v.SetJavascript_CallOnLoad(c.pid);
                     return View(v);
                 }
@@ -61,6 +73,7 @@ namespace UI.Controllers
             {
                 v.RecA01Selected= Factory.a01EventBL.Load(v.SelectedA01ID);
             }
+            v.lisA24 = Factory.a01EventBL.GetList_a24(v.a01id);
 
         }
 

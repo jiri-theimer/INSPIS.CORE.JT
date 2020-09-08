@@ -36,6 +36,12 @@ namespace BL
             }
         }
 
+        public bool PasswordRequireDigit { get; set; }
+        public bool PasswordRequireLowercase { get; set; }
+        public bool PasswordRequireUppercase { get; set; }
+        public bool PasswordRequireNonAlphanumeric { get; set; }
+        public int PasswordMinLength { get; set; }
+        public int PasswordMaxLength { get; set; }
 
     }
 }

@@ -17,7 +17,8 @@ namespace UI.Controllers
             {
                 v.IsDefinePassword = true;
                 v.user_profile_oper = "create";
-                v.NewPassword = BO.BAS.GetGuid().Substring(0, 6);
+                v.NewPassword = BO.BAS.GetGuid().Substring(0, 1).ToUpper()+BO.BAS.GetGuid().Substring(0, Factory.App.PasswordMinLength-1);
+                if (Factory.App.PasswordRequireNonAlphanumeric) v.NewPassword += "@";
                 v.VerifyPassword = v.NewPassword;
             }
             else
@@ -56,7 +57,8 @@ namespace UI.Controllers
             if (oper== "newpwd")
             {
                 v.IsDefinePassword = true;
-                v.NewPassword = BO.BAS.GetGuid().Substring(0, 6);
+                v.NewPassword = BO.BAS.GetGuid().Substring(0, 1).ToUpper() + BO.BAS.GetGuid().Substring(0, Factory.App.PasswordMinLength - 1);
+                if (Factory.App.PasswordRequireNonAlphanumeric) v.NewPassword += "@";
                 v.VerifyPassword = v.NewPassword;
                 return View(v);
             }
@@ -129,9 +131,9 @@ namespace UI.Controllers
         }
 
         private bool ValidateUserPassword(j03Record v)
-        {
-            var lu = new BO.LoggingUser();
-            var res = lu.ValidatePassword(v.NewPassword);
+        {            
+            var c = new BO.CLS.PasswordChecker();
+            var res=c.CheckPassword(v.NewPassword, Factory.App.PasswordMinLength, Factory.App.PasswordMaxLength, Factory.App.PasswordRequireDigit, Factory.App.PasswordRequireUppercase, Factory.App.PasswordRequireLowercase, Factory.App.PasswordRequireNonAlphanumeric);
             if (res.Flag == BO.ResultEnum.Failed)
             {
                 this.AddMessage(res.Message);return false;
@@ -140,7 +142,7 @@ namespace UI.Controllers
             {
                 this.AddMessage("Heslo nesouhlasí s jeho ověřením.");return false;
             }
-
+            
             return true;
         }
         private bool ValidatePreSave(BO.j03User c)

@@ -51,7 +51,7 @@ namespace UI
                      config.Cookie.Path = "/";
                      config.Cookie.Domain = Configuration.GetSection("Authentication")["Domain"];
                      config.ReturnUrlParameter = "returnurl";
-                     config.LoginPath = "/Login/UserLogin";
+                     config.LoginPath = "/Login/UserLogin";                     
                  });
 
             services.Configure<Microsoft.Extensions.WebEncoders.WebEncoderOptions>(options =>
@@ -103,6 +103,18 @@ namespace UI
                 TranslatorMode = Configuration.GetSection("App")["TranslatorMode"]
                 ,
                 UiftUrl= Configuration.GetSection("UIFT")["Url"]
+                ,
+                PasswordMinLength= Convert.ToInt32(Configuration.GetSection("PasswordChecker")["MinLength"])
+                ,
+                PasswordMaxLength = Convert.ToInt32(Configuration.GetSection("PasswordChecker")["MaxLength"])
+                ,
+                PasswordRequireDigit= Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireDigit"])
+                ,
+                PasswordRequireLowercase = Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireLowercase"])
+                ,
+                PasswordRequireUppercase = Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireUppercase"])
+                ,
+                PasswordRequireNonAlphanumeric = Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireNonAlphanumeric"])
             });
 
 

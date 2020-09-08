@@ -132,6 +132,7 @@ namespace BL
             ByPrefix("x29").IsWithoutValidity = true;
 
             AE_TINY("a02Inspector", "Inspektoři", "Inspektor");
+            AE_TINY("a24EventRelation", "Související akce", "Související akce");
             AE_TINY("a70SIS", "Školní IS", "Školní IS");
 
             AE_TINY("o51Tag", "Položky kategorií", "Položka kategorie");

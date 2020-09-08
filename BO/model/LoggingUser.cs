@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Common;
+using System.Reflection.Metadata;
 
 namespace BO
 {
@@ -24,14 +25,16 @@ namespace BO
         public string Browser_DeviceType { get; set; }
         public string Browser_Host { get; set; }
 
-        public Result ValidatePassword(string strPwd)
-        {            
-            if (string.IsNullOrEmpty(strPwd) || strPwd.Length<6)
-            {
-                return new Result(true,"Délka hesla musí být minimálně 6 znaků!");
-            }
-            return new Result(false);
-        }
+        //public Result ValidatePassword(string strPwd)
+        //{            
+        //    if (string.IsNullOrEmpty(strPwd) || strPwd.Length<6)
+        //    {
+        //        return new Result(true,"Délka hesla musí být minimálně 6 znaků!");
+        //    }
+            
+            
+        //    return new Result(false);
+        //}
         public Result VerifyHash(string strPwd,string strLogin,BO.j03User cSavedJ03)
         {
            
@@ -47,24 +50,7 @@ namespace BO
                 return new Result(false);
             }
         }
-        public Result ValidateChangePassword(string strNewPwd,string strCurPwd,string strVerify, j03User cSavedJ03)
-        {
-            var ret= ValidatePassword(strNewPwd);
-            if (ret.Flag == BO.ResultEnum.Failed) { ret.PreMessage = "Nové heslo"; return ret; }
-            
-            ret = ValidatePassword(strCurPwd);
-            if (ret.Flag == BO.ResultEnum.Failed) { ret.PreMessage = "Současné heslo";return ret; }
-
-            if (strNewPwd != strVerify) { return new Result(true, "Nové heslo nesouhlasí s ověřením."); }
-
-            ret = VerifyHash(strCurPwd, cSavedJ03.j03Login, cSavedJ03);
-            if (ret.Flag == BO.ResultEnum.Failed) { return new Result(true, "Stávající heslo se nepodařilo ověřit."); }
-
-            if (strNewPwd == strCurPwd) { return new Result(true, "Nové heslo se musí lišit od současného!"); }
-           
-            return new Result(false);
-
-        }
+       
 
         public string Pwd2Hash(string strPwd,BO.j03User cJ03)
         {
