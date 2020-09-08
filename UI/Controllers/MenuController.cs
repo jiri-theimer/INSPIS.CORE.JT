@@ -427,9 +427,9 @@ namespace UI.Controllers
                     AMI("Záznam akce", null, null, "Zaznam");
                     if (permA01.PermValue == a01EventPermissionENUM.ShareTeam_Leader || permA01.PermValue == a01EventPermissionENUM.ShareTeam_Owner || permA01.PermValue == a01EventPermissionENUM.FullAccess)
                     {
-                        if (recA01.a01ParentID == 0)
+                        if (recA01.a01ParentID == 0 && recA10.a10Aspx_Insert==null)
                         {
-                            AMI("Kopírovat akci", string.Format("javascript: _window_open('/h04/Record?pid=0&a01id={0}')", pid), "Zaznam");
+                            AMI("Kopírovat akci", string.Format("/a01Create/Standard?clonebypid={0}", pid), "Zaznam",null,"_top");
                         }
                         AMI("Upravit základní vlastnosti (kartu)", string.Format("javascript: _window_open('/a01/Record?pid={0}')", pid), "Zaznam");
                     }

@@ -25,19 +25,8 @@ namespace BO
         public string Browser_DeviceType { get; set; }
         public string Browser_Host { get; set; }
 
-        //public Result ValidatePassword(string strPwd)
-        //{            
-        //    if (string.IsNullOrEmpty(strPwd) || strPwd.Length<6)
-        //    {
-        //        return new Result(true,"Délka hesla musí být minimálně 6 znaků!");
-        //    }
-            
-            
-        //    return new Result(false);
-        //}
         public Result VerifyHash(string strPwd,string strLogin,BO.j03User cSavedJ03)
-        {
-           
+        {           
             var hasher = new BO.CLS.PasswordHasher();            
             var overeni = hasher.VerifyHashedPassword(cSavedJ03.j03PasswordHash, getSul(strLogin,strPwd, cSavedJ03.pid));
             if (overeni == BO.CLS.PasswordVerificationResult.Failed)

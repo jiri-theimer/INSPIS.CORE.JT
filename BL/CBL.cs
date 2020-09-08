@@ -40,6 +40,10 @@ namespace BL
             {
                 strSP = "_core_x51helpcore_delete";
             }
+            if (entity.Substring(0, 3) == "j03")
+            {
+                strSP = "_core_j03user_delete";
+            }
             switch (entity)
             {
                 case "":                    

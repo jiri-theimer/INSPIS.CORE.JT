@@ -47,19 +47,43 @@ namespace UI.Controllers
             return View(v);
         }
 
-        public IActionResult Standard(int a10id, int j02id)
+        public IActionResult Standard(int a10id, int j02id,int clonebypid)
         {
-            if (a10id == 0)
+            if (a10id == 0 && clonebypid == 0)
             {
                 return RedirectToAction("Index");
             }
             var v = new a01CreateViewModel() { j02ID = j02id,a10ID=a10id };
 
+            if (clonebypid > 0)
+            {
+                //kopírování akce do nové                
+                v.Rec = Factory.a01EventBL.Load(clonebypid);
+                       
+                v.a10ID = v.Rec.a10ID;
+                v.Rec.pid = 0;
+                v.a03ID = v.Rec.a03ID;
+                v.Institution = v.Rec.a03Name;
+                var mq = new BO.myQuery("a11") { a01id = clonebypid };
+                v.lisA11 = Factory.a11EventFormBL.GetList(mq).ToList();
+                foreach(var c in v.lisA11)
+                {                   
+                    c.TempGuid = BO.BAS.GetGuid();
+                }
+                mq= new BO.myQuery("a41") { a01id = clonebypid };
+                v.lisA41 = Factory.a41PersonToEventBL.GetList(mq).ToList();
+                foreach (var c in v.lisA41)
+                {
+                    c.TempGuid = BO.BAS.GetGuid();
+                    c.PersonCombo = c.PersonDesc;
+                }
+            }
+
             RefreshState(v);
             RefreshInstitution(v);
             
             
-            v.Rec = new BO.a01Event();
+            
             return View(v);
         }
         [HttpPost]

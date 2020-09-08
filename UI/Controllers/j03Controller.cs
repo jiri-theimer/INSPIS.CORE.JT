@@ -10,6 +10,12 @@ namespace UI.Controllers
 {
     public class j03Controller : BaseController
     {
+        private string RndPassword()
+        {
+            string s = BO.BAS.GetGuid().Substring(0, 1).ToUpper() + BO.BAS.GetGuid().Substring(0, Factory.App.PasswordMinLength - 1);
+            if (Factory.App.PasswordRequireNonAlphanumeric) s += "@";
+            return s;
+        }
         public IActionResult Record(int pid, bool isclone)
         {
             var v = new j03Record() { rec_pid = pid, rec_entity = "j03" };
@@ -17,8 +23,7 @@ namespace UI.Controllers
             {
                 v.IsDefinePassword = true;
                 v.user_profile_oper = "create";
-                v.NewPassword = BO.BAS.GetGuid().Substring(0, 1).ToUpper()+BO.BAS.GetGuid().Substring(0, Factory.App.PasswordMinLength-1);
-                if (Factory.App.PasswordRequireNonAlphanumeric) v.NewPassword += "@";
+                v.NewPassword = RndPassword();
                 v.VerifyPassword = v.NewPassword;
             }
             else
@@ -57,8 +62,7 @@ namespace UI.Controllers
             if (oper== "newpwd")
             {
                 v.IsDefinePassword = true;
-                v.NewPassword = BO.BAS.GetGuid().Substring(0, 1).ToUpper() + BO.BAS.GetGuid().Substring(0, Factory.App.PasswordMinLength - 1);
-                if (Factory.App.PasswordRequireNonAlphanumeric) v.NewPassword += "@";
+                v.NewPassword = RndPassword();
                 v.VerifyPassword = v.NewPassword;
                 return View(v);
             }
@@ -66,7 +70,7 @@ namespace UI.Controllers
             {
                 v.IsDefinePassword = true;
                 v.IsChangeLogin = true;
-                v.NewPassword = BO.BAS.GetGuid().Substring(0, 6);
+                v.NewPassword = RndPassword();
                 v.VerifyPassword = v.NewPassword;
                 this.AddMessage("Se změnou přihlašovacího jména je třeba resetovat i přístupové heslo.","info");
                 return View(v);
@@ -116,6 +120,13 @@ namespace UI.Controllers
                 else
                 {
                     c.j02ID = v.Rec.j02ID;  //uložení s existujícím osobním profilem
+                    c.pid = Factory.j03UserBL.Save(c);
+                }
+                if (v.rec_pid == 0 && c.pid>0 && v.IsDefinePassword)
+                {
+                    c = Factory.j03UserBL.Load(c.pid);  //zakládáme nový účet - je třeba pře-generovat j03PasswordHash
+                    var lu = new BO.LoggingUser();
+                    c.j03PasswordHash = lu.Pwd2Hash(v.NewPassword, c);
                     c.pid = Factory.j03UserBL.Save(c);
                 }
                 

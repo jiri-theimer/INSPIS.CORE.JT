@@ -109,10 +109,10 @@ namespace BL
 
         public bool ValidateBeforeSave(BO.a11EventForm c)
         {
-            if (c.a01ID == 0)
-            {
-                this.AddMessageTranslated("a01id missing."); return false;
-            }
+            //if (c.a01ID == 0)
+            //{
+            //    this.AddMessageTranslated("a01id missing."); return false;
+            //}
             if (c.f06ID == 0)
             {
                 this.AddMessage("Na vstupu chybí formulář.");return false;
