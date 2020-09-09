@@ -87,6 +87,9 @@ namespace BL
             p.AddInt("a10Linker_a08ID", rec.a10Linker_a08ID);
             p.AddString("a10LinkerDB", rec.a10LinkerDB);
 
+            p.AddString("a10ViewUrl_Insert", rec.a10ViewUrl_Insert);
+            p.AddString("a10ViewUrl_Page", rec.a10ViewUrl_Page);
+
             int intPID = _db.SaveRecord("a10EventType", p.getDynamicDapperPars(), rec);
             if (a08ids != null)
             {

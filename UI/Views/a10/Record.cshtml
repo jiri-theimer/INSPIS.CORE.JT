@@ -21,7 +21,9 @@
         <li class="nav-item">
             <a id="link_tab3" class="nav-link" data-toggle="tab" href="#tab3">@_f.tra("Podrobný popis")</a>
         </li>
-
+        <li class="nav-item">
+            <a id="link_tab4" class="nav-link" data-toggle="tab" href="#tab4">@_f.tra("Ostatní")</a>
+        </li>
     </ul>
 </div>
 
@@ -60,12 +62,7 @@
 
             </div>
             <div class="form-row my-2">
-                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("WEB form [INSERT]"):</label>
-                <div class="col-sm-5 col-md-4">
-                    <input class="form-control" asp-for="Rec.a10Aspx_Insert" />
-                    <span asp-validation-for="Rec.a10Aspx_Insert" class="text-danger"></span>
-
-                </div>
+                
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Role zakladatele"):</label>
                 <div class="col-sm-5 col-md-4">
                     <select asp-for="Rec.a45ID_Creator" class="form-control">
@@ -78,12 +75,7 @@
 
 
             <div class="form-row my-2">
-                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("WEB form [DETAIL]"):</label>
-                <div class="col-sm-5 col-md-4">
-                    <input class="form-control" asp-for="Rec.a10Aspx_Framework" />
-                    <span asp-validation-for="Rec.a10Aspx_Framework" class="text-danger"></span>
-
-                </div>
+                
 
                 <label class="col-sm-3 col-md-3 col-form-label">@_f.tra("Maximální počet akcí u jedné instituce"):</label>
                 <div class="col-sm-1 col-md-1">
@@ -213,11 +205,49 @@
 
         </div>
         <div class="tab-pane" id="tab3">
-            <!-- Tab2 -->
+            <!-- Tab3 -->
             <textarea asp-for="Rec.a10Description" class="form-control" placeholder="@_f.tra("Podrobný popis")" style="min-height:100px;"></textarea>
             <span asp-validation-for="Rec.a10Description" class="text-danger"></span>
 
 
+        </div>
+        <div class="tab-pane" id="tab4">
+            <!-- Tab4 -->
+            <div class="form-row">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("WEB form [INSERT]"):</label>
+                <div class="col-sm-5 col-md-4">
+                    <input class="form-control" asp-for="Rec.a10Aspx_Insert" />
+                    <span asp-validation-for="Rec.a10Aspx_Insert" class="text-danger"></span>
+
+                </div>
+
+            </div>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("WEB form [DETAIL]"):</label>
+                <div class="col-sm-5 col-md-4">
+                    <input class="form-control" asp-for="Rec.a10Aspx_Framework" />
+                    <span asp-validation-for="Rec.a10Aspx_Framework" class="text-danger"></span>
+
+                </div>
+            </div>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("URL pro CORE verzi [INSERT]"):</label>
+                <div class="col-sm-5 col-md-4">
+                    <input class="form-control" asp-for="Rec.a10ViewUrl_Insert" />
+                    <span asp-validation-for="Rec.a10ViewUrl_Insert" class="text-danger"></span>
+
+                </div>
+
+            </div>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("URL pro CORE verzi [DETAIL]"):</label>
+                <div class="col-sm-5 col-md-4">
+                    <input class="form-control" asp-for="Rec.a10ViewUrl_Page" />
+                    <span asp-validation-for="Rec.a10ViewUrl_Page" class="text-danger"></span>
+
+                </div>
+
+            </div>
         </div>
     </div>
 </div>

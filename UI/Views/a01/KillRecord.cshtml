@@ -1,0 +1,136 @@
+﻿@model UI.Models.Recpage.a01RecPage
+@inject BL.Factory _f
+
+@{
+    ViewData["Title"] = _f.tra("Nenávratně odstranit akci");
+    Layout = "~/Views/Shared/_LayoutModal.cshtml";
+}
+@addTagHelper *, UI
+
+<h4>@_f.tra("Nenávratně odstranit akci") @(": "+Model.Rec.a01Signature)</h4>
+<div class="bg-light" style="padding:10px;">
+    <button id="cmdSave" type="button" class="btn btn-danger">@_f.tra("Potvrdit")</button>
+    <button id="cmdClose" type="button" onclick="_window_close()" class="btn btn-light">@_f.tra("Zavřít")</button>
+    <button type="button" onclick="_helppage()" class="btn btn-light"><b>? </b>@_f.tra("Nápověda")</button>
+</div>
+
+<div class="modal_record_container">
+
+    <div class="form-row">
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("ID akce"):</label>
+        <div class="col-sm-4 col-md-3">
+
+            <myval value="@Model.Rec.a01Signature"></myval>
+        </div>
+        <div class="col-sm-1 col-md-1">
+
+            <myval value="@Model.Rec.a01SigID"></myval>
+        </div>
+
+        <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Typ akce"):</label>
+        <div class="col-sm-5 col-md-4">
+            <myval value="@Model.Rec.a10Name" hoverprefix="a10" hoverpid="@Model.Rec.a10ID"></myval>
+
+
+        </div>
+    </div>
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">@(_f.tra("Aktuální stav")):</label>
+        <div class="col-sm-4 col-md-3">
+
+            <myval value="@Model.Rec.b02Name" hoverprefix="b02" hoverpid="@Model.Rec.b02ID"></myval>
+
+        </div>
+        <div class="col-sm-1 col-md-1">
+            <myval datatype="html" value="@("<span style='background-color:"+Model.Rec.b02Color+";'>"+Model.Rec.b02Ident+"</span>")"></myval>
+
+        </div>
+
+        <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Naposledy"):</label>
+        @if (Model.RecLastEvent != null)
+        {
+            <div class="col-sm-3 col-md-2">
+                <myval value="@Model.RecLastEvent.Person" hoverprefix="j02" hoverpid="@Model.RecLastEvent.j02ID"></myval>
+
+
+            </div>
+            <div class="col-sm-2 col-md-2">
+                <myval datatype="datetime" value="@Model.RecLastEvent.DateInsert"></myval>
+            </div>
+        }
+
+    </div>
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">@(Model.Rec.a06Name+":")</label>
+
+        @if (Model.Rec.a03ID > 0)
+        {
+            <div class="col-sm-4 col-md-3">
+                <myval value="@Model.Rec.a03Name" hoverprefix="a03" hoverpid="@Model.Rec.a03ID"></myval>
+
+
+            </div>
+            <div class="col-sm-1 col-md-1">
+                <myval tooltip="REDIZO" value="@Model.Rec.a03REDIZO"></myval>
+            </div>
+        }
+        else
+        {
+
+            <div class="col-sm-5 col-md-4">
+                <myval value="@Model.Rec.a01InstitutionPlainText"></myval>
+            </div>
+        }
+
+
+        <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Založeno"):</label>
+        <div class="col-sm-3 col-md-2">
+            @if (Model.RecIssuer != null)
+            {
+                <myval value="Model.RecIssuer.FullNameAsc" hoverprefix="j02" hoverpid="@Model.RecIssuer.pid"></myval>
+            }
+        </div>
+        <div class="col-sm-2 col-md-2">
+            <myval datatype="datetime" value="@Model.Rec.DateInsert"></myval>
+        </div>
+    </div>
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Téma akce"):</label>
+        <div class="col-sm-5 col-md-4">
+
+            <myval value="@Model.Rec.a08Name" hoverprefix="a08" hoverpid="@Model.Rec.a08ID"></myval>
+        </div>
+        @if (Model.Rec.a01CaseCode != null && Model.Rec.a01ParentID == 0)
+        {
+            <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Spis"):</label>
+            <div class="col-sm-5 col-md-4">
+                <myval datatype="string" value="@Model.Rec.a01CaseCode"></myval>
+
+            </div>
+
+        }
+
+
+    </div>
+    @Html.Raw(Model.TagHtml)
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#cmdSave").click(function () {
+            $(this).text("Processing...");
+            $(this).attr("disabled", true);
+            location.replace("/a01/KillRecord?confirm=true&pid=@Model.Rec.pid");
+
+        });
+
+
+    });
+
+    
+
+
+</script>
+
+

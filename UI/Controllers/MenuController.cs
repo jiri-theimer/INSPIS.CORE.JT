@@ -347,7 +347,7 @@ namespace UI.Controllers
                     HEADER(recA01.a01Signature);
                     var recA10 = Factory.a10EventTypeBL.Load(recA01.a10ID);
                     var permA01 = Factory.a01EventBL.InhalePermission(recA01);
-                    if (recA10.a10Aspx_Framework == "a01_framework_general_institution.aspx")
+                    if (recA10.a10ViewUrl_Page !=null)
                     {
                         //akce s jednoduchým menu jako ÚRAZ
                         AMI("Posunout/Doplnit", string.Format("javascript: _window_open('/workflow/Dialog?pid={0}')", pid));
@@ -368,7 +368,7 @@ namespace UI.Controllers
                     }
                     if (recA01.a01ParentID > 0)
                     {
-                        AMI_NOTRA(Factory.tra("Nadřízená akce")+ "<img src='/Images/mother.png'/>", string.Format("javascript:_location_replace_top('/a01/RecPage?pid={0}')", recA01.a01ParentID),null,"Nadrizena");
+                        AMI_NOTRA(Factory.tra("Nadřízená akce")+ "<img src='/Images/mother.png'/>", "javascript:_location_replace_top('"+Factory.a01EventBL.GetPageUrl(recA01,recA01.a01ParentID)+"')",null,"Nadrizena");
 
                         
                         RenderPodrizeneAkce(recA01.a01ParentID, "Nadrizena",recA01);
@@ -427,20 +427,20 @@ namespace UI.Controllers
                     AMI("Záznam akce", null, null, "Zaznam");
                     if (permA01.PermValue == a01EventPermissionENUM.ShareTeam_Leader || permA01.PermValue == a01EventPermissionENUM.ShareTeam_Owner || permA01.PermValue == a01EventPermissionENUM.FullAccess)
                     {
-                        if (recA01.a01ParentID == 0 && recA10.a10Aspx_Insert==null)
+                        if (recA01.a01ParentID == 0 && recA10.a10ViewUrl_Insert==null)
                         {
                             AMI("Kopírovat akci", string.Format("/a01Create/Standard?clonebypid={0}", pid), "Zaznam",null,"_top");
                         }
                         AMI("Upravit základní vlastnosti (kartu)", string.Format("javascript: _window_open('/a01/Record?pid={0}')", pid), "Zaznam");
                     }
 
-                    if (permA01.PermValue == a01EventPermissionENUM.FullAccess)
+                    if (Factory.CurrentUser.TestPermission(j05PermValuEnum.AdminGlobal))
                     {
-                        AMI("Nenávratně odstranit akci", string.Format("javascript: _window_open('/a01/Record?pid={0}')", pid), "Zaznam");
+                        AMI("Nenávratně odstranit akci", string.Format("javascript: _window_open('/a01/KillRecord?pid={0}')", pid), "Zaznam");
                         DIV(null, "Zaznam");
                     }
                     
-                    AMI("Stránka akce", string.Format("javascript:_location_replace_top('/a01/RecPage?pid={0}')", recA01.pid), "Zaznam");
+                    AMI("Stránka akce", "javascript:_location_replace_top('"+Factory.a01EventBL.GetPageUrl(recA01)+"')","Zaznam");
                     if (recA01.isclosed == true)
                     {
                         AMI_NOTRA("<kbd>" + Factory.tra("Záznam je v archivu.") + "</kbd>", "");
@@ -518,8 +518,8 @@ namespace UI.Controllers
                     AMI("Karta záznamu", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
                     AMI("Kopírovat", string.Format("javascript:_clone('{0}',{1})", prefix, pid));
                     DIV();
-                    
-                    AMI_NOTRA(string.Format(Factory.tra("Stránka akce {0}"), Factory.a01EventBL.Load(recH04.a01ID).a01Signature), string.Format("javascript:_location_replace_top('/a01/RecPage?pid={0}')", recH04.a01ID));
+                    var cA01 = Factory.a01EventBL.Load(recH04.a01ID);
+                    AMI_NOTRA(string.Format(Factory.tra("Stránka akce {0}"), cA01.a01Signature), "javascript:_location_replace_top('" + Factory.a01EventBL.GetPageUrl(cA01) + "')");
                     break;
                 case "f06":
                     HEADER(Factory.f06FormBL.Load(pid).f06Name);
@@ -599,16 +599,19 @@ namespace UI.Controllers
         private void RenderPodrizeneAkce(int intParentA01ID,string strMenuParentID,BO.a01Event recCurrentA01)
         {
             var strName = recCurrentA01.a01Signature+ "<img src='/Images/mother.png'/>";
+            var strURL = Factory.a01EventBL.GetPageUrl(recCurrentA01, intParentA01ID);
             if (intParentA01ID != recCurrentA01.pid)
             {
-                strName = Factory.a01EventBL.Load(intParentA01ID).a01Signature+ "<img src='/Images/mother.png'/>";
+                var cA01 = Factory.a01EventBL.Load(intParentA01ID);
+                strName = cA01.a01Signature+ "<img src='/Images/mother.png'/>";
+                strURL= Factory.a01EventBL.GetPageUrl(cA01);
             }
             else
             {
                 strName += " ✓";
             }
 
-            AMI_NOTRA(strName, string.Format("javascript:_location_replace_top('/a01/RecPage?pid={0}')", intParentA01ID), "Nadrizena");
+            AMI_NOTRA(strName, "javascript:_location_replace_top('"+strURL+"')", "Nadrizena");
 
             DIV(null, "Nadrizena");
             var mq = new BO.myQuery("a01");
@@ -621,7 +624,7 @@ namespace UI.Controllers
                 {
                     strName += " ✓";
                 }
-                AMI(strName, string.Format("javascript:_location_replace_top('/a01/RecPage?pid={0}')", c.pid), strMenuParentID);
+                AMI(strName, "javascript:_location_replace_top('"+Factory.a01EventBL.GetPageUrl(c)+"')", strMenuParentID);
             }
         }
 

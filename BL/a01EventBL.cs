@@ -14,7 +14,7 @@ namespace BL
         public BO.a01RecordSummary LoadSummary(int pid);
         public IEnumerable<BO.a24EventRelation> GetList_a24(int pid);
         public int SaveA24Record(BO.a24EventRelation rec);
-
+        public string GetPageUrl(BO.a01Event rec, int pid4url=0);
     }
     class a01EventBL : BaseBL, Ia01EventBL
     {
@@ -24,13 +24,32 @@ namespace BL
 
         }
 
+        public string GetPageUrl(BO.a01Event rec,int pid4url)
+        {
+            string s = "/a01/RecPage";
+            if (rec.a10ViewUrl_Page != null)
+            {
+                s = rec.a10ViewUrl_Page;
+            }
+            if (pid4url == 0) pid4url = rec.pid;
 
+            if (s.Contains("?"))
+            {
+                s += "&pid=" + pid4url.ToString();
+            }
+            else
+            {
+                s += "?pid=" + pid4url.ToString();
+            }
+            return s;
+
+        }
         private string GetSQL1(string strAppend = null)
         {
             sb("SELECT a.*,");
             sb(_db.GetSQL1_Ocas("a01", false, true));
             sb(",a01_a10.a10Name,a01_a10.b01ID,a01_a08.a08Name,a01_a03.a03Name,a01_a03.a03REDIZO,a01_a03.a05ID,a01_a06.a06Name");
-            sb(",a01_a05.a05Name,a01_a09.a09Name,a01_b02.b02Name,a01_b02.b02Color,a01_b02.b02Ident");
+            sb(",a01_a05.a05Name,a01_a09.a09Name,a01_b02.b02Name,a01_b02.b02Color,a01_b02.b02Ident,a01_a10.a10ViewUrl_Page");
 
             sb(" FROM a01Event a INNER JOIN a10EventType a01_a10 ON a.a10ID=a01_a10.a10ID");
             sb(" LEFT OUTER JOIN a03Institution a01_a03 ON a.a03ID=a01_a03.a03ID LEFT OUTER JOIN a05Region a01_a05 ON a01_a03.a05ID=a01_a05.a05ID LEFT OUTER JOIN a09FounderType a01_a09 ON a01_a03.a09ID=a01_a09.a09ID");

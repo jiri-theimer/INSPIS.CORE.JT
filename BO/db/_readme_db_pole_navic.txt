@@ -1,4 +1,7 @@
-﻿[j03User]
+﻿[a10EventType]
+a10ViewUrl_Insert varchar(100)
+a10ViewUrl_Page varchar(100)
+[j03User]
 j03IsMustChangePassword
 j03AccessFailedCount
 j03ModalDialogFlag

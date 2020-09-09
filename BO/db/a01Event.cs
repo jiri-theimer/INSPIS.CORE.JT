@@ -56,6 +56,7 @@ namespace BO
         public string a03REDIZO;
         public string a06Name;
         public string a10Name;
+        public string a10ViewUrl_Page;
         public string a08Name { get; set; } //kvůli combo
         public int a05ID;
         public string a05Name;
@@ -71,7 +72,7 @@ namespace BO
         public string a01InstitutionPlainText;
 
         public int a01ChildsCount;
-
-
+        
+        
     }
 }

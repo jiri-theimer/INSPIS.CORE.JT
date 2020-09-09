@@ -13,6 +13,33 @@ namespace UI.Controllers
 {
     public class a01Controller : BaseController
     {
+        //Odstranit akci
+        public IActionResult KillRecord(int pid,bool confirm)
+        {
+            var v = new a01RecPage() { pid = pid };
+            v.Rec = Factory.a01EventBL.Load(v.pid);
+            v.RecLastEvent = Factory.b05Workflow_HistoryBL.LoadLast(v.pid);
+            v.RecIssuer = Factory.j02PersonBL.Load(v.Rec.j02ID_Issuer);
+            var tg = Factory.o51TagBL.GetTagging("a01", v.pid);
+            v.Rec.TagHtml = tg.TagHtml;
+            v.TagHtml = v.Rec.TagHtml;
+            if (!Factory.CurrentUser.TestPermission(BO.j05PermValuEnum.AdminGlobal))
+            {
+                return this.StopPage(true, "Funkce je dostupná pouze administrátorovi.");
+            }
+            
+
+            if (confirm && Factory.CBL.DeleteRecord("a01",v.Rec.pid)=="1")
+            {
+                Factory.CBL.SetUserParam("a01-RecPage-pid", null);
+                v.SetJavascript_CallOnLoad(v.Rec.pid);
+                return View(v);
+            }
+
+
+            return View(v);
+        }
+
         public IActionResult AddSouvisejici(int pid)
         {
             var v = new a01AddSouvisejici() { a01id = pid };
@@ -258,7 +285,7 @@ namespace UI.Controllers
             v.TagNames = tg.TagNames;
             v.TagHtml = tg.TagHtml;
 
-            v.Toolbar = new MyToolbarViewModel(v.Rec) { AllowArchive = false, AllowClone = false };
+            v.Toolbar = new MyToolbarViewModel(v.Rec) { AllowArchive = false, AllowClone = false,AllowDelete=Factory.CurrentUser.TestPermission(BO.j05PermValuEnum.AdminGlobal) };
             return View(v);
         }
         [HttpPost]
@@ -308,6 +335,32 @@ namespace UI.Controllers
             }
             return View(v);
         }
+
+        //Stránka akce úrazu
+        public IActionResult RecPageInjury(int pid)
+        {
+            var v = new a01RecPageInjury() { pid = pid,Rec=new BO.a01Event() };
+            v.Rec = Factory.a01EventBL.Load(v.pid);
+            if (v.Rec == null)
+            {
+                this.Notify_RecNotSaved();
+                return View(v);
+            }
+            v.RecA10 = Factory.a10EventTypeBL.Load(v.Rec.a10ID);
+            v.RecLastEvent = Factory.b05Workflow_HistoryBL.LoadLast(v.pid);
+            v.RecIssuer = Factory.j02PersonBL.Load(v.Rec.j02ID_Issuer);
+            var tg = Factory.o51TagBL.GetTagging("a01", v.pid);
+            v.Rec.TagHtml = tg.TagHtml;
+            v.TagHtml = v.Rec.TagHtml;
+            var mq = new BO.myQuery("a11");
+            mq.a01id = v.pid;
+            v.lisA11 = Factory.a11EventFormBL.GetList(mq);
+
+            Factory.CBL.SetUserParam("a01-RecPage-pid", v.pid.ToString());
+
+            return View(v);
+
+        }
         //Stránka akce       
         public IActionResult RecPage(int pid)
         {
@@ -328,11 +381,16 @@ namespace UI.Controllers
                 }
                 else
                 {
+                    v.RecA10 = Factory.a10EventTypeBL.Load(v.Rec.a10ID);
+                    if (v.RecA10.a10ViewUrl_Page != null)
+                    {
+                        return Redirect(Factory.a01EventBL.GetPageUrl(v.Rec));    //typ akce má jinou stránku než tuto default
+                    }
                     if (pid > 0)
                     {
                         Factory.CBL.SetUserParam("a01-RecPage-pid", pid.ToString());
                     }
-                    v.RecA10 = Factory.a10EventTypeBL.Load(v.Rec.a10ID);
+                    
                     v.RecLastEvent = Factory.b05Workflow_HistoryBL.LoadLast(v.pid);
                     v.RecIssuer = Factory.j02PersonBL.Load(v.Rec.j02ID_Issuer);
 

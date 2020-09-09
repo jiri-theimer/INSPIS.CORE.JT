@@ -88,6 +88,8 @@ namespace UI.Controllers
                 c.a10Name = v.Rec.a10Name;
                 c.a10Aspx_Insert = v.Rec.a10Aspx_Insert;
                 c.a10Aspx_Framework = v.Rec.a10Aspx_Framework;
+                c.a10ViewUrl_Page = v.Rec.a10ViewUrl_Page;
+                c.a10ViewUrl_Insert = v.Rec.a10ViewUrl_Insert;
                 c.a10Ident = v.Rec.a10Ident;
                 c.a10Description = v.Rec.a10Description;
 

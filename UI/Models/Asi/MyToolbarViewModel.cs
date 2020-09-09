@@ -17,6 +17,7 @@ namespace UI.Models
       
         public bool AllowArchive { get; set; }
         public bool AllowClone { get; set; } = true;
+        public bool AllowDelete { get; set; } = true;
         public string ExplicitValidFrom { get; set; }
         public String ExplicitValidUntil { get; set; }
         public bool IsCurrentClone { get; set; }
@@ -118,7 +119,7 @@ namespace UI.Models
             }
             else
             {
-                IsDelete = true;
+                IsDelete = this.AllowDelete;
                 IsNew = true;
                 IsClone = this.AllowClone;
                 IsRefresh = true;

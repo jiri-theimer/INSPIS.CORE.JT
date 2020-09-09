@@ -34,7 +34,10 @@ namespace BO
 
         public string b01Name { get; set; }//combo
 
+        public string a10ViewUrl_Insert { get; set; } //nové pole v CORE
+        public string a10ViewUrl_Page { get; set; } //nové pole v CORE
 
+        
 
     }
 }
