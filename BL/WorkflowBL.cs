@@ -13,6 +13,7 @@ namespace BL
         public int SaveWorkflowComment(int intA01ID, string strComment,string strUploadGUID, List<int> a45ids_restrict_to);
         public int RunWorkflowStep(BO.a01Event rec, BO.b06WorkflowStep recB06, List<BO.a41PersonToEvent> lisNominee, string strComment, string strUploadGUID, bool bolManualStep);
         public List<BO.a11EventForm> GetForms4Validation(BO.a01Event rec, BO.b06WorkflowStep recB06);
+        public void CheckDefaultWorkflowStatus(int a01id);
     }
     class WorkflowBL : BaseBL, IWorkflowBL
     {
@@ -63,7 +64,7 @@ namespace BL
 
         private int SaveStepWithChangeStatus(BO.a01Event rec, BO.b06WorkflowStep recB06, BO.b02WorkflowStatus recB02, string strComment, bool bolManualStep)
         {
-            _db.RunSql("UPDATE a01Event SET b02ID=@b02id WHERE a01ID=@pid", new { b02id = recB06.b02ID_Target, pid = rec.pid });
+            _db.RunSql("UPDATE a01Event SET b02ID=@b02id WHERE a01ID=@pid", new { b02id = recB02.pid, pid = rec.pid });
             var slave = _db.Load<BO.GetInteger>("SELECT TOP 1 a01ID as Value FROM a01Event WHERE a01ParentID=@pid", new { pid = rec.pid });
             if (slave != null && slave.Value > 0)
             {
@@ -71,7 +72,7 @@ namespace BL
                 _db.RunSql("UPDATE a01Event SET b02ID=@b02id WHERE a01ParentID=@pid", new { b02id = recB06.b02ID_Target, pid = rec.pid });
             }
             //zápis do historie workflow
-            var c = new BO.b05Workflow_History() { a01ID = rec.pid, b05IsCommentOnly = false, b05IsManualStep = bolManualStep, b05Comment = strComment, b02ID_From = rec.b02ID, b02ID_To = recB06.b02ID_Target };
+            var c = new BO.b05Workflow_History() { a01ID = rec.pid, b05IsCommentOnly = false, b05IsManualStep = bolManualStep, b05Comment = strComment, b02ID_From = rec.b02ID, b02ID_To = recB02.pid };
             if (recB06 != null)
             {
                 c.b06ID = recB06.pid;
@@ -122,6 +123,52 @@ namespace BL
             {
                 _mother.a41PersonToEventBL.Save(c, true, recB06);
             }
+        }
+
+        public void CheckDefaultWorkflowStatus(int a01id)
+        {
+            BO.a01Event rec = _mother.a01EventBL.Load(a01id);
+            if (rec.b02ID > 0)
+            {
+                return; //akce má status, nemusí se nahazovat a testovat zbytek
+            }
+            if (rec.a01ParentID > 0)    //nová podřízená akce automaticky přebírá aktuální workflow stav nadřízené akce - jinak se 
+            {
+                var recParent = _mother.a01EventBL.Load(rec.a01ParentID);
+                _db.RunSql("UPDATE a01Event SET b02ID=@b02id WHERE a01ID=@pid", new { b02id = recParent.b02ID, pid = rec.pid });
+                return;
+            }
+            var mq = new BO.myQuery("b02") { IsRecordValid = true, b01id = rec.b01ID };
+            var recDefB02 = _mother.b02WorkflowStatusBL.GetList(mq).FirstOrDefault(p => p.b02IsDefaultStatus == true);
+            if (recDefB02 == null)
+            {
+                return;   //workflow šablona nemá výchozí workflow status
+            }
+            if (SaveStepWithChangeStatus(rec, null, recDefB02, null, false) > 0)
+            {
+                mq = new BO.myQuery("a41") { a01id = rec.pid };
+                var lisA41 = _mother.a41PersonToEventBL.GetList(mq);
+
+                var recA10 = _mother.a10EventTypeBL.Load(rec.a10ID);
+                if (recA10.a45ID_Creator > 0)   //automaticky založit vlastníka nebo zadavatele (role 3 nebo 5) - záleží na typu akce
+                {
+                    if (lisA41.Where(p => (int)p.a45ID == recA10.a45ID_Creator).Count() == 0)
+                    {
+                        var recA41 = new BO.a41PersonToEvent() { a01ID = rec.pid, a45ID = (BO.EventRoleENUM)recA10.a45ID_Creator, j02ID = rec.j02ID_Issuer, a41IsAllocateAllPeriod = true };
+                        _mother.a41PersonToEventBL.Save(recA41, true);
+                    }
+                }
+                foreach (var cB03 in _mother.b02WorkflowStatusBL.GetListB03(recDefB02.pid))
+                {
+                    //existují automatičtí výchozí řešitelé statusu
+                    var recA41 = new BO.a41PersonToEvent() { a01ID = rec.pid, a45ID = (BO.EventRoleENUM)cB03.a45ID, j11ID = cB03.j11ID};
+                    _mother.a41PersonToEventBL.Save(recA41, true);
+                }
+                
+                RunB09Commands(rec, 0, recDefB02.pid);  //spouštění pevných SQL příkazů, kterou jsou spojeny s výchozím stavem
+            }
+
+            
         }
 
         public List<BO.a11EventForm> GetForms4Validation(BO.a01Event rec, BO.b06WorkflowStep recB06)

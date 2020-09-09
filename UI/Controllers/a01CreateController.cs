@@ -10,34 +10,46 @@ namespace UI.Controllers
 {
     public class a01CreateController : BaseController
     {
-        public IActionResult Index(int a10id)
+        public IActionResult Index(int a10id,int a03id)
         {
-            var v = new a01CreateViewModel();
-            v.a10ID = a10id;
-            if (a10id > 0)
+            var v = new a01CreateViewModel() { a10ID = a10id, a03ID = a03id };            
+            if (v.a10ID > 0)
             {
                 var c = Factory.a10EventTypeBL.Load(a10id);
-                if (c.a10Aspx_Insert != null)
+                if (string.IsNullOrEmpty(c.a10ViewUrl_Insert)==false)
                 {
-                    switch (c.a10Aspx_Insert)
+                    if (c.a10ViewUrl_Insert.Contains("?"))
                     {
-                        case "a01_create_res.aspx":
-                        case "a42/create":
-                            return RedirectToAction("Create", "a42", new { a10id = a10id });
-                        case "a01_create_aus.aspx":
-                        case "a01create/aus":
-                            return RedirectToAction("Aus", new { a10id = a10id });
-                        case "a01create/helpdesk":
-                        case "a01_create_hd.aspx":
-                            return RedirectToAction("Helpdesk", new { a10id = a10id });
-                        default:
-                            return RedirectToAction("Standard", new { a10id = a10id });
-
+                        c.a10ViewUrl_Insert += "&a10id=" + v.a10ID.ToString();
                     }
+                    else
+                    {
+                        c.a10ViewUrl_Insert += "?a10id=" + v.a10ID.ToString();
+                    }
+                    if (v.a03ID > 0)
+                    {
+                        c.a10ViewUrl_Insert += "&a03id=" + v.a03ID.ToString();
+                    }
+                    return Redirect(c.a10ViewUrl_Insert);
+                    //switch (c.a10Aspx_Insert)
+                    //{
+                    //    case "a01_create_res.aspx":
+                    //    case "a42/create":
+                    //        return RedirectToAction("Create", "a42", new { a10id = a10id,a03id=a03id });
+                    //    case "a01_create_aus.aspx":
+                    //    case "a01create/aus":
+                    //        return RedirectToAction("Aus", new { a10id = a10id });
+                    //    case "a01create/helpdesk":
+                    //    case "a01_create_hd.aspx":
+                    //        return RedirectToAction("Helpdesk", new { a10id = a10id });
+                    //    default:
+                    //        return RedirectToAction("Standard", new { a10id = a10id });
+
+                    //}
                 }
                 else
                 {
-                    return RedirectToAction("Standard", new { a10id = a10id });
+                    return RedirectToAction("Standard", new { a10id = a10id,a03id=a03id });
                 }
                 
             }
@@ -47,14 +59,18 @@ namespace UI.Controllers
             return View(v);
         }
 
-        public IActionResult Standard(int a10id, int j02id,int clonebypid)
+        public IActionResult Standard(int a10id, int j02id,int clonebypid,int a03id)
         {
             if (a10id == 0 && clonebypid == 0)
             {
                 return RedirectToAction("Index");
             }
             var v = new a01CreateViewModel() { j02ID = j02id,a10ID=a10id };
-
+            if (a03id > 0)
+            {
+                v.a03ID = a03id;
+                v.Institution = Factory.a03InstitutionBL.Load(a03id).NamePlusRedizo;
+            }
             if (clonebypid > 0)
             {
                 //kopírování akce do nové                

@@ -256,6 +256,8 @@ namespace BL
             //a10 = typ akce
             AF("a10EventType", "a10Name", "Typ akce", 1, null, "string", false, true);
             AF("a10EventType", "a10Ident", "Kód",1);
+            AF("a10EventType", "a10ViewUrl_Insert", "URL [INSERT]", 2);
+            AF("a10EventType", "a10ViewUrl_Page", "URL [DETAIL]", 2);
             AF("a10EventType", "a10Description", "Popis");
             AppendTimestamp("a10EventType");
 

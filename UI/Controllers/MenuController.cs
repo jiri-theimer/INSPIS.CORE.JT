@@ -457,6 +457,11 @@ namespace UI.Controllers
                         AMI("Přidat činnost školy", string.Format("javascript: _window_open('/a37/Record?pid=0&a03id={0}')", pid));
                         AMI("Přidat vzdělávací obor", string.Format("javascript: _window_open('/a19/Record?pid=0&a03id={0}')", pid));
                     }
+                    if (Factory.j04UserRoleBL.IsA01Create(Factory.CurrentUser.j04ID))
+                    {
+                        DIV();
+                        AMI("Založit novou akci", "/a01Create/Index?a03id="+pid.ToString());                        
+                    }
                     DIV();
                     AMI("Tisková sestava", string.Format("javascript: _window_open('/x31/ReportContext?pid={0}&prefix=a03',2)", pid));
                     AMI("Stránka instituce", string.Format("javascript:_location_replace_top('/a03/RecPage?pid={0}')", recA03.pid));
