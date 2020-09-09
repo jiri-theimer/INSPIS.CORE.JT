@@ -1,0 +1,64 @@
+﻿@model a01CreateInjuryViewModel
+@inject BL.Factory _f
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (Model.a10ID == 0) return;
+    ViewData["Title"] = _f.tra("Založit novou akci");
+}
+
+
+@addTagHelper *, UI
+
+<h4 class="px-2">@Model.RecA10.a10Name</h4>
+
+<div class="bg-light" style="padding:10px;">
+    <button id="cmdSave" class="btn btn-success">@_f.tra("Vygenerovat prostředí")</button>
+    <a id="cmdCancel" href="/a01Create/Index" class="btn btn-light">@_f.tra("Zrušit")</a>
+
+
+</div>
+
+<form id="form1" asp-controller="a01Create" asp-action="Injury" method="POST">
+    <input type="hidden" asp-for="@Model.a10ID" />
+    <input type="hidden" asp-for="@Model.a03ID" />
+
+    <div class="modal_record_container">
+        <div class="form-row">
+            <label class="col-sm-3 col-md-3 col-form-label">@_f.tra("Instituce"):</label>
+            <div class="col-sm-9 col-md-9">
+                <myval value="@Model.RecA03.NamePlusRedizo" hoverpid="@Model.a03ID" hoverprefix="a03"></myval>
+            </div>
+
+        </div>
+        <div class="form-row my-2">
+            <label class="col-sm-3 col-md-3 col-form-label">@_f.tra("Vyberte činnost školy, kde nastal úraz"):</label>
+            <div class="col-sm-9 col-md-9">
+                <mycombo entity="a37InstitutionDepartment" asp-for="@Model.a37ID" selectedtext="@Model.a37Name" filter-flag="1" masterprefix="a03" masterpid="@Model.a03ID"></mycombo>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+
+        $("#cmdSave").click(function () {
+            $(this).text("Processing...");
+            $(this).attr("disabled", true);
+            form1.submit();
+
+
+        });
+
+
+
+    });
+</script>
+
+
+
+

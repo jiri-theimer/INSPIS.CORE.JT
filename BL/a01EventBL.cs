@@ -153,7 +153,11 @@ namespace BL
                 _db.RunSql("INSERT INTO a44InstitutionDepartmentToEvent(a01ID,a37ID) SELECT @pid,a37ID FROM a37InstitutionDepartment WHERE a37ID IN (" + string.Join(",", a37ids) + ")", new { pid = intPID });
             }
 
-            _mother.WorkflowBL.CheckDefaultWorkflowStatus(intPID);
+            if (bolAutoInitWorkflow)
+            {
+                _mother.WorkflowBL.CheckDefaultWorkflowStatus(intPID);
+            }
+            
 
             RunSpAfterA01Save(intPID);
 

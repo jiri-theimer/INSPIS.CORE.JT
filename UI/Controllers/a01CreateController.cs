@@ -198,6 +198,66 @@ namespace UI.Controllers
             return View(v);
         }
 
+        public IActionResult Injury(int a10id,int a03id)
+        {
+            var v = new a01CreateInjuryViewModel() { a10ID = a10id, a03ID = a03id };
+            if (v.a10ID == 0)
+            {
+                return RedirectToAction("Index");
+            }
+            if (v.a03ID == 0)
+            {
+                return StopPage(false, Factory.tra("Na vstupu chybí vazba na instituci."));
+            }
+            
+            RefreshStateInjury(v);
+
+
+            return View(v);
+        }
+        [HttpPost]
+        public IActionResult Injury(a01CreateInjuryViewModel v)
+        {
+            RefreshStateInjury(v);
+            if (ModelState.IsValid)
+            {
+
+                BO.a01Event c = new BO.a01Event() { a01IsTemporary = true, a10ID = v.a10ID, a03ID = v.a03ID, j03ID_Creator = Factory.CurrentUser.pid, j02ID_Issuer = Factory.CurrentUser.j02ID };
+                c.a08ID = Factory.GlobalParams.LoadParamInt("a08ID_Injury", 0); //téma se bere z globálních parametrů
+                if (c.a08ID == 0)
+                {
+                    this.AddMessage("V nastavení globálních parametrů chybí definice klíče [a08ID_Injury].");return View(v);
+                }
+                var mq = new BO.myQuery("f06") { a08id = c.a08ID,IsRecordValid=true };
+                var lisF06 = Factory.f06FormBL.GetList(mq);
+                if (lisF06.Count() == 0)
+                {
+                    this.AddMessage("Pro téma akce není k dispozici ani jeden platný formulář."); return View(v);
+                }
+                var lisA11 = new List<BO.a11EventForm>();
+                foreach(var cF06 in lisF06)
+                {                    
+                    lisA11.Add(new BO.a11EventForm() { f06ID = cF06.pid, a37ID = v.a37ID });
+                }
+                c.pid = Factory.a01EventBL.Create(c, true, lisA11, null, null, null);
+                if (c.pid > 0)
+                {
+                    c = Factory.a01EventBL.Load(c.pid);
+                    return Redirect(Factory.a01EventBL.GetPageUrl(c));
+                    
+
+                }
+            }
+
+            this.Notify_RecNotSaved();
+            return View(v);
+        }
+        private void RefreshStateInjury(Models.a01CreateInjuryViewModel v)
+        {
+            v.RecA10 = Factory.a10EventTypeBL.Load(v.a10ID);
+            v.RecA03 = Factory.a03InstitutionBL.Load(v.a03ID);
+        }
+
         public IActionResult Helpdesk(int a10id, int j02id)
         {
             if (a10id == 0)

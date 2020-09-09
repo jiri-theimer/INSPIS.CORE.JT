@@ -23,11 +23,13 @@ namespace UI.Controllers
             var tg = Factory.o51TagBL.GetTagging("a01", v.pid);
             v.Rec.TagHtml = tg.TagHtml;
             v.TagHtml = v.Rec.TagHtml;
-            if (!Factory.CurrentUser.TestPermission(BO.j05PermValuEnum.AdminGlobal))
+            if (!v.Rec.a01IsTemporary)
             {
-                return this.StopPage(true, "Funkce je dostupná pouze administrátorovi.");
-            }
-            
+                if (!Factory.CurrentUser.TestPermission(BO.j05PermValuEnum.AdminGlobal))
+                {
+                    return this.StopPage(true, "Funkce je dostupná pouze administrátorovi.");
+                }
+            }                        
 
             if (confirm && Factory.CBL.DeleteRecord("a01",v.Rec.pid)=="1")
             {

@@ -359,6 +359,12 @@ namespace UI.Controllers
                                 AMI("Anketní formuláře", string.Format("javascript: _window_open('/a11/AppendPoll?a01id={0}',2)", pid));
                             }
                         }
+                        if (recA01.a01IsTemporary)
+                        {
+                            DIV();
+                            AMI("Nenávratně odstranit akci", string.Format("javascript: _window_open('/a01/KillRecord?pid={0}')", pid));
+                        }
+                        
                         break;
                     }
                     if (recA01.a01ChildsCount > 0)

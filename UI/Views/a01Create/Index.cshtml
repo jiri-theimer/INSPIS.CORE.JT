@@ -40,7 +40,14 @@
             _notify_message("Musíte vybrat typ.");
             return;
         }
-        location.replace("/a01Create/Index?a10id=" + $("#a10ID").val());
+        var url = "/a01Create/Index?a10id=" + $("#a10ID").val();
+        @if (Model.a03ID > 0)
+        {
+           <text>
+        url = url + "&a03id=@Model.a03ID";
+            </text>
+        }
+        location.replace(url);
 
     }
 

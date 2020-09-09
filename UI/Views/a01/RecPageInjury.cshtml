@@ -137,7 +137,6 @@
         </div>
         @Html.Raw(Model.TagHtml)
 
-
         <table class="table table-sm table-hover">
             @foreach (var c in Model.lisA11.Where(p => p.a11IsPoll == false))
             {
@@ -159,7 +158,7 @@
                     <td>
                         <myval datatype="html" value="@("<a class='mx-2' href=\"javascript:_edit('a11'," + @c.pid.ToString() + ")\">" + c.FormNameHtml+"</a>")" hoverprefix="a11" hoverpid="@c.pid" cmprefix="a11" cmdpid="@c.pid"></myval>
 
-                    </td>                  
+                    </td>
                     <td>
                         @if (c.a11IsPoll == false && c.isclosed == false)
                         {
@@ -172,11 +171,12 @@
                     <td>
                         <a href="javascript:_window_open('/a11/ValidateForms?pid=@c.pid.ToString()')">@_f.tra("Kontrola")</a>
                     </td>
-                   
+
                 </tr>
 
             }
         </table>
+
     </div>
     <div class="tabs_container">
         <ul id="navtabs" class="nav nav-tabs">
