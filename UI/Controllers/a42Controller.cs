@@ -144,7 +144,7 @@ namespace UI.Controllers
                 List<int> a03ids = BO.BAS.ConvertString2ListInt(v.a03IDs);
                 var recX40 = new BO.x40MailQueue() { x40Subject = v.MessageSubject, x40Body = v.MessageBody, x40RecipientFlag = v.MessageReceiverFlag };
                 
-                c.pid = Factory.a42QesBL.PrepareTempData(c,recA01,v.lisRightA12,a03ids,recX40);
+                c.pid = Factory.a42QesBL.PrepareTempData(c,recA01,v.lisRightA12,a03ids,recX40,v.lisPollA12.Where(p=>p.IsTempDeleted==false).ToList());
                 if (c.pid > 0)
                 {
                     //Dávka je připravena k vygenerování akcí

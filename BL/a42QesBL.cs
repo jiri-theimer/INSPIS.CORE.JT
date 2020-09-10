@@ -12,7 +12,7 @@ namespace BL
         public BO.a42Qes LoadByName(string strA42Name, int intExcludePID);
         public IEnumerable<BO.a42Qes> GetList(BO.myQuery mq);
         public int Save(BO.a42Qes rec);
-        public int PrepareTempData(BO.a42Qes rec, BO.a01Event recA01Template, List<BO.a12ThemeForm> lisA12, List<int> a03ids, BO.x40MailQueue recX40);
+        public int PrepareTempData(BO.a42Qes rec, BO.a01Event recA01Template, List<BO.a12ThemeForm> lisA12, List<int> a03ids, BO.x40MailQueue recX40, List<BO.a12ThemeForm> lisA12Poll);
         public void UpdateJobState(int a42id, int stateflag);
 
     }
@@ -104,7 +104,7 @@ namespace BL
             return true;
         }
 
-        public int PrepareTempData(BO.a42Qes rec,BO.a01Event recA01Template,List<BO.a12ThemeForm> lisA12, List<int> a03ids,BO.x40MailQueue recX40)
+        public int PrepareTempData(BO.a42Qes rec,BO.a01Event recA01Template,List<BO.a12ThemeForm> lisA12, List<int> a03ids,BO.x40MailQueue recX40, List<BO.a12ThemeForm> lisA12Poll)
         {   //vrací a42ID založené hlavičky INEZU
             string strJobGuid = rec.a42JobGuid;
             string strUploadGUID = rec.a42UploadGuid;
@@ -132,6 +132,7 @@ namespace BL
                     this.AddMessageTranslated(string.Format(_mother.tra("Formulář {0} vyžaduje povinně vazbu na IZO školy."),recA12.f06Name)); return 0;
                 }
             }
+            
             
             var mq = new BO.myQuery("a39");
             mq.j04id = _mother.GlobalParams.LoadParamInt("j04ID_SchoolDirector",35);
@@ -177,8 +178,16 @@ namespace BL
             }
             foreach (var recA12 in lisA12)
             {
-                recTemp = new BO.p85Tempbox() { p85Prefix = "a12", p85GUID = strJobGuid, p85OtherKey1 = recA12.a12ID, p85FreeText01 = recA12.f06Name };
+                recTemp = new BO.p85Tempbox() { p85Prefix = "a12", p85GUID = strJobGuid, p85OtherKey1 = recA12.a12ID, p85FreeText01 = recA12.f06Name,p85OtherKey2=recA12.f06ID };
                 _mother.p85TempboxBL.Save(recTemp);
+            }
+            if (lisA12Poll != null)
+            {
+                foreach (var recA12 in lisA12Poll.Where(p=>p.TempCount>0))  //p85FreeBoolean01=true: anketní formulář, p85FreeNumber01: počet anketních formulářů v akci
+                {
+                    recTemp = new BO.p85Tempbox() { p85Prefix = "a12",p85FreeBoolean01=true, p85GUID = strJobGuid, p85OtherKey1 = recA12.a12ID,p85OtherKey2=recA12.f06ID, p85FreeText01 = recA12.f06Name,p85FreeNumber01=recA12.TempCount };
+                    _mother.p85TempboxBL.Save(recTemp);
+                }
             }
             _mother.MailBL.SaveMailJob2Temp(strJobGuid, recX40, strUploadGUID, lisX43);
 

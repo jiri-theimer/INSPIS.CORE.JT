@@ -15,7 +15,7 @@
 <form id="form1" asp-controller="a42" asp-action="CreateTempFinish" method="POST">
 
     <div class="bg-light" style="padding:10px;">
-        <button id="cmdComplete" type="submit" class="btn btn-success" asp-route-a42id="@Model.a42ID">@_f.tra("Začít generovat akce")</button>
+        <button id="cmdComplete" type="button" class="btn btn-success" asp-route-a42id="@Model.a42ID">@_f.tra("Začít generovat akce")</button>
         <a id="cmdCancel" href="/a42/CreatePre" class="btn btn-light">Zrušit</a>
 
 
@@ -46,7 +46,16 @@
             <div class="col-sm-6 col-md-5">
                 @foreach (var c in Model.lisP85.Where(p => p.p85Prefix == "a12"))
                 {
-                    <span class="val-readonly">@c.p85FreeText01</span><br />
+                    @if (c.p85FreeBoolean01)
+                    {
+                        <myval value="@("Anketní "+Convert.ToInt32(c.p85FreeNumber01).ToString()+"x: "+c.p85FreeText01);" hoverprefix="f06" hoverpid="@c.p85OtherKey2"></myval>
+                    }
+                    else
+                    {
+                        <myval value="@c.p85FreeText01" hoverprefix="f06" hoverpid="@c.p85OtherKey2"></myval>
+                    }
+
+                    <br />
                 }
             </div>
 
@@ -117,3 +126,18 @@
     </div>
 
 </form>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#cmdComplete").click(function () {
+            $(this).text("Processing...");
+            $(this).attr("disabled", true);
+            form1.submit();
+
+        });
+
+        
+        
+    });
+</script>
