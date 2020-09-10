@@ -36,8 +36,9 @@ namespace BO
 
         public string a10ViewUrl_Insert { get; set; } //nové pole v CORE
         public string a10ViewUrl_Page { get; set; } //nové pole v CORE
+        public string a10CoreFlag { get; set; }     //nové pole v CORE: injury/aus/
 
-        
+
 
     }
 }

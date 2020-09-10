@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace BL
@@ -11,7 +12,7 @@ namespace BL
         public IEnumerable<BO.a38TimeLine> GetListTimeLine(BO.myQuery mq);
         public IEnumerable<BO.a38TimeLinePerson> GetListPersonTimeLine(BO.myQuery mq);
         public int Save(BO.a38NonPersonEventPlan rec);
-
+        public bool ValidateBeforeSave(BO.a38NonPersonEventPlan rec);
     }
     class a38NonPersonEventPlanBL : BaseBL, Ia38NonPersonEventPlanBL
     {
@@ -99,7 +100,24 @@ namespace BL
             {
                 this.AddMessage("Na vstupu chybí ID osoby nebo ID akce."); return false;
             }
-
+            var mq = new BO.myQuery("a38") { a01id = rec.a01ID, j23id = rec.j23ID };
+            var lisA38 = GetList(mq);
+            if (lisA38.Where(p=>p.j02ID==rec.j02ID && p.a38PlanDate==rec.a38PlanDate).Count() > 0)
+            {
+                string strPerson = _mother.j02PersonBL.Load(rec.j02ID).FullNameAsc;
+                string strCar = _mother.j23NonPersonBL.Load(rec.j23ID).NamePlusCode;
+                this.AddMessageTranslated(string.Format("Pro osobu [{0}], den [{1}] a zdroj [{2}] již existuje rezervace.", strPerson, rec.a38PlanDate, strCar));
+                return false;
+            }
+            if (lisA38.Count() > 0 && rec.a38IsDriver==true)
+            {
+                if (lisA38.Where(p => p.a38PlanDate == rec.a38PlanDate && p.a38IsDriver==true).Count() > 0)
+                {
+                    string strCar = _mother.j23NonPersonBL.Load(rec.j23ID).NamePlusCode;
+                    this.AddMessageTranslated(string.Format("Pro den [{0}] a zdroj [{1}] již je přiřazen řidič.", rec.a38PlanDate, strCar));
+                    return false;
+                }
+            }
             return true;
         }
 

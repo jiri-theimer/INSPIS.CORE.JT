@@ -347,7 +347,7 @@ namespace UI.Controllers
                     HEADER(recA01.a01Signature);
                     var recA10 = Factory.a10EventTypeBL.Load(recA01.a10ID);
                     var permA01 = Factory.a01EventBL.InhalePermission(recA01);
-                    if (recA10.a10ViewUrl_Page !=null)
+                    if (recA10.a10CoreFlag =="injury" || recA10.a10CoreFlag=="inez")
                     {
                         //akce s jednoduchým menu jako ÚRAZ
                         AMI("Posunout/Doplnit", string.Format("javascript: _window_open('/workflow/Dialog?pid={0}')", pid));
@@ -417,7 +417,16 @@ namespace UI.Controllers
                             DIV();
                             AMI("Upravit časový plán akce", string.Format("javascript: _window_open('/a35/CapacityEdit?pid={0}')", pid));
                             AMI("Časové kapacity inspektorů", string.Format("javascript: _window_open('/a35/TimeLine?a05id={0}',2)", recA01.a05ID));
-                            AMI("Rezervace nepersonálního zdroje", string.Format("javascript: _window_open('/a38/AppendToA01?pid={0}',2)", pid));                            
+                            if (recA10.a10CoreFlag == "aus")
+                            {
+                                //AUS rezervace mimo inspekce
+                                AMI("Rezervace nepersonálního zdroje", string.Format("javascript: _window_open('/a38/CreateAus?a01id={0}',2)", pid));   //standardní akce                                
+                            }
+                            else
+                            {
+                                AMI("Rezervace nepersonálního zdroje", string.Format("javascript: _window_open('/a38/AppendToA01?pid={0}',2)", pid));   //standardní akce
+                            }
+                            
                         }
 
                         

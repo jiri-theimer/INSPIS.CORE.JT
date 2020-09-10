@@ -1,0 +1,179 @@
+﻿@model UI.Models.a38CreateAusViewModel
+@inject BL.Factory _f
+
+@{
+    ViewData["Title"] = "Rezervace nepersonálního zdroje";
+    Layout = "~/Views/Shared/_LayoutModal.cshtml";
+
+
+}
+
+@addTagHelper *, UI
+<link rel="stylesheet" href="~/css/tabcapacity.css" />
+
+<h4>@_f.tra("Rezervace nepersonálního zdroje v akci"): @Model.RecA01.a01Signature</h4>
+
+<div class="tabs_container_record">
+    <!-- Tab panes -->
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a id="link_tab1" class="nav-link" data-toggle="tab" href="#tab1">@_f.tra("Nová rezervace")</a>
+        </li>
+        <li class="nav-item">
+            <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2">@_f.tra("Odstranit uložené rezervace")</a>
+        </li>
+    </ul>
+</div>
+
+
+
+<div class="tab-content">
+    <div class="tab-pane" id="tab1">
+        <div class="bg-light" style="padding:10px;">
+            <button id="cmdSave" type="submit" class="btn btn-success">@_f.tra("Uložit změny")</button>
+            <button type="button" id="cmdClose" onclick="_window_close()" class="btn btn-light">@_f.tra("Zavřít")</button>
+            <button type="button" onclick="_helppage()" class="btn btn-light"><b>? </b>@_f.tra("Nápověda")</button>
+        </div>
+
+        <form id="form1" asp-controller="a38" asp-action="CreateAus" method="POST">
+            <input type="hidden" asp-for="@Model.ActiveTabIndex" />
+            <input type="hidden" asp-for="@Model.a01ID" />
+            <input type="hidden" asp-for="@Model.CurMonth" />
+            <input type="hidden" asp-for="@Model.CurYear" />
+
+
+            <div class="card" style="max-width:1200px;">
+                <div class="card-header">@_f.tra("Nová rezervace")</div>
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="col-sm-10 col-md-10">
+                            <mycombo entity="j23NonPerson" asp-for="@Model.SelectedJ23ID" selectedtext="@Model.SelectedJ23Name" view-flag="2" masterprefix="a05" masterpid="@Model.a05ID" event_after_changevalue="change_j23id" placeholder="@_f.tra("Nepersonální zdroj")"></mycombo>
+                        </div>
+                        <div class="col-sm-2 col-md-2">
+                            <mycombo entity="a05Region" asp-for="@Model.a05ID" selectedtext="@Model.a05Name" view-flag="2" event_after_changevalue="change_a05id" placeholder="@_f.tra("Kraj")"></mycombo>
+                        </div>
+
+                    </div>
+                    <div class="form-row my-2">
+                        <div class="col-sm-10 col-md-10">
+                            <mycombo entity="j02Person" asp-for="@Model.SelectedJ02ID" selectedtext="@Model.SelectedPerson" view-flag="2" event_after_changevalue="change_j02id" placeholder="@_f.tra("Jméno")" masterprefix="a01" masterpid="@Model.a01ID" param1="without_teams_and_owner"></mycombo>
+                        </div>
+                        
+                    </div>
+                    <div class="form-row my-2">
+                        <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Datum od"):</label>
+                        <div class="col-sm-2 col-md-2">
+                            <mydate asp-for="@Model.D1"></mydate>
+                        </div>
+                        <div class="col-1">
+                            @_f.tra("Datum do"):
+                        </div>
+                        <div class="col-sm-2 col-md-2">
+                            <mydate asp-for="@Model.D2"></mydate>
+                        </div>
+                        <div class="col-sm-1 col-md-1">
+                            <input type="checkbox" asp-for="@Model.a38IsDriver" />
+                            <label class="col-form-label" for="a38IsDriver">@_f.tra("Je řidič")</label>
+                        </div>
+                        <div class="col-sm-3 col-md-3">
+                            <mydropdown asp-for="@Model.SelectedJ25ID" firstemptyrowtext="Důvod rezervace" isfirstemptyrow="true" datasource="@Model.lisJ25" textfield="j25Name" valuefield="pid"></mydropdown>
+                        </div>
+                        <div class="col-sm-2 col-md-2">
+                            <input type="text" asp-for="@Model.a38Location" class="form-control" placeholder="@_f.tra("Místo")" />
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+
+        </form>
+
+
+        @Html.EditorFor(m => m.CapacityView, "~/Views/Shared/_a01Capacity.cshtml")
+
+        <iframe id="fraA38" style="height:250px;" src="/a38/TimeLine?a05id=@(Model.a05ID)"></iframe>
+    </div>
+    <div class="tab-pane" id="tab2">
+        <table class="table table-hover">
+            @foreach (var c in Model.lisA38.OrderBy(p => p.a38PlanDate).ThenBy(p => p.PersonDesc))
+            {
+                <tr>
+                    <td>
+                        @(BO.BAS.ObjectDate2String(c.a38PlanDate))
+                    </td>
+                    <td style="color:brown;font-weight:bold;">
+                        @(c.j23Name+" ("+c.j23Code+")")
+                    </td>
+                    <td>
+                        @if (c.a38IsDriver)
+                        {
+                            <span style="background-color:darkviolet;color:white;">@c.PersonDesc</span>
+                        }
+                        else
+                        {
+                            @c.PersonDesc
+                        }
+                    </td>
+
+                    <td>
+                        @c.a38Location
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger" onclick="delete_record(@c.pid)">@_f.tra("Odstranit")</button>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#fraA38").css("width", (_device.innerWidth-50) + "px");
+
+        $("#cmdSave").click(function () {
+            $(this).text("Processing...");
+            $(this).attr("disabled", true);
+
+            
+            form1.submit();
+
+
+        });
+
+
+        $("#tab@(Model.ActiveTabIndex)").attr("class", "tab-pane active");
+        $("#link_tab@(Model.ActiveTabIndex)").attr("class", "nav-link active");
+
+        $('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
+            // v e.target.id je id kliknutá záložka
+            var tabindex = e.target.id.substring(e.target.id.length - 1, e.target.id.length);
+            $("#ActiveTabIndex").val(tabindex);
+        });
+
+
+
+
+    });
+
+    function change_j23id(j23id) {
+        form1.action = "/a38/CreateAus?oper=postback";
+        form1.submit();
+    }
+    function change_a05id(a05id) {
+        form1.action = "/a38/CreateAus?oper=postback";
+        form1.submit();
+    }
+    function change_j02id(j02id) {
+        form1.action = "/a38/CreateAus?oper=postback";
+        form1.submit();
+    }
+    function delete_record(a38id){
+        form1.action = "/a38/CreateAus?oper=delete&a38id="+a38id;
+        form1.submit();
+    }
+</script>

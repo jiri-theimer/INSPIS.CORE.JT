@@ -11,6 +11,103 @@ namespace UI.Controllers
 {
     public class a38Controller : BaseController
     {
+        public IActionResult CreateAus(int a01id, int go2month, int go2year)
+        {
+            var v = new a38CreateAusViewModel() { a01ID = a01id, CurMonth = go2month, CurYear = go2year };
+            if (v.a01ID == 0)
+            {
+                return this.StopPage(true, "a01id missing.");
+            }
+
+            RefreshState_CreateAus(v);
+            v.a05ID = v.RecA01.a05ID;
+            v.a05Name = v.RecA01.a05Name;
+
+            return View(v);
+        }
+        [HttpPost]
+        public IActionResult CreateAus(a38CreateAusViewModel v, string oper, int a38id)
+        {
+            RefreshState_CreateAus(v);
+            if (oper == "postback")
+            {
+                return View(v);
+            }
+            if (oper == "delete")
+            {
+                Factory.CBL.DeleteRecord("a38", a38id);
+                RefreshState_CreateAus(v);
+                return View(v);
+            }
+            if (ModelState.IsValid)
+            {    
+                if (v.D1==null || v.D2 == null)
+                {
+                    this.AddMessage("Musíte vyplnit [Datum od] i [Datum do]."); return View(v);
+                }
+                if (v.D1 > v.D2)
+                {
+                    this.AddMessage("[Datum do] nesmí být menší než [Datum od].");return View(v);
+                }
+                if (v.SelectedJ23ID == 0)
+                {
+                    this.AddMessage("Na vstupu chybí nepersonální zdroj."); return View(v);
+                }
+                if (v.SelectedJ02ID == 0)
+                {
+                    this.AddMessage("Na vstupu chybí ID osoby nebo ID akce."); return View(v);
+                }
+               
+                var lis2SaveA38 = new List<BO.a38NonPersonEventPlan>();                
+                for (DateTime d = Convert.ToDateTime(v.D1); d <= Convert.ToDateTime(v.D2); d = d.AddDays(1))
+                {                    
+                    var cA38 = new BO.a38NonPersonEventPlan() {a38PlanDate=d,a38IsDriver=v.a38IsDriver, a01ID = v.a01ID, j02ID = v.SelectedJ02ID, j23ID = v.SelectedJ23ID, j25ID = BO.BAS.InInt(v.SelectedJ25ID), a38Location=v.a38Location };
+                    if (Factory.a38NonPersonEventPlanBL.ValidateBeforeSave(cA38)==false)
+                    {
+                        return View(v);
+                    }
+                    
+                    lis2SaveA38.Add(cA38);
+                    
+
+                }
+
+                int intOKs = 0;
+                foreach(var c in lis2SaveA38)
+                {
+                    int intPID = Factory.a38NonPersonEventPlanBL.Save(c);
+                    if (intPID > 0)
+                    {
+                        var cA35 = new BO.a35PersonEventPlan() { a01ID = c.a01ID, j02ID = c.j02ID, a35PlanDate = c.a38PlanDate };
+                        if (Factory.a35PersonEventPlanBL.Save(cA35) > 0)
+                        {
+                            intOKs += 1;
+                        }
+                    }
+                }
+                
+                
+                
+                
+                if (intOKs ==lis2SaveA38.Count)
+                {
+                    v.SetJavascript_CallOnLoad(0);
+                    return View(v);
+                }
+                else
+                {
+                    RefreshState_CreateAus(v);
+                    return View(v);
+                }
+
+
+            }
+
+
+            this.Notify_RecNotSaved();
+            return View(v);
+        }
+
         public IActionResult AppendToA01(int pid, int go2month, int go2year)
         {
             var v = new a38AppendToA01ViewModel() { pid = pid, CurMonth = go2month, CurYear = go2year };
@@ -19,7 +116,7 @@ namespace UI.Controllers
                 return this.StopPage(true, "a01id missing.");
             }
 
-            RefreshState_a38Edit(v);
+            RefreshState_AppendToA01(v);
             v.a05ID = v.RecA01.a05ID;
             v.a05Name = v.RecA01.a05Name;
 
@@ -28,7 +125,7 @@ namespace UI.Controllers
         [HttpPost]
         public IActionResult AppendToA01(a38AppendToA01ViewModel v, string oper,int a38id)
         {
-            RefreshState_a38Edit(v);
+            RefreshState_AppendToA01(v);
             if (oper == "postback")
             {
                 return View(v);
@@ -36,7 +133,7 @@ namespace UI.Controllers
             if (oper == "delete")
             {
                 Factory.CBL.DeleteRecord("a38", a38id);
-                RefreshState_a38Edit(v);
+                RefreshState_AppendToA01(v);
                 return View(v);
             }
             if (ModelState.IsValid)
@@ -107,7 +204,36 @@ namespace UI.Controllers
             return View(v);
         }
 
-        private void RefreshState_a38Edit(a38AppendToA01ViewModel v)
+        private void RefreshState_CreateAus(a38CreateAusViewModel v)
+        {
+            v.RecA01 = Factory.a01EventBL.Load(v.a01ID);
+            v.PermA01 = Factory.a01EventBL.InhalePermission(v.RecA01);
+            if (v.SelectedJ23ID > 0)
+            {
+                v.RecJ23 = Factory.j23NonPersonBL.Load(v.SelectedJ23ID);
+            }
+
+            var cp = new a01TabCapacity() { pid = v.a01ID, CurMonth = v.CurMonth, CurYear = v.CurYear, RecA01 = v.RecA01 };
+            var mq = new BO.myQuery("a35") { a01id = v.a01ID };            
+            cp.lisA35 = Factory.a35PersonEventPlanBL.GetList(mq);
+            v.lisA35 = cp.lisA35.Where(p => p.j02ID == v.SelectedJ02ID);            
+            mq = new BO.myQuery("a38") { a01id = v.a01ID };                                  
+            cp.lisA38 = Factory.a38NonPersonEventPlanBL.GetList(mq);
+            v.lisA38 = cp.lisA38;
+            mq = new BO.myQuery("j25") { IsRecordValid = true };
+            v.lisJ25 = Factory.j25NonPersonPlanReasonBL.GetList(mq);
+
+            mq = new BO.myQuery("a41") { a01id = v.a01ID };          
+            cp.lisA41 = Factory.a41PersonToEventBL.GetList(mq).OrderBy(p => p.PersonDesc).Where(p => p.a45ID != BO.EventRoleENUM.Vlastnik);
+            cp.lisJ26 = Factory.j26HolidayBL.GetList(new BO.myQuery("j26")).Where(p => p.j26Date >= v.RecA01.a01DateFrom && p.j26Date <= v.RecA01.a01DateUntil);
+            mq = new BO.myQuery("h04") { a01id = v.a01ID };
+            cp.lisH04 = Factory.h04ToDoBL.GetListCapacity(mq);
+            InhaleCapacityTimeline(cp);
+
+            v.CapacityView = cp;
+
+        }
+        private void RefreshState_AppendToA01(a38AppendToA01ViewModel v)
         {
             v.RecA01 = Factory.a01EventBL.Load(v.pid);
             v.PermA01 = Factory.a01EventBL.InhalePermission(v.RecA01);

@@ -114,7 +114,7 @@ namespace UI.Controllers
                 c.a10Linker_a10ID = v.Rec.a10Linker_a10ID;
                 c.a10Linker_a08ID = v.Rec.a10Linker_a08ID;
                 c.a10LinkerDB = v.Rec.a10LinkerDB;
-
+                c.a10CoreFlag = v.Rec.a10CoreFlag;
 
                 c.ValidUntil = v.Toolbar.GetValidUntil(c);
                 c.ValidFrom = v.Toolbar.GetValidFrom(c);

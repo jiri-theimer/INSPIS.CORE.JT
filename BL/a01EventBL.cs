@@ -50,7 +50,7 @@ namespace BL
             sb("SELECT a.*,");
             sb(_db.GetSQL1_Ocas("a01", false, true));
             sb(",a01_a10.a10Name,a01_a10.b01ID,a01_a08.a08Name,a01_a03.a03Name,a01_a03.a03REDIZO,a01_a03.a05ID,a01_a06.a06Name");
-            sb(",a01_a05.a05Name,a01_a09.a09Name,a01_b02.b02Name,a01_b02.b02Color,a01_b02.b02Ident,a01_a10.a10ViewUrl_Page");
+            sb(",a01_a05.a05Name,a01_a09.a09Name,a01_b02.b02Name,a01_b02.b02Color,a01_b02.b02Ident,a01_a10.a10ViewUrl_Page,a01_a10.a10CoreFlag");
 
             sb(" FROM a01Event a INNER JOIN a10EventType a01_a10 ON a.a10ID=a01_a10.a10ID");
             sb(" LEFT OUTER JOIN a03Institution a01_a03 ON a.a03ID=a01_a03.a03ID LEFT OUTER JOIN a05Region a01_a05 ON a01_a03.a05ID=a01_a05.a05ID LEFT OUTER JOIN a09FounderType a01_a09 ON a01_a03.a09ID=a01_a09.a09ID");

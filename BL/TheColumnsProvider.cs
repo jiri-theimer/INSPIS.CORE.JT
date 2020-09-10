@@ -259,6 +259,7 @@ namespace BL
             AF("a10EventType", "a10ViewUrl_Insert", "URL [INSERT]", 2);
             AF("a10EventType", "a10ViewUrl_Page", "URL [DETAIL]", 2);
             AF("a10EventType", "a10Description", "Popis");
+            AF("a10EventType", "a10CoreFlag", "CORE Flag");
             AppendTimestamp("a10EventType");
 
             //a11 = formulář v akci

@@ -57,6 +57,7 @@ namespace BO
         public string a06Name;
         public string a10Name;
         public string a10ViewUrl_Page;
+        public string a10CoreFlag;
         public string a08Name { get; set; } //kvůli combo
         public int a05ID;
         public string a05Name;

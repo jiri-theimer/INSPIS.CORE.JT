@@ -92,15 +92,10 @@
     {
         <tr>
             <td>
-                @if (Model.lisTimeLine.Where(p => p.j23ID == recJ23.pid).Count() > 0)
-                {
-                    <span>
-                        @recJ23.NamePlusCode
-                    </span>
-
-                }
-
-
+                <span>
+                    @recJ23.NamePlusCode
+                </span>
+                
             </td>
             <td>
                 <a class="reczoom" data-rel="/j23/InfoCapacity?pid=@(recJ23.pid)&hover_by_reczoom=1&m=@Model.CurMonth&y=@Model.CurYear" data-maxwidth="1" style="visibility:visible!important;">ℹ</a>
