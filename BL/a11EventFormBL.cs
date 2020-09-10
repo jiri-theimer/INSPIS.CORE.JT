@@ -18,6 +18,7 @@ namespace BL
         public IEnumerable<BO.j95FormAccessLog> GetList_J95(int a11id, int intTopRecs);
         public bool ValidateBeforeSave(BO.a11EventForm c);
         public bool TestUserAccessToEncryptedFormValues(int a11id, int f06id);
+        public string GetRandomToken();
     }
     class a11EventFormBL : BaseBL, Ia11EventFormBL
     {
@@ -196,6 +197,12 @@ namespace BL
                     return false;
             }
             return false;
+        }
+
+        public string GetRandomToken()
+        {
+            var c = new Random();
+            return BO.BAS.RightString("0000" + c.Next(1, 9999).ToString(), 4);
         }
     }
 }

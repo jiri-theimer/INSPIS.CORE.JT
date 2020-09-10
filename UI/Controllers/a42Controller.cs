@@ -21,28 +21,20 @@ namespace UI.Controllers
         }
         public IActionResult CompleteJob(int a42id)
         {
-            var v = new a42CompleteJob() { a42ID = a42id};            
+            var v = new a42CompleteJob() { a42ID = a42id };
             v.Rec = Factory.a42QesBL.Load(v.a42ID);
             if (v.Rec == null)
             {
-                return this.StopPage(false, "Na vstupu chybí INEZ pid.");
-            }
-            var lisP85 = Factory.p85TempboxBL.GetList(v.Rec.a42JobGuid,false,"a03").Where(p=>p.p85IsFinished==false).Take(10);
-            var lisTempFiles = Factory.o27AttachmentBL.GetTempFiles(v.Rec.a42UploadGuid);
-            
-            foreach(var recTemp in lisP85)
-            {
-                var recA01 = new BO.a01Event() {a01IsTemporary=true, a03ID = recTemp.p85OtherKey1,a10ID=recTemp.p85OtherKey2,a08ID = v.Rec.a08ID,a01DateFrom=v.Rec.a42DateFrom,a01DateUntil=v.Rec.a42DateUntil };
-
-                Factory.a01EventBL.Create(recA01,true,null,null,null,null);
+                return StopPage(true, "Na vstupu chybí INEZ pid.");
             }
             if (v.CurrentA03ID > 0)
             {
                 v.CurrentRecA03 = Factory.a03InstitutionBL.Load(v.CurrentA03ID);
             }
-            
+
             return View(v);
         }
+        
         public IActionResult CreateTempFinish(int a42id)
         {           
             var v = new a42CreateTempFinishViewModel() { a42ID = a42id};
@@ -279,6 +271,70 @@ namespace UI.Controllers
             return Factory.b65WorkflowMessageBL.Load(b65id);
             
             
+        }
+
+
+        public BO.Result RunPartOfJob(int a42id, int take_records_per_job)
+        {
+            //Zpracuje najednou počet akcí=take_records_per_job 
+            if (take_records_per_job == 0) take_records_per_job = 10;
+            var recA42 = Factory.a42QesBL.Load(a42id);
+            if (recA42 == null)
+            {
+                return new BO.Result(true, "Na vstupu chybí INEZ pid.");
+            }
+            var lisP85_A03_ALL = Factory.p85TempboxBL.GetList(recA42.a42JobGuid, false, "a03");
+            var lisP85_A03 = Factory.p85TempboxBL.GetList(recA42.a42JobGuid, false, "a03").Where(p => p.p85IsFinished == false).Take(take_records_per_job);
+            var lisP85 = Factory.p85TempboxBL.GetList(recA42.a42JobGuid, false);
+            var lisTempFiles = Factory.o27AttachmentBL.GetTempFiles(recA42.a42UploadGuid);
+
+            int intOKs = 0;
+            int intErrs = 0;
+            int x = 0;
+            var ret = new BO.Result(false);
+            if (lisP85_A03.Count() == 0)
+            {
+                ret.pid = 1;
+                return ret;
+            }
+            foreach (var recTemp in lisP85_A03)
+            {
+                x += 1;
+                var recA01 = new BO.a01Event() { a42ID = a42id, a01IsTemporary = true, a03ID = recTemp.p85OtherKey1, a10ID = recTemp.p85OtherKey2, a08ID = recA42.a08ID, a01DateFrom = recA42.a42DateFrom, a01DateUntil = recA42.a42DateUntil };
+                recA01.j02ID_Issuer = Factory.CurrentUser.j02ID;
+                recA01.j03ID_Creator = Factory.CurrentUser.pid;
+
+                var lisA11 = new List<BO.a11EventForm>();
+                foreach (var cTempF06 in lisP85.Where(p => p.p85Prefix == "a12"))
+                {
+                    var cA11 = new BO.a11EventForm() { f06ID = cTempF06.p85OtherKey2 };
+                    if (cTempF06.p85FreeBoolean01 == true)
+                    {
+                        cA11.a11IsPoll = true;
+                        cA11.a11AccessToken = Factory.a11EventFormBL.GetRandomToken();
+                    }
+                    lisA11.Add(cA11);
+                }
+
+                var intA01ID = Factory.a01EventBL.Create(recA01, true, lisA11, null, null, null);
+                ret.Message += "<br>#" +x.ToString()+"/"+ lisP85_A03_ALL.Count().ToString()+" # "+ DateTime.Now.ToString() + ": " + Factory.a03InstitutionBL.Load(recA01.a03ID).NamePlusRedizo;
+                if (intA01ID > 0)
+                {
+                    intOKs += 1;
+                    recA01 = Factory.a01EventBL.Load(intA01ID);
+                    ret.Message += ", Nová akce: " + recA01.a01Signature;
+                }
+                else
+                {
+                    intErrs += 1;
+                    ret.Message += ", Chyba";
+                }
+                recTemp.p85IsFinished = true;
+                Factory.p85TempboxBL.Save(recTemp);
+            }
+
+
+            return ret;
         }
     }
 }

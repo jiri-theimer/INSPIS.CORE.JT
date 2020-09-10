@@ -305,7 +305,7 @@ namespace UI.Controllers
                         c.a11IsPoll = true;
                         if (intMinToken <= 0)
                         {
-                            c.a11AccessToken = GetRandomToken();
+                            c.a11AccessToken = Factory.a11EventFormBL.GetRandomToken();
                         }
                         else
                         {
@@ -370,7 +370,7 @@ namespace UI.Controllers
         //Plus notifikační zpráva
         public IActionResult AppendPollWizard(int a01id)
         {
-            var v = new a11AppendPollWizardViewModel() { a01ID = a01id,AccessToken=GetRandomToken()};
+            var v = new a11AppendPollWizardViewModel() { a01ID = a01id,AccessToken= Factory.a11EventFormBL.GetRandomToken()};
             if (v.a01ID == 0)
             {
                 return this.StopPage(true, "a01id missing");
@@ -468,10 +468,6 @@ namespace UI.Controllers
             return Factory.b65WorkflowMessageBL.Load(b65id);
         }
 
-        private string GetRandomToken()
-        {
-            var c = new Random();            
-            return BO.BAS.RightString("0000" + c.Next(1, 9999).ToString(),4);
-        }
+        
     }
 }

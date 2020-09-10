@@ -14,24 +14,21 @@
 
 @if (Model.CurrentRecA03 == null)
 {
-    <button type="button" class="btn btn-primary">@_f.tra("Spustit generování")</button>
+
 }
+<div class="bg-light" style="padding:10px;">
+    <button type="button" onclick="RunOneJob()" class="btn btn-primary">@_f.tra("Spustit generování")</button>
+</div>
+
+<div id="divResult" style="font-weight:bold;">
+
+</div>
 
 <script type="text/javascript">
     $(document).ready(function () {
 
 
-        $.post("/a42/CompleteJob", { prefix: "" }, function (data) {
 
-            $("#layout_sidebar").html(data);
-
-            if (document.getElementById("menu_active_item")) {
-                document.getElementById("menu_active_item").scrollIntoView(true);
-            }
-
-
-
-        });
 
 
 
@@ -41,5 +38,20 @@
 
 
     });
+
+    function RunOneJob() {
+        $.post("/a42/RunPartOfJob", { a42id: @Model.a42ID, take_records_per_job:2 }, function (data) {
+            if (data.pid == 1) {
+                $("#divResult").html("Akce připraveny.");
+                alert("Akce připraveny.");
+                return;
+            }
+            $("#divResult").html(data.message);
+
+            alert("ok");
+
+            RunOneJob();
+        });
+    }
 </script>
 

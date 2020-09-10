@@ -347,6 +347,11 @@ namespace UI.Controllers
                     HEADER(recA01.a01Signature);
                     var recA10 = Factory.a10EventTypeBL.Load(recA01.a10ID);
                     var permA01 = Factory.a01EventBL.InhalePermission(recA01);
+                    if (recA01.a01IsTemporary)
+                    {
+                        DIV();
+                        AMI("Nenávratně odstranit akci", string.Format("javascript: _window_open('/a01/KillRecord?pid={0}')", pid));
+                    }
                     if (recA10.a10CoreFlag =="injury" || recA10.a10CoreFlag=="inez")
                     {
                         //akce s jednoduchým menu jako ÚRAZ
@@ -359,11 +364,7 @@ namespace UI.Controllers
                                 AMI("Anketní formuláře", string.Format("javascript: _window_open('/a11/AppendPoll?a01id={0}',2)", pid));
                             }
                         }
-                        if (recA01.a01IsTemporary)
-                        {
-                            DIV();
-                            AMI("Nenávratně odstranit akci", string.Format("javascript: _window_open('/a01/KillRecord?pid={0}')", pid));
-                        }
+                        
                         
                         break;
                     }
