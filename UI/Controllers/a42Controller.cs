@@ -70,8 +70,8 @@ namespace UI.Controllers
                 Factory.p85TempboxBL.Save(recTemp);
 
                 var cMerge = new BO.CLS.MergeContent();
-                
-                foreach(var cTemp in v.lisP85.Where(p=>p.p85Prefix=="x43"))     //p85OtherKey4: a03ID, p85OtherKey2: j02ID
+                var lisX40 = Factory.MailBL.GetList(new BO.myQuery("x40") { a42id = v.Rec.pid }).Where(p=>p.x40BatchGuid==v.Rec.a42JobGuid);
+                foreach (var cTemp in v.lisP85.Where(p=>p.p85Prefix=="x43"))     //p85OtherKey4: a03ID, p85OtherKey2: j02ID
                 {
                     int intA01ID = v.lisA01.Where(p => p.a03ID == cTemp.p85OtherKey4).First().pid;
                     var dt = Factory.gridBL.GetList4MailMerge("a01", intA01ID) ;
@@ -82,8 +82,14 @@ namespace UI.Controllers
                     {
                         recX40.x40AttachmentsGuid = v.Rec.a42UploadGuid;
                     }
+                    if (lisX40.Where(p=>p.x40DataPID==intA01ID && p.x29ID == 101).Count() > 0)
+                    {
+                        recX40.p40ID = lisX40.Where(p => p.x40DataPID == intA01ID && p.x29ID == 101).First().pid;
+                    }
+                    
                     Factory.MailBL.SaveX40(null, recX40);
                 }
+                return RedirectToAction("CompleteMailJob", new { a42id = c.pid });
 
             }
             this.Notify_RecNotSaved();

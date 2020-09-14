@@ -58,15 +58,7 @@ namespace BL
             return _db.GetList<BO.j40MailAccount>(GetSQL1());
         }
         
-        public int SaveP41(BO.p41MailQueueHeader rec)
-        {
-            var p = new DL.Params4Dapper();
-
-            p.AddInt("pid", rec.p41ID);
-            p.AddString("p41Name", rec.p41Name);
-            p.AddBool("p41IsProcessing", rec.p41IsProcessing);
-            return _db.SaveRecord("p41MailQueueHeader", p.getDynamicDapperPars(), rec);
-        }
+       
         public int SaveJ40(BO.j40MailAccount rec)
         {
             if (rec.pid==0 && rec.j40SmtpUseDefaultCredentials == false && string.IsNullOrEmpty(rec.j40SmtpPassword)==true)
