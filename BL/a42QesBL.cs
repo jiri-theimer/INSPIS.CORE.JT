@@ -14,7 +14,8 @@ namespace BL
         public int Save(BO.a42Qes rec);
         public int PrepareTempData(BO.a42Qes rec, BO.a01Event recA01Template, List<BO.a12ThemeForm> lisA12, List<int> a03ids, BO.x40MailQueue recX40, List<BO.a12ThemeForm> lisA12Poll);
         public void UpdateJobState(int a42id, int stateflag);
-
+        public bool DeleteWithA01(int pid);
+        public int ChangePeriod(BO.a42Qes rec);
     }
     class a42QesBL : BaseBL, Ia42QesBL
     {
@@ -53,6 +54,33 @@ namespace BL
         public void UpdateJobState(int a42id,int stateflag)
         {
             _db.RunSql("UPDATE a42Qes set a42JobState=@x WHERE a42ID=@pid", new { x = stateflag, pid = a42id });
+        }
+        public bool DeleteWithA01(int pid)
+        {
+            var pars = new Dapper.DynamicParameters();
+            pars.Add("j03id_sys", _db.CurrentUser.pid, System.Data.DbType.Int32);
+            pars.Add("pid", pid, System.Data.DbType.Int32);
+            pars.Add("err_ret", "", System.Data.DbType.String, System.Data.ParameterDirection.Output);
+           
+            if (_db.RunSp("a42qes_delete_with_events", ref pars, 240) == "1")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+           
+        }
+        public int ChangePeriod(BO.a42Qes rec)
+        {
+            if (ValidateBeforeSave(rec) == false)
+            {
+                return 0;
+            }
+            _db.RunSql("UPDATE a01Event SET a01DateFrom=@d1,a01DateUntil=@d2 WHERE a42ID=@pid", new { d1 = rec.a42DateFrom, d2 = rec.a42DateUntil, pid = rec.pid });
+            return Save(rec);
         }
 
         public int Save(BO.a42Qes rec)

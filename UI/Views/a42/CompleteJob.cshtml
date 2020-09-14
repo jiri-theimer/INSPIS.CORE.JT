@@ -12,12 +12,21 @@
 @addTagHelper *, UI
 
 
-@if (Model.CurrentRecA03 == null)
-{
 
-}
 <div class="bg-light" style="padding:10px;">
-    <button type="button" onclick="RunOneJob()" class="btn btn-primary">@_f.tra("Spustit generování")</button>
+    <button type="button" id="cmdRun" onclick="StartJob()" class="btn btn-primary">@_f.tra("Spustit generování akcí")</button>
+</div>
+<div>
+    <label>@_f.tra("Generovat dávkově po X akcích:")</label>
+    <select asp-for="@Model.GenerovatPoAkcich">
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="20" selected>20</option>
+        <option value="40">40</option>
+    </select>
+</div>
+<div>
+    <button type="button" id="cmdStop" onclick="StopJob()" class="btn btn-warning" style="display:none;">@_f.tra("Pozastavit")</button>
 </div>
 
 <div id="divResult" style="font-weight:bold;">
@@ -25,30 +34,53 @@
 </div>
 
 <script type="text/javascript">
+    var _cmdRunText = $("#cmdRun").text();
+    var _isStopped = false;
+
     $(document).ready(function () {
-
-
-
-
-
 
         _mainmenu_highlight_current("cmdA01");
 
-
-
-
     });
 
+    function StartJob() {
+        _isStopped = false;
+        $("#cmdRun").text("Processing...");
+        $("#cmdRun").attr("disabled", true);
+        $("#cmdStop").css("display", "block");
+
+        $("#divResult").html("Loading...");
+        RunOneJob();
+    }
+    function StopJob() {
+        _isStopped = true;
+        $("#cmdRun").text("Waiting for STOP...");        
+        $("#cmdStop").css("display", "none");
+    }
+
     function RunOneJob() {
-        $.post("/a42/RunPartOfJob", { a42id: @Model.a42ID, take_records_per_job:2 }, function (data) {
+        
+        var davkaPocet = $("#GenerovatPoAkcich").val();
+
+        $.post("/a42/RunPartOfJob", { a42id: @Model.a42ID, take_records_per_job: davkaPocet }, function (data) {
             if (data.pid == 1) {
-                $("#divResult").html("Akce připraveny.");
+                $("#divResult").html("Akce připraveny.");                
+                $("#cmdRun").text(_cmdRunText);
+                $("#cmdRun").attr("disabled", false);
+                $("#cmdStop").css("display", "none");
                 alert("Akce připraveny.");
                 return;
             }
             $("#divResult").html(data.message);
 
-            alert("ok");
+            if (_isStopped == true) {
+                $("#cmdRun").text(_cmdRunText);
+                $("#cmdRun").attr("disabled", false);
+                $("#cmdStop").css("display", "none");
+                _isStopped = false;
+                return;
+            }
+            
 
             RunOneJob();
         });

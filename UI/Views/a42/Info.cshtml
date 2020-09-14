@@ -9,41 +9,74 @@
 
 @addTagHelper *, UI
 
-<div class="modal_record_container">
-    <div class="form-row">
-        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
-        <div class="col-sm-8 col-md-7">
-            <span class="val-readonly">@(Model.Rec.a42Name)</span>
+    <div class="modal_record_container">
+        <div class="form-row">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
+            <div class="col-sm-8 col-md-7">
+                <span class="val-readonly">@(Model.Rec.a42Name)</span>
+            </div>
+
+        </div>
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Téma"):</label>
+            <div class="col-sm-8 col-md-7">
+
+                <span class="val-readonly">@Model.Rec.a08Name</span>
+            </div>
+
         </div>
 
-    </div>
-    <div class="form-row my-2">
-        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Téma"):</label>
-        <div class="col-sm-8 col-md-7">
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Období"):</label>
+            <div class="col-sm-2 col-md-2">
 
-            <span class="val-readonly">@Model.Rec.a08Name</span>
+                <span class="val-readonly">@(BO.BAS.ObjectDate2String(Model.Rec.a42DateFrom))</span>
+            </div>
+            <div class="col-sm-2 col-md-2">
+
+                <span class="val-readonly">@(BO.BAS.ObjectDate2String(Model.Rec.a42DateUntil))</span>
+            </div>
+
+
         </div>
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Počet akcí"):</label>
+            <div class="col-sm-2 col-md-2">
 
-    </div>
+                <span class="val-readonly">@Model.lisA01.Count()</span>
+            </div>
 
+        </div>
+        @if (Model.lisA01.Where(p => p.a01IsTemporary == true).Count() > 0 && Model.Rec.a42TempRowsA01 > Model.lisA01.Where(p => p.a01IsTemporary == true).Count())
+        {
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Počet TEMP akcí"):</label>
+                <div class="col-sm-2 col-md-2">
+
+                    <span class="val-readonly">@Model.lisA01.Where(p => p.a01IsTemporary == true).Count()</span>
+                </div>
+                <div class="col-sm-3 col-md-3">
+                    <a href="CompleteJob?a42id=@Model.Rec.pid" target="_top" class="btn btn-primary">@_f.tra("Spustit generování akcí")</a>
+                </div>
+            </div>
+        }
     <div class="form-row my-2">
-        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Období"):</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Počet poštovních zpráv"):</label>
         <div class="col-sm-2 col-md-2">
 
-            <span class="val-readonly">@(BO.BAS.ObjectDate2String(Model.Rec.a42DateFrom))</span>
+            <span class="val-readonly">@Model.lisX40.Count()</span>
         </div>
-        <div class="col-sm-2 col-md-2">
-
-            <span class="val-readonly">@(BO.BAS.ObjectDate2String(Model.Rec.a42DateUntil))</span>
-        </div>
-
-
+        @if (Model.lisX40.Count() < Model.lisA01.Count())
+        {
+            <div class="col-sm-3 col-md-3">
+                <a href="CompleteMailJob?a42id=@Model.Rec.pid" target="_top" class="btn btn-primary">@_f.tra("Připravit mail dávku")</a>
+            </div>
+        }
     </div>
 
 
-
-    @Html.Raw(Model.TagHtml)
-</div>
+        @Html.Raw(Model.TagHtml)
+    </div>
 
 @if (Model.Rec.a42Description != null)
 {

@@ -20,13 +20,13 @@ namespace DL
 
 
 
-        public string RunSp(string strProcName, ref Dapper.DynamicParameters pars)
-        {
+        public string RunSp(string strProcName, ref Dapper.DynamicParameters pars,int? timeout_seconds=null)
+        {            
             using (SqlConnection con = new SqlConnection(_conString))
             {
                 try
                 {
-                    con.Query(strProcName, pars, null, true, null, System.Data.CommandType.StoredProcedure);
+                    con.Query(strProcName, pars, null, true, timeout_seconds, System.Data.CommandType.StoredProcedure);
                     if (string.IsNullOrEmpty(pars.Get<string>("err_ret"))==false)
                     {
                         this.CurrentUser.AddMessage(pars.Get<string>("err_ret"));

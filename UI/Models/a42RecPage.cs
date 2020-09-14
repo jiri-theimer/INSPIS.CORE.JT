@@ -11,9 +11,9 @@ namespace UI.Models
 
         
         public int pid { get; set; }
-
-       
-
+        
+        public IEnumerable<BO.a01Event> lisA01 { get; set; }
+        public IEnumerable<BO.x40MailQueue> lisX40 { get; set; }
         public string TagHtml { get; set; }
     }
 }

@@ -31,9 +31,10 @@ namespace BO
         public int x29ID { get; set; }
         public int p40ID { get; set; }
         public int j03ID_Creator { get; set; }
-        
-        
+       
         public string x40MessageGuid { get; set; }
+        public string x40BatchGuid { get; set; }
+        public string x40AttachmentsGuid { get; set; }
         public string x40EmlFolder { get; set; }
         public int x40EmlFileSize { get; set; }
         public x40StateFlag x40Status { get; set; }

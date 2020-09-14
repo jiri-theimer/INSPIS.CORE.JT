@@ -39,7 +39,63 @@
         <span asp-validation-for="Rec.a42Description" class="text-danger"></span>
     </div>
 
+    @if (_f.IsUserAdmin())
+    {
+        <div class="form-row my-2">
+            <button type="button" id="cmdDeleteComplete" class="btn btn-danger">@_f.tra("Odstranit dávku včetně akcí")</button>
+        </div>
+    }
+    <div class="card">
+        <div class="card-header">
+            @_f.tra("Změnit plánované období")
+        </div>
+        <div class="card-body">
+            <div class="form-row">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Plánované období od"):</label>
+                <div class="col-sm-2 col-md-2">
+                    <mydate asp-for="@Model.ChangeDateFrom" include-time="false"></mydate>
+                </div>
+                <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Do"):</label>
+
+                <div class="col-sm-2 col-md-2">
+                    <mydate asp-for="@Model.ChangeDateUntil" include-time="false"></mydate>
+                </div>
+                <div class="col-sm-2 col-md-2">
+                    <button type="button" id="cmdChangePeriod" class="btn btn-light">Uložit změny</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
+<script type="text/javascript">
 
+    $(document).ready(function () {
+
+        $("#cmdChangePeriod").click(function () {
+            $(this).text("Processing...");
+            $(this).attr("disabled", true);
+
+            form1.action = "/a42/Record?oper=changeperiod";
+            form1.submit();
+
+        });
+
+        $("#cmdDeleteComplete").click(function () {
+            if (confirm("@_f.tra("Opravdu nenávratně odstranit tuto dávku včetně akcí?")")) {
+                $(this).text("Processing...");
+                $(this).attr("disabled", true);
+
+                form1.action = "/a42/Record?oper=deletecomplete";
+                form1.submit();
+            }
+            
+
+        });
+
+
+    });
+
+</script>
 

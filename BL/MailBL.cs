@@ -22,6 +22,8 @@ namespace BL
         public BO.x40MailQueue LoadMessageByPid(int x40id);
         public BO.x40MailQueue LoadMessageByGuid(string guid);
         public bool SaveMailJob2Temp(string strJobGuid, BO.x40MailQueue recX40, string strUploadGuid, List<BO.x43MailQueue_Recipient> lisX43);
+        public IEnumerable<BO.x40MailQueue> GetList(BO.myQuery mq);
+        public int SaveX40(MailMessage m, BO.x40MailQueue rec);
 
     }
     class MailBL : BaseBL, IMailBL
@@ -56,6 +58,15 @@ namespace BL
             return _db.GetList<BO.j40MailAccount>(GetSQL1());
         }
         
+        public int SaveP41(BO.p41MailQueueHeader rec)
+        {
+            var p = new DL.Params4Dapper();
+
+            p.AddInt("pid", rec.p41ID);
+            p.AddString("p41Name", rec.p41Name);
+            p.AddBool("p41IsProcessing", rec.p41IsProcessing);
+            return _db.SaveRecord("p41MailQueueHeader", p.getDynamicDapperPars(), rec);
+        }
         public int SaveJ40(BO.j40MailAccount rec)
         {
             if (rec.pid==0 && rec.j40SmtpUseDefaultCredentials == false && string.IsNullOrEmpty(rec.j40SmtpPassword)==true)
@@ -304,32 +315,51 @@ namespace BL
 
         }
 
-        private int SaveX40(MailMessage m,BO.x40MailQueue rec)
+        public int SaveX40(MailMessage m,BO.x40MailQueue rec)
         {            
             var p = new DL.Params4Dapper();
             p.AddInt("pid", rec.x40ID);
             p.AddString("x40MessageGuid", rec.x40MessageGuid);
+            p.AddString("x40BatchGuid", rec.x40BatchGuid);
+            p.AddString("x40AttachmentsGuid", rec.x40AttachmentsGuid);
             p.AddInt("j40ID", rec.j40ID, true);
             p.AddInt("x29ID", rec.x29ID, true);
             if (rec.j03ID_Creator == 0) rec.j03ID_Creator = _mother.CurrentUser.pid;
             p.AddInt("j03ID_Creator", rec.j03ID_Creator, true);
             p.AddInt("x40DataPID", rec.x40DataPID, true);
-           
-            p.AddString("x40SenderAddress", m.From.Address);
-            p.AddString("x40SenderName", m.From.DisplayName);
-            p.AddString("x40Recipient", String.Join(",", m.To.Select(p => p.Address)));
-            p.AddString("x40Bcc", String.Join(",", m.Bcc.Select(p => p.Address)));
-            p.AddString("x40Cc", String.Join(",", m.CC.Select(p => p.Address)));
-            p.AddString("x40Subject", m.Subject);
-            p.AddString("x40Body", m.Body);
-            p.AddBool("x40IsHtmlBody", m.IsBodyHtml);
+            if (m != null)
+            {
+                p.AddString("x40SenderAddress", m.From.Address);
+                p.AddString("x40SenderName", m.From.DisplayName);
+                p.AddString("x40Recipient", String.Join(",", m.To.Select(p => p.Address)));
+                p.AddString("x40Bcc", String.Join(",", m.Bcc.Select(p => p.Address)));
+                p.AddString("x40Cc", String.Join(",", m.CC.Select(p => p.Address)));
+                p.AddString("x40Subject", m.Subject);
+                p.AddString("x40Body", m.Body);
+                p.AddBool("x40IsHtmlBody", m.IsBodyHtml);
+                p.AddString("x40Attachments", String.Join(",", m.Attachments.Select(p => p.Name)));
+            }
+            else
+            {
+                p.AddString("x40SenderAddress", rec.x40SenderAddress);
+                p.AddString("x40SenderName", rec.x40SenderName);
+                p.AddString("x40Recipient", rec.x40Recipient);
+                p.AddString("x40Bcc", rec.x40Bcc);
+                p.AddString("x40Cc", rec.x40Cc);
+                p.AddString("x40Subject", rec.x40Subject);
+                p.AddString("x40Body", rec.x40Body);
+                p.AddBool("x40IsHtmlBody", rec.x40IsHtmlBody);
+                p.AddString("x40Attachments", rec.x40Attachments);
+            }
+            
             p.AddBool("x40IsProcessed", rec.x40IsProcessed);            
             p.AddDateTime("x40DatetimeProcessed", rec.x40DatetimeProcessed);
             p.AddString("x40ErrorMessage", rec.x40ErrorMessage);
             p.AddEnumInt("x40Status", rec.x40Status);
-            p.AddString("x40Attachments", String.Join(",", m.Attachments.Select(p => p.Name)));
+            
             p.AddString("x40EmlFolder", rec.x40EmlFolder);
             p.AddInt("x40EmlFileSize", rec.x40EmlFileSize);
+            
             return _db.SaveRecord("x40MailQueue", p.getDynamicDapperPars(), rec,false);
         }
 
@@ -378,9 +408,16 @@ namespace BL
             {
                 recTemp = new BO.p85Tempbox() { p85Prefix = "x43", p85GUID = strJobGuid, p85FreeText01 = c.x43Email, p85FreeText02 = c.x43DisplayName, p85OtherKey1 = c.x29ID,p85OtherKey2=c.x43DataPID, p85OtherKey3=c.x43RecipientType, p85OtherKey4=c.TempA03ID };
                 _mother.p85TempboxBL.Save(recTemp);
+              
             }
 
             return true;
+        }
+
+        public IEnumerable<BO.x40MailQueue> GetList(BO.myQuery mq)
+        {
+            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            return _db.GetList<BO.x40MailQueue>(fq.FinalSql, fq.Parameters);
         }
 
     }

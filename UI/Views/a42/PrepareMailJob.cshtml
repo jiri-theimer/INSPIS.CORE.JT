@@ -1,30 +1,31 @@
-﻿@model a42CreateTempFinishViewModel
+﻿@model a42PrepareMailJob
 @inject BL.Factory _f
 
 @{
 
     Layout = "~/Views/Shared/_Layout.cshtml";
-    if (Model.Rec == null) return;
+    if (Model.a42ID == 0) return;
 
-    ViewData["Title"] = "Nový INEZ k vygenerování";
+    ViewData["Title"] = _f.tra("Připravit poštovní zprávy pro INEZ dávku");
 }
 
 @addTagHelper *, UI
 
+<div class="bg-light" style="padding:10px;">
+    
+</div>
 
-<form id="form1" asp-controller="a42" asp-action="CreateTempFinish" method="POST">
+
+<form id="form1" asp-controller="a42" asp-action="PrepareMailJob" method="POST">
 
     <div class="bg-light" style="padding:10px;">
-        <button id="cmdComplete" type="button" class="btn btn-success" asp-route-a42id="@Model.a42ID">@_f.tra("Pokračovat")</button>
-        <a id="cmdCancel" href="/a42/CreatePre" class="btn btn-light">Zrušit</a>
-
+        <button type="button" id="cmdComplete" class="btn btn-primary">@_f.tra("Připravit dávku poštovních zpráv")</button>
+        
 
     </div>
 
     <input type="hidden" asp-for="@Model.a42ID" />
-    <input type="hidden" asp-for="@Model.JobGuid" />
-    <input type="hidden" asp-for="@Model.UploadGuid" />
-
+    
 
     <div class="modal_record_container">
 
@@ -41,25 +42,7 @@
                 <span class="val-readonly">@Model.Rec.a08Name</span>
             </div>
         </div>
-        <div class="form-row my-2">
-            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Formuláře"):</label>
-            <div class="col-sm-6 col-md-5">
-                @foreach (var c in Model.lisP85.Where(p => p.p85Prefix == "a12"))
-                {
-                    @if (c.p85FreeBoolean01)
-                    {
-                        <myval value="@("Anketní "+Convert.ToInt32(c.p85FreeNumber01).ToString()+"x: "+c.p85FreeText01);" hoverprefix="f06" hoverpid="@c.p85OtherKey2"></myval>
-                    }
-                    else
-                    {
-                        <myval value="@c.p85FreeText01" hoverprefix="f06" hoverpid="@c.p85OtherKey2"></myval>
-                    }
-
-                    <br />
-                }
-            </div>
-
-        </div>
+        
         <div class="form-row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Časový plán"):</label>
             <div class="col-sm-3 col-md-2">
@@ -70,17 +53,12 @@
             </div>
         </div>
         <div class="form-row my-2">
-            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Počet škol (akcí)"):</label>
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Počet příjemců"):</label>
             <div class="col-sm-6 col-md-5">
-                <span class="val-readonly">@Model.a03Count</span>
+                <span class="val-readonly">@Model.lisX43.Count()</span>
             </div>
         </div>
-        <div class="form-row my-2">
-            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Z toho školy bez e-mail adresy"):</label>
-            <div class="col-sm-6 col-md-5">
-                <span class="val-readonly">@Model.a03CountNoEmail</span>
-            </div>
-        </div>
+        
 
         <div class="form-row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Předmět zprávy"):</label>
@@ -137,7 +115,8 @@
 
         });
 
-        
-        
+
+
     });
 </script>
+
