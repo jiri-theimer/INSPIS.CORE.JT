@@ -408,7 +408,7 @@ namespace BL
 
         public IEnumerable<BO.x40MailQueue> GetList(BO.myQuery mq)
         {
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql("SELECT a.*,"+ _db.GetSQL1_Ocas("x40",false,false,true)+" FROM x40MailQueue a", mq, _mother.CurrentUser);
             return _db.GetList<BO.x40MailQueue>(fq.FinalSql, fq.Parameters);
         }
 

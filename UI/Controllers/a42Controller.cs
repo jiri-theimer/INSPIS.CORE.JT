@@ -77,19 +77,19 @@ namespace UI.Controllers
                     var dt = Factory.gridBL.GetList4MailMerge("a01", intA01ID) ;
                     string strBody = cMerge.GetMergedContent(v.MessageBody, dt);
 
-                    var recX40 = new BO.x40MailQueue() {x40BatchGuid=v.Rec.a42JobGuid, x40Status=BO.x40StateFlag.InQueque, x40Subject = v.MessageSubject,x40Body=strBody,x40IsHtmlBody=false,x40Recipient=cTemp.p85FreeText01 };
+                    var recX40 = new BO.x40MailQueue() {x40BatchGuid=v.Rec.a42JobGuid, x40Status=BO.x40StateFlag.InQueque,x40DataPID=intA01ID,x29ID=101, x40Subject = v.MessageSubject,x40Body=strBody,x40IsHtmlBody=false,x40Recipient=cTemp.p85FreeText01 };
                     if (v.lisTempFiles != null && v.lisTempFiles.Count()>0)
                     {
                         recX40.x40AttachmentsGuid = v.Rec.a42UploadGuid;
                     }
                     if (lisX40.Where(p=>p.x40DataPID==intA01ID && p.x29ID == 101).Count() > 0)
                     {
-                        recX40.p40ID = lisX40.Where(p => p.x40DataPID == intA01ID && p.x29ID == 101).First().pid;
+                        recX40.pid = lisX40.Where(p => p.x40DataPID == intA01ID && p.x29ID == 101).First().pid;
                     }
                     
                     Factory.MailBL.SaveX40(null, recX40);
                 }
-                return RedirectToAction("CompleteMailJob", new { a42id = c.pid });
+                return View(v);
 
             }
             this.Notify_RecNotSaved();
