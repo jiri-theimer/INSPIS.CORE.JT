@@ -71,13 +71,15 @@ namespace UI.Controllers
 
                 var cMerge = new BO.CLS.MergeContent();
                 var lisX40 = Factory.MailBL.GetList(new BO.myQuery("x40") { a42id = v.Rec.pid }).Where(p=>p.x40BatchGuid==v.Rec.a42JobGuid);
+                int x = 0;
                 foreach (var cTemp in v.lisP85.Where(p=>p.p85Prefix=="x43"))     //p85OtherKey4: a03ID, p85OtherKey2: j02ID
                 {
+                    x += 1;
                     int intA01ID = v.lisA01.Where(p => p.a03ID == cTemp.p85OtherKey4).First().pid;
                     var dt = Factory.gridBL.GetList4MailMerge("a01", intA01ID) ;
                     string strBody = cMerge.GetMergedContent(v.MessageBody, dt);
 
-                    var recX40 = new BO.x40MailQueue() {x40BatchGuid=v.Rec.a42JobGuid, x40Status=BO.x40StateFlag.InQueque,x40DataPID=intA01ID,x29ID=101, x40Subject = v.MessageSubject,x40Body=strBody,x40IsHtmlBody=false,x40Recipient=cTemp.p85FreeText01 };
+                    var recX40 = new BO.x40MailQueue() {x40MailID=x,x40BatchGuid=v.Rec.a42JobGuid, x40Status=BO.x40StateFlag.InQueque,x40DataPID=intA01ID,x29ID=101, x40Subject = v.MessageSubject,x40Body=strBody,x40IsHtmlBody=false,x40Recipient=cTemp.p85FreeText01 };
                     if (v.lisTempFiles != null && v.lisTempFiles.Count()>0)
                     {
                         recX40.x40AttachmentsGuid = v.Rec.a42UploadGuid;
@@ -89,7 +91,8 @@ namespace UI.Controllers
                     
                     Factory.MailBL.SaveX40(null, recX40);
                 }
-                return View(v);
+                Factory.a42QesBL.UpdateJobState(v.Rec.pid, BO.a42JobState.PreparedX40);
+                return RedirectToAction("MailBatchFramework","Mail", new { batchguid = c.a42JobGuid });
 
             }
             this.Notify_RecNotSaved();
@@ -201,7 +204,7 @@ namespace UI.Controllers
                 if (c.pid > 0)
                 {
                     //Dávka je připravena k vygenerování akcí
-
+                    Factory.a42QesBL.UpdateJobState(c.pid, BO.a42JobState.Draft);
                     return RedirectToAction("CreateTempFinish", new { a42id = c.pid });
                 }
             }
@@ -289,6 +292,7 @@ namespace UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Record(Models.Record.a42Record v, string oper)
         {
+            v.Rec = Factory.a42QesBL.Load(v.rec_pid);
             if (oper == "changeperiod")
             {
                 var c = Factory.a42QesBL.Load(v.rec_pid);
@@ -315,6 +319,20 @@ namespace UI.Controllers
                 {
                     return View(v);
                 }
+            }
+            if (oper== "stopmailing")
+            {
+                Factory.a42QesBL.UpdateJobState(v.rec_pid, BO.a42JobState.MailQueueStopped);
+                Factory.MailBL.StopPendingMessagesInBatch(v.Rec.a42JobGuid);
+                v.SetJavascript_CallOnLoad(v.rec_pid);
+                return View(v);
+            }            
+            if (oper == "startmailing")
+            {
+                Factory.a42QesBL.UpdateJobState(v.rec_pid, BO.a42JobState.MailQueue);
+                Factory.MailBL.RestartMessagesInBatch(v.Rec.a42JobGuid);
+                v.SetJavascript_CallOnLoad(v.rec_pid);
+                return View(v);
             }
             if (ModelState.IsValid)
             {
@@ -382,6 +400,7 @@ namespace UI.Controllers
             var ret = new BO.Result(false);
             if (lisP85_A03.Count() == 0)
             {
+                Factory.a42QesBL.UpdateJobState(recA42.pid, BO.a42JobState.PreparedA01);    //akce vygenerovány
                 ret.pid = 1;
                 return ret;
             }
@@ -420,7 +439,7 @@ namespace UI.Controllers
                 recTemp.p85IsFinished = true;
                 Factory.p85TempboxBL.Save(recTemp);
             }
-
+            Factory.a42QesBL.UpdateJobState(recA42.pid, BO.a42JobState.Generating);
 
             return ret;
         }

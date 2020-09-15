@@ -72,6 +72,15 @@
                 <a href="PrepareMailJob?a42id=@Model.Rec.pid" target="_top" class="btn btn-primary">@_f.tra("Připravit dávku poštovních zpráv")</a>
             </div>
         }
+        else
+        {
+            if (Model.lisX40.Count() > 0)
+            {
+                <div class="col-sm-3 col-md-3">
+                    <a href="/Mail/MailBatchFramework?batchguid=@Model.Rec.a42JobGuid" target="_top" class="btn btn-primary">@_f.tra("Stav odesílání poštovních zpráv")</a>
+                </div>
+            }
+        }
     </div>
 
 

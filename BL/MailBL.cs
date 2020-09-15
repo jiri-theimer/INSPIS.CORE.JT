@@ -24,6 +24,8 @@ namespace BL
         public bool SaveMailJob2Temp(string strJobGuid, BO.x40MailQueue recX40, string strUploadGuid, List<BO.x43MailQueue_Recipient> lisX43);
         public IEnumerable<BO.x40MailQueue> GetList(BO.myQuery mq);
         public int SaveX40(MailMessage m, BO.x40MailQueue rec);
+        public void StopPendingMessagesInBatch(string batchguid);
+        public void RestartMessagesInBatch(string batchguid);
 
     }
     class MailBL : BaseBL, IMailBL
@@ -307,10 +309,25 @@ namespace BL
 
         }
 
+        public void StopPendingMessagesInBatch(string batchguid)
+        {
+            _db.RunSql("UPDATE x40MailQueue set x40Status=4 WHERE x40BatchGuid=@guid AND x40Status=1", new {guid = batchguid });
+            _db.RunSql("UPDATE a42Qes set a42JobState=7 WHERE a42JobGuid=@guid", new { guid = batchguid }); //doplňkově nastavit stav pro INEZ
+        }
+        public void RestartMessagesInBatch(string batchguid)
+        {
+            _db.RunSql("UPDATE x40MailQueue set x40Status=1 WHERE x40BatchGuid=@guid AND x40Status=4", new { guid = batchguid });
+            _db.RunSql("UPDATE a42Qes set a42JobState=6 WHERE a42JobGuid=@guid", new { guid = batchguid }); //doplňkově nastavit stav pro INEZ
+        }
+
         public int SaveX40(MailMessage m,BO.x40MailQueue rec)
         {            
             var p = new DL.Params4Dapper();
             p.AddInt("pid", rec.x40ID);
+            if (string.IsNullOrEmpty(rec.x40MessageGuid) == true)
+            {
+                rec.x40MessageGuid = BO.BAS.GetGuid();
+            }
             p.AddString("x40MessageGuid", rec.x40MessageGuid);
             p.AddString("x40BatchGuid", rec.x40BatchGuid);
             p.AddString("x40AttachmentsGuid", rec.x40AttachmentsGuid);
@@ -319,6 +336,7 @@ namespace BL
             if (rec.j03ID_Creator == 0) rec.j03ID_Creator = _mother.CurrentUser.pid;
             p.AddInt("j03ID_Creator", rec.j03ID_Creator, true);
             p.AddInt("x40DataPID", rec.x40DataPID, true);
+            p.AddInt("x40MailID", rec.x40MailID, true);
             if (m != null)
             {
                 p.AddString("x40SenderAddress", m.From.Address);

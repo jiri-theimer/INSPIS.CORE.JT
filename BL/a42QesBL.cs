@@ -13,7 +13,7 @@ namespace BL
         public IEnumerable<BO.a42Qes> GetList(BO.myQuery mq);
         public int Save(BO.a42Qes rec);
         public int PrepareTempData(BO.a42Qes rec, BO.a01Event recA01Template, List<BO.a12ThemeForm> lisA12, List<int> a03ids, BO.x40MailQueue recX40, List<BO.a12ThemeForm> lisA12Poll);
-        public void UpdateJobState(int a42id, int stateflag);
+        public void UpdateJobState(int a42id, BO.a42JobState stateflag);
         public bool DeleteWithA01(int pid);
         public int ChangePeriod(BO.a42Qes rec);
     }
@@ -51,9 +51,9 @@ namespace BL
             return _db.GetList<BO.a42Qes>(fq.FinalSql, fq.Parameters);
         }
 
-        public void UpdateJobState(int a42id,int stateflag)
+        public void UpdateJobState(int a42id,BO.a42JobState stateflag)
         {
-            _db.RunSql("UPDATE a42Qes set a42JobState=@x WHERE a42ID=@pid", new { x = stateflag, pid = a42id });
+            _db.RunSql("UPDATE a42Qes set a42JobState=@x WHERE a42ID=@pid", new { x =(int) stateflag, pid = a42id });
         }
         public bool DeleteWithA01(int pid)
         {
@@ -222,7 +222,7 @@ namespace BL
             rec.a42TempRowsA01 = _mother.p85TempboxBL.GetList(strJobGuid, false, "a03").Count();
             rec.a42TempRowsX40= _mother.p85TempboxBL.GetList(strJobGuid, false, "x40").Count();
             int intA42ID = Save(rec);
-            UpdateJobState(intA42ID, 1);
+            
             return intA42ID;
 
         }

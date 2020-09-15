@@ -34,6 +34,7 @@ namespace BO
        
         public string x40MessageGuid { get; set; }
         public string x40BatchGuid { get; set; }
+        public int x40MailID { get; set; }
         public string x40AttachmentsGuid { get; set; }
         public string x40EmlFolder { get; set; }
         public int x40EmlFileSize { get; set; }

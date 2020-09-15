@@ -563,7 +563,9 @@ namespace UI.Controllers
                     AMI("Nová šachovnice otázek", string.Format("javascript: _window_open('/f25/Record?f18id={0}')", pid));
                     break;
                 case "x40":
-                    AMI("Detail odeslané zprávy", string.Format("javascript:_edit_full('Mail','Record',{0})",pid));
+                    var recX40 = Factory.MailBL.LoadMessageByPid(pid);
+                    
+                    AMI("Detail zprávy"+" ["+ recX40.StateAlias+"]", string.Format("javascript:_edit_full('Mail','Record',{0})",pid));
                     DIV();
                     AMI("Zkopírovat do nové zprávy", string.Format(string.Format("javascript: _window_open('/Mail/SendMail?x40id={0}')",pid)));
                     break;

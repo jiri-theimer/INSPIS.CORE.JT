@@ -500,6 +500,10 @@ namespace DL
             {
                 AQ(ref lis, "a.f06BindScopeQuery IN (0,2)", "", null);    //formuláře použitelné jako anketní
             }
+            if (mq.explicit_sqlwhere != null)
+            {
+                AQ(ref lis, mq.explicit_sqlwhere, "", null);
+            }
 
             if (mq.TheGridFilter != null)
             {

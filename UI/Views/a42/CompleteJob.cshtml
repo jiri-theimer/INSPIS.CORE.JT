@@ -15,6 +15,11 @@
 
 <div class="bg-light" style="padding:10px;">
     <button type="button" id="cmdRun" onclick="StartJob()" class="btn btn-primary">@_f.tra("Spustit generování akcí")</button>
+
+    @if (Model.Rec.a42JobState == BO.a42JobState.PreparedA01)
+    {
+        <a href="PrepareMailJob?a42id=@Model.Rec.pid" target="_top" class="btn btn-primary">@_f.tra("Připravit dávku poštovních zpráv")</a>
+    }
 </div>
 <div>
     <label>@_f.tra("Generovat dávkově po X akcích:")</label>
@@ -54,17 +59,17 @@
     }
     function StopJob() {
         _isStopped = true;
-        $("#cmdRun").text("Waiting for STOP...");        
+        $("#cmdRun").text("Waiting for STOP...");
         $("#cmdStop").css("display", "none");
     }
 
     function RunOneJob() {
-        
+
         var davkaPocet = $("#GenerovatPoAkcich").val();
 
         $.post("/a42/RunPartOfJob", { a42id: @Model.a42ID, take_records_per_job: davkaPocet }, function (data) {
             if (data.pid == 1) {
-                $("#divResult").html("Akce připraveny.");                
+                $("#divResult").html("Akce připraveny.");
                 $("#cmdRun").text(_cmdRunText);
                 $("#cmdRun").attr("disabled", false);
                 $("#cmdStop").css("display", "none");
@@ -80,7 +85,7 @@
                 _isStopped = false;
                 return;
             }
-            
+
 
             RunOneJob();
         });
