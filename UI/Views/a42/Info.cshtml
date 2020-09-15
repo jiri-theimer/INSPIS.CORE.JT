@@ -66,7 +66,7 @@
 
             <span class="val-readonly">@Model.lisX40.Count()</span>
         </div>
-        @if (Model.lisX40.Count() < Model.lisA01.Count())
+        @if (Model.lisX40.Count() == 0 && Model.lisA01.Count()>0)
         {
             <div class="col-sm-3 col-md-3">
                 <a href="PrepareMailJob?a42id=@Model.Rec.pid" target="_top" class="btn btn-primary">@_f.tra("Připravit dávku poštovních zpráv")</a>

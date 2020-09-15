@@ -9,6 +9,7 @@ namespace UI.Models
     {
         public string BatchGuid { get; set; }
         public IEnumerable<BO.x40MailQueue> lisX40 { get; set; }
+        public int TotalCountX40 { get; set; }
 
         public int LimitTopRecs { get; set; }
         public int QueryByStatusID { get; set; }
