@@ -86,7 +86,7 @@ namespace UI.Controllers
                 }
 
                 //System.IO.File.AppendAllText("c:\\temp\\hovado.txt", "Try SendMessage: " + DateTime.Now.ToString()+", message: "+ v.Rec.x40Subject);
-                BO.Result r = Factory.MailBL.SendMessage(v.Rec);
+                BO.Result r = Factory.MailBL.SendMessage(v.Rec,false);
                 if (v.Rec.j40ID > 0)
                 {
                     Factory.CBL.SetUserParam("SendMail_j40ID", v.Rec.j40ID.ToString());

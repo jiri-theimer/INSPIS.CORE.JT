@@ -21,6 +21,9 @@ namespace BO
         [Key]
         public int a42ID { get; set; }
         public int a08ID { get; set; }
+        public int j40ID { get; set; }
+        public string j40SmtpEmail { get; set; } //combo
+        public int a42TestFlag { get; set; }    //1:neodesílá maily
         public string a42Name { get; set; }
         public DateTime? a42DateFrom { get; set; }
         public DateTime? a42DateUntil { get; set; }

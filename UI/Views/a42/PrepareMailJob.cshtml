@@ -42,7 +42,7 @@
                 <span class="val-readonly">@Model.Rec.a08Name</span>
             </div>
         </div>
-        
+
         <div class="form-row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Časový plán"):</label>
             <div class="col-sm-3 col-md-2">
@@ -52,7 +52,12 @@
                 <span class="val-readonly">@(BO.BAS.ObjectDate2String(Model.Rec.a42DateUntil))</span>
             </div>
         </div>
-       
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Poštovní účet"):</label>
+            <div class="col-sm-6 col-md-5">
+                <span class="val-readonly">@Model.Rec.j40SmtpEmail</span>
+            </div>
+        </div>
 
         <div class="form-row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Předmět zprávy"):</label>

@@ -9,6 +9,7 @@
 }
 @addTagHelper *, UI
 
+<input type="hidden" asp-for="@Model.Rec.a42JobGuid" />
     <div class="modal_record_container">
 
         <div class="form-row">
@@ -16,6 +17,22 @@
             <div class="col-sm-11 col-md-10">
                 <input class="form-control" asp-for="Rec.a42Name" />
                 <span asp-validation-for="Rec.a42Name" class="text-danger"></span>
+            </div>
+
+        </div>
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Poštovní účet"):</label>
+            <div class="col-sm-11 col-md-10">
+                <mycombo entity="j40MailAccount" asp-for="Rec.j40ID" selectedtext="Rec.j40SmtpEmail" view-flag="2"></mycombo>
+            </div>
+        </div>
+        <div class="form-row">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Režim"):</label>
+            <div class="col-sm-5 col-md-5">
+                <select asp-for="@Model.Rec.a42TestFlag" class="form-control">
+                    <option value="0"></option>
+                    <option value="1">@_f.tra("Testování: Neodesílat poštovní zprávy")</option>
+                </select>
             </div>
 
         </div>

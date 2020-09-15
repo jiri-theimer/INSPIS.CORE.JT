@@ -272,6 +272,7 @@ namespace BL
                     break;
                 case "a42":
                     lis.Add(getREL("a08Theme", "a42_a08", "Téma", "INNER JOIN a08Theme a42_a08 ON a.a08ID=a42_a08.a08ID"));
+                    lis.Add(getREL("j40MailAccount", "a42_j40", "Poštovní účet", "LEFT OUTER JOIN j40MailAccount a42_j40 ON a.j40ID=a42_j40.j40ID"));
                     break;
                 case "b02":
                     lis.Add(getREL("b01WorkflowTemplate", "b02_b01", "Workflow šablona", "INNER JOIN b01WorkflowTemplate b02_b01 ON a.b01ID=b02_b01.b01ID"));

@@ -12,7 +12,7 @@ namespace BL
     {
         public BO.Result SendMessage(int j40id, MailMessage message); //v Result.pid vrací x40id
         public BO.Result SendMessage(int j40id, string toEmail, string toName, string subject, string body, bool ishtml,int x29id,int recpid); //v Result.pid vrací x40id
-        public BO.Result SendMessage(BO.x40MailQueue rec);  //v Result.pid vrací x40id
+        public BO.Result SendMessage(BO.x40MailQueue rec,bool istest);  //v Result.pid vrací x40id
         public void AddAttachment(string fullpath, string displayname, string contenttype = null);
         public void AddAttachment(Attachment att);
         public BO.j40MailAccount LoadJ40(int pid);
@@ -155,10 +155,10 @@ namespace BL
 
             BO.x40MailQueue rec = new BO.x40MailQueue() { x40Recipient = toEmail, x40Subject = subject, x40Body = body, x40IsHtmlBody = ishtml,x40MessageGuid=BO.BAS.GetGuid(),x29ID=x29id,x40DataPID=recpid };
             rec = InhaleMessageSender(j40id,rec);
-            return SendMessage(rec);
+            return SendMessage(rec,false);
            
         }
-        public BO.Result SendMessage(BO.x40MailQueue rec)  //v BO.Result.pid vrací x40id
+        public BO.Result SendMessage(BO.x40MailQueue rec, bool istest)  //v BO.Result.pid vrací x40id
         {
             rec = InhaleMessageSender(rec.j40ID, rec);            
             MailMessage m = new MailMessage() { Body = rec.x40Body, Subject = rec.x40Subject,IsBodyHtml=rec.x40IsHtmlBody};                        
@@ -192,7 +192,7 @@ namespace BL
 
            
 
-            return handle_smtp_finish(m, rec);
+            return handle_smtp_finish(m, rec,istest);
         }
         public BO.Result SendMessage(int j40id, MailMessage message)
         {
@@ -202,11 +202,11 @@ namespace BL
                 rec = InhaleMessageSender(j40id, rec);
                 message.From = new MailAddress(rec.x40SenderAddress, rec.x40SenderName);
             }
-            return handle_smtp_finish(message,rec);
+            return handle_smtp_finish(message,rec,false);
         }
 
 
-        private BO.Result handle_smtp_finish(MailMessage m,BO.x40MailQueue rec)     //finální odeslání zprávy
+        private BO.Result handle_smtp_finish(MailMessage m,BO.x40MailQueue rec, bool istest)     //finální odeslání zprávy
         {
             if (_account == null)
             {
@@ -283,8 +283,18 @@ namespace BL
                 
                 try
                 {
-                    client.Send(m);
-                    rec.x40ErrorMessage = "";
+                    if (istest == false)
+                    {
+                        client.Send(m);                        
+                    }                    
+                    if (istest)
+                    {
+                        rec.x40ErrorMessage = "Testovací režim";
+                    }
+                    else
+                    {
+                        rec.x40ErrorMessage = "";
+                    }                    
                     rec.x40Status = BO.x40StateFlag.Proceeded;
                     ret.pid = SaveX40(m, rec);
                     ret.Flag = ResultEnum.Success;

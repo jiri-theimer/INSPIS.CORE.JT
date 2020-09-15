@@ -56,9 +56,9 @@ namespace UI.Controllers
 
             if (ModelState.IsValid)
             {
-                if (string.IsNullOrEmpty(v.MessageBody) == true || string.IsNullOrEmpty(v.MessageSubject) == true)
+                if (string.IsNullOrEmpty(v.MessageBody) == true || string.IsNullOrEmpty(v.MessageSubject) == true || v.Rec.j40ID==0)
                 {
-                    this.AddMessage("Chybí předmět nebo obsah zprávy.");
+                    this.AddMessage("Chybí poštovní účet, předmět nebo obsah zprávy.");
                     v.Rec = Factory.a42QesBL.Load(v.a42ID);                    
                     return View(v);
                 }
@@ -79,7 +79,7 @@ namespace UI.Controllers
                     var dt = Factory.gridBL.GetList4MailMerge("a01", intA01ID) ;
                     string strBody = cMerge.GetMergedContent(v.MessageBody, dt);
 
-                    var recX40 = new BO.x40MailQueue() {x40MailID=x,x40BatchGuid=v.Rec.a42JobGuid, x40Status=BO.x40StateFlag.InQueque,x40DataPID=intA01ID,x29ID=101, x40Subject = v.MessageSubject,x40Body=strBody,x40IsHtmlBody=false,x40Recipient=cTemp.p85FreeText01 };
+                    var recX40 = new BO.x40MailQueue() {j40ID=c.j40ID,x40MailID=x,x40BatchGuid=v.Rec.a42JobGuid, x40Status=BO.x40StateFlag.InQueque,x40DataPID=intA01ID,x29ID=101, x40Subject = v.MessageSubject,x40Body=strBody,x40IsHtmlBody=false,x40Recipient=cTemp.p85FreeText01 };
                     if (v.lisTempFiles != null && v.lisTempFiles.Count()>0)
                     {
                         recX40.x40AttachmentsGuid = v.Rec.a42UploadGuid;
@@ -195,7 +195,14 @@ namespace UI.Controllers
 
             if (ModelState.IsValid)
             {
+                if (string.IsNullOrEmpty(v.MessageBody) == true || string.IsNullOrEmpty(v.MessageSubject) == true || v.Rec.j40ID == 0 || string.IsNullOrEmpty(v.Rec.a42Name)==true)
+                {
+                    this.AddMessage("Povinná pole: Název, Poštovní účet, Předmět zprávy a Obsah zprávy.");                    
+                    return View(v);
+                }
                 BO.a42Qes c = new BO.a42Qes() { a08ID = v.a08ID, a42DateFrom = v.a42DateFrom, a42DateUntil = v.a42DateUntil, a42Name = v.Rec.a42Name, a42Description = v.Rec.a42Description, a42JobGuid = BO.BAS.GetGuid(), a42UploadGuid = v.UploadGuid };
+                c.j40ID = v.Rec.j40ID;
+                c.a42TestFlag = v.Rec.a42TestFlag;
                 BO.a01Event recA01 = new BO.a01Event() { a10ID = v.a10ID, a08ID = v.a08ID };
                 List<int> a03ids = BO.BAS.ConvertString2ListInt(v.a03IDs);
                 var recX40 = new BO.x40MailQueue() { x40Subject = v.MessageSubject, x40Body = v.MessageBody, x40RecipientFlag = v.MessageReceiverFlag };
@@ -292,7 +299,7 @@ namespace UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Record(Models.Record.a42Record v, string oper)
         {
-            v.Rec = Factory.a42QesBL.Load(v.rec_pid);
+            
             if (oper == "changeperiod")
             {
                 var c = Factory.a42QesBL.Load(v.rec_pid);
@@ -342,7 +349,8 @@ namespace UI.Controllers
                 c.a42DateFrom = v.Rec.a42DateFrom;
                 c.a42DateUntil = v.Rec.a42DateUntil;
                 c.a42Description = v.Rec.a42Description;
-
+                c.j40ID = v.Rec.j40ID;
+                c.a42TestFlag = v.Rec.a42TestFlag;
 
                 c.ValidUntil = v.Toolbar.GetValidUntil(c);
                 c.ValidFrom = v.Toolbar.GetValidFrom(c);

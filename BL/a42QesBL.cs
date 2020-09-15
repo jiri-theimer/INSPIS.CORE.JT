@@ -28,9 +28,9 @@ namespace BL
 
         private string GetSQL1(string strAppend = null)
         {
-            sb("SELECT a.*,a08.a08Name,");
+            sb("SELECT a.*,a08.a08Name,j40.j40SmtpEmail,");
             sb(_db.GetSQL1_Ocas("a42"));
-            sb(" FROM a42Qes a INNER JOIN a08Theme a08 ON a.a08ID=a08.a08ID");
+            sb(" FROM a42Qes a INNER JOIN a08Theme a08 ON a.a08ID=a08.a08ID LEFT OUTER JOIN j40MailAccount j40 ON a.j40ID=j40.j40ID");
             sb(strAppend);
             return sbret();
         }
@@ -93,7 +93,9 @@ namespace BL
 
             var p = new DL.Params4Dapper();
             p.AddInt("pid", rec.a42ID);
+            p.AddInt("j40ID", rec.j40ID,true);
             p.AddInt("a08ID", rec.a08ID,true);
+            p.AddInt("a42TestFlag", rec.a42TestFlag);
             p.AddString("a42Name", rec.a42Name);
             p.AddDateTime("a42DateFrom", rec.a42DateFrom);
             p.AddDateTime("a42DateUntil", rec.a42DateUntil);

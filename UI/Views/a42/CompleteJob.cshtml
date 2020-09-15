@@ -70,10 +70,9 @@
         $.post("/a42/RunPartOfJob", { a42id: @Model.a42ID, take_records_per_job: davkaPocet }, function (data) {
             if (data.pid == 1) {
                 $("#divResult").html("Akce připraveny.");
-                $("#cmdRun").text(_cmdRunText);
-                $("#cmdRun").attr("disabled", false);
-                $("#cmdStop").css("display", "none");
+                
                 alert("Akce připraveny.");
+                location.replace(location.href);
                 return;
             }
             $("#divResult").html(data.message);

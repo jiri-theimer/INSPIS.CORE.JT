@@ -16,5 +16,6 @@ namespace UI.Models
 
         public string MessageSubject { get; set; }
         public string MessageBody { get; set; }
+        
     }
 }

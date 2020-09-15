@@ -78,7 +78,15 @@ namespace UI
                 {
                     foreach (var recX40 in lisX40)
                     {
-                        f.MailBL.SendMessage(recX40);
+                        if (recA42.a42TestFlag == 1)
+                        {
+                            f.MailBL.SendMessage(recX40,true);  //testovací režim
+                        }
+                        else
+                        {
+                            f.MailBL.SendMessage(recX40, false);
+                        }
+                        
                     }
                     return;
                 }
