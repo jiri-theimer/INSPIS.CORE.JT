@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
 using UI.Models;
 using UI.Models.Record;
 
@@ -10,21 +12,73 @@ namespace UI.Controllers
 {
     public class AdminController : BaseController
     {
-        public IActionResult Ciselniky(string prefix, int go2pid,string view)
+        public IActionResult LogAsUser(string login, string code)
         {
-            var v = new AdminPage() { prefix = prefix, go2pid = go2pid,view=view };
+            var v = new AdminLogAsUser() { Login = login, Code = code };
+
+            return View(v);
+        }
+        [HttpPost]
+        public IActionResult LogAsUser(AdminLogAsUser v)
+        {
+            if (ModelState.IsValid)
+            {
+
+                if (string.IsNullOrEmpty(v.Login) || string.IsNullOrEmpty(v.Code))
+                {
+                    this.AddMessage("Login i Ověřovací kód je povinné zadat."); return View(v);
+                }
+                var recJ03 = Factory.j03UserBL.LoadByLogin(v.Login, 0);
+                if (recJ03 == null)
+                {
+                    this.AddMessage("Zadaný login neexistuje."); return View(v);
+                }
+                if (v.Code != Factory.CurrentUser.j03Login.Substring(0, 2)+BO.BAS.ObjectDateTime2String(DateTime.Now,"ddHH"))
+                {
+                    this.AddMessage("Ověřovací kód není správný."); return View(v);
+                }
+
+                if (recJ03.j02Email == null) { recJ03.j02Email = "info@marktime.cz"; };
+                var userClaims = new List<Claim>()
+                {
+                new Claim(ClaimTypes.Name, recJ03.j03Login),
+                new Claim("access_token","inspis_core_token"),
+                new Claim(ClaimTypes.Email, recJ03.j02Email)
+                 };
+
+                var grandmaIdentity = new ClaimsIdentity(userClaims, "User Identity");
+                var userPrincipal = new ClaimsPrincipal(new[] { grandmaIdentity });
+
+                var xx = new AuthenticationProperties() { IsPersistent = true, ExpiresUtc = DateTime.Now.AddHours(1) };
+                HttpContext.SignInAsync(userPrincipal, xx);
+
+                if (recJ03 != null)
+                {
+
+                    return Redirect("/Home/Index");
+                    
+                }
+
+            }
+
+            return View(v);
+        }
+
+        public IActionResult Ciselniky(string prefix, int go2pid, string view)
+        {
+            var v = new AdminPage() { prefix = prefix, go2pid = go2pid, view = view };
             inhale_entity(ref v, prefix);
             if (prefix == "o13" || prefix == "x32")
             {
                 if (string.IsNullOrEmpty(v.view) == true)
                 {
-                    v.view = Factory.CBL.LoadUserParam("Admin-Ciselniky-View-"+prefix, "tree");
+                    v.view = Factory.CBL.LoadUserParam("Admin-Ciselniky-View-" + prefix, "tree");
                 }
                 else
                 {
-                    Factory.CBL.SetUserParam("Admin-Ciselniky-View-"+prefix, v.view);
+                    Factory.CBL.SetUserParam("Admin-Ciselniky-View-" + prefix, v.view);
                 }
-                if (prefix=="o13" && v.view == "tree")
+                if (prefix == "o13" && v.view == "tree")
                 {
                     inhale_tree_o13(v);
                 }
@@ -33,12 +87,12 @@ namespace UI.Controllers
                     inhale_tree_x32(v);
                 }
             }
-            
+
             return View(v);
         }
         public IActionResult Users(string prefix, int go2pid)
         {
-            var v = new AdminPage() { prefix = prefix,go2pid=go2pid };
+            var v = new AdminPage() { prefix = prefix, go2pid = go2pid };
             inhale_entity(ref v, prefix);
 
             return View(v);
@@ -62,7 +116,7 @@ namespace UI.Controllers
                     inhale_tree_f12(v);
                 }
             }
-                        
+
             return View(v);
         }
         public IActionResult Workflow(string prefix, int go2pid)
@@ -74,7 +128,7 @@ namespace UI.Controllers
         }
 
 
-        private void inhale_entity(ref AdminPage v,string prefix)
+        private void inhale_entity(ref AdminPage v, string prefix)
         {
             if (prefix != null)
             {
@@ -154,7 +208,7 @@ namespace UI.Controllers
 
         public IActionResult System()
         {
-            
+
             return View();
         }
         public BO.Result GenerateSpGenerateCreateUpdateScript(string scope)
@@ -165,7 +219,7 @@ namespace UI.Controllers
                 lis = lis.Where(p => p.Name.StartsWith("_core"));
             }
             Factory.FBL.GenerateCreateUpdateScript(lis);
-            
+
             return new BO.Result(false, "Soubor byl vygenerován (do TEMPu)");
         }
 

@@ -387,7 +387,7 @@ namespace DL
             }
             if (mq.j02id_leader > 0)
             {
-                if (mq.Prefix == "a01") AQ(ref lis, "a.a01ID IN (select a01ID FROM a41PersonToEvent WHERE a45ID=2 AND j02ID=@j02id)", "j02id", mq.j02id);   //je vedoucím akce
+                if (mq.Prefix == "a01") AQ(ref lis, "a.a01ID IN (select a01ID FROM a41PersonToEvent WHERE a45ID=2 AND j02ID=@j02id_leader)", "j02id_leader", mq.j02id_leader);   //je vedoucím akce
             }
             if (mq.j02id_issuer > 0)
             {

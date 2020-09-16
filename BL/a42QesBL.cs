@@ -10,6 +10,7 @@ namespace BL
     {
         public BO.a42Qes Load(int pid);
         public BO.a42Qes LoadByName(string strA42Name, int intExcludePID);
+        public BO.a42Qes LoadByGuid(string strGUID, int intExcludePID);
         public IEnumerable<BO.a42Qes> GetList(BO.myQuery mq);
         public int Save(BO.a42Qes rec);
         public int PrepareTempData(BO.a42Qes rec, BO.a01Event recA01Template, List<BO.a12ThemeForm> lisA12, List<int> a03ids, BO.x40MailQueue recX40, List<BO.a12ThemeForm> lisA12Poll);
@@ -42,7 +43,10 @@ namespace BL
         {
             return _db.Load<BO.a42Qes>(GetSQL1(" WHERE a.a42Name LIKE @name AND a.a42ID<>@excludepid"), new { name = strA42Name, excludepid = intExcludePID });
         }
-
+        public BO.a42Qes LoadByGuid(string strGUID, int intExcludePID)
+        {
+            return _db.Load<BO.a42Qes>(GetSQL1(" WHERE a.a42JobGuid LIKE @guid AND a.a42ID<>@excludepid"), new { guid = strGUID, excludepid = intExcludePID });
+        }
 
         public IEnumerable<BO.a42Qes> GetList(BO.myQuery mq)
         {

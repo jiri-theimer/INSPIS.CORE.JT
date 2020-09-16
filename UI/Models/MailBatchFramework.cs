@@ -13,5 +13,7 @@ namespace UI.Models
 
         public int LimitTopRecs { get; set; }
         public int QueryByStatusID { get; set; }
+
+        public BO.a42Qes RecA42 { get; set; }
     }
 }

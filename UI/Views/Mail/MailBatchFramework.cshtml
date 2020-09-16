@@ -17,6 +17,7 @@
         <option value="100">100</option>
         <option value="500">500</option>
         <option value="1000">1000</option>
+        <option value="2000">2000</option>
     </select>
     <select id="cbxStatus" onchange="reload()">
         <option value="0"></option>
@@ -28,6 +29,12 @@
     <strong>
         @Model.lisX40.Count()
     </strong>
+    <button type="button" onclick="reload()" class="btn btn-sm btn-primary">@_f.tra("Občerstvit")</button>
+    @if(Model.RecA42 != null)
+    {
+        <strong>@Model.RecA42.a42Name</strong>
+    }
+
     @if (Model.lisX40.Where(p => p.x40Status == BO.x40StateFlag.InQueque).Count() > 0)
     {
         <button type="button" id="cmdStop" onclick="StopJob()" class="btn btn-warning">@_f.tra("Pozastavit odesílání čekajících zpráv")</button>
@@ -60,6 +67,12 @@
         </td>
         <td>
             @c.x40ErrorMessage
+        </td>
+        <td>
+            @c.DateInsert
+        </td>
+        <td>
+            @c.x40DatetimeProcessed
         </td>
     </tr>
 

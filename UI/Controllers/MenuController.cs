@@ -153,6 +153,11 @@ namespace UI.Controllers
             DIV_TRANS("Správa uživatelů");
             AMI("Uživatelské účty", url_users("j03"));
             AMI("Aplikační role", url_users("j04"));
+            AMI("Osobní stránka", null, null, "Dashboard");
+            AMI("Osobní stránka inspektora", "/Dashboard/Inspector", "Dashboard");
+            AMI("Osobní stránka školy", "/Dashboard/School", "Dashboard");
+            AMI("Přihlásit se pod jinou identitou", "/Admin/LogAsUser");
+
             DIV_TRANS("Osobní profily");
             AMI("Osobní profily", url_users("j02"));
             AMI("Týmy osob", url_users("j11"));

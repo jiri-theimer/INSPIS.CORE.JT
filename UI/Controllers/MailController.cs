@@ -44,6 +44,7 @@ namespace UI.Controllers
             {
                 v.lisX40 = v.lisX40.Take(v.LimitTopRecs);
             }
+            v.RecA42 = Factory.a42QesBL.LoadByGuid(v.BatchGuid,0);
             return View(v);
         }
         public IActionResult SendMail(int x40id)
