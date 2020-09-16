@@ -111,5 +111,21 @@ namespace BO
             }
         }
 
+        public string getHomePageUrl()
+        {
+            
+            switch (this.j03HomePageUrl)
+            {
+                case "j02_framework_inspector.aspx":
+                    return "/Dashboard/Inspector";                    
+                case "j02_framework_institution_general.aspx":
+                    return "/Dashboard/School";
+                default:
+                    return "/Home/Index";
+
+
+            }
+        }
+
     }
 }

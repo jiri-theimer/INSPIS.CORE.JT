@@ -8,7 +8,7 @@
 
 @addTagHelper *, UI
 
-<h4>@ViewData["Title"]</h4>
+<h4 class="nonmobile">@ViewData["Title"]</h4>
 
 <div class="row py-3 bg-light m-0">
 
@@ -27,4 +27,55 @@
 
 
 </div>
+<table>
+    <tr>
+        <td>
+            <select class="form-control" asp-for="@Model.GridMasterFilter">
+                <option value="">@_f.tra("Účastník akce")</option>
+                <option value="leader">@_f.tra("Vedoucí akce")</option>
+                <option value="member">@_f.tra("Člen akce")</option>
+                <option value="issuer">@_f.tra("Vlastník akce")</option>
+            </select>
+        </td>
+        <td>
+            @Html.EditorFor(m => m.PeriodFilter, "~/Views/Shared/_Period.cshtml")
+        </td>
+    </tr>
+</table>
+        
+    
 
+<vc:the-grid entity="a01Event" j72id="0" go2pid="0" master_entity="j02User" master_pid="@Model.pid" contextmenuflag="1" ondblclick="tg_dblclick" master_flag="@Model.GridMasterFilter" masterviewflag="3"></vc:the-grid>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#GridMasterFilter").val("@Model.GridMasterFilter");
+
+
+        $("#GridMasterFilter").change(function () {
+            
+            $.post("/Common/SetUserParam", { key: "DashboardInspector-masterflag", value: $(this).val() }, function (data) {
+                reload();
+
+            });
+
+            
+        });
+
+        $("#PeriodValue").on("change", function () {
+            $.post("/Common/SetUserParam", { key: "report-period-value", value: $(this).val() }, function (data) {
+                reload();
+
+            });
+        });
+
+    });
+
+    function reload() {
+
+        location.replace("/Dashboard/Inspector?masterflag=" + $("#GridMasterFilter").val());
+    }
+    
+</script>

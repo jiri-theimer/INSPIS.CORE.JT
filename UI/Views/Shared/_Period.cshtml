@@ -11,10 +11,8 @@
 @addTagHelper *, UI
 
     <div class="form-row">
-        <div class="col-sm-1 col-md-1">
-            <label style="margin-left:10px;">Časové období:</label>
-        </div>
-        <div class="col-sm-6 col-md-5">
+        
+        <div class="col-sm-5 col-md-4">
             <mydropdown asp-for="@Model.PeriodValue" datasource="@_lisPeriods" valuefield="pid" textfield="Header" isfirstemptyrow="false"></mydropdown>
 
         </div>

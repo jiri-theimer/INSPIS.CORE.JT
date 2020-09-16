@@ -11,5 +11,9 @@ namespace UI.Models.Dashboard
         public int pid { get; set; }
         public string SearchBoxA01 { get; set; }
         public string SearchBoxA03 { get; set; }
+
+        public string GridMasterFilter { get; set; }
+
+        public PeriodViewModel PeriodFilter { get; set; }
     }
 }
