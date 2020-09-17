@@ -21,7 +21,7 @@ namespace UI.Views.Shared.Components.TheGrid
         }
 
         public IViewComponentResult
-            Invoke(string entity, int j72id, int go2pid, string master_entity, int master_pid, int contextmenuflag, string ondblclick, string master_flag, int masterviewflag,string addfilterid)
+            Invoke(string entity, int j72id, int go2pid, string master_entity, int master_pid, int contextmenuflag, string ondblclick, string master_flag, int masterviewflag,string addfilterid,string fixedcolumns)
         {
             var ret = new TheGridViewModel();
             ret.Entity = entity;
@@ -47,6 +47,10 @@ namespace UI.Views.Shared.Components.TheGrid
                 var intJ72ID = _f.j72TheGridTemplateBL.Save(recJ72, null, null, null);
                 gridState = _f.j72TheGridTemplateBL.LoadState(intJ72ID, _f.CurrentUser.pid);
             }
+            if (string.IsNullOrEmpty(fixedcolumns)==false)
+            {
+                gridState.j72Columns = fixedcolumns;
+            }
             gridState.MasterViewFlag = masterviewflag;
             gridState.MasterFlag = master_flag;
             gridState.j75CurrentRecordPid = go2pid;
@@ -55,6 +59,7 @@ namespace UI.Views.Shared.Components.TheGrid
             gridState.MasterPID = master_pid;
             gridState.OnDblClick = ondblclick;
             gridState.AddFilterID = addfilterid;
+            gridState.FixedColumns = fixedcolumns;
 
             var cc = new TheGridController(_colsProvider, _pp);
             cc.Factory = _f;

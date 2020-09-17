@@ -174,6 +174,11 @@ namespace UI.Controllers
             gridState.ContextMenuFlag = tgi.contextmenuflag;
             gridState.OnDblClick = tgi.ondblclick;
             gridState.AddFilterID = tgi.addfilterid;
+            gridState.FixedColumns = tgi.fixedcolumns;
+            if (string.IsNullOrEmpty(gridState.FixedColumns) == false)
+            {
+                gridState.j72Columns = gridState.FixedColumns;
+            }
             var lis = new List<string>();
             foreach (var c in filter)
             {                
@@ -197,12 +202,17 @@ namespace UI.Controllers
         //public TheGridOutput HandleTheGridOper(int j72id,string oper,string key,string value, int master_pid,int contextmenuflag)
         public TheGridOutput HandleTheGridOper(TheGridUIContext tgi)
         {
-            var gridState = this.Factory.j72TheGridTemplateBL.LoadState(tgi.j72id, Factory.CurrentUser.pid);
+            var gridState = this.Factory.j72TheGridTemplateBL.LoadState(tgi.j72id, Factory.CurrentUser.pid);            
             gridState.MasterPID = tgi.master_pid;
             gridState.ContextMenuFlag = tgi.contextmenuflag;
             gridState.MasterFlag = tgi.master_flag;
             gridState.OnDblClick = tgi.ondblclick;
             gridState.AddFilterID = tgi.addfilterid;
+            gridState.FixedColumns = tgi.fixedcolumns;
+            if (string.IsNullOrEmpty(gridState.FixedColumns) == false)
+            {
+                gridState.j72Columns = gridState.FixedColumns;
+            }
             switch (tgi.key)
             {
                 
@@ -262,11 +272,17 @@ namespace UI.Controllers
                 return render_thegrid_error(string.Format("Nelze načíst grid state s id!", tgi.j72id.ToString()));
                 
             }
+            
             gridState.j75CurrentRecordPid = tgi.go2pid;
             gridState.MasterPID = tgi.master_pid;
             gridState.ContextMenuFlag = tgi.contextmenuflag;
             gridState.OnDblClick = tgi.ondblclick;
             gridState.AddFilterID = tgi.addfilterid;
+            gridState.FixedColumns = tgi.fixedcolumns;
+            if (string.IsNullOrEmpty(gridState.FixedColumns) == false)
+            {
+                gridState.j72Columns = gridState.FixedColumns;
+            }
 
             return render_thegrid_html(gridState);
         }
