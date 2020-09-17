@@ -312,6 +312,9 @@ namespace UI.Controllers
                     mq.global_d1 = per.d1;
                     mq.global_d2 = per.d2;
                     break;
+                case "school":
+                    mq.a10id = Factory.CBL.LoadUserParamInt("DashboardSchool-a10id");
+                    break;
             }
         }
         

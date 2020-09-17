@@ -116,7 +116,7 @@ namespace BL
         }
         public IEnumerable<BO.j08UserRole_EventType> GetListJ08(int j04id)
         {
-            sb("SELECT a.*,a10.a10Name FROM j08UserRole_EventType a INNER JOIN a10EventType a10 ON a.a10ID=a10.a10ID WHERE a.j04ID=@pid");
+            sb("SELECT a.*,a10.a10Name,a10.a10IsUse_K01 FROM j08UserRole_EventType a INNER JOIN a10EventType a10 ON a.a10ID=a10.a10ID WHERE a.j04ID=@pid");
            
             return _db.GetList<BO.j08UserRole_EventType>(sbret(), new { pid = j04id });
         }

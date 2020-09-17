@@ -60,18 +60,22 @@ namespace BO
             }
         }
 
-        public bool TestPermission(BO.j05PermValuEnum oneperm)
+        public bool TestPermission(BO.j05PermValuEnum oneperm, string strRoleValue=null)
         {
+            if (strRoleValue == null)
+            {
+                strRoleValue = this.j04RoleValue;
+            }
             if (_WasInitTesting == false)
             {
-                if (this.j04RoleValue.Substring(0, 1) == "1")   //globální admin - první oprávnění
+                if (strRoleValue.Substring(0, 1) == "1")   //globální admin - první oprávnění
                 {
                     _IsGlobalAdmin = true;
                 }
                 _WasInitTesting = true;
             }
             int x = (int)oneperm;
-            if (this.j04RoleValue.Substring(x-1, 1) == "1") //testuje se 1 nebo 0 ve stringu j04RoleValue na pozici x-1
+            if (strRoleValue.Substring(x-1, 1) == "1") //testuje se 1 nebo 0 ve stringu j04RoleValue na pozici x-1
             {
                 return true;
             }
