@@ -28,7 +28,8 @@
     </div>
 
 </div>
-<div id="divToggleH11" style="display:none;">
+<div id="divToggleH11" style="display:none;overflow:auto;max-height:50%;">
+    <strong>@_f.tra("Články na nástěnce"):</strong>
     <table class="table table-sm table-hover" style="min-width:800px;">
         @foreach (var c in Model.lisH11)
         {
@@ -50,8 +51,8 @@
 
 </div>
 
-<div id="divToggleH04" style="display:none;">
-    
+<div id="divToggleH04" style="display:none;overflow:auto;max-height:50%;">
+    <strong>@_f.tra("Otevřené úkoly, které mám řešit"):</strong>
     <table class="table table-sm table-hover">
         @foreach (var c in Model.lisH04)
         {

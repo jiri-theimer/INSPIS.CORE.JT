@@ -41,7 +41,7 @@ namespace UI.Controllers
             var mq = new BO.myQuery("h11") { IsRecordValid = true, MyRecordsDisponible = true };
             v.lisH11 = Factory.h11NoticeBoardBL.GetList(mq);
             mq=new BO.myQuery("h04") { IsRecordValid = true, j02id = Factory.CurrentUser.j02ID, h06TodoRole=1 };
-            v.lisH04 = Factory.h04ToDoBL.GetList(mq);
+            v.lisH04 = Factory.h04ToDoBL.GetList(mq).Where(p => (p.h04IsClosed == false && p.h07IsToDo==true) || (p.h07IsToDo==false && DateTime.Now<=p.h04Deadline));
 
             return View(v);
         }
