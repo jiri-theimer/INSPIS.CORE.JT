@@ -1,0 +1,18 @@
+﻿@model UI.Models.Recpage.h11RecPage
+@inject BL.Factory _f
+
+@{
+    ViewData["Title"] = "Info";
+    Layout = "~/Views/Shared/_LayoutSubform.cshtml";
+    if (Model.Rec == null) return;
+}
+
+@addTagHelper *, UI
+
+<h4>@Model.Rec.h11Name</h4>
+@Html.Raw(Model.TagHtml)
+
+<hr />
+
+
+@Html.Raw(Model.HtmlContent)

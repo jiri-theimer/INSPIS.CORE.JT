@@ -120,8 +120,12 @@ namespace BO
                     return "/Dashboard/Inspector";                    
                 case "j02_framework_institution_general.aspx":
                     return "/Dashboard/School";
-                default:
+                case "j02_framework_administrator.aspx":
                     return "/Home/Index";
+                case null:
+                    return "/Home/Index";
+                default:
+                    return this.j03HomePageUrl;
 
 
             }

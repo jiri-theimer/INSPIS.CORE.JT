@@ -28,7 +28,7 @@ namespace UI.Controllers
             {
                 masterflag = Factory.CBL.LoadUserParam("DashboardInspector-masterflag", "");
             }
-            var v = new DashboardInspector() { pid = Factory.CurrentUser.j02ID,GridMasterFilter=masterflag };
+            var v = new DashboardInspector() { pid = Factory.CurrentUser.j02ID,GridMasterFilter=masterflag };   //leader/member/issuer
             v.Rec = Factory.j02PersonBL.Load(v.pid);
 
             v.PeriodFilter = new PeriodViewModel();
@@ -38,21 +38,26 @@ namespace UI.Controllers
             v.PeriodFilter.d1 = per.d1;
             v.PeriodFilter.d2 = per.d2;
 
+            var mq = new BO.myQuery("h11") { IsRecordValid = true, MyRecordsDisponible = true };
+            v.lisH11 = Factory.h11NoticeBoardBL.GetList(mq);
+            mq=new BO.myQuery("h04") { IsRecordValid = true, j02id = Factory.CurrentUser.j02ID, h06TodoRole=1 };
+            v.lisH04 = Factory.h04ToDoBL.GetList(mq);
+
             return View(v);
         }
 
         private BO.ThePeriod InhalePeriodFilter()
         {
             var ret = _pp.ByPid(0);
-            int x = Factory.CBL.LoadUserParamInt("report-period-value");
+            int x = Factory.CBL.LoadUserParamInt("grid-period-value");
             if (x > 0)
             {
                 ret = _pp.ByPid(x);
             }
             else
             {
-                ret.d1 = Factory.CBL.LoadUserParamDate("report-period-d1");
-                ret.d2 = Factory.CBL.LoadUserParamDate("report-period-d2");
+                ret.d1 = Factory.CBL.LoadUserParamDate("grid-period-d1");
+                ret.d2 = Factory.CBL.LoadUserParamDate("grid-period-d2");
 
             }
 

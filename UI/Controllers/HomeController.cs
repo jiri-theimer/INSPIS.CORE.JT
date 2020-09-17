@@ -105,6 +105,7 @@ namespace UI.Controllers
                 {
                     
                     Response.Redirect(Factory.CurrentUser.getHomePageUrl());
+                    
                 }
             }
             

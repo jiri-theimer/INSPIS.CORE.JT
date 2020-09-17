@@ -111,6 +111,7 @@ namespace BO
         public int f29id { get; set; }
         public int f32id { get; set; }
         public int h04id { get; set; }
+        public int h06TodoRole { get; set; }
         public int h11id { get; set; }
         public int a10id { get; set; }
         public int a11id { get; set; }

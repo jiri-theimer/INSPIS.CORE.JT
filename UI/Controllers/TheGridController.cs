@@ -173,6 +173,7 @@ namespace UI.Controllers
             gridState.MasterPID = tgi.master_pid;
             gridState.ContextMenuFlag = tgi.contextmenuflag;
             gridState.OnDblClick = tgi.ondblclick;
+            gridState.AddFilterID = tgi.addfilterid;
             var lis = new List<string>();
             foreach (var c in filter)
             {                
@@ -201,6 +202,7 @@ namespace UI.Controllers
             gridState.ContextMenuFlag = tgi.contextmenuflag;
             gridState.MasterFlag = tgi.master_flag;
             gridState.OnDblClick = tgi.ondblclick;
+            gridState.AddFilterID = tgi.addfilterid;
             switch (tgi.key)
             {
                 
@@ -264,7 +266,7 @@ namespace UI.Controllers
             gridState.MasterPID = tgi.master_pid;
             gridState.ContextMenuFlag = tgi.contextmenuflag;
             gridState.OnDblClick = tgi.ondblclick;
-
+            gridState.AddFilterID = tgi.addfilterid;
 
             return render_thegrid_html(gridState);
         }
@@ -284,6 +286,7 @@ namespace UI.Controllers
             }
             mq.lisPeriods = _pp.getPallete();
 
+            InhaleAddFilter(gridState.AddFilterID, ref mq);
             if (string.IsNullOrEmpty(gridState.j72MasterEntity) && Factory.EProvider.ByPrefix(mq.Prefix).IsGlobalPeriodQuery)
             {
                 BO.ThePeriod per = InhaleGridPeriodDates();
@@ -297,6 +300,19 @@ namespace UI.Controllers
             mq.InhaleMasterEntityQuery(gridState.j72MasterEntity, gridState.MasterPID,gridState.MasterFlag);
 
             return Factory.gridBL.GetList(mq);
+        }
+
+        private void InhaleAddFilter(string strAddFilterID,ref BO.myQuery mq)
+        {
+            
+            switch (strAddFilterID)
+            {
+                case "dashboard":
+                    BO.ThePeriod per = InhaleGridPeriodDates();
+                    mq.global_d1 = per.d1;
+                    mq.global_d2 = per.d2;
+                    break;
+            }
         }
         
         public TheGridOutput render_thegrid_html(BO.TheGridState gridState)
@@ -320,6 +336,7 @@ namespace UI.Controllers
                 mq.TheGridFilter = _colsProvider.ParseAdhocFilterFromString(gridState.j75Filter, mq.explicit_columns);
             }
             mq.lisPeriods = _pp.getPallete();
+            InhaleAddFilter(gridState.AddFilterID, ref mq);
             if (string.IsNullOrEmpty(gridState.j72MasterEntity) && Factory.EProvider.ByPrefix(mq.Prefix).IsGlobalPeriodQuery)
             {
                 BO.ThePeriod per = InhaleGridPeriodDates();

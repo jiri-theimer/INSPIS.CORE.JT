@@ -37,6 +37,7 @@ namespace UI.Models
         public string ondblclick { get; set; }
 
         public string master_flag { get; set; }
+        public string addfilterid { get; set; }
 
     }
 }

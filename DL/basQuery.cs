@@ -156,12 +156,20 @@ namespace DL
                 {
                     AQ(ref lis, "a.h04Deadline BETWEEN @gd1 AND @gd2 OR a.h04CapacityPlanFrom BETWEEN @gd1 AND @gd2 OR a.h04CapacityPlanUntil BETWEEN @gd1 AND @gd2", "gd1", mq.global_d1, "AND", null, null, "gd2", mq.global_d2);
                 }
+                if (mq.Prefix == "a01")
+                {
+                    AQ(ref lis, "(a.a01DateFrom BETWEEN @gd1 AND @gd2 OR a.a01DateUntil BETWEEN @gd1 AND @gd2 OR (a.a01DateFrom>=@gd1 AND a.a01DateUntil<=@gd2))", "gd1", mq.global_d1, "AND", null, null, "gd2", mq.global_d2);
+                }
             }
             if (mq.MyRecordsDisponible==true && mq.CurrentUser !=null)
             {
                 if (mq.Prefix == "a41")
                 {
                     AQ(ref lis, "a.j02ID=@j02id_me OR a.j11ID IN (select j11ID FROM j12Team_Person WHERE j02ID=@j02id_me OR j04ID=@j04id_me) OR a.j11ID IN (select xa.j11ID FROM j12Team_Person xa INNER JOIN a02Inspector xb ON xa.a04ID=xb.a04ID WHERE xb.j02ID=@j02id_me)", "j02id_me",mq.CurrentUser.j02ID,"AND",null,null,"j04id_me",mq.CurrentUser.j04ID);
+                }
+                if (mq.Prefix == "h11")
+                {
+                    AQ(ref lis, "a.h11IsPublic=1 OR a.h11ID IN (SELECT h11ID FROM h12NoticeBoard_Permission WHERE j04ID=@j04id_me)", "j04id_me", mq.CurrentUser.j04ID);
                 }
             }
             if (mq.pids != null && mq.pids.Any())
@@ -375,8 +383,14 @@ namespace DL
                 if (mq.Prefix == "a03") AQ(ref lis, "a.a03ID IN (select a03ID FROM a39InstitutionPerson WHERE j02ID=@j02id)", "j02id", mq.j02id);
                 if (mq.Prefix == "h04")
                 {
-                    
-                    AQ(ref lis, "a.h04ID IN (select h04ID FROM h06ToDoReceiver WHERE j02ID=@j02id)", "j02id", mq.j02id);
+                    if (mq.h06TodoRole > 0)
+                    {
+                        AQ(ref lis, "a.h04ID IN (select h04ID FROM h06ToDoReceiver WHERE j02ID=@j02id AND h06TodoRole="+mq.h06TodoRole.ToString()+")", "j02id", mq.j02id);
+                    }
+                    else
+                    {
+                        AQ(ref lis, "a.h04ID IN (select h04ID FROM h06ToDoReceiver WHERE j02ID=@j02id)", "j02id", mq.j02id);
+                    }                    
                 }
                 
                 if (mq.Prefix == "j90" || mq.Prefix == "j92") AQ(ref lis, "a.j03ID IN (select j03ID FROM j03User WHERE j02ID=@j02id)", "j02id", mq.j02id);
@@ -659,16 +673,17 @@ namespace DL
                     mq.global_d2 = new DateTime(3000, 1, 1);
                 }
                
-                if (ret.Parameters == null)
-                {
-                    ret.Parameters = new Dapper.DynamicParameters();
-                    if (bolPrepareParam4DT) ret.Parameters4DT = new List<DL.Param4DT>();
-                }
-                ret.Parameters.Add("gd1", mq.global_d1, System.Data.DbType.DateTime);
-                if (bolPrepareParam4DT) ret.Parameters4DT.Add(new DL.Param4DT() { ParName = "gd1", ParValue = mq.global_d1 });
-                ret.Parameters.Add("gd2", mq.global_d2, System.Data.DbType.DateTime);
-                if (bolPrepareParam4DT) ret.Parameters4DT.Add(new DL.Param4DT() { ParName = "gd2", ParValue = mq.global_d2 });
+                //if (ret.Parameters == null)
+                //{
+                //    ret.Parameters = new Dapper.DynamicParameters();
+                //    if (bolPrepareParam4DT) ret.Parameters4DT = new List<DL.Param4DT>();
+                //}
+                //ret.Parameters.Add("gd1", mq.global_d1, System.Data.DbType.DateTime);
+                //if (bolPrepareParam4DT) ret.Parameters4DT.Add(new DL.Param4DT() { ParName = "gd1", ParValue = mq.global_d1 });
+                //ret.Parameters.Add("gd2", mq.global_d2, System.Data.DbType.DateTime);
+                //if (bolPrepareParam4DT) ret.Parameters4DT.Add(new DL.Param4DT() { ParName = "gd2", ParValue = mq.global_d2 });
             }
+            
 
             //System.IO.File.WriteAllText("c:\\temp\\hovado"+mq.Prefix+".txt", strPrimarySql);
             ret.FinalSql = strPrimarySql;

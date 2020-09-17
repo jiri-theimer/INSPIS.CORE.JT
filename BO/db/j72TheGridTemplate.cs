@@ -31,5 +31,7 @@ namespace BO
         
 
         public bool j72HashJ73Query;
+
+        public string AddFilterID { get; set; }     //jedinečné ID implementace gridu na stránce pro účely hledání filtrovacích parametrů
     }
 }
