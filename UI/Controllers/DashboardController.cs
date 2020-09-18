@@ -46,7 +46,7 @@ namespace UI.Controllers
             return View(v);
         }
 
-        
+
 
         private BO.ThePeriod InhalePeriodFilter()
         {
@@ -113,11 +113,12 @@ namespace UI.Controllers
                 //uživatel má přístup do modulu [Učitelé]                
                 v.lisA10.Add(new BO.a10EventType() { a10ID = -2, pid = -2, a10Name = Factory.tra("Učitelé") });
             }
-            if (v.RecJ04.j04IsAllowedAllEventTypes==false)
+            if (v.RecJ04.j04IsAllowedAllEventTypes == false)
             {
                 var lisJ08 = Factory.j04UserRoleBL.GetListJ08(v.RecJ04.pid);
-                foreach (var c in lisJ08.Where(p => p.a10IsUse_K01 == false)){
-                    
+                foreach (var c in lisJ08.Where(p => p.a10IsUse_K01 == false))
+                {
+
                     v.lisA10.Add(new BO.a10EventType() { a10ID = c.a10ID, pid = c.a10ID, a10Name = c.a10Name });
                 }
                 foreach (var c in lisJ08.Where(p => p.a10IsUse_K01 == true))
@@ -131,7 +132,7 @@ namespace UI.Controllers
                 v.IsAllowCreateA01 = true;  //může zakládat všechny akce
                 mq = new BO.myQuery("a10") { IsRecordValid = true };
                 var lis = Factory.a10EventTypeBL.GetList(mq).Where(p => p.a10IsUse_K01 == false);
-                foreach(var c in lis)
+                foreach (var c in lis)
                 {
                     v.lisA10.Add(new BO.a10EventType() { a10ID = c.a10ID, pid = c.a10ID, a10Name = c.a10Name });
                 }
@@ -142,14 +143,24 @@ namespace UI.Controllers
                 Factory.CBL.SetUserParam("DashboardSchool-a10id", v.a10ID.ToString());
                 return RedirectToAction("School");  //znovu načtení stránky, aby si grid dokázal načíst filtr podle a10ID
             }
+            if (v.a10ID > 0)
+            {
+                v.RecA10 = Factory.a10EventTypeBL.Load(v.a10ID);
+                v.GridColumns = "a__a01Event__a01Signature,a01_a08__a08Theme__a08Name,a01_b02__b02WorkflowStatus__b02Name,a__a01Event__a01DateFrom,a__a01Event__a01DateUntil";
+                if (v.RecA10.a10CoreFlag == "injury")
+                {
+
+                }
+            }
+
             if (v.IsAllowCreateA01 == false)
             {
-                if (Factory.j04UserRoleBL.GetListJ08(v.RecJ04.pid).Where(p=>p.a10ID==v.a10ID && p.j08IsAllowedCreate).Count()>0)
+                if (Factory.j04UserRoleBL.GetListJ08(v.RecJ04.pid).Where(p => p.a10ID == v.a10ID && p.j08IsAllowedCreate).Count() > 0)
                 {
                     v.IsAllowCreateA01 = true;  //může zakládat tento typ akce
                 }
             }
-           
+
             return View(v);
         }
     }

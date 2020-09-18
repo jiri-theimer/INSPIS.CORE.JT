@@ -12,7 +12,7 @@ namespace UI.Models.Dashboard
         
         public int a03ID { get; set; }
        
-        public string a10Name { get; set; }
+        public BO.a10EventType RecA10 { get; set; }
         public int a10ID { get; set; }
 
         
@@ -23,5 +23,7 @@ namespace UI.Models.Dashboard
         public List<BO.a10EventType> lisA10 { get; set; }
 
         public bool IsAllowCreateA01 { get; set; }
+
+        public string GridColumns { get; set; }
     }
 }

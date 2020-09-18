@@ -176,6 +176,8 @@ namespace BL
             AE_TINY("x91Translate", "Aplikační překlad", "Aplikační překlad");
             ByPrefix("x91").IsWithoutValidity = true;
 
+            AE_TINY("v_uraz_jmenozraneneho", "Jméno zraněného", "Jméno zraněného");
+
         }
 
         private void AE(string strTabName, string strPlural, string strSingular, string strSqlFromGrid, string strSqlOrderByCombo, string strSqlOrderBy = null)
@@ -236,6 +238,7 @@ namespace BL
                     lis.Add(getREL("a42Qes", "a01_a42", "INEZ", "LEFT OUTER JOIN a42Qes a01_a42 ON a.a42ID=a01_a42.a42ID"));
                     lis.Add(getREL("a01Event", "a01_parent", "Nadřízená akce", "LEFT OUTER JOIN a01Event a01_parent ON a.a01ParentID=a01_parent.a01ID"));
                     lis.Add(getREL("o54TagBindingInline", "a01_o54", "Kategorie", "LEFT OUTER JOIN (SELECT * FROM o54TagBindingInline WHERE o54RecordEntity='a01') a01_o54 ON a.a01ID=a01_o54.o54RecordPid"));
+                    lis.Add(getREL("v_uraz_jmenozraneneho", "a01_xxa", "Jméno zraněného", "LEFT OUTER JOIN v_uraz_jmenozraneneho a01_xxa ON a.a01ID=a01_xxa.a01ID"));
                     break;
                 case "a02":
                     lis.Add(getREL("a04Inspectorate", "a02_a04", "Inspektorát", "INNER JOIN a04Inspectorate a02_a04 ON a.a04ID=a02_a04.a04ID"));
