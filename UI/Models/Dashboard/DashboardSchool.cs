@@ -25,5 +25,7 @@ namespace UI.Models.Dashboard
         public bool IsAllowCreateA01 { get; set; }
 
         public string GridColumns { get; set; }
+
+        public IEnumerable<BO.a39InstitutionPerson> lisA39 { get; set; }
     }
 }

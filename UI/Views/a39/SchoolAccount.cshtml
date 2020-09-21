@@ -1,0 +1,117 @@
+﻿@model UI.Models.a39SchoolAccount
+@inject BL.Factory _f
+
+@{
+    ViewData["Title"] = _f.tra("Školní účet")+": "+Model.Rec.Person;
+    Layout = "~/Views/Shared/_LayoutModal.cshtml";
+
+
+}
+
+@addTagHelper *, UI
+
+
+<h4>@ViewData["Title"]</h4>
+<div class="bg-light" style="padding:10px;">
+    <button id="cmdSave" type="button" class="btn btn-success">@_f.tra("Uložit změny")</button>
+    <button id="cmdCut" type="button" class="btn btn-danger">@_f.tra("Vyjmout účet z instituce")</button>
+    <button id="cmdClose" type="button" onclick="_window_close()" class="btn btn-light">@_f.tra("Zavřít")</button>
+    <button type="button" onclick="_helppage()" class="btn btn-light"><b>? </b>@_f.tra("Nápověda")</button>
+</div>
+
+<form id="form1" asp-controller="a39" asp-action="SchoolAccount" method="POST">
+    <input type="hidden" asp-for="@Model.a39ID" />
+    <input type="hidden" asp-for="@Model.Rec.j02ID" />
+    <input type="hidden" asp-for="@Model.Rec.a03ID" />
+
+    <div class="modal_record_container">
+
+        <div class="form-row">
+            <div class="col-sm-2 col-md-2">
+                <myautocomplete asp-for="RecJ02.j02TitleBeforeName" o15flag="1" placeholder="@_f.tra("Titul")"></myautocomplete>
+
+            </div>
+            <div class="col-sm-3 col-md-3">
+                <input class="form-control" asp-for="RecJ02.j02FirstName" placeholder="@_f.tra("Jméno")" />
+
+            </div>
+            <div class="col-sm-5 col-md-5">
+                <input class="form-control" asp-for="RecJ02.j02LastName" placeholder="@_f.tra("Příjmení")" />
+
+            </div>
+            <div class="col-sm-2 col-md-2">
+                <myautocomplete asp-for="RecJ02.j02TitleAfterName" o15flag="2"></myautocomplete>
+            </div>
+
+        </div>
+
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Aplikační role"):</label>
+            <div class="col-sm-11 col-md-10">
+                <mydropdown asp-for="@Model.SelectedJ04ID" datasource="@Model.lisJ04" valuefield="pid" textfield="j04Name"></mydropdown>
+            </div>
+        </div>
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("E-mail adresa"):</label>
+            <div class="col-sm-4 col-md-4">
+                <input class="form-control" type="email" asp-for="RecJ02.j02Email" />
+
+            </div>
+
+        </div>
+
+
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Mobil"):</label>
+            <div class="col-sm-4 col-md-3">
+                <input class="form-control" type="tel" asp-for="RecJ02.j02Mobile" />
+
+            </div>
+            <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Pevný tel."):</label>
+            <div class="col-sm-4 col-md-4">
+                <input class="form-control" type="tel" asp-for="RecJ02.j02Phone" />
+
+            </div>
+        </div>
+        <div class="form-row my-2">
+            <div class="col-sm-8 col-md-8">
+                <input type="checkbox" asp-for="Rec.a39IsAllowInspisWS" />
+                <label class="col-form-label" for="Rec_a39IsAllowInspisWS">@_f.tra("Oprávnění k integračním službám se školním IS")</label>
+
+            </div>
+        </div>
+        <div class="form-row my-2">
+            <textarea asp-for="Rec.a39Description" class="form-control" placeholder="@_f.tra("Poznámka k roli")"></textarea>
+
+        </div>
+    </div>
+</form>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#cmdSave").click(function () {
+            $(this).text("Processing...");
+            $(this).attr("disabled", true);
+            form1.submit();
+
+        });
+
+        $("#cmdCut").click(function () {
+            if (confirm("@_f.tra("Odstraní se pouze vazba osoby na instituci. Samotný uživatelský účet v systému zůstává uložen. Později můžete osobu k instituci znovu přiřadit.")")) {
+                $(this).text("Processing...");
+                $(this).attr("disabled", true);
+                form1.action = "/a39/SchoolAccount?oper=cut";
+                form1.submit();
+            }
+            
+
+        });
+       
+
+    });
+
+
+
+</script>

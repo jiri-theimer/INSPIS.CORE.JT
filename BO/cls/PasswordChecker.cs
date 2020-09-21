@@ -69,5 +69,13 @@ namespace BO.CLS
 
             return new BO.Result(false, "ok");
         }
+
+
+        public string RandomPassword(int PasswordMinLength)
+        {
+            var x = new Random();
+            return BO.BAS.GetGuid().Substring(0, 1).ToUpper() + BO.BAS.GetGuid().Substring(0, PasswordMinLength - 1) + "!@$%^&*()#".Substring(x.Next(0, 9), 1);
+
+        }
     }
 }

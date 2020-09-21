@@ -8,6 +8,7 @@ namespace BL
     {
         public BO.j03User Load(int pid);
         public BO.j03User LoadByLogin(string strLogin, int pid_exclude);
+        public BO.j03User LoadByJ02(int j02id);
         public IEnumerable<BO.j03User> GetList(BO.myQuery mq);
         public int Save(BO.j03User rec);
         public int SaveWithNewPersonalProfile(BO.j03User rec, BO.j02Person recJ02);
@@ -49,6 +50,10 @@ namespace BL
             {
                 return _db.Load<BO.j03User>(GetSQL1(" WHERE a.j03Login LIKE @login"), new { login = strLogin });
             }            
+        }
+        public BO.j03User LoadByJ02(int j02id)
+        {
+            return _db.Load<BO.j03User>(GetSQL1(" WHERE a.j02ID=@pid"), new { pid = j02id });
         }
         public IEnumerable<BO.j03User> GetList(BO.myQuery mq)
         {

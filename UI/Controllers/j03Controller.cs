@@ -10,12 +10,7 @@ namespace UI.Controllers
 {
     public class j03Controller : BaseController
     {
-        private string RndPassword()
-        {
-            string s = BO.BAS.GetGuid().Substring(0, 1).ToUpper() + BO.BAS.GetGuid().Substring(0, Factory.App.PasswordMinLength - 1);
-            if (Factory.App.PasswordRequireNonAlphanumeric) s += "@";
-            return s;
-        }
+        
         public IActionResult Record(int pid, bool isclone)
         {
             var v = new j03Record() { rec_pid = pid, rec_entity = "j03" };
@@ -23,7 +18,8 @@ namespace UI.Controllers
             {
                 v.IsDefinePassword = true;
                 v.user_profile_oper = "create";
-                v.NewPassword = RndPassword();
+                var c = new BO.CLS.PasswordChecker();
+                v.NewPassword = c.RandomPassword(Factory.App.PasswordMinLength);
                 v.VerifyPassword = v.NewPassword;
             }
             else
@@ -62,7 +58,8 @@ namespace UI.Controllers
             if (oper== "newpwd")
             {
                 v.IsDefinePassword = true;
-                v.NewPassword = RndPassword();
+                var c = new BO.CLS.PasswordChecker();
+                v.NewPassword = c.RandomPassword(Factory.App.PasswordMinLength);
                 v.VerifyPassword = v.NewPassword;
                 return View(v);
             }
@@ -70,7 +67,8 @@ namespace UI.Controllers
             {
                 v.IsDefinePassword = true;
                 v.IsChangeLogin = true;
-                v.NewPassword = RndPassword();
+                var c = new BO.CLS.PasswordChecker();
+                v.NewPassword = c.RandomPassword(Factory.App.PasswordMinLength);
                 v.VerifyPassword = v.NewPassword;
                 this.AddMessage("Se změnou přihlašovacího jména je třeba resetovat i přístupové heslo.","info");
                 return View(v);

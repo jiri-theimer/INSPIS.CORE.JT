@@ -93,14 +93,14 @@ namespace UI.Controllers
             {
                 return this.StopPage(false, "Nelze načíst profil instituce.");
             }
-            mq = new BO.myQuery("a39") { IsRecordValid = true, j02id = Factory.CurrentUser.j02ID };
-            var lisA39 = Factory.a39InstitutionPersonBL.GetList(mq);
-            int intJ04ID = lisA39.Where(p => p.a03ID == v.RecA03.pid).First().j04ID_Explicit;
-            if (intJ04ID == 0)
+            mq = new BO.myQuery("a39") { IsRecordValid = true, a03id=v.a03ID };
+            v.lisA39 = Factory.a39InstitutionPersonBL.GetList(mq);
+            int intCurrentJ04ID = v.lisA39.Where(p => p.j02ID == Factory.CurrentUser.j02ID).First().j04ID_Explicit;
+            if (intCurrentJ04ID == 0)
             {
-                intJ04ID = Factory.CurrentUser.j04ID;
+                intCurrentJ04ID = Factory.CurrentUser.j04ID;
             }
-            v.RecJ04 = Factory.j04UserRoleBL.Load(intJ04ID);
+            v.RecJ04 = Factory.j04UserRoleBL.Load(intCurrentJ04ID);
             v.lisA10 = new List<BO.a10EventType>();
             if (Factory.CurrentUser.TestPermission(BO.j05PermValuEnum.SchoolAdminUser, v.RecJ04.j04RoleValue))
             {
@@ -149,7 +149,7 @@ namespace UI.Controllers
                 v.GridColumns = "a__a01Event__a01Signature,a01_a08__a08Theme__a08Name,a01_b02__b02WorkflowStatus__b02Name,a__a01Event__a01DateFrom,a__a01Event__a01DateUntil";
                 if (v.RecA10.a10CoreFlag == "injury")
                 {
-
+                    v.GridColumns += ",a01_xxa__v_uraz_jmenozraneneho__JmenoZraneneho,a01_xxb__v_uraz_datumzraneni__DatumZraneni,a01_xxc__v_uraz_poradovecislo__PoradoveCislo";
                 }
             }
 

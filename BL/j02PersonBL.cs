@@ -87,6 +87,10 @@ namespace BL
             {
                 this.AddMessage("Chybí vyplnit [E-mail]."); return false;
             }
+            if (!BO.BAS.IsValidEmail(rec.j02Email))
+            {
+                this.AddMessage("Zadaná e-mail adresa není platná"); return false;
+            }
             if (LoadByEmail(rec.j02Email,rec.pid) != null)
             {
                 this.AddMessageTranslated(string.Format(_mother.tra("E-mail adresa [{0}] již je obsazena jinou osobou."), rec.j02Email));

@@ -744,9 +744,9 @@ namespace BL
             AF("o15AutoComplete", "o15Flag", "Typ dat",1, "case a.o15Flag when 1 then 'Titul před' when 2 then 'Titul za' when 328 then 'Stát' when 427 then 'URL adresa' end");
             AF("o15AutoComplete", "o15Ordinal", "#", 2, null, "num0");
 
-            AF("v_uraz_jmenozraneneho", "JmenoZraneneho", "Jméno zraněného", 0);
-            AF("v_uraz_datumzraneni", "DatumZraneni", "Datum zranění", 0,null,"datetime");
-            AF("v_uraz_poradovecislo", "PoradoveCislo", "Pořadové číslo", 0);
+            AF("v_uraz_jmenozraneneho", "JmenoZraneneho", "Jméno zraněného", 0,null,"string",false,true);
+            AF("v_uraz_datumzraneni", "DatumZraneni", "Datum zranění", 0,null,"datetime",false,true);
+            AF("v_uraz_poradovecislo", "PoradoveCislo", "Pořadové číslo", 0, null, "string", false, true);
         }
 
         
