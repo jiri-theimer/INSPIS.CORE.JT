@@ -19,7 +19,13 @@
 </div>
 
 <div>
-    <a class="btn btn-sm btn-info" href="">@_f.tra("Vybrat již existující osobu v rámci všech uživatelských účtů")</a>
+    <input type="radio" id="male" name="gender" value="male" checked>
+    <label for="male">@_f.tra("Založit nový osobní profil a uživatelský účet")</label>
+    <br>
+    <input type="radio" id="female" name="gender" value="female">
+    <label for="female">@_f.tra("Vybrat již existující osobu v rámci všech uživatelských účtů")</label>
+
+    
 </div>
 
 <form id="form1" asp-controller="a39" asp-action="CreateSchoolAccount" method="POST">
