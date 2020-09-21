@@ -20,6 +20,16 @@ namespace UIFT
 
         public Auth Authentication { get; set; }
 
+        public string BaseURL_EPIS1 { get; set; }
+
+        public string FT_CheckboxAnswerTrueValue { get; set; }
+
+        public string FT_CheckboxAnswerFalseValue { get; set; }
+
+        public string UIFT_DateFormat { get; set; }
+
+        public string UIFT_DateTimeFormat { get; set; }
+
         public class Auth
         {
             public string KeyPath { get; set; }

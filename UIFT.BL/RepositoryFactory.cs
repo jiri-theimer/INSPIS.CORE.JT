@@ -5,11 +5,13 @@ namespace UIFT.Repository
     public class RepositoryFactory
     {
         private readonly BL.Factory Factory;
+        private readonly AppConfiguration Configuration;
         private Repository _repository;
         private int _a11id;
 
-        public RepositoryFactory(BL.Factory factory)
+        public RepositoryFactory(BL.Factory factory, AppConfiguration configuration)
         {
+            this.Configuration = configuration;
             this.Factory = factory;
         }
 
@@ -22,7 +24,7 @@ namespace UIFT.Repository
         {
             if ((_a11id != a11id && a11id.HasValue) || _repository == null)
             {
-                _repository = new Repository(Factory, a11id.GetValueOrDefault());
+                _repository = new Repository(Factory, Configuration, a11id.GetValueOrDefault());
             }
             return _repository;
         }

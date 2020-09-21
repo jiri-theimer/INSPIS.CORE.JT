@@ -1,4 +1,5 @@
 ﻿@model UIFT.Models.IOtazka
+@inject AppConfiguration AppConfig
 @inject UIFT.Repository.RepositoryFactory factory
 @{
     var rep = factory.Get();
@@ -21,12 +22,12 @@
     if (!string.IsNullOrEmpty(Model.Odpovedi[0].f21MinValue))
     {
         attrs += $" {rep.BL.tra("min")}=" + Model.Odpovedi[0].f21MinValue.ConvertFromBL().ConvertToUnixTimestamp().ToString();
-        help += $"{rep.BL.tra("min")}: " + Model.Odpovedi[0].f21MinValue.ConvertFromBL().ToString(factory.GetGlobalParams("UIFT_DateFormat"));
+        help += $"{rep.BL.tra("min")}: " + Model.Odpovedi[0].f21MinValue.ConvertFromBL().ToString(AppConfig.UIFT_DateFormat);
     }
     if (!string.IsNullOrEmpty(Model.Odpovedi[0].f21MaxValue))
     {
         attrs += $" {rep.BL.tra("max")}=" + Model.Odpovedi[0].f21MaxValue.ConvertFromBL().ConvertToUnixTimestamp().ToString();
-        help += $" {rep.BL.tra("max")}: " + Model.Odpovedi[0].f21MaxValue.ConvertFromBL().ToString(factory.GetGlobalParams("UIFT_DateFormat"));
+        help += $" {rep.BL.tra("max")}: " + Model.Odpovedi[0].f21MaxValue.ConvertFromBL().ToString(AppConfig.UIFT_DateFormat);
     }
     attrs += " maxlength=12";
 }
@@ -37,11 +38,11 @@
 }
 else
 {
-    <input type="text" class="date" name="Answer_@(Model.PID)" id="Answer_@(Model.PID)" data-answer='{ "f19id":@Model.PID, "f21id":@f21id }' value="@(odpoved.HasValue ? odpoved.Value.ToString(factory.GetGlobalParams("UIFT_DateFormat")) : "")" maxlength="10" @attrs @(Model.ReadOnly ? "readonly=true" : "") />
+    <input type="text" class="date" name="Answer_@(Model.PID)" id="Answer_@(Model.PID)" data-answer='{ "f19id":@Model.PID, "f21id":@f21id }' value="@(odpoved.HasValue ? odpoved.Value.ToString(AppConfig.UIFT_DateFormat) : "")" maxlength="10" @attrs @(Model.ReadOnly ? "readonly=true" : "") />
 
     if (Model.ReplyType == BO.x24DataTypeEnum.tDateTime)
     {
-        <input type="text" name="Answer_@(Model.PID)" id="Answer_@(Model.PID)_time" data-answer='{ "f19id":@Model.PID, "f21id":@f21id }' value="@(odpoved.HasValue ? odpoved.Value.ToString(factory.GetGlobalParams("UIFT_TimeFormat")) : "")" maxlength="5" @(Model.ReadOnly ? "readonly=true" : "") title="@rep.BL.tra("Čas vyberte z předvolené nabídky nebo vepište vlastní do textového pole.")" />
+        <input type="text" name="Answer_@(Model.PID)" id="Answer_@(Model.PID)_time" data-answer='{ "f19id":@Model.PID, "f21id":@f21id }' value="@(odpoved.HasValue ? odpoved.Value.ToString(AppConfig.UIFT_DateTimeFormat) : "")" maxlength="5" @(Model.ReadOnly ? "readonly=true" : "") title="@rep.BL.tra("Čas vyberte z předvolené nabídky nebo vepište vlastní do textového pole.")" />
         <br />
     }
 

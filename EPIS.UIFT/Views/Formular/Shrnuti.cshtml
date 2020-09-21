@@ -1,4 +1,5 @@
 ﻿@model UIFT.Models.ShrnutiResult
+@inject AppConfiguration AppConfig
 @inject UIFT.Repository.RepositoryFactory factory
 @{
     Layout = null;
@@ -42,7 +43,7 @@ else
     {
         <p class="shrnutiWorkflowMsg">@Html.Raw(Model.WorkflowMessage)</p>
         <p class="shrnutiWorkflowA">
-            <a href="@(factory.GetGlobalParams("BaseURL_EPIS1"))/workflow_dialog_general.aspx?pid=@(persistentData.a01id)" target="_blank"><span></span>@rep.BL.tra("Posunout/doplnit")</a>
+            <a href="@(AppConfig.BaseURL_EPIS1)/workflow/Dialog?pid=@(persistentData.a01id)" target="_blank"><span></span>@rep.BL.tra("Posunout/doplnit")</a>
         </p>
     }
 }

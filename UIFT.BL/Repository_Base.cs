@@ -4,6 +4,7 @@
     {
         // ulozena instance BL factory tridy
         private readonly BL.Factory factory;
+        internal readonly AppConfiguration Configuration;
 
         // instance kesovaci tridy
         internal Cache cache;
@@ -41,12 +42,13 @@
         /// <summary>
         /// Konstruktor
         /// </summary>
-        internal Repository(BL.Factory fac, int a11id)
+        internal Repository(BL.Factory fac, AppConfiguration configuration, int a11id)
         {
             this.a11id = a11id;
             
             // vytvorit instanci BL tovarny
             this.factory = fac;
+            this.Configuration = configuration;
             
             // vytvorit instanci kesovaci tridy
             this.cache = new Cache(fac, false);

@@ -1,4 +1,5 @@
 ﻿@model Formular
+@inject AppConfiguration AppConfig
 @inject UIFT.Repository.RepositoryFactory factory
 @{
     var persistentData = this.Context.Items["PersistantData"] as UIFT.PersistantDataStorage;
@@ -33,11 +34,11 @@
         <!-- workflow -->
         @if (Model.Base.f06IsReportDialog)
         {
-            <a class="headerWF" id="headerWF_report" href="@(factory.GetGlobalParams("BaseURL_EPIS1"))/reports_context.aspx?x29id=101&pid=@(persistentData.a01id)" target="_blank"><span></span>@rep.BL.tra("Tisková sestava")</a>
+            <a class="headerWF" id="headerWF_report" href="@(AppConfig.BaseURL_EPIS1)/x31/ReportContext?prefix=a01&pid=@(persistentData.a01id)" target="_blank"><span></span>@rep.BL.tra("Tisková sestava")</a>
         }
         @if (Model.Base.f06IsWorkflowDialog)
         {
-            <a class="headerWF" id="headerWF_move" href="@(factory.GetGlobalParams("BaseURL_EPIS1"))/workflow_dialog_general.aspx?pid=@(persistentData.a01id)" target="_blank"><span></span>@rep.BL.tra("Posunout/doplnit")</a>
+            <a class="headerWF" id="headerWF_move" href="@(AppConfig.BaseURL_EPIS1)/workflow/Dialog?pid=@(persistentData.a01id)" target="_blank"><span></span>@rep.BL.tra("Posunout/doplnit")</a>
         }
 
         <!-- LOGO -->

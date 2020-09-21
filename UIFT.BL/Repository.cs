@@ -66,7 +66,7 @@ namespace UIFT.Repository
                 
                 // checkboxlist - aspon jedna odpoved musi byt zaskrtnuta
                 if ((otazka.ReplyControl == BO.ReplyKeyEnum.Checkbox || otazka.ReplyControl == BO.ReplyKeyEnum.Listbox) && otazka.f19IsMultiselect)
-                    maOdpoved = vyplneneOdpovedi.Count(t => t.f19ID == otazka.pid && t.Value == this.BL.GlobalParams.LoadParam("FT_CheckboxAnswerTrueValue")) > 0;
+                    maOdpoved = vyplneneOdpovedi.Count(t => t.f19ID == otazka.pid && t.Value == Configuration.FT_CheckboxAnswerTrueValue) > 0;
                 else
                     maOdpoved = vyplneneOdpovedi.Count(t => t.f19ID == otazka.pid && !string.IsNullOrEmpty(t.Value)) > 0;
                 

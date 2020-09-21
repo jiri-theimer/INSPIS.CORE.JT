@@ -40,7 +40,7 @@ namespace UIFT.Models
             }
 
             // instance vlastni otazky
-            Otazka otazkaDerived = new Otazka(otazka, repository.BL.GlobalParams.LoadParam("FT_CheckboxAnswerTrueValue"), repository.BL.GlobalParams.LoadParam("FT_CheckboxAnswerFalseValue"))
+            Otazka otazkaDerived = new Otazka(otazka, repository.Configuration.FT_CheckboxAnswerTrueValue, repository.Configuration.FT_CheckboxAnswerFalseValue)
             {
                 IsPreview = isPreview
             };
@@ -96,7 +96,7 @@ namespace UIFT.Models
                     case BO.ReplyKeyEnum.Listbox:
                     case BO.ReplyKeyEnum.RadiobuttonList:
                     case BO.ReplyKeyEnum.DropdownList:
-                        otazkaDerived.VyplneneOdpovedi = vyplneneOdpovedi.Where(t => t.f19ID == otazka.pid && t.Value != repository.BL.GlobalParams.LoadParam("FT_CheckboxAnswerFalseValue")).ToList();
+                        otazkaDerived.VyplneneOdpovedi = vyplneneOdpovedi.Where(t => t.f19ID == otazka.pid && t.Value != repository.Configuration.FT_CheckboxAnswerFalseValue).ToList();
                         break;
                     default:
                         otazkaDerived.VyplneneOdpovedi = vyplneneOdpovedi.Where(t => t.f19ID == otazka.pid).ToList();
