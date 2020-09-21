@@ -83,7 +83,7 @@
                 }
                 else
                 {
-                    <a id="cmdHome" class="nav-link text-white" href="@_f.CurrentUser.j03HomePageUrl" tabindex="-1">HOME☆</a>
+                    <a id="cmdHome" class="nav-link text-white" href="@_f.CurrentUser.getHomePageUrl()" tabindex="-1">HOME☆</a>
                 }
 
                 @if (_f.CurrentUser.HasAdminMenu())

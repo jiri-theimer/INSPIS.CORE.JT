@@ -37,6 +37,7 @@ x40SenderName varchar(50)
 x40EmlFolder varchar(50)
 x40EmlFileSize int
 x40IsHtmlBody bit
+x40BatchGuid varchar(50)
 
 [o13AttachmentType]
 o13TreePath

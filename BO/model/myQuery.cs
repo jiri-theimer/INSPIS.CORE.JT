@@ -67,10 +67,12 @@ namespace BO
         public IEnumerable<BO.TheGridColumn> explicit_columns { get; set; }
         public string explicit_orderby { get; set; }
         public string explicit_selectsql { get; set; }
+        public string explicit_sqlwhere { get; set; }
 
         public bool? IsRecordValid;
         public BO.RunningUser CurrentUser;
         public bool MyRecordsDisponible;
+        
 
         public int j04id { get; set; }
 
@@ -109,6 +111,7 @@ namespace BO
         public int f29id { get; set; }
         public int f32id { get; set; }
         public int h04id { get; set; }
+        public int h06TodoRole { get; set; }
         public int h11id { get; set; }
         public int a10id { get; set; }
         public int a11id { get; set; }

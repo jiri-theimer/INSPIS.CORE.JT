@@ -103,7 +103,9 @@ namespace UI.Controllers
                 //úvodní spuštění: otestovat nastavení domovské stránky
                 if (Factory.CurrentUser.j03HomePageUrl != null)
                 {
-                    Response.Redirect(Factory.CurrentUser.j03HomePageUrl);
+                    
+                    Response.Redirect(Factory.CurrentUser.getHomePageUrl());
+                    
                 }
             }
             

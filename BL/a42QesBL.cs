@@ -10,11 +10,13 @@ namespace BL
     {
         public BO.a42Qes Load(int pid);
         public BO.a42Qes LoadByName(string strA42Name, int intExcludePID);
+        public BO.a42Qes LoadByGuid(string strGUID, int intExcludePID);
         public IEnumerable<BO.a42Qes> GetList(BO.myQuery mq);
         public int Save(BO.a42Qes rec);
         public int PrepareTempData(BO.a42Qes rec, BO.a01Event recA01Template, List<BO.a12ThemeForm> lisA12, List<int> a03ids, BO.x40MailQueue recX40, List<BO.a12ThemeForm> lisA12Poll);
-        public void UpdateJobState(int a42id, int stateflag);
-
+        public void UpdateJobState(int a42id, BO.a42JobState stateflag);
+        public bool DeleteWithA01(int pid);
+        public int ChangePeriod(BO.a42Qes rec);
     }
     class a42QesBL : BaseBL, Ia42QesBL
     {
@@ -27,9 +29,9 @@ namespace BL
 
         private string GetSQL1(string strAppend = null)
         {
-            sb("SELECT a.*,a08.a08Name,");
+            sb("SELECT a.*,a08.a08Name,j40.j40SmtpEmail,");
             sb(_db.GetSQL1_Ocas("a42"));
-            sb(" FROM a42Qes a INNER JOIN a08Theme a08 ON a.a08ID=a08.a08ID");
+            sb(" FROM a42Qes a INNER JOIN a08Theme a08 ON a.a08ID=a08.a08ID LEFT OUTER JOIN j40MailAccount j40 ON a.j40ID=j40.j40ID");
             sb(strAppend);
             return sbret();
         }
@@ -41,7 +43,10 @@ namespace BL
         {
             return _db.Load<BO.a42Qes>(GetSQL1(" WHERE a.a42Name LIKE @name AND a.a42ID<>@excludepid"), new { name = strA42Name, excludepid = intExcludePID });
         }
-
+        public BO.a42Qes LoadByGuid(string strGUID, int intExcludePID)
+        {
+            return _db.Load<BO.a42Qes>(GetSQL1(" WHERE a.a42JobGuid LIKE @guid AND a.a42ID<>@excludepid"), new { guid = strGUID, excludepid = intExcludePID });
+        }
 
         public IEnumerable<BO.a42Qes> GetList(BO.myQuery mq)
         {
@@ -50,9 +55,36 @@ namespace BL
             return _db.GetList<BO.a42Qes>(fq.FinalSql, fq.Parameters);
         }
 
-        public void UpdateJobState(int a42id,int stateflag)
+        public void UpdateJobState(int a42id,BO.a42JobState stateflag)
         {
-            _db.RunSql("UPDATE a42Qes set a42JobState=@x WHERE a42ID=@pid", new { x = stateflag, pid = a42id });
+            _db.RunSql("UPDATE a42Qes set a42JobState=@x WHERE a42ID=@pid", new { x =(int) stateflag, pid = a42id });
+        }
+        public bool DeleteWithA01(int pid)
+        {
+            var pars = new Dapper.DynamicParameters();
+            pars.Add("j03id_sys", _db.CurrentUser.pid, System.Data.DbType.Int32);
+            pars.Add("pid", pid, System.Data.DbType.Int32);
+            pars.Add("err_ret", "", System.Data.DbType.String, System.Data.ParameterDirection.Output);
+           
+            if (_db.RunSp("a42qes_delete_with_events", ref pars, 240) == "1")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+           
+        }
+        public int ChangePeriod(BO.a42Qes rec)
+        {
+            if (ValidateBeforeSave(rec) == false)
+            {
+                return 0;
+            }
+            _db.RunSql("UPDATE a01Event SET a01DateFrom=@d1,a01DateUntil=@d2 WHERE a42ID=@pid", new { d1 = rec.a42DateFrom, d2 = rec.a42DateUntil, pid = rec.pid });
+            return Save(rec);
         }
 
         public int Save(BO.a42Qes rec)
@@ -65,7 +97,9 @@ namespace BL
 
             var p = new DL.Params4Dapper();
             p.AddInt("pid", rec.a42ID);
+            p.AddInt("j40ID", rec.j40ID,true);
             p.AddInt("a08ID", rec.a08ID,true);
+            p.AddInt("a42TestFlag", rec.a42TestFlag);
             p.AddString("a42Name", rec.a42Name);
             p.AddDateTime("a42DateFrom", rec.a42DateFrom);
             p.AddDateTime("a42DateUntil", rec.a42DateUntil);
@@ -194,7 +228,7 @@ namespace BL
             rec.a42TempRowsA01 = _mother.p85TempboxBL.GetList(strJobGuid, false, "a03").Count();
             rec.a42TempRowsX40= _mother.p85TempboxBL.GetList(strJobGuid, false, "x40").Count();
             int intA42ID = Save(rec);
-            UpdateJobState(intA42ID, 1);
+            
             return intA42ID;
 
         }

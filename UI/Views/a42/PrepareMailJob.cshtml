@@ -1,0 +1,121 @@
+﻿@model a42PrepareMailJob
+@inject BL.Factory _f
+
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (Model.a42ID == 0) return;
+
+    ViewData["Title"] = _f.tra("Připravit poštovní zprávy pro INEZ dávku");
+}
+
+@addTagHelper *, UI
+
+<div class="bg-light" style="padding:10px;">
+    
+</div>
+
+
+<form id="form1" asp-controller="a42" asp-action="PrepareMailJob" method="POST">
+
+    <div class="bg-light" style="padding:10px;">
+        <button type="button" id="cmdComplete" class="btn btn-primary">@_f.tra("Připravit dávku poštovních zpráv")</button>
+        
+
+    </div>
+
+    <input type="hidden" asp-for="@Model.a42ID" />
+    
+
+    <div class="modal_record_container">
+
+        <div class="form-row">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("INEZ název"):</label>
+            <div class="col-sm-6 col-md-5">
+                <span class="val-readonly">@Model.Rec.a42Name</span>
+            </div>
+
+        </div>
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
+            <div class="col-sm-6 col-md-5">
+                <span class="val-readonly">@Model.Rec.a08Name</span>
+            </div>
+        </div>
+
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Časový plán"):</label>
+            <div class="col-sm-3 col-md-2">
+                <span class="val-readonly">@(BO.BAS.ObjectDate2String(Model.Rec.a42DateFrom))</span>
+            </div>
+            <div class="col-sm-3 col-md-2">
+                <span class="val-readonly">@(BO.BAS.ObjectDate2String(Model.Rec.a42DateUntil))</span>
+            </div>
+        </div>
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Poštovní účet"):</label>
+            <div class="col-sm-6 col-md-5">
+                <span class="val-readonly">@Model.Rec.j40SmtpEmail</span>
+            </div>
+        </div>
+
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Předmět zprávy"):</label>
+            <div class="col-sm-11 col-md-10">
+                <input class="form-control" asp-for="@Model.MessageSubject" />
+
+            </div>
+
+        </div>
+        <div>
+            <textarea asp-for="@Model.MessageBody" class="form-control" placeholder="@_f.tra("Obsah zprávy")" style="height:400px;overflow:auto;"></textarea>
+        </div>
+
+        <div class="card">
+            <div class="card-header">Přílohy poštovní zprávy (@Model.lisTempFiles.Count)</div>
+            <div class="card-body">
+                @foreach (var c in Model.lisTempFiles)
+                {
+                    <a target="_blank" href="/FileUpload/FileDownloadTempFile?tempfilename=@(c.o27ArchiveFileName)">@(c.o27OriginalFileName)</a>
+                }
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">@_f.tra("Příjemci poštovní zprávy") (@(Model.lisP85.Where(p=>p.p85Prefix=="x43").Count()))</div>
+            <div class="card-body">
+                <table class="table table-sm table-hover">
+                    @foreach (var c in Model.lisP85.Where(p => p.p85Prefix == "x43"))
+                    {
+                        <tr>
+                            <td>
+                                @c.p85FreeText01
+                            </td>
+                            <td>
+                                @c.p85FreeText02
+                            </td>
+                        </tr>
+
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#cmdComplete").click(function () {
+            $(this).text("Processing...");
+            $(this).attr("disabled", true);
+            form1.submit();
+
+        });
+
+
+
+    });
+</script>
+

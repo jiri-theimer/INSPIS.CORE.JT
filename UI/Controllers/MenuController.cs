@@ -153,6 +153,11 @@ namespace UI.Controllers
             DIV_TRANS("Správa uživatelů");
             AMI("Uživatelské účty", url_users("j03"));
             AMI("Aplikační role", url_users("j04"));
+            AMI("Osobní stránka", null, null, "Dashboard");
+            AMI("Osobní stránka inspektora", "/Dashboard/Inspector", "Dashboard");
+            AMI("Osobní stránka školy", "/Dashboard/School", "Dashboard");
+            AMI("Přihlásit se pod jinou identitou", "/Admin/LogAsUser");
+
             DIV_TRANS("Osobní profily");
             AMI("Osobní profily", url_users("j02"));
             AMI("Týmy osob", url_users("j11"));
@@ -563,7 +568,9 @@ namespace UI.Controllers
                     AMI("Nová šachovnice otázek", string.Format("javascript: _window_open('/f25/Record?f18id={0}')", pid));
                     break;
                 case "x40":
-                    AMI("Detail odeslané zprávy", string.Format("javascript:_edit_full('Mail','Record',{0})",pid));
+                    var recX40 = Factory.MailBL.LoadMessageByPid(pid);
+                    
+                    AMI("Detail zprávy"+" ["+ recX40.StateAlias+"]", string.Format("javascript:_edit_full('Mail','Record',{0})",pid));
                     DIV();
                     AMI("Zkopírovat do nové zprávy", string.Format(string.Format("javascript: _window_open('/Mail/SendMail?x40id={0}')",pid)));
                     break;

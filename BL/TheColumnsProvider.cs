@@ -295,7 +295,7 @@ namespace BL
             AppendTimestamp("a37InstitutionDepartment");
 
             AF("a42Qes", "a42Name", "INEZ", 1, null, "string", false, true);
-            AF("a42Qes", "a42JobState", "Stav generování", 1, "case a.a42JobState when 1 then 'Úvodní návrh' when 2 then 'Generují se akce' when 3 then 'Pozastaveno generování akcí' when 4 then 'Akce vygenerovány' when 5 then 'Rozesílání notifikací' when 6 then 'Rozesílání notifikací pozastaveno' when 7 then 'Hotovo' end");
+            AF("a42Qes", "a42JobState", "Stav generování", 1, "case a.a42JobState when 1 then 'Úvodní návrh' when 2 then 'Generují se akce' when 3 then 'Pozastaveno generování akcí' when 4 then 'Akce vygenerovány' when 5 then 'Poštovní zprávy vygenerovány' when 6 then 'Rozesílání zpráv' when 7 then 'Rozesílání zpráv zastaveno' when 99 then 'Hotovo' end");
             AF("a42Qes", "a42DateFrom", "Datum od", 1, null, "date");
             AF("a42Qes", "a42DateUntil", "Datum do", 1, null, "date");
             AF("a42Qes", "a42Description", "Poznámka", 0);
@@ -654,11 +654,12 @@ namespace BL
 
             //x40 = OUTBOX            
             AF("x40MailQueue", "MessageTime", "Čas", 1, "case when a.x40DatetimeProcessed is not null then a.x40DatetimeProcessed else a.x40DateInsert end", "datetime",false,true);            
-            AF("x40MailQueue", "x40SenderName", "Odesílatel", 1);
+            AF("x40MailQueue", "x40SenderName", "Odesílatel", 0);
             AF("x40MailQueue", "x40SenderAddress", "Odesílatel (adresa)");
             AF("x40MailQueue", "x40Recipient", "Komu", 1);
             AF("x40MailQueue", "x40CC", "Cc");
             AF("x40MailQueue", "x40BCC", "Bcc");
+            AF("x40MailQueue", "x40Status", "Stav", 1, "case a.x40Status when 1 then 'Čeká na odeslání' when 2 then 'Chyba' when 3 then 'Odesláno' when 4 then 'Zastaveno' when 5 then 'Čeká na schválení' end");
             AF("x40MailQueue", "x40Subject", "Předmět zprávy", 1);
             AF("x40MailQueue", "x40Body", "Text zprávy", 1, "convert(varchar(150),a.x40Body)+'...'");
             AF("x40MailQueue", "x40Attachments", "Přílohy");
@@ -742,6 +743,10 @@ namespace BL
             AF("o15AutoComplete", "o15Value", "Hodnota", 1);
             AF("o15AutoComplete", "o15Flag", "Typ dat",1, "case a.o15Flag when 1 then 'Titul před' when 2 then 'Titul za' when 328 then 'Stát' when 427 then 'URL adresa' end");
             AF("o15AutoComplete", "o15Ordinal", "#", 2, null, "num0");
+
+            AF("v_uraz_jmenozraneneho", "JmenoZraneneho", "Jméno zraněného", 0);
+            AF("v_uraz_datumzraneni", "DatumZraneni", "Datum zranění", 0,null,"datetime");
+            AF("v_uraz_poradovecislo", "PoradoveCislo", "Pořadové číslo", 0);
         }
 
         

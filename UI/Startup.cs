@@ -133,6 +133,8 @@ namespace UI
            
             services.AddScoped<BO.RunningUser, BO.RunningUser>();
             services.AddScoped<BL.Factory, BL.Factory>();
+
+            services.AddHostedService<UI.TheRobot>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

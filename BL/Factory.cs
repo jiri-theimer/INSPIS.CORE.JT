@@ -125,6 +125,17 @@ namespace BL
             s += " VALUES(@j03id,GETDATE(),@useragent,@browser,@os,@devicetype,@devicefamily,@aw,@ah,@iw,@ih,@mes,@loginname,@cookieexpire,@host,'CORE',@os,@host)";
             db.RunSql(s,new {j03id=BO.BAS.TestIntAsDbKey(c.j03ID), useragent = c.j90ClientBrowser,browser= c.j90BrowserFamily,os=c.j90BrowserOS, devicetype=c.j90BrowserDeviceType, devicefamily=c.j90BrowserDeviceFamily,aw=c.j90BrowserAvailWidth,ah=c.j90BrowserAvailHeight,iw=c.j90BrowserInnerWidth,ih=c.j90BrowserInnerHeight,mes=c.j90LoginMessage, loginname=c.j90LoginName, cookieexpire=c.j90CookieExpiresInHours, host=c.j90LocationHost });
         }
+        public bool IsUserAdmin()
+        {
+            if (this.CurrentUser.TestPermission(BO.j05PermValuEnum.AdminGlobal))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         public string tra(string strExpression)   //lokalizace do ostatních jazyků
         {

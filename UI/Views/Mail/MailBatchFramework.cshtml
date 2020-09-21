@@ -1,0 +1,105 @@
+﻿@model MailBatchFramework
+@inject BL.Factory _f
+
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+    ViewData["Title"] = _f.tra("Dávka poštovních zpráv");
+}
+
+@addTagHelper *, UI
+
+<h4>@ViewData["Title"]</h4>
+<div class="bg-light" style="padding:10px;">
+    <select id="cbxLimitTopRecs" onchange="reload()">
+        <option value="100">100</option>
+        <option value="500">500</option>
+        <option value="1000">1000</option>
+        <option value="2000">2000</option>
+    </select>
+    <select id="cbxStatus" onchange="reload()">
+        <option value="0"></option>
+        <option value="1">@_f.tra("Čeká na odeslání")</option>
+        <option value="4">@_f.tra("Zastaveno")</option>
+        <option value="2">@_f.tra("Chyba")</option>
+        <option value="3">@_f.tra("Odesláno")</option>
+    </select>
+    <strong>
+        @Model.lisX40.Count()
+    </strong>
+    <button type="button" onclick="reload()" class="btn btn-sm btn-primary">@_f.tra("Občerstvit")</button>
+    @if(Model.RecA42 != null)
+    {
+        <strong>@Model.RecA42.a42Name</strong>
+    }
+
+    @if (Model.lisX40.Where(p => p.x40Status == BO.x40StateFlag.InQueque).Count() > 0)
+    {
+        <button type="button" id="cmdStop" onclick="StopJob()" class="btn btn-warning">@_f.tra("Pozastavit odesílání čekajících zpráv")</button>
+    }
+    @if (Model.lisX40.Where(p => p.x40Status == BO.x40StateFlag.Stopped).Count() > 0)
+    {
+        <button type="button" id="cmdRestart" onclick="RestartJob()" class="btn btn-primary">@_f.tra("Obnovit odesílání čekajících zpráv")</button>
+    }
+</div>
+
+<table class="table table-sm table-hover">
+    @foreach (var c in Model.lisX40)
+    {
+    <tr>
+        <td>
+            #@(c.x40MailID.ToString()+"/"+Model.TotalCountX40.ToString())
+        </td>
+        <td>
+            @c.StateAlias
+        </td>
+        <td>
+            @c.x40Recipient
+        </td>
+        <td>
+            @c.x40Subject
+        </td>
+
+        <td>
+            @c.x40DatetimeProcessed
+        </td>
+        <td>
+            @c.x40ErrorMessage
+        </td>
+        <td>
+            @c.DateInsert
+        </td>
+        <td>
+            @c.x40DatetimeProcessed
+        </td>
+    </tr>
+
+    }
+</table>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#cbxLimitTopRecs").val("@Model.LimitTopRecs");
+        $("#cbxStatus").val("@Model.QueryByStatusID");
+
+    });
+
+    function reload() {
+
+        location.replace("/Mail/MailBatchFramework?limittoprecs=" + $("#cbxLimitTopRecs").val() + "&statusid=" + $("#cbxStatus").val()+"&batchguid=@Model.BatchGuid")
+    }
+    function StopJob() {
+        $("#cmdStop").text("Processing...");
+        $("#cmdStop").attr("disabled", true);
+        location.replace("/Mail/MailBatchFramework?oper=stop&limittoprecs=" + $("#cbxLimitTopRecs").val()+"&batchguid=@Model.BatchGuid")
+    }
+    function RestartJob() {
+        $("#cmdRestart").text("Processing...");
+        $("#cmdRestart").attr("disabled", true);
+        location.replace("/Mail/MailBatchFramework?oper=restart&limittoprecs=" + $("#cbxLimitTopRecs").val()+"&batchguid=@Model.BatchGuid")
+    }
+</script>

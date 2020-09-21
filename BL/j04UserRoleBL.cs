@@ -46,7 +46,7 @@ namespace BL
             {
                 return true;
             }
-            if (_db.Load<BO.GetBool>("if exists(SELECT j08ID FROM j08UserRole_EventType WHERE j04id=@pid AND j08IsAllowedCreate=1) return 1 as Value else return 0 as Value", new { pid = j04id }).Value == true)
+            if (_db.Load<BO.GetBool>("if exists(SELECT j08ID FROM j08UserRole_EventType WHERE j04id=@pid AND j08IsAllowedCreate=1) select 1 else select 0 as Value", new { pid = j04id }).Value == true)
             {
                 return true;
             }
@@ -116,7 +116,7 @@ namespace BL
         }
         public IEnumerable<BO.j08UserRole_EventType> GetListJ08(int j04id)
         {
-            sb("SELECT a.*,a10.a10Name FROM j08UserRole_EventType a INNER JOIN a10EventType a10 ON a.a10ID=a10.a10ID WHERE a.j04ID=@pid");
+            sb("SELECT a.*,a10.a10Name,a10.a10IsUse_K01 FROM j08UserRole_EventType a INNER JOIN a10EventType a10 ON a.a10ID=a10.a10ID WHERE a.j04ID=@pid");
            
             return _db.GetList<BO.j08UserRole_EventType>(sbret(), new { pid = j04id });
         }

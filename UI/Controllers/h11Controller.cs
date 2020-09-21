@@ -5,11 +5,26 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using UI.Models;
 using UI.Models.Record;
+using UI.Models.Recpage;
 
 namespace UI.Controllers
 {
     public class h11Controller : BaseController
     {
+        public IActionResult Info(int pid)
+        {
+            var v = new h11RecPage() { pid = pid };
+            if (v.pid > 0)
+            {
+                v.Rec = Factory.h11NoticeBoardBL.Load(v.pid);
+                v.HtmlContent = Factory.h11NoticeBoardBL.LoadHtmlContent(v.pid);
+
+                var tg = Factory.o51TagBL.GetTagging("h11", pid);
+                v.TagHtml = tg.TagHtml;
+
+            }
+            return View(v);
+        }
         public IActionResult Record(int pid, bool isclone)
         {
             var v = new h11Record() { rec_pid = pid, rec_entity = "h11" };

@@ -13,7 +13,7 @@ namespace BO
         public bool j08IsMember { get; set; }
         public bool j08IsAllowedCreate { get; set; }
         public bool j08IsAllowedRead { get; set; }
-
+        public bool a10IsUse_K01;
 
         public bool IsTempDeleted { get; set; }
         public string TempGuid { get; set; }

@@ -13,5 +13,6 @@ namespace BO
         public int x43DataPID { get; set; }
 
         public int TempA03ID { get; set; }  //kvůli INEZ
+       
     }
 }

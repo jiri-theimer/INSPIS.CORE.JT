@@ -18,6 +18,8 @@ var _tg_rowindex = 0;
 var _tg_mousedown_active = false;
 var _tg_current_pid;
 var _tg_is_enable_clipboard = true;
+var _tg_addfilterid;
+var _tg_fixedcolumns;
 
 function tg_init(c) {
     _tg_entity = c.entity;
@@ -31,7 +33,8 @@ function tg_init(c) {
     _tg_master_flag = c.master_flag;
     _tg_contextmenuflag = c.contextmenuflag;
     _tg_ondblclick = c.ondblclick;    
-
+    _tg_addfilterid = c.addfilterid;
+    _tg_fixedcolumns = c.fixedcolumns;
     
     $("#container_grid").scroll(function () {
         $("#container_vScroll").width($("#container_grid").width() + $("#container_grid").scrollLeft());
@@ -134,7 +137,9 @@ function tg_post_data() {
         master_pid: _tg_master_pid,
         contextmenuflag: _tg_contextmenuflag,
         ondblclick: _tg_ondblclick,
-        master_flag: _tg_master_flag
+        master_flag: _tg_master_flag,
+        addfilterid: _tg_addfilterid,
+        fixedcolumns: _tg_fixedcolumns
     }    
     
     $.post(_tg_url_data, {tgi:params}, function (data) {        
@@ -174,7 +179,9 @@ function tg_post_handler(strOper, strKey, strValue) {
         master_entity: _tg_master_entity,
         master_pid: _tg_master_pid,
         contextmenuflag: _tg_contextmenuflag,
-        ondblclick: _tg_ondblclick
+        ondblclick: _tg_ondblclick,
+        addfilterid: _tg_addfilterid,
+        fixedcolumns: _tg_fixedcolumns
     }    
     $.post(_tg_url_handler, { tgi: params}, function (data) {
        // _notify_message("vrátilo se: oper: " + strOper + ", key: " + strKey + ", value: " + strValue);
@@ -790,6 +797,8 @@ function tg_filter_send2server() {
         master_pid: _tg_master_pid,
         contextmenuflag: _tg_contextmenuflag,    
         ondblclick: _tg_ondblclick,
+        addfilterid: _tg_addfilterid,
+        fixedcolumns: _tg_fixedcolumns
     }    
 
     

@@ -2,27 +2,31 @@
 @inject BL.Factory _f
 
 @{
-    ViewData["Title"] = _f.tra("Odeslaná poštovní zpráva");
+    ViewData["Title"] = _f.tra("Poštovní zpráva");
     Layout = "~/Views/Shared/_LayoutModal.cshtml";
 }
 
 @addTagHelper *, UI
 
 
-<div class="input-group bg-light" style="padding:10px;">
-    <div>
-        <h4>@ViewData["Title"]</h4>
+    <div class="input-group bg-light" style="padding:10px;">
+        <div>
+            <h4>@ViewData["Title"]</h4>
+        </div>
+        @if (Model.Rec.x40Status != BO.x40StateFlag.InQueque)
+        {
+            <div style="margin-left:10px;">
+                <button type="button" class="btn btn-primary" onclick="eml()">@_f.tra("Otevřít poštovní zprávu [eml]") (@(BO.BAS.FormatFileSize(Model.Rec.x40EmlFileSize)))</button>
+            </div>
+        }
+
+        <div>
+            <button type="button" class="btn btn-light" onclick="clone()">@_f.tra("Zkopírovat do nové zprávy")</button>
+        </div>
+        <div style="margin-left:10px;">
+            <button type="button" class="btn btn-light" onclick="_window_close()">@_f.tra("Zavřít")</button>
+        </div>
     </div>
-    <div style="margin-left:10px;">
-        <button type="button" class="btn btn-primary" onclick="eml()">@_f.tra("Otevřít poštovní zprávu [eml]") (@(BO.BAS.FormatFileSize(Model.Rec.x40EmlFileSize)))</button>
-    </div>
-    <div>
-        <button type="button" class="btn btn-light" onclick="clone()">@_f.tra("Zkopírovat do nové zprávy")</button>
-    </div>
-    <div style="margin-left:10px;">
-        <button type="button" class="btn btn-light" onclick="_window_close()">@_f.tra("Zavřít")</button>
-    </div>
-</div>
 
 
 <div class="modal_record_container">

@@ -213,6 +213,8 @@
             j72id: "@Model.GridState.j72ID",
             go2pid: "@Model.GridState.j75CurrentRecordPid",
             contextmenuflag: "@Model.GridState.ContextMenuFlag",
+            addfilterid: "@Model.GridState.AddFilterID",
+            fixedcolumns:"@Model.GridState.FixedColumns",
             ondblclick:"@Model.ondblclick"
 
         };
@@ -226,13 +228,13 @@
 
             $.post("/TheGrid/getHTML_ContextMenu", { j72id:@Model.GridState.pid}, function (data) {
                 if (_device.innerHeight <= 300) {
-                    data = data.replace(/nav-link/g, "nav-link-mini");                    
-                    
+                    data = data.replace(/nav-link/g, "nav-link-mini");
+
                     $("#divGridMenu").css("width", "700px");
                 }
-                
+
                 $("#divGridMenu").html(data);
-                
+
                 _gridMenuFilled = true;
             });
 

@@ -36,6 +36,7 @@ namespace BL
 
         public IEnumerable<BO.h04ToDo> GetList(BO.myQuery mq)
         {
+            if (mq.explicit_orderby == null) mq.explicit_orderby = "a.h04ID DESC";
             DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.h04ToDo>(fq.FinalSql, fq.Parameters);
         }
