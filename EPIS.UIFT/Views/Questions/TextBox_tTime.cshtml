@@ -1,4 +1,5 @@
 ﻿@model UIFT.Models.IOtazka
+@inject AppConfiguration AppConfig
 @inject UIFT.Repository.RepositoryFactory factory
 @{
     var rep = factory.Get();
@@ -21,5 +22,5 @@
 }
 else
 {
-    <input type="text" name="Answer_@(Model.PID)" id="Answer_@(Model.PID)_time" data-answer='{ "f19id":@Model.PID, "f21id":@f21id }' value="@(odpoved.HasValue ? odpoved.Value.ToString(factory.GetGlobalParams("UIFT_TimeFormat")) : "")" maxlength="5" @(Model.ReadOnly ? "readonly=true" : "") title="@rep.BL.tra("Čas vyberte z předvolené nabídky nebo vepište vlastní do textového pole.")" />
+    <input type="text" name="Answer_@(Model.PID)" id="Answer_@(Model.PID)_time" data-answer='{ "f19id":@Model.PID, "f21id":@f21id }' value="@(odpoved.HasValue ? odpoved.Value.ToString(AppConfig.UIFT_DateTimeFormat) : "")" maxlength="5" @(Model.ReadOnly ? "readonly=true" : "") title="@rep.BL.tra("Čas vyberte z předvolené nabídky nebo vepište vlastní do textového pole.")" />
 }

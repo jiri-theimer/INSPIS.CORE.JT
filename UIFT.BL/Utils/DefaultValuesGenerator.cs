@@ -49,7 +49,7 @@ namespace UIFT.Repository
                         switch (otazka.ReplyControl)
                         {
                             default:
-                                odpoved.Value = this.repository.BL.GlobalParams.LoadParam("FT_CheckboxAnswerTrueValue");
+                                odpoved.Value = this.repository.Configuration.FT_CheckboxAnswerTrueValue;
                                 // evaluator vraci f21id odpovedi, ktera je jako vychozi
                                 odpoved.f21ID = Convert.ToInt32(ret);
                                 break;

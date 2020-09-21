@@ -1,4 +1,5 @@
 ﻿@model UIFT.Models.Otazka
+@inject AppConfiguration AppConfig
 @inject UIFT.Repository.RepositoryFactory factory
 @{
     var rep = factory.Get();
@@ -9,7 +10,7 @@
         bool check = false;
         if (Model.VyplneneOdpovedi.Exists(t => t.f21ID == unit.pid))
         {
-            check = Model.VyplneneOdpovedi.First(t => t.f21ID == unit.pid).Value == factory.GetGlobalParams("FT_CheckboxAnswerTrueValue");
+            check = Model.VyplneneOdpovedi.First(t => t.f21ID == unit.pid).Value == AppConfig.FT_CheckboxAnswerTrueValue;
         }
         int prevent = unit.f21IsNegation ? 1 : Model.Base.f19CHLMaxAnswers;
         <label>

@@ -1,4 +1,5 @@
 ﻿@model UIFT.Models.IOtazka
+@inject AppConfiguration AppConfig
 @inject UIFT.Repository.RepositoryFactory factory
 @{
     var rep = factory.Get();
@@ -12,14 +13,15 @@
 @foreach (BO.f21ReplyUnitJoinedF19 reply in Model.Odpovedi.Where(t => t.f21IsCommentAllowed))
 {
     BO.f32FilledValue answer = Model.VyplneneOdpovedi.Find(t => t.f21ID == reply.pid);
-    bool displayComment = answer == null ? false : (answer.Value == factory.GetGlobalParams("FT_CheckboxAnswerTrueValue"));
+    bool displayComment = answer == null ? false : (answer.Value == AppConfig.FT_CheckboxAnswerTrueValue);
     <div class="commentContainer" id="commentContainer_@(Model.PID)_@reply.pid" style="display:@(displayComment ? "block" : "none");">
-        <label>@rep.BL.tra("Komentář k odpovědi:")
-            @if (showAnswer)
-            {
-                <br /><span>(@rep.BL.tra("pro:") @reply.f21Name)</span>
-            }
-        </label>
-        <textarea class="comment" name="answerComment_@(Model.PID)_@reply.pid" id="answerComment_@(Model.PID)_@reply.pid" data-comment-id="@reply.pid">@(answer != null ? answer.f32Comment : "")</textarea>
-    </div>
+        <label>
+            @rep.BL.tra("Komentář k odpovědi:")
+        @if (showAnswer)
+        {
+            <br /><span>(@rep.BL.tra("pro:") @reply.f21Name)</span>
+        }
+    </label>
+    <textarea class="comment" name="answerComment_@(Model.PID)_@reply.pid" id="answerComment_@(Model.PID)_@reply.pid" data-comment-id="@reply.pid">@(answer != null ? answer.f32Comment : "")</textarea>
+</div>
 }
