@@ -12,6 +12,24 @@ namespace UI.Controllers
 {
     public class a11Controller : BaseController
     {
+        public BO.Result ClearForm(int a11id)
+        {
+            var recA11 = Factory.a11EventFormBL.Load(a11id);
+            bool b = Factory.CurrentUser.TestPermission(BO.j05PermValuEnum.AdminGlobal);
+            if (!b)
+            {
+                var perm = Factory.a01EventBL.InhalePermission(Factory.a01EventBL.Load(recA11.a01ID));
+                if (perm.PermValue == BO.a01EventPermissionENUM.FullAccess || perm.PermValue == BO.a01EventPermissionENUM.ShareTeam_Owner || perm.PermValue == BO.a01EventPermissionENUM.ShareTeam_Leader)
+                {
+                    b = true;
+                }
+            }
+            if (b)
+            {
+                Factory.a11EventFormBL.ClearF32(a11id);
+            }
+            return new BO.Result(false,Factory.tra("Operace dokončena."));
+        }
         public IActionResult ValidateForms(int pid,int a01id)
         {
             var v = new a11ValidateForms() { pid = pid,a01ID=a01id };

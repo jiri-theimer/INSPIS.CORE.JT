@@ -83,6 +83,7 @@ namespace UI.Controllers
                 c.j04IsAllowedAllEventTypes = v.Rec.j04IsAllowedAllEventTypes;
                 c.j04IsAllowInSchoolAdmin = v.Rec.j04IsAllowInSchoolAdmin;
                 c.j04PortalFaceFlag = v.Rec.j04PortalFaceFlag;
+                c.j04ViewUrl_Page = v.Rec.j04ViewUrl_Page;
 
                 c.ValidUntil = v.Toolbar.GetValidUntil(c);
                 c.ValidFrom = v.Toolbar.GetValidFrom(c);

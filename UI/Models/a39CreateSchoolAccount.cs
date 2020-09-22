@@ -19,5 +19,10 @@ namespace UI.Models
         public string a39Description { get; set; }
         public bool a39IsAllowInspisWS { get; set; }
 
+        public string SearchLogin { get; set; }
+        public int SearchJ03ID { get; set; }
+        public BO.j03User SearchRecJ03 { get; set; }
+        
+
     }
 }

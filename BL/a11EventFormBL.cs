@@ -204,5 +204,7 @@ namespace BL
             var c = new Random();
             return BO.BAS.RightString("0000" + c.Next(1, 9999).ToString(), 4);
         }
+
+      
     }
 }

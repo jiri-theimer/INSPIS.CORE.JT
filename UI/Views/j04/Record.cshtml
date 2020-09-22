@@ -47,7 +47,15 @@
             </div>
             <div class="form-row my-2">
 
-                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("URL výchozí stránky"):</label>
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("URL CORE stránky"):</label>
+                <div class="col-sm-9 col-md-8">
+                    <input class="form-control" asp-for="Rec.j04ViewUrl_Page" />
+
+                </div>
+            </div>
+            <div class="form-row my-2">
+
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("URL ASPX stránky"):</label>
                 <div class="col-sm-9 col-md-8">
                     <input class="form-control" asp-for="Rec.j04Aspx_PersonalPage" />
 
@@ -140,8 +148,8 @@
                         </table>
                     </div>
                 </div>
-                
-                
+
+
             }
 
         </div>

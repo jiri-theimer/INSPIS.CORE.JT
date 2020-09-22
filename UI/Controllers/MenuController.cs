@@ -501,6 +501,7 @@ namespace UI.Controllers
                     break;
                 case "a11":
                     var recA11 = Factory.a11EventFormBL.Load(pid);
+                    
                     AMI("Karta záznamu", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
                     DIV();
                     if (recA11.isclosed==false)
@@ -513,7 +514,22 @@ namespace UI.Controllers
                     AMI("Otestovat vyplnění všech formulářů v akci", string.Format("javascript: _window_open('/a11/ValidateForms?a01id={0}')", recA11.a01ID));
                     DIV();
                     AMI("Zobrazit historii přístupů k šifrovaným otázkám", "");
-                    AMI("Vyčistit data ve formuláři (nenávratně)", "");
+                    bool b = Factory.CurrentUser.TestPermission(j05PermValuEnum.AdminGlobal);
+                    if (!b)
+                    {
+                        var perm = Factory.a01EventBL.InhalePermission(Factory.a01EventBL.Load(recA11.a01ID));
+                        if (perm.PermValue == BO.a01EventPermissionENUM.FullAccess || perm.PermValue == BO.a01EventPermissionENUM.ShareTeam_Owner || perm.PermValue == BO.a01EventPermissionENUM.ShareTeam_Leader)
+                        {
+                            b = true;
+                        }
+                    }
+                    if (b)
+                    {
+                        string s = "'"+Factory.tra("Opravdu nenávratně odtranit vyčistit odpovědi ve formuláři?")+"'";
+                        AMI("Vyčistit data ve formuláři (nenávratně)", "javascript:clear_form("+pid.ToString()+","+s+")");
+                    }
+                    
+                    
                     break;
                 case "a41":
                     var recA41 = Factory.a41PersonToEventBL.Load(pid);

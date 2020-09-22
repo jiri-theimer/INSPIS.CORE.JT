@@ -96,7 +96,7 @@ namespace UI.Controllers
             {
                 return this.StopPage(true, "Nedisponujete oprávněním k administraci uživatelských účtů v instituci.");
             }
-            
+
             return View(v);
         }
 
@@ -126,13 +126,13 @@ namespace UI.Controllers
             RefreshStateSchoolAccount(v);
             if (oper == "cut")
             {
-                
+
                 if (Factory.CBL.DeleteRecord("a39", v.a39ID) == "1")
                 {
                     v.SetJavascript_CallOnLoad(v.a39ID);
                     return View(v);
                 }
-                
+
             }
             if (ModelState.IsValid)
             {
@@ -154,7 +154,7 @@ namespace UI.Controllers
                 recA39.a39Description = v.Rec.a39Description;
                 recA39.a39IsAllowInspisWS = v.Rec.a39IsAllowInspisWS;
                 recA39.j04ID_Explicit = Convert.ToInt32(v.SelectedJ04ID);
-                
+
                 recA39.pid = Factory.a39InstitutionPersonBL.Save(recA39);
                 if (recA39.pid > 0)
                 {
@@ -190,16 +190,74 @@ namespace UI.Controllers
             mq = new BO.myQuery("j03") { j02id = v.Rec.j02ID };
             foreach (var c in Factory.j03UserBL.GetList(mq))
             {
-                
+
                 if (v.lisJ04.Where(p => p.j04ID == c.j04ID && p.j04IsAllowInSchoolAdmin == false).Count() > 0)
                 {
                     v.IsNotSchoolAccount = true;
-                    
+
                 }
             }
 
 
             v.lisJ04 = v.lisJ04.Where(p => p.j04IsAllowInSchoolAdmin == true);
+        }
+
+        public IActionResult CreateSchoolAccountBySearch(int a03id)
+        {
+            if (a03id == 0)
+            {
+                return this.StopPage(true, "a03id missing");
+            }
+            var v = new a39CreateSchoolAccount() { a03ID = a03id };
+
+            RefreshStateCreateSchoolAccount(v);
+            return View(v);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateSchoolAccountBySearch(Models.a39CreateSchoolAccount v, string oper)
+        {
+            RefreshStateCreateSchoolAccount(v);
+            if (oper == "load")
+            {
+                var recJ03 = Factory.j03UserBL.LoadByLogin(v.SearchLogin, 0);
+                if (recJ03 == null)
+                {
+                    this.AddMessage("Uživatelský účet nebyl nalezen.");
+                }
+                else
+                {
+                    var mq = new BO.myQuery("a39") {a03id=v.a03ID, j02id = recJ03.j02ID };
+                    if (Factory.a39InstitutionPersonBL.GetList(mq).Count() > 0)
+                    {
+                        this.AddMessage("Vyhledaný uživatelský účet již má přiřazenou roli v této instituci.");return View(v);
+                    }
+                    v.SearchJ03ID = recJ03.pid;
+                }
+                RefreshStateCreateSchoolAccount(v);
+                return View(v);
+            }
+            if (ModelState.IsValid)
+            {
+                if (v.SearchJ03ID == 0)
+                {
+                    this.AddMessage("Nebyl načten uživatelský účet."); return View(v);
+                }
+                var recJ03 = Factory.j03UserBL.LoadByLogin(v.SearchLogin, 0);
+
+                var recA39 = new BO.a39InstitutionPerson() { j02ID = recJ03.j02ID, a03ID = v.a03ID, j04ID_Explicit = Convert.ToInt32(v.SelectedJ04ID), a39Description = v.a39Description, a39IsAllowInspisWS = v.a39IsAllowInspisWS };
+
+                recA39.pid = Factory.a39InstitutionPersonBL.Save(recA39);
+                if (recA39.pid > 0)
+                {
+                    v.SetJavascript_CallOnLoad(recA39.pid);
+                    return View(v);
+                }
+
+            }
+
+            this.Notify_RecNotSaved();
+            return View(v);
         }
 
         public IActionResult CreateSchoolAccount(int a03id)
@@ -275,6 +333,10 @@ namespace UI.Controllers
             if (v.RecJ02 == null) v.RecJ02 = new BO.j02Person();
             var mq = new BO.myQuery("j04") { IsRecordValid = true };
             v.lisJ04 = Factory.j04UserRoleBL.GetList(mq).Where(p => p.j04IsAllowInSchoolAdmin == true);
+            if (v.SearchJ03ID > 0)
+            {
+                v.SearchRecJ03 = Factory.j03UserBL.Load(v.SearchJ03ID);
+            }
         }
 
         private bool ValidatePreSaveSchoolAccount(BO.j03User c, BO.j02Person d)

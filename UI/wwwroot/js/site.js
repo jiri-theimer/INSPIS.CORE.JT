@@ -720,3 +720,14 @@ function _helppage_layout() {
     
     window.open("/x51/Index?viewurl=" + viewurl + "&pagetitle=" + s, "_blank");
 }
+
+
+function clear_form(a11id,question) {
+    if (confirm(question)) {
+        $.post("/a11/ClearForm", { a11id: a11id }, function (data) {
+            alert(data.message);
+
+        });
+    }
+    
+}

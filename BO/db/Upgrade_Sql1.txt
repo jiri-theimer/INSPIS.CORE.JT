@@ -1,0 +1,35 @@
+﻿update j04UserRole set j04ViewUrl_Page='/Dashboard/School' where j04Aspx_PersonalPage like 'j02_framework_institution_general.aspx'
+
+update j04UserRole set j04ViewUrl_Page='/Dashboard/Inspector' where j04Aspx_PersonalPage like 'j02_framework_inspector.aspx'
+
+
+
+ALTER view [dbo].[v_uraz_datumzraneni]
+as
+select a11.a01ID,a01.a03ID,a.f32Value,a.f32Value_DateSearch as DatumZraneni,a11.a01ID as pid
+FROM
+f32FilledValue a INNER JOIN a11EventForm a11 ON a.a11ID=a11.a11ID
+INNER JOIN a01Event a01 ON a11.a01ID=a01.a01ID
+where a.f19ID=201701
+
+GO
+
+ALTER view [dbo].[v_uraz_jmenozraneneho]
+as
+select a11.a01ID,a01.a03ID,a.f32Value,a.f32Value as JmenoZraneneho
+,a11.a01ID as pid
+FROM
+f32FilledValue a INNER JOIN a11EventForm a11 ON a.a11ID=a11.a11ID
+INNER JOIN a01Event a01 ON a11.a01ID=a01.a01ID
+where a.f19ID=201693
+GO
+
+
+ALTER view [dbo].[v_uraz_poradovecislo]
+as
+select a11.a01ID,a01.a03ID,a.f32Value,a11.a01ID as pid,a.f32Value as PoradoveCislo
+FROM
+f32FilledValue a INNER JOIN a11EventForm a11 ON a.a11ID=a11.a11ID
+INNER JOIN a01Event a01 ON a11.a01ID=a01.a01ID
+where a.f19ID=201692
+GO

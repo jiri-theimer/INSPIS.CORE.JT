@@ -62,6 +62,9 @@ a42JobState
 [j02Person]
 j02FullText
 
+[j04UserRole]
+j04ViewUrl_Page varchar(255)
+
 [h07ToDoType]
 b65ID
 

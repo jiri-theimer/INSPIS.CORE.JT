@@ -73,6 +73,7 @@ namespace BL
             p.AddBool("j04IsAllowInSchoolAdmin", rec.j04IsAllowInSchoolAdmin);
             p.AddInt("j04ElearningDuration", rec.j04ElearningDuration);
             p.AddBool("j04IsElearningNeeded", rec.j04IsElearningNeeded);
+            p.AddString("j04ViewUrl_Page", rec.j04ViewUrl_Page);
 
             int intPID= _db.SaveRecord("j04UserRole", p.getDynamicDapperPars(), rec);
             

@@ -36,5 +36,6 @@ namespace BO
         public int j04ElearningDuration { get; set; }
         public bool j04IsElearningNeeded { get; set; }
 
+        public string j04ViewUrl_Page { get; set; } //nové CORE pole - výchozí stránka role
     }
 }

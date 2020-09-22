@@ -1,0 +1,104 @@
+﻿@model UI.Models.a39CreateSchoolAccount
+@inject BL.Factory _f
+
+@{
+    ViewData["Title"] = _f.tra("Založit školní účet uživatele");
+    Layout = "~/Views/Shared/_LayoutModal.cshtml";
+
+
+}
+
+@addTagHelper *, UI
+
+<h4>@ViewData["Title"]</h4>
+<div class="bg-light" style="padding:10px;">
+    <button id="cmdSave" type="button" class="btn btn-success">@_f.tra("Uložit změny")</button>
+    <button id="cmdClose" type="button" onclick="_window_close()" class="btn btn-light">@_f.tra("Zavřít")</button>
+    <button type="button" onclick="_helppage()" class="btn btn-light"><b>? </b>@_f.tra("Nápověda")</button>
+</div>
+
+<div>
+    <input type="radio" id="male" name="gender" value="male" onchange="exitpage()">
+    <label for="male">@_f.tra("Založit nový osobní profil a uživatelský účet")</label>
+    <br>
+    <input type="radio" id="female" name="gender" value="female" checked>
+    <label for="female">@_f.tra("Vybrat již existující osobu v rámci všech uživatelských účtů")</label>
+
+
+</div>
+
+<form id="form1" asp-controller="a39" asp-action="CreateSchoolAccountBySearch" method="POST">
+    <input type="hidden" asp-for="@Model.a03ID" />
+    <input type="hidden" asp-for="@Model.SearchJ03ID" value="@Model.SearchJ03ID" />
+
+
+    <div class="modal_record_container">
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Uživatelské jméno"):</label>
+            <div class="col-sm-4 col-md-3">
+                <input class="form-control" type="tel" asp-for="@Model.SearchLogin" />
+
+            </div>
+
+            <div class="col-sm-4 col-md-4">
+                <button type="button" id="cmdLoad" class="btn btn-primary">@_f.tra("Načíst")</button>
+            </div>
+        </div>
+        @if (Model.SearchRecJ03 != null)
+        {
+            <div>
+                <strong>@Model.SearchRecJ03.fullname_desc</strong>
+                <strong style="color:blue;">@Model.SearchRecJ03.j03Login</strong>
+            </div>
+        }
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Aplikační role"):</label>
+            <div class="col-sm-11 col-md-10">
+                <mydropdown asp-for="@Model.SelectedJ04ID" datasource="@Model.lisJ04" valuefield="pid" textfield="j04Name"></mydropdown>
+            </div>
+        </div>
+        <div class="form-row my-2">
+            <div class="col-sm-8 col-md-8">
+                <input type="checkbox" asp-for="@Model.a39IsAllowInspisWS" />
+                <label class="col-form-label" for="a39IsAllowInspisWS">@_f.tra("Oprávnění k integračním službám se školním IS")</label>
+
+            </div>
+        </div>
+        <div class="form-row my-2">
+            <textarea asp-for="@Model.a39Description" class="form-control" placeholder="@_f.tra("Poznámka k roli")"></textarea>
+
+        </div>
+    </div>
+</form>
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#cmdSave").click(function () {
+            $(this).text("Processing...");
+            $(this).attr("disabled", true);
+            form1.submit();
+
+        });
+
+        $("#cmdLoad").click(function () {
+            $(this).text("Processing...");
+            $(this).attr("disabled", true);
+            form1.action = "/a39/CreateSchoolAccountBySearch?oper=load";
+            form1.submit();
+
+        });
+
+
+    });
+
+    function exitpage() {
+        location.replace("/a39/CreateSchoolAccount?a03id=@Model.a03ID");
+    }
+
+
+</script>
+

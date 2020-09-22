@@ -329,6 +329,7 @@ namespace BL
             AF("j04UserRole", "PortalFaceFlag", "Portál", 0, "case a.j04PortalFaceFlag when 1 then 'ČŠI' when 2 then 'Škola' when 3 then 'Zřizovatel' when 4 then 'Veřejnost' end");
             AF("j04UserRole", "j04IsAllowedAllEventTypes", "Všechny typy akcí", 0, null, "bool");
             AF("j04UserRole", "j04Description", "Popis");
+            AF("j04UserRole", "j04ViewUrl_Page", "URL výchozí stránky");
             AppendTimestamp("j04UserRole");
 
             //j11 = týmy osob
