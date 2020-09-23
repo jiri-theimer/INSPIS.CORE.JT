@@ -116,7 +116,7 @@
     function multiselect() {
         _window_open("/Record/GridMultiSelect?prefix=f06");
     }
-    function refresh_f06_table() {
+    function refresh_f06_table(f06ids) {
         var f06ids = $("#hidF06IDs").val();
         form1.action = "/a08/Record?oper=addmultiple&f06ids=" + f06ids;
         form1.submit();

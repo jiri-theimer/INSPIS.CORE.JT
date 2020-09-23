@@ -88,6 +88,7 @@ namespace BL
 
         private IMailBL _mail;
         private IWorkflowBL _workflow;
+        private IStatBL _stat;
         private Ik01TeacherBL _k01;
 
         public Factory(BO.RunningUser c,BL.RunningApp runningapp,BL.TheEntitiesProvider ep,BL.TheGlobalParams gp,BL.TheTranslator tt)
@@ -678,6 +679,14 @@ namespace BL
             {
                 if (_workflow == null) _workflow = new WorkflowBL(this);
                 return _workflow;
+            }
+        }
+        public IStatBL StatBL
+        {
+            get
+            {
+                if (_stat == null) _stat = new StatBL(this);
+                return _stat;
             }
         }
     }

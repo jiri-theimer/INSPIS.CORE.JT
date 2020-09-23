@@ -348,7 +348,8 @@ namespace UI.Controllers
             
             _grid.Columns =_colsProvider.ParseTheGridColumns(mq.Prefix,gridState.j72Columns, Factory.CurrentUser.j03LangIndex);            
 
-            mq.explicit_columns = _grid.Columns;
+
+            mq.explicit_columns = _grid.Columns.ToList();
                         
             if (String.IsNullOrEmpty(gridState.j75Filter) == false)
             {

@@ -285,13 +285,13 @@ namespace DL
         }
 
         
-        public bool RunSql(string strSQL, object param = null)
+        public bool RunSql(string strSQL, object param = null, int? timeout_seconds = null)
         {
             using (SqlConnection con = new SqlConnection(_conString))
             {
                 try
                 {
-                    if (con.Execute(strSQL, param) > 0)
+                    if (con.Execute(strSQL, param,null,timeout_seconds) > 0)
                     {
                         return true;
                     }

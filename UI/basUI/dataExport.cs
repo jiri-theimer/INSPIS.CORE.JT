@@ -16,12 +16,12 @@ namespace UI
                 var worksheet = workbook.Worksheets.Add("Grid");
                 int row = 1;
                 int col = 1;
-                
+
                 foreach (var c in mq.explicit_columns)
                 {
                     worksheet.Cell(row, col).Value = c.Header;
                     worksheet.Cell(row, col).Style.Font.Bold = true;
-                    
+
                     col += 1;
                 }
                 row += 1;
@@ -30,22 +30,63 @@ namespace UI
                     col = 1;
                     foreach (var c in mq.explicit_columns)
                     {
-                       
+
                         if (!Convert.IsDBNull(dr[c.UniqueName]))
                         {
-                            worksheet.Cell(row, col).Value = dr[c.UniqueName];                            
+                            worksheet.Cell(row, col).Value = dr[c.UniqueName];
+
                         }
-                        col += 1;                       
+                        col += 1;
                     }
 
                     row += 1;
 
                 }
 
-                //worksheet.Cell("A1").Value = "Hello World!";
-                //worksheet.Cell("A2").FormulaA1 = "=MID(A1, 7, 5)";
                 workbook.SaveAs(strFilePath);
                
+            }
+
+            return true;
+        }
+        public bool ToXLSX(System.Data.DataTable dt, string strFilePath, List<BO.StringPair> cols)
+        {
+            //key: název pole, value: záhlaví sloupce
+            using (var workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("Grid");
+                int row = 1;
+                int col = 1;
+
+                foreach (var c in cols)
+                {
+                    worksheet.Cell(row, col).Value = c.Value;
+                    worksheet.Cell(row, col).Style.Font.Bold = true;
+
+                    col += 1;
+                }
+
+                row += 1;
+                foreach (System.Data.DataRow dr in dt.Rows)
+                {
+                    col = 1;
+                    foreach (var c in cols)
+                    {
+
+                        if (!Convert.IsDBNull(dr[c.Key]))
+                        {
+                            worksheet.Cell(row, col).Value = dr[c.Key];
+
+                        }
+                        col += 1;
+                    }
+
+                    row += 1;
+
+                }
+
+                workbook.SaveAs(strFilePath);
+
             }
 
             return true;

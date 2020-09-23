@@ -34,7 +34,7 @@
             _notify_message("@_f.tra("Musíte vybrat minimálně jeden záznam.")");
             return;
         }
-
+        
         var prefix = "@Model.prefix";
         var hiddenID = "hid" + prefix.toUpperCase() + "IDs";
         var val = window.parent.document.getElementById(hiddenID).value;
@@ -52,7 +52,7 @@
             window.parent.refresh_j02_table();
         }
         if (prefix == "f06") {
-            window.parent.refresh_f06_table();
+            window.parent.refresh_f06_table(pids);
         }
         if (prefix == "f21") {
             window.parent.refresh_f21_table();

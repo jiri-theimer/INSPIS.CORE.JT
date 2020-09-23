@@ -7,6 +7,17 @@ namespace BO
 {
     public static class BAS
     {
+        public static string GB(bool b)
+        {
+            if (b)
+            {
+                return "1";
+            }
+            else
+            {
+                return "0";
+            }
+        }
         public static string GS(string s)
         {
             if(string.IsNullOrEmpty(s) == true)
@@ -297,6 +308,11 @@ namespace BO
             {
                 return false;
             }
+        }
+
+        public static string EncryptedString()
+        {
+            return "********";
         }
 
 

@@ -323,6 +323,11 @@ namespace DL
                 if (mq.Prefix == "f31") AQ(ref lis, "a11.f06ID=@f06id", "f06id", mq.f06id);
                 if (mq.Prefix == "o27") AQ(ref lis, "a.x29ID=406 AND a.o27DataPID=@f06id", "f06id", mq.f06id);
             }
+            if (mq.f06ids != null && mq.f06ids.Count() > 0)
+            {
+                if (mq.Prefix == "f19") AQ(ref lis, "a.f18ID IN (SELECT f18ID FROM f18FormSegment WHERE f06ID IN ("+string.Join(",",mq.f06ids)+"))","",null);
+            }
+
             if (mq.f32id > 0)
             {
                 if (mq.Prefix == "o27") AQ(ref lis, "a.x29ID=432 AND a.o27DataPID=@f32id", "f32id", mq.f32id);

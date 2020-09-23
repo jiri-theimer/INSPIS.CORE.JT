@@ -331,7 +331,7 @@ namespace UI.Controllers
             }
             if (TUP(BO.j05PermValuEnum.Menu_Analyze))
             {
-                AMI("Statistiky", "/Home/About");
+                AMI("Statistiky", "/Stat/Index");
             }
 
             return FlushResult_NAVLINKs();

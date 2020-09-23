@@ -1,0 +1,161 @@
+﻿@model StatViewModel
+@inject BL.Factory _f
+
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+    ViewData["Title"] = _f.tra("Statistiky akcí");
+}
+
+@addTagHelper *, UI
+
+<h4 class="px-2">@ViewData["Title"]</h4>
+
+
+<form id="form1" asp-controller="Stat" asp-action="Index" method="POST">
+    <input type="hidden" id="hidF06IDs" asp-for="@Model.f06IDs" />
+    <input type="hidden" id="hidF19IDs" asp-for="@Model.f19IDs" />
+    <input type="hidden" id="guid" asp-for="@Model.guid" value="@Model.guid" />
+
+    <div class="bg-light" style="padding:10px;">
+        <div class="form-row" style="max-width:1000px;">
+            <div class="col-sm-6 col-md-6">
+                <button id="cmdRunGrid" class="btn btn-success">@_f.tra("Vygenerovat výsledek do GRIDu")</button>
+                <button id="cmdRunExcel" class="btn btn-info">@_f.tra("Vygenerovat výsledek do XLS")</button>
+                @if (Model.XlsExportTempFileName != null)
+                {
+                    <div>
+                        <a target="_blank" style="font-weight:bold;" href="/FileUpload/FileDownloadTempFile?tempfilename=@Model.XlsExportTempFileName">@_f.tra("Otevřít vygenerovaný XLS dokument")</a>
+                    </div>
+
+                }
+            </div>
+            <div class="col-sm-3 col-md-3">
+                <select asp-for="@Model.ValuesMode">
+                    <option value="Nazev">@_f.tra("Odpovědi ve formátu [Název odpovědi]")</option>
+                    <option value="StatID">@_f.tra("Odpovědi ve formátu [STAT ID]")</option>
+                    <option value="PID">@_f.tra("Odpovědi ve formátu [PID]")</option>
+                </select>
+                <div>
+                    <input type="checkbox" asp-for="@Model.IsZeroRow" />
+                    <label class="col-form-label" for="IsZeroRow">@_f.tra("V prvním XLS řádku názvy otázek")</label>
+                </div>
+            </div>
+            <div class="col-sm-3 col-md-3">
+                <select asp-for="@Model.GroupByMode">
+                    <option value="NoGroup">@_f.tra("Data vůbec neshlukovat")</option>
+                    <option value="GroupByA01">@_f.tra("Data shlukovat podle akce+SF")</option>
+                    <option value="GroupByA03">@_f.tra("Data shlukovat podle instituce (školy)")</option>
+                    <option value="GroupByA37">@_f.tra("Data shlukovat podle činnosti školy")</option>
+                </select>
+                <div>
+                    <input type="checkbox" asp-for="@Model.IsBlankA11IDs" />
+                    <label class="col-form-label" for="IsBlankA11IDs">@_f.tra("Zahrnout i formuláře bez odpovědí")</label>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-2">
+            <button type="button" class="btn btn-primary" onclick="multiselect()">@_f.tra("Vybrat formuláře")</button>
+        </div>
+        <div class="col-8">
+            @Html.EditorFor(m => m.PeriodFilter, "~/Views/Shared/_Period.cshtml")
+        </div>
+
+    </div>
+    @if (Model.lisF06 != null)
+    {
+        <table class="table table-sm table-hover">
+            @foreach (var c in Model.lisF06)
+            {
+                <tr>
+                    <td>
+                        @c.f06Name
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+</form>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+
+        $("#cmdRunGrid").click(function () {
+            $(this).text("Processing...");
+            $(this).attr("disabled", true);
+            form1.action = "/Stat/Index?oper=grid"
+            form1.submit();
+
+
+        });
+        $("#cmdRunExcel").click(function () {
+            $(this).text("Processing...");
+            $(this).attr("disabled", true);
+            form1.action = "/Stat/Index?oper=excel"
+            form1.submit();
+
+
+        });
+
+
+        $("#PeriodValue").on("change", function () {
+            $.post("/Common/SetUserParam", { key: "stat-period-value", value: $(this).val() }, function (data) {
+                form1.action = "/Stat/Index?oper=change_period";
+                form1.submit();
+
+            });
+        });
+
+
+        $("#cmdRefreshPeriod").on("click", function () {
+            var k = [];
+            var v = [];
+            k.push("stat-period-value");
+            v.push($("#PeriodValue").val());
+            k.push("stat-period-d1");
+            v.push($("#d1helper").val());
+            k.push("stat-period-d2");
+            v.push($("#d2helper").val());
+
+
+            $.post("/Common/SetUserParams", { keys: k, values: v }, function (data) {
+                form1.action = "/Stat/Index?oper=change_period";
+                form1.submit();
+
+            });
+
+        });
+
+
+
+    });
+
+
+    function multiselect() {
+        _window_open("/Record/GridMultiSelect?prefix=f06");
+    }
+
+    function refresh_f06_table(f06ids) {
+        //volá se automaticky po výběru formulářů
+        $("#hidF06IDs").val(f06ids);
+        form1.action = "/Stat/Index?oper=change_f06ids";
+        form1.submit();
+
+    }
+
+</script>
+
+
+
