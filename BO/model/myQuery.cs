@@ -151,6 +151,9 @@ namespace BO
             }
             switch (master_entity.Substring(0, 3))
             {
+                case "p86":
+                    this.explicit_sqlwhere= "a.p86GUID=" + BO.BAS.GSS(master_flag);
+                    break;
                 case "a01":
                     this.a01id = master_pid;
                     if (master_flag == "poll")

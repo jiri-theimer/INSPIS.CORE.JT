@@ -15,6 +15,7 @@ namespace BL
         public bool SetUserParam(string strKey, string strValue);
         public string EstimateRecordCode(string entity);
         public string GetRecordAlias(string entity, int pid);
+        public void ClearUserParamsCache();
     }
     class CBL :BaseBL, ICBL
     {
@@ -156,6 +157,10 @@ namespace BL
             }
         }        
        
+        public void ClearUserParamsCache()
+        {
+            _userparams = null;
+        }
        
     }
 }

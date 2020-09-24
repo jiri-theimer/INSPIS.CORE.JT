@@ -18,6 +18,8 @@
     <input type="hidden" id="hidF06IDs" asp-for="@Model.f06IDs" />
     <input type="hidden" id="hidF19IDs" asp-for="@Model.f19IDs" />
     <input type="hidden" id="guid" asp-for="@Model.guid" value="@Model.guid" />
+    <input type="hidden" asp-for="@Model.GridGuid" value="@Model.GridGuid" />
+    <input type="hidden" asp-for="@Model.GridContainerCssStyle" />
 
     <div class="bg-light" style="padding:10px;">
         <div class="form-row" style="max-width:1000px;">
@@ -26,7 +28,7 @@
                 <button id="cmdRunExcel" class="btn btn-info">@_f.tra("Vygenerovat výsledek do XLS")</button>
                 @if (Model.XlsExportTempFileName != null)
                 {
-                    <div>
+                    <div style="padding:20px;background-color:lightgoldenrodyellow;">
                         <a target="_blank" style="font-weight:bold;" href="/FileUpload/FileDownloadTempFile?tempfilename=@Model.XlsExportTempFileName">@_f.tra("Otevřít vygenerovaný XLS dokument")</a>
                     </div>
 
@@ -85,6 +87,13 @@
             }
         </table>
     }
+
+    @if (Model.GridGuid != null)
+    {
+        <div id="divGridContainer" style="@Model.GridContainerCssStyle">
+            <vc:the-grid entity="p86TempStat" j72id="0" go2pid="0" master_entity="" master_pid="0" contextmenuflag="1" ondblclick="" master_flag="" masterviewflag="3" addfilterid="stat" fixedcolumns="@Model.GridColumns"></vc:the-grid>
+        </div>
+    }
 </form>
 
 <script type="text/javascript">
@@ -97,16 +106,13 @@
             $(this).attr("disabled", true);
             form1.action = "/Stat/Index?oper=grid"
             form1.submit();
-
-
         });
+
         $("#cmdRunExcel").click(function () {
             $(this).text("Processing...");
             $(this).attr("disabled", true);
             form1.action = "/Stat/Index?oper=excel"
             form1.submit();
-
-
         });
 
 
@@ -152,6 +158,11 @@
         $("#hidF06IDs").val(f06ids);
         form1.action = "/Stat/Index?oper=change_f06ids";
         form1.submit();
+
+    }
+
+    /*automaticky volaná událost z thegrid controlu*/
+    function thegrid_handle_event(event_name, pid) {
 
     }
 

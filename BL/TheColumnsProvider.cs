@@ -748,6 +748,19 @@ namespace BL
             AF("v_uraz_jmenozraneneho", "JmenoZraneneho", "Jméno zraněného", 0,null,"string",false,true);
             AF("v_uraz_datumzraneni", "DatumZraneni", "Datum zranění", 0,null,"datetime",false,true);
             AF("v_uraz_poradovecislo", "PoradoveCislo", "Pořadové číslo", 0, null, "string", false, true);
+
+            //p86 = Statistika
+            AF("p86TempStat", "a01Signature", "ID akce",1);
+            AF("p86TempStat", "a01DateFrom", "Od",1,null,"date");
+            AF("p86TempStat", "a01DateUntil", "Do", 1, null, "date");
+            AF("p86TempStat", "a03REDIZO", "REDIZO", 1);
+            AF("p86TempStat", "a03Name", "Instituce", 1);
+            for(int i = 0; i <= 400; i++)
+            {
+                AF("p86TempStat", "col"+i.ToString(), "Col"+i.ToString());
+            }
+            
+            
         }
 
         

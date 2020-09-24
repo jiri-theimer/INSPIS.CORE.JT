@@ -63,17 +63,43 @@ namespace UI.Controllers
                 mq = new BO.myQuery("a01");
 
                 v.guid = BO.BAS.GetGuid();
+                
+
                 bool b = Factory.StatBL.GenerateStatMatrix(v.guid, mq, lisCols, v.ValuesMode, false, v.IsBlankA11IDs, v.IsZeroRow, bolTestEncryptedValues);
 
                 if (oper == "excel")
                 {
-                    
+                    v.GridGuid = null;
                     Export2Excel(v,lisCols);
+                }
+                if (oper == "grid")
+                {                    
+                    v.GridGuid = v.guid;
+                    Export2Grid(v, lisCols);
                 }
                 
             }
 
                 return View(v);
+        }
+
+        private void Export2Grid(StatViewModel v, List<BO.StatColumn> lisCols)
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.Append("a__p86TempStat__a01Signature,a__p86TempStat__a01DateFrom,a__p86TempStat__a01DateUntil,a__p86TempStat__a03REDIZO,a__p86TempStat__a03Name");
+            v.GridContainerCssStyle = null;
+            
+            foreach(var c in lisCols)
+            {
+                sb.Append(",a__p86TempStat__" + c.colField);               
+            }
+            if (lisCols.Count() > 10)
+            {
+                v.GridContainerCssStyle = "width: " + (1000 + lisCols.Count() * 100).ToString() + "px;overflow-x:auto;";
+            }
+            
+            v.GridColumns = sb.ToString();
+            Factory.CBL.SetUserParam("Stat-GridGuid", v.guid);
         }
 
         private void Export2Excel(StatViewModel v, List<BO.StatColumn> lisCols)

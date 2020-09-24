@@ -176,6 +176,9 @@ namespace BL
             AE_TINY("x91Translate", "Aplikační překlad", "Aplikační překlad");
             ByPrefix("x91").IsWithoutValidity = true;
 
+            AE_TINY("p86TempStat", "Statistika", "Statistika");
+            ByPrefix("p86").IsWithoutValidity = true;
+
             AE_TINY("v_uraz_jmenozraneneho", "Úraz1", "Úraz1");
             AE_TINY("v_uraz_datumzraneni", "Úraz2", "Úraz2");
             AE_TINY("v_uraz_poradovecislo", "Úraz3", "Úraz3");

@@ -331,6 +331,12 @@ namespace UI.Controllers
                 case "school":
                     mq.a10id = Factory.CBL.LoadUserParamInt("DashboardSchool-a10id");
                     break;
+                case "stat":
+                    Factory.CBL.ClearUserParamsCache(); //docílit toho, aby se guid načetl na 100% z databáze
+                    string strGUID = Factory.CBL.LoadUserParam("Stat-GridGuid");
+                    mq.explicit_sqlwhere = "a.p86GUID=" + BO.BAS.GS(strGUID);   //v addfilterid je předaná hodnota p86GUID                    
+                    break;
+                
             }
         }
         

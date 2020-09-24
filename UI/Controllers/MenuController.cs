@@ -619,6 +619,7 @@ namespace UI.Controllers
                 case "j92":
                 case "p44":
                 case "k01":
+                case "p86":
                     AMI("Záznam bez menu nabídky", "javascript:_notify_message('nic')");
                     break; 
                 default:
