@@ -95,17 +95,7 @@ namespace UI.Controllers
         {
             var v = new UI.Models.Pokus();
 
-            var mq = new BO.myQuery("f32");
-            mq.a11id = 1640815;
-            mq.f19id = 216138;
-            var c = Factory.f32FilledValueBL.Load(3);
-
-            c.pid = 0;
-            c.a11ID = 0;
-
-
-            var x = Factory.f32FilledValueBL.Save(c, true);
-
+           
 
 
 

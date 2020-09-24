@@ -4,28 +4,72 @@
     ViewData["Title"] = "Strom";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    
- }
 
-   
+}
+
+
 
 
 @addTagHelper *, UI
 
 
+<!-- Required Stylesheets -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="/lib/hummingbird-treeview/hummingbird-treeview.css" rel="stylesheet">
+
+
+<script src="/lib/hummingbird-treeview/hummingbird-treeview.js"></script>
+
 
 <h1>Strom</h1>
-<button type="button" onclick="pokus()">pokus postback</button>
-<form id="form1" asp-controller="Pokus" asp-action="Strom" method="POST">
-    
-</form>
-    
+
+<style type="text/css">
+</style>
+
+<div class="hummingbird-treeview-converter">
+    <li id="item_1" data-id="100">Warner Bros.</li>
+    <li id="item_2" data-id="200">-Goodfellas</li>
+    <li data-id="300">--Robert De Niro</li>
+    <li data-id="400">--Joe Pesci</li>
+    <li>-The Shawshank Redemption</li>
+    <li>--Tim Robbins</li>
+    <li>--Morgan Freeman</li>
+    <li>Paramount</li>
+    <li>-The Untouchables</li>
+    <li>--Robert De Niro</li>
+    <li data-id="500">--Kevin Costner</li>
+    <li>-Forrest Gump</li>
+    <li>--Tom Hanks</li>
+    <li>--Robin Wright</li>
+</div>
 
 
-    <script type="text/javascript">
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        //$.fn.hummingbird.defaults.checkboxes = "disabled";
+        //$.fn.hummingbird.defaults.checkboxesGroups = "disabled";
+
+        //$.fn.hummingbird.defaults.singleGroupOpen = 0;
+        //$.fn.hummingbird.defaults.hoverItems = true;
+
         
+        
+        $("#treeview").hummingbird();
 
-        function pokus() {
-            form1.submit();
-        }
-    </script>
+
+        //$("#treeview").hummingbird("expandAll");
+
+
+
+        var pre_check = [400, 500];
+        $.each(pre_check, function (i, e) {
+            $("#treeview").hummingbird("checkNode", { attr: "data-id", name: e, expandParents: true });
+        });
+
+    });
+
+
+
+</script>
