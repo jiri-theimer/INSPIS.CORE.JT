@@ -26,6 +26,10 @@ namespace UI.Models
         public string XlsExportTempFileName { get; set; }
         public string GridGuid { get; set; }
         public string GridColumns { get; set; }
+        public string GridHeaders { get; set; }
         public string GridContainerCssStyle { get; set; }
+
+        public string SelectedJ72ID { get; set; }
+        public IEnumerable<BO.j72TheGridTemplate> lisJ72 { get; set; }
     }
 }

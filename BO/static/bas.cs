@@ -36,11 +36,19 @@ namespace BO
             s = s.Replace("'", "").Replace("--", "##");
             return s;
         }
-        public static string GD(DateTime? d)
+        public static string GD(DateTime? d, DateTime? valIfNull=null)
         {
             if (d == null)
             {
-                return "NULL";
+                if (valIfNull == null)
+                {
+                    return "NULL";
+                }
+                else
+                {
+                    d = valIfNull;
+                }
+                
             }
             return "CONVERT(datetime,'" + ObjectDate2String(d, "dd.MM.yyyy") + "',104)";
         }

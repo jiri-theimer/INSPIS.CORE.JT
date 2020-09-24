@@ -61,6 +61,34 @@ namespace UI.Controllers
                 bool bolTestEncryptedValues = !Factory.CurrentUser.TestPermission(BO.j05PermValuEnum.Read_Encrypted_FormValues);
 
                 mq = new BO.myQuery("a01");
+                //mq.global_d1 = v.PeriodFilter.d1;
+                //mq.global_d2 = v.PeriodFilter.d2;
+                var lis = new List<string>();
+                if (v.PeriodFilter.d1 != null)
+                {
+                    lis.Add("a.a01DateFrom>=" + BO.BAS.GD(v.PeriodFilter.d1));
+                }
+                if (v.PeriodFilter.d2 != null)
+                {
+                    lis.Add("a.a01DateUntil<=" + BO.BAS.GD(v.PeriodFilter.d2));
+                }
+                
+                int intJ72ID = BO.BAS.InInt(v.SelectedJ72ID);
+                if (intJ72ID > 0)
+                {
+                    var recJ72 = Factory.j72TheGridTemplateBL.Load(intJ72ID);                    
+                    mq.lisJ73 = Factory.j72TheGridTemplateBL.GetList_j73(intJ72ID,"a01");
+                    DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql("", mq,Factory.CurrentUser);
+                    if (!string.IsNullOrEmpty(fq.SqlWhere))
+                    {
+                        lis.Add("("+fq.SqlWhere+")");
+                    }
+                }
+                
+                if (lis.Count() > 0)
+                {
+                    mq.explicit_sqlwhere = string.Join(" AND ", lis);
+                }
 
                 v.guid = BO.BAS.GetGuid();
                 
@@ -72,7 +100,7 @@ namespace UI.Controllers
                     v.GridGuid = null;
                     Export2Excel(v,lisCols);
                 }
-                if (oper == "grid")
+                if (oper == "grid" || oper== "change_period")
                 {                    
                     v.GridGuid = v.guid;
                     Export2Grid(v, lisCols);
@@ -85,20 +113,24 @@ namespace UI.Controllers
 
         private void Export2Grid(StatViewModel v, List<BO.StatColumn> lisCols)
         {
-            var sb = new System.Text.StringBuilder();
-            sb.Append("a__p86TempStat__a01Signature,a__p86TempStat__a01DateFrom,a__p86TempStat__a01DateUntil,a__p86TempStat__a03REDIZO,a__p86TempStat__a03Name");
+            var sb1 = new System.Text.StringBuilder();
+            var sb2 = new System.Text.StringBuilder();
+            sb1.Append("a__p86TempStat__a01Signature,a__p86TempStat__a01DateFrom,a__p86TempStat__a01DateUntil,a__p86TempStat__a03REDIZO,a__p86TempStat__a03Name");
+            sb2.Append(",,,,");
             v.GridContainerCssStyle = null;
             
             foreach(var c in lisCols)
             {
-                sb.Append(",a__p86TempStat__" + c.colField);               
+                sb1.Append(",a__p86TempStat__" + c.colField);
+                sb2.Append("," + c.colName);
             }
             if (lisCols.Count() > 10)
             {
                 v.GridContainerCssStyle = "width: " + (1000 + lisCols.Count() * 100).ToString() + "px;overflow-x:auto;";
             }
             
-            v.GridColumns = sb.ToString();
+            v.GridColumns = sb1.ToString();
+            v.GridHeaders = sb2.ToString();
             Factory.CBL.SetUserParam("Stat-GridGuid", v.guid);
         }
 
@@ -153,7 +185,13 @@ namespace UI.Controllers
                 mq.SetPids(v.f06IDs);
                 v.lisF06 = Factory.f06FormBL.GetList(mq);
             }
-            
+
+            v.lisJ72 = Factory.j72TheGridTemplateBL.GetList("a01Event", Factory.CurrentUser.pid, null).Where(p => p.j72HashJ73Query == true);
+            foreach (var c in v.lisJ72.Where(p => p.j72IsSystem == true))
+            {
+                c.j72Name = Factory.tra("Výchozí GRID");
+            }
+
         }
 
 

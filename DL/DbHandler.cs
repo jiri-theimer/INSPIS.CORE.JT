@@ -96,7 +96,7 @@ namespace DL
                     log_error(e, strSQL, pars);
                     return default(T);
                 }
-
+                
 
             }
         }
@@ -284,13 +284,32 @@ namespace DL
             return 0;
         }
 
-        
+
+        //public bool RunSql(string strSQL, Dapper.DynamicParameters pars, int? timeout_seconds = null)
+        //{
+        //    using (SqlConnection con = new SqlConnection(_conString))
+        //    {
+        //        try
+        //        {
+        //            con.Query(strSQL, pars,null,false,timeout_seconds);
+        //            return true;
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            log_error(e, strSQL, pars);
+        //            return false;
+        //        }
+
+        //    }
+        //    return false;
+        //}
         public bool RunSql(string strSQL, object param = null, int? timeout_seconds = null)
         {
             using (SqlConnection con = new SqlConnection(_conString))
             {
                 try
                 {
+                    
                     if (con.Execute(strSQL, param,null,timeout_seconds) > 0)
                     {
                         return true;

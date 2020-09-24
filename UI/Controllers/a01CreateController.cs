@@ -222,7 +222,7 @@ namespace UI.Controllers
             if (ModelState.IsValid)
             {
 
-                BO.a01Event c = new BO.a01Event() { a01IsTemporary = true, a10ID = v.a10ID, a03ID = v.a03ID, j03ID_Creator = Factory.CurrentUser.pid, j02ID_Issuer = Factory.CurrentUser.j02ID };
+                BO.a01Event c = new BO.a01Event() {a01DateFrom=DateTime.Today, a01IsTemporary = true, a10ID = v.a10ID, a03ID = v.a03ID, j03ID_Creator = Factory.CurrentUser.pid, j02ID_Issuer = Factory.CurrentUser.j02ID };
                 c.a08ID = Factory.GlobalParams.LoadParamInt("a08ID_Injury", 0); //téma se bere z globálních parametrů
                 if (c.a08ID == 0)
                 {

@@ -158,7 +158,10 @@ namespace DL
                 }
                 if (mq.Prefix == "a01")
                 {
-                    AQ(ref lis, "(a.a01DateFrom BETWEEN @gd1 AND @gd2 OR a.a01DateUntil BETWEEN @gd1 AND @gd2 OR (a.a01DateFrom>=@gd1 AND a.a01DateUntil<=@gd2))", "gd1", mq.global_d1, "AND", null, null, "gd2", mq.global_d2);
+                    //AQ(ref lis, "(a.a01DateFrom BETWEEN @gd1 AND @gd2 OR a.a01DateUntil BETWEEN @gd1 AND @gd2 OR (a.a01DateFrom>=@gd1 AND a.a01DateUntil<=@gd2))", "gd1", mq.global_d1, "AND", null, null, "gd2", mq.global_d2);
+                    //AQ(ref lis, "a.a01DateFrom>=@gd1 AND a.a01DateUntil<=@gd2", "gd1", mq.global_d1, "AND", null, null, "gd2", mq.global_d2);
+                    AQ(ref lis, "a.a01DateFrom>=@gd1", "gd1", mq.global_d1);
+                    AQ(ref lis, "a.a01DateUntil<=@gd2", "gd2", mq.global_d2);
                 }
             }
             if (mq.MyRecordsDisponible==true && mq.CurrentUser !=null)

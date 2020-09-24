@@ -19,7 +19,9 @@
     <input type="hidden" id="hidF19IDs" asp-for="@Model.f19IDs" />
     <input type="hidden" id="guid" asp-for="@Model.guid" value="@Model.guid" />
     <input type="hidden" asp-for="@Model.GridGuid" value="@Model.GridGuid" />
-    <input type="hidden" asp-for="@Model.GridContainerCssStyle" />
+    <input type="hidden" asp-for="@Model.GridContainerCssStyle" value="@Model.GridContainerCssStyle" />
+    <input type="hidden" asp-for="@Model.GridColumns" value="@Model.GridColumns" />
+    <input type="hidden" asp-for="@Model.GridHeaders" value="@Model.GridHeaders" />
 
     <div class="bg-light" style="padding:10px;">
         <div class="form-row" style="max-width:1000px;">
@@ -59,7 +61,20 @@
             </div>
 
         </div>
+        @if (Model.lisJ72 != null)
+        {
+            <div class="form-row">
+                <div class="col-sm-2 col-md-2">
 
+                </div>
+                <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Pojmenovaný GRID filtr"):</label>
+                <div class="col-sm-4 col-md-4">
+                    <mydropdown asp-for="@Model.SelectedJ72ID" datasource="@Model.lisJ72" textfield="j72Name" valuefield="pid" isfirstemptyrow="true" event_after_changevalue="j72id_change"></mydropdown>
+
+                </div>
+                
+            </div>
+        }
 
     </div>
 
@@ -145,6 +160,18 @@
         });
 
 
+        var h = $("#GridHeaders").val();
+        var c = $("#GridColumns").val();
+        if (c != "") {
+            var arrh = h.split(",");
+            var arrc = c.split(",");
+            for (var i = 0; i <= arrc.length - 1; i++) {
+                if (arrh[i] != "") {
+                    $("#th_" + arrc[i]).text(arrh[i]);
+                }                
+            }
+        }
+        
 
     });
 

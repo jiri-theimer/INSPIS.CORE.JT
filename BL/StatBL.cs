@@ -23,8 +23,11 @@ namespace BL
         public bool GenerateStatMatrix(string strGUID,BO.myQuery mq,List<BO.StatColumn> lisCols,BO.StatValueMode valueMODE,bool bolConvertNullCheckboxToZero,bool bolIncludeBlankA11IDs,bool bolConvertZeroChkListValsToNull,bool bolTestEncryptedValues)
         {
 
-            //DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
-            string strW_A01 = "a.a01ID>0";  //sql where klauzule seznamu akcí
+           DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql("", mq, _mother.CurrentUser);
+           
+            string strW_A01 = fq.SqlWhere;  //sql where klauzule seznamu akcí
+            if (string.IsNullOrEmpty(strW_A01)) strW_A01 = "a.a01ID>0";
+            
             string strF_A01 = "a01Event a INNER JOIN a10EventType a10 ON a.a10ID=a10.a10ID LEFT OUTER JOIN a03Institution a03 ON a.a03ID=a03.a03ID LEFT OUTER JOIN a08Theme a08 ON a.a08ID=a08.a08ID LEFT OUTER JOIN b02WorkflowStatus b02 ON a.b02ID=b02.b02ID";    //sql pro vnořený seznam akcí
 
             string strColsInsertOcas = "";
@@ -73,6 +76,7 @@ namespace BL
             sb(" INNER JOIN a01Event a01s ON a11s.a01ID=a01s.a01ID");
            
             sb(" WHERE f32s.f19ID IN (" + string.Join(",", lisCols.Select(p => p.f19ID).Distinct()) + ")");
+
             sb(" AND a11s.a01ID IN (SELECT a.a01ID FROM " + strF_A01 + " WHERE " + strW_A01 + ")");
             sb(" AND NOT EXISTS (SELECT 1 FROM f35FilledQuestionHidden f35 WHERE f32s.a11ID=f35.a11ID AND f32s.f19ID=f35.f19ID AND f35.f35IsHidden=1)");
 
@@ -81,7 +85,10 @@ namespace BL
 
             sb("INSERT INTO p86TempStat(a11ID,p86GUID,a01ID,a01Signature" + strColsInsertOcas + ") " + strFinalS);
 
+            
             bool b=_db.RunSql(sbret(), null, 120); //120 sekund timeout
+            
+           
             if (b)
             {
                 if (bolIncludeBlankA11IDs)

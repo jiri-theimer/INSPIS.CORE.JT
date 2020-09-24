@@ -192,6 +192,10 @@ namespace BL
 
             p.AddBool("a01IsTemporary", rec.a01IsTemporary);
             p.AddDateTime("a01DateFrom", rec.a01DateFrom);
+            if (rec.a01DateUntil == null)
+            {
+                rec.a01DateUntil = new DateTime(3000, 1, 1);
+            }
             p.AddDateTime("a01DateUntil", rec.a01DateUntil);
 
             int intPID = _db.SaveRecord("a01Event", p.getDynamicDapperPars(), rec);
@@ -320,7 +324,7 @@ namespace BL
                 }
                 if (c.a01DateUntil == null)
                 {
-                    c.a01DateFrom = new DateTime(3000, 1, 1);
+                    c.a01DateUntil = new DateTime(3000, 1, 1);
                 }
             }
 
