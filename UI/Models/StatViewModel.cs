@@ -14,6 +14,7 @@ namespace UI.Models
         public IEnumerable<BO.f19Question> lisF19 { get; set; }
 
         public string f19IDs { get; set; }
+        public string CheckedIDs { get; set; }
        
         public bool IsZeroRow { get; set; }     //V prvním XLS řádku názvy otázek
         public bool IsBlankA11IDs { get; set; }     //Zahrnout i formuláře bez odpovědí
@@ -33,5 +34,7 @@ namespace UI.Models
 
         public string SelectedJ72ID { get; set; }
         public IEnumerable<BO.j72TheGridTemplate> lisJ72 { get; set; }
+
+        public string TreeContainerHeight { get; set; }
     }
 }

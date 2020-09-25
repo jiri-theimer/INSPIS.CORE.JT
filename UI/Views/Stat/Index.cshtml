@@ -19,13 +19,15 @@
 
 
 <form id="form1" asp-controller="Stat" asp-action="Index" method="POST">
-    <input type="hidden" id="hidF06IDs" asp-for="@Model.f06IDs" />
-    <input type="hidden" id="hidF19IDs" asp-for="@Model.f19IDs" />
+    <input type="hidden" id="hidF06IDs" asp-for="@Model.f06IDs" value="@Model.f06IDs" />
+    <input type="hidden" asp-for="@Model.f19IDs" />
+    <input type="hidden" asp-for="@Model.CheckedIDs" />
     <input type="hidden" id="guid" asp-for="@Model.guid" value="@Model.guid" />
     <input type="hidden" asp-for="@Model.GridGuid" value="@Model.GridGuid" />
     <input type="hidden" asp-for="@Model.GridContainerCssStyle" value="@Model.GridContainerCssStyle" />
     <input type="hidden" asp-for="@Model.GridColumns" value="@Model.GridColumns" />
     <input type="hidden" asp-for="@Model.GridHeaders" value="@Model.GridHeaders" />
+    <input type="hidden" asp-for="@Model.TreeContainerHeight" />
 
     <div class="bg-light" style="padding:10px;">
         <div class="form-row" style="max-width:1000px;">
@@ -95,26 +97,36 @@
                             <td>
                                 @c.f06Name
                             </td>
+                            <td>
+                                <button type="button" class="btn btn-danger" title="@_f.tra("Vyjmout formulář")" onclick="handle_delete_f06(@c.pid)">x</button>
+                            </td>
                         </tr>
                     }
                 </table>
             }
-
-        <div class="hummingbird-treeview-converter">
-            @foreach (var cF06 in Model.lisF06)
-            {
-                <li id="item-f06-@cF06.pid" data-id="f06-@cF06.pid">@cF06.f06Name</li>
-                @foreach (var cF18 in Model.lisF18.Where(p => p.f06ID == cF06.pid))
-                {
-                    <li id="item-f18-@cF18.pid" data-id="f18-@cF18.pid">@(new string('-',cF18.f18TreeLevel)+cF18.f18Name)</li>
-                    @foreach (var cF19 in Model.lisF19.Where(p => p.f18ID == cF18.pid))
+            <div id="offset1"></div>
+            <div id="divTreeviewContainer" style="overflow:auto;max-width:1000px;">
+                <div class="hummingbird-treeview-converter">
+                    @if (Model.lisF06 != null)
                     {
-                        <li id="item-f19-@cF19.pid" data-id="f19-@cF19.pid">@(new string('-',cF18.f18TreeLevel+1)+cF19.pid.ToString()+" - "+cF19.f19Name)</li>
+                        @foreach (var cF06 in Model.lisF06)
+                        {
+                            <li id="item-f06-@cF06.pid" data-id="f06-@cF06.pid">@cF06.f06Name</li>
+                            @foreach (var cF18 in Model.lisF18.Where(p => p.f06ID == cF06.pid))
+                            {
+                                <li id="item-f18-@cF18.pid" data-id="f18-@cF18.pid">@(new string('-',cF18.f18TreeLevel)+cF18.f18Name)</li>
+                                @foreach (var cF19 in Model.lisF19.Where(p => p.f18ID == cF18.pid))
+                                {
+                                    <li id="item-f19-@cF19.pid" data-id="f19-@cF19.pid">@(new string('-',cF18.f18TreeLevel+1)+cF19.pid.ToString()+" - "+cF19.f19Name)</li>
+                                }
+                            }
+                        }
                     }
-                }
-            }
 
-        </div>
+
+                </div>
+            </div>
+
 
         </div>
         <div class="tab-pane" id="tab2">
@@ -153,6 +165,7 @@
 
 </form>
 
+
 @if (Model.GridGuid != null)
 {
     <div id="divGridContainer" style="@Model.GridContainerCssStyle">
@@ -162,8 +175,20 @@
 
 <script type="text/javascript">
 
+
     $(document).ready(function () {
         $("#treeview").hummingbird();
+
+        @if (!string.IsNullOrEmpty(Model.CheckedIDs))
+        {
+            <text>
+            var pre_check = "@Model.CheckedIDs".split(",");
+
+            $.each(pre_check, function (i, e) {
+                $("#treeview").hummingbird("checkNode", { attr: "id", name: e, expandParents: true });
+            });
+            </text>
+        }
 
         $("#tab@(Model.ActiveTabIndex)").attr("class", "tab-pane active");
             $("#link_tab@(Model.ActiveTabIndex)").attr("class", "nav-link active");
@@ -186,22 +211,23 @@
         $("#cmdRunGrid").click(function () {
             $(this).text("Processing...");
             $(this).attr("disabled", true);
-            form1.action = "/Stat/Index?oper=grid"
-            form1.submit();
+
+            handle_submit("/Stat/Index?oper=grid");
+
         });
 
         $("#cmdRunExcel").click(function () {
             $(this).text("Processing...");
             $(this).attr("disabled", true);
-            form1.action = "/Stat/Index?oper=excel"
-            form1.submit();
+            handle_submit("/Stat/Index?oper=excel");
+
         });
 
 
         $("#PeriodValue").on("change", function () {
             $.post("/Common/SetUserParam", { key: "stat-period-value", value: $(this).val() }, function (data) {
-                form1.action = "/Stat/Index?oper=change_period";
-                form1.submit();
+
+                handle_submit("/Stat/Index?oper=change_period");
 
             });
         });
@@ -219,8 +245,7 @@
 
 
             $.post("/Common/SetUserParams", { keys: k, values: v }, function (data) {
-                form1.action = "/Stat/Index?oper=change_period";
-                form1.submit();
+                handle_submit("/Stat/Index?oper=change_period");
 
             });
 
@@ -239,6 +264,20 @@
             }
         }
 
+        if ($("#TreeContainerHeight").val() == "") {
+            var offset = $("#offset1").offset();
+            var h_vertical = _device.innerHeight - offset.top;
+            h_vertical = parseInt(h_vertical) + 10;
+
+            $("#TreeContainerHeight").val(h_vertical + "px")
+            $("#divTreeviewContainer").css("height", h_vertical + "px");
+        } else {
+            $("#divTreeviewContainer").css("height", $("#TreeContainerHeight").val());
+        }
+       
+
+
+
 
     });
 
@@ -250,14 +289,33 @@
     function refresh_f06_table(f06ids) {
         //volá se automaticky po výběru formulářů
         //$("#hidF06IDs").val(f06ids);
-        form1.action = "/Stat/Index?oper=change_f06ids";
-        form1.submit();
+        handle_submit("/Stat/Index?oper=add_f06ids");
+
+
+    }
+
+    function handle_delete_f06(f06id) {
+        handle_submit("/Stat/Index?oper=remove_f06id&f06id=" + f06id);
+
+    }
+
+    function handle_checked_ids() {
+        var List = { "id": [], "dataid": [], "text": [] };
+        $("#treeview").hummingbird("getChecked", { list: List, onlyEndNodes: true, onlyParents: false, fromThis: false });
+        $("#CheckedIDs").val(List.id.join(","));
 
     }
 
     /*automaticky volaná událost z thegrid controlu*/
     function thegrid_handle_event(event_name, pid) {
 
+    }
+
+
+    function handle_submit(action) {
+        handle_checked_ids();
+        form1.action = action;
+        form1.submit();
     }
 
 </script>

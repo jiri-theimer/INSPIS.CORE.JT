@@ -30,16 +30,29 @@ namespace UI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(StatViewModel v, string oper)
+        public IActionResult Index(StatViewModel v, string oper,int f06id)
         {
             RefreshStateIndex(v);
 
-            if (oper == "change_f06ids")
+            if (oper == "add_f06ids")
             {
                 Factory.CBL.SetUserParam("Stat-f06IDs", v.f06IDs);
                 return View(v);
             }
-            
+            if (oper == "remove_f06id")
+            {
+                var lis = BO.BAS.ConvertString2ListInt(v.f06IDs);
+                if (lis.Contains(f06id))
+                {
+                    lis.Remove(f06id);                    
+                    v.f06IDs = string.Join(",", lis);
+                    Factory.CBL.SetUserParam("Stat-f06IDs", v.f06IDs);
+                    RefreshStateIndex(v);
+                }                
+                
+                return View(v);
+            }
+
             Factory.CBL.SetUserParam("Stat-ValuesMode", ((int)v.ValuesMode).ToString());
             Factory.CBL.SetUserParam("Stat-GroupByMode", ((int)v.GroupByMode).ToString());
             Factory.CBL.SetUserParam("Stat-IsZeroRow", BO.BAS.GB(v.IsZeroRow));
@@ -53,8 +66,14 @@ namespace UI.Controllers
                 {
                     this.AddMessage("Musíte vybrat formulář.");return View(v);
                 }
+                if (v.lisF19 == null)
+                {
+                    this.AddMessage("Musíte zaškrtnout minimálně jednu otázku."); return View(v);
+                }
                 var mq = new BO.myQuery("f19");
                 mq.f06ids = f06ids;
+                string strF19IDs = v.CheckedIDs.Replace("item-f19-", "");
+                mq.SetPids(strF19IDs);
                 var lisF19 = Factory.f19QuestionBL.GetList(mq);
                 var lisCols = Factory.StatBL.GetList_StatColumns(lisF19.Select(p=>p.f19ID).ToList());
 
@@ -192,6 +211,10 @@ namespace UI.Controllers
                 mq = new BO.myQuery("f19");
                 mq.f06ids = v.lisF06.Select(p => p.pid).ToList();
                 v.lisF19 = Factory.f19QuestionBL.GetList(mq);
+            }
+            else
+            {
+                v.lisF06 = null; v.lisF18 = null; v.lisF19 = null;
             }
 
             v.lisJ72 = Factory.j72TheGridTemplateBL.GetList("a01Event", Factory.CurrentUser.pid, null).Where(p => p.j72HashJ73Query == true);

@@ -10,12 +10,11 @@
 }
 
 
-.hummingbird-treeview input[type=checkbox] {
-    width : 16px;
-    height :16px;
-    padding: 0px;
-    margin: 0px;
-}
+    .hummingbird-treeview input[type=checkbox] {
+        
+        padding: 0px;
+        margin: 0px;
+    }
 
 .hummingbird-treeview ul:not(.hummingbird-base) {
     display: none;
