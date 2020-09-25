@@ -27,17 +27,17 @@
 </style>
 
 <div class="hummingbird-treeview-converter">
-    <li id="item_1" data-id="100">Warner Bros.</li>
-    <li id="item_2" data-id="200">-Goodfellas</li>
-    <li data-id="300">--Robert De Niro</li>
-    <li data-id="400">--Joe Pesci</li>
+    <li id="item_1" data-id="f18-100">Warner Bros.</li>
+    <li id="item_2" data-id="f18-200">-Goodfellas</li>
+    <li data-id="f-19300">--Robert De Niro</li>
+    <li data-id="f19-400">--Joe Pesci</li>
     <li>-The Shawshank Redemption</li>
     <li>--Tim Robbins</li>
     <li>--Morgan Freeman</li>
     <li>Paramount</li>
     <li>-The Untouchables</li>
     <li>--Robert De Niro</li>
-    <li data-id="500">--Kevin Costner</li>
+    <li data-id="f19-500">--Kevin Costner</li>
     <li>-Forrest Gump</li>
     <li>--Tom Hanks</li>
     <li>--Robin Wright</li>
@@ -63,7 +63,7 @@
 
 
 
-        var pre_check = [400, 500];
+        var pre_check = ["f19-400", "f19-500"];
         $.each(pre_check, function (i, e) {
             $("#treeview").hummingbird("checkNode", { attr: "data-id", name: e, expandParents: true });
         });

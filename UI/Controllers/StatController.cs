@@ -99,11 +99,13 @@ namespace UI.Controllers
                 {
                     v.GridGuid = null;
                     Export2Excel(v,lisCols);
+                    v.ActiveTabIndex = 3;
                 }
                 if (oper == "grid" || oper== "change_period")
                 {                    
                     v.GridGuid = v.guid;
                     Export2Grid(v, lisCols);
+                    v.ActiveTabIndex = 3;
                 }
                 
             }
@@ -183,7 +185,13 @@ namespace UI.Controllers
             {
                 var mq = new BO.myQuery("f06");
                 mq.SetPids(v.f06IDs);
-                v.lisF06 = Factory.f06FormBL.GetList(mq);
+                v.lisF06 = Factory.f06FormBL.GetList(mq);                
+                mq = new BO.myQuery("f18");
+                mq.f06ids = v.lisF06.Select(p => p.pid).ToList();
+                v.lisF18 = Factory.f18FormSegmentBL.GetList(mq);
+                mq = new BO.myQuery("f19");
+                mq.f06ids = v.lisF06.Select(p => p.pid).ToList();
+                v.lisF19 = Factory.f19QuestionBL.GetList(mq);
             }
 
             v.lisJ72 = Factory.j72TheGridTemplateBL.GetList("a01Event", Factory.CurrentUser.pid, null).Where(p => p.j72HashJ73Query == true);

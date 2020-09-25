@@ -329,6 +329,7 @@ namespace DL
             if (mq.f06ids != null && mq.f06ids.Count() > 0)
             {
                 if (mq.Prefix == "f19") AQ(ref lis, "a.f18ID IN (SELECT f18ID FROM f18FormSegment WHERE f06ID IN ("+string.Join(",",mq.f06ids)+"))","",null);
+                if (mq.Prefix == "f18") AQ(ref lis, "a.f06ID IN (" + string.Join(",", mq.f06ids) + ")", "", null);
             }
 
             if (mq.f32id > 0)

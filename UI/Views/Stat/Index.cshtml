@@ -11,6 +11,10 @@
 
 @addTagHelper *, UI
 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="/lib/hummingbird-treeview/hummingbird-treeview.css" rel="stylesheet">
+<script src="/lib/hummingbird-treeview/hummingbird-treeview.js"></script>
+
 <h4 class="px-2">@ViewData["Title"]</h4>
 
 
@@ -28,13 +32,7 @@
             <div class="col-sm-6 col-md-6">
                 <button id="cmdRunGrid" class="btn btn-success">@_f.tra("Vygenerovat výsledek do GRIDu")</button>
                 <button id="cmdRunExcel" class="btn btn-info">@_f.tra("Vygenerovat výsledek do XLS")</button>
-                @if (Model.XlsExportTempFileName != null)
-                {
-                    <div style="padding:20px;background-color:lightgoldenrodyellow;">
-                        <a target="_blank" style="font-weight:bold;" href="/FileUpload/FileDownloadTempFile?tempfilename=@Model.XlsExportTempFileName">@_f.tra("Otevřít vygenerovaný XLS dokument")</a>
-                    </div>
 
-                }
             </div>
             <div class="col-sm-3 col-md-3">
                 <select asp-for="@Model.ValuesMode">
@@ -61,59 +59,128 @@
             </div>
 
         </div>
-        @if (Model.lisJ72 != null)
-        {
-            <div class="form-row">
-                <div class="col-sm-2 col-md-2">
 
-                </div>
-                <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Pojmenovaný GRID filtr"):</label>
-                <div class="col-sm-4 col-md-4">
-                    <mydropdown asp-for="@Model.SelectedJ72ID" datasource="@Model.lisJ72" textfield="j72Name" valuefield="pid" isfirstemptyrow="true" event_after_changevalue="j72id_change"></mydropdown>
 
-                </div>
-                
+    </div>
+
+
+    <div class="tabs_container_record">
+        <!-- Tab panes -->
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a id="link_tab1" class="nav-link" data-toggle="tab" href="#tab1">@_f.tra("Formuláře a otázky")</a>
+            </li>
+            <li class="nav-item">
+                <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2">@_f.tra("Filtrování akcí")</a>
+            </li>
+            <li class="nav-item">
+                <a id="link_tab3" class="nav-link" data-toggle="tab" href="#tab3">@_f.tra("Výsledek")</a>
+            </li>
+
+        </ul>
+    </div>
+
+    <div class="tab-content">
+        <div class="tab-pane" id="tab1">
+            <div style="padding:10px;">
+                <button type="button" class="btn btn-primary" onclick="multiselect()">@_f.tra("Přidat formulář")</button>
+
             </div>
-        }
-
-    </div>
-
-
-
-    <div class="row">
-        <div class="col-2">
-            <button type="button" class="btn btn-primary" onclick="multiselect()">@_f.tra("Vybrat formuláře")</button>
-        </div>
-        <div class="col-8">
-            @Html.EditorFor(m => m.PeriodFilter, "~/Views/Shared/_Period.cshtml")
-        </div>
-
-    </div>
-    @if (Model.lisF06 != null)
-    {
-        <table class="table table-sm table-hover">
-            @foreach (var c in Model.lisF06)
+            @if (Model.lisF06 != null)
             {
-                <tr>
-                    <td>
-                        @c.f06Name
-                    </td>
-                </tr>
+                <table class="table table-sm table-hover">
+                    @foreach (var c in Model.lisF06)
+                    {
+                        <tr>
+                            <td>
+                                @c.f06Name
+                            </td>
+                        </tr>
+                    }
+                </table>
             }
-        </table>
-    }
 
-    @if (Model.GridGuid != null)
-    {
-        <div id="divGridContainer" style="@Model.GridContainerCssStyle">
-            <vc:the-grid entity="p86TempStat" j72id="0" go2pid="0" master_entity="" master_pid="0" contextmenuflag="1" ondblclick="" master_flag="" masterviewflag="3" addfilterid="stat" fixedcolumns="@Model.GridColumns"></vc:the-grid>
+        <div class="hummingbird-treeview-converter">
+            @foreach (var cF06 in Model.lisF06)
+            {
+                <li id="item-f06-@cF06.pid" data-id="f06-@cF06.pid">@cF06.f06Name</li>
+                @foreach (var cF18 in Model.lisF18.Where(p => p.f06ID == cF06.pid))
+                {
+                    <li id="item-f18-@cF18.pid" data-id="f18-@cF18.pid">@(new string('-',cF18.f18TreeLevel)+cF18.f18Name)</li>
+                    @foreach (var cF19 in Model.lisF19.Where(p => p.f18ID == cF18.pid))
+                    {
+                        <li id="item-f19-@cF19.pid" data-id="f19-@cF19.pid">@(new string('-',cF18.f18TreeLevel+1)+cF19.pid.ToString()+" - "+cF19.f19Name)</li>
+                    }
+                }
+            }
+
         </div>
-    }
+
+        </div>
+        <div class="tab-pane" id="tab2">
+            <div style="max-width:1000px;">
+                @Html.EditorFor(m => m.PeriodFilter, "~/Views/Shared/_Period.cshtml")
+            </div>
+            @if (Model.lisJ72 != null)
+            {
+                <div class="form-row my-4" style="max-width:1000px;">
+
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Pojmenovaný GRID filtr"):</label>
+                    <div class="col-sm-7 col-md-7">
+                        <mydropdown asp-for="@Model.SelectedJ72ID" datasource="@Model.lisJ72" textfield="j72Name" valuefield="pid" isfirstemptyrow="true" event_after_changevalue="j72id_change"></mydropdown>
+
+                    </div>
+
+                </div>
+            }
+        </div>
+        <div class="tab-pane" id="tab3">
+
+
+            @if (Model.XlsExportTempFileName != null)
+            {
+                <div style="padding:20px;background-color:lightgoldenrodyellow;">
+                    <a target="_blank" style="font-weight:bold;" href="/FileUpload/FileDownloadTempFile?tempfilename=@Model.XlsExportTempFileName">@_f.tra("Otevřít vygenerovaný XLS dokument")</a>
+                </div>
+
+            }
+        </div>
+    </div>
+
+
+
+
+
 </form>
+
+@if (Model.GridGuid != null)
+{
+    <div id="divGridContainer" style="@Model.GridContainerCssStyle">
+        <vc:the-grid entity="p86TempStat" j72id="0" go2pid="0" master_entity="" master_pid="0" contextmenuflag="1" ondblclick="" master_flag="" masterviewflag="3" addfilterid="stat" fixedcolumns="@Model.GridColumns"></vc:the-grid>
+    </div>
+}
 
 <script type="text/javascript">
 
     $(document).ready(function () {
+        $("#treeview").hummingbird();
+
+        $("#tab@(Model.ActiveTabIndex)").attr("class", "tab-pane active");
+            $("#link_tab@(Model.ActiveTabIndex)").attr("class", "nav-link active");
+
+            $('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
+                // v e.target.id je id kliknutá záložka
+                var tabindex = e.target.id.substring(e.target.id.length - 1, e.target.id.length);
+                $("#ActiveTabIndex").val(tabindex);
+                if (tabindex == "3") {
+                    $("#divGridContainer").css("display", "block");
+                } else {
+                    $("#divGridContainer").css("display", "none");
+                }
+
+            })
+
+
 
 
         $("#cmdRunGrid").click(function () {
@@ -168,10 +235,10 @@
             for (var i = 0; i <= arrc.length - 1; i++) {
                 if (arrh[i] != "") {
                     $("#th_" + arrc[i]).text(arrh[i]);
-                }                
+                }
             }
         }
-        
+
 
     });
 
@@ -182,7 +249,7 @@
 
     function refresh_f06_table(f06ids) {
         //volá se automaticky po výběru formulářů
-        $("#hidF06IDs").val(f06ids);
+        //$("#hidF06IDs").val(f06ids);
         form1.action = "/Stat/Index?oper=change_f06ids";
         form1.submit();
 
