@@ -16,6 +16,10 @@ namespace UI.Controllers
             _pp = pp;
         }
 
+        private string GetTempFilePath()
+        {
+            return Factory.App.TempFolder + "\\" + Factory.CurrentUser.j03Login + "_Stat_CheckedIDs.txt";
+        }
         public IActionResult Index()
         {
             var v = new StatViewModel() { guid = BO.BAS.GetGuid() };
@@ -24,6 +28,11 @@ namespace UI.Controllers
             v.GroupByMode = (BO.StatGroupByMode)Factory.CBL.LoadUserParamInt("Stat-GroupByMode", 0);
             v.IsZeroRow = Factory.CBL.LoadUserParamBool("Stat-IsZeroRow",true);
             v.IsBlankA11IDs = Factory.CBL.LoadUserParamBool("Stat-IsBlankA11IDs", false);
+            if (string.IsNullOrEmpty(v.f06IDs)==false && System.IO.File.Exists(GetTempFilePath()))
+            {
+                v.CheckedIDs = System.IO.File.ReadAllText(GetTempFilePath());
+            }
+            
             RefreshStateIndex(v);
            
             return View(v);
@@ -73,6 +82,7 @@ namespace UI.Controllers
                 var mq = new BO.myQuery("f19");
                 mq.f06ids = f06ids;
                 string strF19IDs = v.CheckedIDs.Replace("item-f19-", "");
+                System.IO.File.WriteAllText(GetTempFilePath(), v.CheckedIDs);
                 mq.SetPids(strF19IDs);
                 var lisF19 = Factory.f19QuestionBL.GetList(mq);
                 var lisCols = Factory.StatBL.GetList_StatColumns(lisF19.Select(p=>p.f19ID).ToList());
