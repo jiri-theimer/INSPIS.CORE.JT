@@ -751,11 +751,20 @@ namespace BL
 
             //p86 = Statistika
             AF("p86TempStat", "a01Signature", "ID akce",1);
-            AF("p86TempStat", "a01DateFrom", "Od",1,null,"date");
-            AF("p86TempStat", "a01DateUntil", "Do", 1, null, "date");
+            
             AF("p86TempStat", "a03REDIZO", "REDIZO", 1);
+            AF("p86TempStat", "a37IZO", "IZO", 1);
+            AF("p86TempStat", "a17Name", "Typ IZO", 1);
             AF("p86TempStat", "a03Name", "Instituce", 1);
-            for(int i = 0; i <= 400; i++)
+            AF("p86TempStat", "a09Name", "Typ zřizovatele", 1);
+            AF("p86TempStat", "a05Name", "Kraj", 1);
+            AF("p86TempStat", "a01DateFrom", "Od", 1, null, "date");
+            AF("p86TempStat", "a01DateUntil", "Do", 1, null, "date");
+            AF("p86TempStat", "b02Name", "Stav", 1);
+            AF("p86TempStat", "a10Name", "Typ akce", 1);
+            AF("p86TempStat", "a08Name", "Téma", 1);
+            AF("p86TempStat", "a25Name", "SF", 1);
+            for (int i = 0; i <= 400; i++)
             {
                 AF("p86TempStat", "col"+i.ToString(), "Col"+i.ToString());
             }

@@ -13,6 +13,8 @@ namespace UI.Models
         public IEnumerable<BO.f18FormSegment> lisF18 { get; set; }
         public IEnumerable<BO.f19Question> lisF19 { get; set; }
 
+        public List<BO.StatColumn> lisCols { get; set; }
+
         public string f19IDs { get; set; }
         public string CheckedIDs { get; set; }
        
@@ -36,5 +38,9 @@ namespace UI.Models
         public IEnumerable<BO.j72TheGridTemplate> lisJ72 { get; set; }
 
         public string TreeContainerHeight { get; set; }
+
+        public string SelectedAddQueryField { get; set; }
+        public string GuidAddFilter { get; set; }
+        public List<BO.p85Tempbox> lisTemp { get; set; }
     }
 }

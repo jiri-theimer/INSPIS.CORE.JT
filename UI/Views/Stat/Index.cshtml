@@ -28,6 +28,7 @@
     <input type="hidden" asp-for="@Model.GridColumns" value="@Model.GridColumns" />
     <input type="hidden" asp-for="@Model.GridHeaders" value="@Model.GridHeaders" />
     <input type="hidden" asp-for="@Model.TreeContainerHeight" />
+    <input type="hidden" asp-for="@Model.GuidAddFilter" />
 
     <div class="bg-light" style="padding:10px;">
         <div class="form-row" style="max-width:1000px;">
@@ -73,7 +74,7 @@
                 <a id="link_tab1" class="nav-link" data-toggle="tab" href="#tab1">@_f.tra("Formuláře a otázky")</a>
             </li>
             <li class="nav-item">
-                <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2">@_f.tra("Filtrování akcí")</a>
+                <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2">@_f.tra("Filtrování dat")</a>
             </li>
             <li class="nav-item">
                 <a id="link_tab3" class="nav-link" data-toggle="tab" href="#tab3">@_f.tra("Výsledek")</a>
@@ -94,6 +95,9 @@
                     @foreach (var c in Model.lisF06)
                     {
                         <tr>
+                            <td style="width:20px;">
+                                <image src="/Images/form.png"></image>
+                            </td>
                             <td>
                                 @c.f06Name
                             </td>
@@ -145,6 +149,49 @@
 
                 </div>
             }
+            <div class="form-row-my-4">
+                <div class="col-sm-2 col-md-2">
+                    <button id="cmdRefreshAddQuery" type="button" class="btn btn-light" onclick="handle_submit('/Stat/Index?oper=postback')">@_f.tra("Obnovit formulářový filtr")</button>
+                </div>
+                <div class="col-sm-6 col-md-6">
+                    @if (Model.lisCols != null)
+                    {
+                        <mydropdown datasource="@Model.lisCols" textfield="ComboText" valuefield="ComboValue" asp-for="@Model.SelectedAddQueryField"></mydropdown>
+                    }
+                </div>
+                <div class="col-sm-1 col-md-1">
+                    <button type="button" class="btn btn-light" onclick="handle_submit('/Stat/Index?oper=addfilter')">@_f.tra("Vložit do filtru")</button>
+                </div>
+            </div>
+            <table class="table table-sm table-hover">
+                @for (int i=0;i<Model.lisTemp.Count();i++)
+                {
+                    <tr style="display:@Model.lisTemp[i].CssTempDisplay">
+                        <td>
+                            <input type="hidden" asp-for="@Model.lisTemp[i].p85GUID" value="@Model.lisTemp[i].p85GUID" />
+                            <input type="hidden" asp-for="@Model.lisTemp[i].p85IsDeleted" value="@Model.lisTemp[i].p85IsDeleted" />
+                            <input type="hidden" asp-for="@Model.lisTemp[i].p85FreeText03" value="@Model.lisTemp[i].p85FreeText03" />
+                            <input type="hidden" asp-for="@Model.lisTemp[i].p85FreeText01" value="@Model.lisTemp[i].p85FreeText01" />
+                            <input type="hidden" asp-for="@Model.lisTemp[i].p85FreeText02" value="@Model.lisTemp[i].p85FreeText02" />
+                            <select>
+                                <option value="OR">@_f.tra("NEBO")</option>
+                                <option value="AND" selected>@_f.tra("A ZÁROVEŇ")</option>
+
+                            </select>
+                        </td>
+                        <td>
+                            @Model.lisTemp[i].p85FreeText02
+                        </td>
+                        <td>
+                            <input type="text" asp-for="@Model.lisTemp[i].p85FreeText04" />
+                        </td>
+                        <td style="width:20px;">
+                            <button type="button" class="btn btn-danger" title="@_f.tra("Odstranit řádek")" onclick="handle_delete_temp(@Model.lisTemp[i].p85ID)">x</button>
+                        </td>
+                    </tr>
+                }
+            </table>
+
         </div>
         <div class="tab-pane" id="tab3">
 
@@ -190,6 +237,13 @@
             </text>
         }
 
+    @if(Model.GridGuid != null && Model.ActiveTabIndex !=3)
+        {
+            <text>
+            $("#divGridContainer").css("display", "none");
+            </text>
+        }
+
         $("#tab@(Model.ActiveTabIndex)").attr("class", "tab-pane active");
             $("#link_tab@(Model.ActiveTabIndex)").attr("class", "nav-link active");
 
@@ -221,7 +275,7 @@
             $(this).attr("disabled", true);
             handle_submit("/Stat/Index?oper=excel");
 
-        });
+        });        
 
 
         $("#PeriodValue").on("change", function () {
@@ -298,6 +352,9 @@
         handle_submit("/Stat/Index?oper=remove_f06id&f06id=" + f06id);
 
     }
+    function handle_delete_temp(p85id){
+        handle_submit("/Stat/Index?oper=delete_temp&p85id=" + f06id);
+    }
 
     function handle_checked_ids() {
         var List = { "id": [], "dataid": [], "text": [] };
@@ -305,6 +362,8 @@
         $("#CheckedIDs").val(List.id.join(","));
 
     }
+
+   
 
     /*automaticky volaná událost z thegrid controlu*/
     function thegrid_handle_event(event_name, pid) {

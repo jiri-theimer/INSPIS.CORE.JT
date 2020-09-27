@@ -50,5 +50,20 @@ namespace BO
         public bool p85FreeBoolean04 { get; set; }
 
         public int p85ClonePid { get; set; }
+
+        public string CssTempDisplay
+        {
+            get
+            {
+                if (this.p85IsDeleted == true)
+                {
+                    return "display:none;";
+                }
+                else
+                {
+                    return "display:block";
+                }
+            }
+        }
     }
 }

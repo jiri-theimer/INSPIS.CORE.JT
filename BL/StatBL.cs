@@ -246,7 +246,7 @@ namespace BL
             sb(" WHERE a.f19ID IN (" + String.Join(",", f19ids) + ") AND f21.f21validfrom<=getdate() AND f21.f21validuntil>=getdate() AND f21.f21IsCommentAllowed=1");
 
             sb(" ORDER BY f18.f06ID,f18.f18TreeIndex,CASE WHEN f26.f26Ordinal IS NULL THEN f19.f19Ordinal ELSE f26.f26Ordinal END,f26ID,f19ID,f21Ordinal,f21ExportValue");
-
+                        
             var lis = _db.GetList<BO.StatColumn>(sbret()).ToList();
             for(int x = 0; x < lis.Count(); x++)
             {
