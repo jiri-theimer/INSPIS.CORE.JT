@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using DocumentFormat.OpenXml.Drawing;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Asn1.Pkcs;
+using Org.BouncyCastle.Bcpg.OpenPgp;
 using Org.BouncyCastle.Crypto.Tls;
 using UI.Models;
 
@@ -21,10 +24,15 @@ namespace UI.Controllers
         {
             return Factory.App.TempFolder + "\\" + Factory.CurrentUser.j03Login + "_Stat_CheckedIDs.txt";
         }
+        private string GetTempFilePathFilter()
+        {
+            return Factory.App.TempFolder + "\\" + Factory.CurrentUser.j03Login + "_AddFilter.txt";
+        }
         public IActionResult Index()
         {
             var v = new StatViewModel() { guid = BO.BAS.GetGuid() };
-            
+            v.lisTemp = LoadAddFilterFromTemp(v);
+
             v.f06IDs = Factory.CBL.LoadUserParam("Stat-f06IDs");
             v.ValuesMode = (BO.StatValueMode) Factory.CBL.LoadUserParamInt("Stat-ValuesMode", 1);
             v.GroupByMode = (BO.StatGroupByMode)Factory.CBL.LoadUserParamInt("Stat-GroupByMode", 0);
@@ -45,8 +53,9 @@ namespace UI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(StatViewModel v, string oper,int f06id,int p85id)
+        public IActionResult Index(StatViewModel v, string oper,int f06id,int index)
         {
+            
             RefreshStateIndex(v);
 
             if (oper == "add_f06ids")
@@ -69,19 +78,19 @@ namespace UI.Controllers
             }
             if (oper== "addfilter")
             {
+                v.ActiveTabIndex = 2;
                 var c = new BO.p85Tempbox() { p85GUID = v.GuidAddFilter, p85FreeText01 = v.SelectedAddQueryField,p85FreeText02=v.lisCols.Where(p=>p.ComboValue==v.SelectedAddQueryField).First().ComboText };
                 if (v.lisTemp.Where(p=>p.p85FreeText01==v.SelectedAddQueryField).Count() > 0)
                 {
                     this.AddMessage("Tato veličina již byla vložena do filtru.");
                     return View(v);
                 }
-                v.lisTemp.Add(c);                
-                v.ActiveTabIndex = 2;
+                v.lisTemp.Add(c);
                 return View(v);
             }
             if (oper== "delete_temp")
             {
-                v.lisTemp.Where(p => p.p85FreeText01 == v.SelectedAddQueryField).First().p85IsDeleted = true;
+                v.lisTemp[index].p85IsDeleted = true;                
                 v.ActiveTabIndex = 2;
                 return View(v);
             }
@@ -228,6 +237,42 @@ namespace UI.Controllers
             
         }
 
+        private void SaveAddFilter2Temp(StatViewModel v)
+        {
+            var sb = new System.Text.StringBuilder();
+            for(int i=0;i<v.lisTemp.Count();i++)
+            {
+                if (i > 0)
+                {
+                    sb.Append("$$");
+                }
+                sb.Append(v.lisTemp[i].p85IsDeleted.ToString()+"|"+v.lisTemp[i].p85FreeText01 + "|" + v.lisTemp[i].p85FreeText02 + "|" + v.lisTemp[i].p85FreeText03 + "|" + v.lisTemp[i].p85FreeText04);
+            }
+
+            System.IO.File.WriteAllText(GetTempFilePathFilter(), sb.ToString());            
+        }
+        private List<BO.p85Tempbox> LoadAddFilterFromTemp(StatViewModel v)
+        {
+            var ret= new List<BO.p85Tempbox>();
+            if (System.IO.File.Exists(GetTempFilePathFilter()))
+            {
+                var lis = BO.BAS.ConvertString2List(System.IO.File.ReadAllText(GetTempFilePathFilter()), "$$");
+                foreach(var s in lis)
+                {
+                    var arr = BO.BAS.ConvertString2List(s, "|");
+                    var c = new BO.p85Tempbox() {p85IsDeleted=Convert.ToBoolean(arr[0]), p85FreeText01 = arr[1], p85FreeText02 = arr[2], p85FreeText03 = arr[3], p85FreeText04 = arr[4] };
+                    if (c.p85IsDeleted == false)
+                    {
+                        ret.Add(c);
+                    }
+                    
+                }
+                
+            }
+
+            return ret;
+        }
+        
 
         private void RefreshStateIndex(StatViewModel v)
         {
@@ -273,7 +318,9 @@ namespace UI.Controllers
                 c.j72Name = Factory.tra("Výchozí GRID");
             }
 
-           
+            SaveAddFilter2Temp(v);
+
+
         }
 
 
