@@ -42,5 +42,8 @@ namespace UI.Models
         public string SelectedAddQueryField { get; set; }
         public string GuidAddFilter { get; set; }
         public List<BO.p85Tempbox> lisTemp { get; set; }
+
+        public List<BO.StringPair> lisVztah { get; set; }
+        public List<BO.StringPair> lisOperator { get; set; }
     }
 }

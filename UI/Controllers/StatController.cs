@@ -272,7 +272,7 @@ namespace UI.Controllers
 
             return ret;
         }
-        
+
 
         private void RefreshStateIndex(StatViewModel v)
         {
@@ -280,6 +280,19 @@ namespace UI.Controllers
             {
                 v.lisTemp = new List<BO.p85Tempbox>();
             }
+            v.lisVztah = new List<BO.StringPair>();
+            v.lisVztah.Add(new BO.StringPair() { Key = "OR", Value = Factory.tra("NEBO") });
+            v.lisVztah.Add(new BO.StringPair() { Key = "AND", Value = Factory.tra("A ZÁROVEŇ") });
+
+            v.lisOperator = new List<BO.StringPair>();
+            v.lisOperator.Add(new BO.StringPair() { Key = "", Value = Factory.tra("Nefiltrovat") });
+            v.lisOperator.Add(new BO.StringPair() { Key = "IS NOT NULL", Value = Factory.tra("Je vyplněno") });
+            v.lisOperator.Add(new BO.StringPair() { Key = "=", Value = Factory.tra("Je rovno") });
+            v.lisOperator.Add(new BO.StringPair() { Key = ">=", Value = Factory.tra("Je větší nebo rovno než") });
+            v.lisOperator.Add(new BO.StringPair() { Key = ">", Value = Factory.tra("Je větší než") });
+            v.lisOperator.Add(new BO.StringPair() { Key = "<", Value = Factory.tra("Je menší než") });
+            v.lisOperator.Add(new BO.StringPair() { Key = "<=", Value = Factory.tra("Je menší nebo rovno než") });
+
             v.PeriodFilter = new PeriodViewModel() { IsShowButtonRefresh = false };
             v.PeriodFilter.IsShowButtonRefresh = true;
             var per = InhalePeriodFilter();

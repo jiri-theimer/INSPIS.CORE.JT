@@ -169,22 +169,22 @@
                     <tr style="@Model.lisTemp[i].CssTempDisplay">
                         <td>
                             <input type="hidden" asp-for="@Model.lisTemp[i].p85GUID" value="@Model.lisTemp[i].p85GUID" />
-                            <input type="hidden" asp-for="@Model.lisTemp[i].p85IsDeleted" value="@Model.lisTemp[i].p85IsDeleted" />
-                            <input type="hidden" asp-for="@Model.lisTemp[i].p85FreeText03" value="@Model.lisTemp[i].p85FreeText03" />
+                            <input type="hidden" asp-for="@Model.lisTemp[i].p85IsDeleted" value="@Model.lisTemp[i].p85IsDeleted" />                            
                             <input type="hidden" asp-for="@Model.lisTemp[i].p85FreeText01" value="@Model.lisTemp[i].p85FreeText01" />
                             <input type="hidden" asp-for="@Model.lisTemp[i].p85FreeText02" value="@Model.lisTemp[i].p85FreeText02" />
-                            <input type="hidden" asp-for="@Model.lisTemp[i].p85FreeText03" />
-                            <select onchange="change_temp_freetext03(@i)">
-                                <option value="OR">@_f.tra("NEBO")</option>
-                                <option value="AND" selected>@_f.tra("A ZÁROVEŇ")</option>
-
-                            </select>
+                            
+                            <mydropdown asp-for="@Model.lisTemp[i].p85FreeText03" datasource="@Model.lisVztah" valuefield="Key" textfield="Value"></mydropdown>
+                           
                         </td>
                         <td>
                             @Model.lisTemp[i].p85FreeText02
                         </td>
                         <td>
-                            <input type="text" asp-for="@Model.lisTemp[i].p85FreeText04" />
+                            <mydropdown asp-for="@Model.lisTemp[i].p85FreeText04" datasource="@Model.lisOperator" valuefield="Key" textfield="Value"></mydropdown>
+                            
+                        </td>
+                        <td>
+                            <input type="text" asp-for="@Model.lisTemp[i].p85FreeText05" />
                         </td>
                         <td style="width:20px;">
                             <button type="button" class="btn btn-danger" title="@_f.tra("Odstranit řádek")" onclick="handle_delete_temp(@i)">x</button>
