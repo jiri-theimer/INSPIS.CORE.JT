@@ -316,6 +316,7 @@ namespace BL
 
             var pars = new List<DL.Param4DT>();
             pars.Add(new DL.Param4DT() { ParamType = "string", ParName = "guid", ParValue = strGUID });
+
             return _db.GetDataTable(sbret(), pars);
         }
 

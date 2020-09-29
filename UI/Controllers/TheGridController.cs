@@ -334,7 +334,12 @@ namespace UI.Controllers
                 case "stat":
                     Factory.CBL.ClearUserParamsCache(); //docílit toho, aby se guid načetl na 100% z databáze
                     string strGUID = Factory.CBL.LoadUserParam("Stat-GridGuid");
-                    mq.explicit_sqlwhere = "a.p86GUID=" + BO.BAS.GS(strGUID);   //v addfilterid je předaná hodnota p86GUID                    
+                    mq.explicit_sqlwhere = "a.p86GUID=" + BO.BAS.GS(strGUID);   //v addfilterid je předaná hodnota p86GUID
+                    string strAddFilterSql = Factory.CBL.LoadUserParam("Stat-AddFilterSql");
+                    if (!string.IsNullOrEmpty(strAddFilterSql))
+                    {
+                        mq.explicit_sqlwhere += " AND (" + strAddFilterSql + ")";
+                    }
                     break;
                 
             }

@@ -201,11 +201,12 @@ namespace UI.Controllers
             v.GridColumns = sb1.ToString();
             v.GridHeaders = sb2.ToString();
             Factory.CBL.SetUserParam("Stat-GridGuid", v.guid);
+            Factory.CBL.SetUserParam("Stat-AddFilterSql", GetAddFilterSqlWhere(v));
         }
 
         private void Export2Excel(StatViewModel v)
         {
-            var dt = Factory.StatBL.GetList_StatMatrix(v.guid, null, v.lisCols, v.GroupByMode);
+            var dt = Factory.StatBL.GetList_StatMatrix(v.guid, GetAddFilterSqlWhere(v), v.lisCols, v.GroupByMode);
             var cExcel = new UI.dataExport();
             var cols = new List<BO.StringPair>();
             cols.Add(new BO.StringPair() { Key = "a01Signature", Value = "ID akce" });
@@ -248,8 +249,18 @@ namespace UI.Controllers
                 }
                 sb.Append(v.lisTemp[i].p85IsDeleted.ToString()+"|"+v.lisTemp[i].p85FreeText01 + "|" + v.lisTemp[i].p85FreeText02 + "|" + v.lisTemp[i].p85FreeText03 + "|" + v.lisTemp[i].p85FreeText04);
             }
-
-            System.IO.File.WriteAllText(GetTempFilePathFilter(), sb.ToString());            
+            if (sb.Length == 0)
+            {
+                if (System.IO.File.Exists(GetTempFilePathFilter()))
+                {
+                    System.IO.File.Delete(GetTempFilePathFilter());
+                }
+            }
+            else
+            {
+                System.IO.File.WriteAllText(GetTempFilePathFilter(), sb.ToString());
+            }
+            
         }
         private List<BO.p85Tempbox> LoadAddFilterFromTemp(StatViewModel v)
         {
@@ -336,7 +347,67 @@ namespace UI.Controllers
 
         }
 
+        private string GetAddFilterSqlWhere(StatViewModel v)
+        {
+            var sb = new System.Text.StringBuilder();
+            foreach(var c in v.lisTemp.Where(p=>p.p85IsDeleted==false && string.IsNullOrEmpty(p.p85FreeText04)==false))
+            {
+                var arr = c.p85FreeText01.Split("-");
+                var intF19ID = BO.BAS.InInt(arr[0]);
+                var recF19 = Factory.f19QuestionBL.Load(intF19ID);
+                var intF21ID = BO.BAS.InInt(arr[1]);
+                var strVal = c.p85FreeText05;
+                var strVztah = c.p85FreeText03;
+                var strOperator = c.p85FreeText04;
+                var strCF = "";
+                for(int i=0;i<v.lisCols.Count();i++)
+                {
+                    if (v.lisCols[i].ComboValue == c.p85FreeText01)
+                    {
+                        strCF = "col" + (i+1).ToString();break;
+                    }
+                }
+                if (strOperator=="IS NOT NULL")
+                {
+                    sb.Append(" "+strVztah + " " + strCF + " IS NOT NULL");
+                }
+                else
+                {
+                    if (recF19.f23ID == 1)
+                    {
+                        //textbox
+                        if (recF19.x24ID==1 || recF19.x24ID == 3)
+                        {
+                            //'integer nebo decimal - filtrování podle čísel
+                            sb.Append(" "+strVztah + " " + " (CASE WHEN ISNUMERIC(" + strCF + ")=1 THEN CONVERT(FLOAT,REPLACE(" + strCF + ",',','.')) END) " + strOperator + " " + strVal.Replace(",", "."));
+                        }
+                        else
+                        {
+                            sb.Append(" " + strVztah + " " + strCF + " " + strOperator + " " + BO.BAS.GS(strVal));
+                        }
+                    }
+                    else
+                    {
+                        sb.Append(" " + strVztah + " " + strCF + " " + strOperator + " " + BO.BAS.GS(strVal));
+                    }
+                    
+                }
+                
 
+            }
+            
+            if (sb.Length == 0)
+            {
+                return null;
+            }
+            else
+            {
+                string s = sb.ToString();
+                //System.IO.File.WriteAllText("c:\\temp\\hovado.txt", s);
+                return BO.BAS.RightString(s, s.Length - 4);
+            }
+            
+        }
 
         private BO.ThePeriod InhalePeriodFilter()
         {

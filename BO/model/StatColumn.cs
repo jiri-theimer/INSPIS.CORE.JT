@@ -31,7 +31,15 @@ namespace BO
                     case 3:
                     case 4:
                     case 5:
-                        return this.f19Name + " -> " + this.f21Name + " [" + this.f21ID.ToString() + "]";
+                        if (this.f21ID > 0)
+                        {
+                            return this.f19Name + " [" + this.f19ID.ToString() + "] -> " + this.f21Name + " [" + this.f21ID.ToString() + "]";
+                        }
+                        else
+                        {
+                            return this.f19Name + " [" + this.f19ID.ToString() + "] -";
+                        }
+                        
                     default:
                         return this.f19Name + " [" + this.f19ID.ToString() + "]";
                 }
