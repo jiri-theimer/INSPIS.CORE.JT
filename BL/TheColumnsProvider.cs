@@ -111,8 +111,17 @@ namespace BL
             //Překlad do ostatních jazyků
             foreach (var col in _lis)
             {
-                col.TranslateLang1 = _tt.DoTranslate(col.Header, 1);
-                col.TranslateLang2 = _tt.DoTranslate(col.Header, 2);
+                bool b = true;
+                if (col.Header.Length>3 && col.Header.Substring(0, 3) == "Col")
+                {
+                    b = false;
+                }
+                if (b)
+                {
+                    col.TranslateLang1 = _tt.DoTranslate(col.Header, 1);
+                    col.TranslateLang2 = _tt.DoTranslate(col.Header, 2);
+                }
+                
             }
             //dt = db.GetDataTable("select * from x91Translate WHERE x91Code IS NOT NULL AND x91Page IS NULL");
             //foreach (System.Data.DataRow dbrow in dt.Rows)
@@ -766,7 +775,8 @@ namespace BL
             AF("p86TempStat", "a25Name", "SF", 1);
             for (int i = 0; i <= 400; i++)
             {
-                AF("p86TempStat", "col"+i.ToString(), "Col"+i.ToString());
+                AF("p86TempStat", "col"+i.ToString(),"Col"+i.ToString());
+               
             }
             
             

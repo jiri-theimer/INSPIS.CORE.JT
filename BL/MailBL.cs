@@ -257,16 +257,16 @@ namespace BL
                         m.Attachments.Add(att);
                     }
                 }
-                
-                
-                client.DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory;    
-                client.PickupDirectoryLocation = _mother.App.TempFolder;                
+
+
+                client.DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory;
+                client.PickupDirectoryLocation = _mother.App.TempFolder;
                 client.Send(m);//nejdříve uložit eml soubor do temp složky
                 string strFullPath = FindEmlFileByGuid(rec.x40MessageGuid); //najít vygenerovaný eml file podle jeho Message-ID
                 if (strFullPath != "")
                 {
-                    rec.x40EmlFolder = "eml\\"+DateTime.Now.Year.ToString() + "\\" + DateTime.Now.Month.ToString();
-                    rec.x40EmlFileSize =(int)(new System.IO.FileInfo(strFullPath).Length);
+                    rec.x40EmlFolder = "eml\\" + DateTime.Now.Year.ToString() + "\\" + DateTime.Now.Month.ToString();
+                    rec.x40EmlFileSize = (int)(new System.IO.FileInfo(strFullPath).Length);
                     if (!System.IO.Directory.Exists(_mother.App.UploadFolder + "\\" + rec.x40EmlFolder))
                     {
                         System.IO.Directory.CreateDirectory(_mother.App.UploadFolder + "\\" + rec.x40EmlFolder);
@@ -276,8 +276,8 @@ namespace BL
                     {
                         File.Move(strFullPath, strDestPath);    //přejmenovat nalezený eml file na guid
                     }
-                    
-                    
+
+
                 }
                 client.DeliveryMethod = SmtpDeliveryMethod.Network; //nyní opravdu odeslat
                 

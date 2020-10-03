@@ -2,7 +2,7 @@
 
 namespace BO
 {
-    public class x91Translate
+    public class x91Translate:BaseBO
     {
         [Key]
         public int x91ID { get; set; }
