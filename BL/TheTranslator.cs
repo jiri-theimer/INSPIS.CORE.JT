@@ -38,6 +38,10 @@ namespace BL
                 _hash.Add(c);
             }
         }
+        public void Recovery()
+        {
+            SetupPallete();
+        }
 
         public string DoTranslate(string strCode,int langindex)
         {

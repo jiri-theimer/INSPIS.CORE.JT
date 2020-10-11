@@ -36,9 +36,14 @@ namespace UI.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Record(Models.Record.x91Record v)
+        public IActionResult Record(Models.Record.x91Record v,string oper)
         {
-
+            if (oper == "recovery")
+            {
+                Factory.Translator.Recovery();
+                this.AddMessageTranslated("Překlad načten.","info");
+                return View(v);
+            }
             if (ModelState.IsValid)
             {
                 BO.x91Translate c = new BO.x91Translate();

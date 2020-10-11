@@ -37,6 +37,29 @@
     </div>
 
 </div>
+<div>
+    <button id="cmdRecovery" type="button" class="btn btn-primary">Občerstvit cache překladů na serveru</button>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+       
+
+        $("#cmdRecovery").click(function () {
+            $(this).text("Processing...");
+            $(this).attr("disabled", true);
+            form1.action = "/x91/Record?oper=recovery";
+            form1.submit();
+        });
+
+
+
+
+
+
+
+    });
+</script>
 
 
 
