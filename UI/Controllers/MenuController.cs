@@ -29,18 +29,18 @@ namespace UI.Controllers
         {
             AMI_NOTRA(string.Format("<img src='{0}'/>",Factory.App.LogoImage), null);
 
-            if (Factory.App.Implementation == "HD")
-            {
-                AMI_NOTRA("InspIS DATA", "https://inspis.csicr.cz/app");
-            }
-            else
-            {
-                AMI_NOTRA("InspIS HELPDESK", "https://helpdesk.csicr.cz/app");
-            }
-            AMI_NOTRA("InspIS E-LEARNING", "https://elearning.csicr.cz");
-            AMI_NOTRA("InspIS PORTAL", "https://portal.csicr.cz");
-            AMI_NOTRA("InspIS SET", "https://set.csicr.cz");
-            AMI_NOTRA("InspIS ŠVP", "https://svp.csicr.cz/app");
+            //if (Factory.App.Implementation == "HD")
+            //{
+            //    AMI_NOTRA("InspIS DATA", "https://inspis.csicr.cz/app");
+            //}
+            //else
+            //{
+            //    AMI_NOTRA("InspIS HELPDESK", "https://helpdesk.csicr.cz/app");
+            //}
+            //AMI_NOTRA("InspIS E-LEARNING", "https://elearning.csicr.cz");
+            //AMI_NOTRA("InspIS PORTAL", "https://portal.csicr.cz");
+            //AMI_NOTRA("InspIS SET", "https://set.csicr.cz");
+            //AMI_NOTRA("InspIS ŠVP", "https://svp.csicr.cz/app");
             
 
             DIV();
@@ -64,7 +64,7 @@ namespace UI.Controllers
             AMI("Vyplnit anketní formulář", Factory.App.UiftUrl,null,null,"_blank");
             DIV();
             AMI("Nápověda", "javascript:_helppage_layout()");
-            AMI("O aplikaci", "/Home/About");
+            //AMI("O aplikaci", "/Home/About");
             DIV();
             AMI("Odhlásit se", "/Home/logout");
 
