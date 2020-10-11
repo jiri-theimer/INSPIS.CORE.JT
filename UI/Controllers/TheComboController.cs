@@ -173,8 +173,13 @@ namespace UI.Controllers
             }
             
             mq.explicit_columns = _colsProvider.getDefaultPallete(false, mq);
+            var ce = Factory.EProvider.ByPrefix(mq.Prefix);
+            if (ce.IsWithoutValidity == false)
+            {
+                mq.IsRecordValid = true;    //v combo nabídce pouze časově platné záznamy
+            }
+            mq.explicit_orderby = ce.SqlOrderByCombo;
 
-            mq.IsRecordValid = true;    //v combo nabídce pouze časově platné záznamy
             mq.InhaleMasterEntityQuery(masterprefix, masterpid, null);
 
             List<int> selpids = null;

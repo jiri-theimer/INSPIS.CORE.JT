@@ -474,6 +474,8 @@ namespace DL
             {
                 if (mq.Prefix == "x32") AQ(ref lis, "a.x32ID IN (select x32ID FROM x34Report_Category WHERE x31ID=@x31id)", "x31id", mq.x31id);
                 if (mq.Prefix == "j04") AQ(ref lis, "a.j04ID IN (select j04ID FROM x37ReportRestriction_UserRole WHERE x31ID=@x31id)", "x31id", mq.x31id);
+                if (mq.Prefix == "a10") AQ(ref lis, "a.a10ID IN (select a10ID FROM a23EventType_Report WHERE x31ID=@x31id)", "x31id", mq.x31id);
+                if (mq.Prefix == "a08") AQ(ref lis, "a.a08ID IN (select a08ID FROM a27EventTheme_Report WHERE x31ID=@x31id)", "x31id", mq.x31id);
             }
             if (mq.Prefix == "x29")
             {

@@ -189,12 +189,18 @@ namespace UI.Controllers
                 var lis = Factory.x32ReportTypeBL.GetList(mq);
                 v.x32IDs = string.Join(",", lis.Select(p => p.pid));
                 v.x32Names = string.Join(",", lis.Select(p => p.x32Name));
-                mq = new BO.myQuery("j04UserRole");
-                mq.x31id = v.rec_pid;                
+
+                mq = new BO.myQuery("j04UserRole") { x31id = v.rec_pid,explicit_orderby="j04Name" };                
                 v.j04IDs = string.Join(",", Factory.j04UserRoleBL.GetList(mq).Select(p => p.pid));
                 v.j04Names = string.Join(",", Factory.j04UserRoleBL.GetList(mq).Select(p => p.j04Name));
 
-                
+                mq = new BO.myQuery("a10EventType") { explicit_orderby = "a10Name", x31id = v.rec_pid };                
+                v.a10IDs = string.Join(",", Factory.a10EventTypeBL.GetList(mq).Select(p => p.pid));
+                v.a10Names = string.Join(",", Factory.a10EventTypeBL.GetList(mq).Select(p => p.a10Name));
+
+                mq = new BO.myQuery("a08Theme") { explicit_orderby = "a08Name", x31id = v.rec_pid };                
+                v.a08IDs = string.Join(",", Factory.a08ThemeBL.GetList(mq).Select(p => p.pid));
+                v.a08Names = string.Join(",", Factory.a08ThemeBL.GetList(mq).Select(p => p.a08Name));
 
             }
             v.Toolbar = new MyToolbarViewModel(v.Rec);
@@ -207,9 +213,13 @@ namespace UI.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Record(Models.Record.x31Record v)
+        public IActionResult Record(Models.Record.x31Record v,string oper)
         {
             RefreshState(v);
+            if (oper == "postback")
+            {
+                return View(v);
+            }
             if (ModelState.IsValid)
             {
                 BO.x31Report c = new BO.x31Report();
@@ -224,7 +234,9 @@ namespace UI.Controllers
                 c.ValidFrom = v.Toolbar.GetValidFrom(c);
                 List<int> x32ids = BO.BAS.ConvertString2ListInt(v.x32IDs);
                 List<int> j04ids = BO.BAS.ConvertString2ListInt(v.j04IDs);
-                c.pid = Factory.x31ReportBL.Save(c, x32ids,j04ids);
+                List<int> a10ids = BO.BAS.ConvertString2ListInt(v.a10IDs);
+                List<int> a08ids = BO.BAS.ConvertString2ListInt(v.a08IDs);
+                c.pid = Factory.x31ReportBL.Save(c, x32ids,j04ids,a10ids,a08ids);
                 if (c.pid > 0)
                 {
                     if (Factory.o27AttachmentBL.SaveSingleUpload(v.UploadGuid, 931, c.pid))

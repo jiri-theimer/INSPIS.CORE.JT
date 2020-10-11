@@ -62,7 +62,7 @@ namespace BL
                 if (_app.TranslatorMode == "Collect")
                 {
                     DL.DbHandler db = new DL.DbHandler(_app.ConnectString, new BO.RunningUser(), _app.LogFolder);
-                    db.RunSql("INSERT INTO x91Translate(x91Code,x91Orig) VALUES(@code,@orig)",new { code = strCode,orig=strCode });
+                    db.RunSql("INSERT INTO x91Translate(x91Code,x91Orig,x91UserInsert,x91UserUpdate,x91DateInsert,x91DateUpdate) VALUES(@code,@orig,'collect','collect',GETDATE(),GETDATE())", new { code = strCode,orig=strCode });
                     SetupPallete();
                 }
                 return "?" + strCode + "?";

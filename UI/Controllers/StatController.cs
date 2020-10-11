@@ -209,21 +209,21 @@ namespace UI.Controllers
             var dt = Factory.StatBL.GetList_StatMatrix(v.guid, GetAddFilterSqlWhere(v), v.lisCols, v.GroupByMode);
             var cExcel = new UI.dataExport();
             var cols = new List<BO.StringPair>();
-            cols.Add(new BO.StringPair() { Key = "a01Signature", Value = "ID akce" });
+            cols.Add(new BO.StringPair() { Key = "a01Signature", Value = Factory.tra("ID akce") });
             cols.Add(new BO.StringPair() { Key = "a03REDIZO", Value = "REDIZO" });
             cols.Add(new BO.StringPair() { Key = "a37IZO", Value = "IZO" });
             cols.Add(new BO.StringPair() { Key = "a17Name", Value = "Typ IZO" });
-            cols.Add(new BO.StringPair() { Key = "a03Name", Value = "Škola" });
-            cols.Add(new BO.StringPair() { Key = "a09Name", Value = "Typ zřizovatele" });
-            cols.Add(new BO.StringPair() { Key = "a05Name", Value = "Kraj" });
-            cols.Add(new BO.StringPair() { Key = "a01DateFrom", Value = "Od" });
-            cols.Add(new BO.StringPair() { Key = "a01DateUntil", Value = "Do" });
+            cols.Add(new BO.StringPair() { Key = "a03Name", Value = Factory.tra("Škola") });
+            cols.Add(new BO.StringPair() { Key = "a09Name", Value = Factory.tra("Typ zřizovatele") });
+            cols.Add(new BO.StringPair() { Key = "a05Name", Value = Factory.tra("Kraj") });
+            cols.Add(new BO.StringPair() { Key = "a01DateFrom", Value = Factory.tra("Od") });
+            cols.Add(new BO.StringPair() { Key = "a01DateUntil", Value = Factory.tra("Do") });
             
-            cols.Add(new BO.StringPair() { Key = "b02Name", Value = "Stav" });
-            cols.Add(new BO.StringPair() { Key = "a10Name", Value = "Typ akce" });
-            cols.Add(new BO.StringPair() { Key = "a08Name", Value = "Téma akce" });
+            cols.Add(new BO.StringPair() { Key = "b02Name", Value = Factory.tra("Stav") });
+            cols.Add(new BO.StringPair() { Key = "a10Name", Value = Factory.tra("Typ akce") });
+            cols.Add(new BO.StringPair() { Key = "a08Name", Value = Factory.tra("Téma akce") });
             
-            
+           
             foreach (var col in v.lisCols)
             {
                 var c = new BO.StringPair() { Value = col.colName, Key = col.colField };
@@ -232,6 +232,13 @@ namespace UI.Controllers
            
             if (cExcel.ToXLSX(dt, Factory.App.TempFolder + "\\" + v.guid + ".xlsx", cols))
             {
+                var mq = new BO.myQuery("xx1");
+                
+                string strCheckedF19IDs = v.CheckedIDs.Replace("item-f19-", "");
+                mq.f19ids = BO.BAS.ConvertString2ListInt(strCheckedF19IDs);
+                mq.explicit_orderby = "f18Ordinal,f18Name,f19Ordinal,f19Name,f21Ordinal,f21Name";
+                var lisColsHelp = Factory.f21ReplyUnitBL.GetListJoinedF19(mq);
+                cExcel.StatVysvetlivky(Factory.App.TempFolder + "\\" + v.guid + ".xlsx", lisColsHelp,Factory);
                 v.XlsExportTempFileName = v.guid + ".xlsx";
                 this.AddMessage("MS-EXCEL dokument vygenerován.", "info");
             }

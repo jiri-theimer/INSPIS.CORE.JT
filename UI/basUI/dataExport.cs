@@ -2,13 +2,80 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using BL;
 using ClosedXML.Excel;
+using SQLitePCL;
 
 namespace UI
 {
     public class dataExport
     {
+        public void StatVysvetlivky(string strFilePathExisting,IEnumerable<BO.f21ReplyUnitJoinedF19> lisColsHelp,BL.Factory f)
+        {
+            //strFilePathExisting: xls soubor, do které se přidá sešit Vysvětlivky
+            using (var workbook = new XLWorkbook(strFilePathExisting))
+            {
+                var worksheet = workbook.Worksheets.Add(f.tra("Vysvětlivky"));
+               
+                int row = 1;
+                int lastF18ID = 0;
+                int lastF06ID = 0;
+               
+                foreach (var c in lisColsHelp)
+                {
+                    if (c.f06ID != lastF06ID)
+                    {
+                        worksheet.Cell(row, 1).Value = c.f06Name;
+                        row += 1;
+                        worksheet.Cell(row, 1).Value = f.tra("Segment");
+                        worksheet.Cell(row, 2).Value = f.tra("Otázka");
+                        worksheet.Cell(row, 5).Value = f.tra("Jednotka odpovědi");
+                        worksheet.Cell(row, 8).Value = f.tra("Baterie");                        
+                        row += 1;
+                        worksheet.Cell(row, 2).Value = "PID";
+                        worksheet.Cell(row, 3).Value = f.tra("STAT ID");
+                        worksheet.Cell(row, 4).Value = f.tra("Název");
+                        worksheet.Cell(row, 5).Value = "PID";
+                        worksheet.Cell(row, 6).Value = f.tra("STAT ID");
+                        worksheet.Cell(row, 7).Value = f.tra("Název");
+                        
+                        
+                        row += 1;
+
+                    }
+                    if (lastF18ID != c.f18ID)
+                    {
+                        worksheet.Cell(row, 1).Value = c.f18Name;
+                    }
+                    worksheet.Cell(row, 2).Value = c.f19ID;
+                    worksheet.Cell(row, 3).Value = c.f19StatID;
+                    worksheet.Cell(row, 4).Value = c.f19Name;
+                    if (c.f23ID == 2 || c.f23ID == 3 || c.f23ID == 4 || c.f23ID == 5)
+                    {
+                        worksheet.Cell(row, 5).Value = c.pid;
+                        worksheet.Cell(row, 6).Value = c.f21ExportValue;
+                        worksheet.Cell(row, 7).Value = c.f21Name;
+                    }
+                    worksheet.Cell(row, 8).Value = c.f26Name;
+                    if (c.f21IsCommentAllowed)
+                    {
+                        row += 1;
+                        worksheet.Cell(row, 2).Value = c.f19ID;
+                        worksheet.Cell(row, 5).Value = c.pid;
+                        worksheet.Cell(row, 4).Value = f.tra("Komentář k jednotce odpovědi");
+                        worksheet.Cell(row, 8).Value = c.f26Name;
+                    }
+                    //worksheet.Cell(row, 3).Style.Font.Bold = true;
+                    row += 1;
+                    lastF18ID = c.f18ID; lastF06ID = c.f06ID;
+                }
+                worksheet.Columns(1, 8).AdjustToContents();
+
+
+                workbook.Save();
+
+            }
+        }
         public bool ToXLSX(System.Data.DataTable dt, string strFilePath, BO.myQuery mq)
         {
             using (var workbook = new XLWorkbook())
@@ -42,6 +109,8 @@ namespace UI
                     row += 1;
 
                 }
+                worksheet.Columns(1,col).AdjustToContents();
+                
 
                 workbook.SaveAs(strFilePath);
                
@@ -84,7 +153,7 @@ namespace UI
                     row += 1;
 
                 }
-
+                worksheet.Columns(1, col).AdjustToContents();
                 workbook.SaveAs(strFilePath);
 
             }

@@ -40,7 +40,7 @@
             <span asp-validation-for="Rec.x31PID" class="text-danger"></span>
         </div>
         <div class="col-sm-6 col-md-6">
-            <input type="checkbox" asp-for="Rec.x31Is4SingleRecord" />
+            <input type="checkbox" asp-for="Rec.x31Is4SingleRecord" onchange="handle_postback()" />
             <label class="col-form-label" for="Rec_x31Is4SingleRecord">@_f.tra("Sestava pro účely zobrazení jednoho vybraného záznamu")</label>
 
         </div>
@@ -64,9 +64,33 @@
     <div class="form-row my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Entita"):</label>
         <div class="col-sm-5 col-md-4">
-            <mycombo entity="x29Entity" asp-for="Rec.x29ID" selectedtext="Rec.x29Name" view-flag="2" param1="x29IsReport"></mycombo>
+            <mycombo entity="x29Entity" asp-for="Rec.x29ID" selectedtext="Rec.x29Name" view-flag="2" param1="x29IsReport" event_after_changevalue="handle_change_x29id"></mycombo>
         </div>
     </div>
+
+    @if (Model.Rec.x31Is4SingleRecord && Model.Rec.x29ID == 101)
+    {
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typy akcí"):</label>
+            <div class="col-sm-11 col-md-10">
+                <mycombochecklist asp-for="@Model.a10IDs" entity="a10EventType" selectedtext="@Model.a10Names"></mycombochecklist>
+            </div>
+        </div>
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Témata akcí"):</label>
+            <div class="col-sm-11 col-md-10">
+                <mycombochecklist asp-for="@Model.a08IDs" entity="a08Theme" selectedtext="@Model.a08Names"></mycombochecklist>
+            </div>
+        </div>
+    }
+    else
+    {
+        <input type="hidden" asp-for="@Model.a10IDs" />
+        <input type="hidden" asp-for="@Model.a10Names" />
+        <input type="hidden" asp-for="@Model.a08IDs" />
+        <input type="hidden" asp-for="@Model.a08Names" />
+    }
+
 
     <div class="form-row my-2">
         <textarea asp-for="Rec.x31Description" class="form-control" placeholder="@_f.tra("Podrobný popis")"></textarea>
@@ -100,8 +124,13 @@
     });
 
 
-
-
+    function handle_change_x29id(x29id) {
+        handle_postback();
+    }
+    function handle_postback() {
+        form1.action = "/x31/Record?oper=postback";
+        form1.submit();
+    }
 
 
 </script>
