@@ -469,15 +469,19 @@ namespace UI.Controllers
                     break;
                 case "a03":
                     var recA03 = Factory.a03InstitutionBL.Load(pid);
-                    AMI("Karta záznamu", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
-                    AMI("Kopírovat", string.Format("javascript:_clone('{0}',{1})", prefix, pid));
-                    DIV();
-                    AMI("Přidat kontaktní osobu", string.Format("javascript: _window_open('/a39/Record?pid=0&a03id={0}')", pid));
-                    if (recA03.a06ID == 1)
+                    if (TUP(j05PermValuEnum.A03Admin))
                     {
-                        AMI("Přidat činnost školy", string.Format("javascript: _window_open('/a37/Record?pid=0&a03id={0}')", pid));
-                        AMI("Přidat vzdělávací obor", string.Format("javascript: _window_open('/a19/Record?pid=0&a03id={0}')", pid));
+                        AMI("Karta záznamu", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
+                        AMI("Kopírovat", string.Format("javascript:_clone('{0}',{1})", prefix, pid));
+                        DIV();
+                        AMI("Přidat kontaktní osobu", string.Format("javascript: _window_open('/a39/Record?pid=0&a03id={0}')", pid));
+                        if (recA03.a06ID == 1)
+                        {
+                            AMI("Přidat činnost školy", string.Format("javascript: _window_open('/a37/Record?pid=0&a03id={0}')", pid));
+                            AMI("Přidat vzdělávací obor", string.Format("javascript: _window_open('/a19/Record?pid=0&a03id={0}')", pid));
+                        }
                     }
+                    
                     if (Factory.j04UserRoleBL.IsA01Create(Factory.CurrentUser.j04ID))
                     {
                         DIV();

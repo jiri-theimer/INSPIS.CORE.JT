@@ -51,7 +51,7 @@ namespace UI.Controllers
                 v.MakeClone();
             }
             RefreshState(v);
-            return View(v);
+            return ViewTup(v, BO.j05PermValuEnum.AdminGlobal_Ciselniky);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

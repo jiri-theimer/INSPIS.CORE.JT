@@ -11,8 +11,9 @@ namespace UI.Controllers
     public class a29Controller : BaseController
     {
         public IActionResult Record(int pid, bool isclone)
-        {
+        {            
             var v = new a29Record() { rec_pid = pid, rec_entity = "a29" };
+            
             v.Rec = new BO.a29InstitutionList();
             if (v.rec_pid > 0)
             {
@@ -30,7 +31,7 @@ namespace UI.Controllers
             {
                 v.MakeClone();
             }
-            return View(v);
+            return ViewTup(v, BO.j05PermValuEnum.AdminGlobal_Ciselniky);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

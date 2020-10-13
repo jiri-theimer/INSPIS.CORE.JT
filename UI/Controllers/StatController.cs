@@ -48,8 +48,8 @@ namespace UI.Controllers
             
 
             RefreshStateIndex(v);
-           
-            return View(v);
+
+            return ViewTup(v, BO.j05PermValuEnum.Menu_Analyze);
         }
 
         [HttpPost]
@@ -338,7 +338,11 @@ namespace UI.Controllers
                     string strCheckedF19IDs = v.CheckedIDs.Replace("item-f19-", "");
                     mq.SetPids(strCheckedF19IDs);
                     var lisCheckedF19 = Factory.f19QuestionBL.GetList(mq);
-                    v.lisCols = Factory.StatBL.GetList_StatColumns(lisCheckedF19.Select(p => p.f19ID).ToList());
+                    if (lisCheckedF19.Count() > 0)
+                    {
+                        v.lisCols = Factory.StatBL.GetList_StatColumns(lisCheckedF19.Select(p => p.f19ID).ToList());
+                    }
+                    
                 }
                 
             }

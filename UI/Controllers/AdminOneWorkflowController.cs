@@ -46,7 +46,7 @@ namespace UI.Controllers
             {
                 inhale_tree(v);
             }
-            return View(v);
+            return ViewTup(v, BO.j05PermValuEnum.WorkflowDesigner);
         }
 
         private void inhale_tree(UI.Models.AdminOneWorkflow v)

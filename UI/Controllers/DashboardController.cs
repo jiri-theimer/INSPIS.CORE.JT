@@ -160,8 +160,8 @@ namespace UI.Controllers
                     v.IsAllowCreateA01 = true;  //může zakládat tento typ akce
                 }
             }
-
-            return View(v);
+            
+            return ViewTup(v, BO.j05PermValuEnum.SchoolAdminUser);
         }
     }
 }

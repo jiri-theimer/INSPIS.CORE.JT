@@ -16,7 +16,7 @@ namespace UI.Controllers
         {
             var v = new AdminLogAsUser() { Login = login, Code = code };
 
-            return View(v);
+            return ViewTup(v, BO.j05PermValuEnum.AdminGlobal);
         }
         [HttpPost]
         public IActionResult LogAsUser(AdminLogAsUser v)

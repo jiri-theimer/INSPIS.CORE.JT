@@ -91,7 +91,7 @@ namespace UI.Controllers
                 v.Rec = Factory.j02PersonBL.Load(v.pid);
                 if (v.Rec == null)
                 {
-                    this.Notify_RecNotSaved();
+                    this.Notify_RecNotFound();
                     v.pid = 0;
                 }
                 else
@@ -183,7 +183,7 @@ namespace UI.Controllers
             {
                 v.MakeClone();
             }
-            return View(v);
+            return ViewTup(v, BO.j05PermValuEnum.AdminGlobal_Ciselniky);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
