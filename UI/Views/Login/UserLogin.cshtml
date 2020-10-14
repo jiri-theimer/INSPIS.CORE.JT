@@ -2,7 +2,7 @@
 @inject BL.Factory _f
 
 @{
-    ViewData["Title"] = "Přihlášení";
+    ViewData["Title"] = _f.trawi("Přihlášení",Model.LangIndex);
     Layout = "~/Views/Shared/_LayoutLogin.cshtml";
 
     var _returnurl = @Context.Request.Query["returnurl"];
@@ -13,7 +13,7 @@
 <div class="row">
     <div class="col-md-4">
         <form id="form1" asp-action="UserLogin" method="post">
-            <h2>Přihlášení do aplikace</h2>
+            <h2>@_f.trawi("Přihlášení do aplikace",Model.LangIndex)</h2>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="@Model.Login" class="control-label">@_f.trawi("Přihlašovací jméno (login)",Model.LangIndex)</label>
@@ -26,17 +26,17 @@
                 <span asp-validation-for="@Model.Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Přihlásit se" class="btn btn-default btn-primary" asp-route-returnurl="@_returnurl" />
+                <input type="submit" value="@_f.trawi("Přihlásit se",Model.LangIndex)" class="btn btn-default btn-primary" asp-route-returnurl="@_returnurl" />
             </div>
             <div class="form-group">
 
                 <select asp-for="@Model.CookieExpiresInHours" class="form-control">
-                    <option value="1">Trvalé přihlášení (1 hodina)</option>
-                    <option value="2">2 hodiny</option>
-                    <option value="6">6 hodin</option>
-                    <option value="12">12 hodin</option>
-                    <option value="24">24 hodin</option>
-                    <option value="48">48 hodin</option>
+                    <option value="1">@_f.trawi("Trvalé přihlášení (1 hodina)",Model.LangIndex)</option>
+                    <option value="2">@_f.trawi("2 hodiny",Model.LangIndex)</option>
+                    <option value="6">@_f.trawi("6 hodin", Model.LangIndex)</option>
+                    <option value="12">@_f.trawi("12 hodin", Model.LangIndex)</option>
+                    <option value="24">@_f.trawi("24 hodin", Model.LangIndex)</option>
+                    <option value="48">@_f.trawi("48 hodin", Model.LangIndex)</option>
                 </select>
             </div>
             

@@ -103,9 +103,7 @@ namespace UI.Controllers
 
             Write2Accesslog(lu);
             if (lu.IsChangedLangIndex)
-            {
-
-                
+            {                
                 var co = new CookieOptions() { Expires = DateTime.Now.AddDays(100) };
                 Response.Cookies.Append("inspis.core.langindex", lu.LangIndex.ToString(), co);
                 var c = _f.j03UserBL.Load(_f.CurrentUser.pid);
