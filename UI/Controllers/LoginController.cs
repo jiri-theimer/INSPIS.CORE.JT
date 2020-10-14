@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using UI.Models;
-
+using DocumentFormat.OpenXml.EMMA;
+using Microsoft.AspNetCore.Http;
 
 namespace UI.Controllers
 {
@@ -24,7 +25,10 @@ namespace UI.Controllers
             {
                 TryLogout();
             }            
+            
             var v = new BO.LoggingUser();
+            v.LangIndex = BO.BAS.InInt(Request.Cookies["inspis.core.langindex"]);
+
             return View(v);
         }
 
@@ -38,8 +42,15 @@ namespace UI.Controllers
         }
 
         [HttpPost]
-        public ActionResult UserLogin([Bind] BO.LoggingUser lu, string returnurl)
-        {            
+        public ActionResult UserLogin([Bind] BO.LoggingUser lu, string returnurl,string oper)
+        {
+            if (oper == "postback")
+            {
+                
+                return View(lu);
+            }
+            
+
             _f.InhaleUserByLogin(lu.Login);
             if (_f.CurrentUser == null)
             {
@@ -91,6 +102,17 @@ namespace UI.Controllers
 
 
             Write2Accesslog(lu);
+            if (lu.IsChangedLangIndex)
+            {
+
+                
+                var co = new CookieOptions() { Expires = DateTime.Now.AddDays(100) };
+                Response.Cookies.Append("inspis.core.langindex", lu.LangIndex.ToString(), co);
+                var c = _f.j03UserBL.Load(_f.CurrentUser.pid);
+                c.j03LangIndex = lu.LangIndex;
+                _f.j03UserBL.Save(c);
+            }
+            
 
             if (returnurl == null || returnurl.Length<3)
             {

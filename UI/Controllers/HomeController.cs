@@ -60,6 +60,8 @@ namespace UI.Controllers
             var c = Factory.j03UserBL.Load(Factory.CurrentUser.pid);
             c.j03LangIndex = langindex;
             Factory.j03UserBL.Save(c);
+            var co = new CookieOptions() { Expires = DateTime.Now.AddDays(100) };
+            Response.Cookies.Append("inspis.core.langindex", langindex.ToString(), co);
             return new BO.Result(false);
         }
 

@@ -144,7 +144,12 @@ namespace BL
             if (this.CurrentUser.j03LangIndex == 0) return strExpression;
             return this.Translator.DoTranslate(strExpression, this.CurrentUser.j03LangIndex);
         }
-        
+
+        public string trawi(string strExpression,int langindex)   //lokalizace do ostatních jazyků
+        {
+            
+            return this.Translator.DoTranslate(strExpression, langindex);
+        }
 
         public IDataGridBL gridBL
         {
