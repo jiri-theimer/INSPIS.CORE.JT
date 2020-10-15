@@ -92,6 +92,8 @@ namespace UI
                 ,
                 Implementation = Configuration.GetSection("App")["Implementation"]
                 ,
+                DefaultLangIndex = BO.BAS.InInt(Configuration.GetSection("App")["DefaultLangIndex"])
+                ,
                 UploadFolder = Configuration.GetSection("Folders")["Upload"]
                 ,
                 TempFolder = Configuration.GetSection("Folders")["Temp"]

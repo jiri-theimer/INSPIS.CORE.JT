@@ -20,6 +20,8 @@ namespace BL
         public string LogoImage { get; set; }
         public string TranslatorMode { get; set; }
 
+        public int DefaultLangIndex { get; set; }
+
         public string Implementation { get; set; }  //HD nebo prázdno
 
         public string UiftUrl { get; set; } //url pro spouštění UIFT

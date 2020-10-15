@@ -60,6 +60,16 @@
             }
         </div>
     </div>
+    <div class="form-row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Jazyk"):</label>
+        <div class="col-sm-5 col-md-4">
+            <select asp-for="Rec.j03LangIndex" class="form-control">
+                <option value="0">Česky</option>
+                <option value="1">English</option>
+                <option value="2">Українська</option>
+            </select>
+        </div>
+    </div>
 
 
     @if (Model.IsDefinePassword)

@@ -83,6 +83,7 @@ namespace UI.Controllers
                 c.j03IsDomainAccount = v.Rec.j03IsDomainAccount;
                 c.j03IsMustChangePassword = v.Rec.j03IsMustChangePassword;
                 c.j03IsSystemAccount = v.Rec.j03IsSystemAccount;
+                c.j03LangIndex = v.Rec.j03LangIndex;
 
                 c.ValidUntil = v.Toolbar.GetValidUntil(c);
                 c.ValidFrom = v.Toolbar.GetValidFrom(c);

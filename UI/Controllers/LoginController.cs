@@ -27,7 +27,11 @@ namespace UI.Controllers
             }            
             
             var v = new BO.LoggingUser();
-            v.LangIndex = BO.BAS.InInt(Request.Cookies["inspis.core.langindex"]);
+            v.LangIndex = _f.App.DefaultLangIndex;
+            if(Request.Cookies["inspis.core.langindex"] !=null)
+            {
+                v.LangIndex = BO.BAS.InInt(Request.Cookies["inspis.core.langindex"]);
+            }
 
             return View(v);
         }
@@ -109,6 +113,15 @@ namespace UI.Controllers
                 var c = _f.j03UserBL.Load(_f.CurrentUser.pid);
                 c.j03LangIndex = lu.LangIndex;
                 _f.j03UserBL.Save(c);
+            }
+            else
+            {
+                var c = _f.j03UserBL.Load(_f.CurrentUser.pid);
+                if (lu.LangIndex != c.j03LangIndex)
+                {
+                    c.j03LangIndex = lu.LangIndex;
+                    _f.j03UserBL.Save(c);
+                }
             }
             
 
