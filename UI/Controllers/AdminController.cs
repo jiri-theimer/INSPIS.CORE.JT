@@ -134,7 +134,19 @@ namespace UI.Controllers
             {
                 var c = Factory.EProvider.ByPrefix(prefix);
                 v.entity = c.TableName;
-                v.entityTitle = c.AliasPlural;
+                switch (Factory.CurrentUser.j03LangIndex)
+                {
+                    case 1:
+                        v.entityTitle = c.TranslateLang1;
+                        break;
+                    case 2:
+                        v.entityTitle = c.TranslateLang2;
+                        break;
+                    default:
+                        v.entityTitle = c.AliasPlural;
+                        break;
+                }
+                
             }
         }
 

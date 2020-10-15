@@ -63,6 +63,8 @@
             <input type="hidden" asp-for="@Model.rec_entity" />
             <input type="hidden" asp-for="@Model.ActiveTabIndex" />
 
+
+
             @Html.EditorFor(m => m.Toolbar, "~/Views/Shared/_MyToolbar.cshtml")
 
             @RenderBody()
@@ -70,7 +72,10 @@
         </form>
         @if (Model.rec_pid > 0)
         {
-            @Html.Raw(Model.Toolbar.TimeStamp)
+            @Html.Raw(Model.Toolbar.getTimeStampHtml(_f));
+
+            
+
         }
         @if (Model.Toolbar.AllowArchive)
         {
