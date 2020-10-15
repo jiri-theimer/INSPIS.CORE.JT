@@ -28,6 +28,7 @@ namespace UI.Controllers
             }
 
             v.Rec = new BO.j03User();
+            v.Rec.j03LangIndex = Factory.App.DefaultLangIndex;
             v.RecJ02 = new BO.j02Person();
 
             if (v.rec_pid > 0)
