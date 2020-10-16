@@ -82,14 +82,16 @@ namespace UIFT
             services.AddSingleton<BL.RunningApp>(x => new BL.RunningApp()
             {
                 ConnectString = Configuration.GetSection("ConnectionStrings")["AppConnection"],
-                AppName = "UIFT",
-                AppVersion = "version 1.0",
+                AppName = Configuration.GetSection("App")["Name"],
+                AppVersion = Configuration.GetSection("App")["Version"],
                 AppBuild = "build: " + BO.BAS.ObjectDateTime2String(versionTime),
-                Implementation = "DEFAULT",
+                LogoImage = Configuration.GetSection("App")["LogoImage"],
+                Implementation = Configuration.GetSection("App")["Implementation"],
                 UploadFolder = AppConfig.UploadFolder,
                 TempFolder = AppConfig.TempFolder,
                 LogFolder = AppConfig.LogFolder,
-                TranslatorMode = "Collect"
+                TranslatorMode = Configuration.GetSection("App")["TranslatorMode"],
+                DefaultLangIndex = Configuration.GetSection("App")["DefaultLangIndex"]
             });
 
 
