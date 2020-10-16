@@ -29,7 +29,7 @@ namespace UI.Controllers
                 v.MakeClone();
 
             }
-            return View(v);
+            return ViewTup(v, BO.j05PermValuEnum.AdminGlobal_Ciselniky);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

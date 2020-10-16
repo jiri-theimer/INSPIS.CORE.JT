@@ -329,6 +329,7 @@ namespace BL
             //j03 = uživatelé
             AF("j03User", "j03Login", "Login", 1,null,"string",false,true);
             AF("j03User", "j04Name", "Role", 1, "j03_j04.j04Name","string",false,true);
+            AF("j03User", "Lang", "Jazyk", 1, "case isnull(a.j03LangIndex,0) when 0 then 'Česky' when 1 then 'English' when 2 then 'Українська' end");
             AF("j03User", "j03PingTimestamp", "Last ping", 0, "a.j03PingTimestamp", "datetime");
             AppendTimestamp("j03User");
 

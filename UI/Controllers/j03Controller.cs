@@ -28,6 +28,7 @@ namespace UI.Controllers
             }
 
             v.Rec = new BO.j03User();
+            v.Rec.j03LangIndex = Factory.App.DefaultLangIndex;
             v.RecJ02 = new BO.j02Person();
 
             if (v.rec_pid > 0)
@@ -44,7 +45,7 @@ namespace UI.Controllers
             {
                 v.MakeClone();
             }
-            return View(v);
+            return ViewTup(v, BO.j05PermValuEnum.AdminGlobal_Ciselniky);
         }
 
         [HttpPost]
@@ -83,6 +84,7 @@ namespace UI.Controllers
                 c.j03IsDomainAccount = v.Rec.j03IsDomainAccount;
                 c.j03IsMustChangePassword = v.Rec.j03IsMustChangePassword;
                 c.j03IsSystemAccount = v.Rec.j03IsSystemAccount;
+                c.j03LangIndex = v.Rec.j03LangIndex;
 
                 c.ValidUntil = v.Toolbar.GetValidUntil(c);
                 c.ValidFrom = v.Toolbar.GetValidFrom(c);

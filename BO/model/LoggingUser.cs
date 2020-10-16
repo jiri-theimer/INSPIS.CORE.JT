@@ -9,11 +9,12 @@ namespace BO
 {
     public class LoggingUser
     {
-        [Display(Name ="Přihlašovací jméno (login)")]
-        public string Login { get; set; }
-        [Display(Name ="Heslo")]
+        
+        public string Login { get; set; }        
         public string Password { get; set; }
-        public int CookieExpiresInHours { get; set; } = 1;      
+        public int CookieExpiresInHours { get; set; } = 1;
+        public int LangIndex { get; set; }
+        public bool IsChangedLangIndex { get; set; }
 
         public string Message { get; set; }
 

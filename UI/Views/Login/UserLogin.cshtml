@@ -1,7 +1,8 @@
 ﻿@model BO.LoggingUser
+@inject BL.Factory _f
 
 @{
-    ViewData["Title"] = "Přihlášení";
+    ViewData["Title"] = _f.trawi("Přihlášení",Model.LangIndex);
     Layout = "~/Views/Shared/_LayoutLogin.cshtml";
 
     var _returnurl = @Context.Request.Query["returnurl"];
@@ -11,34 +12,66 @@
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="UserLogin">
-            <h2>Přihlášení do aplikace</h2>
+        <form id="form1" asp-action="UserLogin" method="post">
+            <h2>@_f.trawi("Přihlášení do aplikace",Model.LangIndex)</h2>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="@Model.Login" class="control-label"></label>
+                <label asp-for="@Model.Login" class="control-label">@_f.trawi("Přihlašovací jméno (login)",Model.LangIndex)</label>
                 <input asp-for="@Model.Login" class="form-control" />
                 <span asp-validation-for="@Model.Login" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.Password" class="control-label"></label>
+                <label asp-for="@Model.Password" class="control-label">@_f.trawi("Heslo", Model.LangIndex)</label>
                 <input type="password" asp-for="@Model.Password" class="form-control" />
                 <span asp-validation-for="@Model.Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Přihlásit se" class="btn btn-default btn-primary" asp-route-returnurl="@_returnurl" />
+                <input type="submit" value="@_f.trawi("Přihlásit se",Model.LangIndex)" class="btn btn-default btn-primary" asp-route-returnurl="@_returnurl" />
             </div>
             <div class="form-group">
 
                 <select asp-for="@Model.CookieExpiresInHours" class="form-control">
-                    <option value="1">Trvalé přihlášení (1 hodina)</option>
-                    <option value="2">2 hodiny</option>
-                    <option value="6">6 hodin</option>
-                    <option value="12">12 hodin</option>
-                    <option value="24">24 hodin</option>
-                    <option value="48">48 hodin</option>
+                    <option value="1">@_f.trawi("Trvalé přihlášení (1 hodina)",Model.LangIndex)</option>
+                    <option value="2">@_f.trawi("2 hodiny",Model.LangIndex)</option>
+                    <option value="6">@_f.trawi("6 hodin", Model.LangIndex)</option>
+                    <option value="12">@_f.trawi("12 hodin", Model.LangIndex)</option>
+                    <option value="24">@_f.trawi("24 hodin", Model.LangIndex)</option>
+                    <option value="48">@_f.trawi("48 hodin", Model.LangIndex)</option>
                 </select>
             </div>
+            
+            <div class="form-group">
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="javascript:void(0)" id="cmdLangIndex" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tabindex="-1">
+                        @if (Model.LangIndex == 0)
+                        {
+                            <img src="~/images/czechrepublic.gif" />
+                        }
+                        @if (Model.LangIndex == 1)
+                        {
+                            <img src="~/images/uk.gif" />
+                        }
+                        @if (Model.LangIndex == 2)
+                        {
+                            <img src="~/images/ukraine.gif" />
+                        }
 
+                    </a>
+
+                    <div class="dropdown-menu dropdown_menu_container" id="divLangIndexMenu" aria-labelledby="cmdLangIndex">
+                        <a class="btn btn-light" href="javascript:change_lang(0)" style="width:100%;"><img src="~/images/czechrepublic.gif" /> Česky</a>
+                        <br />
+                        <a class="btn btn-light" href="javascript:change_lang(1)" style="width:100%;"><img src="~/images/uk.gif" /> English</a>
+                        <br />                        
+                        <a class="btn btn-light" href="javascript:change_lang(2)" style="width:100%;"><img src="~/images/ukraine.gif" /> Українська</a>
+                    </div>
+
+                </div>
+
+                
+            </div>
+            <input type="hidden" asp-for="@Model.LangIndex" value="@Model.LangIndex" />
+            <input type="hidden" asp-for="@Model.IsChangedLangIndex" value="@Model.IsChangedLangIndex" />
             <input type="hidden" asp-for="@Model.Browser_AvailWidth" />
             <input type="hidden" asp-for="@Model.Browser_AvailHeight" />
             <input type="hidden" asp-for="@Model.Browser_InnerWidth" />
@@ -82,8 +115,15 @@
         $("#Browser_DeviceType").val(devicetype);
 
 
-
+       
 
 
     });
+
+    function change_lang(li) {
+        $("#LangIndex").val(li);
+        $("#IsChangedLangIndex").val(true);
+        form1.action = "/Login/UserLogin?oper=postback";
+        form1.submit();
+    }
 </script>

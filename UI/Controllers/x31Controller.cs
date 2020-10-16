@@ -31,9 +31,9 @@ namespace UI.Controllers
             v.SelectedX31ID = x31id;
             RefreshStateReportNoContext(v);
 
-          
 
-            return View(v);
+
+            return ViewTup(v, BO.j05PermValuEnum.Menu_Reports);
         }
         [HttpPost]
         public IActionResult ReportNoContext(ReportNoContextViewModel v, string oper)
@@ -209,7 +209,7 @@ namespace UI.Controllers
                 v.MakeClone();
             }
             RefreshState(v);
-            return View(v);
+            return ViewTup(v, BO.j05PermValuEnum.AdminGlobal_Ciselniky);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

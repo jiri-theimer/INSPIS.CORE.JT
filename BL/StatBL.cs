@@ -223,6 +223,7 @@ namespace BL
 
         public List<BO.StatColumn> GetList_StatColumns(List<int> f19ids)
         {
+
             sb("select a.f19ID,a.f21ID,f19.f19Name,f21.f21Name,f21.f21ExportValue,f19.x24ID");
             sb(",convert(varchar(10),a.f19ID)+'-'+convert(varchar(10),a.f21ID) as colName,f19.f23ID");
             sb(",f19.f19Ordinal,f21.f21Ordinal,f19.f26ID,f18.f18TreeIndex,f19.f19IsMultiselect,isnull(f26.f26Ordinal,99999),f18.f18TreeIndex,f18.f06ID");

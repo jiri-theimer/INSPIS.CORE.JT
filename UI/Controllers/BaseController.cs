@@ -79,7 +79,7 @@ namespace UI.Controllers
         public IActionResult StopPage(bool bolModal,string strMessage)
         {
             var v = new StopPageViewModel() { Message = strMessage, IsModal = bolModal };
-
+            
             return View("_StopPage",v);
         }
         public IActionResult StopPageSubform(string strMessage)
@@ -104,7 +104,11 @@ namespace UI.Controllers
         {
             return (StopPage(bolModal, "100% klientský záznam.<hr>Přepněte se do rozhraní [CLIENT]."));
         }
-
+        public IActionResult RecMissingPerm(UI.Models.BaseRecordViewModel v)
+        {
+            return StopPage(true,"Pro tuto stránku nemáte oprávnění!");
+            
+        }
         public ViewResult RecNotFound(UI.Models.BaseRecordViewModel v)
         {
             AddMessage("Hledaný záznam neexistuje!","error");            
@@ -120,6 +124,10 @@ namespace UI.Controllers
         {
             AddMessage("Záznam zatím nebyl uložen.", "warning");
         }
+        public void Notify_RecNotFound()
+        {
+            AddMessage("Hledaný záznam neexistuje!", "warning");
+        }
 
         public void AddMessage(string strMessage,string template="error")
         {
@@ -133,6 +141,16 @@ namespace UI.Controllers
         public bool TUP(BO.j05PermValuEnum oneperm)
         {
             return Factory.CurrentUser.TestPermission(oneperm);
+        }
+
+        public virtual ViewResult ViewTup(object model, BO.j05PermValuEnum oneperm)
+        {
+            if (!TUP(oneperm))
+            {
+                var v = new StopPageViewModel() { Message = "Pro tuto stránku nemáte oprávnění!", IsModal = true };
+                return View("_StopPage",v);
+            }
+            return View(model);
         }
 
 

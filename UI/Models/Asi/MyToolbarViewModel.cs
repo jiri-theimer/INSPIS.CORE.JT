@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 namespace UI.Models
 {
     public class MyToolbarViewModel
-    {
-      
+    {        
+        
         public int RecordPID { get; set; }
         public bool RecordIsClosed { get; set; }
         public string RecordEntity { get; set; }
@@ -35,54 +35,56 @@ namespace UI.Models
         //public string ArchiveFlag { get; set; }
         public string BG;
 
+        private BO.BaseBO _rec { get; set; }
+
         public MyToolbarViewModel(BO.BaseBO rec,bool bolAllowArchive=true)
         {
+            _rec = rec;
             this.AllowArchive = bolAllowArchive;
             this.RecordEntity = rec.entity;
             this.RecordPID = rec.pid;
             this.RecordIsClosed = rec.isclosed;
-
             
-            if (rec.pid>0)
-            {
-                var sb = new System.Text.StringBuilder();
-                sb.AppendLine("<div style='border-top:solid 1px #F5F5F5;margin-top:20px;'>");
-                if (rec.DateInsert != null)
-                {
-                    sb.Append("<small>Záznam založen:</small>");
-                    sb.Append("<small class='text-info'>");
-                    sb.Append(rec.UserInsert + " / " + rec.DateInsert.ToString());
-                    sb.Append("</small>");            
-                }
-                if (rec.DateUpdate>rec.DateInsert)
-                {
-                    sb.Append("<small style='margin-left:20px;'>Poslední aktualizace:</small>");
-                    sb.Append("<small class='text-info'>");
-                    sb.Append(rec.UserUpdate + " / " + rec.DateUpdate.ToString());
-                    sb.Append("</small>");
-                }
-                if (bolAllowArchive && rec.ValidFrom !=null && rec.ValidUntil != null)
-                {
-                    this.ExplicitValidFrom = BO.BAS.ObjectDateTime2String(rec.ValidFrom);
-                    this.ExplicitValidUntil = BO.BAS.ObjectDateTime2String(rec.ValidUntil);
+            //if (rec.pid>0)
+            //{
+            //    var sb = new System.Text.StringBuilder();
+            //    sb.AppendLine("<div style='border-top:solid 1px #F5F5F5;margin-top:20px;'>");
+            //    if (rec.DateInsert != null)
+            //    {
+            //        sb.Append("<small>Záznam založen:</small>");
+            //        sb.Append("<small class='text-info'>");
+            //        sb.Append(rec.UserInsert + " / " + rec.DateInsert.ToString());
+            //        sb.Append("</small>");            
+            //    }
+            //    if (rec.DateUpdate>rec.DateInsert)
+            //    {
+            //        sb.Append("<small style='margin-left:20px;'>Poslední aktualizace:</small>");
+            //        sb.Append("<small class='text-info'>");
+            //        sb.Append(rec.UserUpdate + " / " + rec.DateUpdate.ToString());
+            //        sb.Append("</small>");
+            //    }
+            //    if (bolAllowArchive && rec.ValidFrom !=null && rec.ValidUntil != null)
+            //    {
+            //        this.ExplicitValidFrom = BO.BAS.ObjectDateTime2String(rec.ValidFrom);
+            //        this.ExplicitValidUntil = BO.BAS.ObjectDateTime2String(rec.ValidUntil);
 
-                    sb.Append("<small style='margin-left:20px;'>Platnost záznamu:</small>");
-                    sb.Append("<small class='text-info'>");
-                    if (rec.ValidUntil>DateTime.Now && rec.ValidFrom <= DateTime.Now)
-                    {
-                        sb.Append(" Záznam je časově platný.");
-                    }
-                    else
-                    {
-                        sb.Append(rec.ValidFrom.ToString() + " - " + rec.ValidUntil.ToString());
-                        sb.Append("<kbd style='font-size:120%;'>Záznam je v archivu.</kbd>");
-                    }
-                    sb.Append("</small>");
-                }
+            //        sb.Append("<small style='margin-left:20px;'>Platnost záznamu:</small>");
+            //        sb.Append("<small class='text-info'>");
+            //        if (rec.ValidUntil>DateTime.Now && rec.ValidFrom <= DateTime.Now)
+            //        {
+            //            sb.Append(" Záznam je časově platný.");
+            //        }
+            //        else
+            //        {
+            //            sb.Append(rec.ValidFrom.ToString() + " - " + rec.ValidUntil.ToString());
+            //            sb.Append("<kbd style='font-size:120%;'>Záznam je v archivu.</kbd>");
+            //        }
+            //        sb.Append("</small>");
+            //    }
 
-                sb.AppendLine("</div>");
-                this.TimeStamp = sb.ToString();
-            }
+            //    sb.AppendLine("</div>");
+            //    this.TimeStamp = sb.ToString();
+            //}
 
             RefreshState();
 
@@ -92,7 +94,55 @@ namespace UI.Models
             RefreshState();
         }
 
-        
+        public string getTimeStampHtml(BL.Factory f)
+        {
+            if (_rec.pid > 0)
+            {
+                var sb = new System.Text.StringBuilder();
+                sb.AppendLine("<div style='border-top:solid 1px #F5F5F5;margin-top:20px;'>");
+                if (_rec.DateInsert != null)
+                {
+                    sb.Append("<small>"+f.tra("Záznam založen")+":</small>");
+                                      
+                    sb.Append("<small class='text-info'>");
+                    sb.Append(_rec.UserInsert + " / " + _rec.DateInsert.ToString());
+                    sb.Append("</small>");
+                }
+                if (_rec.DateUpdate > _rec.DateInsert)
+                {
+                    sb.Append("<small style='margin-left:20px;'>"+f.tra("Poslední aktualizace")+":</small>");
+
+                    sb.Append("<small class='text-info'>");
+                    sb.Append(_rec.UserUpdate + " / " + _rec.DateUpdate.ToString());
+                    sb.Append("</small>");
+                }
+                if (this.AllowArchive && _rec.ValidFrom != null && _rec.ValidUntil != null)
+                {
+                    this.ExplicitValidFrom = BO.BAS.ObjectDateTime2String(_rec.ValidFrom);
+                    this.ExplicitValidUntil = BO.BAS.ObjectDateTime2String(_rec.ValidUntil);
+
+                    sb.Append("<small style='margin-left:20px;'>"+f.tra("Platnost záznamu")+":</small>");
+                    sb.Append("<small class='text-info'>");
+                    if (_rec.ValidUntil > DateTime.Now && _rec.ValidFrom <= DateTime.Now)
+                    {
+                        sb.Append(" "+f.tra("Záznam je časově platný."));
+                    }
+                    else
+                    {
+                        sb.Append(_rec.ValidFrom.ToString() + " - " + _rec.ValidUntil.ToString());
+                        sb.Append("<kbd style='font-size:120%;'>"+f.tra("Záznam je v archivu.")+"</kbd>");
+                    }
+                    sb.Append("</small>");
+                }
+
+                sb.AppendLine("</div>");
+                return sb.ToString();
+            }
+            else
+            {
+                return null;
+            }
+        }
 
         public void MakeClone()
         {

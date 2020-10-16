@@ -37,7 +37,7 @@ namespace UI.Controllers
                 v.MakeClone();
 
             }
-            return View(v);
+            return ViewTup(v, BO.j05PermValuEnum.A03Admin);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

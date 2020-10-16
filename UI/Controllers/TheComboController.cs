@@ -82,11 +82,11 @@ namespace UI.Controllers
             {
                 if (intRows >= mq.TopRecordsOnly)
                 {
-                    s.AppendLine(string.Format("<small style='margin-left:10px;'>Zobrazeno prvních {0} záznamů. Zpřesněte filtrovací podmínku.</small>", intRows));
+                    s.AppendLine(string.Format("<small style='margin-left:10px;'>{0} {1} {2}. {3}</small>",Factory.tra("Zobrazeno prvních"), intRows,Factory.tra("záznamů"),Factory.tra("Zpřesněte filtrovací podmínku.")));
                 }
                 else
                 {
-                    s.AppendLine(string.Format("<small style='margin-left:10px;'>Počet záznamů: {0}.</small>", intRows));
+                    s.AppendLine(string.Format("<small style='margin-left:10px;'>{0}: {1}.</small>",Factory.tra("Počet záznamů"), intRows));
                 }
 
             }

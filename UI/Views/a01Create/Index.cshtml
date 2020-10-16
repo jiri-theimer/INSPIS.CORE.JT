@@ -1,12 +1,11 @@
 ﻿@model a01CreateViewModel
-@inject BL.RunningApp _app
 @inject BL.Factory _f
 
 @{    
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     string _header = @_f.tra("Vyberte typ akce");
-    if (_app.Implementation == "HD")
+    if (_f.App.Implementation == "HD")
     {
         _header = @_f.tra("Vyberte typ požadavku");
     }

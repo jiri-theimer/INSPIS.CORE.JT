@@ -378,7 +378,7 @@ namespace UI.Controllers
                 v.Rec = Factory.a01EventBL.Load(v.pid);
                 if (v.Rec == null)
                 {
-                    this.Notify_RecNotSaved();
+                    this.Notify_RecNotFound();
                     v.pid = 0;
                 }
                 else
