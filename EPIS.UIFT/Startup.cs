@@ -91,9 +91,8 @@ namespace UIFT
                 TempFolder = AppConfig.TempFolder,
                 LogFolder = AppConfig.LogFolder,
                 TranslatorMode = Configuration.GetSection("App")["TranslatorMode"],
-                DefaultLangIndex = Configuration.GetSection("App")["DefaultLangIndex"]
+                DefaultLangIndex = BO.BAS.InInt(Configuration.GetSection("App")["DefaultLangIndex"])
             });
-
 
             services.AddSingleton<BL.TheEntitiesProvider>();
             services.AddSingleton<BL.TheTranslator>();
