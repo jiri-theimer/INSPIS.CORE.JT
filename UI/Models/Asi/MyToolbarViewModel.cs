@@ -96,6 +96,10 @@ namespace UI.Models
 
         public string getTimeStampHtml(BL.Factory f)
         {
+            if (_rec == null)
+            {
+                return null;
+            }
             if (_rec.pid > 0)
             {
                 var sb = new System.Text.StringBuilder();

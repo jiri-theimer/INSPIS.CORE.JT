@@ -355,7 +355,7 @@ namespace UI.Controllers
             ret.sortdir = gridState.j75SortOrder;
             
             var mq = new BO.myQuery(gridState.j72Entity);
-            
+            mq.MyRecordsDisponible = true;  //pouze záznamy odpovídající oprávnění uživatele
             
             _grid.Columns =_colsProvider.ParseTheGridColumns(mq.Prefix,gridState.j72Columns, Factory.CurrentUser.j03LangIndex);            
 

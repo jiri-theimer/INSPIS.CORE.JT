@@ -267,9 +267,13 @@ namespace UI.Controllers
             
             if (Factory.App.Implementation != "HD")
             {
-                DIV();
-                AMI("INEZ: Grid", "/TheGrid/MasterView?prefix=a42");
-                AMI("INEZ: Nový", "/a42/CreatePre");
+                if (Factory.CurrentUser.TestPermission(j05PermValuEnum.Menu_RS))
+                {
+                    DIV();
+                    AMI("INEZ: Grid", "/TheGrid/MasterView?prefix=a42");
+                    AMI("INEZ: Nový", "/a42/CreatePre");
+                }
+                
                 DIV();
                 AMI("Časové kapacity inspektorů", "/a35/TimeLine",null,null,"_blank");
                 AMI("Rezervace nepersonálních zdrojů", "/a38/TimeLine",null,null, "_blank");                

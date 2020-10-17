@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace DL
 {
@@ -173,6 +174,11 @@ namespace DL
                 if (mq.Prefix == "h11")
                 {
                     AQ(ref lis, "a.h11IsPublic=1 OR a.h11ID IN (SELECT h11ID FROM h12NoticeBoard_Permission WHERE j04ID=@j04id_me)", "j04id_me", mq.CurrentUser.j04ID);
+                }
+                if (mq.Prefix == "a01" && !(mq.CurrentUser.j04IsAllowedAllEventTypes && mq.CurrentUser.j04RelationFlag == BO.j04RelationFlagEnum.NoRelation))
+                {
+                    
+                    AQ(ref lis, GetDisponibleA01Where(mq), null,null);
                 }
             }
             if (mq.pids != null && mq.pids.Any())
@@ -860,7 +866,58 @@ namespace DL
                 }
             }
 
+            
+
         }
 
+        private static string GetDisponibleA01Where(BO.myQuery mq)
+        {
+            //výběr uživateli dostupných akcí podle aplikační role a účasti v akcích
+            string sw = "(";
+            sw += "a.a01ID IN(SELECT a01ID FROM a41PersonToEvent WHERE j02ID = " + mq.CurrentUser.j02ID.ToString() + ")";
+            sw += " OR a.a01ID IN (SELECT xa.a01ID FROM a41PersonToEvent xa INNER JOIN j12Team_Person xb on xa.j11ID=xb.j11ID WHERE xa.j11ID IS NOT NULL AND (xb.j02ID=" + mq.CurrentUser.j02ID.ToString() + " OR xb.j04ID=" + mq.CurrentUser.j04ID.ToString() + "))";
+            switch (mq.CurrentUser.j04RelationFlag)
+            {
+                case BO.j04RelationFlagEnum.A03:    //omezení akcí pouze na svázané instituce
+                    sw += " OR (a.a03ID IN (SELECT a03ID FROM a39InstitutionPerson WHERE j02ID=" + mq.CurrentUser.j02ID.ToString() + ")";
+                    if (!mq.CurrentUser.j04IsAllowedAllEventTypes)
+                    {
+                        if (mq.CurrentUser.a10IDs != null)
+                        {
+                            sw += " AND a.a10ID IN (" + mq.CurrentUser.a10IDs + ")";
+                        }
+                        else
+                        {
+                            sw += " AND a.a10ID IN (SELECT a10ID FROM j08UserRole_EventType WHERE (j08IsAllowedRead=1 OR j08IsLeader=1 OR j08IsMember=1) AND j04ID=" + mq.CurrentUser.j04ID.ToString() + ")";
+                        }
+
+                    }
+                    sw += ")";
+                    break;
+                case BO.j04RelationFlagEnum.A05:    //omezení akcí pouze na kraj instituce
+                    sw += " OR (a03.a05ID=" + mq.CurrentUser.a05ID.ToString();
+                    if (!mq.CurrentUser.j04IsAllowedAllEventTypes)
+                    {
+                        if (mq.CurrentUser.a10IDs != null)
+                        {
+                            sw += " AND a.a10ID IN (" + mq.CurrentUser.a10IDs + ")";
+                        }
+                        else
+                        {
+                            sw += " AND a.a10ID IN (SELECT a10ID FROM j08UserRole_EventType WHERE (j08IsAllowedRead=1 OR j08IsLeader=1 OR j08IsMember=1) AND j04ID=" + mq.CurrentUser.j04ID.ToString() + ")";
+                        }
+                    }
+                    sw += ")";
+                    //navíc přístup ke všem akcím škol, kde má daný inspektor minimálně jednu otevřenou akci (a01IsClosed=0)
+                    sw += " OR a.a03ID IN (SELECT qb.a03ID FROM a41PersonToEvent qa INNER JOIN a01Event qb ON qa.a01ID=qb.a01ID WHERE qb.a01IsClosed=0 AND qa.j02ID=" +mq.CurrentUser.j02ID.ToString()+ ")";
+                    sw += " OR a.a03ID IN (SELECT qb.a03ID FROM a01Event qb INNER JOIN a41PersonToEvent qa ON qb.a01ID=qa.a01ID INNER JOIN j12Team_Person qc on qa.j11ID=qc.j11ID WHERE qb.a01IsClosed=0 AND qa.j11ID IS NOT NULL AND (qc.j02ID=@j02id_xa OR qc.j04ID="+mq.CurrentUser.j04ID.ToString()+"))";
+
+                    break;
+                case BO.j04RelationFlagEnum.NoRelation: //role bez vazby na region nebo školu - potenciálně neomezený přístup k akcím
+                    break;
+            }
+            sw += ")";
+            return sw;
+        }
     }
 }

@@ -17,7 +17,8 @@ namespace BO
         public string j04Name { get; set; }
         public int j04ID { get; set; }
         public string j04RoleValue { get;set;}
-        
+        public bool j04IsAllowedAllEventTypes { get; set; }
+        public j04RelationFlagEnum j04RelationFlag { get; set; }
 
         public bool j03IsMustChangePassword { get; set; }
         public int j03FontStyleFlag { get; set; }
@@ -31,6 +32,7 @@ namespace BO
         public int a04ID { get; set; }      //svázaný inspektorát
         public int a05ID { get; set; }      //svázaný region
         public string j11IDs_Cache { get; set; }    //kvůli výkonu SQL - seznam j11ID týmů s účastní uživatele
+        public string a10IDs { get; set; }      //výčet všech povolených typů akcí z tabulky j08
 
         public List<BO.StringPair> Messages4Notify { get; set; }
 
