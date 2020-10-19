@@ -24,7 +24,8 @@ namespace BO
 
         public bool j02IsInvitedPerson { get; set; }
         
-        
+        public string j02Address { get; set; }
+        public string j02Position { get; set; }
 
         public int j03ID { get; }
         public string j03Login { get; }

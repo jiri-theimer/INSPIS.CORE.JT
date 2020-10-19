@@ -69,7 +69,8 @@ namespace BL
             p.AddString("j02Phone", rec.j02Phone);
             p.AddString("j02PID", rec.j02PID);
             p.AddBool("j02IsInvitedPerson", rec.j02IsInvitedPerson);
-
+            p.AddString("j02Address", rec.j02Address);
+            p.AddString("j02Position", rec.j02Position);
             return _db.SaveRecord("j02Person", p.getDynamicDapperPars(),rec);
         }
 

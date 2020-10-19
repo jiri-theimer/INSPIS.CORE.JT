@@ -140,6 +140,23 @@
 
 
         </div>
+        @if (Model.Rec.j02Address != null)
+        {
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Adresa bydliště"):</label>
+                <div class="col-sm-6 col-md-6">
+                    <div class="val-readonly rowvalhover">
+                        <span>@Model.Rec.j02Address</span>
+                        <a class="valhover_tooltip" target='_blank' href="https://mapy.cz/zakladni?q=@(Model.Rec.j02Address)">mapy</a>
+                        <a class="valhover_tooltip" target='_blank' href="https://www.google.com/maps/place/@(Model.Rec.j02Address)">google</a>
+                    </div>
+
+                </div>
+                <div class="col-sm-4 col-md-4">
+                    <myval value="@Model.Rec.j02Position" tooltip="@(_f.tra("Pracovní funkce"))"></myval>
+                </div>
+            </div>
+        }
         @Html.Raw(Model.TagHtml)
     </div>
 

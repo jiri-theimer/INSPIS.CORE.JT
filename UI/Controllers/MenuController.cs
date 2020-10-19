@@ -286,7 +286,7 @@ namespace UI.Controllers
         {
             if (TUP(BO.j05PermValuEnum.A03Admin)==true)
             {
-                AMI("Nový", "javascript:_edit('a03',0,'Založit instituci')");
+                AMI("Nový", "javascript:_edit('a03',0,'"+Factory.tra("Založit instituci")+"')");
                 DIV();
             }
             AMI("Stránka", "/a03/RecPage");

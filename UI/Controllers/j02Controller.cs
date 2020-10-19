@@ -205,7 +205,8 @@ namespace UI.Controllers
                 c.j02Email = v.Rec.j02Email;
                 c.j02Phone = v.Rec.j02Phone;
                 c.j02Mobile = v.Rec.j02Mobile;
-
+                c.j02Address = v.Rec.j02Address;
+                c.j02Position = v.Rec.j02Position;
 
                 c.ValidUntil = v.Toolbar.GetValidUntil(c);
                 c.ValidFrom = v.Toolbar.GetValidFrom(c);

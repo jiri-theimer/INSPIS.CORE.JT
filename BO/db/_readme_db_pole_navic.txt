@@ -61,6 +61,8 @@ a42JobState
 
 [j02Person]
 j02FullText
+j02Address
+j02Position
 
 [j04UserRole]
 j04ViewUrl_Page varchar(255)

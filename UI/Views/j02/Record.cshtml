@@ -10,62 +10,78 @@
 @addTagHelper *, UI
 
 
-<div class="modal_record_container">
+    <div class="modal_record_container">
 
-    <div class="form-row">
-        <div class="col-sm-2 col-md-2">
-            <myautocomplete asp-for="Rec.j02TitleBeforeName" o15flag="1" placeholder="@_f.tra("Titul")"></myautocomplete>
+        <div class="form-row">
+            <div class="col-sm-2 col-md-2">
+                <myautocomplete asp-for="Rec.j02TitleBeforeName" o15flag="1" placeholder="@_f.tra("Titul")"></myautocomplete>
+
+            </div>
+            <div class="col-sm-3 col-md-3">
+                <input class="form-control" asp-for="Rec.j02FirstName" placeholder="@_f.tra("Jméno")" />
+                <span asp-validation-for="Rec.j02FirstName" class="text-danger"></span>
+
+            </div>
+            <div class="col-sm-5 col-md-5">
+                <input class="form-control" asp-for="Rec.j02LastName" placeholder="@_f.tra("Příjmení")" />
+                <span asp-validation-for="Rec.j02LastName" class="text-danger"></span>
+            </div>
+            <div class="col-sm-2 col-md-2">
+                <myautocomplete asp-for="Rec.j02TitleAfterName" o15flag="2"></myautocomplete>
+            </div>
 
         </div>
-        <div class="col-sm-3 col-md-3">
-            <input class="form-control" asp-for="Rec.j02FirstName" placeholder="@_f.tra("Jméno")" />
-            <span asp-validation-for="Rec.j02FirstName" class="text-danger"></span>
+
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Personální číslo"):</label>
+            <div class="col-sm-4 col-md-3">
+                <input class="form-control" asp-for="Rec.j02PID" />
+                <span asp-validation-for="Rec.j02PID" class="text-danger"></span>
+            </div>
+            <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("E-mail"):</label>
+            <div class="col-sm-4 col-md-4">
+                <input class="form-control" type="email" asp-for="Rec.j02Email" />
+                <span asp-validation-for="Rec.j02Email" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Mobil"):</label>
+            <div class="col-sm-4 col-md-3">
+                <input class="form-control" type="tel" asp-for="Rec.j02Mobile" />
+                <span asp-validation-for="Rec.j02Mobile" class="text-danger"></span>
+            </div>
+            <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Pevný tel."):</label>
+            <div class="col-sm-4 col-md-4">
+                <input class="form-control" type="tel" asp-for="Rec.j02Phone" />
+                <span asp-validation-for="Rec.j02Phone" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Adresa bydliště"):</label>
+            <div class="col-sm-11 col-md-10">
+                <input class="form-control" type="tel" asp-for="Rec.j02Address" />
+
+            </div>
 
         </div>
-        <div class="col-sm-5 col-md-5">
-            <input class="form-control" asp-for="Rec.j02LastName" placeholder="@_f.tra("Příjmení")" />
-            <span asp-validation-for="Rec.j02LastName" class="text-danger"></span>
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Pracovní funkce"):</label>
+            <div class="col-sm-3 col-md-3">
+                <myautocomplete asp-for="Rec.j02Position" o15flag="3" placeholder="@_f.tra("Pracovní funkce")"></myautocomplete>
+
+            </div>
+
         </div>
-        <div class="col-sm-2 col-md-2">
-            <myautocomplete asp-for="Rec.j02TitleAfterName" o15flag="2"></myautocomplete>
+        <div class="form-row my-2">
+            <div class="col-sm-3 col-md-3">
+                <input type="checkbox" asp-for="Rec.j02IsInvitedPerson" />
+                <label class="col-form-label" for="Rec_j02IsInvitedPerson">@_f.tra("Může být přizvanou osobou v akci")</label>
+
+            </div>
         </div>
 
+
+
+        <mystitky entity="j02Person" asp-for="@Model.TagPids" tagnames="@Model.TagNames" taghtml="@Model.TagHtml"></mystitky>
     </div>
-
-    <div class="form-row my-2">
-        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Personální číslo"):</label>
-        <div class="col-sm-4 col-md-3">
-            <input class="form-control" asp-for="Rec.j02PID" />
-            <span asp-validation-for="Rec.j02PID" class="text-danger"></span>
-        </div>
-        <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("E-mail"):</label>
-        <div class="col-sm-4 col-md-4">
-            <input class="form-control" type="email" asp-for="Rec.j02Email" />
-            <span asp-validation-for="Rec.j02Email" class="text-danger"></span>
-        </div>
-    </div>
-
-    <div class="form-row my-2">
-        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Mobil"):</label>
-        <div class="col-sm-4 col-md-3">
-            <input class="form-control" type="tel" asp-for="Rec.j02Mobile" />
-            <span asp-validation-for="Rec.j02Mobile" class="text-danger"></span>
-        </div>
-        <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Pevný tel."):</label>
-        <div class="col-sm-4 col-md-4">
-            <input class="form-control" type="tel" asp-for="Rec.j02Phone" />
-            <span asp-validation-for="Rec.j02Phone" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-row my-2">
-        <div class="col-sm-3 col-md-3">
-            <input type="checkbox" asp-for="Rec.j02IsInvitedPerson" />
-            <label class="col-form-label" for="Rec_j02IsInvitedPerson">@_f.tra("Může být přizvanou osobou v akci")</label>
-
-        </div>
-    </div>
-
-
-
-    <mystitky entity="j02Person" asp-for="@Model.TagPids" tagnames="@Model.TagNames" taghtml="@Model.TagHtml"></mystitky>
-</div>

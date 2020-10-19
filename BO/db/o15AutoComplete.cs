@@ -6,6 +6,7 @@ namespace BO
     {
         TitulPred = 1,      
         TitulZa = 2,
+        Pozice=3,
         Stat=328,
         UrlAdresa=427
     }
