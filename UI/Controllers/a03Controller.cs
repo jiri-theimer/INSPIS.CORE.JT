@@ -35,6 +35,14 @@ namespace UI.Controllers
                         v.FounderName = c.a03Name;
                     }
                 }
+                if (v.Rec.a03ID_Supervisory > 0)
+                {
+                    var c = Factory.a03InstitutionBL.Load(v.Rec.a03ID_Supervisory);
+                    if (c != null)
+                    {
+                        v.SupervisoryName = c.a03Name;
+                    }
+                }
             }
             v.Toolbar = new MyToolbarViewModel(v.Rec);
             if (isclone)
@@ -53,6 +61,7 @@ namespace UI.Controllers
                 BO.a03Institution c = new BO.a03Institution();
                 if (v.rec_pid > 0) c = Factory.a03InstitutionBL.Load(v.rec_pid);
                 c.a03Name = v.Rec.a03Name;
+                c.a03ShortName = v.Rec.a03ShortName;
                 c.a03REDIZO = v.Rec.a03REDIZO;
                 c.a03IsTestRecord = v.Rec.a03IsTestRecord;
                 c.a03ICO = v.Rec.a03ICO;
@@ -61,6 +70,7 @@ namespace UI.Controllers
                 c.a21ID = v.Rec.a21ID;
                 c.a05ID = v.Rec.a05ID;
                 c.a03ID_Founder = v.Rec.a03ID_Founder;
+                c.a03ID_Supervisory = v.Rec.a03ID_Supervisory;
                 c.a09ID = v.Rec.a09ID;
                 c.a03Street = v.Rec.a03Street;
                 c.a03City = v.Rec.a03City;
@@ -102,6 +112,10 @@ namespace UI.Controllers
                     {
                         v.RecFounder = Factory.a03InstitutionBL.Load(v.Rec.a03ID_Founder);
                     }
+                    if (v.Rec.a03ID_Supervisory > 0)
+                    {
+                        v.RecSupervisory = Factory.a03InstitutionBL.Load(v.Rec.a03ID_Supervisory);
+                    }
                     
                 }                
             }
@@ -140,7 +154,11 @@ namespace UI.Controllers
                     if (v.Rec.a03ID_Founder > 0)
                     {
                         v.RecFounder = Factory.a03InstitutionBL.Load(v.Rec.a03ID_Founder);
-                    }                    
+                    }
+                    if (v.Rec.a03ID_Supervisory > 0)
+                    {
+                        v.RecSupervisory = Factory.a03InstitutionBL.Load(v.Rec.a03ID_Supervisory);
+                    }
                     v.TagHtml = Factory.o51TagBL.GetTagging("a03", v.pid).TagHtml;
 
                     RefreshNavTabs(v);
@@ -166,6 +184,7 @@ namespace UI.Controllers
             v.NavTabs.Add(AddTab("Vzdělávací obory", "a19DomainToInstitutionDepartment", "/TheGrid/SlaveView?prefix=a19"));
             v.NavTabs.Add(AddTab("Učitelé", "k01Teacher", "/TheGrid/SlaveView?prefix=k01"));
             v.NavTabs.Add(AddTab("Školy zřizovatele", "a03Institution", "/TheGrid/SlaveView?prefix=a03&master_flag=founder"));
+            v.NavTabs.Add(AddTab("Pod dohledem", "a03Institution", "/TheGrid/SlaveView?prefix=a03&master_flag=supervisor"));
             v.NavTabs.Add(AddTab("INEZ", "a42Qes", "/TheGrid/SlaveView?prefix=a42"));
             v.NavTabs.Add(AddTab("Pojmenované seznamy", "a29InstitutionList", "/TheGrid/SlaveView?prefix=a29"));
 

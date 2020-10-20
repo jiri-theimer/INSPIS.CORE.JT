@@ -10,6 +10,7 @@ namespace UI.Models.Recpage
         public BO.a03Institution Rec { get; set; }
 
         public BO.a03Institution RecFounder { get; set; }
+        public BO.a03Institution RecSupervisory { get; set; }
 
         public string MenuCode { get; set; }
 

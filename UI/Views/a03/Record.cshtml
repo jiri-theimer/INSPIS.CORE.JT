@@ -31,12 +31,15 @@
             <!-- Tab1 -->
             <div class="form-row">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
-                <div class="col-sm-8 col-md-7">
+                <div class="col-sm-7 col-md-6">
                     <input class="form-control" asp-for="Rec.a03Name" />
                     <span asp-validation-for="Rec.a03Name" class="text-danger"></span>
                 </div>
+                <div class="col-sm-2 col-md-2">
+                    <input class="form-control" asp-for="Rec.a03ShortName" placeholder="@_f.tra("Zkrácený název")" />
 
-                <div class="col-sm-3 col-md-3">
+                </div>
+                <div class="col-sm-2 col-md-2">
                     <input type="checkbox" asp-for="Rec.a03IsTestRecord" />
                     <label class="col-form-label" for="Rec_a03IsTestRecord">@_f.tra("Testovací záznam")</label>
 
@@ -66,6 +69,7 @@
                         <option></option>
                         <option value="1">@_f.tra("Škola")</option>
                         <option value="2">@_f.tra("Zřizovatel")</option>
+                        <option value="3">@_f.tra("Dohledový orgán")</option>
                     </select>
                 </div>
                 <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Právní forma"):</label>
@@ -94,6 +98,14 @@
                     <mycombo entity="a09FounderType" asp-for="Rec.a09ID" selectedtext="Rec.a09Name" view-flag="2"></mycombo>
 
                 </div>
+            </div>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Dohledový orgán"):</label>
+                <div class="col-sm-7 col-md-6">
+                    <mycombo entity="a03Institution" asp-for="Rec.a03ID_Supervisory" selectedtext="@Model.SupervisoryName" filter-flag="1" masterprefix="a06" masterpid="3" event_after_changevalue="supervisory_change"></mycombo>
+
+                </div>
+                
             </div>
             <hr />
             <div class="form-row my-2">
@@ -169,6 +181,9 @@
 
 <script type="text/javascript">
     function founder_change(a03id) {
-        _notify_message(a03id);
+        
+    }
+    function supervisory_change(a03id) {
+
     }
 </script>

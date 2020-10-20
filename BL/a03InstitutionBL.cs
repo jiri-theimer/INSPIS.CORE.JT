@@ -58,10 +58,13 @@ namespace BL
             p.AddInt("a21ID", rec.a21ID, true);
             p.AddInt("a70ID", rec.a70ID, true);
             p.AddInt("a03ID_Founder", rec.a03ID_Founder, true);
+            p.AddInt("a03ID_Supervisory", rec.a03ID_Supervisory, true);
+            
             p.AddBool("a03IsTestRecord", rec.a03IsTestRecord);
             p.AddEnumInt("a03SchoolPortalFlag", rec.a03SchoolPortalFlag);            
 
             p.AddString("a03Name", rec.a03Name);
+            p.AddString("a03ShortName", rec.a03ShortName);
             p.AddString("a03ICO", rec.a03ICO);
             p.AddString("a03REDIZO", rec.a03REDIZO);            
             p.AddString("a03FounderCode", rec.a03FounderCode);
@@ -110,6 +113,13 @@ namespace BL
             if (c.a03ID_Founder==c.pid && c.pid != 0)
             {
                 this.AddMessage("Vazba na zřizovatele není logická.");
+            }
+            if (c.a06ID == 3)
+            {
+                if (c.a03ID_Supervisory != 0)
+                {
+                    this.AddMessage("U typu instituce [Dohledový orgán] nemůže být vyplněna vazba na instituci typu [Dohledový orgán]."); return false;
+                }
             }
             if (c.a06ID == 2)
             {

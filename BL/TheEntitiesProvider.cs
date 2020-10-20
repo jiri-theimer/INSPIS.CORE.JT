@@ -256,6 +256,8 @@ namespace BL
                     lis.Add(getREL("a05Region", "a03_a05", "Kraj", "LEFT OUTER JOIN a05Region a03_a05 ON a.a05ID=a03_a05.a05ID"));
                     lis.Add(getREL("a06InstitutionType", "a03_a06", "Typ", "LEFT OUTER JOIN a06InstitutionType a03_a06 ON a.a06ID=a03_a06.a06ID"));
                     lis.Add(getREL("a09FounderType", "a03_a09", "Typ zřizovatele", "LEFT OUTER JOIN a09FounderType a03_a09 ON a.a09ID=a03_a09.a09ID"));
+                    lis.Add(getREL("a03Institution", "a03_founder", "Zřizovatel", "LEFT OUTER JOIN a03Institution a03_founder ON a.a03ID_Founder=a03_founder.a03ID"));
+                    lis.Add(getREL("a03Institution", "a03_supervisory", "Dohled", "LEFT OUTER JOIN a03Institution a03_supervisory ON a.a03ID_Supervisory=a03_supervisory.a03ID"));
                     lis.Add(getREL("a21InstitutionLegalType", "a03_a21", "Právní forma", "LEFT OUTER JOIN a21InstitutionLegalType a03_a21 ON a.a21ID=a03_a21.a21ID"));
                     lis.Add(getREL("a70SIS", "a03_a70", "Školní IS", "LEFT OUTER JOIN a70SIS a03_a70 ON a.a70ID=a03_a70.a70ID"));
                     lis.Add(getREL("k01Teacher", "a03_k01", "Učitel", "LEFT OUTER JOIN k02TeacherSchool a03_k02 ON a.a03ID=a03_k02.a03ID LEFT OUTER JOIN k01Teacher a03_k01 ON a03_k02.k01ID=a03_k01.k01ID"));

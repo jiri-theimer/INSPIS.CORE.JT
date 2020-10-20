@@ -184,7 +184,8 @@ namespace BL
             //a03Institution = instituce
             onecol=AF("a03Institution", "a03REDIZO", "REDIZO",1,null,"string",false,true);
             onecol.FixedWidth = 100;
-            AF("a03Institution", "a03Name", "Instituce", 1, null, "string", false, true);
+            AF("a03Institution", "a03Name", "Instituce", 1, null, "string", false, false);
+            AF("a03Institution", "a03ShortName", "Zkrácený název", 0);
             AF("a03Institution", "NazevPlusRedizo", "Název+REDIZO", 0, "a.a03Name+'['+a.a03REDIZO+']'");
             onecol=AF("a03Institution", "a03ICO", "IČ");
             AF("a03Institution", "Ares", "ARES url", 0, "case when a.a03ICO IS NOT NULL AND a.a06ID=1 then '<a class='+char(34)+'grid-link'+char(34)+' target='+char(34)+'_blank'+char(34)+' href='+char(34)+'https://wwwinfo.mfcr.cz/cgi-bin/ares/darv_sko.cgi?ico='+a.a03ICO+'&jazyk=cz&xml=1'+CHAR(34)+'>ares</a>' end");
@@ -769,7 +770,7 @@ namespace BL
             AF("p86TempStat", "a03REDIZO", "REDIZO", 1);
             AF("p86TempStat", "a37IZO", "IZO", 1);
             AF("p86TempStat", "a17Name", "Typ IZO", 1);
-            AF("p86TempStat", "a03Name", "Instituce", 1);
+            AF("p86TempStat", "a03Name", "Instituce", 1);            
             AF("p86TempStat", "a09Name", "Typ zřizovatele", 1);
             AF("p86TempStat", "a05Name", "Kraj", 1);
             AF("p86TempStat", "a01DateFrom", "Od", 1, null, "date");

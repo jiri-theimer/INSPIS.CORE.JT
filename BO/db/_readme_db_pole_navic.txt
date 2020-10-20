@@ -54,6 +54,9 @@ f18TreePath
 [x32ReportType]
 x32TreePath
 
+[a03Institution]
+a03ShortName
+
 [a42Qes]
 a42JobGuid
 a42UploadGuid

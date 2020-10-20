@@ -19,6 +19,7 @@ namespace BO
         public int a05ID { get; set; }
         public int a06ID { get; set; }
         public int a03ID_Founder { get; set; }
+        public int a03ID_Supervisory { get; set; }
         public int a21ID { get; set; }
         public int a70ID { get; set; }
         public bool a03IsTestRecord { get; set; }
@@ -26,6 +27,7 @@ namespace BO
         public string a03REDIZO { get; set; }
         public string a03ICO { get; set; }
         public string a03Name { get; set; }  
+        public string a03ShortName { get; set; }
         public string a03City { get; set; }
         public string a03Street { get; set; }
         public string a03PostCode { get; set; }

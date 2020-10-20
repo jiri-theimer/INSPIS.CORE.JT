@@ -81,6 +81,17 @@
         }
 
     </div>
+    @if (Model.RecSupervisory != null)
+    {
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Dohledový orgán"):</label>
+            <div class="col-sm-5 col-md-4">
+                <myval datatype="link" value="@Model.RecSupervisory.a03Name" linkurl="/a03/RecPage?pid=@Model.RecSupervisory.pid" linktarget="_top"></myval>
+                
+            </div>
+        </div>
+
+    }
 
     <div class="form-row" style="margin-top:10px;">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kraj"):</label>
@@ -106,7 +117,7 @@
         <div class="form-row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Zřizovatel"):</label>
             <div class="col-sm-8 col-md-7">
-                <myval datatype="link" value="@Model.RecFounder.a03Name" linkurl="/a03/RecPage?pid=@Model.RecFounder.pid"></myval>
+                <myval datatype="link" value="@Model.RecFounder.a03Name" linkurl="/a03/RecPage?pid=@Model.RecFounder.pid" linktarget="_top"></myval>
             </div>
             <div class="col-sm-2 col-md-2">
                 <myval value="@Model.RecFounder.a21Name"></myval>

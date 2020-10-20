@@ -262,6 +262,10 @@ namespace DL
             {
                 if (mq.Prefix == "a03") AQ(ref lis, "a.a03ID_Founder=@a03id_founder", "a03id_founder", mq.a03id_founder);
             }
+            if (mq.a03id_supervisory > 0)
+            {
+                if (mq.Prefix == "a03") AQ(ref lis, "a.a03ID_Supervisory=@a03id_supervisory", "a03id_supervisory", mq.a03id_supervisory);
+            }
             if (mq.a05id > 0)
             {
                 if (mq.Prefix == "j02") AQ(ref lis, "a.j02ID IN (select j02ID FROM a02Inspector WHERE a05ID=@a05id AND GETDATE() BETWEEN a02ValidFrom AND a02ValidUntil)", "a05id", mq.a05id);

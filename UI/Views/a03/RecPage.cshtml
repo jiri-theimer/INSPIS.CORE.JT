@@ -38,14 +38,25 @@
 <div id="layout_sidebar" class="cm_recpage"></div>
 
 
-
 <div id="layout_main">
     <div class="modal_record_container">
         <div class="form-row">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
-            <div class="col-sm-8 col-md-7">
-                <myval value="@Model.Rec.a03Name"></myval>
-            </div>
+            @if (Model.Rec.a03ShortName == null)
+            {
+                <div class="col-sm-8 col-md-7">
+                    <myval value="@Model.Rec.a03Name"></myval>
+                </div>
+            }
+            else
+            {
+                <div class="col-sm-6 col-md-5">
+                    <myval value="@Model.Rec.a03Name"></myval>
+                </div>
+                <div class="col-sm-2 col-md-2">
+                    <myval value="@Model.Rec.a03ShortName"></myval>
+                </div>
+            }
 
 
             <div class="col-sm-1 col-md-1">
@@ -148,6 +159,16 @@
                 <div class="col-sm-1 col-md-1">
                     <myval value="@Model.RecFounder.a03FounderCode"></myval>
                 </div>
+            </div>
+        }
+        @if (Model.RecSupervisory !=null)
+        {
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Dohledový orgán"):</label>
+                <div class="col-sm-8 col-md-7">
+                    <myval datatype="link" value="@Model.RecSupervisory.a03Name" linkurl="/a03/RecPage?pid=@Model.RecSupervisory.pid" hoverprefix="a03" hoverpid="@Model.RecSupervisory.pid"></myval>
+                </div>
+                
             </div>
         }
 
