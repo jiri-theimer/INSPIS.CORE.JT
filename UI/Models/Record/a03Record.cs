@@ -10,6 +10,7 @@ namespace UI.Models.Record
         public BO.a03Institution Rec { get; set; }
         public string FounderName { get; set; }
         public string SupervisoryName { get; set; }
+        public string ParentName { get; set; }
 
         public string TagPids { get; set; }
         public string TagNames { get; set; }

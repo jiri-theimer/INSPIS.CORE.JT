@@ -11,6 +11,12 @@ namespace BO
         NotPublish = 1,
         Publish = 2        
     }
+    public enum a03ParentFlagEnum
+    {
+        None=0,
+        Master=1,
+        Slave=2
+    }
     public class a03Institution:BaseBO
     {
         [Key]
@@ -47,7 +53,9 @@ namespace BO
         public DateTime a03DateUpdate_Address { get; set; }
         public DateTime a03DateUpdate_GMaps { get; set; }
 
-      
+        public a03ParentFlagEnum a03ParentFlag { get; set; }
+        public int a03ID_Parent { get; set; }
+
         public string a05Name { get; set; }//combo
         public string a05UIVCode;
         public string a06Name;

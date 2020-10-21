@@ -77,7 +77,9 @@ namespace BL
             p.AddString("a03Email", rec.a03Email);
             p.AddString("a03Web", rec.a03Web);
             p.AddString("a03DirectorFullName", rec.a03DirectorFullName);
-            
+
+            p.AddEnumInt("a03ParentFlag", rec.a03ParentFlag);
+            p.AddInt("a03ID_Parent", rec.a03ID_Parent, true);
 
             int intPID= _db.SaveRecord("a03Institution", p.getDynamicDapperPars(),rec);
 
@@ -147,7 +149,18 @@ namespace BL
                     this.AddMessageTranslated(string.Format(_mother.tra("Hodnota zadaného REDIZO kódu je již použita v jiné instituci: {0}."), LoadByRedizo(c.a03REDIZO, c.pid).a03Name));return false;
                 }
             }
-
+            if (c.a03ParentFlag==BO.a03ParentFlagEnum.Slave && c.a03ID_Parent == 0)
+            {
+                this.AddMessage("U podřízené školy chybí vazba na nadřízenou instituci."); return false;
+            }
+            if (c.a03ParentFlag == BO.a03ParentFlagEnum.Master && c.a03ID_Parent > 0)
+            {
+                this.AddMessage("U nadřízené školy nelze mít vazbu na nadřízenou instituci."); return false;
+            }
+            if (c.a03ParentFlag == BO.a03ParentFlagEnum.Slave && c.a03ID_Parent == c.pid)
+            {
+                this.AddMessage("Škola nemůže být podřízená sama sobě."); return false;
+            }
             return true;
         }
 

@@ -43,6 +43,14 @@ namespace UI.Controllers
                         v.SupervisoryName = c.a03Name;
                     }
                 }
+                if (v.Rec.a03ID_Parent > 0)
+                {
+                    var c = Factory.a03InstitutionBL.Load(v.Rec.a03ID_Parent);
+                    if (c != null)
+                    {
+                        v.ParentName = c.a03Name;
+                    }
+                }
             }
             v.Toolbar = new MyToolbarViewModel(v.Rec);
             if (isclone)
@@ -53,9 +61,12 @@ namespace UI.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Record(Models.Record.a03Record v)
+        public IActionResult Record(Models.Record.a03Record v,string oper)
         {
-            
+            if (oper == "postback")
+            {
+                return View(v);
+            }
             if (ModelState.IsValid)
             {
                 BO.a03Institution c = new BO.a03Institution();
@@ -80,6 +91,8 @@ namespace UI.Controllers
                 c.a03Mobile = v.Rec.a03Mobile;
                 c.a03Phone = v.Rec.a03Phone;
                 c.a03SchoolPortalFlag = v.Rec.a03SchoolPortalFlag;
+                c.a03ParentFlag = v.Rec.a03ParentFlag;
+                c.a03ID_Parent = v.Rec.a03ID_Parent;
 
                 c.ValidUntil = v.Toolbar.GetValidUntil(c);
                 c.ValidFrom = v.Toolbar.GetValidFrom(c);
@@ -116,7 +129,11 @@ namespace UI.Controllers
                     {
                         v.RecSupervisory = Factory.a03InstitutionBL.Load(v.Rec.a03ID_Supervisory);
                     }
-                    
+                    if (v.Rec.a03ID_Parent > 0)
+                    {
+                        v.RecParent = Factory.a03InstitutionBL.Load(v.Rec.a03ID_Parent);
+                    }
+
                 }                
             }
 
@@ -158,6 +175,10 @@ namespace UI.Controllers
                     if (v.Rec.a03ID_Supervisory > 0)
                     {
                         v.RecSupervisory = Factory.a03InstitutionBL.Load(v.Rec.a03ID_Supervisory);
+                    }
+                    if (v.Rec.a03ID_Parent > 0)
+                    {
+                        v.RecParent = Factory.a03InstitutionBL.Load(v.Rec.a03ID_Parent);
                     }
                     v.TagHtml = Factory.o51TagBL.GetTagging("a03", v.pid).TagHtml;
 

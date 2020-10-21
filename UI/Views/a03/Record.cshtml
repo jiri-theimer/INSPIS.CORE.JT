@@ -105,8 +105,30 @@
                     <mycombo entity="a03Institution" asp-for="Rec.a03ID_Supervisory" selectedtext="@Model.SupervisoryName" filter-flag="1" masterprefix="a06" masterpid="3" event_after_changevalue="supervisory_change"></mycombo>
 
                 </div>
-                
+
             </div>
+            <hr />
+            <div class="form-row my-2">
+                <div class="col-sm-4 col-md-4">
+                    <input type="radio" value="None" id="opg1" asp-for="@Model.Rec.a03ParentFlag" onchange="handle_postback()">
+                    <label for="opg1">@_f.tra("Standard")</label>
+                    <input type="radio" value="Master" id="opg2" asp-for="@Model.Rec.a03ParentFlag" onchange="handle_postback()">
+                    <label for="opg2">@_f.tra("Nadřízená škola")</label>
+                    <input type="radio" value="Slave" id="opg3" asp-for="@Model.Rec.a03ParentFlag" onchange="handle_postback()">
+                    <label for="opg3">@_f.tra("Podřízená škola")</label>
+                </div>
+                @if (Model.Rec.a03ParentFlag == BO.a03ParentFlagEnum.Slave)
+                {
+                    <div class="col-sm-8 col-md-8">
+                        <mycombo entity="a03Institution" asp-for="Rec.a03ID_Parent" selectedtext="@Model.ParentName" filter-flag="1" param1="parent" event_after_changevalue="parent_change"></mycombo>
+
+                    </div>
+                }
+               
+
+            </div>
+            
+
             <hr />
             <div class="form-row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Ulice"):</label>
@@ -185,5 +207,11 @@
     }
     function supervisory_change(a03id) {
 
+    }
+
+
+    function handle_postback() {
+        form1.action = "/a03/Record?oper=postback";
+        form1.submit();
     }
 </script>

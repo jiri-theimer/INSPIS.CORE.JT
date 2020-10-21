@@ -506,7 +506,10 @@ namespace DL
             {
                 if (mq.Prefix == "o51") AQ(ref lis, "a.o53ID=@o53id", "o53id", mq.o53id);
             }
-
+            if (mq.Prefix=="a03" && mq.param1 == "parent")
+            {
+                AQ(ref lis, "a.a03ParentFlag=1", "", null);    //filtr pouze nadřízené školy
+            }
             if (mq.Prefix == "b02" && mq.param1 != null)
             {
                 AQ(ref lis, "a.b02Entity=@prefix", "prefix", mq.param1);    //filtr seznamu stavů podle druhu entity
