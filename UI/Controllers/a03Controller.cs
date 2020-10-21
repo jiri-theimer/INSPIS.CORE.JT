@@ -205,7 +205,8 @@ namespace UI.Controllers
             v.NavTabs.Add(AddTab("Vzdělávací obory", "a19DomainToInstitutionDepartment", "/TheGrid/SlaveView?prefix=a19"));
             v.NavTabs.Add(AddTab("Učitelé", "k01Teacher", "/TheGrid/SlaveView?prefix=k01"));
             v.NavTabs.Add(AddTab("Školy zřizovatele", "a03Institution", "/TheGrid/SlaveView?prefix=a03&master_flag=founder"));
-            v.NavTabs.Add(AddTab("Pod dohledem", "a03Institution", "/TheGrid/SlaveView?prefix=a03&master_flag=supervisor"));
+            v.NavTabs.Add(AddTab("Dohled", "a03Institution", "/TheGrid/SlaveView?prefix=a03&master_flag=supervisor"));
+            v.NavTabs.Add(AddTab("Podřízené", "a03Institution", "/TheGrid/SlaveView?prefix=a03&master_flag=parent"));
             v.NavTabs.Add(AddTab("INEZ", "a42Qes", "/TheGrid/SlaveView?prefix=a42"));
             v.NavTabs.Add(AddTab("Pojmenované seznamy", "a29InstitutionList", "/TheGrid/SlaveView?prefix=a29"));
 

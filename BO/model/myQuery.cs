@@ -80,6 +80,7 @@ namespace BO
         public int a03id { get; set; }
         public int a03id_founder { get; set; }
         public int a03id_supervisory { get; set; }
+        public int a03id_parent { get; set; }
         public int a01id { get; set; }
         public int a01parentid { get; set; }
         public int a04id { get; set; }
@@ -170,6 +171,9 @@ namespace BO
                             break;
                         case "supervisor":
                             this.a03id_supervisory= master_pid;
+                            break;
+                        case "parent":
+                            this.a03id_parent = master_pid;
                             break;
                         default:
                             this.a03id = master_pid;

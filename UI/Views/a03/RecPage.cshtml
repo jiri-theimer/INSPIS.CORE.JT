@@ -161,14 +161,24 @@
                 </div>
             </div>
         }
-        @if (Model.RecSupervisory !=null)
+        @if (Model.RecSupervisory != null)
         {
             <div class="form-row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Dohledový orgán"):</label>
                 <div class="col-sm-8 col-md-7">
                     <myval datatype="link" value="@Model.RecSupervisory.a03Name" linkurl="/a03/RecPage?pid=@Model.RecSupervisory.pid" hoverprefix="a03" hoverpid="@Model.RecSupervisory.pid"></myval>
                 </div>
-                
+
+            </div>
+        }
+        @if (Model.RecParent != null)
+        {
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Nadřízená škola"):</label>
+                <div class="col-sm-8 col-md-7">
+                    <myval datatype="link" value="@Model.RecParent.a03Name" linkurl="/a03/RecPage?pid=@Model.RecParent.pid" hoverprefix="a03" hoverpid="@Model.RecParent.pid"></myval>
+                </div>
+
             </div>
         }
 
