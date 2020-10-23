@@ -1,0 +1,105 @@
+﻿@model a03Import
+@inject BL.Factory _f
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+
+    ViewData["Title"] = "Import";
+
+
+
+}
+
+
+@addTagHelper *,UI
+
+<h4>Datový import záznamů institucí</h4>
+<div class="bg-light" style="padding:10px;">
+    <button id="cmdSave" type="button" class="btn btn-success">@_f.tra("Potvrdit")</button>
+    <button type="button" onclick="_helppage()" class="btn btn-light"><b>? </b>@_f.tra("Nápověda")</button>
+</div>
+
+<form id="form1" asp-controller="import" asp-action="a03" method="POST">
+    <table>
+        <tr>
+            <td>
+                @_f.tra("Sešit"):
+            </td>
+            <td>
+                <mydropdown asp-for="@Model.SelectedSheet" datasource="@Model.Sheets" valuefield="Key" textfield="Value"></mydropdown>
+            </td>
+        </tr>
+    </table>
+    
+
+    <table class="table table-sm table-hover">
+        @for(int i = 0; i <= Model.MapCols.Count - 1; i++)
+        {
+            <tr>
+                <td style="width:30px;">
+                    <span>@("#"+Model.MapCols[i].Index.ToString())</span>
+                    <input type="hidden" asp-for="@Model.MapCols[i].Index" />
+                </td>
+                <td style="width:10px;">
+                    <input type="checkbox" id="@("chk"+Model.MapCols[i].Index.ToString())" asp-for="@Model.MapCols[i].IsChecked" />
+                </td>
+                <td>
+                    <label for="@("chk"+Model.MapCols[i].Index.ToString())">
+                        @Model.MapCols[i].Name
+                    </label>
+                    <input type="hidden" asp-for="@Model.MapCols[i].Name" />
+                </td>
+                <td>
+                    <select class="form-control" asp-for="@Model.MapCols[i].TargetField">
+                        <option value="">@_f.tra("Namapovat sloupec")</option>
+                        <option value="a03REDIZO">REDIZO</option>
+                        <option value="a03FounderCode">Kód zřizovatele</option>
+                        <option value="bind_a03FounderCode">Vazba na zřizovatele přes jeho kód</option>
+                        <option value="a03ICO">IČ</option>
+                        <option value="a03Name">Název</option>
+                        <option value="a03ShortName">Zkrácený název</option>
+                        <option value="a03City">Obec</option>
+                        <option value="a03Street">Ulice</option>
+                        <option value="a03PostCode">PSČ</option>
+                        <option value="a03Phone">Pevný Tel.</option>
+                        <option value="a03Mobile">Mobil</option>
+                        <option value="a03Fax">FAX</option>
+                        <option value="a03Web">WWW</option>
+                        <option value="a03Email">E-mail</option>
+                        <option value="a21Code">Právní forma (kód)</option>
+                        <option value="a05RZCode">Kraj (RZ kód)</option>                       
+                        <option value="a09UIVCode">Typ zřizovatele (UIV kód)</option>
+                        <option value="a09ID">Typ zřizovatele (a09ID)</option>
+                        <option value="a03ValidFrom">Platné od</option>
+                        <option value="a03ValidUntil">Platné do</option>
+                        <option value="a03DirectorFullName">Jméno ředitele</option>
+                    </select>
+                </td>
+            </tr>
+        }
+    </table>
+    <input type="hidden" asp-for="@Model.FileFullPath" />
+</form>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#cmdSave").click(function () {
+            $(this).text("Processing...");
+            $(this).attr("disabled", true);
+            form1.submit();
+
+        });
+
+
+
+    });
+
+
+
+
+</script>
