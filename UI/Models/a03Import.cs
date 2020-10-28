@@ -17,5 +17,12 @@ namespace UI.Models
         public List<ImportMappingColumn> MapCols { get; set; }
         public int HeadersRow { get; set; }
 
+        public string SelectedJ75ID { get; set; }
+        public IEnumerable<BO.j75ImportTemplate> lisJ75 { get; set; }
+
+        public int SelectedA06ID { get; set; }
+        public int StartRow { get; set; }
+        public int EndRow { get; set; }
+
     }
 }

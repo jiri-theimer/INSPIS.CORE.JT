@@ -16,28 +16,76 @@
 @addTagHelper *,UI
 
 <h4>Datový import záznamů institucí</h4>
-<div class="bg-light" style="padding:10px;">
-    <button id="cmdSave" type="button" class="btn btn-success">@_f.tra("Potvrdit")</button>
-    <button type="button" onclick="_helppage()" class="btn btn-light"><b>? </b>@_f.tra("Nápověda")</button>
-</div>
-
 <form id="form1" asp-controller="import" asp-action="a03" method="POST">
+    <div class="bg-light" style="padding:10px;">
+        <div class="form-row">
+            <div class="col-auto">
+                <button id="cmdSave" type="button" class="btn btn-success">@_f.tra("Spustit import")</button>
+                <button type="button" onclick="_helppage()" class="btn btn-light"><b>? </b>@_f.tra("Nápověda")</button>
+            </div>
+            <div class="col-4">
+                <mydropdown asp-for="@Model.SelectedJ75ID" datasource="@Model.lisJ75" IsFirstEmptyRow="true" firstemptyrowtext="@_f.tra("Pojmenovaná import šablona")" valuefield="pid" textfield="j75Name" event_after_changevalue="j75id_onchange"></mydropdown>
+            </div>
+            @if (!string.IsNullOrEmpty(Model.SelectedJ75ID))
+            {
+                <div class="col-auto">
+                    <button type="button" class="btn btn-success" onclick="savechanges()">@_f.tra("Uložit změny")</button>
+                </div>
+                <div class="col-auto">
+                    <button type="button" class="btn btn-danger" onclick="deletetemplate()">@_f.tra("Odstranit šablonu")</button>
+                </div>
+            }
+
+            <div class="col-auto">
+                <button type="button" class="btn btn-info" onclick="createtemplate()">@_f.tra("Uložit jako novou šablonu")</button>
+            </div>
+        </div>
+
+
+
+    </div>
+
+
     <table>
         <tr>
             <td>
                 @_f.tra("Sešit"):
             </td>
             <td>
-                <mydropdown asp-for="@Model.SelectedSheet" datasource="@Model.Sheets" valuefield="Key" textfield="Value"></mydropdown>
+                <mydropdown asp-for="@Model.SelectedSheet" datasource="@Model.Sheets" valuefield="Key" textfield="Value" event_after_changevalue="sheet_onchange"></mydropdown>
+            </td>
+            <td>
+                @_f.tra("Typ instituce"):
+            </td>
+            <td>
+                <select asp-for="@Model.SelectedA06ID" class="form-control">
+                    <option value="1">@_f.tra("Škola")</option>
+                    <option value="2">@_f.tra("Zřizovatel")</option>
+                    <option value="3">@_f.tra("Dohledový orgán")</option>
+                </select>
+            </td>
+            <td>
+                @_f.tra("Zahájit import od řádku"):
+            </td>
+            <td style="max-width:60px;">
+                <mynumber asp-for="@Model.StartRow" decimal-digits="0"></mynumber>
+            </td>
+           
+            <td>
+                @_f.tra("do řádku"):
+            </td>
+            <td style="max-width:80px;">
+                <mynumber asp-for="@Model.EndRow" decimal-digits="0"></mynumber>
             </td>
         </tr>
     </table>
-    
+
 
     <table class="table table-sm table-hover">
-        @for(int i = 0; i <= Model.MapCols.Count - 1; i++)
+        @for (int i = 0; i <= Model.MapCols.Count - 1; i++)
         {
-            <tr>
+            <tr style="@Model.MapCols[i].CssTrStyle">
+
                 <td style="width:30px;">
                     <span>@("#"+Model.MapCols[i].Index.ToString())</span>
                     <input type="hidden" asp-for="@Model.MapCols[i].Index" />
@@ -69,7 +117,7 @@
                         <option value="a03Web">WWW</option>
                         <option value="a03Email">E-mail</option>
                         <option value="a21Code">Právní forma (kód)</option>
-                        <option value="a05RZCode">Kraj (RZ kód)</option>                       
+                        <option value="a05RZCode">Kraj (RZ kód)</option>
                         <option value="a09UIVCode">Typ zřizovatele (UIV kód)</option>
                         <option value="a09ID">Typ zřizovatele (a09ID)</option>
                         <option value="a03ValidFrom">Platné od</option>
@@ -81,6 +129,7 @@
         }
     </table>
     <input type="hidden" asp-for="@Model.FileFullPath" />
+    <input type="hidden" asp-for="@Model.HeadersRow" />
 </form>
 
 
@@ -100,6 +149,38 @@
     });
 
 
+    function sheet_onchange(sheetname) {
+        form1.action = "/import/a03?oper=changesheet";
+        form1.submit();
+    }
+    function j75id_onchange(cbx) {
+        if ($.isNumeric(cbx.value)==false) {
+            return
+        }
+        location.replace("/import/a03?j75id="+cbx.value)
+        //form1.action = "/import/a03?oper=selecttemplate";
+        //form1.submit();
 
+    }
+    function createtemplate() {
+        var s = prompt("@_f.tra("Zadejte název šablony")");
+        if (s != null && s != "") {
+            form1.action = "/import/a03?oper=createtemplate&j75name="+s;
+            form1.submit();
+        }
+    }
+
+    function savechanges() {
+        form1.action = "/import/a03?oper=savechanges";
+        form1.submit();
+    }
+
+    function deletetemplate (){
+       if (confirm("@_f.tra("Opravdu nenávratně odstranit tuto šablonu?")")) {
+
+           form1.action = "/import/a03?oper=deletetemplate";
+           form1.submit();
+            }
+    }
 
 </script>

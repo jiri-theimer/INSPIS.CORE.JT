@@ -9,7 +9,7 @@ namespace BL
         public BO.j75ImportTemplate Load(int pid);
         public IEnumerable<BO.j75ImportTemplate> GetList(BO.myQuery mq);
         public int Save(BO.j75ImportTemplate rec);
-
+        public bool Delete(int pid);
 
     }
     class j75ImportTemplateBL : BaseBL, Ij75ImportTemplateBL
@@ -22,7 +22,7 @@ namespace BL
 
         private string GetSQL1(string strAppend = null)
         {
-            sb("SELECT a.*");
+            sb("SELECT a.*,");
             sb(_db.GetSQL1_Ocas("j75"));
             sb(" FROM j75ImportTemplate a");
             sb(strAppend);
@@ -41,7 +41,11 @@ namespace BL
             return _db.GetList<BO.j75ImportTemplate>(fq.FinalSql, fq.Parameters);
         }
 
-
+        public bool Delete(int pid)
+        {
+            _db.RunSql("DELETE FROM j75ImportTemplate WHERE j75ID=@pid", new { pid = pid });
+            return true;
+        }
 
         public int Save(BO.j75ImportTemplate rec)
         {

@@ -11,5 +11,7 @@ namespace UI.Models
         public string Name { get; set; }
         public bool IsChecked { get; set; }
         public string TargetField { get; set; }
+
+        public string CssTrStyle { get; set; }
     }
 }
