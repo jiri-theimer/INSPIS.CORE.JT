@@ -22,10 +22,11 @@ namespace BL
         {
             sb("SELECT a.*,");
             sb(_db.GetSQL1_Ocas("a03"));
-            sb(",a05.a05name,a05.a05UIVCode,a06.a06Name,a21.a21Name,a09.a09name,a09.a09UIVCode,a05.a05UIVCode,a70.a70Code");
+            sb(",a05.a05name,a05.a05UIVCode,a06.a06Name,a21.a21Name,a09.a09name,a09.a09UIVCode,a05.a05UIVCode,a70.a70Code,a28.a28Name");
             sb(" FROM a03Institution a");
             sb(" LEFT OUTER JOIN a05Region a05 ON a.a05id=a05.a05id LEFT OUTER JOIN a09FounderType a09 on a.a09id=a09.a09id LEFT OUTER JOIN a06InstitutionType a06 ON a.a06ID=a06.a06ID");
             sb(" LEFT OUTER JOIN a21InstitutionLegalType a21 ON a.a21ID=a21.a21ID LEFT OUTER JOIN a70SIS a70 ON a.a70ID=a70.a70ID");
+            sb(" LEFT OUTER JOIN a28SchoolType a28 ON a.a28ID=a28.a28ID");
             sb(strAppend);            
             return sbret();
         }
@@ -57,6 +58,7 @@ namespace BL
             p.AddInt("a06ID", rec.a06ID, true);
             p.AddInt("a21ID", rec.a21ID, true);
             p.AddInt("a70ID", rec.a70ID, true);
+            p.AddInt("a28ID", rec.a28ID, true);            
             p.AddInt("a03ID_Founder", rec.a03ID_Founder, true);
             p.AddInt("a03ID_Supervisory", rec.a03ID_Supervisory, true);
             

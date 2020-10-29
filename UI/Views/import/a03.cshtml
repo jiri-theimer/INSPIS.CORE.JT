@@ -68,7 +68,11 @@
                 @_f.tra("Zahájit import od řádku"):
             </td>
             <td style="max-width:60px;">
-                <mynumber asp-for="@Model.StartRow" decimal-digits="0"></mynumber>
+                <select asp-for="@Model.StartRow" class="form-control" onchange="startrow_change()">
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+            
             </td>
            
             <td>
@@ -172,6 +176,11 @@
 
     function savechanges() {
         form1.action = "/import/a03?oper=savechanges";
+        form1.submit();
+    }
+
+    function startrow_change() {
+        form1.action = "/import/a03?oper=startrow";
         form1.submit();
     }
 

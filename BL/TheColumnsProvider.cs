@@ -390,7 +390,7 @@ namespace BL
             AF("o54TagBindingInline", "o54InlineHtml", "Kategorie", 1, null, "string", false, true);
             AF("o54TagBindingInline", "o54InlineText", "Kategorie (pouze text)",1, null, "string", false, true);
 
-            
+
             //zatím provizorně v rámci SINGLETON režimu této třídy:
             //DL.DbHandler db = new DL.DbHandler(_app.ConnectString, new BO.RunningUser(), _app.LogFolder);
             //var dt = db.GetDataTable("select * from o53TagGroup WHERE o53Field IS NOT NULL AND o53Entities IS NOT NULL ORDER BY o53Ordinary");
@@ -399,10 +399,14 @@ namespace BL
             //   onecol= AF("o54TagBindingInline", dbrow["o53Field"].ToString(), dbrow["o53Name"].ToString(), 0, null, "string", false, true);
             //   onecol.VisibleWithinEntityOnly = dbrow["o53Entities"].ToString();
             //}
-            
 
 
-            
+            //a28 = Typy škol
+            AF("a28SchoolType", "a28Name", "Typ školy", 1, null, "string", false, true);
+            AF("a28SchoolType", "a28Code", "Kód", 2);
+            AF("a28SchoolType", "o53Ordinary", "Pořadí", 2, null, "num0");            
+            AppendTimestamp("a28SchoolType");
+
 
             //a70 = Školní IS
             AF("a70SIS", "a70Name", "Školní IS", 1,null,"string",false,true);

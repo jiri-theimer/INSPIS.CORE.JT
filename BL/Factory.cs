@@ -38,6 +38,7 @@ namespace BL
         private Ia18DepartmentDomainBL _a18;
         private Ia19DomainToInstitutionDepartmentBL _a19;
         private Ia25EventFormGroupBL _a25;
+        private Ia28SchoolTypeBL _a28;
         private Ia29InstitutionListBL _a29;
         private Ia39InstitutionPersonBL _a39;
         private Ia37InstitutionDepartmentBL _a37;
@@ -536,6 +537,14 @@ namespace BL
             {
                 if (_a42 == null) _a42 = new a42QesBL(this);
                 return _a42;
+            }
+        }
+        public Ia28SchoolTypeBL a28SchoolTypeBL
+        {
+            get
+            {
+                if (_a28 == null) _a28 = new a28SchoolTypeBL(this);
+                return _a28;
             }
         }
         public Ia70SISBL a70SISBL

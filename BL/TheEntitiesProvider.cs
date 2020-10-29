@@ -133,6 +133,7 @@ namespace BL
 
             AE_TINY("a02Inspector", "Inspektoři", "Inspektor");
             AE_TINY("a24EventRelation", "Související akce", "Související akce");
+            AE_TINY("a28SchoolType", "Typy škol", "Typ školy");
             AE_TINY("a70SIS", "Školní IS", "Školní IS");
 
             AE_TINY("o51Tag", "Položky kategorií", "Položka kategorie");
@@ -261,6 +262,7 @@ namespace BL
                     lis.Add(getREL("a03Institution", "a03_parent", "Nadřízená škola", "LEFT OUTER JOIN a03Institution a03_parent ON a.a03ID_Parent=a03_parent.a03ID"));
                     lis.Add(getREL("a21InstitutionLegalType", "a03_a21", "Právní forma", "LEFT OUTER JOIN a21InstitutionLegalType a03_a21 ON a.a21ID=a03_a21.a21ID"));
                     lis.Add(getREL("a70SIS", "a03_a70", "Školní IS", "LEFT OUTER JOIN a70SIS a03_a70 ON a.a70ID=a03_a70.a70ID"));
+                    lis.Add(getREL("a28SchoolType", "a03_a28", "Typ školy", "LEFT OUTER JOIN a28SchoolType a03_a28 ON a.a28ID=a03_a28.a28ID"));
                     lis.Add(getREL("k01Teacher", "a03_k01", "Učitel", "LEFT OUTER JOIN k02TeacherSchool a03_k02 ON a.a03ID=a03_k02.a03ID LEFT OUTER JOIN k01Teacher a03_k01 ON a03_k02.k01ID=a03_k01.k01ID"));
 
                     lis.Add(getREL("o54TagBindingInline", "a03_o54", "Kategorie", "LEFT OUTER JOIN (SELECT * FROM o54TagBindingInline WHERE o54RecordEntity='a03') a03_o54 ON a.a03ID=a03_o54.o54RecordPid"));

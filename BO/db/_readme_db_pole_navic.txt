@@ -56,6 +56,10 @@ x32TreePath
 
 [a03Institution]
 a03ShortName
+a03ID_Supervisory
+a03ParentFlag
+a03ID_Parent
+a28ID
 
 [a42Qes]
 a42JobGuid
@@ -74,6 +78,7 @@ j04ViewUrl_Page varchar(255)
 b65ID
 
 Nové tabulky:
+[a28SchoolType]
 [j72TheGridState]
 j73TheGridQuery
 j74TheGridReceiver

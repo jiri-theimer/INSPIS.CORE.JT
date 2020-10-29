@@ -189,11 +189,12 @@ namespace UI.Controllers
             AMI("Typy zdrojů", url_ciselniky("j24"));
             AMI("Důvody rezervace", url_ciselniky("j25"));
             DIV_TRANS("Instituce");
-            AMI("Pojmenované seznamy institucí", url_ciselniky("a29"));
+            AMI("Pojmenované seznamy", url_ciselniky("a29"));
             AMI("Typy zřizovatelů", url_ciselniky("a09"));
+            AMI("Typy škol", url_ciselniky("a28"));
             AMI("Typy činností", url_ciselniky("a17"));
             AMI("Kódy vzdělávacích oborů", url_ciselniky("a18"));
-            AMI("Školní informační systémy (SIS)", url_ciselniky("a70"));
+            AMI("Školní informační systémy", url_ciselniky("a70"));
             DIV_TRANS("Akce");
             AMI("Typy akcí", url_ciselniky("a10"));
             AMI("Témata akcí", url_ciselniky("a08"));

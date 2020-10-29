@@ -27,6 +27,7 @@ namespace BO
         public int a03ID_Founder { get; set; }
         public int a03ID_Supervisory { get; set; }
         public int a21ID { get; set; }
+        public int a28ID { get; set; }
         public int a70ID { get; set; }
         public bool a03IsTestRecord { get; set; }
 
@@ -63,7 +64,7 @@ namespace BO
         public string a09Name { get; set; } //combo
         public string a09UIVCode;
 
-     
+     public string a28Name { get; set; }    //combo
         public string NamePlusRedizo
         {
             get

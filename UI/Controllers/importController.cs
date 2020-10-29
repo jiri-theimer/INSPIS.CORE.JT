@@ -17,9 +17,9 @@ namespace UI.Controllers
             if (startrow == 0) startrow = 2;
             if (endrow == 0) endrow = 50000;
 
-            var v = new a03Import() { HeadersRow = 1,StartRow=startrow,EndRow=endrow };
+            var v = new a03Import() { HeadersRow = startrow-1,StartRow=startrow,EndRow=endrow };
 
-            v.FileFullPath = "c:\\temp\\import_test.xlsx";
+            v.FileFullPath = "c:\\temp\\import_ukrajina\\import_test.xlsx";
             if (j75id > 0)
             {
                 v.SelectedJ75ID = j75id.ToString();
@@ -69,6 +69,7 @@ namespace UI.Controllers
 
             using (var workbook = new XLWorkbook(v.FileFullPath))
             {
+                v.HeadersRow = v.StartRow - 1;
                 foreach (var c in workbook.Worksheets)
                 {
                     var sp = new BO.StringPair() { Key = c.Name, Value = c.Name };
@@ -84,6 +85,7 @@ namespace UI.Controllers
                     v.MapCols = new List<ImportMappingColumn>();
                     for (int col = 1; col <= 100; col++)
                     {
+
                         if (sheet.Cell(v.HeadersRow, col).Value !=null && string.IsNullOrEmpty(sheet.Cell(v.HeadersRow, col).Value.ToString())==false)
                         {
                             var c = new ImportMappingColumn() { Index = col, Name = sheet.Cell(v.HeadersRow, col).Value.ToString(), IsChecked = false };
@@ -139,7 +141,13 @@ namespace UI.Controllers
                 }
                 return View(v);
             }
-            
+            if (oper == "startrow")
+            {
+                
+                v.MapCols = null;
+                RefreshState(v);
+                return View(v);
+            }
             if (oper == "postback")
             {
                 return View(v);

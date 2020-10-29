@@ -93,6 +93,7 @@ namespace UI.Controllers
                 c.a03SchoolPortalFlag = v.Rec.a03SchoolPortalFlag;
                 c.a03ParentFlag = v.Rec.a03ParentFlag;
                 c.a03ID_Parent = v.Rec.a03ID_Parent;
+                c.a28ID = v.Rec.a28ID;
 
                 c.ValidUntil = v.Toolbar.GetValidUntil(c);
                 c.ValidFrom = v.Toolbar.GetValidFrom(c);

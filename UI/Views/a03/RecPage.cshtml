@@ -63,7 +63,14 @@
                 <myval value="@Model.Rec.a06Name"></myval>
             </div>
             <div class="col-sm-2 col-md-2">
-                <myval value="@Model.Rec.a21Name"></myval>
+                @if (Model.Rec.a21ID > 0)
+                {
+                    <myval value="@Model.Rec.a21Name"></myval>
+                }
+                @if (Model.Rec.a28ID > 0)
+                {
+                    <myval value="@Model.Rec.a28Name"></myval>
+                }
             </div>
         </div>
         <div class="form-row my-2">
