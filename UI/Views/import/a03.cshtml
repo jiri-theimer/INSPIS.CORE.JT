@@ -24,7 +24,11 @@
     <div class="bg-light" style="padding:10px;">
         <div class="form-row">
             <div class="col-auto">
-                <button id="cmdSave" type="button" class="btn btn-success">@_f.tra("Spustit import")</button>
+                @if (string.IsNullOrEmpty(Model.FileName) == false)
+                {
+                    <button id="cmdRunImport" type="button" class="btn btn-success">@_f.tra("Spustit import")</button>
+                }
+
                 <button type="button" onclick="_helppage()" class="btn btn-light"><b>? </b>@_f.tra("Nápověda")</button>
             </div>
 
@@ -85,6 +89,9 @@
             </td>
             <td style="max-width:80px;">
                 <mynumber asp-for="@Model.EndRow" decimal-digits="0"></mynumber>
+            </td>
+            <td>
+                <button type="button" class="btn btn-sm btn-light" onclick="startrow_change()">@_f.tra("Obnovit")</button>
             </td>
         </tr>
     </table>
@@ -148,9 +155,10 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
-        $("#cmdSave").click(function () {
+        $("#cmdRunImport").click(function () {
             $(this).text("Processing...");
             $(this).attr("disabled", true);
+            form1.action = "/import/a03?oper=runimport" + get_ocas();
             form1.submit();
 
         });

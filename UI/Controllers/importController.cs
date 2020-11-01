@@ -8,6 +8,7 @@ using UI.Models.Record;
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.Extensions.Primitives;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace UI.Controllers
 {
@@ -50,7 +51,7 @@ namespace UI.Controllers
             }
             
 
-            RefreshState(v);
+            RefreshState(v,true);
 
             if (v.Rec != null)
             {
@@ -73,7 +74,7 @@ namespace UI.Controllers
             return View(v);
         }
 
-        private void RefreshState(a03Import v)
+        private void RefreshState(a03Import v,bool bolTestRowsCount)
         {
             v.Sheets = new List<BO.StringPair>();
             v.lisJ75 = Factory.j75ImportTemplateBL.GetList(new BO.myQuery("j75")).Where(p => p.x29ID == 103);
@@ -114,6 +115,18 @@ namespace UI.Controllers
 
                     }
                 }
+                if (bolTestRowsCount)
+                {                    
+                    for (int row = v.StartRow; row <= v.EndRow; row++)
+                    {                        
+                        var strVal = GV(sheet.Cell(row, 1).Value.ToString());
+                        if (strVal=="" && GV(sheet.Cell(row+1, 1).Value.ToString()) == "")
+                        {
+                            v.EndRow = row-1;
+                            break;
+                        }                        
+                    }
+                }
                 
                 
             }
@@ -123,7 +136,7 @@ namespace UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult a03(a03Import v,string oper,string j75name)
         {
-            RefreshState(v);
+            RefreshState(v,false);
             if (oper== "createtemplate" && string.IsNullOrEmpty(j75name)==false)
             {
                 //uložit jako novou šablonu
@@ -151,7 +164,7 @@ namespace UI.Controllers
             if (oper == "changesheet")
             {
                 v.MapCols = null;
-                RefreshState(v);
+                RefreshState(v,false);
                 return View(v);
             }
             if (oper== "deletetemplate")
@@ -165,7 +178,12 @@ namespace UI.Controllers
             {
                 
                 v.MapCols = null;
-                RefreshState(v);
+                RefreshState(v,false);
+                return View(v);
+            }
+            if (oper== "runimport")
+            {
+                handle_import(v);
                 return View(v);
             }
             if (oper == "postback")
@@ -235,6 +253,7 @@ namespace UI.Controllers
             var lisA21 = Factory.FBL.GetListA21();
             var lisA05 = Factory.a05RegionBL.GetList(new BO.myQuery("a05"));
             var lisA09=Factory.a09FounderTypeBL.GetList(new BO.myQuery("a09"));
+            var errs = new List<string>();
 
             using (var workbook = new XLWorkbook(Factory.App.TempFolder+"\\"+v.FileName))
             {
@@ -258,7 +277,7 @@ namespace UI.Controllers
                                 rec.a03Name = strVal;
                                 break;
                             case "a03City":
-                                rec.a03Name = strVal;
+                                rec.a03City = strVal;
                                 break;
                             case "a03Street":
                                 rec.a03Street = strVal;
@@ -340,12 +359,29 @@ namespace UI.Controllers
 
                                 break;
                         }
+                        
                     }
-                    
 
+                    if (Factory.a03InstitutionBL.ValidateBeforeSave(ref rec) == false)
+                    {
+                        errs.Add(row.ToString());
+                        if (errs.Count() >= 10)
+                        {
+                            break;
+                        }
+                    }
+
+                }
+                
+
+                if (errs.Count() > 0)
+                {
+                    this.AddMessage("Import pozastaven.");
+                    return;
                 }
 
 
+                this.AddMessage("OK", "info");
             }
         }
     }

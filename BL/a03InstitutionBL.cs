@@ -9,7 +9,7 @@ namespace BL
         public BO.a03Institution LoadByFounderCode(string foundercode, int pid_exclude);
         public IEnumerable<BO.a03Institution> GetList(BO.myQuery mq);
         public int Save(BO.a03Institution rec);
-        
+        public bool ValidateBeforeSave(ref BO.a03Institution c);
     }
     class a03InstitutionBL : BaseBL,Ia03InstitutionBL
     {        
@@ -97,7 +97,7 @@ namespace BL
         }
 
 
-        private bool ValidateBeforeSave(ref BO.a03Institution c)
+        public bool ValidateBeforeSave(ref BO.a03Institution c)
         {
             if (c.a06ID == 0)
             {
@@ -148,9 +148,10 @@ namespace BL
                 {
                     this.AddMessage("Chybí vyplnit REDIZO."); return false;
                 }
-                if (BO.BAS.InDouble(c.a03REDIZO) == 0 || c.a03REDIZO.Length != 9 || c.a03REDIZO.Substring(0,1)=="0")
+                
+                if (_mother.App.Implementation != "UA" && (BO.BAS.InDouble(c.a03REDIZO) == 0 || c.a03REDIZO.Length != 9 || c.a03REDIZO.Substring(0,1)=="0"))
                 {
-                    this.AddMessage("Hodnota [REDIZO] musí nesmí začínat nulou a délka musí být 9 znaků.");return false;
+                    this.AddMessage("Hodnota [REDIZO] nesmí začínat nulou a délka musí být 9 znaků.");return false;
                 }
                 if (LoadByRedizo(c.a03REDIZO,c.pid) != null)
                 {
