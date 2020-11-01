@@ -8,7 +8,9 @@ namespace UI.Models
     public class a03Import: BaseViewModel
     {
         public BO.j75ImportTemplate Rec { get; set; }
-        public string FileFullPath { get; set; }
+        public string FileName { get; set; }
+        public string FileNameOrig { get; set; }
+       public string Guid { get; set; }
 
         public string SelectedSheet { get; set; }
 

@@ -6,6 +6,7 @@ namespace BL
     {
         public BO.a03Institution Load(int pid);
         public BO.a03Institution LoadByRedizo(string redizo, int pid_exclude);
+        public BO.a03Institution LoadByFounderCode(string foundercode, int pid_exclude);
         public IEnumerable<BO.a03Institution> GetList(BO.myQuery mq);
         public int Save(BO.a03Institution rec);
         
@@ -38,6 +39,11 @@ namespace BL
         {
             return _db.Load<BO.a03Institution>(GetSQL1(" WHERE a.a03REDIZO LIKE @redizo AND a.a03ID<>@pid_exclude"), new { redizo = redizo, pid_exclude= pid_exclude });
         }
+        public BO.a03Institution LoadByFounderCode(string foundercode, int pid_exclude)
+        {
+            return _db.Load<BO.a03Institution>(GetSQL1(" WHERE a.a03FounderCode LIKE @foundercode AND a.a03ID<>@pid_exclude"), new { foundercode = foundercode, pid_exclude = pid_exclude });
+        }
+        
 
         public IEnumerable<BO.a03Institution> GetList(BO.myQuery mq)
         {

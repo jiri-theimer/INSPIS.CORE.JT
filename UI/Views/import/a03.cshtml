@@ -16,6 +16,10 @@
 @addTagHelper *,UI
 
 <h4>Datový import záznamů institucí</h4>
+@if (string.IsNullOrEmpty(Model.FileNameOrig) == false)
+{
+    <a href="/FileUpload/FileDownloadTempFile?tempfilename=@Model.FileName" target="_blank">@Model.FileNameOrig</a>
+}
 <form id="form1" asp-controller="import" asp-action="a03" method="POST">
     <div class="bg-light" style="padding:10px;">
         <div class="form-row">
@@ -23,7 +27,8 @@
                 <button id="cmdSave" type="button" class="btn btn-success">@_f.tra("Spustit import")</button>
                 <button type="button" onclick="_helppage()" class="btn btn-light"><b>? </b>@_f.tra("Nápověda")</button>
             </div>
-            <div class="col-4">
+
+            <div class="col-3">
                 <mydropdown asp-for="@Model.SelectedJ75ID" datasource="@Model.lisJ75" IsFirstEmptyRow="true" firstemptyrowtext="@_f.tra("Pojmenovaná import šablona")" valuefield="pid" textfield="j75Name" event_after_changevalue="j75id_onchange"></mydropdown>
             </div>
             @if (!string.IsNullOrEmpty(Model.SelectedJ75ID))
@@ -72,9 +77,9 @@
                     <option value="2">2</option>
                     <option value="3">3</option>
                 </select>
-            
+
             </td>
-           
+
             <td>
                 @_f.tra("do řádku"):
             </td>
@@ -132,7 +137,9 @@
             </tr>
         }
     </table>
-    <input type="hidden" asp-for="@Model.FileFullPath" />
+    <input type="hidden" asp-for="@Model.FileName" />
+    <input type="hidden" asp-for="@Model.FileNameOrig" />
+    <input type="hidden" asp-for="@Model.Guid" />
     <input type="hidden" asp-for="@Model.HeadersRow" />
 </form>
 
@@ -152,16 +159,18 @@
 
     });
 
-
+    function get_ocas() {
+        return "&guid=@Model.Guid&filename=@Model.FileName";
+    }
     function sheet_onchange(sheetname) {
-        form1.action = "/import/a03?oper=changesheet";
+        form1.action = "/import/a03?oper=changesheet" + get_ocas();
         form1.submit();
     }
     function j75id_onchange(cbx) {
         if ($.isNumeric(cbx.value)==false) {
             return
         }
-        location.replace("/import/a03?j75id="+cbx.value)
+        location.replace("/import/a03?j75id=" + cbx.value + get_ocas());
         //form1.action = "/import/a03?oper=selecttemplate";
         //form1.submit();
 
@@ -169,25 +178,25 @@
     function createtemplate() {
         var s = prompt("@_f.tra("Zadejte název šablony")");
         if (s != null && s != "") {
-            form1.action = "/import/a03?oper=createtemplate&j75name="+s;
+            form1.action = "/import/a03?oper=createtemplate&j75name=" + s + get_ocas();
             form1.submit();
         }
     }
 
     function savechanges() {
-        form1.action = "/import/a03?oper=savechanges";
+        form1.action = "/import/a03?oper=savechanges" + get_ocas();
         form1.submit();
     }
 
     function startrow_change() {
-        form1.action = "/import/a03?oper=startrow";
+        form1.action = "/import/a03?oper=startrow" + get_ocas();
         form1.submit();
     }
 
     function deletetemplate (){
        if (confirm("@_f.tra("Opravdu nenávratně odstranit tuto šablonu?")")) {
 
-           form1.action = "/import/a03?oper=deletetemplate";
+           form1.action = "/import/a03?oper=deletetemplate" + get_ocas();
            form1.submit();
             }
     }

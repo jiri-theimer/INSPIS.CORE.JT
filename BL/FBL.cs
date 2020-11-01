@@ -14,6 +14,7 @@ namespace BL
         public IEnumerable<BO.SysDbObject> GetList_SysObjects();
         public void GenerateCreateUpdateScript(IEnumerable<BO.SysDbObject> lis);
         public IEnumerable<BO.j05Permission> GetListJ05();
+        public IEnumerable<BO.a21InstitutionLegalType> GetListA21();
         public IEnumerable<BO.iSETSchoolClass> GetList_SchoolClasses(string strREDIZO, string strSchoolYear);
     }
     class FBL : BaseBL, IFBL
@@ -26,6 +27,10 @@ namespace BL
         public IEnumerable<BO.j05Permission> GetListJ05()
         {
             return _db.GetList<BO.j05Permission>("SELECT * FROM j05Permission ORDER BY j05Order");
+        }
+        public IEnumerable<BO.a21InstitutionLegalType> GetListA21()
+        {
+            return _db.GetList<BO.a21InstitutionLegalType>("SELECT * FROM a21InstitutionLegalType");
         }
 
         public IEnumerable<BO.GetString> GetListAutoComplete(int intO15Flag)

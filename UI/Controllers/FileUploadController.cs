@@ -45,13 +45,13 @@ namespace UI.Controllers
             }
             
         }
-        public IActionResult SingleUpload(string guid)
+        public IActionResult SingleUpload(string guid,string targetflag)
         {
             if (string.IsNullOrEmpty(guid) == true)
             {
                 return this.StopPageSubform("guid missing");
             }
-            var v = new FileUploadSingleViewModel() { Guid = guid };
+            var v = new FileUploadSingleViewModel() { Guid = guid,TargetFlag=targetflag };
             v.lisTempFiles = Factory.o27AttachmentBL.GetTempFiles(v.Guid);
             return View(v);
         }
@@ -83,6 +83,8 @@ namespace UI.Controllers
             }
 
             v.lisTempFiles = Factory.o27AttachmentBL.GetTempFiles(v.Guid);
+
+            
             return View(v);
             
         }
