@@ -254,6 +254,12 @@ namespace UI.Controllers
             var lisA05 = Factory.a05RegionBL.GetList(new BO.myQuery("a05"));
             var lisA09=Factory.a09FounderTypeBL.GetList(new BO.myQuery("a09"));
             var errs = new List<string>();
+            var recs = new List<BO.a03Institution>();
+            int intRedIzoIndex = -1;
+            if (v.MapCols.Where(p => p.IsChecked == true && p.TargetField == "a03REDIZO").Count() > 0)
+            {
+                intRedIzoIndex = v.MapCols.Where(p => p.IsChecked == true && p.TargetField == "a03REDIZO").First().Index;
+            }
 
             using (var workbook = new XLWorkbook(Factory.App.TempFolder+"\\"+v.FileName))
             {
@@ -262,13 +268,29 @@ namespace UI.Controllers
                 for (int row = v.StartRow; row <= v.EndRow; row++)
                 {
                     var rec = new BO.a03Institution() { a06ID = v.SelectedA06ID };
+                    if (intRedIzoIndex > -1)
+                    {
+                        rec.a03REDIZO = GV(sheet.Cell(row, intRedIzoIndex).Value);  //najít již existující instituci podle REDIZO
+                        if (rec.a03REDIZO != "")
+                        {
+                            var recExist = Factory.a03InstitutionBL.LoadByRedizo(rec.a03REDIZO, 0);
+                            if (recExist != null) rec = recExist;
+                        }                        
+                    }
                     foreach(var c in v.MapCols.Where(p => p.IsChecked == true && string.IsNullOrEmpty(p.TargetField)==false))
                     {
-                        var strVal = GV(sheet.Cell(row, c.Index).Value.ToString());
+                        var strVal = GV(sheet.Cell(row, c.Index).Value);
                         switch (c.TargetField)
                         {
                             case "a03REDIZO":
                                 rec.a03REDIZO = strVal;
+                                break;
+                            case "a03REDIZO_Parent":
+                                if (strVal != "" && Factory.a03InstitutionBL.LoadByRedizo(strVal, 0) != null)
+                                {
+                                    rec.a03ID_Parent = Factory.a03InstitutionBL.LoadByRedizo(strVal, 0).pid;
+                                    rec.a03ParentFlag = BO.a03ParentFlagEnum.Slave;
+                                }
                                 break;
                             case "a03ICO":
                                 rec.a03ICO = strVal;
@@ -324,6 +346,12 @@ namespace UI.Controllers
                                     rec.a05ID = lisA05.Where(p => p.a05RZCode == strVal).First().pid;
                                 }
                                 break;
+                            case "a05Name":
+                                if (strVal != "" && lisA05.Where(p => p.a05Name.ToLower() == strVal.ToLower()).Count() > 0)
+                                {
+                                    rec.a05ID = lisA05.Where(p => p.a05Name.ToLower() == strVal.ToLower()).First().pid;
+                                }
+                                break;
                             case "a09ID":
                                 if (BO.BAS.InInt(strVal)>0 && lisA09.Where(p => p.pid == BO.BAS.InInt(strVal)).Count() > 0)
                                 {
@@ -362,7 +390,11 @@ namespace UI.Controllers
                         
                     }
 
-                    if (Factory.a03InstitutionBL.ValidateBeforeSave(ref rec) == false)
+                    if (Factory.a03InstitutionBL.ValidateBeforeSave(ref rec))
+                    {
+                        recs.Add(rec);
+                    }
+                    else
                     {
                         errs.Add(row.ToString());
                         if (errs.Count() >= 10)
@@ -370,6 +402,7 @@ namespace UI.Controllers
                             break;
                         }
                     }
+                   
 
                 }
                 
@@ -380,6 +413,11 @@ namespace UI.Controllers
                     return;
                 }
 
+                foreach(var rec in recs)
+                {
+                    
+                    Factory.a03InstitutionBL.Save(rec);
+                }
 
                 this.AddMessage("OK", "info");
             }
