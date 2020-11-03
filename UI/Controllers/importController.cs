@@ -247,11 +247,16 @@ namespace UI.Controllers
         }
         private void prepare_import(a03Import v)
         {//uložit namapování sloupců do db tempu
+            if (!validate_mapping(v))
+            {
+                return;
+            }
+
             if (Factory.p85TempboxBL.GetList(v.GuidMapping).Count() > 0)
             {
                 v.GuidMapping = BO.BAS.GetGuid();
             }
-            var rec = new BO.p85Tempbox() { p85Prefix = "header", p85GUID = v.GuidMapping, p85FreeText01 = v.FileName, p85FreeText02 = v.SelectedSheet,p85OtherKey1=v.SelectedA06ID };
+            var rec = new BO.p85Tempbox() { p85Prefix = "header", p85GUID = v.GuidMapping, p85FreeText01 = v.FileName, p85FreeText02 = v.SelectedSheet,p85OtherKey1=v.SelectedA06ID,p85OtherKey2=v.StartRow,p85OtherKey3=v.EndRow };
             Factory.p85TempboxBL.Save(rec);
 
             foreach (var c in v.MapCols.Where(p => p.IsChecked == true && string.IsNullOrEmpty(p.TargetField) == false))
@@ -262,13 +267,7 @@ namespace UI.Controllers
         }
         private void handle_import(string strGuid,int startrowindex,int endrowindex)
         {
-            if (!validate_mapping(v))
-            {
-                return;
-            }
-            if (startrowindex == 0) startrowindex = v.StartRow;
-            if (endrowindex == 0) endrowindex = v.EndRow;
-
+                       
             var lisMapping = Factory.p85TempboxBL.GetList(strGuid).Where(p=>p.p85Prefix== "mapping");
             var headerMapping = Factory.p85TempboxBL.GetList(strGuid).Where(p => p.p85Prefix == "header").First();
             var lisA21 = Factory.FBL.GetListA21();
@@ -282,12 +281,15 @@ namespace UI.Controllers
             {
                 intRedIzoIndex = lisMapping.Where(p => p.p85FreeText01 == "a03REDIZO").First().p85DataPID;
             }
-            
+            if (startrowindex == 0) startrowindex = headerMapping.p85OtherKey2;
+            if (endrowindex == 0) endrowindex = headerMapping.p85OtherKey3;
 
-            using (var workbook = new XLWorkbook(Factory.App.TempFolder+"\\"+v.FileName))
+
+
+            using (var workbook = new XLWorkbook(Factory.App.TempFolder+"\\"+headerMapping.p85FreeText01))
             {
                 
-                var sheet = workbook.Worksheets.First(p => p.Name == v.SelectedSheet);
+                var sheet = workbook.Worksheets.First(p => p.Name == headerMapping.p85FreeText02);
                 for (int row = startrowindex; row <= endrowindex; row++)
                 {
                     var rec = new BO.a03Institution() { a06ID = v.SelectedA06ID };
