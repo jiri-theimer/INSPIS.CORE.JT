@@ -23,7 +23,7 @@ namespace UI.Controllers
             if (startrow == 0) startrow = 2;
             if (endrow == 0) endrow = 50000;
             if (string.IsNullOrEmpty(guid)) guid = BO.BAS.GetGuid();
-            var v = new a03Import() { HeadersRow = startrow-1,StartRow=startrow,EndRow=endrow,FileName=filename,Guid=guid };
+            var v = new a03Import() { HeadersRow = startrow-1,StartRow=startrow,EndRow=endrow,FileName=filename,Guid=guid,GuidMapping=BO.BAS.GetGuid() };
 
             if (string.IsNullOrEmpty(v.FileName))
             {
@@ -183,7 +183,8 @@ namespace UI.Controllers
             }
             if (oper== "runimport")
             {
-                handle_import(v,0,0);
+                prepare_import(v);
+                
                 return View(v);
             }
             if (oper == "postback")
@@ -245,16 +246,21 @@ namespace UI.Controllers
             return val.ToString();
         }
         private void prepare_import(a03Import v)
-        {
-            var lis = new List<BO.p85Tempbox>();
-            
+        {//uložit namapování sloupců do db tempu
+            if (Factory.p85TempboxBL.GetList(v.GuidMapping).Count() > 0)
+            {
+                v.GuidMapping = BO.BAS.GetGuid();
+            }
+            var rec = new BO.p85Tempbox() { p85Prefix = "header", p85GUID = v.GuidMapping, p85FreeText01 = v.FileName, p85FreeText02 = v.SelectedSheet,p85OtherKey1=v.SelectedA06ID };
+            Factory.p85TempboxBL.Save(rec);
+
             foreach (var c in v.MapCols.Where(p => p.IsChecked == true && string.IsNullOrEmpty(p.TargetField) == false))
             {
-                var rec = new BO.p85Tempbox() {p85GUID=v.Guid, p85FreeText01 = c.TargetField };
-                
+                rec = new BO.p85Tempbox() {p85Prefix="mapping", p85GUID=v.GuidMapping, p85FreeText01 = c.TargetField,p85DataPID=c.Index };
+                Factory.p85TempboxBL.Save(rec);
             }
         }
-        private void handle_import(a03Import v,int startrowindex,int endrowindex)
+        private void handle_import(string strGuid,int startrowindex,int endrowindex)
         {
             if (!validate_mapping(v))
             {
@@ -263,6 +269,8 @@ namespace UI.Controllers
             if (startrowindex == 0) startrowindex = v.StartRow;
             if (endrowindex == 0) endrowindex = v.EndRow;
 
+            var lisMapping = Factory.p85TempboxBL.GetList(strGuid).Where(p=>p.p85Prefix== "mapping");
+            var headerMapping = Factory.p85TempboxBL.GetList(strGuid).Where(p => p.p85Prefix == "header").First();
             var lisA21 = Factory.FBL.GetListA21();
             var lisA05 = Factory.a05RegionBL.GetList(new BO.myQuery("a05"));
             var lisA28 = Factory.a28SchoolTypeBL.GetList(new BO.myQuery("a28"));
@@ -270,10 +278,11 @@ namespace UI.Controllers
             var errs = new List<string>();
             var recs = new List<BO.a03Institution>();
             int intRedIzoIndex = -1;
-            if (v.MapCols.Where(p => p.IsChecked == true && p.TargetField == "a03REDIZO").Count() > 0)
+            if (lisMapping.Where(p => p.p85FreeText01 == "a03REDIZO").Count() > 0)
             {
-                intRedIzoIndex = v.MapCols.Where(p => p.IsChecked == true && p.TargetField == "a03REDIZO").First().Index;
+                intRedIzoIndex = lisMapping.Where(p => p.p85FreeText01 == "a03REDIZO").First().p85DataPID;
             }
+            
 
             using (var workbook = new XLWorkbook(Factory.App.TempFolder+"\\"+v.FileName))
             {
@@ -291,10 +300,10 @@ namespace UI.Controllers
                             if (recExist != null) rec = recExist;
                         }                        
                     }
-                    foreach(var c in v.MapCols.Where(p => p.IsChecked == true && string.IsNullOrEmpty(p.TargetField)==false))
+                    foreach(var c in lisMapping)
                     {
-                        var strVal = GV(sheet.Cell(row, c.Index).Value);
-                        switch (c.TargetField)
+                        var strVal = GV(sheet.Cell(row, c.p85DataPID).Value);
+                        switch (c.p85FreeText01)
                         {
                             case "a03REDIZO":
                                 rec.a03REDIZO = strVal;
@@ -343,10 +352,10 @@ namespace UI.Controllers
                                 rec.a03Email = strVal;
                                 break;
                             case "a03DirectorFullName":
-                                rec.a03DirectorFullName = GV(sheet.Cell(row, c.Index).Value.ToString());
+                                rec.a03DirectorFullName = GV(sheet.Cell(row, c.p85DataPID).Value.ToString());
                                 break;
                             case "a03ShortName":
-                                rec.a03ShortName = GV(sheet.Cell(row, c.Index).Value.ToString());
+                                rec.a03ShortName = GV(sheet.Cell(row, c.p85DataPID).Value.ToString());
                                 break;
                             case "a21Code":                                
                                 if (strVal!= "" && lisA21.Where(p => p.a21Code == strVal).Count() > 0)
@@ -399,7 +408,7 @@ namespace UI.Controllers
                             case "a03ValidFrom":
                                 try
                                 {
-                                    rec.ValidFrom = sheet.Cell(row, c.Index).GetDateTime();
+                                    rec.ValidFrom = sheet.Cell(row, c.p85DataPID).GetDateTime();
                                 }
                                 catch
                                 {
@@ -410,7 +419,7 @@ namespace UI.Controllers
                             case "a03ValidUntil":
                                 try
                                 {
-                                    rec.ValidUntil = sheet.Cell(row, c.Index).GetDateTime();
+                                    rec.ValidUntil = sheet.Cell(row, c.p85DataPID).GetDateTime();
                                 }
                                 catch
                                 {

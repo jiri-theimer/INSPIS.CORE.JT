@@ -11,6 +11,7 @@ namespace UI.Models
         public string FileName { get; set; }
         public string FileNameOrig { get; set; }
        public string Guid { get; set; }
+        public string GuidMapping { get; set; }
 
         public string SelectedSheet { get; set; }
 

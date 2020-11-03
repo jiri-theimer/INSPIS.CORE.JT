@@ -70,6 +70,7 @@ a42JobState
 j02FullText
 j02Address
 j02Position
+a03ID_Employer
 
 [j04UserRole]
 j04ViewUrl_Page varchar(255)
