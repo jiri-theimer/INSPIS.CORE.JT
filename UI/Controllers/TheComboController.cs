@@ -53,7 +53,7 @@ namespace UI.Controllers
             switch (mq.Prefix)
             {
                 case "a03":
-                    if (masterprefix == "a06" && masterpid == 2)      //combo zřizovatele-> vyndat redizo sloupec
+                    if (masterprefix == "a06" && (masterpid == 2 || masterpid==3 || masterpid==4))      //combo zřizovatele nebo dohledového orgánu-> vyndat redizo sloupec
                     {
                         if (cols.Where(p => p.Field == "a03REDIZO").Count() > 0)
                         {

@@ -109,6 +109,10 @@ namespace UI.Controllers
                     {
                         v.RecJ03 = Factory.j03UserBL.Load(v.Rec.j03ID);
                     }
+                    if (v.Rec.a03ID_Employer > 0)
+                    {
+                        v.RecEmployer = Factory.a03InstitutionBL.Load(v.Rec.a03ID_Employer);
+                    }
 
                     var mq = new BO.myQuery("a39InstitutionPerson");
                     mq.IsRecordValid = true;
@@ -176,7 +180,14 @@ namespace UI.Controllers
                 v.TagNames = tg.TagNames;
                 v.TagHtml = tg.TagHtml;
 
-
+                if (v.Rec.a03ID_Employer > 0)
+                {
+                    var c = Factory.a03InstitutionBL.Load(v.Rec.a03ID_Employer);
+                    if (c != null)
+                    {
+                        v.EmployerName = c.a03Name;
+                    }
+                }
             }
             v.Toolbar = new MyToolbarViewModel(v.Rec);
             if (isclone)
@@ -208,6 +219,7 @@ namespace UI.Controllers
                 c.j02Address = v.Rec.j02Address;
                 c.j02Position = v.Rec.j02Position;
 
+                c.a03ID_Employer = v.Rec.a03ID_Employer;
                 c.ValidUntil = v.Toolbar.GetValidUntil(c);
                 c.ValidFrom = v.Toolbar.GetValidFrom(c);
 

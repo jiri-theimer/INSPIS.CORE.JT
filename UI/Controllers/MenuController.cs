@@ -118,6 +118,8 @@ namespace UI.Controllers
                 AMI("Workflow", "/Admin/Workflow");
                 AMI("Návrhář workflow", "/AdminOneWorkflow/Index");
             }
+            
+            AMI("Import"+": "+Factory.tra("Instituce"), "/import/a03");
             //if (TUP(BO.PermValueEnum.H11Admin))
             //{
             //    AMI("Nástěnka", "/Admin/NoticeBoard");

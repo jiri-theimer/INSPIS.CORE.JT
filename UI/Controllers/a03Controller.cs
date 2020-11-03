@@ -216,21 +216,26 @@ namespace UI.Controllers
 
             foreach (var tab in v.NavTabs)
             {
-                if (tab.Entity== "a03Institution")
+                if (!tab.Url.Contains("&master_pid"))
                 {
-                    if (v.Rec.a06ID == 1)
-                    {
-                        tab.Url += "&master_entity=a03Institution&master_pid=" + v.Rec.a03ID_Founder.ToString();
-                    }
-                    else
-                    {
-                        tab.Url += "&master_entity=a03Institution&master_pid=" + v.Rec.pid.ToString();
-                    }
+                    tab.Url += "&master_entity=a03Institution&master_pid=" + v.Rec.pid.ToString();
+                        
                 }
-                else
-                {
-                    tab.Url += "&master_entity=a03Institution&master_pid=" + v.pid.ToString();
-                }
+                //if (tab.Entity== "a03Institution")
+                //{
+                //    if (v.Rec.a06ID == 1)
+                //    {
+                //        tab.Url += "&master_entity=a03Institution&master_pid=" + v.Rec.a03ID_Founder.ToString();
+                //    }
+                //    else
+                //    {
+                //        tab.Url += "&master_entity=a03Institution&master_pid=" + v.Rec.pid.ToString();
+                //    }
+                //}
+                //else
+                //{
+                //    tab.Url += "&master_entity=a03Institution&master_pid=" + v.pid.ToString();
+                //}
                 
                 if (strDefTab != null && tab.Entity == strDefTab)
                 {

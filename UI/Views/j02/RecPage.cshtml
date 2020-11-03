@@ -84,6 +84,17 @@
             </div>
 
         }
+        @if (Model.RecEmployer !=null)
+        {
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Zaměstnavatel"):</label>
+                <div class="col-sm-7 col-md-6">
+                    <myval value="@Model.RecEmployer.a03Name"></myval>
+                </div>
+               
+            </div>
+
+        }
         @if (Model.LisA39 != null)
         {
             <div class="py-2">

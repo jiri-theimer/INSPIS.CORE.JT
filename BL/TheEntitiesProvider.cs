@@ -222,6 +222,8 @@ namespace BL
                     lis.Add(getREL("a04Inspectorate", "j02_a04", "Inspektorát", "LEFT OUTER JOIN a02Inspector j02_a02 ON a.j02ID=j02_a02.j02ID LEFT OUTER JOIN a04Inspectorate j02_a04 ON j02_a02.a04ID=j02_a04.a04ID"));
                     lis.Add(getREL("a05Region", "j02_a05", "Kraj", "LEFT OUTER JOIN a05Region j02_a05 ON j02_a04.a05ID=j02_a05.a05ID", "j02_a04"));
 
+                    lis.Add(getREL("a03Institution", "j02_employer", "Zaměstnavatel", "LEFT OUTER JOIN a03Institution j02_employer ON a.a03ID_Employer=j02_employer.a03ID"));
+
                     lis.Add(getREL("o54TagBindingInline", "j02_o54", "Kategorie", "LEFT OUTER JOIN (SELECT * FROM o54TagBindingInline WHERE o54RecordEntity='j02') j02_o54 ON a.j02ID=j02_o54.o54RecordPid"));
                     break;
                 case "j03":

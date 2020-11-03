@@ -10,7 +10,9 @@ namespace BO
         [Key]
         public int j02ID { get; set; }
         public int j07ID { get; set; }        
-                        
+        public int a03ID_Employer { get; set; }
+
+
         public string j02Email { get; set; }        
                
         public string j02FirstName { get; set; }        

@@ -12,6 +12,7 @@ namespace UI.Models.Recpage
         public BO.j03User RecJ03 { get; set; }
         public BO.a04Inspectorate RecA04 { get; set; }
         
+        public BO.a03Institution RecEmployer { get; set; }
 
         public List<BO.a39InstitutionPerson> LisA39 { get; set; }
 

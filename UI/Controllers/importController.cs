@@ -183,7 +183,7 @@ namespace UI.Controllers
             }
             if (oper== "runimport")
             {
-                handle_import(v);
+                handle_import(v,0,0);
                 return View(v);
             }
             if (oper == "postback")
@@ -244,14 +244,28 @@ namespace UI.Controllers
             }
             return val.ToString();
         }
-        private void handle_import(a03Import v)
+        private void prepare_import(a03Import v)
+        {
+            var lis = new List<BO.p85Tempbox>();
+            
+            foreach (var c in v.MapCols.Where(p => p.IsChecked == true && string.IsNullOrEmpty(p.TargetField) == false))
+            {
+                var rec = new BO.p85Tempbox() {p85GUID=v.Guid, p85FreeText01 = c.TargetField };
+                
+            }
+        }
+        private void handle_import(a03Import v,int startrowindex,int endrowindex)
         {
             if (!validate_mapping(v))
             {
                 return;
             }
+            if (startrowindex == 0) startrowindex = v.StartRow;
+            if (endrowindex == 0) endrowindex = v.EndRow;
+
             var lisA21 = Factory.FBL.GetListA21();
             var lisA05 = Factory.a05RegionBL.GetList(new BO.myQuery("a05"));
+            var lisA28 = Factory.a28SchoolTypeBL.GetList(new BO.myQuery("a28"));
             var lisA09=Factory.a09FounderTypeBL.GetList(new BO.myQuery("a09"));
             var errs = new List<string>();
             var recs = new List<BO.a03Institution>();
@@ -265,7 +279,7 @@ namespace UI.Controllers
             {
                 
                 var sheet = workbook.Worksheets.First(p => p.Name == v.SelectedSheet);
-                for (int row = v.StartRow; row <= v.EndRow; row++)
+                for (int row = startrowindex; row <= endrowindex; row++)
                 {
                     var rec = new BO.a03Institution() { a06ID = v.SelectedA06ID };
                     if (intRedIzoIndex > -1)
@@ -290,6 +304,12 @@ namespace UI.Controllers
                                 {
                                     rec.a03ID_Parent = Factory.a03InstitutionBL.LoadByRedizo(strVal, 0).pid;
                                     rec.a03ParentFlag = BO.a03ParentFlagEnum.Slave;
+                                }
+                                break;
+                            case "a03REDIZO_Supervisory":
+                                if (strVal != "" && Factory.a03InstitutionBL.LoadByRedizo(strVal, 0) != null)
+                                {
+                                    rec.a03ID_Supervisory = Factory.a03InstitutionBL.LoadByRedizo(strVal, 0).pid;                                   
                                 }
                                 break;
                             case "a03ICO":
@@ -332,6 +352,18 @@ namespace UI.Controllers
                                 if (strVal!= "" && lisA21.Where(p => p.a21Code == strVal).Count() > 0)
                                 {
                                     rec.a21ID = lisA21.Where(p => p.a21Code == strVal).First().pid;
+                                }
+                                break;
+                            case "a28Code":
+                                if (strVal != "" && lisA28.Where(p => p.a28Code == strVal).Count() > 0)
+                                {
+                                    rec.a28ID = lisA28.Where(p => p.a28Code == strVal).First().pid;
+                                }
+                                break;
+                            case "a28Name":
+                                if (strVal != "" && lisA28.Where(p => p.a28Name.ToLower() == strVal.ToLower()).Count() > 0)
+                                {
+                                    rec.a28ID = lisA28.Where(p => p.a28Name.ToLower() == strVal.ToLower()).First().pid;
                                 }
                                 break;
                             case "bind_a03FounderCode":

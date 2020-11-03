@@ -138,7 +138,7 @@ namespace BL
                 c.a03REDIZO = "";
                 if (string.IsNullOrEmpty(c.a03FounderCode) == true)
                 {
-                    this.AddMessage("U typu instituce 'Zřizovatel' je [Kód zřizovatele] je povinné pole."); return false;
+                    this.AddMessage("U typu instituce 'Zřizovatel' je [Kód zřizovatele] povinné pole."); return false;
                 }
             }
             if (c.a06ID == 1)
