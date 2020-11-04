@@ -100,19 +100,11 @@ namespace BL
 
         private void Handle_DbOpers()
         {
-            BO.TheGridColumn onecol;
-            DL.DbHandler db = new DL.DbHandler(_app.ConnectString, new BO.RunningUser(), _app.LogFolder);
-            var dt = db.GetDataTable("select * from o53TagGroup WHERE o53Field IS NOT NULL AND o53Entities IS NOT NULL ORDER BY o53Ordinary");
-            foreach (System.Data.DataRow dbrow in dt.Rows)
-            {
-                onecol = AF("o54TagBindingInline", dbrow["o53Field"].ToString(), dbrow["o53Name"].ToString(), 0, null, "string", false, true);
-                onecol.VisibleWithinEntityOnly = dbrow["o53Entities"].ToString();
-            }
-            //Překlad do ostatních jazyků
+            //Překlad do ostatních jazyků: Musí být před načtením kategorií, aby se názvy kategorií nepřekládali!
             foreach (var col in _lis)
             {
                 bool b = true;
-                if (col.Header.Length>3 && col.Header.Substring(0, 3) == "Col")
+                if (col.Header.Length > 3 && col.Header.Substring(0, 3) == "Col")
                 {
                     b = false;
                 }
@@ -121,29 +113,20 @@ namespace BL
                     col.TranslateLang1 = _tt.DoTranslate(col.Header, 1);
                     col.TranslateLang2 = _tt.DoTranslate(col.Header, 2);
                 }
-                
+
             }
-            //dt = db.GetDataTable("select * from x91Translate WHERE x91Code IS NOT NULL AND x91Page IS NULL");
-            //foreach (System.Data.DataRow dbrow in dt.Rows)
-            //{                
-            //    if (_lis.Where(p => p.Field == dbrow["x91Code"].ToString()).Count() > 0)
-            //    {
-            //        onecol= _lis.Where(p => p.Field == dbrow["x91Code"].ToString()).First();
-            //        onecol.TranslateLang1 = dbrow["x91Lang1"].ToString();
-            //        if (dbrow["x91Lang2"] != System.DBNull.Value)
-            //        {
-            //            onecol.TranslateLang2 = dbrow["x91Lang2"].ToString();
-            //        }
-            //        if (dbrow["x91Lang3"] != System.DBNull.Value)
-            //        {
-            //            onecol.TranslateLang3 = dbrow["x91Lang3"].ToString();
-            //        }
-                    
 
-
-            //    }
+            BO.TheGridColumn onecol;
+            DL.DbHandler db = new DL.DbHandler(_app.ConnectString, new BO.RunningUser(), _app.LogFolder);
+            var dt = db.GetDataTable("select * from o53TagGroup WHERE o53Field IS NOT NULL AND o53Entities IS NOT NULL ORDER BY o53Ordinary");
+            foreach (System.Data.DataRow dbrow in dt.Rows)
+            {
                
-            //}
+                onecol = AF("o54TagBindingInline", dbrow["o53Field"].ToString(), dbrow["o53Name"].ToString(), 0, null, "string", false, true);
+                onecol.VisibleWithinEntityOnly = dbrow["o53Entities"].ToString();
+            }
+            
+            
         }
         private void SetupPallete()
         {

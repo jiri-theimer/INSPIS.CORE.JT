@@ -166,7 +166,7 @@ namespace BL
             {
                 this.AddMessage("U nadřízené školy nelze mít vazbu na nadřízenou instituci."); return false;
             }
-            if (c.a03ParentFlag == BO.a03ParentFlagEnum.Slave && c.a03ID_Parent == c.pid)
+            if (c.a03ParentFlag == BO.a03ParentFlagEnum.Slave && c.pid>0 && c.a03ID_Parent == c.pid)
             {
                 this.AddMessage("Škola nemůže být podřízená sama sobě."); return false;
             }

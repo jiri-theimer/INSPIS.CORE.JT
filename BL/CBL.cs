@@ -45,7 +45,7 @@ namespace BL
             {
                 strSP = "_core_j03user_delete";
             }
-            if (entity.Substring(0, 3) == "o51" || entity.Substring(0, 3) == "o53")
+            if (entity.Substring(0, 3) == "o51" || entity.Substring(0, 3) == "o53" || entity.Substring(0, 3) == "x91")
             {
                 strSP = "_core_"+ entity.Substring(0, 3)+"_delete";
             }
