@@ -292,7 +292,7 @@ namespace UI.Controllers
                 var sheet = workbook.Worksheets.First(p => p.Name == headerMapping.p85FreeText02);
                 for (int row = startrowindex; row <= endrowindex; row++)
                 {
-                    var rec = new BO.a03Institution() { a06ID = v.SelectedA06ID };
+                    var rec = new BO.a03Institution() { a06ID = headerMapping.p85OtherKey1 };
                     if (intRedIzoIndex > -1)
                     {
                         rec.a03REDIZO = GV(sheet.Cell(row, intRedIzoIndex).Value);  //najít již existující instituci podle REDIZO

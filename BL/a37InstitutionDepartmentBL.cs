@@ -77,7 +77,7 @@ namespace BL
                 this.AddMessage("Chybí vyplnit [Typ činnosti]."); return false;
             }            
 
-            if (string.IsNullOrEmpty(c.a37IZO) == true)
+            if (_mother.App.Implementation !="UA" && string.IsNullOrEmpty(c.a37IZO) == true)
             {
                 this.AddMessage("Chybí vyplnit [IZO]."); return false;
             }

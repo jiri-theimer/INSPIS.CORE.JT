@@ -136,14 +136,17 @@ namespace BL
                 c.a09ID = 0;
                 c.a03ID_Founder = 0;
                 c.a03REDIZO = "";
-                if (string.IsNullOrEmpty(c.a03FounderCode) == true)
+                if (_mother.App.Implementation !="UA" && string.IsNullOrEmpty(c.a03FounderCode) == true)
                 {
                     this.AddMessage("U typu instituce 'Zřizovatel' je [Kód zřizovatele] povinné pole."); return false;
                 }
             }
             if (c.a06ID == 1)
             {
-                c.a03REDIZO = c.a03REDIZO.Trim().Replace(" ", "");
+                if (string.IsNullOrEmpty(c.a03REDIZO) == false)
+                {
+                    c.a03REDIZO = c.a03REDIZO.Trim().Replace(" ", "");
+                }                    
                 if (string.IsNullOrEmpty(c.a03REDIZO) == true)
                 {
                     this.AddMessage("Chybí vyplnit REDIZO."); return false;
@@ -158,10 +161,7 @@ namespace BL
                     this.AddMessageTranslated(string.Format(_mother.tra("Hodnota zadaného REDIZO kódu je již použita v jiné instituci: {0}."), LoadByRedizo(c.a03REDIZO, c.pid).a03Name));return false;
                 }
             }
-            if (c.a03ParentFlag==BO.a03ParentFlagEnum.Slave && c.a03ID_Parent == 0)
-            {
-                this.AddMessage("U podřízené školy chybí vazba na nadřízenou instituci."); return false;
-            }
+            
             if (c.a03ParentFlag == BO.a03ParentFlagEnum.Master && c.a03ID_Parent > 0)
             {
                 this.AddMessage("U nadřízené školy nelze mít vazbu na nadřízenou instituci."); return false;

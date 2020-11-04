@@ -404,7 +404,7 @@ namespace BL
             //a28 = Typy škol
             AF("a28SchoolType", "a28Name", "Typ školy", 1, null, "string", false, true);
             AF("a28SchoolType", "a28Code", "Kód", 2);
-            AF("a28SchoolType", "o28Ordinary", "Pořadí", 2, null, "num0");            
+            AF("a28SchoolType", "a28Ordinary", "Pořadí", 2, null, "num0");            
             AppendTimestamp("a28SchoolType");
 
 
