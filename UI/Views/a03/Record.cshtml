@@ -33,7 +33,7 @@
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
                 <div class="col-sm-7 col-md-6">
                     <input class="form-control" asp-for="Rec.a03Name" />
-                    <span asp-validation-for="Rec.a03Name" class="text-danger"></span>
+                    
                 </div>
                 <div class="col-sm-2 col-md-2">
                     <input class="form-control" asp-for="Rec.a03ShortName" placeholder="@_f.tra("Zkrácený název")" />
@@ -49,24 +49,24 @@
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("REDIZO"):</label>
                 <div class="col-sm-3 col-md-2">
                     <input class="form-control" asp-for="Rec.a03REDIZO" />
-                    <span asp-validation-for="Rec.a03REDIZO" class="text-danger"></span>
+                    
                 </div>
                 <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("IČ"):</label>
                 <div class="col-sm-2 col-md-2">
                     <input class="form-control" asp-for="Rec.a03ICO" />
-                    <span asp-validation-for="Rec.a03ICO" class="text-danger"></span>
+                    
                 </div>
                 <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Ředitel"):</label>
                 <div class="col-sm-4 col-md-4">
                     <input class="form-control" asp-for="Rec.a03DirectorFullName" />
-                    <span asp-validation-for="Rec.a03DirectorFullName" class="text-danger"></span>
+                    
                 </div>
             </div>
             <div class="form-row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typ instituce"):</label>
                 <div class="col-sm-2 col-md-2">
                     <select asp-for="Rec.a06ID" class="form-control">
-                        <option></option>
+                        <option value="0"></option>
                         <option value="1">@_f.tra("Škola")</option>
                         <option value="2">@_f.tra("Zřizovatel")</option>
                         <option value="3">@_f.tra("Dohledový orgán")</option>
@@ -140,7 +140,7 @@
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Ulice"):</label>
                 <div class="col-sm-5 col-md-4">
                     <input class="form-control" asp-for="Rec.a03Street" />
-                    <span asp-validation-for="Rec.a03Street" class="text-danger"></span>
+                    
                 </div>
 
 
@@ -149,14 +149,14 @@
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Město"):</label>
                 <div class="col-sm-5 col-md-4">
                     <input class="form-control" asp-for="Rec.a03City" />
-                    <span asp-validation-for="Rec.a03City" class="text-danger"></span>
+                    
                 </div>
             </div>
             <div class="form-row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("PSČ"):</label>
                 <div class="col-sm-1 col-md-1">
                     <input class="form-control" asp-for="Rec.a03PostCode" />
-                    <span asp-validation-for="Rec.a03PostCode" class="text-danger"></span>
+                    
                 </div>
             </div>
             <hr />
@@ -164,12 +164,12 @@
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("E-mail"):</label>
                 <div class="col-sm-5 col-md-4">
                     <input class="form-control" type="email" asp-for="Rec.a03Email" />
-                    <span asp-validation-for="Rec.a03Email" class="text-danger"></span>
+                    
                 </div>
                 <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("WWW"):</label>
                 <div class="col-sm-5 col-md-5">
                     <input class="form-control" type="url" asp-for="Rec.a03Web" />
-                    <span asp-validation-for="Rec.a03Web" class="text-danger"></span>
+                    
                 </div>
 
             </div>
@@ -177,12 +177,12 @@
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Mobil"):</label>
                 <div class="col-sm-5 col-md-4">
                     <input class="form-control" type="tel" asp-for="Rec.a03Mobile" />
-                    <span asp-validation-for="Rec.a03Mobile" class="text-danger"></span>
+                    
                 </div>
                 <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Telefon"):</label>
                 <div class="col-sm-5 col-md-5">
                     <input class="form-control" type="tel" asp-for="Rec.a03Phone" />
-                    <span asp-validation-for="Rec.a03Phone" class="text-danger"></span>
+                    
                 </div>
 
             </div>
