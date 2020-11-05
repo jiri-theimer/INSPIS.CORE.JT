@@ -1,11 +1,12 @@
 ﻿@inject UIFT.Repository.RepositoryFactory factory
+@inject BL.RunningApp app
 @{
     var rep = factory.Get();
 }
 <!-- HEADER -->
 <div id="header">
     <div id="header2">
-        <img src="~/css/images/logo.png?v=4" alt="Logo" class="logo" />
+        <img src="@app.LogoImage" alt="Logo" class="logo" />
     </div>
 </div>
 

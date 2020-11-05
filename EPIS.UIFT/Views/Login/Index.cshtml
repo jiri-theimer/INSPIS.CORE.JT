@@ -1,10 +1,11 @@
 ﻿@model LoginModel
 @inject UIFT.Repository.RepositoryFactory factory
+@inject BL.RunningApp app
 @{
     var rep = factory.Get();
 }
 <div class="loginBox1">
-    <h1><img src="~/css/images/logo.png?v=4" alt="Logo" class="logo" /></h1>
+    <h1><img src="@app.LogoImage" alt="Logo" class="logo" /></h1>
 
     <div id="loginBox">
         @using (Html.BeginForm("Login", "Login", FormMethod.Post, new { autocomplete = "off" }))

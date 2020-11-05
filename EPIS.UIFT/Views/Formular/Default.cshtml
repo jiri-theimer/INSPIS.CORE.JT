@@ -1,6 +1,7 @@
 ﻿@model Formular
 @inject AppConfiguration AppConfig
 @inject UIFT.Repository.RepositoryFactory factory
+@inject BL.RunningApp app
 @{
     var persistentData = this.Context.Items["PersistantData"] as UIFT.PersistantDataStorage;
     var user = this.User as UIFT.Security.UIFTUser;
@@ -42,7 +43,7 @@
         }
 
         <!-- LOGO -->
-        <img src="~/css/images/logo.png?v=4" alt="EPIS" class="logo" />
+        <img src="@app.LogoImage" alt="EPIS" class="logo" />
     </div>
 </div>
 
