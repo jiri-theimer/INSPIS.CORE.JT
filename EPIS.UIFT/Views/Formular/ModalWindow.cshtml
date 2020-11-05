@@ -1,5 +1,6 @@
 ﻿@model Formular
 @inject UIFT.Repository.RepositoryFactory factory
+@inject BL.RunningApp app
 @{
     var persistentData = this.Context.Items["PersistantData"] as UIFT.PersistantDataStorage;
     var rep = factory.Get();
@@ -18,7 +19,7 @@
         <!-- ikona pro mobilni menu -->
         <a href="#" id="mobileMenu"></a>
         <div class="headerClose">[ <a href="javascript:parent.FormularClose();">@rep.BL.tra("zavřít okno")</a> ]</div>
-        <img src="~/css/images/logo.png?v=4" alt="Logo" class="logo" />
+        <img src="@app.LogoImage" alt="Logo" class="logo" />
         <p class="appName">@rep.BL.tra("EPIS")</p>
     </div>
 </div>
