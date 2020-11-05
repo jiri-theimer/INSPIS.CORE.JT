@@ -65,10 +65,19 @@
             </div>
 
         </div>
+
         <div class="form-row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Pracovní funkce"):</label>
             <div class="col-sm-3 col-md-3">
                 <myautocomplete asp-for="Rec.j02Position" o15flag="3" placeholder="@_f.tra("Pracovní funkce")"></myautocomplete>
+
+            </div>
+
+        </div>
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Zaměstnavatel"):</label>
+            <div class="col-sm-11 col-md-10">
+                <mycombo entity="a03Institution" asp-for="@Model.a03ID_Employer" selectedtext="@Model.EmployerName" filter-flag="1"></mycombo>
 
             </div>
 
@@ -80,14 +89,7 @@
 
             </div>
         </div>
-        <div class="form-row my-2">
-            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Zaměstnavatel"):</label>
-            <div class="col-sm-7 col-md-6">
-                <mycombo entity="a03Institution" asp-for="Rec.a03ID_Employer" selectedtext="@Model.EmployerName" filter-flag="1" masterprefix="a06" masterpid="4" event_after_changevalue="employer_change"></mycombo>
 
-            </div>
-
-        </div>
 
 
         <mystitky entity="j02Person" asp-for="@Model.TagPids" tagnames="@Model.TagNames" taghtml="@Model.TagHtml"></mystitky>

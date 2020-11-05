@@ -11,11 +11,79 @@ namespace UI.Controllers
 {
     public class a39Controller : BaseController
     {
-        public IActionResult Record(int pid, int a03id, bool isclone)
+        public IActionResult RecordByPerson(int pid, int j02id, bool isclone)
         {
-            if (pid == 0 && a03id == 0)
+            if (pid == 0 && j02id == 0)
             {
-                return this.StopPage(true, "a03id missing");
+                return this.StopPage(true, "j02id missing");
+            }
+            var v = new a39RecordByPerson() { rec_pid = pid, rec_entity = "a39", j02ID = j02id,form_action= "RecordByPerson" };
+
+
+            v.Rec = new BO.a39InstitutionPerson();
+            if (v.rec_pid > 0)
+            {
+                v.Rec = Factory.a39InstitutionPersonBL.Load(v.rec_pid);
+                v.j02ID = v.Rec.j02ID;
+                if (v.Rec.j04ID_Explicit > 0)
+                {
+                    v.RoleName = v.Rec.SchoolRoleName;
+                }
+                v.a03Name = v.Rec.a03Name;
+            }
+            v.Toolbar = new MyToolbarViewModel(v.Rec);
+
+            RefreshStateRecordByPerson(v);
+
+            if (isclone)
+            {
+                v.MakeClone();
+
+            }
+            return ViewTup(v, BO.j05PermValuEnum.A03Admin);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult RecordByPerson(Models.Record.a39RecordByPerson v)
+        {
+            RefreshStateRecordByPerson(v);
+
+            if (ModelState.IsValid)
+            {
+                var c = new BO.a39InstitutionPerson();
+                if (v.rec_pid > 0) c = Factory.a39InstitutionPersonBL.Load(v.rec_pid);
+                c.j02ID = v.j02ID;
+                c.a03ID = v.Rec.a03ID;
+                c.j04ID_Explicit = v.Rec.j04ID_Explicit;
+                c.a39RelationFlag = v.Rec.a39RelationFlag;
+                c.a39Description = v.Rec.a39Description;
+                c.a39IsAllowInspisWS = v.Rec.a39IsAllowInspisWS;
+
+                c.ValidUntil = v.Toolbar.GetValidUntil(c);
+                c.ValidFrom = v.Toolbar.GetValidFrom(c);
+
+                c.pid = Factory.a39InstitutionPersonBL.Save(c);
+                if (c.pid > 0)
+                {
+                    v.SetJavascript_CallOnLoad(c.pid);
+                    return View(v);
+                }
+
+            }
+
+            this.Notify_RecNotSaved();
+            return View(v);
+        }
+        private void RefreshStateRecordByPerson(a39RecordByPerson v)
+        {            
+            v.RecJ02 = Factory.j02PersonBL.Load(v.j02ID);
+
+        }
+        public IActionResult Record(int pid, int a03id,int j02id, bool isclone)
+        {
+            if (pid == 0 && a03id == 0 && j02id==0)
+            {
+                return this.StopPage(true, "a03id or j02id missing");
             }
             var v = new a39Record() { rec_pid = pid, rec_entity = "a39", a03ID = a03id };
 
@@ -24,7 +92,10 @@ namespace UI.Controllers
             {
                 v.Rec = Factory.a39InstitutionPersonBL.Load(v.rec_pid);
                 v.a03ID = v.Rec.a03ID;
-                v.RoleName = v.Rec.RoleName;
+                if (v.Rec.j04ID_Explicit > 0)
+                {
+                    v.RoleName = v.Rec.SchoolRoleName;
+                }                
                 v.Person = v.Rec.Person;
             }
             v.Toolbar = new MyToolbarViewModel(v.Rec);
@@ -51,7 +122,7 @@ namespace UI.Controllers
                 c.a03ID = v.a03ID;
                 c.j02ID = v.Rec.j02ID;
                 c.j04ID_Explicit = v.Rec.j04ID_Explicit;
-
+                c.a39RelationFlag = v.Rec.a39RelationFlag;
                 c.a39Description = v.Rec.a39Description;
                 c.a39IsAllowInspisWS = v.Rec.a39IsAllowInspisWS;
 
@@ -73,7 +144,7 @@ namespace UI.Controllers
 
         private void RefreshStateRecord(a39Record v)
         {
-            v.PageTitle = "Kontaktní osoba";
+            v.PageTitle = Factory.tra("Kontaktní osoba");
             v.RecA03 = Factory.a03InstitutionBL.Load(v.a03ID);
 
         }

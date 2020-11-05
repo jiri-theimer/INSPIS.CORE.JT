@@ -9,6 +9,7 @@ using ClosedXML.Excel;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.Extensions.Primitives;
 using DocumentFormat.OpenXml.Wordprocessing;
+using BO;
 
 namespace UI.Controllers
 {
@@ -317,6 +318,22 @@ namespace UI.Controllers
                                     rec.a03ParentFlag = BO.a03ParentFlagEnum.Slave;
                                 }
                                 break;
+                            case "a03ParentFlag":
+                                switch (strVal)
+                                {
+                                    case "1":
+                                        rec.a03ParentFlag = a03ParentFlagEnum.Master;
+                                        break;
+                                    case "2":
+                                    case "Філія":
+                                        rec.a03ParentFlag = a03ParentFlagEnum.Slave;
+                                        break;
+                                    default:
+                                        rec.a03ParentFlag = a03ParentFlagEnum.None;
+                                        break;
+                                }
+
+                                break;
                             case "a03REDIZO_Supervisory":
                                 if (strVal != "" && Factory.a03InstitutionBL.LoadByRedizo(strVal, 0) != null)
                                 {
@@ -429,6 +446,7 @@ namespace UI.Controllers
                                 }
 
                                 break;
+                            
                         }
                         
                     }

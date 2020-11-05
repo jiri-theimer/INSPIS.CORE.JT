@@ -63,47 +63,49 @@
             </div>
 
         }
-        @if (Model.RecEmployer != null)
-        {
-            <div class="form-row my-2">
-                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Zaměstnavatel"):</label>
-                <div class="col-sm-7 col-md-6">
-                    <myval value="@Model.RecEmployer.a03Name"></myval>
-                </div>
-
-            </div>
-
-        }
+       
         @if (Model.LisA39 != null)
         {
             <div class="py-2">
                 @foreach (var c in Model.LisA39)
                 {
-                    <div class="form-row">
-                        <label class="col-sm-1 col-md-2 col-form-label">@(c.a06Name):</label>
-                        <div class="col-sm-7 col-md-6">
-                            <myval datatype="link" linktarget="_top" linkurl="/a03/RecPage?pid=@c.a03ID" value="@c.a03Name" hoverprefix="a03" hoverpid="@c.a03ID"></myval>
+                <div class="form-row">
+                    @if (c.j04ID_Explicit > 0)
+                    {
+                        <label class="col-sm-1 col-md-2 col-form-label">@(c.a06Name+" ("+c.SchoolRoleName+")"):</label>
+                    }
+                    else
+                    {
+                        if (c.a39RelationFlag == BO.a39InstitutionPerson.a39RelationFlagEnum.Employee)
+                        {
+                            <label class="col-sm-1 col-md-2 col-form-label">@(c.a06Name+" ("+_f.tra("Zaměstnanec")+")"):</label>
+                        }
+                        else
+                        {
+                            <label class="col-sm-1 col-md-2 col-form-label">@(c.a06Name+" ("+_f.tra("Kontaktní osoba")+")"):</label>
+                        }
+                    }
 
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <myval value="@c.RoleName" tooltip="@_f.tra("Role v instituci")"></myval>
+                    <div class="col-sm-7 col-md-6">
+                        <myval datatype="link" linktarget="_top" linkurl="/a03/RecPage?pid=@c.a03ID" value="@c.a03Name" hoverprefix="a03" hoverpid="@c.a03ID"></myval>
 
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <div class="val-readonly rowvalhover">
-                                @if (c.a03REDIZO != null)
+                    </div>
+                    
+                    <div class="col-sm-4 col-md-4">
+                        <div class="val-readonly rowvalhover">
+                            @if (c.a03REDIZO != null)
+                            {
+                                <span>@c.a03REDIZO</span>
+                                <a class="valhover_tooltip" target="_blank" href="https://portal.csicr.cz/School/@(c.a03REDIZO)">portal</a>
+                                @if (c.a03ICO != null)
                                 {
-                                    <span>@c.a03REDIZO</span>
-                                    <a class="valhover_tooltip" target="_blank" href="https://portal.csicr.cz/School/@(c.a03REDIZO)">portal</a>
-                                    @if (c.a03ICO != null)
-                                    {
-                                        <a class="valhover_tooltip" target='_blank' href="https://wwwinfo.mfcr.cz/cgi-bin/ares/darv_sko.cgi?ico=@(c.a03ICO)&jazyk=cz&xml=1">ares</a>
-                                    }
-
+                                    <a class="valhover_tooltip" target='_blank' href="https://wwwinfo.mfcr.cz/cgi-bin/ares/darv_sko.cgi?ico=@(c.a03ICO)&jazyk=cz&xml=1">ares</a>
                                 }
-                            </div>
+
+                            }
                         </div>
                     </div>
+                </div>
                 }
             </div>
 

@@ -11,6 +11,7 @@ namespace BO
         NoRelation = 1,     //Aplikační role bez omezení uživatele podle jeho vztahu k instituci nebo k inspektorátu
         A03 = 2,            //Aplikační role s omezením na příslušnost uživatele k instituci
         A05 = 3             //Aplikační role s omezením na příslušnost osoby uživatele ke kraji podle inspektorátu
+        
     }
     public enum j04PortalFaceFlagEnum       //Vztah role k PORTÁLu
     {
@@ -18,6 +19,11 @@ namespace BO
         School = 2,     //škola
         Founder = 3,    //zřizovatel
         Anonymous = 4   //veřejnost
+    }
+    public enum j04UaFlag
+    {
+       None=0,
+       Employee=1       //vyjadřuje vztah zaměstnavatel -> zaměstnanec
     }
     public class j04UserRole : BaseBO
     {

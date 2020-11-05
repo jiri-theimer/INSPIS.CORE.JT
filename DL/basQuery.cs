@@ -526,6 +526,10 @@ namespace DL
             {
                 AQ(ref lis, "a.j04IsAllowInSchoolAdmin=1", "", null);    //filtr školních rolí podle j04IsAllowInSchoolAdmin=1
             }
+            if (mq.Prefix == "j04" && mq.param1 == "institution")
+            {
+                AQ(ref lis, "(a.j04IsAllowInSchoolAdmin=1 OR a.j04RelationFlag=2)", "", null);    //filtr školních rolí podle j04IsAllowInSchoolAdmin=1
+            }
             if (mq.Prefix == "j02" && mq.param1 == "j02IsInvitedPerson")
             {
                 AQ(ref lis, "a.j02IsInvitedPerson=1", "", null);    //filtr přizvaných osob

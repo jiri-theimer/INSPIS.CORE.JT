@@ -45,7 +45,7 @@
     </div>
 
     <div class="col-sm-1 col-md-1">
-        <mycombo entity="a05Region" asp-for="@Model.a05ID" selectedtext="@Model.a05Name" view-flag="2" event_after_changevalue="change_a05id" placeholder="Kraj"></mycombo>
+        <mycombo entity="a05Region" asp-for="@Model.a05ID" selectedtext="@Model.a05Name" view-flag="2" event_after_changevalue="change_a05id" placeholder="@_f.tra("Kraj")"></mycombo>
     </div>
     <div class="col-sm-1 col-md-1">
         <select class="form-control" asp-for="@Model.PersonQueryFlag" onchange="change_personqueryflag(this)">
@@ -88,11 +88,14 @@
                 strClass = "holiday";
             }
 
-            <td class="@strClass">
-                @d.Day
-                <br />
-                @(BO.BAS.ObjectDate2String(d,"ddd"))
-            </td>
+    <td class="@strClass">
+        @d.Day
+        <br />
+        @_f.tra(BO.BAS.DayOfWeekString(d)).Substring(0,2)
+       
+
+        
+    </td>
         }
 
     </tr>
@@ -108,8 +111,8 @@
                     </span>
                 }
                 else
-                {
-                    @recJ02.FullNameDesc
+                                {
+                                    @recJ02.FullNameDesc
                 }
 
 
@@ -135,28 +138,28 @@
             }
 
 
-            @foreach (DateTime d in Model.lisDays)
-            {
-                strClass = "";
-                x = Model.lisTimeLine.Where(p => p.j02ID == recJ02.j02ID && p.a35PlanDate == d).Count();
-                if (d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday)
+                @foreach (DateTime d in Model.lisDays)
                 {
-                    strClass = "nonwork-day";
-                }
+                    strClass = "";
+                    x = Model.lisTimeLine.Where(p => p.j02ID == recJ02.j02ID && p.a35PlanDate == d).Count();
+                    if (d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday)
+                    {
+                        strClass = "nonwork-day";
+                    }
                 <td class="@strClass">
                     @if (x > 0)
-                    {
+                {
                         <div class="a35cell">
                             @if (x > 1)
-                            {
+                {
                                 <span style="background-color:pink;padding-left:2px;padding-right:2px;">@x</span>
                             }
                         </div>
                     }
 
                     @if (Model.A38QueryFlag > 0)
-                    {
-                        @foreach (var c in Model.lisTimeLineA38.Where(p => p.j02ID == recJ02.j02ID && p.a38PlanDate == d))
+                {
+                    @foreach (var c in Model.lisTimeLineA38.Where(p => p.j02ID == recJ02.j02ID && p.a38PlanDate == d))
                         {
                             <div class="a38cell">
 
@@ -168,12 +171,12 @@
                         if (x > 0) strClass = "a35cell";
                     }
                     @if (Model.a05ID > 0)
-                    {
-                        @foreach (var c in Model.lisH04.Where(p => p.j02ID == recJ02.pid && (p.h04CapacityPlanFrom >= d && p.h04CapacityPlanFrom < d.AddDays(1) || p.h04CapacityPlanUntil >= d && p.h04CapacityPlanUntil < d.AddDays(1))))
+                {
+                    @foreach (var c in Model.lisH04.Where(p => p.j02ID == recJ02.pid && (p.h04CapacityPlanFrom >= d && p.h04CapacityPlanFrom < d.AddDays(1) || p.h04CapacityPlanUntil >= d && p.h04CapacityPlanUntil < d.AddDays(1))))
                         {
 
-                            if (c.h07IsToDo && c.h04Deadline != null && c.h04Deadline >= d && c.h04Deadline < d.AddDays(1))
-                            {
+                        if (c.h07IsToDo && c.h04Deadline != null && c.h04Deadline >= d && c.h04Deadline < d.AddDays(1))
+                        {
                                 <div class="@strClass" title="@(c.h07Name+": "+c.h04Name+", "+_akceTra+": "+c.a01Signature)">
                                     <img src="~/images/todo.png" />
                                 </div>

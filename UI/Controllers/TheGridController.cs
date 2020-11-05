@@ -28,7 +28,7 @@ namespace UI.Controllers
         }
 
         public IActionResult FlatView(string prefix,int go2pid)    //pouze grid bez subform
-        {
+        {            
             var v = inhaleGridViewInstance(prefix, go2pid);
             v.j72id = Factory.CBL.LoadUserParamInt("flatview-j72id-" + prefix);
             return View(v);

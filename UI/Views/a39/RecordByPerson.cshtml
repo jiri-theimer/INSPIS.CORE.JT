@@ -1,21 +1,21 @@
-﻿@model UI.Models.Record.a39Record
+﻿@model UI.Models.Record.a39RecordByPerson
 @inject BL.Factory _f
 
 @{
 
     Layout = "~/Views/Shared/_LayoutRecord.cshtml";
     if (Model.Rec == null) return;
-    Model.PageTitle = _f.tra("Kontaktní osoba");
+    Model.PageTitle = _f.tra("Kontaktní instituce");
 
 }
 
 @addTagHelper *, UI
 
-<input type="hidden" asp-for="@Model.a03ID" />
+<input type="hidden" asp-for="@Model.j02ID" />
 
 <div class="modal_record_container">
     <div class="alert alert-primary" role="alert">
-        @Model.RecA03.NamePlusRedizo
+        @Model.RecJ02.FullNameAsc
     </div>
     <div class="form-row">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Vztah"):</label>
@@ -28,9 +28,10 @@
     </div>
 
     <div class="form-row my-2">
-        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Osobní profil"):</label>
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Instituce"):</label>
         <div class="col-sm-11 col-md-10">
-            <mycombo entity="j02Person" asp-for="Rec.j02ID" selectedtext="@Model.Person" filter-flag="1"></mycombo>
+            <mycombo entity="a03Institution" asp-for="Rec.a03ID" selectedtext="@Model.a03Name" filter-flag="1"></mycombo>
+
         </div>
 
     </div>
@@ -42,6 +43,7 @@
         </div>
 
     </div>
+
     @if (_f.App.Implementation == "Default")
     {
         <div class="form-row my-2">
@@ -59,6 +61,7 @@
         <span asp-validation-for="Rec.a39Description" class="text-danger"></span>
     </div>
 </div>
+
 
 
 

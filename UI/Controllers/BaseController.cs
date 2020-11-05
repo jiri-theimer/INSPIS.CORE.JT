@@ -65,7 +65,8 @@ namespace UI.Controllers
                     {
                         
                         modelErrors.Add(modelError.ErrorMessage);
-                        Factory.CurrentUser.AddMessage(Factory.tra("Kontrola chyb")+": "+modelError.ErrorMessage);
+                        
+                        Factory.CurrentUser.AddMessage(context.HttpContext.Request.Path+" | "+Factory.tra("Kontrola chyb")+": "+modelError.ErrorMessage);
                     }
                 }
             }

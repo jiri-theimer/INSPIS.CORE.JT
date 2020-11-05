@@ -1,5 +1,5 @@
 ﻿@model UI.Models.Tab.a01TabCapacity
-@inject BL.Factory _f 
+@inject BL.Factory _f
 @{
     if (Model == null || Model.RecA01 == null)
     {
@@ -90,7 +90,8 @@
             <td class="@strClass">
                 @d.Day
                 <br />
-                @(BO.BAS.ObjectDate2String(d,"ddd"))
+                @_f.tra(BO.BAS.DayOfWeekString(d)).Substring(0, 2)
+
             </td>
         }
 

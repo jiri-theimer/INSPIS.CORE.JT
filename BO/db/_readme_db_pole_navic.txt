@@ -61,6 +61,9 @@ a03ParentFlag
 a03ID_Parent
 a28ID
 
+[a39InstitutionPerson]
+a39RelationFlag
+
 [a42Qes]
 a42JobGuid
 a42UploadGuid
@@ -70,7 +73,6 @@ a42JobState
 j02FullText
 j02Address
 j02Position
-a03ID_Employer
 
 [j04UserRole]
 j04ViewUrl_Page varchar(255)

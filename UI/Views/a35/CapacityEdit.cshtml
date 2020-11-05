@@ -131,7 +131,7 @@
                 <td class="@strClass">
                     @d.Day
                     <br />
-                    @(BO.BAS.ObjectDate2String(d,"ddd"))
+                    @_f.tra(BO.BAS.DayOfWeekString(d)).Substring(0, 2)
                 </td>
             }
             <td></td>

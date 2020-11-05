@@ -430,9 +430,10 @@ namespace BL
             AppendTimestamp("f06Form");
 
             //a39 = kontaktní osoby
-            AF("a39InstitutionPerson", "a39IsAllowInspisWS", "Přístup k IS", 1, null, "bool",false,true);
+            AF("a39InstitutionPerson", "a39IsAllowInspisWS", "Přístup k IS", 0, null, "bool",false,true);
             AF("a39InstitutionPerson", "a39Description", "Poznámka", 2);
-            
+            AF("a39InstitutionPerson", "RelationFlag", "Vztah", 2, "case a.a39RelationFlag when 2 then 'Zaměstnanec' else 'Kontaktní osoba' end");
+
             //f12 = typ formuláře            
             AF("f12FormType", "TreeItem", "Typ formuláře", 1, "case when a.f12TreeLevel > 1 then replace(space(2 * (a.f12TreeLevel - 1)), ' ', '-') else '' END + a.f12Name", "string", false, true);
             AF("f12FormType", "f12Name", "Název", 2);

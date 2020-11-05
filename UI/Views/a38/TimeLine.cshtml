@@ -82,7 +82,8 @@
             <td class="@strClass">
                 @d.Day
                 <br />
-                @(BO.BAS.ObjectDate2String(d,"ddd"))
+                @_f.tra(BO.BAS.DayOfWeekString(d)).Substring(0, 2)
+
             </td>
         }
 
@@ -95,7 +96,7 @@
                 <span>
                     @recJ23.NamePlusCode
                 </span>
-                
+
             </td>
             <td>
                 <a class="reczoom" data-rel="/j23/InfoCapacity?pid=@(recJ23.pid)&hover_by_reczoom=1&m=@Model.CurMonth&y=@Model.CurYear" data-maxwidth="1" style="visibility:visible!important;">ℹ</a>

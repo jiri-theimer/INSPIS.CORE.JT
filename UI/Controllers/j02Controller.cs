@@ -109,10 +109,7 @@ namespace UI.Controllers
                     {
                         v.RecJ03 = Factory.j03UserBL.Load(v.Rec.j03ID);
                     }
-                    if (v.Rec.a03ID_Employer > 0)
-                    {
-                        v.RecEmployer = Factory.a03InstitutionBL.Load(v.Rec.a03ID_Employer);
-                    }
+                   
 
                     var mq = new BO.myQuery("a39InstitutionPerson");
                     mq.IsRecordValid = true;
@@ -180,14 +177,15 @@ namespace UI.Controllers
                 v.TagNames = tg.TagNames;
                 v.TagHtml = tg.TagHtml;
 
-                if (v.Rec.a03ID_Employer > 0)
+                var mq = new BO.myQuery("a39");
+                mq.j02id = v.rec_pid;
+                var lisA39 = Factory.a39InstitutionPersonBL.GetList(mq).Where(p=>p.a39RelationFlag==BO.a39InstitutionPerson.a39RelationFlagEnum.Employee);
+                if (lisA39.Count() > 0)
                 {
-                    var c = Factory.a03InstitutionBL.Load(v.Rec.a03ID_Employer);
-                    if (c != null)
-                    {
-                        v.EmployerName = c.a03Name;
-                    }
+                    v.a03ID_Employer = lisA39.First().a03ID;
+                    v.EmployerName= lisA39.First().a03Name;
                 }
+
             }
             v.Toolbar = new MyToolbarViewModel(v.Rec);
             if (isclone)
@@ -218,8 +216,7 @@ namespace UI.Controllers
                 c.j02Mobile = v.Rec.j02Mobile;
                 c.j02Address = v.Rec.j02Address;
                 c.j02Position = v.Rec.j02Position;
-
-                c.a03ID_Employer = v.Rec.a03ID_Employer;
+               
                 c.ValidUntil = v.Toolbar.GetValidUntil(c);
                 c.ValidFrom = v.Toolbar.GetValidFrom(c);
 
@@ -227,6 +224,29 @@ namespace UI.Controllers
                 if (c.pid > 0)
                 {
                     Factory.o51TagBL.SaveTagging("j02", c.pid, v.TagPids);
+
+                    var mq = new BO.myQuery("a39");
+                    mq.j02id = c.pid;
+                    var lisA39 = Factory.a39InstitutionPersonBL.GetList(mq).Where(p => p.a39RelationFlag == BO.a39InstitutionPerson.a39RelationFlagEnum.Employee);
+                    if (v.a03ID_Employer > 0)
+                    {
+                        var recA39 = new BO.a39InstitutionPerson() { a39RelationFlag = BO.a39InstitutionPerson.a39RelationFlagEnum.Employee,j02ID=c.pid };
+                        if (lisA39.Count() > 0 && v.a03ID_Employer > 0)
+                        {
+                            recA39 = lisA39.First();                            
+                        }                        
+                        recA39.a03ID = v.a03ID_Employer;
+                        Factory.a39InstitutionPersonBL.Save(recA39);
+                    }
+                    else
+                    {
+                        if (lisA39.Count() > 0)
+                        {
+                            Factory.CBL.DeleteRecord("a39InstitutionPerson", lisA39.First().pid);
+                        }
+                    }
+                    
+                    
 
                     v.SetJavascript_CallOnLoad(c.pid);
                     return View(v);

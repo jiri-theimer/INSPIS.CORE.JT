@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 
 namespace UI.Models.Record
 {
-    public class a39Record : BaseRecordViewModel
+    public class a39RecordByPerson: BaseRecordViewModel
     {
         public BO.a39InstitutionPerson Rec { get; set; }
 
-        public BO.a03Institution RecA03 { get; set; }
+        public BO.j02Person RecJ02 { get; set; }
 
-        
-        public int a03ID { get; set; }
-        public string Person { get; set; }  //kvůli combo
+
+        public int j02ID { get; set; }
+        public string a03Name { get; set; }  //kvůli combo
         public string RoleName { get; set; }    //kvůli combo
 
 

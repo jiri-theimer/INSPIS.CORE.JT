@@ -58,11 +58,11 @@
 
     <div>
         <h4>@Model.PageTitle</h4>
-        <form id="form1" asp-controller="@Model.rec_entity" asp-action="Record" method="POST">
+        <form id="form1" asp-controller="@Model.rec_entity" asp-action="@Model.form_action" method="POST">
             <input type="hidden" asp-for="@Model.rec_pid" />
             <input type="hidden" asp-for="@Model.rec_entity" />
             <input type="hidden" asp-for="@Model.ActiveTabIndex" />
-
+            <input type="hidden" asp-for="@Model.form_action" />
 
 
             @Html.EditorFor(m => m.Toolbar, "~/Views/Shared/_MyToolbar.cshtml")

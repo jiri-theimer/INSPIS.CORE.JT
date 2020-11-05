@@ -10,6 +10,7 @@ namespace UI.Models
         
         public int rec_pid { get; set; }        
         public string rec_entity { get; set; }
+        public string form_action { get; set; } = "Record";
         
         public string PageTitle { get; set; }
         public int ActiveTabIndex { get; set; } = 1;

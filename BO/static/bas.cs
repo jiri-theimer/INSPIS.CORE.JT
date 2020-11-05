@@ -189,6 +189,28 @@ namespace BO
             }
             
         }
+        public static string DayOfWeekString(DateTime d)
+        {
+            switch ((int)d.DayOfWeek)
+            {
+                case 0:
+                    return "Neděle";
+                case 1:
+                    return "Pondělí";
+                case 2:
+                    return "Úterý";
+                case 3:
+                    return "Středa";                
+                case 4:
+                    return "Čtvrtek";
+                case 5:
+                    return "Pátek";
+                case 6:
+                    return "Sobota";                
+                default:
+                    return "??";
+            }
+        }
         public static string ObjectDate2String(object d,string format="dd.MM.yyyy ddd")
         {
             if (d == System.DBNull.Value || d==null) return "";

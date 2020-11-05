@@ -507,6 +507,8 @@ namespace UI.Controllers
                     AMI("Karta záznamu", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
                     AMI("Kopírovat", string.Format("javascript:_clone('{0}',{1})", prefix, pid));
                     DIV();
+                    AMI("Přidat kontaktní instituci", string.Format("javascript: _window_open('/a39/RecordByPerson?pid=0&j02id={0}')", pid));
+                    DIV();
                     AMI("Tisková sestava", string.Format("javascript: _window_open('/x31/ReportContext?pid={0}&prefix=j02',2)", pid));
                     AMI("Stránka osoby", string.Format("javascript:_location_replace_top('/j02/RecPage?pid={0}')",pid));
                     break;
