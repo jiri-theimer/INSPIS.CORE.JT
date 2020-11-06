@@ -185,7 +185,7 @@ namespace UI.Controllers
             if (oper== "runimport")
             {
                 prepare_import(v);
-                
+                handle_import(v.GuidMapping, 0, 0);
                 return View(v);
             }
             if (oper == "postback")
@@ -275,6 +275,7 @@ namespace UI.Controllers
             var lisA05 = Factory.a05RegionBL.GetList(new BO.myQuery("a05"));
             var lisA28 = Factory.a28SchoolTypeBL.GetList(new BO.myQuery("a28"));
             var lisA09=Factory.a09FounderTypeBL.GetList(new BO.myQuery("a09"));
+            var lisA03 = Factory.a03InstitutionBL.GetList(new BO.myQuery("a03"));
             var errs = new List<string>();
             var recs = new List<BO.a03Institution>();
             int intRedIzoIndex = -1;
@@ -297,10 +298,9 @@ namespace UI.Controllers
                     if (intRedIzoIndex > -1)
                     {
                         rec.a03REDIZO = GV(sheet.Cell(row, intRedIzoIndex).Value);  //najít již existující instituci podle REDIZO
-                        if (rec.a03REDIZO != "")
+                        if (rec.a03REDIZO != "" && lisA03.Where(p=>p.a03REDIZO==rec.a03REDIZO).Count()>0)
                         {
-                            var recExist = Factory.a03InstitutionBL.LoadByRedizo(rec.a03REDIZO, 0);
-                            if (recExist != null) rec = recExist;
+                            rec = lisA03.Where(p => p.a03REDIZO == rec.a03REDIZO).First();                           
                         }                        
                     }
                     foreach(var c in lisMapping)
@@ -312,9 +312,9 @@ namespace UI.Controllers
                                 rec.a03REDIZO = strVal;
                                 break;
                             case "a03REDIZO_Parent":
-                                if (strVal != "" && Factory.a03InstitutionBL.LoadByRedizo(strVal, 0) != null)
+                                if (strVal != "" && lisA03.Where(p => p.a03REDIZO == strVal).Count() > 0)
                                 {
-                                    rec.a03ID_Parent = Factory.a03InstitutionBL.LoadByRedizo(strVal, 0).pid;
+                                    rec.a03ID_Parent = lisA03.Where(p => p.a03REDIZO == strVal).First().pid;
                                     rec.a03ParentFlag = BO.a03ParentFlagEnum.Slave;
                                 }
                                 break;
@@ -335,9 +335,15 @@ namespace UI.Controllers
 
                                 break;
                             case "a03REDIZO_Supervisory":
-                                if (strVal != "" && Factory.a03InstitutionBL.LoadByRedizo(strVal, 0) != null)
+                                if (strVal != "" && lisA03.Where(p => p.a03REDIZO == strVal).Count() > 0)
                                 {
-                                    rec.a03ID_Supervisory = Factory.a03InstitutionBL.LoadByRedizo(strVal, 0).pid;                                   
+                                    rec.a03ID_Supervisory = lisA03.Where(p => p.a03REDIZO == strVal).First().pid;                                   
+                                }
+                                break;
+                            case "a03Name_Supervisory":
+                                if (strVal != "" && lisA03.Where(p => p.a03Name == strVal || p.a03ShortName==strVal).Count() > 0)
+                                {
+                                    rec.a03ID_Supervisory = lisA03.Where(p => p.a03REDIZO == strVal || p.a03Name==strVal).First().pid;
                                 }
                                 break;
                             case "a03ICO":

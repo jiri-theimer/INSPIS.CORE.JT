@@ -429,7 +429,7 @@ namespace UI.Controllers
                         {
                             DIV();
                             AMI("Upravit časový plán akce", string.Format("javascript: _window_open('/a35/CapacityEdit?pid={0}')", pid));
-                            AMI("Časové kapacity inspektorů", string.Format("javascript: _window_open('/a35/TimeLine?a05id={0}',2)", recA01.a05ID));
+                            AMI("Časové kapacity inspektorů", string.Format("javascript: _window_open('/a35/TimeLine?a05id={0}&a01id={1}',2)", recA01.a05ID,pid));
                             if (recA10.a10CoreFlag == "aus")
                             {
                                 //AUS rezervace mimo inspekce

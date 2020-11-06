@@ -332,11 +332,11 @@ namespace DL
                 case "a01":
                     if (isthegrid == true)
                     {
-                        return "a.a01ID as pid,dbo._core_a01_isclosed(a.a01IsClosed,a.a01ValidFrom,a.a01ValidUntil) as isclosed,bc.b02Color as bgcolor";
+                        return "a.a01ID as pid,dbo._core_a01_isclosed(a.a01IsClosed,a.a01ValidFrom,a.a01ValidUntil) as isclosed,bc.b02Color as bgcolor,a.a01ParentID as parentpid,a.a01ChildsCount as childscount";
                     }
                     else
                     {
-                        return "a.a01ID as pid,dbo._core_a01_isclosed(a.a01IsClosed,a.a01ValidFrom,a.a01ValidUntil) as isclosed,'a01' as entity,a.a01DateInsert as DateInsert,a.a01UserInsert as UserInsert,a.a01DateUpdate as DateUpdate,a.a01UserUpdate as UserUpdate,a.a01ValidFrom as ValidFrom,a.a01ValidUntil as ValidUntil";
+                        return "a.a01ID as pid,dbo._core_a01_isclosed(a.a01IsClosed,a.a01ValidFrom,a.a01ValidUntil) as isclosed,'a01' as entity,a.a01DateInsert as DateInsert,a.a01UserInsert as UserInsert,a.a01DateUpdate as DateUpdate,a.a01UserUpdate as UserUpdate,a.a01ValidFrom as ValidFrom,a.a01ValidUntil as ValidUntil,a.a01ParentID as parentpid,a.a01ChildsCount as childscount";
                     }
 
                 case "a11":

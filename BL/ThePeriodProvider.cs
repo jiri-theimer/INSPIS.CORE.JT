@@ -66,7 +66,7 @@ namespace BL
 
             switch (pid)
             {
-                case 10:
+                case 10:                    
                     strName = "Dnes"; d1 = DateTime.Today; d2 = DateTime.Today;
                     break;
                 case 11:

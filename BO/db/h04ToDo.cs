@@ -26,6 +26,8 @@ namespace BO
         public bool h07IsToDo;
         public bool h07IsCapacityPlan;
         public string h05Name { get; set; } //combo
+        public string h05NameLang1 { get; set; }
+        public string h05NameLang2 { get; set; }
         public string a01Signature;
 
     }

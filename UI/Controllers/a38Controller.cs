@@ -288,7 +288,7 @@ namespace UI.Controllers
             {
                 if (d.DayOfWeek != DayOfWeek.Saturday && d.DayOfWeek != DayOfWeek.Sunday)
                 {
-                    v.PracovnichDni += 1;
+                    if (v.lisJ26.Where(p => p.j26Date == d).Count() == 0) v.PracovnichDni += 1;                    
                 }
 
             }

@@ -1,11 +1,19 @@
 ﻿@model UI.Models.PeriodViewModel
 @inject BL.ThePeriodProvider _pp
+@inject BL.Factory _f
 @{
     if (Model == null)
     {
         return;
     }
     var _lisPeriods = _pp.getPallete();
+    if (_f.CurrentUser.j03LangIndex > 0)
+    {
+        foreach(BO.ThePeriod c in _lisPeriods)
+        {
+            c.PeriodName = _f.tra(c.PeriodName);
+        }
+    }
 }
 
 @addTagHelper *, UI

@@ -193,6 +193,8 @@ namespace BL
             AF("a03Institution", "a03DirectorFullName", "Ředitel (textově)");
             AF("a03Institution", "a03IsTestRecord", "Testovací záznam", 0, null, "bool");
             AF("a03Institution","a29Names", "Pojmenované seznamy", 0, "dbo._core_a03_get_a29name_inline(a.a03ID)");
+            onecol=AF("a03Institution", "a03ParentFlag", "Úroveň", 0, "case a.a03ParentFlag when 1 then '1' when 2 then '2' end");
+            onecol.FixedWidth = 100;
             AppendTimestamp("a03Institution");
 
             //a02 = osoba v inspektorátu            
@@ -575,7 +577,7 @@ namespace BL
 
             //h05 = stav úkolu
             AF("h05ToDoStatus", "h05Name", "Stav úkolu", 1,null,"string",false,true);
-
+            
             AF("h11NoticeBoard", "h11Name", "Článek", 1, null, "string", false, true);
             AF("h11NoticeBoard", "h11IsPublic", "Pro všechny", 1, null, "bool");
             AppendTimestamp("h11NoticeBoard");

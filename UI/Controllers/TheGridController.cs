@@ -482,12 +482,25 @@ namespace UI.Controllers
 
                 if ((mq.Prefix=="a01" || mq.Prefix=="a11") && dbRow["bgcolor"] != System.DBNull.Value)
                 {
-                    _s.Append(string.Format("<td class='td1' style='width:20px;background-color:{0}'></td>", dbRow["bgcolor"]));
+                    _s.Append(string.Format("<td class='td1' style='width:20px;background-color:{0}'>", dbRow["bgcolor"]));
                 }
                 else
                 {
-                    _s.Append("<td class='td1' style='width:20px;'></td>");
+                    _s.Append("<td class='td1' style='width:20px;'>");
                 }
+
+                if (mq.Prefix == "a01")
+                {
+                    if (dbRow["parentpid"] != DBNull.Value)
+                    {
+                        _s.Append("<img src='/images/child.png'/>");
+                    }
+                    else
+                    {
+                        if (Convert.ToInt32(dbRow["childscount"])>0) _s.Append("<img src='/images/mother.png'/>");
+                    }
+                }
+                _s.Append("</td>");
                 
                 
                 if (_grid.GridState.ContextMenuFlag > 0)
