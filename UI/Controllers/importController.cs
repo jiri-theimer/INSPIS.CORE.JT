@@ -19,6 +19,15 @@ namespace UI.Controllers
         //{
 
         //}
+
+        public IActionResult a03run(string guid)
+        {
+            var lisMapping = Factory.p85TempboxBL.GetList(guid).Where(p => p.p85Prefix == "mapping");
+            var headerMapping = Factory.p85TempboxBL.GetList(guid).Where(p => p.p85Prefix == "header").First();
+
+            var v = new a03ImportRun() { Guid=guid,StartRow= headerMapping.p85OtherKey2,EndRow= headerMapping.p85OtherKey3};
+            return View(v);
+        }
         public IActionResult a03(int j75id,string sheetname,int startrow,int endrow,string guid,string filename)
         {
             if (startrow == 0) startrow = 2;
@@ -185,8 +194,9 @@ namespace UI.Controllers
             if (oper== "runimport")
             {
                 prepare_import(v);
-                handle_import(v.GuidMapping, 0, 0);
-                return View(v);
+                return Redirect("/import/a03run?guid=" + v.GuidMapping);
+                
+                
             }
             if (oper == "postback")
             {
@@ -266,9 +276,9 @@ namespace UI.Controllers
                 Factory.p85TempboxBL.Save(rec);
             }
         }
-        private void handle_import(string strGuid,int startrowindex,int endrowindex)
+        public BO.Result handle_import(string strGuid)
         {
-                       
+            var ret = new BO.Result(false);
             var lisMapping = Factory.p85TempboxBL.GetList(strGuid).Where(p=>p.p85Prefix== "mapping");
             var headerMapping = Factory.p85TempboxBL.GetList(strGuid).Where(p => p.p85Prefix == "header").First();
             var lisA21 = Factory.FBL.GetListA21();
@@ -283,16 +293,26 @@ namespace UI.Controllers
             {
                 intRedIzoIndex = lisMapping.Where(p => p.p85FreeText01 == "a03REDIZO").First().p85DataPID;
             }
-            if (startrowindex == 0) startrowindex = headerMapping.p85OtherKey2;
-            if (endrowindex == 0) endrowindex = headerMapping.p85OtherKey3;
-
+            int intStartRow = headerMapping.p85OtherKey2;
+            int intEndRow = headerMapping.p85OtherKey3;
+            int intBatchStartRow = headerMapping.p85OtherKey4;
+            if (intBatchStartRow < intStartRow)
+            {
+                intBatchStartRow = intStartRow;
+            }
+            int intBatchEndRow = intBatchStartRow + 50;
+            if (intBatchEndRow > intEndRow)
+            {
+                intBatchEndRow = intEndRow;
+            }
+           
 
 
             using (var workbook = new XLWorkbook(Factory.App.TempFolder+"\\"+headerMapping.p85FreeText01))
             {
                 
                 var sheet = workbook.Worksheets.First(p => p.Name == headerMapping.p85FreeText02);
-                for (int row = startrowindex; row <= endrowindex; row++)
+                for (int row = intBatchStartRow; row <= intBatchEndRow; row++)
                 {
                     var rec = new BO.a03Institution() { a06ID = headerMapping.p85OtherKey1 };
                     if (intRedIzoIndex > -1)
@@ -463,7 +483,11 @@ namespace UI.Controllers
                     }
                     else
                     {
+                        var cRecErr = new BO.p85Tempbox() { p85GUID = strGuid, p85Prefix = "error", p85FreeText01 = "#" + row.ToString(), p85Message = Factory.CurrentUser.Messages4Notify.Last().Key + ": " + Factory.CurrentUser.Messages4Notify.Last().Value };
+                        Factory.p85TempboxBL.Save(cRecErr);
+                        
                         errs.Add(row.ToString());
+                        ret.Message += "<hr>#" + row.ToString()+" | "+Factory.CurrentUser.Messages4Notify.Last().Key + ": " + Factory.CurrentUser.Messages4Notify.Last().Value;
                         if (errs.Count() >= 10)
                         {
                             break;
@@ -474,10 +498,10 @@ namespace UI.Controllers
                 }
                 
 
-                if (errs.Count() > 0)
-                {
-                    this.AddMessage("Import pozastaven.");
-                    return;
+                if (errs.Count() >= 10)
+                {                   
+                    ret.Message += "<hr>"+"Import pozastaven kvůli chybám.";                   
+                    return ret;
                 }
 
                 foreach(var rec in recs)
@@ -485,8 +509,21 @@ namespace UI.Controllers
                     
                     Factory.a03InstitutionBL.Save(rec);
                 }
+                ret.Message = "Import #" + intBatchStartRow.ToString() + " - #" + intBatchEndRow.ToString();
 
-                this.AddMessage("OK", "info");
+                headerMapping.p85OtherKey4 = intBatchEndRow + 1;
+                if (intBatchEndRow >= intEndRow)
+                {
+                    ret.pid = 1;    //import celkově dokončen
+                    var lisErrs = Factory.p85TempboxBL.GetList(strGuid).Where(p => p.p85Prefix == "error");
+                    foreach(var cc in lisErrs)
+                    {
+                        ret.Message += "<hr>" + cc.p85FreeText01 + " | " + cc.p85Message;
+                    }
+                }
+                Factory.p85TempboxBL.Save(headerMapping);
+
+                return ret;
             }
         }
     }

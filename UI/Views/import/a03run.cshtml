@@ -1,0 +1,82 @@
+﻿@model a03ImportRun
+@inject BL.Factory _f
+
+@{
+    ViewData["Title"] = _f.tra("Dokončit import");
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <h4>@ViewData["Title"]</h4>
+
+
+<form id="form1" asp-controller="import" asp-action="a03run" method="POST">
+    <input type="hidden" asp-for="@Model.Guid" />
+
+    <div class="bg-light" style="padding:10px;">
+        <button type="button" id="cmdRun" onclick="StartJob()" class="btn btn-primary">@_f.tra("Spustit import")</button>
+
+        <span>#@Model.StartRow</span> - <span>#@Model.EndRow</span>
+    </div>
+
+    <div>
+        <button type="button" id="cmdStop" onclick="StopJob()" class="btn btn-warning" style="display:none;">@_f.tra("Pozastavit")</button>
+    </div>
+
+    <div id="divResult" style="font-weight:bold;">
+
+    </div>
+
+</form>
+
+<script type="text/javascript">
+    var _cmdRunText = $("#cmdRun").text();
+    var _isStopped = false;
+
+    $(document).ready(function () {
+
+       
+    });
+
+    function StartJob() {
+        _isStopped = false;
+        $("#cmdRun").text("Processing...");
+        $("#cmdRun").attr("disabled", true);
+        $("#cmdStop").css("display", "block");
+
+        $("#divResult").html("Loading...");
+        RunOneJob();
+    }
+    function StopJob() {
+        _isStopped = true;
+        $("#cmdRun").text("Waiting for STOP...");
+        $("#cmdStop").css("display", "none");
+    }
+
+    function RunOneJob() {
+
+        $.post("/import/handle_import", { strGuid: "@Model.Guid" }, function (data) {
+            if (data.pid == 1) {
+                $("#divResult").html(data.message+"<hr>"+"Import dokončen.");
+
+                alert("Import dokončen.");
+                //location.replace(location.href);
+                return;
+            }
+            $("#divResult").html(data.message);
+
+            if (_isStopped == true) {
+                $("#cmdRun").text(_cmdRunText);
+                $("#cmdRun").attr("disabled", false);
+                $("#cmdStop").css("display", "none");
+                _isStopped = false;
+                return;
+            }
+
+
+            RunOneJob();
+        });
+    }
+</script>
+
+
+
