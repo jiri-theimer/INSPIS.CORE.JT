@@ -184,6 +184,14 @@ namespace UI.Controllers
             v.SelectedColumns = _colsProvider.ParseTheGridColumns(mq.Prefix, v.Rec.j72Columns, Factory.CurrentUser.j03LangIndex);
            
             v.lisQueryFields = new BL.TheQueryFieldProvider(v.Rec.j72Entity.Substring(0, 3)).getPallete();
+            if (Factory.CurrentUser.j03LangIndex > 0)
+            {   //překlad do cizího jazyku
+                foreach (var c in v.lisQueryFields)
+                {
+                    c.Header = Factory.tra(c.Header);
+                }
+            }
+            
             v.lisPeriods = _pp.getPallete();
             if (v.lisJ73 == null)
             {

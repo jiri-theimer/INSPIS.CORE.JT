@@ -41,7 +41,17 @@
 <div id="layout_main">
     <div class="modal_record_container">
         <div class="form-row">
-            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
+            <label class="col-sm-1 col-md-2 col-form-label">
+                @_f.tra("Název"):
+                @if (Model.Rec.a03ParentFlag == BO.a03ParentFlagEnum.Master)
+                {
+                    <img src="~/images/a03ParentFlag1.png" />
+                }
+                @if (Model.Rec.a03ParentFlag == BO.a03ParentFlagEnum.Slave)
+                {
+                    <img src="~/images/a03ParentFlag2.png" />
+                }
+            </label>
             @if (Model.Rec.a03ShortName == null)
             {
                 <div class="col-sm-8 col-md-7">
@@ -90,11 +100,21 @@
                         @if (Model.Rec.a03REDIZO != null)
                         {
                             <span>@Model.Rec.a03REDIZO</span>
-                            <a class="valhover_tooltip" target="_blank" href="https://portal.csicr.cz/School/@(Model.Rec.a03REDIZO)">portal</a>
-                            @if (Model.Rec.a03ICO != null)
+                            @if (_f.App.Implementation == "UA")
                             {
-                                <a class="valhover_tooltip" target='_blank' href="https://wwwinfo.mfcr.cz/cgi-bin/ares/darv_sko.cgi?ico=@(Model.Rec.a03ICO)&jazyk=cz&xml=1">rejstřík škol</a>
+
+                                <a class="valhover_tooltip" target='_blank' href="https://registry.edbo.gov.ua/institution/@(Model.Rec.a03REDIZO)">EDBO</a>
                             }
+                            else
+                            {
+                                <a class="valhover_tooltip" target="_blank" href="https://portal.csicr.cz/School/@(Model.Rec.a03REDIZO)">portal</a>
+                                @if (Model.Rec.a03ICO != null)
+                                {
+                                    <a class="valhover_tooltip" target='_blank' href="https://wwwinfo.mfcr.cz/cgi-bin/ares/darv_sko.cgi?ico=@(Model.Rec.a03ICO)&jazyk=cz&xml=1">rejstřík škol</a>
+                                }
+
+                            }
+
 
                         }
                     </div>
@@ -147,7 +167,11 @@
             <div class="col-sm-6 col-md-6">
                 <div class="val-readonly rowvalhover">
                     <span>@(Model.Rec.a03Street+", "+Model.Rec.a03PostCode+" "+Model.Rec.a03City)</span>
-                    <a class="valhover_tooltip" target='_blank' href="https://mapy.cz/zakladni?q=@(Model.Rec.a03City+"+"+Model.Rec.a03Street)">mapy</a>
+                    @if (_f.App.Implementation != "UA")
+                    {
+                        <a class="valhover_tooltip" target='_blank' href="https://mapy.cz/zakladni?q=@(Model.Rec.a03City+"+"+Model.Rec.a03Street)">mapy</a>
+                    }
+
                     <a class="valhover_tooltip" target='_blank' href="https://www.google.com/maps/place/@(Model.Rec.a03City+"+"+Model.Rec.a03Street)">google</a>
                 </div>
 

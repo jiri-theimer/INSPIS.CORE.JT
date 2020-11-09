@@ -20,6 +20,8 @@ namespace UI.Models
         
         
         public TheGridOutput firstdata { get; set; }
+
+        public string GridMessage { get; set; }     //zpráva dole za navigací pageru
     }
 
    public class TheGridUIContext

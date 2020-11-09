@@ -248,11 +248,15 @@ namespace UI.Controllers
 
         }
 
-       private string GV(object val)
+       private string GV(object val,int intMaxLength=0)
         {
             if (val == null)
             {
                 return "";
+            }
+            if (intMaxLength > 0 && val.ToString().Length>intMaxLength)
+            {
+                return val.ToString().Substring(0, intMaxLength);
             }
             return val.ToString();
         }
@@ -373,34 +377,34 @@ namespace UI.Controllers
                                 rec.a03Name = strVal;
                                 break;
                             case "a03City":
-                                rec.a03City = strVal;
+                                rec.a03City = BO.BAS.LeftString(strVal,80);
                                 break;
                             case "a03Street":
-                                rec.a03Street = strVal;
+                                rec.a03Street = BO.BAS.LeftString(strVal, 255);                                
                                 break;
                             case "a03PostCode":
-                                rec.a03PostCode = strVal;
+                                rec.a03PostCode = BO.BAS.LeftString(strVal,50);
                                 break;
                             case "a03Phone":
-                                rec.a03Phone = strVal;
+                                rec.a03Phone = BO.BAS.LeftString(strVal,50);
                                 break;                           
                             case "a03Mobile":
-                                rec.a03Mobile = strVal;
+                                rec.a03Mobile =BO.BAS.LeftString( strVal,50);
                                 break;
                             case "a03Fax":
-                                rec.a03Fax = strVal;
+                                rec.a03Fax = BO.BAS.LeftString(strVal, 50);
                                 break;
                             case "a03Web":
-                                rec.a03Web = strVal;
+                                rec.a03Web = BO.BAS.LeftString(strVal, 200);
                                 break;
                             case "a03Email":
-                                rec.a03Email = strVal;
+                                rec.a03Email = BO.BAS.LeftString(strVal, 100);
                                 break;
                             case "a03DirectorFullName":
-                                rec.a03DirectorFullName = GV(sheet.Cell(row, c.p85DataPID).Value.ToString());
+                                rec.a03DirectorFullName = GV(sheet.Cell(row, c.p85DataPID).Value.ToString(),100);
                                 break;
                             case "a03ShortName":
-                                rec.a03ShortName = GV(sheet.Cell(row, c.p85DataPID).Value.ToString());
+                                rec.a03ShortName = GV(sheet.Cell(row, c.p85DataPID).Value.ToString(),200);
                                 break;
                             case "a21Code":                                
                                 if (strVal!= "" && lisA21.Where(p => p.a21Code == strVal).Count() > 0)

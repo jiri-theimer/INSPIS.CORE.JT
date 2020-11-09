@@ -56,7 +56,8 @@
 
         $.post("/import/handle_import", { strGuid: "@Model.Guid" }, function (data) {
             if (data.pid == 1) {
-                $("#divResult").html(data.message+"<hr>"+"Import dokončen.");
+                var d = new Date();
+                $("#divResult").html(data.message+"<hr>"+"Import dokončen."+"<hr>"+d);
 
                 alert("Import dokončen.");
                 //location.replace(location.href);

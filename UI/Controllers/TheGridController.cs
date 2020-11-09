@@ -287,7 +287,7 @@ namespace UI.Controllers
             return render_thegrid_html(gridState);
         }
         
-        private System.Data.DataTable prepare_datatable(ref BO.myQuery mq, BO.TheGridState gridState)
+        private System.Data.DataTable prepare_datatable_4export(ref BO.myQuery mq, BO.TheGridState gridState)
         {            
             
             mq.explicit_columns = _colsProvider.ParseTheGridColumns(mq.Prefix, gridState.j72Columns,Factory.CurrentUser.j03LangIndex);
@@ -301,7 +301,7 @@ namespace UI.Controllers
                 mq.TheGridFilter = _colsProvider.ParseAdhocFilterFromString(gridState.j75Filter, mq.explicit_columns);
             }
             mq.lisPeriods = _pp.getPallete();
-
+            
             InhaleAddFilter(gridState.AddFilterID, ref mq);
             if (string.IsNullOrEmpty(gridState.j72MasterEntity) && Factory.EProvider.ByPrefix(mq.Prefix).IsGlobalPeriodQuery)
             {
@@ -377,6 +377,9 @@ namespace UI.Controllers
             if (gridState.j72HashJ73Query)
             {
                 mq.lisJ73 = Factory.j72TheGridTemplateBL.GetList_j73(gridState.j72ID,gridState.j72Entity.Substring(0,3));
+                _grid.GridMessage = getFiltrAlias(gridState, mq);
+
+
             }
             mq.InhaleMasterEntityQuery(gridState.j72MasterEntity, gridState.MasterPID,gridState.MasterFlag);
                         
@@ -460,6 +463,10 @@ namespace UI.Controllers
                 {
                     strRowClass+= " trbin";
                 }
+                if (mq.Prefix == "a03" && Convert.ToBoolean(dbRow["istestrecord"]))
+                {
+                    strRowClass += " trtestrecord";
+                }
                 if (_grid.GridState.OnDblClick == null)
                 {
                     _s.Append(string.Format("<tr id='r{0}' class='{1}'>", dbRow["pid"], strRowClass));
@@ -499,6 +506,23 @@ namespace UI.Controllers
                     {
                         if (Convert.ToInt32(dbRow["childscount"])>0) _s.Append("<img src='/images/mother.png'/>");
                     }
+                }
+                if (mq.Prefix == "a03")
+                {
+                    if (dbRow["parentflag"] != DBNull.Value)
+                    {
+                        if (Convert.ToInt32(dbRow["parentflag"]) == 1)
+                        {
+                            _s.Append("<img src='/images/a03ParentFlag1.png'/>");
+                        }
+                        if (Convert.ToInt32(dbRow["parentflag"]) == 2)
+                        {
+                            _s.Append("<img src='/images/a03ParentFlag2.png'/>");
+                        }
+
+                    }
+                    
+                    
                 }
                 _s.Append("</td>");
                 
@@ -597,12 +621,14 @@ namespace UI.Controllers
             if (intRowsCount < 0)
             {
                 RenderPanelsSwitchFlag();
+                RenderGridMessage();
                 return;
             }
             
             if (intRowsCount <= intPageSize)
             {
                 RenderPanelsSwitchFlag();
+                RenderGridMessage();
                 return;
             }
 
@@ -664,8 +690,18 @@ namespace UI.Controllers
             _s.Append(string.Format("<button type='button' title='"+Factory.tra("Poslední")+"' class='btn btn-light tgp' onclick='tg_pager(\n{0}\n)'>&gt;&gt;</button>", intLastIndex));
 
             RenderPanelsSwitchFlag();
+
+            RenderGridMessage();
         }
 
+        private void RenderGridMessage()
+        {
+            if (_grid.GridMessage != null)
+            {
+                // _s.Append("<div class='text-nowrap bd-highlight'>" + _grid.GridMessage + "</div>");
+                _s.Append("<span id='gridmessage'>" + _grid.GridMessage + "</span>");
+            }
+        }
         private void RenderPanelsSwitchFlag()
         {
             if (_grid.GridState.MasterViewFlag<3)
@@ -775,7 +811,7 @@ namespace UI.Controllers
             }
             
            
-            System.Data.DataTable dt = prepare_datatable(ref mq,gridState);
+            System.Data.DataTable dt = prepare_datatable_4export(ref mq,gridState);
             string filepath = Factory.App.TempFolder+"\\"+BO.BAS.GetGuid()+"."+ format;
 
             var cExport = new UI.dataExport();
@@ -820,6 +856,91 @@ namespace UI.Controllers
         }
 
 
+        private string getFiltrAlias(BO.TheGridState gridState,BO.myQuery mq)
+        {            
+            if (mq.lisJ73.Count() == 0) return "";
+            var lisFields = new BL.TheQueryFieldProvider(gridState.j72Entity.Substring(0, 3)).getPallete();
+           
+            var lis = new List<string>();
+            
+            foreach(var c in mq.lisJ73)
+            {
+                string ss = "";
+                BO.TheQueryField cField = null;
+                if (c.j73BracketLeft != null)
+                {
+                    ss += "(";
+                }
+                if (c.j73Op == "OR")
+                {
+                    ss += " OR ";
+                }
+                if (lisFields.Where(p => p.Field == c.j73Column).Count()>0)
+                {
+                    cField = lisFields.Where(p => p.Field == c.j73Column).First();
+                    string s=cField.Header;
+                    if (Factory.CurrentUser.j03LangIndex > 0)
+                    {
+                        s = Factory.tra(s);
+                    }
+                    ss = "[" + s + "] ";
+                }
+                switch (c.j73Operator)
+                {
+                    case "EQUAL":
+                        ss += "=";
+                        break;
+                    case "NOT-ISNULL":
+                        ss += Factory.tra("Není prázdné");
+                        break;
+                    case "ISNULL":
+                        ss+=Factory.tra("Je prázdné");
+                        break;
+                    case "INTERVAL":
+                        ss += Factory.tra("Je interval");
+                        break;
+                    case "GREATERZERO":
+                        ss += Factory.tra("Je větší než nula");
+                        break;
+                    case "ISNULLORZERO":
+                        ss += Factory.tra("Je nula nebo prázdné");
+                        break;
+                    case "NOT-EQUAL":
+                        ss += Factory.tra("Není rovno");
+                        break;
+                    case "CONTAINS":
+                        lis.Add(Factory.tra("Obsahuje"));
+                        break;
+                    case "STARTS":
+                        ss += Factory.tra("Začíná na");
+                        break;
+                    default:
+                        break;
+                }
+                if (c.j73ValueAlias != null)
+                {
+                    ss += c.j73ValueAlias;
+                }
+                else
+                {
+                    ss += c.j73Value;
+                }
+                if (c.j73DatePeriodFlag > 0)
+                {
+                    var d1 = mq.lisPeriods.Where(p => p.pid == c.j73DatePeriodFlag).First().d1;
+                    var d2 = Convert.ToDateTime(mq.lisPeriods.Where(p => p.pid == c.j73DatePeriodFlag).First().d2).AddDays(1).AddMinutes(-1);
+                    ss += ": "+BO.BAS.ObjectDate2String(d1, "dd.MM.yyyy") + " - " + BO.BAS.ObjectDate2String(d2, "dd.MM.yyyy");
+                }
+                
+                if (c.j73BracketRight != null)
+                {
+                    ss += ")";
+                }
+                lis.Add(ss);
+            }
+
+            return string.Join("; ",lis);
+        }
 
     }
 }

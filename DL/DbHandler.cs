@@ -350,8 +350,15 @@ namespace DL
                         return s + ",a.a11DateUpdate as DateUpdate,a.a11DateInsert as DateInsert,a.a11UserUpdate as UserUpdate,a.a11UserInsert as UserInsert";
 
                     }
-
-
+                case "a03":
+                    if (isthegrid == true)
+                    {
+                        return string.Format("a.{0}ID as pid,convert(bit,CASE WHEN GETDATE() BETWEEN a.{0}ValidFrom AND a.{0}ValidUntil THEN 0 ELSE 1 end) as isclosed,a.a03ParentFlag as parentflag,a.a03IsTestRecord as istestrecord", strPrefix);
+                    }
+                    else
+                    {
+                        return string.Format("a.{0}ID as pid,CASE WHEN GETDATE() BETWEEN a.{0}ValidFrom AND a.{0}ValidUntil THEN 0 ELSE 1 end as isclosed,'{0}' as entity,a.{0}DateInsert as DateInsert,a.{0}UserInsert as UserInsert,a.{0}DateUpdate as DateUpdate,a.{0}UserUpdate as UserUpdate,a.{0}ValidFrom as ValidFrom,a.{0}ValidUntil as ValidUntil,a.a03ParentFlag as parentflag,a.a03IsTestRecord as istestrecord", strPrefix);
+                    }
                 default:
                     if (isvalidity == true)
                     {

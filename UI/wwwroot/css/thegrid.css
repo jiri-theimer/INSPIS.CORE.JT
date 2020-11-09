@@ -225,6 +225,10 @@ td.td_nowrap {
     
 }
 
+#tabgrid1 tr.trtestrecord td {
+    color:brown;
+}
+
 
 #tabgrid1 tr.trgroup {
     background-color: #F5F5DC;
@@ -350,6 +354,13 @@ button.tgp {
 
 }
 
+#gridmessage {    
+    padding:2px 3px 2px 3px;    
+    border-radius: 3px;    
+    background-color: red;
+    font-style:italic;
+    color: white;
+}
 
 @media only screen and (max-width: 1000px) {
 

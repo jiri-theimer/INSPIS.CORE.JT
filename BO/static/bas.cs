@@ -79,6 +79,18 @@ namespace BO
                 return s;
             }
         }
+        public static string LeftString(string s, int maxlen)
+        {
+            if (s == null) return null;
+            if (s.Length > maxlen)
+            {
+                return s.Substring(0, maxlen);
+            }
+            else
+            {
+                return s;
+            }
+        }
         public static int InInt(string s)
         {
             if (int.TryParse(s, out int x))
