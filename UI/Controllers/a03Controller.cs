@@ -57,7 +57,8 @@ namespace UI.Controllers
             {
                 v.MakeClone();
             }
-            return View(v);
+            return ViewTupCiselnik(v, BO.j03AdminRoleValueFlagEnum.instituce_er);
+            
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

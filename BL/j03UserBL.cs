@@ -101,6 +101,7 @@ namespace BL
             p.AddInt("j03GridSelectionModeFlag", rec.j03GridSelectionModeFlag);
             p.AddDateTime("j03LiveChatTimestamp", rec.j03LiveChatTimestamp);
             p.AddString("j03HomePageUrl",rec.j03HomePageUrl);
+            p.AddString("j03AdminRoleValue", rec.j03AdminRoleValue);
             if (!String.IsNullOrEmpty(rec.j03PasswordHash))
             {
                 p.Add("j03PasswordHash", rec.j03PasswordHash);

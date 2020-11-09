@@ -101,11 +101,15 @@ namespace UI.Controllers
         }
         public string AdminMenu()
         {
-            AMI("Uživatelé", "/Admin/Users");
-            AMI("Číselníky", "/Admin/Ciselniky");
+            if (Factory.CurrentUser.TestPermCiselniky(j03AdminRoleValueFlagEnum.uzivatel_er,j03AdminRoleValueFlagEnum.uzivatel_ro))
+            {
+                AMI("Uživatelé", "/Admin/Users");
+            }
+            
+            
             if (TUP(BO.j05PermValuEnum.AdminGlobal_Ciselniky))
             {
-                //AMI("Číselníky", "/Admin/Index");
+                AMI("Číselníky", "/Admin/Ciselniky");
             }
           
             if (TUP(BO.j05PermValuEnum.FormDesigner))
@@ -177,46 +181,68 @@ namespace UI.Controllers
             return FlushResult_UL();
         }
         public string AdminCiselniky(string prefix)
-        {
-            DIV_TRANS("Kategorie");
-            AMI("Kategorie (Skupiny položek)", url_ciselniky("o53"));
-            AMI("Položky kategorií", url_ciselniky("o51"));
-            
-            DIV("Inspektoráty");
-            AMI("Osoby v inspektorátech", url_ciselniky("a02"));
-            AMI("Inspektoráty", url_ciselniky("a04"));
-            AMI("Kraje", url_ciselniky("a05"));
-            DIV_TRANS("Nepersonální zdroje");
-            AMI("Zdroje", url_ciselniky("j23"));
-            AMI("Typy zdrojů", url_ciselniky("j24"));
-            AMI("Důvody rezervace", url_ciselniky("j25"));
-            DIV_TRANS("Instituce");
-            AMI("Pojmenované seznamy", url_ciselniky("a29"));
-            AMI("Typy zřizovatelů", url_ciselniky("a09"));
-            AMI("Typy škol", url_ciselniky("a28"));
-            AMI("Typy činností", url_ciselniky("a17"));
-            AMI("Kódy vzdělávacích oborů", url_ciselniky("a18"));
-            AMI("Školní informační systémy", url_ciselniky("a70"));
-            DIV_TRANS("Akce");
-            AMI("Typy akcí", url_ciselniky("a10"));
-            AMI("Témata akcí", url_ciselniky("a08"));
-
-
-
-            DIV_TRANS("Úkoly/Lhůty");
-            AMI("Typy úkolů a lhůt", url_ciselniky("h07"));
-            DIV_TRANS("Pevné tiskové sestavy");
-            AMI("Report šablony", url_ciselniky("x31"));
-            AMI("Report kategorie", url_ciselniky("x32"));
+        {                        
+            if (Factory.CurrentUser.TestPermCiselniky(j03AdminRoleValueFlagEnum.inspektorat_er, j03AdminRoleValueFlagEnum.inspektorat_ro))
+            {
+                DIV("Inspektoráty");
+                AMI("Osoby v inspektorátech", url_ciselniky("a02"));
+                AMI("Inspektoráty", url_ciselniky("a04"));
+                AMI("Kraje", url_ciselniky("a05"));
+            }
+            if (Factory.CurrentUser.TestPermCiselniky(j03AdminRoleValueFlagEnum.neper_er, j03AdminRoleValueFlagEnum.neper_ro))
+            {
+                DIV_TRANS("Nepersonální zdroje");
+                AMI("Zdroje", url_ciselniky("j23"));
+                AMI("Typy zdrojů", url_ciselniky("j24"));
+                AMI("Důvody rezervace", url_ciselniky("j25"));
+            }
+            if (Factory.CurrentUser.TestPermCiselniky(j03AdminRoleValueFlagEnum.instituce_er, j03AdminRoleValueFlagEnum.instituce_ro))
+            {
+                DIV_TRANS("Instituce");
+                AMI("Pojmenované seznamy", url_ciselniky("a29"));
+                AMI("Typy zřizovatelů", url_ciselniky("a09"));
+                AMI("Typy škol", url_ciselniky("a28"));
+                AMI("Typy činností", url_ciselniky("a17"));
+                AMI("Kódy vzdělávacích oborů", url_ciselniky("a18"));
+                AMI("Školní informační systémy", url_ciselniky("a70"));
+            }
+            if (Factory.CurrentUser.TestPermCiselniky(j03AdminRoleValueFlagEnum.akce_er, j03AdminRoleValueFlagEnum.akce_ro))
+            {
+                DIV_TRANS("Akce");
+                AMI("Typy akcí", url_ciselniky("a10"));
+                AMI("Témata akcí", url_ciselniky("a08"));
+            }
+            if (Factory.CurrentUser.TestPermCiselniky(j03AdminRoleValueFlagEnum.ukol_er, j03AdminRoleValueFlagEnum.ukol_ro))
+            {
+                DIV_TRANS("Úkoly/Lhůty");
+                AMI("Typy úkolů a lhůt", url_ciselniky("h07"));
+            }
+            if (Factory.CurrentUser.TestPermCiselniky(j03AdminRoleValueFlagEnum.sestava_er, j03AdminRoleValueFlagEnum.sestava_ro))
+            {
+                DIV_TRANS("Pevné tiskové sestavy");
+                AMI("Report šablony", url_ciselniky("x31"));
+                AMI("Report kategorie", url_ciselniky("x32"));
+            }
 
             DIV_TRANS("Ostatní");
-            AMI("Typy příloh", url_ciselniky("o13"));
-            AMI("Šablony notifikačních zpráv", url_ciselniky("b65"));
-            AMI("Články pro nástěnku", url_ciselniky("h11"));
-            AMI("Dny svátků", url_ciselniky("j26"));
-            AMI("AutoComplete položky", url_ciselniky("o15"));
-            AMI("Uživatelská nápověda", url_ciselniky("x51"));
-            AMI("Aplikační překlad", url_ciselniky("x91"));
+            if (Factory.CurrentUser.TestPermCiselniky(j03AdminRoleValueFlagEnum.priloha_er, j03AdminRoleValueFlagEnum.priloha_ro))
+            {
+                AMI("Typy příloh", url_ciselniky("o13"));
+            }
+            if (Factory.CurrentUser.TestPermCiselniky(j03AdminRoleValueFlagEnum.ostatni_er, j03AdminRoleValueFlagEnum.ostatni_ro))
+            {                
+                //DIV_TRANS("Kategorie");
+                AMI("Kategorie (Skupiny položek)", url_ciselniky("o53"));
+                AMI("Položky kategorií", url_ciselniky("o51"));
+                
+                AMI("Šablony notifikačních zpráv", url_ciselniky("b65"));
+                AMI("Články pro nástěnku", url_ciselniky("h11"));
+                AMI("Dny svátků", url_ciselniky("j26"));
+                AMI("AutoComplete položky", url_ciselniky("o15"));
+                AMI("Uživatelská nápověda", url_ciselniky("x51"));
+                AMI("Aplikační překlad", url_ciselniky("x91"));
+            }
+
 
             handle_selected_item(prefix);
 

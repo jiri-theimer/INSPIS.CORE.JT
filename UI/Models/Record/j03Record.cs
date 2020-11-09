@@ -19,5 +19,8 @@ namespace UI.Models.Record
         public string user_profile_oper { get; set; }
 
         public string ComboPerson { get; set; }
+
+        public List<j03RecordAdminRoleValue> lisAdminRoleValues { get; set; }
+
     }
 }

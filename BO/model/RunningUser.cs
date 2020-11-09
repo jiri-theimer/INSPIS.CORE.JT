@@ -17,6 +17,7 @@ namespace BO
         public string j04Name { get; set; }
         public int j04ID { get; set; }
         public string j04RoleValue { get;set;}
+        public string j03AdminRoleValue { get; set; }
         public bool j04IsAllowedAllEventTypes { get; set; }
         public j04RelationFlagEnum j04RelationFlag { get; set; }
 
@@ -83,9 +84,27 @@ namespace BO
             }
 
             return false;  //i globální admin musí mít oprávnění oneperm zaškrtnuté
-            
-            
-           
+                                   
+        }
+        public bool TestPermCiselniky(BO.j03AdminRoleValueFlagEnum oneperm_re, BO.j03AdminRoleValueFlagEnum oneperm_ro)
+        {
+            if (this.j03AdminRoleValue == null || TestPermission(j05PermValuEnum.AdminGlobal_Ciselniky)==false)
+            {
+                return false;
+            }
+            int x = (int)oneperm_re;            
+            if (x>0 && this.j03AdminRoleValue.Substring(x - 1, 1) == "1") //testuje se 1 nebo 0 ve stringu j03AdminRoleValue na pozici x-1
+            {
+                return true;
+            }
+
+            x = (int)oneperm_ro;
+            if (x>0 && this.j03AdminRoleValue.Substring(x - 1, 1) == "1") //testuje se 1 nebo 0 ve stringu j03AdminRoleValue na pozici x-1
+            {
+                return true;
+            }
+
+            return false;
         }
         public bool HasAdminMenu()
         {

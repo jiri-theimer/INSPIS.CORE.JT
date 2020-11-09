@@ -153,7 +153,15 @@ namespace UI.Controllers
             }
             return View(model);
         }
-
+        public virtual ViewResult ViewTupCiselnik(object model, BO.j03AdminRoleValueFlagEnum ciselnik_perm_edit)
+        {
+            if (!Factory.CurrentUser.TestPermCiselniky(ciselnik_perm_edit, BO.j03AdminRoleValueFlagEnum._none))
+            {
+                var v = new StopPageViewModel() { Message = "Pro tuto stránku nemáte oprávnění!", IsModal = true };
+                return View("_StopPage", v);
+            }
+            return View(model);
+        }
 
         public NavTab AddTab(string strName, string strEntity, string strUrl,bool istranslate=true,string strBadge=null)
         {

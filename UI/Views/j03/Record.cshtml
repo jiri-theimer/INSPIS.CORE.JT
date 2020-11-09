@@ -13,6 +13,7 @@
 
 <input type="hidden" asp-for="@Model.IsDefinePassword" value="@Model.IsDefinePassword" />
 <input type="hidden" asp-for="@Model.IsChangeLogin" value="@Model.IsChangeLogin" />
+<input type="hidden" asp-for="@Model.Rec.j03AdminRoleValue" />
 <div class="modal_record_container">
 
     <div class="form-row">
@@ -156,12 +157,52 @@
     </div>
 
 
+    <button id="cmdCiselniky" class="btn btn-light" type="button">@_f.tra("Správce číselníků")<img src="~/images/caret_down.gif"/></button>
+    <div id="divCiselniky" style="display:none;">
+        <i>
+            @_f.tra("Aplikovatelné pouze pro uživatele, jejichž aplikační role má oprávnění [Správce číselníků] nebo [Administrátor systému].")
+        </i>
+        <table class="table table-hover">
+            <tr>
+                <th>
+                    @_f.tra("Okruh číselníků")
+                </th>
+                <th>
+                    @_f.tra("Editovat i číst")
+                </th>
+                <th>
+                    @_f.tra("Pouze číst")
+                </th>
+            </tr>
+            @for (int i = 0; i < Model.lisAdminRoleValues.Count(); i++)
+            {
+                <tr>
+                    <td>
+                        @Model.lisAdminRoleValues[i].Header
+                        <input type="hidden" asp-for="@Model.lisAdminRoleValues[i].Header" />
+                    </td>
+                    <td>
+                        <input type="checkbox" asp-for="@Model.lisAdminRoleValues[i].IsER" />
+                        <input type="hidden" asp-for="@Model.lisAdminRoleValues[i].ER" />
+                    </td>
+                    <td>
+                        <input type="checkbox" asp-for="@Model.lisAdminRoleValues[i].IsRO" />
+                        <input type="hidden" asp-for="@Model.lisAdminRoleValues[i].RO" />
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
 
 </div>
 
 
 <script type="text/javascript">
     $(document).ready(function () {
+        $("#cmdCiselniky").click(function () {
+            $("#divCiselniky").toggle();
+        });
 
         $("#user_profile_create").on("change", function () {
             form1.action = "/j03/Record?oper=postback";

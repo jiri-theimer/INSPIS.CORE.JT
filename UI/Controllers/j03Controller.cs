@@ -29,7 +29,7 @@ namespace UI.Controllers
 
             v.Rec = new BO.j03User();
             v.Rec.j03LangIndex = Factory.App.DefaultLangIndex;
-            v.RecJ02 = new BO.j02Person();
+            v.RecJ02 = new BO.j02Person();            
 
             if (v.rec_pid > 0)
             {
@@ -40,6 +40,19 @@ namespace UI.Controllers
                 }
                 v.ComboPerson = v.Rec.fullname_desc;
             }
+            v.lisAdminRoleValues = new List<j03RecordAdminRoleValue>();
+            ARV("Uživatelé systému", 1, 2, v.lisAdminRoleValues, v.Rec.j03AdminRoleValue);
+            ARV("Inspektoráty", 3, 4, v.lisAdminRoleValues, v.Rec.j03AdminRoleValue);
+            ARV("Nepersonální zdroje", 5, 6, v.lisAdminRoleValues, v.Rec.j03AdminRoleValue);
+            ARV("Instituce", 7, 8, v.lisAdminRoleValues, v.Rec.j03AdminRoleValue);
+            ARV("Akce", 9, 10, v.lisAdminRoleValues, v.Rec.j03AdminRoleValue);
+            ARV("Formuláře", 11, 12, v.lisAdminRoleValues, v.Rec.j03AdminRoleValue);
+            ARV("Přílohy", 13, 14, v.lisAdminRoleValues, v.Rec.j03AdminRoleValue);
+            ARV("Úkoly", 15, 16, v.lisAdminRoleValues, v.Rec.j03AdminRoleValue);
+            ARV("Svodky", 17, 18, v.lisAdminRoleValues, v.Rec.j03AdminRoleValue);
+            ARV("Tiskové sestavy", 19, 20, v.lisAdminRoleValues, v.Rec.j03AdminRoleValue);
+            ARV("Ostatní", 21, 22, v.lisAdminRoleValues, v.Rec.j03AdminRoleValue);
+
             v.Toolbar = new MyToolbarViewModel(v.Rec);
             if (isclone)
             {
@@ -85,7 +98,29 @@ namespace UI.Controllers
                 c.j03IsMustChangePassword = v.Rec.j03IsMustChangePassword;
                 c.j03IsSystemAccount = v.Rec.j03IsSystemAccount;
                 c.j03LangIndex = v.Rec.j03LangIndex;
-
+                c.j03AdminRoleValue = "";
+                foreach(var cc in v.lisAdminRoleValues)
+                {
+                    if (cc.IsER)
+                    {
+                        c.j03AdminRoleValue += "1";
+                    }
+                    else
+                    {
+                        c.j03AdminRoleValue += "0";
+                    }
+                    if (cc.IsRO)
+                    {
+                        c.j03AdminRoleValue += "1";
+                    }
+                    else
+                    {
+                        c.j03AdminRoleValue += "0";
+                    }
+                }
+                c.j03AdminRoleValue += "000000000000000000000000000000000000000";                
+                c.j03AdminRoleValue = BO.BAS.LeftString(c.j03AdminRoleValue, 50);
+                    
                 c.ValidUntil = v.Toolbar.GetValidUntil(c);
                 c.ValidFrom = v.Toolbar.GetValidFrom(c);
                 if (!ValidatePreSave(c))
@@ -163,6 +198,22 @@ namespace UI.Controllers
                 this.AddMessage("Přihlašovací jméno (login) a Aplikační role jsou povinná pro uživatelský účet.");return false;
             }
             return true;
+        }
+
+        private void ARV(string strHeader,int intER,int intRO,List<j03RecordAdminRoleValue> lisAdminRoleValues,string strAdminRoleValue)
+        {
+            var cc = new j03RecordAdminRoleValue() { Header = Factory.tra(strHeader), ER = intER, RO = intRO };
+           
+            if (strAdminRoleValue !=null && strAdminRoleValue.Length >= intER && strAdminRoleValue.Substring(intER-1,1)=="1")
+            {
+                cc.IsER = true;
+            }
+            if (strAdminRoleValue !=null && strAdminRoleValue.Length >= intRO && strAdminRoleValue.Substring(intRO - 1, 1) == "1")
+            {
+                cc.IsRO = true;
+            }
+            
+            lisAdminRoleValues.Add(cc);
         }
         
     }
