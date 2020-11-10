@@ -26,7 +26,9 @@ namespace UI.Controllers
             var v = new a35TimeLineViewModel() { CurMonth = go2month, CurYear = go2year, a05ID = a05id };
             v.PersonQueryFlag = Factory.CBL.LoadUserParamInt("a35TimeLine-PersonQueryFlag", 0);
             v.A38QueryFlag = Factory.CBL.LoadUserParamInt("a35TimeLine-A38QueryFlag", 0);
-            
+            v.QueryByO51ID= Factory.CBL.LoadUserParamInt("a35TimeLine-QueryByO51ID", 0);
+
+
             if (v.a05ID == 0)
             {
                 v.a05ID = Factory.CBL.LoadUserParamInt("a35TimeLine-a05ID", Factory.CurrentUser.a05ID);                
@@ -56,12 +58,21 @@ namespace UI.Controllers
             else
             {
                 mq.param1 = "a02Inspector";
-            }                       
+            }
+            if (v.QueryByO51ID > 0)
+            {
+                mq.o51ids = BO.BAS.ConvertString2ListInt(v.QueryByO51ID.ToString());
+            }
+            
             mq.explicit_orderby = "a.j02LastName";
             v.lisJ02 = Factory.j02PersonBL.GetList(mq);
             if (v.PersonQueryFlag == 1)
             {
                 v.lisJ02 = v.lisJ02.Where(p => p.j02IsInvitedPerson == true);   //filtr: pouze přizvané osoby
+            }
+            if (v.PersonQueryFlag == 2)
+            {
+                v.lisJ02 = v.lisJ02.Where(p => p.j02IsInvitedPerson == false);   //filtr: pouze inspektoři
             }
             mq = new BO.myQuery("a35");
             mq.global_d1 = d1;
@@ -78,6 +89,10 @@ namespace UI.Controllers
                 v.lisTimeLineA38 = Factory.a38NonPersonEventPlanBL.GetListPersonTimeLine(mq);
             }
             v.lisJ26 = Factory.j26HolidayBL.GetList(new BO.myQuery("j26")).Where(p => p.j26Date >= d1 && p.j26Date <= d2);
+           
+            mq = new BO.myQuery("o51");
+           
+            v.lisO51 = Factory.o51TagBL.GetList(mq).Where(p => p.o53Entities.Contains("j02"));
 
             return View(v);
         }
@@ -183,6 +198,8 @@ namespace UI.Controllers
                 v.lisA35 = Factory.a35PersonEventPlanBL.GetList(mq);
             }
             v.lisJ26 = Factory.j26HolidayBL.GetList(new BO.myQuery("j26")).Where(p => p.j26Date >= v.RecA01.a01DateFrom && p.j26Date <= v.RecA01.a01DateUntil);
+
+           
         }
 
         private void InhaleCapacityTimeline(a01TabCapacity v)

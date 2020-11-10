@@ -125,6 +125,7 @@ namespace BO
         public int recpid { get; set; }
 
         public int o53id { get; set; }
+        public List<int> o51ids { get; set; }
         public string param1;
 
         public BO.BooleanQueryMode HiddenQuestions { get; set; }

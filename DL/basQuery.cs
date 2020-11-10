@@ -510,6 +510,10 @@ namespace DL
             {
                 if (mq.Prefix == "o51") AQ(ref lis, "a.o53ID=@o53id", "o53id", mq.o53id);
             }
+            if (mq.o51ids !=null && mq.o51ids.Count > 0)
+            {
+                AQ(ref lis, "a."+mq.Prefix+ "ID IN (select o52RecordPid FROM o52TagBinding WHERE o51ID IN ("+string.Join(",",mq.o51ids)+"))",null,null);
+            }
             if (mq.Prefix=="a03" && mq.param1 == "parent")
             {
                 AQ(ref lis, "a.a03ParentFlag=1", "", null);    //filtr pouze nadřízené školy

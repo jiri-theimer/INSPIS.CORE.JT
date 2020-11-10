@@ -51,7 +51,18 @@
         <select class="form-control" asp-for="@Model.PersonQueryFlag" onchange="change_personqueryflag(this)">
             <option value="0"></option>
             <option value="1">@_f.tra("Pouze přizvané osoby")</option>
+            <option value="2">@_f.tra("Kromě přizvaných osob")</option>
         </select>
+    </div>
+    <div class="col-sm-1 col-md-1">
+        <select class="form-control" asp-for="@Model.QueryByO51ID" onchange="change_o51id(this)">
+            <option value="0">@_f.tra("Kategorie")</option>
+            @foreach (var c in Model.lisO51)
+            {
+                <option value="@c.pid">@(c.o51Name+" ("+c.o53Name+")")</option>
+            }
+        </select>
+        
     </div>
     <div class="col-sm-1 col-md-1">
         <select class="form-control" asp-for="@Model.A38QueryFlag" onchange="change_a38queryflag(this)">
@@ -265,6 +276,12 @@
     }
     function change_a38queryflag(ctl) {
         $.post("/Common/SetUserParam", { key: "a35TimeLine-A38QueryFlag", value: ctl.value }, function (data) {
+            refresh("/a35/TimeLine");
+
+        });
+    }
+    function change_o51id(ctl) {
+        $.post("/Common/SetUserParam", { key: "a35TimeLine-QueryByO51ID", value: ctl.value }, function (data) {
             refresh("/a35/TimeLine");
 
         });
