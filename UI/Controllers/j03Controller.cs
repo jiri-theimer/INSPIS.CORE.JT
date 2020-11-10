@@ -58,7 +58,8 @@ namespace UI.Controllers
             {
                 v.MakeClone();
             }
-            return ViewTup(v, BO.j05PermValuEnum.AdminGlobal_Ciselniky);
+            return ViewTupCiselnik(v, BO.j03AdminRoleValueFlagEnum.uzivatel_er);
+            
         }
 
         [HttpPost]

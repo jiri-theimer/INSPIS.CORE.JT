@@ -71,8 +71,9 @@ namespace UI.Controllers
                 v.x31Names = string.Join(",", Factory.x31ReportBL.GetList(mq).Select(p => p.x31Name));
             }
             v.Toolbar = new MyToolbarViewModel(v.Rec);
+
             
-            return View(v);
+            return ViewTup(v,BO.j05PermValuEnum.FormDesigner);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

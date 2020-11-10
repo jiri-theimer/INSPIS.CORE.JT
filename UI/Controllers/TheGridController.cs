@@ -761,9 +761,18 @@ namespace UI.Controllers
 
             var lis = Factory.j72TheGridTemplateBL.GetList(recJ72.j72Entity, recJ72.j03ID, recJ72.j72MasterEntity);
             sb.AppendLine("<table style='width:100%;margin-bottom:20px;'>");
+            string strGridNavrhar = Factory.tra("Grid návrhář");
             foreach (var c in lis)
             {
                 sb.AppendLine("<tr>");
+                if (c.j72HashJ73Query)
+                {
+                    sb.Append("<td><img src='/Images/query.png'/></td>");
+                }
+                else
+                {
+                    sb.Append("<td><img src='/Images/griddesigner.png'/></td>");
+                }
                 if (c.j72IsSystem)
                 {
                     c.j72Name = Factory.tra("Výchozí GRID");
@@ -773,8 +782,8 @@ namespace UI.Controllers
                     c.j72Name += " ✔";
                 }
                 sb.Append(string.Format("<td><a class='nav-link py-0' href='javascript:change_grid({0})'>{1}</a></td>", c.pid, c.j72Name));
-
-                sb.AppendLine(string.Format("<td style='width:30px;'><a title='Grid Návrhář' class='nav-link py-0' href='javascript:_window_open(\"/TheGridDesigner/Index?j72id={0}\",2);'><img src='/Images/setting.png'/></a></td>", c.pid));
+                
+                sb.AppendLine(string.Format("<td style='width:30px;'><a title='"+ strGridNavrhar+"' class='btn btn-sm btn-primary py-0' href='javascript:_window_open(\"/TheGridDesigner/Index?j72id={0}\",2);'>...</a></td>", c.pid));
                 sb.AppendLine("</tr>");
             }
             sb.AppendLine("</table>");

@@ -11,17 +11,33 @@
                 <th class="th0" colspan="3" style="width:60px;">
                     @if (Model.GridState.j72SelectableFlag > 0)
                     {
+                        @if (Model.GridState.j72HashJ73Query)
+                        {
+                            <div class="dropdown" style="padding:0px;">
+                                <button class="btn btn-danger dropdown-toggle py-0" title="GRID Menu" type="button" id="cmdTheGridBatchSelect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width:100%;">
+                                    <img src="~/images/query.png" />
+                                    &#9776;
+                                </button>
+                                <div id="divGridMenu" class="dropdown-menu" aria-labelledby="cmdTheGridBatchSelect" style="padding:0px;width:350px;background-color:aliceblue;">
 
-                        <div class="dropdown" style="padding:0px;">
-                            <button class="btn btn-light dropdown-toggle py-0" title="GRID Menu" type="button" id="cmdTheGridBatchSelect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width:100%;">
-                                &#9752;
-                                &#9776;
-                            </button>
-                            <div id="divGridMenu" class="dropdown-menu" aria-labelledby="cmdTheGridBatchSelect" style="padding:0px;width:350px;background-color:aliceblue;">
+                                </div>
 
                             </div>
+                        }
+                        else
+                        {
+                            <div class="dropdown" style="padding:0px;">
+                                <button class="btn btn-light dropdown-toggle py-0" title="GRID Menu" type="button" id="cmdTheGridBatchSelect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width:100%;">
+                                    <img src="~/images/griddesigner.png" />
+                                    &#9776;
+                                </button>
+                                <div id="divGridMenu" class="dropdown-menu" aria-labelledby="cmdTheGridBatchSelect" style="padding:0px;width:350px;background-color:aliceblue;">
 
-                        </div>
+                                </div>
+
+                            </div>
+                        }
+
                     }
 
                 </th>

@@ -32,8 +32,8 @@ namespace UI.Controllers
             RefreshStateReportNoContext(v);
 
 
-
-            return ViewTup(v, BO.j05PermValuEnum.Menu_Reports);
+            return ViewTupCiselnik(v, BO.j03AdminRoleValueFlagEnum.sestava_er);
+            
         }
         [HttpPost]
         public IActionResult ReportNoContext(ReportNoContextViewModel v, string oper)
