@@ -401,7 +401,7 @@ namespace DL
             if (mq.j02id > 0)
             {
                 if (mq.Prefix == "a01") AQ(ref lis, "a.a01ID IN (select a01ID FROM a41PersonToEvent WHERE j02ID=@j02id)", "j02id", mq.j02id);   //je účastníkem akce
-                if (mq.Prefix == "a39" || mq.Prefix == "j03" || mq.Prefix=="a35" || mq.Prefix=="a38") AQ(ref lis, "a.j02ID=@j02id", "j02id", mq.j02id);
+                if (mq.Prefix == "a39" || mq.Prefix == "j03" || mq.Prefix=="a35" || mq.Prefix=="a38" || mq.Prefix=="a41") AQ(ref lis, "a.j02ID=@j02id", "j02id", mq.j02id);
 
                 if (mq.Prefix == "a03") AQ(ref lis, "a.a03ID IN (select a03ID FROM a39InstitutionPerson WHERE j02ID=@j02id)", "j02id", mq.j02id);
                 if (mq.Prefix == "h04")

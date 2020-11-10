@@ -56,8 +56,8 @@
     </div>
     <div class="col-sm-1 col-md-1">
         <mycombochecklist asp-for="@Model.o51IDs" entity="o51Tag" selectedtext="@Model.o51Names" placeholder="@_f.tra("Kategorie")..." param1="j02" event_after_changevalue="change_o51ids"></mycombochecklist>
-        
-        
+
+
     </div>
     <div class="col-sm-1 col-md-1">
         <select class="form-control" asp-for="@Model.A38QueryFlag" onchange="change_a38queryflag(this)">
@@ -80,6 +80,10 @@
         <td class="firstcol_timeline">
         </td>
         <td></td>
+        @if (Model.a01ID > 0)
+        {
+            <td></td>
+        }
         <td class="timeline_dny">@_f.tra("Dní")</td>
         <td class="timeline_dny">@_f.tra("Akcí")</td>
         @foreach (DateTime d in Model.lisDays)
@@ -94,14 +98,14 @@
                 strClass = "holiday";
             }
 
-    <td class="@strClass">
-        @d.Day
-        <br />
-        @_f.tra(BO.BAS.DayOfWeekString(d)).Substring(0,2)
-       
+            <td class="@strClass">
+                @d.Day
+                <br />
+                @_f.tra(BO.BAS.DayOfWeekString(d)).Substring(0, 2)
 
-        
-    </td>
+
+
+            </td>
         }
 
     </tr>
@@ -117,8 +121,8 @@
                     </span>
                 }
                 else
-                                {
-                                    @recJ02.FullNameDesc
+                {
+                    @recJ02.FullNameDesc
                 }
 
 
@@ -126,6 +130,16 @@
             <td>
                 <a class="reczoom" data-rel="/j02/InfoCapacity?pid=@(recJ02.pid)&hover_by_reczoom=1&m=@Model.CurMonth&y=@Model.CurYear" data-maxwidth="1" style="visibility:visible!important;">ℹ</a>
             </td>
+            @if (Model.a01ID > 0)
+            {
+                <td>
+                    @if (Model.lisA41.Where(p => p.j02ID == recJ02.pid).Count() == 0)
+                    {
+                        <button type="button" class="btn btn-sm btn-info py-0 px-1 mx-1" onclick="append_to_event(@(recJ02.pid))" title="@_f.tra("Přidat do akce")">+</button>
+                    }
+
+                </td>
+            }
             @if (Model.lisTimeLine.Where(p => p.j02ID == recJ02.pid).Count() > 0)
             {
                 <td class="timeline_dny">
@@ -144,28 +158,28 @@
             }
 
 
-                @foreach (DateTime d in Model.lisDays)
+            @foreach (DateTime d in Model.lisDays)
+            {
+                strClass = "";
+                x = Model.lisTimeLine.Where(p => p.j02ID == recJ02.j02ID && p.a35PlanDate == d).Count();
+                if (d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday)
                 {
-                    strClass = "";
-                    x = Model.lisTimeLine.Where(p => p.j02ID == recJ02.j02ID && p.a35PlanDate == d).Count();
-                    if (d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday)
-                    {
-                        strClass = "nonwork-day";
-                    }
+                    strClass = "nonwork-day";
+                }
                 <td class="@strClass">
                     @if (x > 0)
-                {
+                    {
                         <div class="a35cell">
                             @if (x > 1)
-                {
+                            {
                                 <span style="background-color:pink;padding-left:2px;padding-right:2px;">@x</span>
                             }
                         </div>
                     }
 
                     @if (Model.A38QueryFlag > 0)
-                {
-                    @foreach (var c in Model.lisTimeLineA38.Where(p => p.j02ID == recJ02.j02ID && p.a38PlanDate == d))
+                    {
+                        @foreach (var c in Model.lisTimeLineA38.Where(p => p.j02ID == recJ02.j02ID && p.a38PlanDate == d))
                         {
                             <div class="a38cell">
 
@@ -177,12 +191,12 @@
                         if (x > 0) strClass = "a35cell";
                     }
                     @if (Model.a05ID > 0)
-                {
-                    @foreach (var c in Model.lisH04.Where(p => p.j02ID == recJ02.pid && (p.h04CapacityPlanFrom >= d && p.h04CapacityPlanFrom < d.AddDays(1) || p.h04CapacityPlanUntil >= d && p.h04CapacityPlanUntil < d.AddDays(1))))
+                    {
+                        @foreach (var c in Model.lisH04.Where(p => p.j02ID == recJ02.pid && (p.h04CapacityPlanFrom >= d && p.h04CapacityPlanFrom < d.AddDays(1) || p.h04CapacityPlanUntil >= d && p.h04CapacityPlanUntil < d.AddDays(1))))
                         {
 
-                        if (c.h07IsToDo && c.h04Deadline != null && c.h04Deadline >= d && c.h04Deadline < d.AddDays(1))
-                        {
+                            if (c.h07IsToDo && c.h04Deadline != null && c.h04Deadline >= d && c.h04Deadline < d.AddDays(1))
+                            {
                                 <div class="@strClass" title="@(c.h07Name+": "+c.h04Name+", "+_akceTra+": "+c.a01Signature)">
                                     <img src="~/images/todo.png" />
                                 </div>
@@ -225,6 +239,7 @@
 
 <script type="text/javascript">
     var _a05id = "@Model.a05ID";
+    var _a01id = "@Model.a01ID";
 
     $(document).ready(function () {
 
@@ -282,7 +297,7 @@
         });
     }
 
-    function change_o51ids(pids) {        
+    function change_o51ids(pids) {
         $.post("/Common/SetUserParam", { key: "a35TimeLine-o51IDs", value: pids }, function (data) {
             refresh("/a35/TimeLine");
 
@@ -290,8 +305,28 @@
     }
 
     function refresh(url) {
+        if (url.indexOf("?") == -1) {
+            url = url + "?1=1";
+        }
+        if (url.indexOf("a01id") == -1 && _a01id != "0") {
+            url = url + "&a01id=" + _a01id;
+        }
+        if (url.indexOf("a05id") == -1 && _a05id != "0") {
+            url = url + "&a05id=" + _a05id;
+        }
+
         _notify_message("Loading...", "info");
+
         location.replace(url);
+    }
+
+
+    function append_to_event(j02id) {
+        $.post("/a35/AppendToEvent", { a01id: _a01id, j02id: j02id }, function (data) {
+            alert(data.message);
+
+        });
+
     }
 
 </script>

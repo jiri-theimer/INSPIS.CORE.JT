@@ -10,7 +10,7 @@ namespace UI.Controllers
 {
     public class a35Controller : BaseController
     {
-        public IActionResult TimeLine(int go2month, int go2year, int a05id)
+        public IActionResult TimeLine(int go2month, int go2year, int a05id,int a01id)
         {
             if (go2month == 0 || go2year == 0)
             {
@@ -23,7 +23,8 @@ namespace UI.Controllers
                 Factory.CBL.SetUserParam("TimeLine-Year", go2year.ToString());
             }            
 
-            var v = new a35TimeLineViewModel() { CurMonth = go2month, CurYear = go2year, a05ID = a05id };
+            var v = new a35TimeLineViewModel() { CurMonth = go2month, CurYear = go2year, a05ID = a05id,a01ID=a01id };
+            
             v.PersonQueryFlag = Factory.CBL.LoadUserParamInt("a35TimeLine-PersonQueryFlag", 0);
             v.A38QueryFlag = Factory.CBL.LoadUserParamInt("a35TimeLine-A38QueryFlag", 0);
             v.o51IDs = Factory.CBL.LoadUserParam("a35TimeLine-o51IDs") ;
@@ -94,9 +95,13 @@ namespace UI.Controllers
                 mq = new BO.myQuery("o51") { pids = BO.BAS.ConvertString2ListInt(v.o51IDs) };
                 v.o51Names = string.Join(", ", Factory.o51TagBL.GetList(mq).Select(p => p.o51Name));
             }
-            
-           
-            
+
+            if (v.a01ID > 0)
+            {
+                mq = new BO.myQuery("a41") { a01id=v.a01ID };
+                v.lisA41 = Factory.a41PersonToEventBL.GetList(mq);
+             }
+
 
             return View(v);
         }
@@ -296,6 +301,34 @@ namespace UI.Controllers
             
 
             return View(v);
+        }
+
+        public BO.Result AppendToEvent(int j02id,int a01id)
+        {
+            var recA01 = Factory.a01EventBL.Load(a01id);
+            var recJ02 = Factory.j02PersonBL.Load(j02id);
+            var mq = new BO.myQuery("a41") { a01id = a01id,j02id=j02id };
+            if (Factory.a41PersonToEventBL.GetList(mq).Count() > 0)
+            {
+                return new BO.Result(true, Factory.tra("Zvolená osoba již je členem této akce."));
+            }
+            var recA41 = new BO.a41PersonToEvent() { a01ID = recA01.pid, j02ID = recJ02.pid, a41IsAllocateAllPeriod = true, a45ID = BO.EventRoleENUM.Resitel };
+            
+            if (Factory.a41PersonToEventBL.Save(recA41, true)>0)
+            {
+                for(DateTime d = Convert.ToDateTime(recA01.a01DateFrom); d <= Convert.ToDateTime(recA01.a01DateUntil); d = d.AddDays(1))
+                {
+                    var c = new BO.a35PersonEventPlan() { a01ID = a01id, j02ID = j02id, a35PlanDate = d };
+                    Factory.a35PersonEventPlanBL.Save(c);
+                }
+                
+                return new BO.Result(false,Factory.tra("Vloženo do akce."));
+            }
+            else
+            {
+                return new BO.Result(true,"error");
+            }
+            
         }
     }
 }

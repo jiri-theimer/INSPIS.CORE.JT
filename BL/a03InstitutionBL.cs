@@ -71,7 +71,7 @@ namespace BL
             p.AddBool("a03IsTestRecord", rec.a03IsTestRecord);
             p.AddEnumInt("a03SchoolPortalFlag", rec.a03SchoolPortalFlag);            
 
-            p.AddString("a03Name", rec.a03Name);
+            p.AddString("a03Name", rec.a03Name.ToUpper());
             p.AddString("a03ShortName", rec.a03ShortName);
             p.AddString("a03ICO", rec.a03ICO);
             p.AddString("a03REDIZO", rec.a03REDIZO);            

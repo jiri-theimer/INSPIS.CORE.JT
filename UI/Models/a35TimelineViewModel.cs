@@ -8,10 +8,12 @@ namespace UI.Models
     public class a35TimeLineViewModel:BaseViewModel
     {
         public int a05ID { get; set; }
+        public int a01ID { get; set; }
         public string a05Name { get; set; }
         public IEnumerable<BO.j02Person> lisJ02 { get; set; }
         public IEnumerable<BO.a35TimeLine> lisTimeLine { get; set; }
-        
+
+        public IEnumerable<BO.a41PersonToEvent> lisA41 { get; set; }
         public IEnumerable<BO.a38TimeLinePerson> lisTimeLineA38 { get; set; }
         public IEnumerable<BO.j26Holiday> lisJ26 { get; set; }
         public IEnumerable<BO.h04TodoCapacity> lisH04 { get; set; }        
