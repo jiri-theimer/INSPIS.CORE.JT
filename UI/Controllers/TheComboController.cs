@@ -208,8 +208,8 @@ namespace UI.Controllers
             var intRows = dt.Rows.Count;
 
             var sb = new System.Text.StringBuilder();
-            sb.AppendLine("<div class='row' style='padding:0px;margin:0px;'>");
-            sb.AppendLine("<div class='col-8'>");
+            //sb.AppendLine("<div class='row' style='padding:0px;margin:0px;'>");
+            //sb.AppendLine("<div class='col-8'>");
             sb.AppendLine("<ul style='list-style:none;padding-left:0px;'>");
 
 
@@ -243,7 +243,7 @@ namespace UI.Controllers
 
                 sb.AppendLine("<li>");
                 sb.Append(string.Format("<input type='checkbox' id='chk{0}_{1}' name='chk{0}' value='{1}' {2} />", controlid, intValue, strChecked));
-                sb.Append(string.Format("<label style='min-width:200px;' for='chk{0}_{1}'>{2}</label>", controlid, intValue, strText));
+                sb.Append(string.Format("<label style='min-width:60%;' for='chk{0}_{1}'>{2}</label>", controlid, intValue, strText));
 
                 sb.AppendLine("</li>");
             }
@@ -251,12 +251,12 @@ namespace UI.Controllers
 
 
             sb.AppendLine("</ul>");
-            sb.AppendLine("</div>");
-            sb.AppendLine("<div class='col-4'>");
-            sb.AppendLine(string.Format("<button type='button' id='cmdCheckAll{0}' class='btn btn-light'>Zaškrtnout vše</button>", controlid));
-            sb.AppendLine(string.Format("<button type='button' id='cmdUnCheckAll{0}' class='btn btn-light'>Odškrtnout vše</button>", controlid));
-            sb.AppendLine("</div>");
-            sb.AppendLine("</div>");
+            //sb.AppendLine("</div>");
+            //sb.AppendLine("<div class='col-4'>");
+            sb.AppendLine(string.Format("<button type='button' id='cmdCheckAll{0}' class='btn btn-light'>"+Factory.tra("Zaškrtnout vše")+"</button>", controlid));
+            sb.AppendLine(string.Format("<button type='button' id='cmdUnCheckAll{0}' class='btn btn-light'>"+Factory.tra("Odškrtnout vše")+"</button>", controlid));
+            //sb.AppendLine("</div>");
+            //sb.AppendLine("</div>");
             return sb.ToString();
         }
 

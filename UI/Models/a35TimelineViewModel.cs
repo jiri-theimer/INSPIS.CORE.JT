@@ -14,9 +14,7 @@ namespace UI.Models
         
         public IEnumerable<BO.a38TimeLinePerson> lisTimeLineA38 { get; set; }
         public IEnumerable<BO.j26Holiday> lisJ26 { get; set; }
-        public IEnumerable<BO.h04TodoCapacity> lisH04 { get; set; }
-
-        public IEnumerable<BO.o51Tag> lisO51 { get; set; }  //filtrování podle kategorií
+        public IEnumerable<BO.h04TodoCapacity> lisH04 { get; set; }        
 
         public List<DateTime> lisDays { get; set; }
         public List<int> lisYears { get; set; }
@@ -33,6 +31,8 @@ namespace UI.Models
         public int PersonQueryFlag { get; set; }
         public int A38QueryFlag { get; set; }
 
-        public int QueryByO51ID { get; set; }
+        
+        public string o51IDs { get; set; }
+        public string o51Names { get; set; }
     }
 }

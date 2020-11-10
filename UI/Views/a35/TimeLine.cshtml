@@ -55,13 +55,8 @@
         </select>
     </div>
     <div class="col-sm-1 col-md-1">
-        <select class="form-control" asp-for="@Model.QueryByO51ID" onchange="change_o51id(this)">
-            <option value="0">@_f.tra("Kategorie")</option>
-            @foreach (var c in Model.lisO51)
-            {
-                <option value="@c.pid">@(c.o51Name+" ("+c.o53Name+")")</option>
-            }
-        </select>
+        <mycombochecklist asp-for="@Model.o51IDs" entity="o51Tag" selectedtext="@Model.o51Names" placeholder="@_f.tra("Kategorie")..." param1="j02" event_after_changevalue="change_o51ids"></mycombochecklist>
+        
         
     </div>
     <div class="col-sm-1 col-md-1">
@@ -282,6 +277,13 @@
     }
     function change_o51id(ctl) {
         $.post("/Common/SetUserParam", { key: "a35TimeLine-QueryByO51ID", value: ctl.value }, function (data) {
+            refresh("/a35/TimeLine");
+
+        });
+    }
+
+    function change_o51ids(pids) {        
+        $.post("/Common/SetUserParam", { key: "a35TimeLine-o51IDs", value: pids }, function (data) {
             refresh("/a35/TimeLine");
 
         });

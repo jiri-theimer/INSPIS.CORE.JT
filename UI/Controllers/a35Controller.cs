@@ -26,9 +26,8 @@ namespace UI.Controllers
             var v = new a35TimeLineViewModel() { CurMonth = go2month, CurYear = go2year, a05ID = a05id };
             v.PersonQueryFlag = Factory.CBL.LoadUserParamInt("a35TimeLine-PersonQueryFlag", 0);
             v.A38QueryFlag = Factory.CBL.LoadUserParamInt("a35TimeLine-A38QueryFlag", 0);
-            v.QueryByO51ID= Factory.CBL.LoadUserParamInt("a35TimeLine-QueryByO51ID", 0);
-
-
+            v.o51IDs = Factory.CBL.LoadUserParam("a35TimeLine-o51IDs") ;
+            
             if (v.a05ID == 0)
             {
                 v.a05ID = Factory.CBL.LoadUserParamInt("a35TimeLine-a05ID", Factory.CurrentUser.a05ID);                
@@ -59,9 +58,9 @@ namespace UI.Controllers
             {
                 mq.param1 = "a02Inspector";
             }
-            if (v.QueryByO51ID > 0)
+            if (!string.IsNullOrEmpty(v.o51IDs))
             {
-                mq.o51ids = BO.BAS.ConvertString2ListInt(v.QueryByO51ID.ToString());
+                mq.o51ids = BO.BAS.ConvertString2ListInt(v.o51IDs);
             }
             
             mq.explicit_orderby = "a.j02LastName";
@@ -90,9 +89,14 @@ namespace UI.Controllers
             }
             v.lisJ26 = Factory.j26HolidayBL.GetList(new BO.myQuery("j26")).Where(p => p.j26Date >= d1 && p.j26Date <= d2);
            
-            mq = new BO.myQuery("o51");
+            if (!string.IsNullOrEmpty(v.o51IDs))
+            {
+                mq = new BO.myQuery("o51") { pids = BO.BAS.ConvertString2ListInt(v.o51IDs) };
+                v.o51Names = string.Join(", ", Factory.o51TagBL.GetList(mq).Select(p => p.o51Name));
+            }
+            
            
-            v.lisO51 = Factory.o51TagBL.GetList(mq).Where(p => p.o53Entities.Contains("j02"));
+            
 
             return View(v);
         }
