@@ -9,6 +9,7 @@
 }
 
 @addTagHelper *, UI
+    <script src="~/lib/selection/ds.min.js"></script>
 
 <h4>@ViewData["Title"]</h4>
 <div class="bg-light" style="padding:10px;">
@@ -25,6 +26,7 @@
     <input type="hidden" asp-for="Rec.x29ID" />
     <input type="hidden" asp-for="Rec.x40DataPID" />
     <input type="hidden" asp-for="@Model.ActiveTabIndex" />
+    <input type="hidden" id="hidA03IDs" asp-for="@Model.a03IDs" />
 
     <div class="tabs_container_record">
         <!-- Tab panes -->
@@ -95,11 +97,20 @@
             <div class="tab-pane" id="tab2">
                 <!-- Tab2 -->
                 <p></p>
+                <mycombo entity="a03Institution" asp-for="@Model.FilterA03ID" selectedtext="@Model.FilterA03Name" filter-flag="1" placeholder="@_f.tra("Vybrat instituci")..." event_after_changevalue="handle_a03id_append"></mycombo>
+                <mycombo entity="a29InstitutionList" asp-for="@Model.FilterA29ID" selectedtext="@Model.FilterA29Name" placeholder="@_f.tra("Vložit z pojmenovaného seznamu")..." event_after_changevalue="handle_a29id_append"></mycombo>
+
+                <hr />
+                <button type="button" id="cmdGrid" class="btn btn-secondary btn-sm" onclick="multiselect()">@_f.tra("Přidat hromadně přes Grid")</button>
+                <button type="button" id="cmdClear" class="btn btn-danger btn-sm" style="visibility:hidden;" onclick="clear_all()">@_f.tra("Odebrat vše")</button>
+                <button type="button" id="cmdRemoveClosed" class="btn btn-danger btn-sm" style="visibility:hidden;" onclick="handle_remove_closed()">@_f.tra("Odebrat neplatné")</button>
+
+
 
             </div>
         </div>
     </div>
-
+    <div id="divA03" style="margin-bottom:20px;"></div>
 </form>
 
 
@@ -127,12 +138,158 @@
             $("#ActiveTabIndex").val(tabindex);
 
 
-        })
+        });
+
+        if ($("#hidA03IDs").val() != "") {
+            refresh_a03_table();
+        }
 
     });
 
 
+    function handle_a03id_append(a03id) {
+        if (a03id == "") {
+            _notify_message("@_f.tra("Musíte vybrat instituci.")");
+            return;
+        }
+        var arr = [a03id];
+        append_a03ids(arr,false);
+    }
 
+    function handle_a29id_append(a29id) {
+        if (a29id == "") {
+            _notify_message("@_f.tra("Musíte vybrat seznam.")");
+            return;
+        }
+        $.post("/Common/GetPidsOfQuery", { entity: "a03Institution", master_prefix: "a29", master_pid: a29id }, function (data) {
+            if (data != null) {
+                append_a03ids(data,true);
+            }
+        });
+    }
+
+    function clear_all() {
+        $("#hidA03IDs").val("");
+        _a03IDsCount = 0;
+        $("#a03IDs_Count").text(_a03IDsCount);
+        refresh_a03_table();
+    }
+    function handle_remove_closed() {
+        $("#divA03").html("Loading...");
+        $.post("/a42/RemoveClosed", { a03ids: $("#hidA03IDs").val() }, function (data) {
+            $("#hidA03IDs").val(data);
+            refresh_a03_table();
+        });
+
+    }
+
+    function append_a03ids(arr, silent) {
+        $("#divA03").html("Loading...");
+        var a03ids = [];
+        if ($("#hidA03IDs").val() != "") {
+            a03ids = $("#hidA03IDs").val().split(",");
+        }
+        for (var i = 0; i < arr.length; i++) {
+            if (a03ids.includes(arr[i]+"")==true) {
+                if (!silent) {
+                    _notify_message("@_f.tra("Tato instituce již je v seznamu.")");
+                    refresh_a03_table();
+                    return;
+                }
+            } else {
+                a03ids.push(arr[i]+"");
+            }
+            if (a03ids.length > 5000) {
+                _notify_message("@_f.tra("Maximální počet cílových institucí v jedné INEZ dávce je 5.000.")");
+                refresh_a03_table();
+                return;
+            }
+        }
+        $("#hidA03IDs").val(a03ids.join(","));
+
+        refresh_a03_table();
+    }
+
+    function multiselect() {
+        _window_open("/Record/GridMultiSelect?prefix=a03", 2);
+
+    }
+
+    function refresh_a03_table() {
+        var url = "@Url.Action("GetWorkTable", "Common")";
+        var pids = $("#hidA03IDs").val();
+
+        if (pids == "") {
+            $("#divA03").html("");
+            $("#cmdClear").css("visibility", "hidden");
+            $("#cmdRemoveClosed").css("visibility", "hidden");
+            return;
+        }
+        $.post(url, { entity: "a03Institution", tableid: "tabA03IDs", pids: pids, delete_function: "handle_a03id_delete",selectable:true }, function (data) {
+            $("#divA03").html(data);
+            $("#cmdClear").css("visibility", "visible");
+            $("#cmdRemoveClosed").css("visibility", "visible");
+
+
+            $("#tabA03IDs td").each(function () {
+                $(this).addClass("no_clipboard");
+            });
+
+            worktable_setup_selectable("divA03");
+            _a03IDsCount = $("#tabA03IDs").find("tr").length-1;
+
+            $("#a03IDs_Count").text(_a03IDsCount.toString());
+        });
+    }
+
+    function handle_a03id_delete(a03id) {
+        var a03ids = [];
+        a03ids = $("#hidA03IDs").val().split(",");
+        var x = a03ids.indexOf(a03id.toString());
+        a03ids.splice(x, 1);
+
+        $("#hidA03IDs").val(a03ids.join(","));
+        refresh_a03_table();
+
+    }
+
+
+    function worktable_setup_selectable(containerID) {
+
+        var ds1 = new DragSelect({
+            selectables: document.getElementsByClassName("can-select"), // node/nodes that can be selected. This is also optional, you could just add them later with .addSelectables.
+            selectedClass: "selcell",
+            area: document.getElementById(containerID), // area in which you can drag. If not provided it will be the whole document.
+            customStyles: false,  // If set to true, no styles (except for position absolute) will be applied by default.
+            multiSelectKeys: ['ctrlKey', 'shiftKey', 'metaKey'],  // special keys that allow multiselection.
+            multiSelectMode: false,  // If set to true, the multiselection behavior will be turned on by default without the need of modifier keys. Default: false
+            autoScrollSpeed: 20,  // Speed in which the area scrolls while selecting (if available). Unit is pixel per movement. Set to 0 to disable autoscrolling. Default = 1
+            onDragStart: function (element) { }, // fired when the user clicks in the area. This callback gets the event object. Executed after DragSelect function code ran, befor the setup of event listeners.
+            onDragMove: function (element) { }, // fired when the user drags. This callback gets the event object. Executed before DragSelect function code ran, after getting the current mouse position.
+            onElementSelect: function (element) { }, // fired every time an element is selected. (element) = just selected node
+            onElementUnselect: function (element) { }, // fired every time an element is de-selected. (element) = just de-selected node.
+            callback: function (elements) {
+                // fired once the user releases the mouse. (elements) = selected nodes.
+
+                if (elements.length > 0) {
+                    var _rowids = [];
+
+                    for (i = 0; i < elements.length; i++) {
+                        var rowid = $(elements[i]).attr("data-v");
+
+                        _rowids.push(rowid);
+
+                    }
+
+
+                }
+
+            }
+
+
+
+        });
+    }
 </script>
 
 

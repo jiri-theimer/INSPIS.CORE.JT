@@ -149,14 +149,14 @@
                 <!-- Tab2 -->
 
                 <div style="padding:20px;max-width:1000px;">
-                    <mycombo entity="a03Institution" asp-for="@Model.FilterA03ID" selectedtext="@Model.FilterA03Name" filter-flag="1" placeholder="Vybrat instituci..." event_after_changevalue="handle_a03id_append"></mycombo>
-                    <mycombo entity="a29InstitutionList" asp-for="@Model.FilterA29ID" selectedtext="@Model.FilterA29Name" placeholder="Vložit z pojmenovaného seznamu..." event_after_changevalue="handle_a29id_append"></mycombo>
-                    <mycombo entity="a42Qes" asp-for="@Model.FilterA42ID" selectedtext="@Model.FilterA42Name" placeholder="Vložit z INEZU..." filter-flag="1" event_after_changevalue="handle_a42id_append"></mycombo>
+                    <mycombo entity="a03Institution" asp-for="@Model.FilterA03ID" selectedtext="@Model.FilterA03Name" filter-flag="1" placeholder="@_f.tra("Vybrat instituci")..." event_after_changevalue="handle_a03id_append"></mycombo>
+                    <mycombo entity="a29InstitutionList" asp-for="@Model.FilterA29ID" selectedtext="@Model.FilterA29Name" placeholder="@_f.tra("Vložit z pojmenovaného seznamu")..." event_after_changevalue="handle_a29id_append"></mycombo>
+                    <mycombo entity="a42Qes" asp-for="@Model.FilterA42ID" selectedtext="@Model.FilterA42Name" placeholder="@_f.tra("Vložit z INEZU")..." filter-flag="1" event_after_changevalue="handle_a42id_append"></mycombo>
                     <hr />
                     <button type="button" id="cmdGrid" class="btn btn-secondary btn-sm" onclick="multiselect()">@_f.tra("Přidat hromadně přes Grid")</button>
                     <button type="button" id="cmdClear" class="btn btn-danger btn-sm" style="visibility:hidden;" onclick="clear_all()">@_f.tra("Odebrat vše")</button>
                     <button type="button" id="cmdRemoveClosed" class="btn btn-danger btn-sm" style="visibility:hidden;" onclick="handle_remove_closed()">@_f.tra("Odebrat neplatné")</button>
-                    <label>Počet cílových institucí:</label><span class="badge" id="a03IDs_Count" style="font-size:120%;">0</span>
+                    <label>@_f.tra("Počet cílových institucí"):</label><span class="badge" id="a03IDs_Count" style="font-size:120%;">0</span>
                 </div>
 
                 <div id="divA03" style="margin-bottom:20px;"></div>
@@ -271,7 +271,7 @@
 
     function handle_a03id_append(a03id) {
         if (a03id == "") {
-            _notify_message("Musíte vybrat instituci.");
+            _notify_message("@_f.tra("Musíte vybrat instituci.")");
             return;
         }
         var arr = [a03id];
@@ -316,7 +316,7 @@
 
     function handle_a29id_append(a29id) {
         if (a29id == "") {
-            _notify_message("Musíte vybrat seznam.");
+            _notify_message("@_f.tra("Musíte vybrat seznam.")");
             return;
         }
         $.post("/Common/GetPidsOfQuery", { entity: "a03Institution", master_prefix: "a29", master_pid: a29id }, function (data) {

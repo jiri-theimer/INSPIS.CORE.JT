@@ -58,7 +58,7 @@ function _clone_full(controller, action, pid, header) {
 
 
 function _sendmail() {
-    _window_open("/Mail/SendMail");
+    _window_open("/Mail/SendMail",2);
 }
 
 
