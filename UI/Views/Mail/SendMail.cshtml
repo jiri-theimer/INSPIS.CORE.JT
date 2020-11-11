@@ -50,6 +50,10 @@
                 <!-- Tab1 -->
                 <p></p>
                 <div class="form-row">
+                    <input type="checkbox" id="chkIsTest" asp-for="@Model.IsTest" />
+                    <label for="chkIsTest">@_f.tra("Testovací zpráva")</label>
+                </div>
+                <div class="form-row my-2">
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Odesílatel"):</label>
                     <div class="col-sm-11 col-md-10">
                         <mycombo entity="j40MailAccount" asp-for="Rec.j40ID" selectedtext="Rec.j40Name" view-flag="2"></mycombo>

@@ -55,16 +55,16 @@
             @if (Model.Rec.a03ShortName == null)
             {
                 <div class="col-sm-8 col-md-7">
-                    <myval value="@Model.Rec.a03Name"></myval>
+                    <myval value="@Model.Rec.a03Name" tooltip="@Model.Rec.a03Name"></myval>
                 </div>
             }
             else
             {
                 <div class="col-sm-6 col-md-5">
-                    <myval value="@Model.Rec.a03Name"></myval>
+                    <myval value="@Model.Rec.a03Name" tooltip="@Model.Rec.a03Name"></myval>
                 </div>
                 <div class="col-sm-2 col-md-2">
-                    <myval value="@Model.Rec.a03ShortName"></myval>
+                    <myval value="@Model.Rec.a03ShortName" tooltip="@Model.Rec.a03ShortName"></myval>
                 </div>
             }
 

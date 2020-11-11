@@ -15,6 +15,9 @@ namespace UI.Models
             this.Javascript_CallOnLoad = string.Format(jsfunction+"({0},'{1}');", intPID,strFlag);
         }
 
-        
+        public void SetJavascript_CallOnLoad(string reloadurl_parentsite)
+        {
+            this.Javascript_CallOnLoad = "_close_and_reload_parentsite('"+reloadurl_parentsite+"')";
+        }
     }
 }

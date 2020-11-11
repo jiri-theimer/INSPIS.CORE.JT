@@ -369,6 +369,15 @@ function _reload_layout_and_close(pid, flag) {
     }
 }
 
+function _close_and_reload_parentsite(url) {
+    if (window !== top) {
+        window.parent.location.replace(url);
+        window.parent._window_close();
+    } else {
+        location.replace(url);
+    }
+}
+
 function _removeUrlParam(key, sourceURL) {
     var rtn = sourceURL.split("?")[0],
         param,

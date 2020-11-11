@@ -649,7 +649,7 @@ namespace DL
                 }
                 if (mq.Prefix == "j02")
                 {
-                    string sw = string.Format("Contains((a.j02FullText,a.j02Email,a.j02PID),'{0}')", s);
+                    string sw = string.Format("Contains((a.j02FullText,a.j02Email,a.j02PID,a.j02Address,a.j02Mobile),'{0}')", s);
                     AQ(ref lis, "(" + sw + ")", "", null);
                     //AQ(ref lis, "(a.j02LastName LIKE '%'+@expr+'%' OR a.j02FirstName LIKE '%'+@expr+'%' OR a.j02Email LIKE '%'+@expr+'%' OR a.j02PID LIKE '%'+@expr+'%')", "expr", mq.SearchString);
                 }

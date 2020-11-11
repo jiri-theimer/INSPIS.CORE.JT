@@ -10,7 +10,7 @@ namespace UI.Models
         public BO.x40MailQueue Rec { get; set; }
 
         public string UploadGuid { get; set; }
-
+        
         public int ActiveTabIndex { get; set; } = 1;
 
         public int FilterA03ID { get; set; }
@@ -18,5 +18,7 @@ namespace UI.Models
         public int FilterA29ID { get; set; }
         public string FilterA29Name { get; set; }
         public string a03IDs { get; set; }
+
+        public bool IsTest { get; set; }
     }
 }

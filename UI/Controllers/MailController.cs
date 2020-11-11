@@ -32,7 +32,7 @@ namespace UI.Controllers
                     break;
             }
 
-            var mq = new BO.myQuery("x40") {explicit_orderby= "a.x40MailID", explicit_sqlwhere = "a.x40BatchGuid='" + BO.BAS.GSS(v.BatchGuid) + "'" };
+            var mq = new BO.myQuery("x40") { explicit_orderby = "a.x40MailID", explicit_sqlwhere = "a.x40BatchGuid='" + BO.BAS.GSS(v.BatchGuid) + "'" };
             v.lisX40 = Factory.MailBL.GetList(mq);
             v.TotalCountX40 = v.lisX40.Count();
             if (v.QueryByStatusID > 0)
@@ -44,12 +44,12 @@ namespace UI.Controllers
             {
                 v.lisX40 = v.lisX40.Take(v.LimitTopRecs);
             }
-            v.RecA42 = Factory.a42QesBL.LoadByGuid(v.BatchGuid,0);
+            v.RecA42 = Factory.a42QesBL.LoadByGuid(v.BatchGuid, 0);
             return View(v);
         }
         public IActionResult SendMail(int x40id)
         {
-            var v = new Models.SendMailViewModel();
+            var v = new Models.SendMailViewModel() { UploadGuid = BO.BAS.GetGuid() };
             v.Rec = new BO.x40MailQueue();
             v.Rec.x29ID = 502;
             v.Rec.x40DataPID = Factory.CurrentUser.j02ID;
@@ -57,7 +57,7 @@ namespace UI.Controllers
             v.Rec.j40ID = BO.BAS.InInt(Factory.CBL.LoadUserParam("SendMail_j40ID"));
             v.Rec.j40Name = Factory.CBL.LoadUserParam("SendMail_j40Name");
             v.Rec.x40MessageGuid = BO.BAS.GetGuid();
-            v.UploadGuid = BO.BAS.GetGuid();
+
 
             if (x40id > 0)
             {   //kopírování zprávy do nové podle vzoru x40id
@@ -88,14 +88,60 @@ namespace UI.Controllers
                 }
 
                 //System.IO.File.AppendAllText("c:\\temp\\hovado.txt", "Try SendMessage: " + DateTime.Now.ToString()+", message: "+ v.Rec.x40Subject);
-                BO.Result r = Factory.MailBL.SendMessage(v.Rec,false);
+                BO.Result ret = new BO.Result(false);
+                if (!string.IsNullOrEmpty(v.a03IDs))
+                {   //poslat to vybraným institucím                    
+                    var a03ids = BO.BAS.ConvertString2ListInt(v.a03IDs);
+                    string strBatchGuid = BO.BAS.GetGuid();
+                    if (v.IsTest)
+                    {
+                        strBatchGuid = "TEST" + strBatchGuid;
+                    }
+                    else
+                    {
+                        strBatchGuid = "REAL" + strBatchGuid;
+                    }
+
+                    foreach (int intA03ID in a03ids)
+                    {
+                        var recA03 = Factory.a03InstitutionBL.Load(intA03ID);
+                        v.Rec.x40Recipient = recA03.a03Email;
+                        v.Rec.x40MessageGuid = BO.BAS.GetGuid();
+                        if (a03ids.Count() > 10)
+                        {
+                            //odesílat dávkově
+                            v.Rec.x40BatchGuid = strBatchGuid;                            
+                            v.Rec.x40Status = BO.x40StateFlag.InQueque;
+                            Factory.MailBL.SaveX40(null, v.Rec);
+                        }
+                        else
+                        {
+                            //odeslat rovnou
+                            ret = Factory.MailBL.SendMessage(v.Rec, v.IsTest);
+                        }
+                        
+                    }   
+                    if (a03ids.Count() > 10)
+                    {
+                        v.SetJavascript_CallOnLoad("/Mail/MailBatchFramework?batchguid=" + strBatchGuid);
+                        return View(v);                        
+                    }
+
+                }
+                else
+                {
+                    ret = Factory.MailBL.SendMessage(v.Rec, v.IsTest);
+                }
+
+
+
                 if (v.Rec.j40ID > 0)
                 {
                     Factory.CBL.SetUserParam("SendMail_j40ID", v.Rec.j40ID.ToString());
                     Factory.CBL.SetUserParam("SendMail_j40Name", v.Rec.j40Name);
                 }
 
-                if (r.Flag == BO.ResultEnum.Success)  //případná chybová hláška je již naplněná v BL vrstvě
+                if (ret.Flag == BO.ResultEnum.Success)  //případná chybová hláška je již naplněná v BL vrstvě
                 {
                     v.SetJavascript_CallOnLoad(v.Rec.pid);
                     return View(v);

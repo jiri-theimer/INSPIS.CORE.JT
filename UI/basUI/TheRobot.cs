@@ -61,7 +61,29 @@ namespace UI
 
             //čekající pošta na odeslání
             Handle_MailQueue_INEZ(f);
+            Handle_MailQueue(f);
+        }
 
+        private void Handle_MailQueue(BL.Factory f)
+        {
+            var mq = new BO.myQuery("x40");
+           
+            var lisX40 = f.MailBL.GetList(mq).Where(p => p.x40BatchGuid != null && p.x40Status == BO.x40StateFlag.InQueque && (p.x40BatchGuid.Substring(0,4)=="REAL" || p.x40BatchGuid.Substring(0, 4) == "TEST")).Take(20);
+            if (lisX40.Count() > 0)
+            {
+                foreach (var recX40 in lisX40)
+                {
+                    if (recX40.x40BatchGuid.Substring(0, 4) == "TEST")
+                    {
+                        f.MailBL.SendMessage(recX40, true);  //testovací režim
+                    }
+                    else
+                    {
+                        f.MailBL.SendMessage(recX40, false);
+                    }
+                }
+
+            }
         }
 
         private void Handle_MailQueue_INEZ(BL.Factory f)
@@ -91,11 +113,7 @@ namespace UI
                     return;
                 }
                 
-            }
-           
-            
-            
-            
+            }                                               
         }
 
         public Task StopAsync(CancellationToken stoppingToken)
