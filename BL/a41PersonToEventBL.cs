@@ -66,6 +66,7 @@ namespace BL
          
 
             int intA41ID = _db.SaveRecord("a41PersonToEvent", p.getDynamicDapperPars(), rec,false);
+            _db.RunSql("UPDATE a01Event set a01LeaderInLine=dbo._core_a41_get_role_inline(@pid,2),a01MemberInLine=dbo._core_a41_get_role_inline(@pid,1) WHERE a01ID=@pid", new { pid = rec.a01ID });
             if (bolAppend2WorkflowHistory)
             {
                 var recB05 = new BO.b05Workflow_History() { a01ID = rec.a01ID, b05IsNominee = true, j02ID_Nominee = rec.j02ID, j11ID_Nominee = rec.j11ID };
@@ -101,6 +102,8 @@ namespace BL
                     sb(" SELECT @pid,a45ID,j02ID,j11ID,a41IsAllocateAllPeriod,a41DateInsert,a41DateUpdate,a41UserInsert,a41UserUpdate");
                     sb(" FROM a41PersonToEvent WHERE a01ID=@parentpid");
                     _db.RunSql(sbret(), new { pid = c.pid, parentpid =recParent.pid});
+
+                    _db.RunSql("UPDATE a01Event set a01LeaderInLine=dbo._core_a41_get_role_inline(@pid,2),a01MemberInLine=dbo._core_a41_get_role_inline(@pid,1) WHERE a01ID=@pid", new { pid = recParent.pid });
                 }
             }
         }
