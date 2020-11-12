@@ -13,6 +13,21 @@
 
 <h4>@ViewData["Title"]</h4>
 <div class="bg-light" style="padding:10px;">
+    <label>@_f.tra("ID fronty"):</label>
+    <select id="cbxGuid" onchange="reload()">
+        @foreach (var strGUID in Model.lisGUID)
+        {
+            @if (strGUID == Model.BatchGuid)
+            {
+                <option selected value="@strGUID">@strGUID</option>
+            }
+            else
+            {
+                <option value="@strGUID">@strGUID</option>
+            }
+
+        }
+    </select>
     <select id="cbxLimitTopRecs" onchange="reload()">
         <option value="100">100</option>
         <option value="500">500</option>
@@ -30,7 +45,7 @@
         @Model.lisX40.Count()
     </strong>
     <button type="button" onclick="reload()" class="btn btn-sm btn-primary">@_f.tra("Občerstvit")</button>
-    @if(Model.RecA42 != null)
+    @if (Model.RecA42 != null)
     {
         <strong>@Model.RecA42.a42Name</strong>
     }
@@ -48,33 +63,33 @@
 <table class="table table-sm table-hover">
     @foreach (var c in Model.lisX40)
     {
-    <tr>
-        <td>
-            #@(c.x40MailID.ToString()+"/"+Model.TotalCountX40.ToString())
-        </td>
-        <td>
-            @c.StateAlias
-        </td>
-        <td>
-            @c.x40Recipient
-        </td>
-        <td>
-            @c.x40Subject
-        </td>
+        <tr>
+            <td>
+                #@(c.x40MailID.ToString()+"/"+Model.TotalCountX40.ToString())
+            </td>
+            <td>
+                @c.StateAlias
+            </td>
+            <td>
+                @c.x40Recipient
+            </td>
+            <td>
+                @c.x40Subject
+            </td>
 
-        <td>
-            @c.x40DatetimeProcessed
-        </td>
-        <td>
-            @c.x40ErrorMessage
-        </td>
-        <td>
-            @c.DateInsert
-        </td>
-        <td>
-            @c.x40DatetimeProcessed
-        </td>
-    </tr>
+            <td>
+                @c.x40DatetimeProcessed
+            </td>
+            <td>
+                @c.x40ErrorMessage
+            </td>
+            <td>
+                @c.DateInsert
+            </td>
+            <td>
+                @c.x40DatetimeProcessed
+            </td>
+        </tr>
 
     }
 </table>
@@ -89,8 +104,8 @@
     });
 
     function reload() {
-
-        location.replace("/Mail/MailBatchFramework?limittoprecs=" + $("#cbxLimitTopRecs").val() + "&statusid=" + $("#cbxStatus").val()+"&batchguid=@Model.BatchGuid")
+        var guid = $("#cbxGuid").val();
+        location.replace("/Mail/MailBatchFramework?limittoprecs=" + $("#cbxLimitTopRecs").val() + "&statusid=" + $("#cbxStatus").val() + "&batchguid=" + guid);
     }
     function StopJob() {
         $("#cmdStop").text("Processing...");

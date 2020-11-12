@@ -15,5 +15,7 @@ namespace UI.Models
         public int QueryByStatusID { get; set; }
 
         public BO.a42Qes RecA42 { get; set; }
+
+        public List<string> lisGUID { get; set; }
     }
 }

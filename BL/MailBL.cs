@@ -26,6 +26,7 @@ namespace BL
         public int SaveX40(MailMessage m, BO.x40MailQueue rec);
         public void StopPendingMessagesInBatch(string batchguid);
         public void RestartMessagesInBatch(string batchguid);
+        public IEnumerable<BO.GetString> GetGuidsInQueque();
 
     }
     class MailBL : BaseBL, IMailBL
@@ -438,6 +439,11 @@ namespace BL
         {
             DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql("SELECT a.*,"+ _db.GetSQL1_Ocas("x40",false,false,true)+" FROM x40MailQueue a", mq, _mother.CurrentUser);
             return _db.GetList<BO.x40MailQueue>(fq.FinalSql, fq.Parameters);
+        }
+
+        public IEnumerable<BO.GetString> GetGuidsInQueque()
+        {            
+            return _db.GetList<BO.GetString>("SELECT DISTINCT x40BatchGuid as Value FROM x40MailQueue WHERE x40Status=1");
         }
 
     }

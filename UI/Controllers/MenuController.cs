@@ -123,6 +123,7 @@ namespace UI.Controllers
                 AMI("Návrhář workflow", "/AdminOneWorkflow/Index");
             }
             
+
             AMI("Import"+": "+Factory.tra("Instituce"), "/import/a03");
             //if (TUP(BO.PermValueEnum.H11Admin))
             //{
@@ -175,6 +176,7 @@ namespace UI.Controllers
             DIV_TRANS("Pošta");
             AMI("Poštovní účty", url_users("j40"));
             AMI("OUTBOX", url_users("x40"));
+            AMI("MAIL fronta", "/mail/MailBatchFramework");
 
             handle_selected_item(prefix);
 

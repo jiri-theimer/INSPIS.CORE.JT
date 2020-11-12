@@ -17,10 +17,27 @@ namespace UI.Controllers
         public IActionResult MailBatchFramework(string batchguid, int limittoprecs, int statusid, string oper)
         {
             if (limittoprecs == 0) limittoprecs = 500;
-            var v = new Models.MailBatchFramework() { BatchGuid = batchguid, LimitTopRecs = limittoprecs, QueryByStatusID = statusid };
-            if (string.IsNullOrEmpty(v.BatchGuid))
+            var v = new Models.MailBatchFramework() { BatchGuid = batchguid, LimitTopRecs = limittoprecs, QueryByStatusID = statusid, lisGUID = new List<string>() };
+           
+            var guids = Factory.MailBL.GetGuidsInQueque();
+            if (guids.Count() > 0)
+            {                
+                foreach (var c in guids)
+                {
+                    v.lisGUID.Add(c.Value);
+                }
+            }
+
+            if (!string.IsNullOrEmpty(v.BatchGuid))
             {
-                return this.StopPage(false, "batchguid missing.");
+                if (!v.lisGUID.Contains(v.BatchGuid))
+                {
+                    v.lisGUID.Add(v.BatchGuid);
+                }                                
+            }
+            if (v.lisGUID.Count() == 0)
+            {
+                return this.StopPage(false, Factory.tra("Momentálně neexistuje otevřená mail fronta."));
             }
             switch (oper)
             {
