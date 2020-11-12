@@ -552,7 +552,7 @@ namespace DL
             }
             if (mq.Prefix == "f06" && mq.param1 == "poll")
             {
-                AQ(ref lis, "a.f06BindScopeQuery IN (0,2)", "", null);    //formuláře použitelné jako anketní
+                AQ(ref lis, "ISNULL(a.f06BindScopeQuery,0) IN (0,2)", "", null);    //formuláře použitelné jako anketní
             }
             if (mq.explicit_sqlwhere != null)
             {

@@ -426,7 +426,7 @@ namespace BL
             AF("f06Form", "f06Ordinal", "#", 2, null, "num0");
             AF("f06Form", "f06ExportCode", "STAT kód");
             AF("f06Form", "f06Description", "Popis");
-            AF("f06Form", "f06BindScopeQuery", "Ankety", 0, "case a.f06BindScopeQuery when 0 then 'Ne-anketní i anketní' when 1 then 'Pouze ne-anketní' when 2 then 'Pouze anketní' end");
+            AF("f06Form", "f06BindScopeQuery", "Ankety", 0, "case ISNULL(a.f06BindScopeQuery,0) when 0 then 'Ne-anketní i anketní' when 1 then 'Pouze ne-anketní' when 2 then 'Pouze anketní' end");
             AF("f06Form", "f06UserLockFlag", "Zamykání", 0, "case a.f06UserLockFlag when 1 then 'Uživatel nemá možnost' when 2 then 'Ano, pokud je korektně vyplněn' when 3 then 'Kdykoliv' end");
             
             AppendTimestamp("f06Form");

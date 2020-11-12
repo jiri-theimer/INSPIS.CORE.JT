@@ -299,6 +299,7 @@ namespace UI.Controllers
                     }
                     Factory.a11EventFormBL.Save(c);
                 }
+                v.SetJavascript_CallOnLoad("/a01/RecPage?pid=" + v.RecA01.pid.ToString());
                 return View(v);
             }
             if (oper=="delete" && pids != ""){
@@ -307,7 +308,8 @@ namespace UI.Controllers
                 {
                     Factory.CBL.DeleteRecord("a11", a11ids[i]);
                 }
-                RefreshStateAppendPoll(v);
+                //RefreshStateAppendPoll(v);
+                v.SetJavascript_CallOnLoad("/a01/RecPage?pid=" + v.RecA01.pid.ToString());
                 return View(v);
             }
             if (oper == "add")
@@ -350,8 +352,10 @@ namespace UI.Controllers
                     {
                         Factory.a11EventFormBL.Save(c);
                     }
-                    RefreshStateAppendPoll(v);
+                    v.SetJavascript_CallOnLoad("/a01/RecPage?pid="+v.RecA01.pid.ToString());
                     return View(v);
+                    //RefreshStateAppendPoll(v);
+                    
                 }
                 else
                 {
