@@ -119,7 +119,7 @@ namespace UI.Controllers
             }
             sb.Append("</tr></thead>");
             sb.Append("<tbody>");
-            string strClass = "";
+            string strClass = "";string strUpravit = Factory.tra("Upravit");
             for (int i = 0; i < intRows; i++)
             {
                 strClass = null;
@@ -143,7 +143,7 @@ namespace UI.Controllers
 
                 if (edit_function != null)
                 {
-                    sb.Append(string.Format("<td><button type='button' class='btn btn-sm btn-light' onclick='{0}({1})'>Upravit</button></td>", edit_function, dt.Rows[i]["pid"]));
+                    sb.Append(string.Format("<td><button type='button' class='btn btn-sm btn-light' onclick='{0}({1})'>"+strUpravit+"</button></td>", edit_function, dt.Rows[i]["pid"]));
                 }
                 foreach (var col in mq.explicit_columns)
                 {

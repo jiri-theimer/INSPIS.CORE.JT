@@ -258,7 +258,7 @@
             @if (Model.Rec.ReplyControl == BO.ReplyKeyEnum.DropdownList || Model.Rec.ReplyControl == BO.ReplyKeyEnum.RadiobuttonList || Model.Rec.ReplyControl == BO.ReplyKeyEnum.Listbox || (Model.Rec.ReplyControl == BO.ReplyKeyEnum.Checkbox && Model.Rec.f19IsMultiselect))
             {
                 <div style="width:100%;">
-                    <mycombo entity="f21ReplyUnit" asp-for="@Model.SelectedF21ID" selectedtext="@Model.SelectedF21Name" filter-flag="1" param1="search" placeholder="Vybrat jednotku odpovědi..." event_after_changevalue="handle_f21id_append"></mycombo>
+                    <mycombo entity="f21ReplyUnit" asp-for="@Model.SelectedF21ID" selectedtext="@Model.SelectedF21Name" filter-flag="1" param1="search" placeholder="@_f.tra("Vybrat jednotku odpovědi")..." event_after_changevalue="handle_f21id_append"></mycombo>
 
                 </div>
                 <button type="button" id="cmdNew" class="btn btn-primary btn-sm" onclick="f21_create()">@_f.tra("Vytvořit novou jednotku")</button>
@@ -278,7 +278,7 @@
             <!-- Tab4 -->
             <p></p>
             <div class="form-row">
-                <label class="col-sm-1 col-md-2 col-form-label">Nápověda:</label>
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Nápověda"):</label>
                 <div class="col-sm-11 col-md-10">
                     <textarea asp-for="Rec.f19Hint" class="form-control" placeholder="@_f.tra("Text nápovědy")" style="min-height:40px;"></textarea>
                     <span asp-validation-for="Rec.f19Hint" class="text-danger"></span>
@@ -358,7 +358,7 @@
 
     function handle_f23id_change(f23id) {
         if (f23id == "") {
-            _notify_message("Musíte vybrat typ odpovědi.");
+            _notify_message("@_f.tra("Musíte vybrat typ odpovědi.")");
             return;
         }
         form1.action = "/f19/Record?oper=postback&f23id=" + f23id;
@@ -366,7 +366,7 @@
     }
     function handle_x24id_change(x24id) {
         if (x24id == "") {
-            _notify_message("Musíte vybrat datový typ.");
+            _notify_message("@_f.tra("Musíte vybrat datový typ.")");
             return;
         }
         form1.action = "/f19/Record?oper=postback";
@@ -374,7 +374,7 @@
     }
     function handle_f18id_change(f18id) {
         if (f18id == "") {
-            _notify_message("Musíte vybrat segment.");
+            _notify_message("@_f.tra("Musíte vybrat segment.")");
             return;
         }
         form1.action = "/f19/Record?oper=postback";
@@ -382,7 +382,7 @@
     }
     function handle_f25id_change(f25id) {
         if (f25id == "") {
-            _notify_message("Musíte vybrat šachovnici.");
+            _notify_message("@_f.tra("Musíte vybrat šachovnici.")");
             return;
         }
         form1.action = "/f19/Record?oper=postback";
@@ -398,19 +398,19 @@
 
     function handle_f21id_append(f21id) {
         if (f21id == "") {
-            _notify_message("Musíte vybrat jednotku odpovědi.");
+            _notify_message("@_f.tra("Musíte vybrat jednotku odpovědi.")");
             return;
         }
         var f21ids = [];
         if ($("#hidF21IDs").val() != "") f21ids = $("#hidF21IDs").val().split(",");
         if (f21ids.includes(f21id)) {
-            _notify_message("Tato jednotka již je v seznamu.", "info");
+            _notify_message("@_f.tra("Tato jednotka již je v seznamu.")", "info");
             return;
         }
         f21ids.push(f21id);
         $("#hidF21IDs").val(f21ids.join(","));
         refresh_f21_table();
-        _notify_message("Jednotka přidána do seznamu. Je třeba potvrdit tlačítkem [Uložit změny].","info");
+        _notify_message("@_f.tra("Jednotka přidána do seznamu. Je třeba potvrdit tlačítkem [Uložit změny].")","info");
 
     }
     function handle_f21id_delete(f21id) {
@@ -466,7 +466,7 @@
 
     function popup_evalfunct(elementID) {
 
-        _window_open("/x27/SelectFunction?elementid=" + elementID,1,"Vybrat EVAL funkci");
+        _window_open("/x27/SelectFunction?elementid=" + elementID,1,"@_f.tra("Vybrat EVAL funkci")");
 
     }
 </script>
