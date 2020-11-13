@@ -62,8 +62,12 @@ namespace BL
                     sb.Append(" LEFT OUTER JOIN k01Teacher k01 ON a.k01ID=k01.k01ID");
                     break;
                 case "j02":
-                    sb.Append("a.*,j07.j07Name");
-                    sb.Append(" FROM j02Person a LEFT OUTER JOIN j07Position j07 on a.j07ID=j07.j07ID");
+                    sb.Append("a.*,j07.j07Name,j03.j03Login,j03.j03LangIndex,j04.*");
+                    sb.Append(" FROM j02Person a LEFT OUTER JOIN j07Position j07 on a.j07ID=j07.j07ID LEFT OUTER JOIN j03User j03 ON a.j02ID=j03.j03ID LEFT OUTER JOIN j04UserRole j04 ON j03.j04ID=j04.j04ID");
+                    break;
+                case "j03":
+                    sb.Append("a.*,j07.j07Name,j02.*,j04.*");
+                    sb.Append(" FROM j03User a INNER JOIN j04UserRole j04 ON a.j04ID=j04.j04ID LEFT OUTER JOIN j02Person j02 ON a.j02ID=j03.j02ID LEFT OUTER JOIN j07Position j07 on j02.j07ID=j07.j07ID");
                     break;
             }
             sb.Append(" WHERE a." + prefix + "ID=" + pid.ToString());

@@ -83,6 +83,7 @@ namespace BO
         public int a03id_parent { get; set; }
         public int a01id { get; set; }
         public int a01parentid { get; set; }
+        public bool? a01IsTemporary { get; set; }
         public int a04id { get; set; }
         public int a05id { get; set; }
         public int a06id { get; set; }

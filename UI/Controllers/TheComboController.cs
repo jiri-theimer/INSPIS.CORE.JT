@@ -62,6 +62,9 @@ namespace UI.Controllers
                         }
                     }
                     break;
+                case "a01":
+                    mq.a01IsTemporary = false;  //vyloučit temp akce
+                    break;
                 
 
             }
@@ -311,6 +314,7 @@ namespace UI.Controllers
 
             mq.SearchString = searchstring; //filtrování na straně serveru
             mq.TopRecordsOnly = setting.TopRecs; //maximálně prvních 50 záznamů, které vyhovují podmínce
+            mq.a01IsTemporary = false;  //vyloučit temp akce
 
             var cols = _colsProvider.getDefaultPallete(true, mq);
             mq.explicit_columns = cols;

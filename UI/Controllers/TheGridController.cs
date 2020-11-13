@@ -356,7 +356,10 @@ namespace UI.Controllers
             
             var mq = new BO.myQuery(gridState.j72Entity);
             mq.MyRecordsDisponible = true;  //pouze záznamy odpovídající oprávnění uživatele
-            
+            if (mq.Prefix == "a01")
+            {
+                mq.a01IsTemporary = false;  //v gridu zákaz zobrazovat TEMP akce
+            }
             _grid.Columns =_colsProvider.ParseTheGridColumns(mq.Prefix,gridState.j72Columns, Factory.CurrentUser.j03LangIndex);            
 
 

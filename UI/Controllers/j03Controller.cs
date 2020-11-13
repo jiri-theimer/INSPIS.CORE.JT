@@ -11,7 +11,7 @@ namespace UI.Controllers
     public class j03Controller : BaseController
     {
         
-        public IActionResult Record(int pid, bool isclone)
+        public IActionResult Record(int pid, bool isclone,int j02id)
         {
             var v = new j03Record() { rec_pid = pid, rec_entity = "j03" };
             if (v.rec_pid == 0)
@@ -20,13 +20,13 @@ namespace UI.Controllers
                 v.user_profile_oper = "create";
                 var c = new BO.CLS.PasswordChecker();
                 v.NewPassword = c.RandomPassword(Factory.App.PasswordMinLength);
-                v.VerifyPassword = v.NewPassword;
+                v.VerifyPassword = v.NewPassword;                
             }
             else
             {
                 v.user_profile_oper = "bind";
             }
-
+            
             v.Rec = new BO.j03User();
             v.Rec.j03LangIndex = Factory.App.DefaultLangIndex;
             v.RecJ02 = new BO.j02Person();            
@@ -40,6 +40,14 @@ namespace UI.Controllers
                 }
                 v.ComboPerson = v.Rec.fullname_desc;
             }
+            else
+            {
+                if (j02id > 0)
+                {
+                    var recJ02 = Factory.j02PersonBL.Load(j02id);
+                    v.ComboPerson = recJ02.FullNameDesc;                    
+                }
+            }
             v.lisAdminRoleValues = new List<j03RecordAdminRoleValue>();
             ARV("Uživatelé systému", 1, 2, v.lisAdminRoleValues, v.Rec.j03AdminRoleValue);
             ARV("Inspektoráty", 3, 4, v.lisAdminRoleValues, v.Rec.j03AdminRoleValue);
@@ -49,7 +57,7 @@ namespace UI.Controllers
             ARV("Formuláře", 11, 12, v.lisAdminRoleValues, v.Rec.j03AdminRoleValue);
             ARV("Přílohy", 13, 14, v.lisAdminRoleValues, v.Rec.j03AdminRoleValue);
             ARV("Úkoly", 15, 16, v.lisAdminRoleValues, v.Rec.j03AdminRoleValue);
-            ARV("Svodky", 17, 18, v.lisAdminRoleValues, v.Rec.j03AdminRoleValue);
+            ARV("Neobsazeno", 17, 18, v.lisAdminRoleValues, v.Rec.j03AdminRoleValue);
             ARV("Tiskové sestavy", 19, 20, v.lisAdminRoleValues, v.Rec.j03AdminRoleValue);
             ARV("Ostatní", 21, 22, v.lisAdminRoleValues, v.Rec.j03AdminRoleValue);
 

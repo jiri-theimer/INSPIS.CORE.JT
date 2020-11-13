@@ -168,6 +168,7 @@ namespace UI.Controllers
             DIV_TRANS("Osobní profily");
             AMI("Osobní profily", url_users("j02"));
             AMI("Týmy osob", url_users("j11"));
+
             DIV_TRANS("Provoz");
             AMI("PING Log", url_users("j92"));
             AMI("Kdo je právě online (+-2 minuty)", url_users("j92"));
@@ -177,6 +178,8 @@ namespace UI.Controllers
             AMI("Poštovní účty", url_users("j40"));
             AMI("OUTBOX", url_users("x40"));
             AMI("MAIL fronta", "/mail/MailBatchFramework");
+            
+            
 
             handle_selected_item(prefix);
 
@@ -534,6 +537,20 @@ namespace UI.Controllers
                     var recJ02 = Factory.j02PersonBL.Load(pid);
                     AMI("Karta záznamu", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
                     AMI("Kopírovat", string.Format("javascript:_clone('{0}',{1})", prefix, pid));
+                    
+                    if (Factory.CurrentUser.TestPermCiselniky(j03AdminRoleValueFlagEnum.uzivatel_er, j03AdminRoleValueFlagEnum._none))
+                    {
+                        DIV();
+                        if (recJ02.j03ID > 0)
+                        {
+                            AMI("Uživatelský účet", string.Format("javascript:_edit('j03',{0})", recJ02.j03ID));
+                        }
+                        else
+                        {
+                            AMI("Založit uživatelský účet", "javascript:_edit('j03',0)");                            
+                        }
+                        
+                    }
                     DIV();
                     AMI("Přidat kontaktní instituci", string.Format("javascript: _window_open('/a39/RecordByPerson?pid=0&j02id={0}')", pid));
                     DIV();

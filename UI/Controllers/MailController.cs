@@ -64,18 +64,30 @@ namespace UI.Controllers
             v.RecA42 = Factory.a42QesBL.LoadByGuid(v.BatchGuid, 0);
             return View(v);
         }
-        public IActionResult SendMail(int x40id)
+        public IActionResult SendMail(int x40id,int b65id,int j02id,int x29id,int x40datapid)
         {
-            var v = new Models.SendMailViewModel() { UploadGuid = BO.BAS.GetGuid() };
-            v.Rec = new BO.x40MailQueue();
-            v.Rec.x29ID = 502;
-            v.Rec.x40DataPID = Factory.CurrentUser.j02ID;
+            if (x40datapid == 0) x40datapid = Factory.CurrentUser.j02ID;
+            if (x29id == 0) x29id = 502;
 
+            var v = new Models.SendMailViewModel() { UploadGuid = BO.BAS.GetGuid(),b65ID=b65id };
+            v.Rec = new BO.x40MailQueue();
+            v.Rec.x29ID = x29id;
+            v.Rec.x40DataPID = x40datapid;
+           
             v.Rec.j40ID = BO.BAS.InInt(Factory.CBL.LoadUserParam("SendMail_j40ID"));
             v.Rec.j40Name = Factory.CBL.LoadUserParam("SendMail_j40Name");
             v.Rec.x40MessageGuid = BO.BAS.GetGuid();
 
-
+            if (v.b65ID > 0)
+            {
+                var recB65 = Factory.b65WorkflowMessageBL.Load(v.b65ID);
+                v.b65Name = recB65.b65Name;
+                var dt = Factory.gridBL.GetList4MailMerge(recB65.entity, v.Rec.x40DataPID);
+                var cMerge = new BO.CLS.MergeContent();                
+                v.Rec.x40Body = cMerge.GetMergedContent(recB65.b65MessageBody, dt);
+                v.Rec.x40Subject = cMerge.GetMergedContent(recB65.b65MessageSubject, dt);
+            }
+           
             if (x40id > 0)
             {   //kopírování zprávy do nové podle vzoru x40id
                 v.Rec = Factory.MailBL.LoadMessageByPid(x40id);

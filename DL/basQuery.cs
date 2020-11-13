@@ -233,10 +233,19 @@ namespace DL
                 }
 
             }
-            if (mq.a01parentid > 0)
+            if (mq.Prefix == "a01")
             {
-                if (mq.Prefix == "a01") AQ(ref lis, "a.a01ParentID=@a01parentid", "a01parentid", mq.a01parentid);   //podřízené akce
+                if (mq.a01parentid > 0)
+                {
+                    AQ(ref lis, "a.a01ParentID=@a01parentid", "a01parentid", mq.a01parentid);   //podřízené akce
+                }
+                if (mq.a01IsTemporary !=null)
+                {
+                    AQ(ref lis, "a.a01IsTemporary=@istemp", "istemp", mq.a01IsTemporary);   //temp akce
+                }
             }
+            
+            
             if (mq.Prefix == "a45" && mq.param1 == "a45IsManual1")
             {
                 AQ(ref lis, "a.a45IsManual=1", "", null);
@@ -585,40 +594,9 @@ namespace DL
                     else
                     {
                         sw = string.Format("Contains((a.a01Signature,a.a01LeaderInLine,a.a01MemberInLine,a.a01CaseCode,a.a01InstitutionPlainText,a.a01InstitutionPlainTextRedizo),'{0}')", s);
-                        //sw = "Contains((a.a01Signature,a.a01LeaderInLine,a.a01MemberInLine,a.a01CaseCode,a.a01InstitutionPlainText,a.a01InstitutionPlainTextRedizo),@expr)";
+                        
                     }
-                    //sw += string.Format(" OR Contains((a03Name),'{0}')", s);
-
-                    //if (BO.BAS.InDouble(mq.SearchString) > 0)
-                    //{
-                    //    //sw = "a.a01Signature LIKE '%'+@expr OR a01_a03.a03REDIZO LIKE @expr+'%'";
-                    //    sw = "a.a01Signature LIKE @expr OR a01_a03.a03REDIZO LIKE @expr+'%'";
-
-                    //}
-                    //else
-                    //{
-                    //    //sw = "a01_a03.a03Name LIKE '%'+@expr+'%' OR a01_a03.a03City LIKE '%'+@expr+'%'";
-                    //    string s = mq.SearchString.ToLower().Trim();
-                    //    s = s.Replace("--", "").Replace("drop", "").Replace("delete", "").Replace("truncate", "").Replace(";", " or ").Replace(",", " or ").Replace("  ", " ");
-                    //    s = s.Replace(" or ", "#or#").Replace(" and ", "#and#");
-                    //    s = s.Replace(" ", " and ");
-                    //    s = s.Replace("#or#", " or ").Replace("#and#", " and ");
-
-
-                    //    if (mq.SearchImplementation == "HD")
-                    //    {
-                    //        sw = string.Format("Contains((a.a01LeaderInLine,a.a01MemberInLine,a.a01CaseCode,a.a01Description,a.a01InstitutionPlainText),'{0}')", s);
-                    //        sw += string.Format(" OR a.a01ID IN (select a01ID FROM b05Workflow_History WHERE Contains((b05Comment),'{0}'))", s);
-                    //    }
-                    //    else
-                    //    {
-                    //        sw = string.Format("Contains((a.a01LeaderInLine,a.a01MemberInLine,a.a01CaseCode,a.a01InstitutionPlainText,a.a01InstitutionPlainTextRedizo),'{0}')", s);
-                    //    }
-                    //    //sw += string.Format(" OR Contains((a03Name),'{0}')", s);
-
-
-                    //}
-                    //AQ(ref lis, "(" + sw + ")", "expr", mq.SearchString);
+                   
                     AQ(ref lis, "(" + sw + ")", "", null);
 
                 }
@@ -632,18 +610,7 @@ namespace DL
                         sw += string.Format(" OR a.a03ID IN (SELECT a03ID FROM a37InstitutionDepartment WHERE a37IZO = '{0}')",s);
                     }
 
-                    //if (BO.BAS.InInt(mq.SearchString) > 0)
-                    //{
-                    //    sw = "a.a03REDIZO LIKE '%'+@expr+'%'";
-                    //    if (sw.Length == 9)
-                    //    {
-                    //        sw += " OR a.a03ID IN (SELECT a03ID FROM a37InstitutionDepartment WHERE a37IZO = @expr)";
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    sw = "a.a03REDIZO LIKE '%'+@expr+'%' OR a.a03Name LIKE '%'+@expr+'%' OR a.a03Email LIKE '%'+@expr+'%' OR a.a03City LIKE '%'+@expr+'%' OR a.a03Street LIKE '%'+@expr+'%'";
-                    //}
+                  
                     AQ(ref lis, "(" + sw + ")", "", null);
 
                 }
@@ -651,7 +618,7 @@ namespace DL
                 {
                     string sw = string.Format("Contains((a.j02FullText,a.j02Email,a.j02PID,a.j02Address,a.j02Mobile),'{0}')", s);
                     AQ(ref lis, "(" + sw + ")", "", null);
-                    //AQ(ref lis, "(a.j02LastName LIKE '%'+@expr+'%' OR a.j02FirstName LIKE '%'+@expr+'%' OR a.j02Email LIKE '%'+@expr+'%' OR a.j02PID LIKE '%'+@expr+'%')", "expr", mq.SearchString);
+                    
                 }
                 if (mq.Prefix == "a42")
                 {

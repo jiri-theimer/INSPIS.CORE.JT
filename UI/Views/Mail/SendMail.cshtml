@@ -94,6 +94,12 @@
                     <textarea asp-for="Rec.x40Body" class="form-control" placeholder="@_f.tra("Text zprávy")" style="height:200px;"></textarea>
 
                 </div>
+                <div class="form-row my-2">
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Šablona zprávy"):</label>
+                    <div class="col-sm-11 col-md-10">
+                        <mycombo entity="b65WorkflowMessage" asp-for="@Model.b65ID" selectedtext="@Model.b65Name" view-flag="2"></mycombo>
+                    </div>
+                </div>
                 <iframe id="fraUpload" src="/FileUpload/Index?prefix=j02&guid=@Model.UploadGuid" frameborder="0" height="220" scrolling="no"></iframe>
 
 
