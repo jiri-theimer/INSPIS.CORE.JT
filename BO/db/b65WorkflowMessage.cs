@@ -13,5 +13,6 @@ namespace BO
         public string b65MessageBody { get; set; }
 
         public string x29Name { get; set; } //combo
+        public string x29Prefix;
     }
 }

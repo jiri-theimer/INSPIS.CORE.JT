@@ -22,7 +22,7 @@ namespace BL
 
         private string GetSQL1(string strAppend = null)
         {
-            sb("SELECT a.*,x29.x29Name,");
+            sb("SELECT a.*,x29.x29Name,x29.x29Prefix,");
             sb(_db.GetSQL1_Ocas("b65"));
             sb(" FROM b65WorkflowMessage a LEFT OUTER JOIN x29Entity x29 ON a.x29ID=x29.x29ID");
             sb(strAppend);

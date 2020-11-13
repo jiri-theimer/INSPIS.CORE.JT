@@ -26,7 +26,8 @@ namespace UI.Controllers
             {
                 v.user_profile_oper = "bind";
             }
-            
+            v.lisB65 = Factory.b65WorkflowMessageBL.GetList(new BO.myQuery("b65")).Where(p => p.x29ID == 503);
+
             v.Rec = new BO.j03User();
             v.Rec.j03LangIndex = Factory.App.DefaultLangIndex;
             v.RecJ02 = new BO.j02Person();            
@@ -72,12 +73,14 @@ namespace UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Record(Models.Record.j03Record v,string oper)
+        public IActionResult Record(Models.Record.j03Record v,string oper,int b65id)
         {
+            v.lisB65 = Factory.b65WorkflowMessageBL.GetList(new BO.myQuery("b65")).Where(p => p.x29ID == 503);
             if (oper == "postback")
             {
                 return View(v);
             }
+            
             if (oper== "newpwd")
             {
                 v.IsDefinePassword = true;
@@ -176,8 +179,16 @@ namespace UI.Controllers
                 
                 if (c.pid > 0)
                 {
-                    v.SetJavascript_CallOnLoad(c.pid);
-                    return View(v);
+                    if (oper == "save_and_send")
+                    {
+                        return Redirect("/Mail/SendMail?x29id=503&j02id=" + c.j02ID.ToString() + "&x40datapid=" + c.pid.ToString() + "&b65id=" + b65id.ToString()+ "&param1="+v.NewPassword);
+                    }
+                    else
+                    {
+                        v.SetJavascript_CallOnLoad(c.pid);
+                        return View(v);
+                    }
+                    
                 }
             }
             this.Notify_RecNotSaved();

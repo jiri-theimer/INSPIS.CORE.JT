@@ -9,7 +9,8 @@ namespace UI.Models
     {
         public BO.x40MailQueue Rec { get; set; }
         public int b65ID { get; set; }
-        public string b65Name { get; set; } //combo
+        public IEnumerable<BO.b65WorkflowMessage> lisB65 { get; set; }
+        public string Param1 { get; set; }
 
         public string UploadGuid { get; set; }
         

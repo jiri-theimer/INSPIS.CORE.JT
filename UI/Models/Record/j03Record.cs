@@ -22,5 +22,6 @@ namespace UI.Models.Record
 
         public List<j03RecordAdminRoleValue> lisAdminRoleValues { get; set; }
 
+        public IEnumerable<BO.b65WorkflowMessage> lisB65 { get; set; }
     }
 }

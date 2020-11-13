@@ -27,6 +27,7 @@
     <input type="hidden" asp-for="Rec.x40DataPID" />
     <input type="hidden" asp-for="@Model.ActiveTabIndex" />
     <input type="hidden" id="hidA03IDs" asp-for="@Model.a03IDs" />
+    <input type="hidden" asp-for="@Model.Param1" />
 
     <div class="tabs_container_record">
         <!-- Tab panes -->
@@ -86,18 +87,22 @@
                 </div>
 
                 <div class="form-row" style="margin-top:10px;">
-                    <input class="form-control" asp-for="Rec.x40Subject" placeholder="@_f.tra("Předmět zprávy")" />
+                    <input class="form-control" asp-for="Rec.x40Subject" id="txtSubject" placeholder="@_f.tra("Předmět zprávy")" />
                 </div>
 
 
                 <div class="form-row" style="margin-top:10px;">
-                    <textarea asp-for="Rec.x40Body" class="form-control" placeholder="@_f.tra("Text zprávy")" style="height:200px;"></textarea>
+                    <textarea asp-for="Rec.x40Body" id="txtBody" class="form-control" placeholder="@_f.tra("Text zprávy")" style="height:200px;"></textarea>
 
                 </div>
                 <div class="form-row my-2">
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Šablona zprávy"):</label>
-                    <div class="col-sm-11 col-md-10">
-                        <mycombo entity="b65WorkflowMessage" asp-for="@Model.b65ID" selectedtext="@Model.b65Name" view-flag="2"></mycombo>
+                    <div class="col-sm-9 col-md-8">
+                        <mydropdown asp-for="@Model.b65ID" textfield="b65Name" valuefield="pid" isfirstemptyrow="true" event_after_changevalue="b65id_onchange" datasource="@Model.lisB65"></mydropdown>
+
+                    </div>
+                    <div class="col-sm-2 col-md-2">
+                        <button type="button" class="btn btn-light" onclick="remember_p65id()">@_f.tra("Zapamatovat si šablonu")</button>
                     </div>
                 </div>
                 <iframe id="fraUpload" src="/FileUpload/Index?prefix=j02&guid=@Model.UploadGuid" frameborder="0" height="220" scrolling="no"></iframe>
@@ -177,7 +182,18 @@
             }
         });
     }
-
+    function b65id_onchange(ctl) {
+        if (ctl.value == "") {
+            return;
+        }
+        $.post("/Mail/Inhale_MergeTemplate", { b65id: ctl.value, datapid: @Model.Rec.x40DataPID, param1:"@Model.Param1" }, function (data) {
+            if (data != null) {
+                $("#txtBody").text(data.value);
+                $("#txtSubject").val(data.key);
+            }
+        });
+        
+    }
     function clear_all() {
         $("#hidA03IDs").val("");
         _a03IDsCount = 0;
@@ -191,6 +207,15 @@
             refresh_a03_table();
         });
 
+    }
+    function remember_p65id() {
+        var x29id = "@Model.Rec.x29ID";
+        var strKey = "SendMail-" + x29id + "-b65id";
+        var strVal = $("#b65ID").val();        
+        $.post("/Common/SetUserParam", {key: strKey, value: strVal }, function (data) {
+           
+
+        });
     }
 
     function append_a03ids(arr, silent) {

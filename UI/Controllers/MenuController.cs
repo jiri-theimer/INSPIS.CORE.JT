@@ -554,6 +554,7 @@ namespace UI.Controllers
                     DIV();
                     AMI("Přidat kontaktní instituci", string.Format("javascript: _window_open('/a39/RecordByPerson?pid=0&j02id={0}')", pid));
                     DIV();
+                    AMI("Odeslat zprávu", string.Format("javascript: _window_open('/Mail/SendMail?j02id={0}&x29id=502&x40datapid={0}',2)", pid));
                     AMI("Tisková sestava", string.Format("javascript: _window_open('/x31/ReportContext?pid={0}&prefix=j02',2)", pid));
                     AMI("Stránka osoby", string.Format("javascript:_location_replace_top('/j02/RecPage?pid={0}')",pid));
                     break;
@@ -679,7 +680,14 @@ namespace UI.Controllers
                 case "k01":
                 case "p86":
                     AMI("Záznam bez menu nabídky", "javascript:_notify_message('nic')");
-                    break; 
+                    break;
+                case "j03":
+                    var recJ03 = Factory.j03UserBL.Load(pid);
+                    AMI("Karta záznamu", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
+                    AMI("Kopírovat", string.Format("javascript:_clone('{0}',{1})", prefix, pid));
+                    DIV();
+                    AMI("Odeslat zprávu", string.Format("javascript: _window_open('/Mail/SendMail?j02id={0}&x29id=503&x40datapid={1}',2)", recJ03.j02ID, pid));
+                    break;
                 default:
                     AMI("Karta záznamu", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
                     AMI("Kopírovat", string.Format("javascript:_clone('{0}',{1})", prefix, pid));

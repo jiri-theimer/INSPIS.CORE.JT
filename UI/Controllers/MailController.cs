@@ -64,28 +64,35 @@ namespace UI.Controllers
             v.RecA42 = Factory.a42QesBL.LoadByGuid(v.BatchGuid, 0);
             return View(v);
         }
-        public IActionResult SendMail(int x40id,int b65id,int j02id,int x29id,int x40datapid)
+        public IActionResult SendMail(int x40id,int b65id,int j02id,int x29id,int x40datapid,string param1)
         {
             if (x40datapid == 0) x40datapid = Factory.CurrentUser.j02ID;
             if (x29id == 0) x29id = 502;
+            if (b65id == 0)
+            {
+                b65id = Factory.CBL.LoadUserParamInt("SendMail-" + x29id.ToString() + "-b65id");
+            }
 
-            var v = new Models.SendMailViewModel() { UploadGuid = BO.BAS.GetGuid(),b65ID=b65id };
+            var v = new Models.SendMailViewModel() { UploadGuid = BO.BAS.GetGuid(),b65ID=b65id,Param1=param1 };
             v.Rec = new BO.x40MailQueue();
             v.Rec.x29ID = x29id;
             v.Rec.x40DataPID = x40datapid;
-           
+            if (j02id > 0)
+            {
+                v.Rec.x40Recipient = Factory.j02PersonBL.Load(j02id).j02Email;
+            }
+
+
             v.Rec.j40ID = BO.BAS.InInt(Factory.CBL.LoadUserParam("SendMail_j40ID"));
             v.Rec.j40Name = Factory.CBL.LoadUserParam("SendMail_j40Name");
             v.Rec.x40MessageGuid = BO.BAS.GetGuid();
 
+            v.lisB65 = Factory.b65WorkflowMessageBL.GetList(new BO.myQuery("b65")).Where(p => p.x29ID == v.Rec.x29ID);
             if (v.b65ID > 0)
             {
-                var recB65 = Factory.b65WorkflowMessageBL.Load(v.b65ID);
-                v.b65Name = recB65.b65Name;
-                var dt = Factory.gridBL.GetList4MailMerge(recB65.entity, v.Rec.x40DataPID);
-                var cMerge = new BO.CLS.MergeContent();                
-                v.Rec.x40Body = cMerge.GetMergedContent(recB65.b65MessageBody, dt);
-                v.Rec.x40Subject = cMerge.GetMergedContent(recB65.b65MessageSubject, dt);
+                var sp = Inhale_MergeTemplate(v.b65ID, v.Rec.x40DataPID,v.Param1);               
+                v.Rec.x40Body = sp.Value;
+                v.Rec.x40Subject = sp.Key;
             }
            
             if (x40id > 0)
@@ -107,8 +114,10 @@ namespace UI.Controllers
             return View(v);
         }
         [HttpPost]
-        public IActionResult SendMail(Models.SendMailViewModel v)
+        public IActionResult SendMail(Models.SendMailViewModel v,string oper)
         {
+            v.lisB65 = Factory.b65WorkflowMessageBL.GetList(new BO.myQuery("b65")).Where(p => p.x29ID == v.Rec.x29ID);
+            
             if (ModelState.IsValid)
             {
                 foreach (BO.o27Attachment c in Factory.o27AttachmentBL.GetTempFiles(v.UploadGuid))
@@ -182,7 +191,16 @@ namespace UI.Controllers
             return View(v);
         }
 
-
+        public BO.StringPair Inhale_MergeTemplate(int b65id,int datapid,string param1)
+        {            
+            var recB65 = Factory.b65WorkflowMessageBL.Load(b65id);              
+            var dt = Factory.gridBL.GetList4MailMerge(recB65.x29Prefix, datapid);
+            var cMerge = new BO.CLS.MergeContent();
+            var ret = new BO.StringPair();            
+            ret.Value = cMerge.GetMergedContent(recB65.b65MessageBody, dt).Replace("#param1",param1,StringComparison.OrdinalIgnoreCase).Replace("#password#",param1);
+            ret.Key = cMerge.GetMergedContent(recB65.b65MessageSubject, dt).Replace("#param1", param1, StringComparison.OrdinalIgnoreCase);
+            return ret;
+        }
         public IActionResult Record(int pid)
         {
             var v = new Models.x40RecMessage();
