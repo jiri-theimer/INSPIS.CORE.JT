@@ -45,8 +45,10 @@ namespace UI.Controllers
             {
                 if (j02id > 0)
                 {
-                    var recJ02 = Factory.j02PersonBL.Load(j02id);
-                    v.ComboPerson = recJ02.FullNameDesc;                    
+                    v.RecJ02 = Factory.j02PersonBL.Load(j02id);                    
+                    v.ComboPerson = v.RecJ02.FullNameDesc;
+                    v.user_profile_oper = "bind";
+                    v.Rec.j02ID = v.RecJ02.pid;
                 }
             }
             v.lisAdminRoleValues = new List<j03RecordAdminRoleValue>();

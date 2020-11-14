@@ -547,7 +547,8 @@ namespace UI.Controllers
                         }
                         else
                         {
-                            AMI("Založit uživatelský účet", "javascript:_edit('j03',0)");                            
+                            //AMI("Založit uživatelský účet", "javascript:_edit('j03',0)");
+                            AMI("Založit uživatelský účet", string.Format("javascript: _window_open('/j03/Record?pid=0&j02id={0}')", pid));
                         }
                         
                     }
