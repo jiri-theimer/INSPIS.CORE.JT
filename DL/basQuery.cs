@@ -457,9 +457,10 @@ namespace DL
             {
                 if (mq.Prefix == "f32") AQ(ref lis, "a.a11ID=@a11id", "a11id", mq.a11id);
             }
-            if (mq.Prefix=="a11" && mq.a11ispoll == BO.BooleanQueryMode.TrueQuery)
+            if (mq.Prefix=="a11")
             {
-                AQ(ref lis, "a.a11IsPoll=1", null, null);
+                if (mq.a11ispoll == BO.BooleanQueryMode.TrueQuery) AQ(ref lis, "a.a11IsPoll=1", null, null);
+                if (mq.a11issimulation == BO.BooleanQueryMode.TrueQuery) AQ(ref lis, "a.a11IsSimulation=1", null, null);
             }
             if (mq.HiddenQuestions == BO.BooleanQueryMode.FalseQuery)   //vyloučit skryté otázky
             {

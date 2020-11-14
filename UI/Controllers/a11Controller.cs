@@ -12,6 +12,113 @@ namespace UI.Controllers
 {
     public class a11Controller : BaseController
     {
+        public IActionResult Simulation(int f06id)
+        {
+            var v = new a11SimulationViewModel() { f06ID=f06id };
+            if (v.f06ID == 0)
+            {
+                return StopPage(false, "f06id missing");
+            }
+            v.a10ID = Factory.CBL.LoadUserParamInt("Simulation-a10ID");
+            v.a08ID = Factory.CBL.LoadUserParamInt("Simulation-a08ID");
+            v.a03ID = Factory.CBL.LoadUserParamInt("Simulation-a03ID");
+            if (v.a03ID > 0)
+            {
+                v.a03Name = Factory.a03InstitutionBL.Load(v.a03ID).a03Name;
+            }
+            RefreshStateSimulation(v);
+
+
+
+
+            return View(v);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Simulation(Models.a11SimulationViewModel v,string oper)
+        {
+            RefreshStateSimulation(v);
+            if (oper == "postback")
+            {                
+                return View(v);
+            }
+            if (oper== "cleardata")
+            {                
+                var lisA11 = Factory.a11EventFormBL.GetList(new BO.myQuery("a11") { f06id = v.f06ID, a11issimulation = BO.BooleanQueryMode.TrueQuery });
+                if (lisA11.Count() > 0)
+                {
+                    foreach(var c in lisA11)
+                    {
+                        Factory.a11EventFormBL.ClearF32(c.pid);
+                    }
+                }
+                this.AddMessage("Provedeno.", "info");
+                return View(v);
+                
+            }
+            if (ModelState.IsValid)
+            {
+                if (v.a10ID==0 || v.a08ID == 0 || v.a03ID==0)
+                {
+                    this.AddMessage("Chybí vyplnit typ, téma akce nebo instituci.");
+                    return View(v);
+                }
+                var mq = new BO.myQuery("a11") { f06id = v.f06ID,a11issimulation=BO.BooleanQueryMode.TrueQuery };
+                var lisA11 = Factory.a11EventFormBL.GetList(mq);
+                if (lisA11.Count() == 0)
+                {
+                    var recA01 = new BO.a01Event() { a01IsTemporary = true,a10ID=v.a10ID,a08ID=v.a08ID,a03ID=v.a03ID, a01DateFrom=DateTime.Now, a01DateUntil=new DateTime(3000,1,1), j03ID_Creator=Factory.CurrentUser.pid,j02ID_Issuer=Factory.CurrentUser.j02ID };
+                    var recA11 = new BO.a11EventForm() { f06ID = v.f06ID, a11IsSimulation = true, a37ID = v.a37ID, a11Description = Factory.tra("Simulace chování formuláře.") };
+                    var lis = new List<BO.a11EventForm>();
+
+                    var intA01ID=Factory.a01EventBL.Create(recA01, false, new List<BO.a11EventForm>() { recA11 },null,null,null);
+                    if (intA01ID > 0)
+                    {
+                        SaveSimulationData(v);
+                        mq.a01id = intA01ID;
+                        lisA11= Factory.a11EventFormBL.GetList(mq);
+                        return Redirect(Factory.App.UiftUrl + "/formular/" + lisA11.Last().pid.ToString());
+                    }
+                }
+                else
+                {
+                    var recA01 = Factory.a01EventBL.Load(lisA11.Last().a01ID);
+                    recA01.a10ID = v.a10ID;
+                    recA01.a08ID = v.a01ID;
+                    recA01.a03ID = v.a03ID;
+                    Factory.a01EventBL.SaveA01Record(recA01,Factory.a10EventTypeBL.Load(v.a10ID));
+                    SaveSimulationData(v);
+                    return Redirect(Factory.App.UiftUrl + "/formular/" + lisA11.Last().pid.ToString());
+                }
+            }
+
+
+            
+            return View(v);
+        }
+
+        private void SaveSimulationData(Models.a11SimulationViewModel v)
+        {
+            Factory.CBL.SetUserParam("Simulation-a10ID", v.a10ID.ToString());
+            Factory.CBL.SetUserParam("Simulation-a08ID", v.a08ID.ToString());
+            Factory.CBL.SetUserParam("Simulation-a03ID", v.a03ID.ToString());
+        }
+
+        
+
+        private void RefreshStateSimulation(Models.a11SimulationViewModel v)
+        {
+            v.lisA10 = Factory.a10EventTypeBL.GetList(new BO.myQuery("a10"));
+            v.lisA08 = Factory.a08ThemeBL.GetList(new BO.myQuery("a08"));
+            v.RecF06 = Factory.f06FormBL.Load(v.f06ID);
+            if (v.a03ID > 0)
+            {
+                var mq = new BO.myQuery("a37");
+                mq.a03id = v.a03ID;
+                v.lisA37 = Factory.a37InstitutionDepartmentBL.GetList(mq);
+            }
+        }
+
         public BO.Result ClearForm(int a11id)
         {
             var recA11 = Factory.a11EventFormBL.Load(a11id);

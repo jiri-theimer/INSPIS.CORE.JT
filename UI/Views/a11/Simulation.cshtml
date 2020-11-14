@@ -1,0 +1,96 @@
+﻿@model a11SimulationViewModel
+@inject BL.Factory _f
+@{
+    ViewData["Title"] = _f.tra("Simulace formuláře");
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@addTagHelper *, UI
+
+
+<h4>@ViewData["Title"]</h4>
+<div class="bg-light" style="padding:10px;">
+    
+    <button id="cmdRun" type="button" class="btn btn-primary">@_f.tra("Spustit simulaci")</button>
+</div>
+
+<div class="modal_record_container">
+    
+
+    <div class="alert alert-primary" role="alert">
+        <label style="font-weight:bold;">@_f.tra("Formulář"):</label>
+        @Model.RecF06.f06Name
+
+    </div>
+
+    <form id="form1" asp-controller="a11" asp-action="Simulation" method="POST">
+        <input type="hidden" asp-for="@Model.f06ID" />
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typ akce"):</label>
+            <div class="col-sm-11 col-md-10">
+                <mydropdown asp-for="@Model.a10ID" datasource="@Model.lisA10" valuefield="pid" textfield="a10Name" isfirstemptyrow="true" firstemptyrowvalue="0"></mydropdown>
+
+            </div>
+
+        </div>
+
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Téma akce"):</label>
+            <div class="col-sm-11 col-md-10">
+                <mydropdown asp-for="@Model.a08ID" datasource="@Model.lisA08" valuefield="pid" textfield="a08Name" isfirstemptyrow="true" firstemptyrowvalue="0"></mydropdown>
+
+            </div>
+
+        </div>
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Instituce"):</label>
+            <div class="col-sm-11 col-md-10">
+                <mycombo entity="a03Institution" asp-for="@Model.a03ID" selectedtext="@Model.a03Name" filter-flag="1" event_after_changevalue="a03id_change"></mycombo>
+            </div>
+
+        </div>
+        <div class="form-row">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Činnost (součást) školy"):</label>
+            <div class="col-sm-11 col-md-10">
+                <mydropdown asp-for="@Model.a37ID" datasource="@Model.lisA37" valuefield="pid" textfield="a37Name" isfirstemptyrow="true" firstemptyrowvalue="0"></mydropdown>
+            </div>
+        </div>
+
+    </form>
+
+    <div class="bg-light" style="padding:10px;">
+        <button id="cmdClear" type="button" class="btn btn-danger">@_f.tra("Vyčistit uložené odpovědi")</button>
+    </div>
+</div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("#cmdRun").click(function () {
+                $(this).text("Processing...");
+                $(this).attr("disabled", true);
+                form1.submit();
+
+            });
+
+            $("#cmdClear").click(function () {
+                $(this).text("Processing...");
+                $(this).attr("disabled", true);
+                form1.action = "/a11/Simulation?oper=cleardata";
+                form1.submit();
+
+            });
+
+        });
+
+        function a03id_change() {
+
+            form1.action = "/a11/Simulation?oper=postback";
+            form1.submit();
+
+        }
+       
+
+
+
+    </script>

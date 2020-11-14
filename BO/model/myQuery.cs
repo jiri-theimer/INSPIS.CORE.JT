@@ -120,6 +120,7 @@ namespace BO
         public int a10id { get; set; }
         public int a11id { get; set; }
         public BO.BooleanQueryMode a11ispoll { get; set; }
+        public BO.BooleanQueryMode a11issimulation { get; set; }
         public int a08id { get; set; }
         public int x31id { get; set; }
         public int x29id { get; set; }
