@@ -214,6 +214,10 @@
             <!-- Tab5 -->
             <p></p>
             <div class="form-row">
+                
+                <textarea asp-for="Rec.b02Message4UIFT" class="form-control" placeholder="@_f.tra("Hláška pro UIFT po úspěšné kontrole vyplnění formuláře")" style="min-height:100px;"></textarea>
+            </div>
+            <div class="form-row my-2">
                 <div class="col-sm-4 col-md-4">
                     <input type="checkbox" asp-for="Rec.b02IsDurationSLA" />
                     <label class="col-form-label" for="Rec_b02IsDurationSLA">@_f.tra("Započítávat do SLA doby trvání")</label>

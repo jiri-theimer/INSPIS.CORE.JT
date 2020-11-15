@@ -21,12 +21,16 @@
         <li class="nav-item">
             <a id="link_tab3" class="nav-link" data-toggle="tab" href="#tab3">@_f.tra("Oprávnění")</a>
         </li>
-        <li class="nav-item">
-            <a id="link_tab4" class="nav-link" data-toggle="tab" href="#tab4">@_f.tra("Oprávnění")</a>
-        </li>
-        <li class="nav-item">
-            <a id="link_tab5" class="nav-link" data-toggle="tab" href="#tab5">@_f.tra("Ostatní")</a>
-        </li>
+        @if (_f.App.Implementation != "UA")
+        {
+            <li class="nav-item">
+                <a id="link_tab4" class="nav-link" data-toggle="tab" href="#tab4">@_f.tra("Portál")</a>
+            </li>
+            <li class="nav-item">
+                <a id="link_tab5" class="nav-link" data-toggle="tab" href="#tab5">@_f.tra("Ostatní")</a>
+            </li>
+        }
+
     </ul>
 </div>
 
@@ -68,7 +72,7 @@
                     <select asp-for="@Model.Rec.j04RelationFlag" class="form-control" onchange="dopostback()" style="background-color:yellow;">
                         <option value="NoRelation">@_f.tra("Aplikační role bez omezení uživatele podle jeho vztahu k instituci nebo k inspektorátu")</option>
                         <option value="A03">@_f.tra("Aplikační role s omezením na příslušnost uživatele k instituci")</option>
-                        <option value="A05">@_f.tra("Aplikační role s omezením na příslušnost osoby uživatele ke kraji podle inspektorátu")</option>                        
+                        <option value="A05">@_f.tra("Aplikační role s omezením na příslušnost osoby uživatele ke kraji podle inspektorátu")</option>
                     </select>
 
                 </div>
@@ -167,17 +171,21 @@
 
             <mycheckboxlist asp-for="@Model.SelectedJ05IDs_EPIS2" textfield="j05Name" valuefield="j05ID" datasource="@Model.lisJ05_EPIS2"></mycheckboxlist>
         </div>
-        <div class="tab-pane" id="tab4">
-            <!-- Tab4 -->
-            <p></p>
-            <mycheckboxlist asp-for="@Model.SelectedJ05IDs_PORTAL" textfield="j05Name" valuefield="j05ID" datasource="@Model.lisJ05_PORTAL"></mycheckboxlist>
+        @if (_f.App.Implementation != "UA")
+        {
+            <div class="tab-pane" id="tab4">
+                <!-- Tab4 -->
+                <p></p>
+                <mycheckboxlist asp-for="@Model.SelectedJ05IDs_PORTAL" textfield="j05Name" valuefield="j05ID" datasource="@Model.lisJ05_PORTAL"></mycheckboxlist>
 
-        </div>
-        <div class="tab-pane" id="tab5">
-            <!-- Tab5 -->
-            <p></p>
+            </div>
+            <div class="tab-pane" id="tab5">
+                <!-- Tab5 -->
+                <p></p>
 
-        </div>
+            </div>
+        }
+
 
     </div>
 

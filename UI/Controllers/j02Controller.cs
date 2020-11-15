@@ -50,6 +50,7 @@ namespace UI.Controllers
                 if (v.Rec != null)
                 {
                     v.TagHtml = Factory.o51TagBL.GetTagging("j02", v.pid).TagHtml;
+                    
                     if (v.Rec.a04ID > 0)
                     {
                         v.RecA04 = Factory.a04InspectorateBL.Load(v.Rec.a04ID);
