@@ -137,9 +137,11 @@ namespace UI.Controllers
             }
             if (oper== "generate_docx")
             {
-                v.GeneratedTempFileName=Handle_DocMailMerge(v);
-                if (string.IsNullOrEmpty(v.GeneratedTempFileName) == false)
+                v.AllGeneratedTempFileNames=Handle_DocMailMerge(v);
+                
+                if (v.AllGeneratedTempFileNames !=null)
                 {
+                    v.GeneratedTempFileName = v.AllGeneratedTempFileNames[0];
                     this.AddMessage("Dokument byl vygenerován.", "info");
                 }
             }
@@ -317,12 +319,12 @@ namespace UI.Controllers
                 }
             }
         }
-        private string Handle_DocMailMerge(ReportContextViewModel v)
+        private List<string> Handle_DocMailMerge(ReportContextViewModel v)
         {
             var recO27 = Factory.x31ReportBL.LoadReportDoc(v.RecX31.pid);
             if (recO27 == null)
             {
-                this.AddMessage("Na serveru nelze dohledat soubor šablony zvolené tiskové sestavy.");return "";
+                this.AddMessage("Na serveru nelze dohledat soubor šablony zvolené tiskové sestavy.");return null;
             }
             DataTable dt = null;
             if (string.IsNullOrEmpty(v.RecX31.x31DocSqlSource))
@@ -336,35 +338,82 @@ namespace UI.Controllers
             
             if (dt.Rows.Count == 0)
             {
-                this.AddMessage("Na vstupu chybí záznam.");return "";
+                this.AddMessage("Na vstupu chybí záznam.");return null;
             }
-            DataRow dr = dt.Rows[0];
-            var strFileName = BO.BAS.GetGuid() + ".docx";
+
+            var strFileName = BO.BAS.GetGuid();
+            DataRow dr0 = dt.Rows[0];
             switch (v.rec_prefix)
             {
                 case "a01":
-                    strFileName=dr["a01Signature"]+"_"+ BO.BAS.GetGuid() + ".docx";
+                    strFileName = dr0["a01Signature"] + "_" + BO.BAS.GetGuid();
                     break;
                 case "a03":
-                    strFileName = dr["a03REDIZO"] + "_" + BO.BAS.GetGuid() + ".docx";
+                    strFileName = dr0["a03REDIZO"] + "_" + BO.BAS.GetGuid();
                     break;
                 case "j02":
-                    strFileName = dr["j02LastName"]+"_"+ dr["j02FirstName"] + "_" + BO.BAS.GetGuid() + ".docx";
+                    strFileName = dr0["j02LastName"] + "_" + dr0["j02FirstName"] + "_" + BO.BAS.GetGuid();
                     break;
             }
-            string strTempPath = Factory.App.TempFolder + "\\" + strFileName;
-            System.IO.File.Copy(Factory.App.ReportFolder+"\\"+recO27.o27ArchiveFileName, strTempPath, true);
+
+            var filenames = new List<string>();
+            int x = 0;
+            foreach(DataRow dr in dt.Rows)
+            {
+                x += 1;
+                filenames.Add(strFileName+"_"+x.ToString()+".docx");                
+                GenerateOneDoc(recO27, dt, dr, filenames.Last());
+            }
+
+            if (dt.Rows.Count > 1)  //join dokumentů, pokud má zdroj více záznamů
+            {                
+                System.IO.File.Copy(Factory.App.TempFolder + "\\" + filenames[0], Factory.App.TempFolder + "\\" + strFileName+".docx", true);
+                x = 0;
+                foreach (string filename in filenames)
+                {
+                    using (WordprocessingDocument myDoc = WordprocessingDocument.Open(Factory.App.TempFolder + "\\" + strFileName + ".docx", true))
+                    {
+                        MainDocumentPart mainPart = myDoc.MainDocumentPart;
+                        x += 1;
+                        string altChunkId = "AltChunkId" + x.ToString();
+                        AlternativeFormatImportPart chunk = mainPart.AddAlternativeFormatImportPart(
+                            AlternativeFormatImportPartType.WordprocessingML, altChunkId);
+                        using (FileStream fileStream = System.IO.File.Open(Factory.App.TempFolder + "\\" + filename, FileMode.Open))
+                        {
+                            chunk.FeedData(fileStream);
+                        }
+                        Paragraph pb1 = new Paragraph(new Run((new Break() { Type = BreakValues.Page })));
+                        mainPart.Document.Body.InsertAfter(pb1, mainPart.Document.Body.LastChild);
+
+                        AltChunk altChunk = new AltChunk();
+                        altChunk.Id = altChunkId;
+                        mainPart.Document.Body.InsertAfter(altChunk, mainPart.Document.Body.Elements<Paragraph>().Last());
+                        
+                        mainPart.Document.Save();
+                        myDoc.Close();
+                    }
+                }
+                filenames.Insert(0, strFileName + ".docx");
+            }
+
+            return filenames;
+        }
+
+        private void GenerateOneDoc(BO.o27Attachment recO27, DataTable dt, DataRow dr,string strTempFileName)
+        {
+            string strTempPath = Factory.App.TempFolder + "\\" + strTempFileName;
+            System.IO.File.Copy(Factory.App.ReportFolder + "\\" + recO27.o27ArchiveFileName, strTempPath, true);
             Package wordPackage = Package.Open(strTempPath, FileMode.Open, FileAccess.ReadWrite);
 
             using (WordprocessingDocument wordDocument = WordprocessingDocument.Open(wordPackage))
             {
                 var body = wordDocument.MainDocumentPart.Document.Body;
                 var allParas = wordDocument.MainDocumentPart.Document.Descendants<DocumentFormat.OpenXml.Wordprocessing.Text>();
-                
+
                 foreach (var item in allParas)
                 {
-                    handle_merge_value(item, dt, dt.Rows[0]);
-                    
+                    handle_merge_value(item, dt, dr);
+
 
                 }
                 foreach (HeaderPart headerPart in wordDocument.MainDocumentPart.HeaderParts)
@@ -373,7 +422,7 @@ namespace UI.Controllers
                     var allHeaderParas = header.Descendants<Text>();
                     foreach (var item in allHeaderParas)
                     {
-                        handle_merge_value(item, dt, dt.Rows[0]);
+                        handle_merge_value(item, dt, dr);
 
                     }
 
@@ -385,7 +434,7 @@ namespace UI.Controllers
                     var allFooterParas = footer.Descendants<Text>();
                     foreach (var item in allFooterParas)
                     {
-                        handle_merge_value(item, dt, dt.Rows[0]);
+                        handle_merge_value(item, dt, dr);
 
                     }
 
@@ -393,11 +442,9 @@ namespace UI.Controllers
 
 
                 wordDocument.MainDocumentPart.Document.Save();
-            }
-            return strFileName;
-        }
 
-        
+            }
+        }
 
     }
 }

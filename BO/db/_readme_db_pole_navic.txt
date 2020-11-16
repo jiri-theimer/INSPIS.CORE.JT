@@ -51,6 +51,9 @@ f12TreePath
 [f18FormSegment]
 f18TreePath
 
+[x31Report]
+x31DocSqlSource
+
 [x32ReportType]
 x32TreePath
 

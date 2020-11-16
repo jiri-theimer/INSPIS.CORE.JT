@@ -106,9 +106,16 @@
             {
                 <button type="button" class="btn btn-primary" onclick="generate_docx()">Vygenerovat dokument</button>
             }
-            @if (string.IsNullOrEmpty(Model.GeneratedTempFileName)==false)
+            @if (string.IsNullOrEmpty(Model.GeneratedTempFileName) == false)
             {
-                <a type="button" class="btn btn-success" href="/FileUpload/FileDownloadTempFile?tempfilename=@Model.GeneratedTempFileName" target="_blank">Stáhnout vygenerovaný dokument</a>
+                <a type="button" class="btn btn-success" href="/FileUpload/FileDownloadTempFile?tempfilename=@Model.GeneratedTempFileName" target="_blank">@_f.tra("Stáhnout vygenerovaný dokument")</a>
+                @if (Model.AllGeneratedTempFileNames != null && Model.AllGeneratedTempFileNames.Count() > 1)
+                {
+                    @for (int i=1;i< Model.AllGeneratedTempFileNames.Count(); i++)
+                    {
+                        <a type="button" class="btn btn-success" href="/FileUpload/FileDownloadTempFile?tempfilename=@Model.AllGeneratedTempFileNames[i]" target="_blank">#@i</a>
+                    }
+                }
             }
         </div>
 

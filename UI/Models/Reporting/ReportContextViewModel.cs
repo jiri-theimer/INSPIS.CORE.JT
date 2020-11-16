@@ -20,6 +20,7 @@ namespace UI.Models
         public string UserParamKey { get; set; }
 
         public string GeneratedTempFileName { get; set; }
+        public List<string> AllGeneratedTempFileNames { get; set; }
 
     }
 }
