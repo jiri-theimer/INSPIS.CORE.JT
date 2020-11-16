@@ -26,5 +26,6 @@ namespace BO
         public string x31MSReporting_ReportPath { get; set; }
 
         public string x29Name { get; set; } //combo
+        public string x31DocSqlSource { get; set; }
     }
 }

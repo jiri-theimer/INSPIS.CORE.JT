@@ -230,6 +230,7 @@ namespace UI.Controllers
                 c.x31Description = v.Rec.x31Description;
                 c.x31Is4SingleRecord = v.Rec.x31Is4SingleRecord;
                 c.x31ReportFormat = v.Rec.x31ReportFormat;
+                c.x31DocSqlSource = v.Rec.x31DocSqlSource;
                 c.ValidUntil = v.Toolbar.GetValidUntil(c);
                 c.ValidFrom = v.Toolbar.GetValidFrom(c);
                 List<int> x32ids = BO.BAS.ConvertString2ListInt(v.x32IDs);
@@ -281,10 +282,9 @@ namespace UI.Controllers
             return ret;
         }
 
-        private void handle_merge_value(Text item,DataTable dt)
+        private void handle_merge_value(Text item,DataTable dt, DataRow dr)
         {
-            string strVal = "";
-            DataRow dr = dt.Rows[0];
+            string strVal = "";            
 
             foreach (DataColumn col in dt.Columns)
             {
@@ -324,8 +324,16 @@ namespace UI.Controllers
             {
                 this.AddMessage("Na serveru nelze dohledat soubor šablony zvolené tiskové sestavy.");return "";
             }
-           
-            var dt = Factory.gridBL.GetList4MailMerge(v.rec_prefix,v.rec_pid);
+            DataTable dt = null;
+            if (string.IsNullOrEmpty(v.RecX31.x31DocSqlSource))
+            {
+                dt = Factory.gridBL.GetList4MailMerge(v.rec_prefix, v.rec_pid);
+            }
+            else
+            {
+                dt = Factory.gridBL.GetList4MailMerge(v.rec_pid,v.RecX31.x31DocSqlSource);  //sql zdroj na míru
+            }
+            
             if (dt.Rows.Count == 0)
             {
                 this.AddMessage("Na vstupu chybí záznam.");return "";
@@ -355,7 +363,7 @@ namespace UI.Controllers
                 
                 foreach (var item in allParas)
                 {
-                    handle_merge_value(item, dt);
+                    handle_merge_value(item, dt, dt.Rows[0]);
                     
 
                 }
@@ -365,7 +373,7 @@ namespace UI.Controllers
                     var allHeaderParas = header.Descendants<Text>();
                     foreach (var item in allHeaderParas)
                     {
-                        handle_merge_value(item, dt);
+                        handle_merge_value(item, dt, dt.Rows[0]);
 
                     }
 
@@ -377,7 +385,7 @@ namespace UI.Controllers
                     var allFooterParas = footer.Descendants<Text>();
                     foreach (var item in allFooterParas)
                     {
-                        handle_merge_value(item, dt);
+                        handle_merge_value(item, dt, dt.Rows[0]);
 
                     }
 

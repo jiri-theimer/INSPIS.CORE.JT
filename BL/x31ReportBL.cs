@@ -63,6 +63,7 @@ namespace BL
             p.AddEnumInt("x31ReportFormat", rec.x31ReportFormat);
             p.AddString("x31Description", rec.x31Description);
             p.AddBool("x31Is4SingleRecord", rec.x31Is4SingleRecord);
+            p.AddString("x31DocSqlSource", rec.x31DocSqlSource);
             if (a10ids != null)
             {
                 if (a10ids.Count == 0)

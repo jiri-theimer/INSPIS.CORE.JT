@@ -9,22 +9,30 @@
 @addTagHelper *, UI
 
 
-<div class="row py-3 bg-light m-0">
-    <div class="col-auto" style="width:190px;">
-        <a class="cm h4 mx-0" onclick="_cm(event, 'Workflow',0,'@Model.prefix');">☰@_f.tra("Workflow")</a>
+    <div class="row py-3 bg-light m-0">
+        <div class="col-auto" style="width:190px;">
+            <a class="cm h4 mx-0" onclick="_cm(event, 'Workflow',0,'@Model.prefix');">☰@_f.tra("Workflow")</a>
+        </div>
+        <div class="col-sm-7">
+            <mark>@Model.entityTitle</mark>
+        </div>
+        <div class="col-sm-1">
+            
+            @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.WorkflowDesigner))
+            {
+                <button id="cmdNew" type="button" onclick="b01_new()" class="btn btn-primary">@_f.tra("Nová šablona")</button>
+            }
+
+        </div>
+        <div class="col-sm-1"></div>
+        <div class="nonmobile nontablet">
+            <a class="btn btn-secondary" href="/Admin/Workflow?prefix=@Model.prefix">@_f.tra("Občerstvit")</a>
+        </div>
+
+
+
+
     </div>
-    <div class="col-sm-8">
-        <mark>@Model.entityTitle</mark>
-    </div>
-    <div class="col-sm-1"></div>
-    <div class="nonmobile nontablet">
-        <a class="btn btn-secondary" href="/Admin/Workflow?prefix=@Model.prefix">@_f.tra("Občerstvit")</a>
-    </div>
-
-
-
-
-</div>
 
 <div id="layout_sidebar" class="cm_recpage" style="overflow-y:auto;"></div>
 
@@ -83,6 +91,10 @@
 
     }
 
+
+    function b01_new() {
+         _window_open("/b01/Record",1);
+    }
 
 </script>
 

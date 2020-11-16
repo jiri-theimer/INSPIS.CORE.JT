@@ -72,6 +72,10 @@ namespace BL
             p.AddString("b02UC", rec.b02UC);
 
             int intPID = _db.SaveRecord("b02WorkflowStatus", p.getDynamicDapperPars(), rec);
+            if (intPID>0 && rec.b02IsDefaultStatus)
+            {
+                _db.RunSql("UPDATE b02WorkflowStatus SET b02IsDefaultStatus=0 WHERE b01ID=@b01id AND b02ID<>@pid", new { b01id = rec.b01ID,pid=intPID });
+            }
             if (lisB07 != null)
             {
                 if (rec.pid > 0)

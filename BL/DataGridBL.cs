@@ -11,6 +11,7 @@ namespace BL
     {
         public DataTable GetList(BO.myQuery mq, bool bolGetTotalsRow = false);
         public DataTable GetList4MailMerge(string prefix, int pid);
+        public DataTable GetList4MailMerge(int pid, string individual_sql_source);
 
     }
     class DataGridBL:BaseBL,IDataGridBL
@@ -21,13 +22,16 @@ namespace BL
             
         }
 
-        
+        public DataTable GetList4MailMerge(int pid, string individual_sql_source)
+        {
+            individual_sql_source = individual_sql_source.Replace("@pid", pid.ToString()).Replace("#pid#", pid.ToString());
+            return _db.GetDataTable(individual_sql_source);
+        }
 
         public DataTable GetList4MailMerge(string prefix,int pid)
-        {            
+        {
             var sb = new System.Text.StringBuilder();
             sb.Append("SELECT ");
-           
             switch (prefix)
             {
                 case "a01":
@@ -54,8 +58,8 @@ namespace BL
                     sb.Append(" LEFT OUTER JOIN a21InstitutionLegalType a21 ON a.a21ID=a21.a21ID");
                     sb.Append(" LEFT OUTER JOIN a03Institution zri on a.a03ID_Founder=zri.a03ID");
                     break;
-                case "a11":                    
-                    sb.Append("a.*,a01.*,f06.*,a25.*,a37.*,k01.*");                                      
+                case "a11":
+                    sb.Append("a.*,a01.*,f06.*,a25.*,a37.*,k01.*");
                     sb.Append(" FROM a11EventForm a INNER JOIN f06Form f06 ON a.f06ID=f06.f06ID INNER JOIN a01Event a01 ON a.a01ID=a01.a01ID");
                     sb.Append(" LEFT OUTER JOIN a25EventFormGroup a25 ON a.a25ID=a25.a25ID");
                     sb.Append(" LEFT OUTER JOIN a37InstitutionDepartment a37 ON a.a37ID=a37.a37ID");
@@ -71,8 +75,7 @@ namespace BL
                     break;
             }
             sb.Append(" WHERE a." + prefix + "ID=" + pid.ToString());
-
-            return _db.GetDataTable(sb.ToString());
+            return _db.GetDataTable(sb.ToString());           
         }
       
         public DataTable GetList(BO.myQuery mq,bool bolGetTotalsRow=false)

@@ -119,7 +119,7 @@ namespace UI.Controllers
             }
             if (TUP(BO.j05PermValuEnum.WorkflowDesigner))
             {
-                AMI("Workflow", "/Admin/Workflow");
+                AMI("Workflow", "/Admin/Workflow?prefix=b01");
                 AMI("Návrhář workflow", "/AdminOneWorkflow/Index");
             }
             
@@ -481,6 +481,7 @@ namespace UI.Controllers
                     DIV();
                     AMI("Nový úkol (lhůta)", string.Format("javascript: _window_open('/h04/Record?pid=0&a01id={0}')", pid));
                     AMI("Zadat související akci", string.Format("javascript: _window_open('/a01/AddSouvisejici?pid={0}')", pid));
+                    AMI("Odeslat zprávu", string.Format("javascript: _window_open('/Mail/SendMail?x29id=101&x40datapid={0}',2)", pid));
 
 
                     AMI("Záznam akce", null, null, "Zaznam");
@@ -527,6 +528,7 @@ namespace UI.Controllers
                     }
                     DIV();
                     AMI("Tisková sestava", string.Format("javascript: _window_open('/x31/ReportContext?pid={0}&prefix=a03',2)", pid));
+                    AMI("Odeslat zprávu", string.Format("javascript: _window_open('/Mail/SendMail?x29id=103&x40datapid={0}',2)", pid));
                     AMI("Stránka instituce", string.Format("javascript:_location_replace_top('/a03/RecPage?pid={0}')", recA03.pid));
                     if (recA03.isclosed == true)
                     {
@@ -554,9 +556,9 @@ namespace UI.Controllers
                     }
                     DIV();
                     AMI("Přidat kontaktní instituci", string.Format("javascript: _window_open('/a39/RecordByPerson?pid=0&j02id={0}')", pid));
-                    DIV();
-                    AMI("Odeslat zprávu", string.Format("javascript: _window_open('/Mail/SendMail?j02id={0}&x29id=502&x40datapid={0}',2)", pid));
+                    DIV();                    
                     AMI("Tisková sestava", string.Format("javascript: _window_open('/x31/ReportContext?pid={0}&prefix=j02',2)", pid));
+                    AMI("Odeslat zprávu", string.Format("javascript: _window_open('/Mail/SendMail?j02id={0}&x29id=502&x40datapid={0}',2)", pid));
                     AMI("Stránka osoby", string.Format("javascript:_location_replace_top('/j02/RecPage?pid={0}')",pid));
                     break;
                 case "a11":
@@ -620,8 +622,11 @@ namespace UI.Controllers
                     AMI("Karta záznamu", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
                     AMI("Kopírovat", string.Format("javascript:_clone('{0}',{1})", prefix, pid));
                     DIV();
+                    AMI("Odeslat zprávu", string.Format("javascript: _window_open('/Mail/SendMail?x29id=604&x40datapid={0}',2)", pid));
+                    DIV();
                     var cA01 = Factory.a01EventBL.Load(recH04.a01ID);
                     AMI_NOTRA(string.Format(Factory.tra("Stránka akce {0}"), cA01.a01Signature), "javascript:_location_replace_top('" + Factory.a01EventBL.GetPageUrl(cA01) + "')");
+                    
                     break;
                 case "f06":
                     HEADER(Factory.f06FormBL.Load(pid).f06Name);

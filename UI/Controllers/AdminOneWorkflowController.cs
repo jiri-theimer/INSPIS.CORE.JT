@@ -64,11 +64,15 @@ namespace UI.Controllers
             foreach (var recB02 in lisB02)
             {
                 x += 1;
+                if (recB02.b02IsDefaultStatus)
+                {
+                    recB02.b02Name += "**";
+                }
                 var c = new myTreeNode()
                 {                    
                     TreeIndex = x,
                     TreeLevel = 1,
-                    Text = recB02.b02Name,
+                    Text = recB02.b02Name,                   
                     TreeIndexFrom = x,
                     TreeIndexTo = x,
                     Pid = recB02.pid,                    
