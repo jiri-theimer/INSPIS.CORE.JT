@@ -380,7 +380,8 @@ namespace UI.Controllers
             if (gridState.j72HashJ73Query)
             {
                 mq.lisJ73 = Factory.j72TheGridTemplateBL.GetList_j73(gridState.j72ID,gridState.j72Entity.Substring(0,3));
-                _grid.GridMessage = getFiltrAlias(gridState, mq);
+                //_grid.GridMessage = getFiltrAlias(gridState, mq);
+                _grid.GridMessage = Factory.j72TheGridTemplateBL.getFiltrAlias(gridState.j72Entity.Substring(0, 3), mq);
 
 
             }
@@ -868,91 +869,91 @@ namespace UI.Controllers
         }
 
 
-        private string getFiltrAlias(BO.TheGridState gridState,BO.myQuery mq)
-        {            
-            if (mq.lisJ73.Count() == 0) return "";
-            var lisFields = new BL.TheQueryFieldProvider(gridState.j72Entity.Substring(0, 3)).getPallete();
+        //private string getFiltrAlias(BO.TheGridState gridState,BO.myQuery mq)
+        //{            
+        //    if (mq.lisJ73.Count() == 0) return "";
+        //    var lisFields = new BL.TheQueryFieldProvider(gridState.j72Entity.Substring(0, 3)).getPallete();
            
-            var lis = new List<string>();
+        //    var lis = new List<string>();
             
-            foreach(var c in mq.lisJ73)
-            {
-                string ss = "";
-                BO.TheQueryField cField = null;
-                if (c.j73BracketLeft != null)
-                {
-                    ss += "(";
-                }
-                if (c.j73Op == "OR")
-                {
-                    ss += " OR ";
-                }
-                if (lisFields.Where(p => p.Field == c.j73Column).Count()>0)
-                {
-                    cField = lisFields.Where(p => p.Field == c.j73Column).First();
-                    string s=cField.Header;
-                    if (Factory.CurrentUser.j03LangIndex > 0)
-                    {
-                        s = Factory.tra(s);
-                    }
-                    ss = "[" + s + "] ";
-                }
-                switch (c.j73Operator)
-                {
-                    case "EQUAL":
-                        ss += "=";
-                        break;
-                    case "NOT-ISNULL":
-                        ss += Factory.tra("Není prázdné");
-                        break;
-                    case "ISNULL":
-                        ss+=Factory.tra("Je prázdné");
-                        break;
-                    case "INTERVAL":
-                        ss += Factory.tra("Je interval");
-                        break;
-                    case "GREATERZERO":
-                        ss += Factory.tra("Je větší než nula");
-                        break;
-                    case "ISNULLORZERO":
-                        ss += Factory.tra("Je nula nebo prázdné");
-                        break;
-                    case "NOT-EQUAL":
-                        ss += Factory.tra("Není rovno");
-                        break;
-                    case "CONTAINS":
-                        lis.Add(Factory.tra("Obsahuje"));
-                        break;
-                    case "STARTS":
-                        ss += Factory.tra("Začíná na");
-                        break;
-                    default:
-                        break;
-                }
-                if (c.j73ValueAlias != null)
-                {
-                    ss += c.j73ValueAlias;
-                }
-                else
-                {
-                    ss += c.j73Value;
-                }
-                if (c.j73DatePeriodFlag > 0)
-                {
-                    var d1 = mq.lisPeriods.Where(p => p.pid == c.j73DatePeriodFlag).First().d1;
-                    var d2 = Convert.ToDateTime(mq.lisPeriods.Where(p => p.pid == c.j73DatePeriodFlag).First().d2).AddDays(1).AddMinutes(-1);
-                    ss += ": "+BO.BAS.ObjectDate2String(d1, "dd.MM.yyyy") + " - " + BO.BAS.ObjectDate2String(d2, "dd.MM.yyyy");
-                }
+        //    foreach(var c in mq.lisJ73)
+        //    {
+        //        string ss = "";
+        //        BO.TheQueryField cField = null;
+        //        if (c.j73BracketLeft != null)
+        //        {
+        //            ss += "(";
+        //        }
+        //        if (c.j73Op == "OR")
+        //        {
+        //            ss += " OR ";
+        //        }
+        //        if (lisFields.Where(p => p.Field == c.j73Column).Count()>0)
+        //        {
+        //            cField = lisFields.Where(p => p.Field == c.j73Column).First();
+        //            string s=cField.Header;
+        //            if (Factory.CurrentUser.j03LangIndex > 0)
+        //            {
+        //                s = Factory.tra(s);
+        //            }
+        //            ss = "[" + s + "] ";
+        //        }
+        //        switch (c.j73Operator)
+        //        {
+        //            case "EQUAL":
+        //                ss += "=";
+        //                break;
+        //            case "NOT-ISNULL":
+        //                ss += Factory.tra("Není prázdné");
+        //                break;
+        //            case "ISNULL":
+        //                ss+=Factory.tra("Je prázdné");
+        //                break;
+        //            case "INTERVAL":
+        //                ss += Factory.tra("Je interval");
+        //                break;
+        //            case "GREATERZERO":
+        //                ss += Factory.tra("Je větší než nula");
+        //                break;
+        //            case "ISNULLORZERO":
+        //                ss += Factory.tra("Je nula nebo prázdné");
+        //                break;
+        //            case "NOT-EQUAL":
+        //                ss += Factory.tra("Není rovno");
+        //                break;
+        //            case "CONTAINS":
+        //                lis.Add(Factory.tra("Obsahuje"));
+        //                break;
+        //            case "STARTS":
+        //                ss += Factory.tra("Začíná na");
+        //                break;
+        //            default:
+        //                break;
+        //        }
+        //        if (c.j73ValueAlias != null)
+        //        {
+        //            ss += c.j73ValueAlias;
+        //        }
+        //        else
+        //        {
+        //            ss += c.j73Value;
+        //        }
+        //        if (c.j73DatePeriodFlag > 0)
+        //        {
+        //            var d1 = mq.lisPeriods.Where(p => p.pid == c.j73DatePeriodFlag).First().d1;
+        //            var d2 = Convert.ToDateTime(mq.lisPeriods.Where(p => p.pid == c.j73DatePeriodFlag).First().d2).AddDays(1).AddMinutes(-1);
+        //            ss += ": "+BO.BAS.ObjectDate2String(d1, "dd.MM.yyyy") + " - " + BO.BAS.ObjectDate2String(d2, "dd.MM.yyyy");
+        //        }
                 
-                if (c.j73BracketRight != null)
-                {
-                    ss += ")";
-                }
-                lis.Add(ss);
-            }
+        //        if (c.j73BracketRight != null)
+        //        {
+        //            ss += ")";
+        //        }
+        //        lis.Add(ss);
+        //    }
 
-            return string.Join("; ",lis);
-        }
+        //    return string.Join("; ",lis);
+        //}
 
     }
 }

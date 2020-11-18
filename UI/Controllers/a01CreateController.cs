@@ -92,6 +92,7 @@ namespace UI.Controllers
                 {
                     c.TempGuid = BO.BAS.GetGuid();
                     c.PersonCombo = c.PersonDesc;
+                    
                 }
             }
 
@@ -159,7 +160,7 @@ namespace UI.Controllers
                     }
                 }
                 c.j02ID = v.SelectedJ02ID;
-                c.PersonCombo = Factory.j02PersonBL.Load(c.j02ID).FullNameDesc;
+                c.PersonCombo = Factory.j02PersonBL.Load(c.j02ID).FullNameDesc;                
                 c.a45ID = BO.EventRoleENUM.Resitel;
                 c.a45Name = Factory.FBL.LoadA45((int)c.a45ID).a45Name;
                 c.a45IsManual = true;

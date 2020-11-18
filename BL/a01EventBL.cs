@@ -229,7 +229,11 @@ namespace BL
             if (lisA41.Where(p => p.IsTempDeleted == false && p.a45ID == BO.EventRoleENUM.PrizvanaOsoba && p.j02IsInvitedPerson==false).Count() > 0)
             {
                 int j02id = lisA41.Where(p => p.IsTempDeleted == false && p.a45ID == BO.EventRoleENUM.PrizvanaOsoba && p.j02IsInvitedPerson == false).First().j02ID;
-                this.AddMessageTranslated(string.Format(_mother.tra("V obsazení akce je osoba [{0}] zařazena jako 'Přizvaná'. Ale v nastavení osobního profilu není uvedeno, že může být přizvanou osobou."), _mother.j02PersonBL.Load(j02id).FullNameAsc)); return false;
+                if (!_mother.j02PersonBL.Load(j02id).j02IsInvitedPerson)
+                {
+                    this.AddMessageTranslated(string.Format(_mother.tra("V obsazení akce je osoba [{0}] zařazena jako 'Přizvaná'. Ale v nastavení osobního profilu není uvedeno, že může být přizvanou osobou."), _mother.j02PersonBL.Load(j02id).FullNameAsc)); return false;
+                }
+                
             }
             return true;
         }

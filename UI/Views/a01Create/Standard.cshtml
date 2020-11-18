@@ -22,7 +22,7 @@
 
 <form id="form1" asp-controller="a01Create" asp-action="Standard" method="POST">
     <input type="hidden" asp-for="@Model.a10ID" />
-    
+
     <div class="modal_record_container">
 
         <input type="hidden" asp-for="@Model.ActiveTabIndex" />
@@ -223,6 +223,7 @@
                         <input type="hidden" asp-for="@Model.lisA41[i].IsTempDeleted" value="@Model.lisA41[i].IsTempDeleted" />
                         <input type="hidden" asp-for="@Model.lisA41[i].j02ID" value="@Model.lisA41[i].j02ID" />
                         <input type="hidden" asp-for="@Model.lisA41[i].PersonCombo" value="@Model.lisA41[i].PersonCombo" />
+                        
 
                         <input type="hidden" asp-for="@Model.lisA41[i].a45IsManual" value="@Model.lisA41[i].a45IsManual" />
 

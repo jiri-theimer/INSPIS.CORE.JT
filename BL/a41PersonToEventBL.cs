@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace BL
@@ -123,6 +124,12 @@ namespace BL
             {
                 this.AddMessageTranslated(string.Format(_mother.tra("Osoba [{0}] již byla zařazena mezi účastníky této akce."), LoadByJ02ID(c.j02ID,c.a01ID, c.pid).PersonAsc)); return false;
             }
+            if (c.a45ID == BO.EventRoleENUM.PrizvanaOsoba && _mother.j02PersonBL.Load(c.j02ID).j02IsInvitedPerson == false)
+            {
+                this.AddMessageTranslated(string.Format(_mother.tra("V obsazení akce je osoba [{0}] zařazena jako 'Přizvaná'. Ale v nastavení osobního profilu není uvedeno, že může být přizvanou osobou."), _mother.j02PersonBL.Load(c.j02ID).FullNameAsc)); return false;
+            }
+          
+            
 
             return true;
         }

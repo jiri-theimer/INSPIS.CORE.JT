@@ -13,7 +13,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tisková sestava</title>
+    <title>@_f.tra("Tisková sestava")</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link href="~/lib/datepicker/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
     <link href="~/lib/qtip/jquery.qtip.css" rel="stylesheet" type="text/css" />
@@ -28,8 +28,21 @@
     <script src="~/lib/datepicker/bootstrap-datepicker.cs.min.js"></script>
     <script src="~/lib/qtip/jquery.qtip.min.js"></script>
 
-    <script src="/js/reporting/resources.en.js"></script>
-    <script src="/js/reporting/resources.cs.js"></script>
+    @switch (_f.CurrentUser.j03LangIndex)
+    {
+        case 1:
+            <script src="/js/reporting/resources.en.js"></script>
+            break;
+        case 2:
+            <script src="/js/reporting/resources.ua.js"></script>
+            break;
+        default:
+            <script src="/js/reporting/resources.cs.js"></script>
+            break;
+    }
+
+
+
 
     <link href="https://kendo.cdn.telerik.com/2020.1.114/styles/kendo.common.min.css" rel="stylesheet" />
     <link href="https://kendo.cdn.telerik.com/2020.1.114/styles/kendo.blueopal.min.css" rel="stylesheet" />
@@ -41,7 +54,7 @@
     <script src="~/js/mycontrols.js" asp-append-version="true"></script>
 
     <script src="/api/reports/resources/js/telerikReportViewer"></script>
-    @if (Model.IsPeriodFilter || Model.lisJ72 !=null)
+    @if (Model.IsPeriodFilter || Model.lisJ72 != null)
     {
         <style>
             #reportViewer1 {
