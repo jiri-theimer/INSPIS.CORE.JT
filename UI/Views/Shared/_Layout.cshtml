@@ -92,7 +92,7 @@
                 }
                 else
                 {
-            <a id="cmdHome" class="nav-link text-white" href="@_f.CurrentUser.getHomePageUrl()" tabindex="-1">@_f.tra("Home").ToUpper()☆</a>
+                    <a id="cmdHome" class="nav-link text-white" href="@_f.CurrentUser.getHomePageUrl()" tabindex="-1">@_f.tra("Home").ToUpper()☆</a>
                 }
 
                 @if (_f.CurrentUser.HasAdminMenu())
@@ -281,22 +281,24 @@
 
             $("#cmdLangIndex").click(function () {
                 $.post("/Menu/CurrentUserLangIndex", function (data) {
-                    $("#divLangIndexMenu").html(data);
+                    handle_render_menu_branch("divLangIndexMenu", data);
                 });
             });
             $("#cmdFontStyleFlag").click(function () {
                 $.post("/Menu/CurrentUserFontMenu", function (data) {
-                    $("#divFontStyleMenu").html(data);
+                    handle_render_menu_branch("divFontStyleMenu", data);
                 });
             });
             $("#cmdCurrentUser").click(function () {
                 $.post("/Menu/CurrentUserMenu", function (data) {
-                    $("#divCurrentUserMenu").html(data);
+                    handle_render_menu_branch("divCurrentUserMenu", data);
+                   
                 });
             });
             $("#cmdGlobalNavigate").click(function () {
                 $.post("/Menu/GlobalNavigateMenu", function (data) {
-                    $("#divGlobalNavigateMenu").html(data);
+                    handle_render_menu_branch("divGlobalNavigateMenu", data);
+                    
                 })
                     .fail(function () {
                         alert("error");
@@ -306,16 +308,15 @@
 
             _init_qtip_onpage();
 
-            
+
 
         });
 
 
-        function menu_open_by_prefix(prefix) {
-
-            //$("#divMenu" + prefix).html("Loading...");
+        function menu_open_by_prefix(prefix) {            
             $.post("/Menu/"+prefix+"Menu", function (data) {
-                $("#divMenu" + prefix).html(data);
+                //$("#divMenu" + prefix).html(data);
+                handle_render_menu_branch("divMenu" + prefix, data);
                 $("#cmd" + prefix).attr("onclick", "");
 
             });
@@ -364,16 +365,6 @@
             });
 
         }
-        function render_currentuser_menu() {
-
-            $.post("/Menu/CurrentUserMenu", function (data) {
-                $("#divCurrentUserMenu").html(data);
-            });
-
-        }
-
-
-
 
         //vyvolání popup okna - na stránce musí být přítomen DIV: ID=myModalContainer
         function _window_close() {
@@ -456,6 +447,16 @@
             $(_modal).css("display", "block");
         }
 
+        function handle_render_menu_branch(divID, htmldata) {
+            var mydiv = $("#" + divID);
+            $(mydiv).html(htmldata);
+            
+            if ($(mydiv).offset().left + $(mydiv).width() > _device.innerWidth) {
+
+                $(mydiv).css("margin-left", _device.innerWidth - (20+$(mydiv).offset().left + $(mydiv).width()));
+
+            }
+        }
 
         function handle_smartsupp(flag) {
             $.post("/Home/StartStopLiveChat?flag="+flag, function (data) {
@@ -464,6 +465,8 @@
                 }
 
             });
+
+            
 
         }
 
