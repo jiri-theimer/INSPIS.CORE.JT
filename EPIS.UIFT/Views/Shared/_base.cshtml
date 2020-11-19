@@ -30,6 +30,10 @@
     <meta name="Author" content="CleverApp" />
 
     <link rel="stylesheet" href="~/css/uift.min.css">
+    @if (!string.IsNullOrEmpty(configuration.ThemeCss))
+    {
+        <link rel="stylesheet" href="@(configuration.ThemeCss)">
+    }
     <script type="text/javascript" src="~/ckeditor/ckeditor.js?v=457"></script>
     <script type="text/javascript" src="~/js/uift.min.js?v=2"></script>
     <script type="text/javascript" src="~/js/layout.full.js?v=2"></script>

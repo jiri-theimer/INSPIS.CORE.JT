@@ -1,0 +1,14 @@
+﻿.loginBox1 h1 {
+    background-color: #202ee2;
+}
+.loginBox1 h1 span {
+    color: white;
+    font-weight: bold;
+    font-size: 21px;
+    float: right;
+    padding-right: 28px;
+    padding-top: 9px;
+}
+.loginBox1 .logo {
+    margin: 0 !important;
+}

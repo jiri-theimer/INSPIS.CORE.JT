@@ -13,9 +13,11 @@ namespace UIFT.Controllers
     public class LoginController : Controller
     {
         private readonly UIFT.Repository.RepositoryFactory Factory;
+        private readonly AppConfiguration Configuration;
 
-        public LoginController(UIFT.Repository.RepositoryFactory factory)
+        public LoginController(UIFT.Repository.RepositoryFactory factory, AppConfiguration configuration)
         {
+            this.Configuration = configuration;
             this.Factory = factory;
         }
 
@@ -57,11 +59,11 @@ namespace UIFT.Controllers
 
             if (string.IsNullOrEmpty(model.PIN))
             {
-                ModelState.AddModelError("", rep.BL.tra("Musíte zadat PIN."));
+                ModelState.AddModelError("", rep.BL.trawi("Musíte zadat PIN.", Configuration.DefaultLanguage));
             }
             else if (string.IsNullOrEmpty(model.Akce))
             {
-                ModelState.AddModelError("", rep.BL.tra("Musíte zadat ID akce."));
+                ModelState.AddModelError("", rep.BL.trawi("Musíte zadat ID akce.", Configuration.DefaultLanguage));
             }
             else
             {
@@ -96,11 +98,11 @@ namespace UIFT.Controllers
                         }
                     }
 
-                    ModelState.AddModelError("", rep.BL.tra("Pro zadaný PIN a ID akce systém nedokázal najít otevřenou anketu."));
+                    ModelState.AddModelError("", rep.BL.trawi("Pro zadaný PIN a ID akce systém nedokázal najít otevřenou anketu.", Configuration.DefaultLanguage));
                 }
                 catch (Exception)
                 {
-                    ModelState.AddModelError("", rep.BL.tra("Chybné přístupové údaje."));
+                    ModelState.AddModelError("", rep.BL.trawi("Chybné přístupové údaje.", Configuration.DefaultLanguage));
                 }
             }
 

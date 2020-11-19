@@ -919,6 +919,9 @@ td.chessRowHeader {
         border-bottom: 1px solid #D3D3D3;
         padding-top: 10px;
     }
+        .loginBox1 h1 span {
+            display: none;
+        }
 .loginBox2 {
     text-align: center;
     font-size: 11px;
