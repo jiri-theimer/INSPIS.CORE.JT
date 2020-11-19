@@ -98,7 +98,7 @@
                 <div class="form-row my-2">
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Šablona zprávy"):</label>
                     <div class="col-sm-9 col-md-8">
-                        <mydropdown asp-for="@Model.b65ID" textfield="b65Name" valuefield="pid" isfirstemptyrow="true" event_after_changevalue="b65id_onchange" datasource="@Model.lisB65"></mydropdown>
+                        <mydropdown asp-for="@Model.b65ID" textfield="b65Name" valuefield="pid" firstemptyrowvalue="0" isfirstemptyrow="true" event_after_changevalue="b65id_onchange" datasource="@Model.lisB65"></mydropdown>
 
                     </div>
                     <div class="col-sm-2 col-md-2">

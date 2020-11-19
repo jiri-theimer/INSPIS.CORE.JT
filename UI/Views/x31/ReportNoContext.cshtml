@@ -117,7 +117,7 @@
                 <div class="form-row">
                     <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Pojmenovaný GRID filtr"):</label>
                     <div class="col-sm-5 col-md-5">
-                        <mydropdown asp-for="@Model.SelectedJ72ID" datasource="@Model.lisJ72" textfield="j72Name" valuefield="pid" isfirstemptyrow="true" event_after_changevalue="j72id_change"></mydropdown>
+                        <mydropdown asp-for="@Model.SelectedJ72ID" datasource="@Model.lisJ72" textfield="j72Name" valuefield="pid" firstemptyrowvalue="0" isfirstemptyrow="true" event_after_changevalue="j72id_change"></mydropdown>
 
                     </div>
                     <div class="col-sm-1 col-md-1 btn-group">
