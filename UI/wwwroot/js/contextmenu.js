@@ -5,19 +5,19 @@
 
     $.fn.contextMenu = function (settings) {
         var $menu = $(settings.menuSelector);
-        var clicker = settings.menuClicker;
-
+        var clicker = settings.menuClicker;        
         $menu.data("menuSelector", settings.menuSelector);
         if ($menu.length === 0) return;
-
+        
         menus[settings.menuSelector] = { $menu: $menu, settings: settings };
-
+        
         //make sure menu closes on any click
-        $(document).click(function (e) {
+        $(document).click(function (e) {            
             if (e.target.id === "divZoomHeader") return;
             hideAll();
         });
         $(document).on("click", function (e) {
+            
             if (e.target.id === "divZoomHeader") return;
 
             var $ul = $(e.target).closest("ul");
@@ -50,11 +50,12 @@
         // Open context menu
         (function (element, menuSelector) {
             element.on("click", function (e) {
+                
                 // return native menu if pressing control
                 if (clicker === _last_clicker) {
                     var m = getMenu(menuSelector);
                     if (m.$menu.css("display") === "block") {
-                        hideAll();
+                        hideAll();                        
                         return false;
                     }
                 }
@@ -97,7 +98,7 @@
             });
             return menu;
         }
-        function hideAll() {
+        function hideAll() {            
             $.each(menus, function (menuSelector, menu) {
                 menu.$menu.hide();
                 callOnMenuHide(menu);
@@ -128,8 +129,8 @@
 
         function getMenuPosition(mouse, direction, scrollDir) {
             var win = $(window)[direction](),
-                scroll = $(window)[scrollDir](),
-                menu = $(settings.menuSelector)[direction](),   //výška menu
+                scroll = $(window)[scrollDir](),                
+                menu = $(settings.menuSelector)[direction](),   //výška/šířka menu
                 position = mouse + scroll;                      //souřadnice
 
             
@@ -140,11 +141,14 @@
                 }
                 
             }
+            
+            
             if (direction === "height" && menu + position > $(window).height()) {
                 position = $(window).height() - menu - 10;
                 if (_device.type === "Phone") {
                     position = 0;
                 }
+                
                 return position;
         
             }

@@ -451,9 +451,9 @@
             var mydiv = $("#" + divID);
             $(mydiv).html(htmldata);
             
-            if ($(mydiv).offset().left + $(mydiv).width() > _device.innerWidth) {
+            if ($(mydiv).offset().left + $(mydiv).width() > window.innerWidth) {
 
-                $(mydiv).css("margin-left", _device.innerWidth - (20+$(mydiv).offset().left + $(mydiv).width()));
+                $(mydiv).css("margin-left", window.innerWidth - (25+20+$(mydiv).offset().left + $(mydiv).width()));
 
             }
         }
