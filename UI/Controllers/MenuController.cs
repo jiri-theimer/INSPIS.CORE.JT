@@ -823,7 +823,7 @@ namespace UI.Controllers
                         if (bolHasChilds)
                         {
                             //podřízené nabídky -> druhá úroveň »
-                            sb.Append("<ul style='background-color:#90EE90;margin-left:2px;padding:6px;'>");
+                            sb.Append("<ul class='cm_submenu'>");
                             foreach (var cc in _lis.Where(p => p.ParentID == c.ID))
                             {
                                 if (cc.IsDivider)

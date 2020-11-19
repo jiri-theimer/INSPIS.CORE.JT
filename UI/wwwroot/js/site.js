@@ -333,34 +333,36 @@ function _cm(e, entity, pid, flag) {
     if (ctl.getAttribute("menu_je_inicializovano") === "1") {
         return; // kontextové menu bylo již u tohoto elementu inicializováno - není třeba to dělat znovu.
     }
-    $(ctl).contextMenu({
-        menuSelector: "#" + menuid,
-        menuClicker: ctl
-
-    });
-
-    ctl.setAttribute("menu_je_inicializovano", "1");
+    
+    var menuLoadByServer = true;
 
     if (document.getElementById("divContextMenuStatic")) {
         var data = $("#divContextMenuStatic").html();   //na stránce se nachází preferované UL statického menu v divu id=divContextMenuStatic -> není třeba ho volat ze serveru
         data = data.replace(/#pid#/g, pid);  //místo #pid# replace pravé pid hodnoty
         $("#" + menuid).html(data);
 
+        menuLoadByServer = false;
         
-
-        
-
     } else {
-        //načíst menu ze serveru   
+        //načíst menu později dynamicky ze serveru   
         $("#" + menuid).html("Loading...");
-        $.post("/Menu/ContextMenu", { entity: entity, pid: pid, flag: flag }, function (data) {                
-            $("#" + menuid).html(data);
-            
-            
-            
-            
-        });
+        menuLoadByServer = true;
+        
     }
+
+
+    
+    $(ctl).contextMenu({
+        menuSelector: "#" + menuid,
+        menuClicker: ctl,
+        menuEntity: entity,
+        menuPid: pid,
+        menuFlag: flag,
+        menuLoadByServer: menuLoadByServer
+
+    });
+    ctl.setAttribute("menu_je_inicializovano", "1");
+    
 
     
 

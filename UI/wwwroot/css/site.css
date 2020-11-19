@@ -44,8 +44,9 @@ tr.isclosed td {
 .closed_item {
     text-decoration: line-through;
 }
-.f18{
-    color:brown;
+
+.f18 {
+    color: brown;
 }
 
 tr.isclosed_by_color td {
@@ -116,6 +117,7 @@ input:checked + label {
     background-color: #448CCB;
     color: white;
 }
+
 .no_clipboard {
     -webkit-user-select: none; /* Safari */
     -ms-user-select: none; /* IE 10+ and Edge */
@@ -279,6 +281,7 @@ a.cm {
         right: 5%;
         margin-top: -4px;
         -webkit-transform: rotate(360deg);
+        
     }
 
 /*Kontextové MENU pro mobilní zařízení*/
@@ -441,6 +444,9 @@ a.cm {
         left: 5%;
         margin-top: -4px;
         -webkit-transform: rotate(360deg);
+        background-color: #90EE90 !important;
+        margin-left: 2px;
+        padding: 6px;
     }
 
 
@@ -573,8 +579,14 @@ a.cm {
         right: 5%;
         margin-top: -4px;
         -webkit-transform: rotate(360deg);
+        
     }
 
+.cm_submenu {
+    background-color: #90EE90 !important;
+    margin-left: 2px;
+    padding: 6px;    
+}
 /*SPLITTER*/
 /* splitter zleva doprava - horizontální*/
 
@@ -716,12 +728,12 @@ a.nav-link-mini { /*context menu link pro velmi nízké okna pod 300px*/
 }
 
 a.grid-link {
-    display:block;
+    display: block;
 }
-a.grid-link:hover {
-    background-color: #F5F5F5;
-        
-}
+
+    a.grid-link:hover {
+        background-color: #F5F5F5;
+    }
 
 hr.hr-mini { /*používá se v kontextovém menu*/
     margin-bottom: 0px;
@@ -753,7 +765,7 @@ div.dropdown_menu_container {
 
 
 #mainmenu1 {
-    background-color: #25A0DA;    
+    background-color: #25A0DA;
 }
     /* change the brand and text color */
     #mainmenu1 .navbar-text .navbar-brand {
@@ -827,7 +839,6 @@ div.dropdown_menu_container {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    
 }
 
 
@@ -858,7 +869,7 @@ div.dropdown_menu_container {
     left: 0;
     background-color: #F8F9FA;
     border-right: solid 1px #F5F5F5;
-    overflow-x:visible;
+    overflow-x: visible;
     transition: 0.5s;
 }
 
@@ -913,7 +924,7 @@ button.cmdDropdown {
     display: flex;
     flex-basis: 100%;
     align-items: center;
-    color:silver;
+    color: silver;
     font-size: 12px;
     margin: 1px 0px;
 }
@@ -938,7 +949,7 @@ ul.tree_ul {
     ul.tree_ul > li {
         cursor: default;
         margin-top: 3px;
-        margin-bottom:5px;
+        margin-bottom: 5px;
     }
 
 .caret {
@@ -966,8 +977,8 @@ ul.tree_ul {
 
 .caret:hover {
     background-color: aliceblue;
-    border:solid 1px silver;
-    border-radius:3px;
+    border: solid 1px silver;
+    border-radius: 3px;
 }
 
 .branch_nested {
@@ -1005,8 +1016,8 @@ div.tabs_container_record {
     }
 
 
-.required{
-    color:red;
+.required {
+    color: red;
 }
 
 
@@ -1016,7 +1027,7 @@ div.tabs_container_record {
     font-weight: normal;
     width: 16px;
     background-color: darkgray;
-    color:white;
+    color: white;
     text-align: center;
     border-radius: 4px;
     padding: 1px 5px;
@@ -1025,7 +1036,7 @@ div.tabs_container_record {
     /* Position the tooltip */
     position: sticky;
     right: 4px;
-    z-index:1000;
+    z-index: 1000;
 }
 
     .valhover_tooltip:hover {
@@ -1034,9 +1045,9 @@ div.tabs_container_record {
 
 
 
-    .rowvalhover:hover .valhover_tooltip {
-        visibility: visible;
-    }
+.rowvalhover:hover .valhover_tooltip {
+    visibility: visible;
+}
 
 
 
@@ -1044,15 +1055,15 @@ div.tabs_container_record {
 ----------------------------------------------------------*/
 a.reczoom {
     font: normal 15px Arial bold;
-    padding-left:5px;
-    padding-right:5px;
+    padding-left: 5px;
+    padding-right: 5px;
     color: blue;
-    background-color:lightblue;
-    border-radius:5px;
-    margin-left:1px;
+    background-color: lightblue;
+    border-radius: 5px;
+    margin-left: 1px;
     text-decoration: none;
     cursor: help;
-    visibility:hidden;
+    visibility: hidden;
 }
 
 .rowvalhover:hover .reczoom {

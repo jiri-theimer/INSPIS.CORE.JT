@@ -5,7 +5,12 @@
 
     $.fn.contextMenu = function (settings) {
         var $menu = $(settings.menuSelector);
-        var clicker = settings.menuClicker;        
+        var clicker = settings.menuClicker;
+        var menuEntity = settings.menuEntity;
+        var menuPid = settings.menuPid;
+        var menuFlag = settings.menuFlag;
+        var menuLoadByServer = settings.menuLoadByServer;
+
         $menu.data("menuSelector", settings.menuSelector);
         if ($menu.length === 0) return;
         
@@ -24,6 +29,7 @@
             if ($ul.length === 0 || !$ul.data("menuSelector")) {
                 hideAll();
 
+                
                 var b = false;
                 if (e.target === clicker) b = true;
                 if (b === false && (e.target.parentNode)) {
@@ -45,7 +51,7 @@
             
         });
 
-
+        
 
         // Open context menu
         (function (element, menuSelector) {
@@ -60,32 +66,47 @@
                     }
                 }
                 _last_clicker = clicker;
+                
                 return handler_show_menu(e, menuSelector);
 
             });
         })($(this), settings.menuSelector);
 
-        function handler_show_menu(e, menuSelector) {
-
-            if (e.ctrlKey) return;
-
+        function handler_show_menu(e, menuSelector) {            
+            if (e.ctrlKey) return;            
             hideAll();
             var menu = getMenu(menuSelector);
+            if (menuLoadByServer === false) {
+                return false;   //statické menu
+            }
+            $.post("/Menu/ContextMenu", { entity: menuEntity, pid: menuPid, flag: menuFlag }, function (data) {
+                $(menuSelector).html(data);
 
+                //až nyní je menu stažené ze serveru
+                menu.$menu
+                    .data("invokedOn", $(e.target))
+                    .show()
+                    .css({
+                        position: "absolute",
+                        left: getMenuPosition(e.clientX, "width", "scrollLeft"),
+                        top: getMenuPosition(e.clientY, "height", "scrollTop")
+                    })
+                    .off('click');
 
-            //open menu
-            menu.$menu
-                .data("invokedOn", $(e.target))
-                .show()
-                .css({
-                    position: "absolute",
-                    left: getMenuPosition(e.clientX, "width", "scrollLeft"),
-                    top: getMenuPosition(e.clientY, "height", "scrollTop")
-                })
-                .off('click');
+                $('.cm_submenu').each(function () {
+                    if ($(this).height() + $(this).offset().top > $(window).height()) {
+                        $(this).css("margin-top", -10+$(window).height() - ($(this).height() + $(this).offset().top));
+                    }
+                    
+                });
+                
+               
+                callOnMenuShow(menu);
+                return false;
+            });
             
-            callOnMenuShow(menu);
-            return false;
+
+            
         }
 
         function getMenu(menuSelector) {
@@ -141,7 +162,7 @@
                 }
                 
             }
-            
+           
             
             if (direction === "height" && menu + position > $(window).height()) {
                 position = $(window).height() - menu - 10;
