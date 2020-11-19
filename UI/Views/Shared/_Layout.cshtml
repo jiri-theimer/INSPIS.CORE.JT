@@ -20,6 +20,15 @@
     {
         <link rel="stylesheet" href="~/css/thegrid.css" />
     }
+    @if (_f.App.Implementation == "UA")
+    {
+        <link href="/images/favicon_ua.ico" rel="shortcut icon" type="image/x-icon" />
+    }
+    else
+    {
+        <link href="/images/favicon_csi.ico" rel="shortcut icon" type="image/x-icon" />
+    }
+
 
     @if (_f.CurrentUser.j03LiveChatTimestamp != null)
     {

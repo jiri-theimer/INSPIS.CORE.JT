@@ -76,7 +76,7 @@
                             <label class="col-form-label" for="a38IsDriver">@_f.tra("Je řidič")</label>
                         </div>
                         <div class="col-sm-3 col-md-3">
-                            <mydropdown asp-for="@Model.SelectedJ25ID" firstemptyrowtext="Důvod rezervace" isfirstemptyrow="true" datasource="@Model.lisJ25" textfield="j25Name" valuefield="pid"></mydropdown>
+                            <mydropdown asp-for="@Model.SelectedJ25ID" firstemptyrowtext="Důvod rezervace" firstemptyrowvalue="0" isfirstemptyrow="true" datasource="@Model.lisJ25" textfield="j25Name" valuefield="pid"></mydropdown>
                         </div>
                         <div class="col-sm-2 col-md-2">
                             <input type="text" asp-for="@Model.a38Location" class="form-control" placeholder="@_f.tra("Místo")" />
