@@ -691,8 +691,12 @@ namespace UI.Controllers
                     var recJ03 = Factory.j03UserBL.Load(pid);
                     AMI("Karta záznamu", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
                     AMI("Kopírovat", string.Format("javascript:_clone('{0}',{1})", prefix, pid));
-                    DIV();
-                    AMI("Odeslat zprávu", string.Format("javascript: _window_open('/Mail/SendMail?j02id={0}&x29id=503&x40datapid={1}',2)", recJ03.j02ID, pid));
+                    if (recJ03.j02ID > 0)
+                    {
+                        DIV();
+                        AMI("Odeslat zprávu", string.Format("javascript: _window_open('/Mail/SendMail?j02id={0}&x29id=503&x40datapid={1}',2)", recJ03.j02ID, pid));
+                    }
+                    
                     break;
                 default:
                     AMI("Karta záznamu", string.Format("javascript:_edit('{0}',{1})", prefix, pid));

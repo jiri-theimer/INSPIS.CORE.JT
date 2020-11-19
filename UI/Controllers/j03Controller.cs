@@ -40,6 +40,10 @@ namespace UI.Controllers
                     return RecNotFound(v);
                 }
                 v.ComboPerson = v.Rec.fullname_desc;
+                if (v.Rec.j02ID == 0)
+                {
+                    v.user_profile_oper = "nobind"; //uživatel bez osobního profilu
+                }
             }
             else
             {
@@ -51,6 +55,7 @@ namespace UI.Controllers
                     v.Rec.j02ID = v.RecJ02.pid;
                 }
             }
+
             v.lisAdminRoleValues = new List<j03RecordAdminRoleValue>();
             ARV("Uživatelé systému", 1, 2, v.lisAdminRoleValues, v.Rec.j03AdminRoleValue);
             ARV("Inspektoráty", 3, 4, v.lisAdminRoleValues, v.Rec.j03AdminRoleValue);
@@ -103,6 +108,10 @@ namespace UI.Controllers
             }
             if (ModelState.IsValid)
             {
+                if (v.user_profile_oper=="bind" && v.Rec.j02ID==0)
+                {
+                    this.AddMessage("U uživatelského účtu chybí vazba na osobní profil."); return View(v);
+                }
                 BO.j03User c = new BO.j03User();
                 if (v.rec_pid > 0) c = Factory.j03UserBL.Load(v.rec_pid);                
                 c.j03Login = v.Rec.j03Login;
@@ -150,27 +159,41 @@ namespace UI.Controllers
                     var lu = new BO.LoggingUser();
                     c.j03PasswordHash = lu.Pwd2Hash(v.NewPassword, c);
                 }
+               
+                switch (v.user_profile_oper){
+                    case "create":
+                        c.j02ID = 0;    //zakládáme nový osobní profil
+                        var cJ02 = new BO.j02Person()
+                        {
+                            j02Email = v.RecJ02.j02Email
+                            ,
+                            j02TitleBeforeName = v.RecJ02.j02TitleBeforeName
+                            ,
+                            j02FirstName = v.RecJ02.j02FirstName
+                            ,
+                            j02LastName = v.RecJ02.j02LastName
+                            ,
+                            j02TitleAfterName = v.RecJ02.j02TitleAfterName
+                            ,
+                            j02PID = v.RecJ02.j02PID
+                            ,
+                            j02Mobile = v.RecJ02.j02Mobile
+                            ,
+                            j02Phone = v.RecJ02.j02Phone
+                        };
+                        c.pid = Factory.j03UserBL.SaveWithNewPersonalProfile(c, cJ02);
+                        break;
+                    case "bind":
+                        c.j02ID = v.Rec.j02ID;  //uložení s existujícím osobním profilem
+                        c.pid = Factory.j03UserBL.Save(c);
+                        break;
+                    default:
+                        //účet bez vazby na osobní profil
+                        c.j02ID = 0;
+                        c.j03IsSystemAccount = true;
+                        break;
+                }
                 
-                if (v.user_profile_oper == "create")
-                {
-                    c.j02ID = 0;    //zakládáme nový osobní profil
-                    var cJ02 = new BO.j02Person() {
-                        j02Email=v.RecJ02.j02Email
-                        ,j02TitleBeforeName = v.RecJ02.j02TitleBeforeName
-                        ,j02FirstName = v.RecJ02.j02FirstName
-                        ,j02LastName = v.RecJ02.j02LastName
-                        ,j02TitleAfterName = v.RecJ02.j02TitleAfterName
-                        ,j02PID = v.RecJ02.j02PID
-                        ,j02Mobile=v.RecJ02.j02Mobile
-                        ,j02Phone=v.RecJ02.j02Phone
-                    };
-                    c.pid = Factory.j03UserBL.SaveWithNewPersonalProfile(c, cJ02);
-                }
-                else
-                {
-                    c.j02ID = v.Rec.j02ID;  //uložení s existujícím osobním profilem
-                    c.pid = Factory.j03UserBL.Save(c);
-                }
                 if (v.rec_pid == 0 && c.pid>0 && v.IsDefinePassword)
                 {
                     c = Factory.j03UserBL.Load(c.pid);  //zakládáme nový účet - je třeba pře-generovat j03PasswordHash

@@ -102,77 +102,91 @@
             <label for="user_profile_create">@_f.tra("Založit nový osobní profil uživatele")</label>
             <input type="radio" id="user_profile_bind" asp-for="@Model.user_profile_oper" value="bind">
             <label for="user_profile_bind">@_f.tra("Svázat uživatele s již existujícím osobním profilem")</label>
+            <input type="radio" id="user_profile_nobind" asp-for="@Model.user_profile_oper" value="nobind">
+            <label for="user_profile_nobind">@_f.tra("Technologický účet bez vazby na osobní profil")</label>
         </div>
-        <div id="divPersonalProfileBind" class="card-body">
+        @if (Model.user_profile_oper == "bind")
+        {
+            <div id="divPersonalProfileBind" class="card-body">
 
-            <mycombo entity="j02Person" asp-for="Rec.j02ID" selectedtext="@Model.ComboPerson" filter-flag="1" placeholder="@_f.tra("Vybrat osobní profil")..."></mycombo>
-
-        </div>
-        <div id="divPersonalProfileCreate" class="card-body">
-            <div class="form-row">
-                <div class="col-sm-2 col-md-2">
-                    <myautocomplete asp-for="RecJ02.j02TitleBeforeName" o15flag="1" placeholder="@_f.tra("Titul")"></myautocomplete>
-
-                </div>
-                <div class="col-sm-3 col-md-3">
-                    <input class="form-control" asp-for="RecJ02.j02FirstName" placeholder="@_f.tra("Jméno")" />
-
-
-                </div>
-                <div class="col-sm-5 col-md-5">
-                    <input class="form-control" asp-for="RecJ02.j02LastName" placeholder="@_f.tra("Příjmení")" />
-
-                </div>
-                <div class="col-sm-2 col-md-2">
-                    <myautocomplete asp-for="RecJ02.j02TitleAfterName" o15flag="2"></myautocomplete>
-                </div>
+                <mycombo entity="j02Person" asp-for="Rec.j02ID" selectedtext="@Model.ComboPerson" filter-flag="1" placeholder="@_f.tra("Vybrat osobní profil")..."></mycombo>
 
             </div>
-            <div class="form-row my-2">
-                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Osobní kód"):</label>
-                <div class="col-sm-4 col-md-3">
-                    <input class="form-control" asp-for="RecJ02.j02PID" />
+        }
+
+        @if (Model.user_profile_oper == "create")
+        {
+            <div id="divPersonalProfileCreate" class="card-body">
+                <div class="form-row">
+                    <div class="col-sm-2 col-md-2">
+                        <myautocomplete asp-for="RecJ02.j02TitleBeforeName" o15flag="1" placeholder="@_f.tra("Titul")"></myautocomplete>
+
+                    </div>
+                    <div class="col-sm-3 col-md-3">
+                        <input class="form-control" asp-for="RecJ02.j02FirstName" placeholder="@_f.tra("Jméno")" />
+
+
+                    </div>
+                    <div class="col-sm-5 col-md-5">
+                        <input class="form-control" asp-for="RecJ02.j02LastName" placeholder="@_f.tra("Příjmení")" />
+
+                    </div>
+                    <div class="col-sm-2 col-md-2">
+                        <myautocomplete asp-for="RecJ02.j02TitleAfterName" o15flag="2"></myautocomplete>
+                    </div>
 
                 </div>
-                <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("E-mail"):</label>
-                <div class="col-sm-4 col-md-4">
-                    <input class="form-control" type="email" asp-for="RecJ02.j02Email" />
+                <div class="form-row my-2">
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Osobní kód"):</label>
+                    <div class="col-sm-4 col-md-3">
+                        <input class="form-control" asp-for="RecJ02.j02PID" />
 
+                    </div>
+                    <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("E-mail"):</label>
+                    <div class="col-sm-4 col-md-4">
+                        <input class="form-control" type="email" asp-for="RecJ02.j02Email" />
+
+                    </div>
+                </div>
+
+                <div class="form-row my-2">
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Mobilní telefon"):</label>
+                    <div class="col-sm-4 col-md-3">
+                        <input class="form-control" type="tel" asp-for="RecJ02.j02Mobile" />
+
+                    </div>
+                    <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Pevný tel"):</label>
+                    <div class="col-sm-4 col-md-4">
+                        <input class="form-control" type="tel" asp-for="RecJ02.j02Phone" />
+
+                    </div>
                 </div>
             </div>
+        }
 
-            <div class="form-row my-2">
-                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Mobilní telefon"):</label>
-                <div class="col-sm-4 col-md-3">
-                    <input class="form-control" type="tel" asp-for="RecJ02.j02Mobile" />
-
-                </div>
-                <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Pevný tel"):</label>
-                <div class="col-sm-4 col-md-4">
-                    <input class="form-control" type="tel" asp-for="RecJ02.j02Phone" />
-
-                </div>
-            </div>
-        </div>
     </div>
     <div class="btn-group">
         <div class="dropdown">
-            <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                @_f.tra("Uložit změny a odeslat zprávu")
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                @foreach (var c in Model.lisB65)
-                {
-                    <a class="dropdown-item" href="javascript:save_and_send(@c.pid)">@c.b65Name</a>
-                }
-                
-            </div>
+            @if (Model.user_profile_oper == "create" || Model.user_profile_oper == "bind")
+            {
+                <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    @_f.tra("Uložit změny a odeslat zprávu")
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    @foreach (var c in Model.lisB65)
+                    {
+                        <a class="dropdown-item" href="javascript:save_and_send(@c.pid)">@c.b65Name</a>
+                    }
+
+                </div>
+            }
+
         </div>
         <button id="cmdCiselniky" class="btn btn-light" type="button">@_f.tra("Oprávnění správce číselníků")<img src="~/images/caret_down.gif" /></button>
     </div>
-    
 
-    
+
+
     <div id="divCiselniky" style="display:none;">
         <i>
             @_f.tra("Aplikovatelné pouze pro uživatele, jejichž aplikační role má oprávnění [Správce číselníků] nebo [Administrátor systému].")
@@ -228,6 +242,11 @@
             form1.action = "/j03/Record?oper=postback";
             form1.submit();
         });
+        $("#user_profile_nobind").on("change", function () {
+
+            form1.action = "/j03/Record?oper=postback";
+            form1.submit();
+        });
         $("#cmdNewPassword").on("click", function () {
             form1.action = "/j03/Record?oper=newpwd";
             form1.submit();
@@ -237,20 +256,7 @@
             form1.submit();
         });
 
-        @if (Model.user_profile_oper == "create")
-        {
-            <text>
-        $("#divPersonalProfileBind").css("display", "none");
-        $("#divPersonalProfileCreate").css("display", "block");
-            </text>
-        }
-        @if (Model.user_profile_oper == "bind")
-        {
-            <text>
-        $("#divPersonalProfileBind").css("display", "block");
-        $("#divPersonalProfileCreate").css("display", "none");
-            </text>
-        }
+        
 
         @if (Model.rec_pid == 0)
         {
@@ -267,7 +273,7 @@
     function save_and_send(b65id) {
         form1.action = "/j03/Record?oper=save_and_send&b65id="+b65id;
         form1.submit();
-        
+
     }
 
 </script>

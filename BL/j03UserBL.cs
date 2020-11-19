@@ -29,7 +29,7 @@ namespace BL
             sb(_db.GetSQL1_Ocas("j03"));
             sb(",j04.j04Name,j02.j02Email,j02.j02LastName+' '+j02.j02FirstName+ISNULL(' '+j02.j02TitleBeforeName,' ') as fullname_desc");
             sb(" FROM j03User a");
-            sb(" INNER JOIN j04UserRole j04 ON a.j04ID = j04.j04ID INNER JOIN j02Person j02 ON a.j02id=j02.j02id");            
+            sb(" INNER JOIN j04UserRole j04 ON a.j04ID = j04.j04ID LEFT OUTER JOIN j02Person j02 ON a.j02id=j02.j02id");            
             sb(strAppend);
             return sbret();
 
@@ -71,11 +71,15 @@ namespace BL
             {
                 return 0;
             }
-            rec.j02ID = _mother.j02PersonBL.Save(recJ02);
-            if (rec.j02ID == 0)
+            if (rec.j02ID > 0)
             {
-                this.AddMessage("Nepodařilo se založit osobní profil uživatele."); return 0;
+                rec.j02ID = _mother.j02PersonBL.Save(recJ02);
+                if (rec.j02ID == 0)
+                {
+                    this.AddMessage("Nepodařilo se založit osobní profil uživatele."); return 0;
+                }
             }
+            
             return Save(rec);
         }
 
@@ -113,10 +117,14 @@ namespace BL
 
         private bool ValidateBeforeSave(BO.j03User rec)
         {
-            if (rec.pid>0 && rec.j02ID == 0)
+            if (rec.pid > 0 && rec.j02ID==0 && rec.j03IsSystemAccount == false)
             {
                 this.AddMessage("U uživatelského účtu chybí vazba na osobní profil."); return false;
             }
+            //if (rec.pid>0 && rec.j02ID == 0)
+            //{
+            //    this.AddMessage("U uživatelského účtu chybí vazba na osobní profil."); return false;
+            //}
             if (string.IsNullOrEmpty(rec.j03Login))
             {
                 this.AddMessage("Chybí vyplnit [Login]."); return false;

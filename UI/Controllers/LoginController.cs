@@ -58,16 +58,17 @@ namespace UI.Controllers
             _f.InhaleUserByLogin(lu.Login);
             if (_f.CurrentUser == null)
             {
-                lu.Message = "Přihlášení se nezdařilo - pravděpodobně chybné heslo nebo jméno!";
+                lu.Message = _f.trawi("Přihlášení se nezdařilo - pravděpodobně chybné heslo nebo jméno!",lu.LangIndex);
                 Write2Accesslog(lu);
                 return View(lu);
             }
             if (_f.CurrentUser.isclosed)
             {
-                lu.Message = "Uživatelský účet je uzavřený pro přihlašování!";
+                lu.Message = _f.trawi("Uživatelský účet je uzavřený pro přihlašování!",lu.LangIndex);
                 Write2Accesslog(lu);
                 return View(lu);
             }
+            
             BO.j03User cJ03 = _f.j03UserBL.LoadByLogin(lu.Login,0);
             BO.j04UserRole cJ04 = _f.j04UserRoleBL.Load(cJ03.j04ID);
             
@@ -76,13 +77,21 @@ namespace UI.Controllers
                 lu.Message = lu.Pwd2Hash("123456", cJ03);
                 return View(lu);
             }
-            var ret = lu.VerifyHash(lu.Password, lu.Login, cJ03);
-            if (ret.Flag == BO.ResultEnum.Failed)
+            if (cJ03.j02ID == 0)
             {
-                lu.Message = "Ověření uživatele se nezdařilo - pravděpodobně chybné heslo nebo jméno!";
+                lu.Message = _f.trawi("Uživatelský účet bez vazby na osobní profil slouží pouze pro technologické účely!",lu.LangIndex);
                 Write2Accesslog(lu);
                 return View(lu);
             }
+            var ret = lu.VerifyHash(lu.Password, lu.Login, cJ03);
+            if (ret.Flag == BO.ResultEnum.Failed)
+            {
+                lu.Message = _f.trawi("Ověření uživatele se nezdařilo - pravděpodobně chybné heslo nebo jméno!",lu.LangIndex);
+                Write2Accesslog(lu);
+                return View(lu);
+            }
+            
+
 
             //ověřený
             string strEmail = cJ03.j02Email;
