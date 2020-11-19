@@ -700,6 +700,11 @@ namespace UI.Controllers
 
         private void RenderGridMessage()
         {
+            if (!_grid.GridState.j72IsSystem)
+            {
+                _s.Append("<span id='gridname'>" + _grid.GridState.j72Name + "</span>");
+            }
+            
             if (_grid.GridMessage != null)
             {
                 // _s.Append("<div class='text-nowrap bd-highlight'>" + _grid.GridMessage + "</div>");

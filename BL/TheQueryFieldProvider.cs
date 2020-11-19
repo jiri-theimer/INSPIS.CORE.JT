@@ -117,6 +117,18 @@ namespace BL
                     of.SqlWrapper = "a.a01Name LIKE 'CALL-CENTRUM'";
 
                     break;
+                case "j02":
+                    of = AF("j02Person", "j02IsInvitedPerson", "a.j02IsInvitedPerson", "Přizvaná osoba", null, null, "bool");
+                    AF("j02Person", "a03Email", "a.j02Email", "E-mail");
+                    AF("j02Person", "j02Position", "a.j02Position", "Pracovní funkce");
+                    AF("j02Person", "j02Position", "a.j02Position", "Pracovní funkce");
+                    AF("j02Person", "j02Address", "a.j02Address", "Adresa bydliště");
+                    AF("j02Person", "j02Phone", "a.j02Phone", "Pevný tel");
+                    AF("j02Person", "ExistsJ03", "(case when exists(select j03ID FROM j03User WHERE j02ID=a.j02ID) then 1 else 0 end)", "Má uživatelský účet", null, null, "bool");
+                    AF("j02Person", "ExistsA02", "(case when exists(select a02ID FROM a02Inspector WHERE j02ID=a.j02ID) then 1 else 0 end)", "Má vazbu na inspektorát", null, null, "bool");
+                    AF("j02Person", "ExistsA39_1", "(case when exists(select a39ID FROM a39InstitutionPerson WHERE isnull(a39RelationFlag,1)=1 AND j02ID=a.j02ID) then 1 else 0 end)", "Je kontaktní osobou", null, null, "bool");
+                    AF("j02Person", "ExistsA39_2", "(case when exists(select a39ID FROM a39InstitutionPerson WHERE a39RelationFlag=2 AND j02ID=a.j02ID) then 1 else 0 end)", "Má vazbu na zaměstnavatele", null, null, "bool");
+                    break;
                 default:
                     break;
             }
