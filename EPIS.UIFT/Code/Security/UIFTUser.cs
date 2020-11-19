@@ -71,21 +71,5 @@ namespace UIFT.Security
         {
             return Permissions[Convert.ToInt32(permission)] == '1';
         }
-
-        /// <summary>
-        /// Vraci umele vytvorenou instanci sysUser pro vytvoreni BL repository.
-        /// </summary>
-        public BO.RunningUser GetSysUser()
-        {
-            if (this._sysUser == null)
-            {
-                this._sysUser = new BO.RunningUser();
-                this._sysUser.j03Login = this.Name;
-                this._sysUser.pid = this.ID;
-            }
-
-            return this._sysUser;
-        }
-        private BO.RunningUser _sysUser;
     }
 }

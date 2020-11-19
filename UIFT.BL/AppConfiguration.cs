@@ -18,6 +18,10 @@ namespace UIFT
 
         public int DefaultLanguage { get; set; }
 
+        public string AppName { get; set; }
+
+        public string ThemeCss { get; set; }
+
         public Auth Authentication { get; set; }
 
         public string BaseURL_EPIS1 { get; set; }

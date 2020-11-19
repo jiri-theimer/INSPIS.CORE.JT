@@ -79,10 +79,12 @@ namespace UIFT
             var execAssembly = System.Reflection.Assembly.GetExecutingAssembly();
             var versionTime = new System.IO.FileInfo(execAssembly.Location).LastWriteTime;
 
+            AppConfig.DefaultLanguage = BO.BAS.InInt(Configuration.GetSection("App")["DefaultLangIndex"]);
+            AppConfig.AppName = Configuration.GetSection("App")["Name"];
             services.AddSingleton<BL.RunningApp>(x => new BL.RunningApp()
             {
                 ConnectString = Configuration.GetSection("ConnectionStrings")["AppConnection"],
-                AppName = Configuration.GetSection("App")["Name"],
+                AppName = AppConfig.AppName,
                 AppVersion = Configuration.GetSection("App")["Version"],
                 AppBuild = "build: " + BO.BAS.ObjectDateTime2String(versionTime),
                 LogoImage = Configuration.GetSection("App")["LogoImage"],
@@ -91,7 +93,7 @@ namespace UIFT
                 TempFolder = AppConfig.TempFolder,
                 LogFolder = AppConfig.LogFolder,
                 TranslatorMode = Configuration.GetSection("App")["TranslatorMode"],
-                DefaultLangIndex = BO.BAS.InInt(Configuration.GetSection("App")["DefaultLangIndex"])
+                DefaultLangIndex = AppConfig.DefaultLanguage
             });
 
             services.AddSingleton<BL.TheEntitiesProvider>();
