@@ -1,4 +1,5 @@
 ﻿@model LoginModel
+@inject AppConfiguration configuration
 @inject UIFT.Repository.RepositoryFactory factory
 @inject BL.RunningApp app
 @{
@@ -13,13 +14,13 @@
     <div id="loginBox">
         @using (Html.BeginForm("Login", "Login", FormMethod.Post, new { autocomplete = "off" }))
         {
-            <p><label>@rep.BL.tra("ID akce:") </label>@Html.TextBoxFor(t => t.Akce)</p>
-            <p><label>@rep.BL.tra("PIN:") </label>@Html.TextBoxFor(t => t.PIN, null, new { autocomplete = "off" })</p>
+            <p><label>@rep.BL.trawi("ID akce:", configuration.DefaultLanguage) </label>@Html.TextBoxFor(t => t.Akce)</p>
+            <p><label>@rep.BL.trawi("PIN:", configuration.DefaultLanguage) </label>@Html.TextBoxFor(t => t.PIN, null, new { autocomplete = "off" })</p>
             if (!ViewData.ModelState.IsValid)
             {
                 <div id="loginError">@Html.ValidationSummary()</div>
             }
-            <p><button type="submit" class="buttonSmall">@rep.BL.tra("Přihlásit se")</button></p>
+            <p><button type="submit" class="buttonSmall">@rep.BL.trawi("Přihlásit se", configuration.DefaultLanguage)</button></p>
         }
     </div>
 </div>
