@@ -68,16 +68,14 @@
     <header>
         <nav id="mainmenu1" class="navbar navbar-expand-lg navbar-dark py-1">
             <div class="navbar-nav">
-                <div class="nav-item dropdown">
-                    <a id="cmdGlobalNavigate" class="btn btn-light btn-sm dropdown-toggle" data-toggle="dropdown" role="button" style="cursor: pointer;">
-                        <span class="text-primary" style="font-size:140%;">
-
-                            ☰@_f.App.AppName
-                        </span>
-                    </a>
-
-                    <div class="dropdown-menu" style="background-color:white;" id="divGlobalNavigateMenu" aria-labelledby="cmdGlobalNavigate">Loading...</div>
-                </div>
+                @if (_f.CurrentUser.j03HomePageUrl == null)
+                {
+                    <a id="cmdHome" class="nav-link text-white" href="/Home/Index" tabindex="-1">@_f.App.AppName</a>
+                }
+                else
+                {
+                    <a id="cmdHome" class="nav-link text-white" href="@_f.CurrentUser.getHomePageUrl()" tabindex="-1">@_f.App.AppName☆</a>
+                }
 
             </div>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -86,14 +84,7 @@
 
 
             <div class="navbar-collapse collapse d-sm-inline-flex">
-                @if (_f.CurrentUser.j03HomePageUrl == null)
-                {
-                    <a id="cmdHome" class="nav-link text-white" href="/Home/Index" tabindex="-1">@_f.tra("Home").ToUpper()</a>
-                }
-                else
-                {
-                    <a id="cmdHome" class="nav-link text-white" href="@_f.CurrentUser.getHomePageUrl()" tabindex="-1">@_f.tra("Home").ToUpper()☆</a>
-                }
+                
 
                 @if (_f.CurrentUser.HasAdminMenu())
                 {

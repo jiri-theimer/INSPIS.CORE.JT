@@ -9,7 +9,7 @@
 }
 
 
-<nav class="navbar navbar-expand navbar-toggleable navbar-light border-bottom box-shadow mb-3 @Model.BG" id="nav1" style="margin-bottom:10px;">
+<nav class="navbar navbar-expand navbar-toggleable navbar-light border-bottom box-shadow mb-3 px-2 @Model.BG" id="nav1" style="margin-bottom:10px;">
     <div class="navbar-brand" style="margin: 0px;">
 
     </div>
@@ -24,7 +24,7 @@
 
 
             <div class="btn-group">
-                <button type="submit" id="cmdSaveMyToolbar" action="@Model.ControllorName" class="btn btn-success">@_f.tra("Uložit změny")</button>
+                <button type="submit" id="cmdSaveMyToolbar" action="@Model.ControllorName" class="btn btn-success my-0">@_f.tra("Uložit změny")</button>
 
             </div>
             @if (Model.IsApply)
