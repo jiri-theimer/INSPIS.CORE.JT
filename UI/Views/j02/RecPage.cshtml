@@ -177,7 +177,7 @@
         <ul id="navtabs" class="nav nav-tabs">
             @foreach (var tab in Model.NavTabs)
             {
-                <li class="nav-item">
+                <li class="nav-item onetab">
                     <a class="@tab.CssClass" id="tab@(tab.Entity)" href="@tab.Url" target="fra_subgrid" onclick="tabclick(this)">@tab.Name</a>
                 </li>
             }

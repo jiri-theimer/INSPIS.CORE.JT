@@ -765,13 +765,16 @@ div.dropdown_menu_container {
 
 
 #mainmenu1 {
-    background-color: #25A0DA;
+    background-color: #1e2de0;  /*původně: #25A0DA;*/
 }
     /* change the brand and text color */
     #mainmenu1 .navbar-text .navbar-brand {
         color: white;
     }
 
+    #mainmenu1 .navbar-nav:nth-last-child(4) {
+        margin-left: auto;
+    }
 
     /* change the link color */
 
@@ -996,11 +999,22 @@ li.root_nocaret {
 div.tabs_container {
     padding-top: 2px;
     margin-bottom: 1px;
-    height: 34px;
+    
     /* background-image: linear-gradient(#E5E5E5, silver);*/
-    background-color: #ADD8E6;
+    background-color: white;
+    /* background-image: linear-gradient(#E5E5E5, silver);*/
 }
 
+.onetab {
+    border-left: solid 1px silver;
+    border-top: solid 1px silver;
+    border-right: solid 1px silver;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    margin-left:1px;
+    background-color:#F5F5F5;
+    
+}
 
 
 /* záložky v modálním formuláři */

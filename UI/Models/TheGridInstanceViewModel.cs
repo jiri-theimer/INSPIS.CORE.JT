@@ -35,8 +35,8 @@ namespace UI.Models
         public string Url { get; set; }
 
         public string CssClass { get; set; } = "nav-link text-dark";
+       
 
-        
         public string Badge { get; set; }
         
     }

@@ -257,7 +257,7 @@
         <ul id="navtabs" class="nav nav-tabs">
             @foreach (var tab in Model.NavTabs)
             {
-                <li class="nav-item">
+                <li class="nav-item onetab">
                     <a class="@tab.CssClass" id="tab@(tab.Entity)" href="@tab.Url" target="fra_subgrid" onclick="tabclick(this)">@tab.Name</a>
                 </li>
 
@@ -312,8 +312,8 @@
 
 
     function tabclick(tab) {    //uložit aktuální záložku do profilu uživatele
-            $("#navtabs .nav-link").removeClass("active");
-            $(tab).addClass("active");
+        $("#navtabs .nav-link").removeClass("active");
+        $(tab).addClass("active");
             $.post("/Common/SetUserParam", { key: "recpage-tab-a03",value:tab.id.replace("tab","")  }, function (data) {
 
 

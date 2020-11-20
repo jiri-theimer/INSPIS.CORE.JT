@@ -45,7 +45,7 @@
         @if (Model.RecLastEvent != null)
         {
             <div class="col-sm-3 col-md-2">
-                <myval datatype="link" linkurl="/j02/RecPage?pid=@Model.RecLastEvent.j02ID" value="@Model.RecLastEvent.Person" hoverprefix="j02" hoverpid="@Model.RecLastEvent.j02ID"></myval>
+                <myval datatype="link" linkurl="/j02/RecPage?pid=@Model.RecLastEvent.j02ID" linktarget="_top" value="@Model.RecLastEvent.Person" hoverprefix="j02" hoverpid="@Model.RecLastEvent.j02ID"></myval>
 
 
             </div>
@@ -61,7 +61,7 @@
         @if (Model.Rec.a03ID > 0)
         {
             <div class="col-sm-4 col-md-3">
-                <myval datatype="link" linkurl="/a03/RecPage?pid=@Model.Rec.a03ID" value="@Model.Rec.a03Name" hoverprefix="a03" hoverpid="@Model.Rec.a03ID"></myval>
+                <myval datatype="link" linkurl="/a03/RecPage?pid=@Model.Rec.a03ID" linktarget="_top" value="@Model.Rec.a03Name" hoverprefix="a03" hoverpid="@Model.Rec.a03ID"></myval>
 
 
             </div>
@@ -82,7 +82,7 @@
         <div class="col-sm-3 col-md-2">
             @if (Model.RecIssuer != null)
             {
-                <myval datatype="link" linkurl="/j02/RecPage?pid=@Model.RecIssuer.pid" value="Model.RecIssuer.FullNameAsc" hoverprefix="j02" hoverpid="@Model.RecIssuer.pid"></myval>
+                <myval datatype="link" linkurl="/j02/RecPage?pid=@Model.RecIssuer.pid" linktarget="_top" value="Model.RecIssuer.FullNameAsc" hoverprefix="j02" hoverpid="@Model.RecIssuer.pid"></myval>
             }
         </div>
         <div class="col-sm-2 col-md-2">

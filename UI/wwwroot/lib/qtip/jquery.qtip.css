@@ -104,12 +104,12 @@
 .qtip-default{
 	border: 1px solid #F1D031;
 
-	background-color: #FFFFA3;
+	background-color: #1e2de0;
 	color: #555;
 }
 
 	.qtip-default .qtip-titlebar{
-		background-color: #FFEF93;
+		background-color: #1e2de0;
 	}
 
 	.qtip-default .qtip-icon{
