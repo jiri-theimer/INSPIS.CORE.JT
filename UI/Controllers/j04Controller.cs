@@ -91,8 +91,15 @@ namespace UI.Controllers
 
                 var j05ids = new List<int>();
                 j05ids.InsertRange(0, v.SelectedJ05IDs_EPIS1);
-                j05ids.InsertRange(0, v.SelectedJ05IDs_EPIS2);
-                j05ids.InsertRange(0, v.SelectedJ05IDs_PORTAL);
+                if (v.SelectedJ05IDs_EPIS2 != null)
+                {
+                    j05ids.InsertRange(0, v.SelectedJ05IDs_EPIS2);
+                }                
+                if (v.SelectedJ05IDs_PORTAL != null)
+                {
+                    j05ids.InsertRange(0, v.SelectedJ05IDs_PORTAL);
+                }
+                
 
                 c.pid = Factory.j04UserRoleBL.Save(c,j05ids,v.lisJ08.Where(p=>p.IsTempDeleted==false).ToList());
                 if (c.pid > 0)

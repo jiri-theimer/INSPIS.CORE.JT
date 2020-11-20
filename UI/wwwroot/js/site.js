@@ -540,7 +540,8 @@ function _zoom(e, entity, pid, dialog_width, header, url) {     //wtype: small (
 
     $(ctl).contextMenu({
         menuSelector: "#" + menuid,
-        menuClicker: ctl
+        menuClicker: ctl,
+        menuLoadByServer:false
 
     });
 
