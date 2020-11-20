@@ -1009,12 +1009,14 @@ div.tabs_container {
     border-left: solid 1px silver;
     border-top: solid 1px silver;
     border-right: solid 1px silver;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
-    margin-left:1px;
-    background-color:#F5F5F5;
-    
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    margin-left: 1px;
+    background-color: #DCDCDC;
 }
+
+
+
 
 
 /* záložky v modálním formuláři */

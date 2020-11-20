@@ -26,11 +26,11 @@
         <vc:the-grid entity="@Model.entity" j72id="@Model.j72id" go2pid="@Model.go2pid" master_entity="" master_pid="0" contextmenuflag="@Model.contextmenuflag" ondblclick="tg_dblclick" master_flag="@Model.master_flag" masterviewflag="2" addfilterid="" fixedcolumns=""></vc:the-grid>
 
     </div>
-    <div class="tabs_container">
+    <div class="tabs_container" style="background-color:#F0F8FF;">
         <ul id="navtabs" class="nav nav-tabs">
             @foreach (var tab in Model.NavTabs)
             {
-                <li class="nav-item">
+                <li class="nav-item onetab">
                     <a class="@tab.CssClass" id="tab@(tab.Entity)" href="@tab.Url" target="fra_subgrid" onclick="tabclick(this)">@tab.Name</a>
                 </li>
 
