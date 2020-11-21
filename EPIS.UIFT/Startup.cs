@@ -81,6 +81,7 @@ namespace UIFT
 
             AppConfig.DefaultLanguage = BO.BAS.InInt(Configuration.GetSection("App")["DefaultLangIndex"]);
             AppConfig.AppName = Configuration.GetSection("App")["Name"];
+
             services.AddSingleton<BL.RunningApp>(x => new BL.RunningApp()
             {
                 ConnectString = Configuration.GetSection("ConnectionStrings")["AppConnection"],
