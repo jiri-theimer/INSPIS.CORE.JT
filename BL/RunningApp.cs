@@ -18,6 +18,7 @@ namespace BL
         public string AppVersion { get; set; }
         public string AppBuild { get; set; }
         public string LogoImage { get; set; }
+        public string LoginImage { get; set; }
         public string TranslatorMode { get; set; }
 
         public int DefaultLangIndex { get; set; }

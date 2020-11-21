@@ -90,6 +90,8 @@ namespace UI
                 ,
                 LogoImage = Configuration.GetSection("App")["LogoImage"]
                 ,
+                LoginImage = Configuration.GetSection("App")["LoginImage"]
+                ,
                 Implementation = Configuration.GetSection("App")["Implementation"]
                 ,
                 DefaultLangIndex = BO.BAS.InInt(Configuration.GetSection("App")["DefaultLangIndex"])

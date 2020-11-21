@@ -5,8 +5,9 @@
     Layout = "~/Views/Shared/_LayoutLogin.cshtml";
 }
 
-<h2>@_f.tra("Došlo k odhlášení uživatele")</h2>
+    <div style="margin:auto;max-width:500px;">
+        <h4>@_f.tra("Došlo k odhlášení uživatele")</h4>
 
-<a asp-action="UserLogin" asp-controller="Login">@_f.tra("Přihlásit se")</a>
-
+        <a asp-action="UserLogin" asp-controller="Login">@_f.tra("Přihlásit se")</a>
+    </div>
 
