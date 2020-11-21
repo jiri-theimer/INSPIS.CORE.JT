@@ -10,10 +10,12 @@
 
 
 
-<div class="row">
-    <div class="col-md-4">
+<div style="margin:auto;max-width:500px;">
+    
         <form id="form1" asp-action="UserLogin" method="post">
-            <h2>@_f.trawi("Přihlášení do aplikace",Model.LangIndex)</h2>
+            
+            <h4>@_f.trawi("Přihlášení do aplikace",Model.LangIndex)</h4>
+
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="@Model.Login" class="control-label">@_f.trawi("Přihlašovací jméno (login)",Model.LangIndex)</label>
@@ -80,8 +82,7 @@
             <input type="hidden" asp-for="@Model.Browser_DeviceType" />
             <input type="hidden" asp-for="@Model.Browser_Host" />
         </form>
-    </div>
-
+    
 
 
 

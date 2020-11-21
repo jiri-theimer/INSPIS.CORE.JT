@@ -25,16 +25,18 @@
     <header>
         
     </header>
-    <div class="container">
-        <span class="navbar-brand">@_app.AppName</span>
-
-        <main role="main" class="pb-3">
+    <div class="container-fluid px-0">        
+        <div style="background-color:#1E2DE0;margin-bottom:30px;">
+            <img src="@_app.LoginImage" style="display:block;width:40%;margin-left:auto;margin-right:auto;padding-top:30px;padding-bottom:30px;" />
+        </div>
+        <main role="main">
             @RenderBody()
         </main>
+        
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
+    <footer style="border-top:1px solid lightgray;position:fixed;bottom:100px;width:100%;">
+        <div style="margin:auto;max-width:500px;">
             👌@_app.AppName <small>@_app.AppVersion</small><small style="margin-left:10px;color:silver;">@_app.AppBuild</small>
         </div>
     </footer>

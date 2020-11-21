@@ -28,7 +28,7 @@
     </div>
     <div class="col-sm-1"></div>
     <div class="nonmobile nontablet">
-        <a class="btn btn-secondary" href="/j02/RecPage?pid=@Model.pid">@_f.tra("Občerstvit")</a>
+        <a class="btn btn-light" href="/j02/RecPage?pid=@Model.pid">@_f.tra("Občerstvit")</a>
     </div>
 
 
@@ -177,7 +177,7 @@
         <ul id="navtabs" class="nav nav-tabs">
             @foreach (var tab in Model.NavTabs)
             {
-                <li class="nav-item">
+                <li class="nav-item onetab">
                     <a class="@tab.CssClass" id="tab@(tab.Entity)" href="@tab.Url" target="fra_subgrid" onclick="tabclick(this)">@tab.Name</a>
                 </li>
             }

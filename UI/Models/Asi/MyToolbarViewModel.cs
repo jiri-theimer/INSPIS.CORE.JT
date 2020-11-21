@@ -106,7 +106,7 @@ namespace UI.Models
                 sb.AppendLine("<div style='border-top:solid 1px #F5F5F5;margin-top:20px;'>");
                 if (_rec.DateInsert != null)
                 {
-                    sb.Append("<small>"+f.tra("Záznam založen")+":</small>");
+                    sb.Append("<small>"+f.tra("Záznam založen")+ ":&nbsp;</small>");
                                       
                     sb.Append("<small class='text-info'>");
                     sb.Append(_rec.UserInsert + " / " + _rec.DateInsert.ToString());
@@ -114,7 +114,7 @@ namespace UI.Models
                 }
                 if (_rec.DateUpdate > _rec.DateInsert)
                 {
-                    sb.Append("<small style='margin-left:20px;'>"+f.tra("Poslední aktualizace")+":</small>");
+                    sb.Append("<small style='margin-left:20px;'>"+f.tra("Poslední aktualizace")+ ":&nbsp;</small>");
 
                     sb.Append("<small class='text-info'>");
                     sb.Append(_rec.UserUpdate + " / " + _rec.DateUpdate.ToString());
@@ -125,7 +125,7 @@ namespace UI.Models
                     this.ExplicitValidFrom = BO.BAS.ObjectDateTime2String(_rec.ValidFrom);
                     this.ExplicitValidUntil = BO.BAS.ObjectDateTime2String(_rec.ValidUntil);
 
-                    sb.Append("<small style='margin-left:20px;'>"+f.tra("Platnost záznamu")+":</small>");
+                    sb.Append("<small style='margin-left:20px;'>"+f.tra("Platnost záznamu")+ ":&nbsp;</small>");
                     sb.Append("<small class='text-info'>");
                     if (_rec.ValidUntil > DateTime.Now && _rec.ValidFrom <= DateTime.Now)
                     {

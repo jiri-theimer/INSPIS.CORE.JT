@@ -6,6 +6,10 @@
     $.fn.contextMenu = function (settings) {
         var $menu = $(settings.menuSelector);
         var clicker = settings.menuClicker;
+        var menuEntity = settings.menuEntity;
+        var menuPid = settings.menuPid;
+        var menuFlag = settings.menuFlag;
+        var menuLoadByServer = settings.menuLoadByServer;
 
         $menu.data("menuSelector", settings.menuSelector);
         if ($menu.length === 0) return;
@@ -18,11 +22,13 @@
             hideAll();
         });
         $(document).on("click", function (e) {
+
             if (e.target.id === "divZoomHeader") return;
 
             var $ul = $(e.target).closest("ul");
             if ($ul.length === 0 || !$ul.data("menuSelector")) {
                 hideAll();
+
 
                 var b = false;
                 if (e.target === clicker) b = true;
@@ -42,7 +48,7 @@
                 hideAll();  //ESCAPE klávesa
 
             }
-            
+
         });
 
 
@@ -50,6 +56,7 @@
         // Open context menu
         (function (element, menuSelector) {
             element.on("click", function (e) {
+
                 // return native menu if pressing control
                 if (clicker === _last_clicker) {
                     var m = getMenu(menuSelector);
@@ -59,32 +66,60 @@
                     }
                 }
                 _last_clicker = clicker;
+
                 return handler_show_menu(e, menuSelector);
 
             });
         })($(this), settings.menuSelector);
 
         function handler_show_menu(e, menuSelector) {
-
             if (e.ctrlKey) return;
-
             hideAll();
             var menu = getMenu(menuSelector);
+            if (menuLoadByServer === false) {
+                //statické menu
+                menu.$menu
+                    .data("invokedOn", $(e.target))
+                    .show()
+                    .css({
+                        position: "absolute",
+                        left: getMenuPosition(e.clientX, "width", "scrollLeft"),
+                        top: getMenuPosition(e.clientY, "height", "scrollTop")
+                    })
+                    .off('click');
+
+                callOnMenuShow(menu);
+                return false;
+            }
+            $.post("/Menu/ContextMenu", { entity: menuEntity, pid: menuPid, flag: menuFlag }, function (data) {
+                //menu položky natahované dynamicky ze serveru
+                $(menuSelector).html(data);
+
+                //až nyní je menu stažené ze serveru
+                menu.$menu
+                    .data("invokedOn", $(e.target))
+                    .show()
+                    .css({
+                        position: "absolute",
+                        left: getMenuPosition(e.clientX, "width", "scrollLeft"),
+                        top: getMenuPosition(e.clientY, "height", "scrollTop")
+                    })
+                    .off('click');
+
+                $('.cm_submenu').each(function () {
+                    if ($(this).height() + $(this).offset().top > $(window).height()) {
+                        $(this).css("margin-top", -10 + $(window).height() - ($(this).height() + $(this).offset().top));
+                    }
+
+                });
 
 
-            //open menu
-            menu.$menu
-                .data("invokedOn", $(e.target))
-                .show()
-                .css({
-                    position: "absolute",
-                    left: getMenuPosition(e.clientX, "width", "scrollLeft"),
-                    top: getMenuPosition(e.clientY, "height", "scrollTop")
-                })
-                .off('click');
-            
-            callOnMenuShow(menu);
-            return false;
+                callOnMenuShow(menu);
+                return false;
+            });
+
+
+
         }
 
         function getMenu(menuSelector) {
@@ -129,27 +164,30 @@
         function getMenuPosition(mouse, direction, scrollDir) {
             var win = $(window)[direction](),
                 scroll = $(window)[scrollDir](),
-                menu = $(settings.menuSelector)[direction](),   //výška menu
+                menu = $(settings.menuSelector)[direction](),   //výška/šířka menu
                 position = mouse + scroll;                      //souřadnice
 
-            
+
             if (direction === "width") {
                 position = position + 20;
                 if (_device.type === "Phone") {
                     position = 0;
                 }
-                
+
             }
+
+
             if (direction === "height" && menu + position > $(window).height()) {
                 position = $(window).height() - menu - 10;
                 if (_device.type === "Phone") {
                     position = 0;
                 }
+
                 return position;
-        
+
             }
 
-            if (menu === 0 || menu === win) {                
+            if (menu === 0 || menu === win) {
                 menu = 300;
             }
             // opening menu would pass the side of the page
