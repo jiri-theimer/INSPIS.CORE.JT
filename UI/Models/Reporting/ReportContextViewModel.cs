@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace UI.Models
 {
-    public class ReportContextViewModel:BaseViewModel
+    public class ReportContextViewModel : BaseViewModel
     {
         public int x29ID { get; set; }
-        
-        
+
+
         public BO.x31Report RecX31 { get; set; }
         public string ReportFileName { get; set; }
 
@@ -21,6 +21,7 @@ namespace UI.Models
 
         public string GeneratedTempFileName { get; set; }
         public List<string> AllGeneratedTempFileNames { get; set; }
+        public int LangIndex{get;set;}
 
     }
 }

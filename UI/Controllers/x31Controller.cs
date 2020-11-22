@@ -27,7 +27,7 @@ namespace UI.Controllers
         public IActionResult ReportNoContext(int x31id)
         {
             var v = new ReportNoContextViewModel();
-                      
+            v.LangIndex = Factory.CurrentUser.j03LangIndex;
             v.SelectedX31ID = x31id;
             RefreshStateReportNoContext(v);
 
@@ -101,6 +101,7 @@ namespace UI.Controllers
         public IActionResult ReportContext(int pid, string prefix,int x31id)
         {
             var v = new ReportContextViewModel() { rec_pid = pid, rec_prefix = prefix };
+            v.LangIndex = Factory.CurrentUser.j03LangIndex;
             if (string.IsNullOrEmpty(v.rec_prefix)==true || v.rec_pid == 0)
             {
                 return StopPage(true, "pid or prefix missing");
