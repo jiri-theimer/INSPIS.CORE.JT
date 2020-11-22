@@ -88,9 +88,11 @@ namespace UI
                 ,
                 AppBuild = "build: " + BO.BAS.ObjectDateTime2String(versionTime)
                 ,
-                LogoImage = Configuration.GetSection("App")["LogoImage"]
+                LogoImageSuffix = Configuration.GetSection("App")["LogoImageSuffix"]
                 ,
-                LoginImage = Configuration.GetSection("App")["LoginImage"]
+                BgColor = Configuration.GetSection("App")["BgColor"]
+                ,
+                FgColor = Configuration.GetSection("App")["FgColor"]
                 ,
                 Implementation = Configuration.GetSection("App")["Implementation"]
                 ,

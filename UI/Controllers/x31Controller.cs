@@ -233,6 +233,7 @@ namespace UI.Controllers
                 c.x31Is4SingleRecord = v.Rec.x31Is4SingleRecord;
                 c.x31ReportFormat = v.Rec.x31ReportFormat;
                 c.x31DocSqlSource = v.Rec.x31DocSqlSource;
+                c.x31Translate = v.Rec.x31Translate;
                 c.ValidUntil = v.Toolbar.GetValidUntil(c);
                 c.ValidFrom = v.Toolbar.GetValidFrom(c);
                 List<int> x32ids = BO.BAS.ConvertString2ListInt(v.x32IDs);

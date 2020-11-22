@@ -174,7 +174,7 @@
                 serviceUrl: "/api/reports",
                     reportSource: {
                         report: "@(Model.ReportFileName+"###"+_f.CurrentUser.j03Login+"###"+Model.SelectedJ72ID)",
-                        parameters: { j02id: @_f.CurrentUser.j02ID, a05id: @_f.CurrentUser.a05ID, datFrom: d1, datUntil: d2}
+                        parameters: { j02id: @_f.CurrentUser.j02ID, a05id: @_f.CurrentUser.a05ID, datFrom: d1, datUntil: d2,langindex:"@_f.CurrentUser.j03LangIndex", langsource:"@Model.RecX31.x31Translate"}
                     },
                 viewMode: telerikReportViewer.ViewModes.INTERACTIVE,
                 scaleMode: telerikReportViewer.ScaleModes.SPECIFIC,

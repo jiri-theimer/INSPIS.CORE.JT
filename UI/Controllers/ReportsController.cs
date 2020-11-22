@@ -54,8 +54,9 @@ namespace UI.Controllers
             {
                 intJ72ID = BO.BAS.InInt(lis[2]);
             }
-            
 
+            
+            
             string reportXml = File.ReadAllText(_app.ReportFolder + "\\" + reportId);
 
             if (reportXml.Contains("1=1"))
@@ -80,9 +81,9 @@ namespace UI.Controllers
                 }
                 
             }
-            
-            
 
+
+            
 
             return new Telerik.Reporting.XmlReportSource { Xml = reportXml };
         }

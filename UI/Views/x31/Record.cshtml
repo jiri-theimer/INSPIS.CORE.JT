@@ -67,6 +67,10 @@
             <mycombo entity="x29Entity" asp-for="Rec.x29ID" selectedtext="Rec.x29Name" view-flag="2" param1="x29IsReport" event_after_changevalue="handle_change_x29id"></mycombo>
         </div>
     </div>
+    <div class="form-row my-2">
+        <textarea asp-for="Rec.x31Translate" class="form-control" placeholder="@_f.tra("Jazykový překlad")"></textarea>
+        
+    </div>
 
     @if (Model.Rec.x31Is4SingleRecord && Model.Rec.x29ID == 101)
     {
@@ -92,10 +96,7 @@
     }
 
 
-    <div class="form-row my-2">
-        <textarea asp-for="Rec.x31Description" class="form-control" placeholder="@_f.tra("Podrobný popis")"></textarea>
-        <span asp-validation-for="Rec.x31Description" class="text-danger"></span>
-    </div>
+
     @if (Model.RecO27 != null)
     {
         <div class="form-row my-2">
@@ -113,7 +114,12 @@
 
     <div class="form-row my-2">
         <textarea asp-for="Rec.x31DocSqlSource" class="form-control" placeholder="@_f.tra("Na míru DOCX SQL zdroj sestavy")"></textarea>
-        
+
+    </div>
+
+    <div class="form-row my-2">
+        <textarea asp-for="Rec.x31Description" class="form-control" placeholder="@_f.tra("Podrobný popis")"></textarea>
+        <span asp-validation-for="Rec.x31Description" class="text-danger"></span>
     </div>
 </div>
 

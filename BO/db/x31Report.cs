@@ -27,5 +27,6 @@ namespace BO
 
         public string x29Name { get; set; } //combo
         public string x31DocSqlSource { get; set; }
+        public string x31Translate { get; set; }
     }
 }

@@ -64,6 +64,7 @@ namespace BL
             p.AddString("x31Description", rec.x31Description);
             p.AddBool("x31Is4SingleRecord", rec.x31Is4SingleRecord);
             p.AddString("x31DocSqlSource", rec.x31DocSqlSource);
+            p.AddString("x31Translate", rec.x31Translate);
             if (a10ids != null)
             {
                 if (a10ids.Count == 0)

@@ -8,14 +8,7 @@
     <title>Přihlásit se</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    @if (_app.Implementation == "UA")
-    {
-        <link href="/images/favicon_ua.ico" rel="shortcut icon" type="image/x-icon" />
-    }
-    else
-    {
-        <link href="/images/favicon_csi.ico" rel="shortcut icon" type="image/x-icon" />
-    }
+    <link href="/images/favicon_@(_app.LogoImageSuffix).ico" rel="shortcut icon" type="image/x-icon" />
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -26,8 +19,8 @@
         
     </header>
     <div class="container-fluid px-0">        
-        <div style="background-color:#1E2DE0;margin-bottom:30px;">
-            <img src="@_app.LoginImage" style="display:block;width:40%;margin-left:auto;margin-right:auto;padding-top:30px;padding-bottom:30px;" />
+        <div style="background-color:@_app.BgColor;margin-bottom:30px;">
+            <img src="/images/logo_login_@(_app.LogoImageSuffix).png" style="display:block;width:40%;margin-left:auto;margin-right:auto;padding-top:30px;padding-bottom:30px;" />
         </div>
         <main role="main">
             @RenderBody()

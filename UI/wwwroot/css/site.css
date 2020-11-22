@@ -281,7 +281,6 @@ a.cm {
         right: 5%;
         margin-top: -4px;
         -webkit-transform: rotate(360deg);
-        
     }
 
 /*Kontextové MENU pro mobilní zařízení*/
@@ -579,13 +578,12 @@ a.cm {
         right: 5%;
         margin-top: -4px;
         -webkit-transform: rotate(360deg);
-        
     }
 
 .cm_submenu {
     background-color: #90EE90 !important;
     margin-left: 2px;
-    padding: 6px;    
+    padding: 6px;
 }
 /*SPLITTER*/
 /* splitter zleva doprava - horizontální*/
@@ -764,67 +762,65 @@ div.dropdown_menu_container {
 }
 
 
-#mainmenu1 {
-    background-color: #1e2de0;  /*původně: #25A0DA;*/
+
+/* change the brand and text color */
+#mainmenu1 .navbar-text .navbar-brand {
+    color: white;
 }
-    /* change the brand and text color */
-    #mainmenu1 .navbar-text .navbar-brand {
-        color: white;
+
+#mainmenu1 .navbar-nav:nth-last-child(4) {
+    margin-left: auto;
+}
+
+/* change the link color */
+
+#mainmenu1 .navbar-nav .nav-link {
+    color: #FFFFFF;
+    padding: 6px;
+}
+/* change the color of active or hovered links */
+
+#mainmenu1 .nav-item:hover .nav-link {
+    color: #FFFFFF;
+}
+
+#mainmenu1 .active {
+    background-color: gray;
+}
+
+#mainmenu1 .nav-link:hover {
+    background-color: royalblue;
+    color: white !important;
+    height: 100%;
+}
+
+#mainmenu1 .dropdown-item {
+    padding: 0px 0px 0px 0px;
+    color: #505050;
+}
+
+
+    #mainmenu1 .dropdown-item .nav-link {
+        padding: 3px 20px 3px 10px;
     }
 
-    #mainmenu1 .navbar-nav:nth-last-child(4) {
-        margin-left: auto;
-    }
+        #mainmenu1 .dropdown-item .nav-link:hover {
+            background-color: #2D89EF;
+        }
 
-    /* change the link color */
-
-    #mainmenu1 .navbar-nav .nav-link {
-        color: #FFFFFF;
-        padding: 6px;
-    }
-    /* change the color of active or hovered links */
-
-    #mainmenu1 .nav-item:hover .nav-link {
-        color: #FFFFFF;
-    }
-
-    #mainmenu1 .active {
+    #mainmenu1 .dropdown-item.active {
+        padding-top: 3px;
+        padding-bottom: 3px;
         background-color: gray;
     }
 
-    #mainmenu1 .nav-link:hover {
-        background-color: royalblue;
-        color: white !important;
-        height: 100%;
-    }
-
-    #mainmenu1 .dropdown-item {
-        padding: 0px 0px 0px 0px;
-        color: #505050;
-    }
 
 
-        #mainmenu1 .dropdown-item .nav-link {
-            padding: 3px 20px 3px 10px;
-        }
-
-            #mainmenu1 .dropdown-item .nav-link:hover {
-                background-color: #2D89EF;
-            }
-
-        #mainmenu1 .dropdown-item.active {
-            padding-top: 3px;
-            padding-bottom: 3px;
-            background-color: gray;
-        }
-
-
-
-    #mainmenu1 .dropdown-divider {
-        margin-top: 2px;
-        margin-bottom: 0px;
-        border-color: #D3D3D3;
-    }
+#mainmenu1 .dropdown-divider {
+    margin-top: 2px;
+    margin-bottom: 0px;
+    border-color: #D3D3D3;
+}
 
 
 .val-readonly {
@@ -999,7 +995,6 @@ li.root_nocaret {
 div.tabs_container {
     padding-top: 2px;
     margin-bottom: 1px;
-    
     /* background-image: linear-gradient(#E5E5E5, silver);*/
     background-color: white;
     /* background-image: linear-gradient(#E5E5E5, silver);*/

@@ -666,11 +666,17 @@ namespace UI.Controllers
                     AMI("Návrhář workflow", string.Format("/AdminOneWorkflow/Index?b01id={0}", pid));
                     DIV();
                     AMI("Nový workflow stav", string.Format("javascript: _window_open('/b02/Record?b01id={0}')", pid));
-                    //AMI("Nový workflow krok", string.Format("javascript: _window_open('/b06/Record?b01id={0}')", pid));
+                    
                     DIV();
                     AMI("Upravit hlavičku workflow", string.Format("javascript:_edit('b01',{0})", pid));
                     AMI("Kopírovat workflow šablonu", string.Format("javascript:_clone('b01',{0})", pid));
 
+                    break;
+                case "b02":
+                    AMI("Karta záznamu", string.Format("javascript:_edit('b02',{0})", pid));
+                    AMI("Kopírovat", string.Format("javascript:_clone('b02',{0})", pid));
+                    DIV();
+                    AMI("Nový workflow krok", string.Format("javascript: _window_open('/b06/Record?b02id={0}')", pid));
                     break;
                 case "z01":
                     AMI("Náhled tiskové sestavy", string.Format("javascript: _window_open('/x31/ReportNoContext?x31id={0}',2)", pid));

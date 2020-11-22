@@ -20,14 +20,7 @@
     {
         <link rel="stylesheet" href="~/css/thegrid.css" />
     }
-    @if (_f.App.Implementation == "UA")
-    {
-        <link href="/images/favicon_ua.ico" rel="shortcut icon" type="image/x-icon" />
-    }
-    else
-    {
-        <link href="/images/favicon_csi.ico" rel="shortcut icon" type="image/x-icon" />
-    }
+    <link href="/images/favicon_@(_f.App.LogoImageSuffix).ico" rel="shortcut icon" type="image/x-icon" />
 
 
     @if (_f.CurrentUser.j03LiveChatTimestamp != null)
@@ -66,7 +59,7 @@
     <script src="~/js/mycontrols.js" asp-append-version="true"></script>
 
     <header>
-        <nav id="mainmenu1" class="navbar navbar-expand-lg navbar-dark py-1">
+        <nav id="mainmenu1" class="navbar navbar-expand-lg navbar-dark py-1" style="background-color:@(_f.App.BgColor)">
             <div class="navbar-nav">
                 @if (_f.CurrentUser.j03HomePageUrl == null)
                 {
@@ -189,7 +182,7 @@
 
     <div id="myModalContainer" style="display:none;">
         <div id="myModalContent">
-            <div style="height:30px;background-color: #1e2de0;padding:3px;" ondblclick="_window_toggle()">
+            <div style="height:30px;background-color: @(_f.App.BgColor);padding:3px;" ondblclick="_window_toggle()">
                 <button class="btn btn-secondary btn-sm float-left" onclick="_window_close()" style="margin-left:3px;margin-right:3px;">&times;</button>
                 <span id="myModalContentHeader" style="color:white;"></span>
                 <button class="btn btn-secondary btn-sm float-right" onclick="_window_close()" style="margin-right:3px;">&times;</button>

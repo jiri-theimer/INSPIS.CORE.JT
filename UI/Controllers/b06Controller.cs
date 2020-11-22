@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Crypto.Tls;
 using UI.Models;
 using UI.Models.Record;
 
@@ -19,7 +20,7 @@ namespace UI.Controllers
             {
                 v.Rec = Factory.b06WorkflowStepBL.Load(v.rec_pid);
                 v.b02ID = v.Rec.b02ID;
-                v.b01ID = v.Rec.b01ID;
+                v.b01ID = v.Rec.b01ID;                
                 if (v.Rec == null)
                 {
                     return RecNotFound(v);
@@ -69,6 +70,8 @@ namespace UI.Controllers
                 }
 
             }
+           
+            
             RefreshState(v);
             v.Toolbar = new MyToolbarViewModel(v.Rec);
             if (isclone)
@@ -221,6 +224,7 @@ namespace UI.Controllers
         private void RefreshState(b06Record v)
         {
             v.RecB02 = Factory.b02WorkflowStatusBL.Load(v.b02ID);
+            if (v.b01ID == 0) v.b01ID = v.RecB02.b01ID;
             
             if (v.lisB11 == null)
             {
