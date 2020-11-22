@@ -21,6 +21,9 @@ namespace UI
                 {
                     var arr = BO.BAS.ConvertString2List(s, "|");
                     return arr[intLangIndex];
+                    
+
+                    
                 }
             }
 

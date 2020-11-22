@@ -24,5 +24,7 @@ namespace UI.Models
        
         public IEnumerable<BO.j72TheGridTemplate> lisJ72 { get; set; }
 
+        public int LangIndex { get; set; }
+
     }
 }
