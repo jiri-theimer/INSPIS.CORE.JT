@@ -20,6 +20,8 @@ namespace UIFT
 
         public string AppName { get; set; }
 
+        public string LogoImageLogin { get; set; }
+
         public string ThemeCss { get; set; }
 
         public Auth Authentication { get; set; }
