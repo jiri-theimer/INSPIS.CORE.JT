@@ -1,4 +1,5 @@
 ﻿@inject AppConfiguration configuration
+@inject BL.RunningApp app
 @inject UIFT.Repository.RepositoryFactory factory
 @{
     Layout = null;
@@ -14,10 +15,10 @@
 <!--[if lt IE 9]> <html lang="cs-cz" id="fullpage"  class="layout-@(ViewBag.Layout) template-@(ViewBag.FormularTemplate) ie8"> <![endif]-->
 <!--[if gt IE 9]><!-->
 <html lang="cs-cz" id="fullpage" class="layout-@(ViewBag.Layout) template-@(ViewBag.FormularTemplate)">
- <!--<![endif]-->
+<!--<![endif]-->
 
 <head>
-    <title>@configuration.AppName</title>
+    <title>@app.AppName</title>
 
     <!--[if lte IE 9]><meta http-equiv="X-UA-Compatible" content="IE=edge" /><![endif]-->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
