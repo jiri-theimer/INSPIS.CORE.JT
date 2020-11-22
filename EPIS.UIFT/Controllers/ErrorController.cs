@@ -30,17 +30,17 @@ namespace UIFT.Controllers
         };
 
         private readonly BL.TheTranslator Translator;
-        private readonly AppConfiguration Configuration;
+        private readonly int LangIndex;
 
-        public ErrorController(BL.TheTranslator translator, AppConfiguration configuration)
+        public ErrorController(BL.TheTranslator translator, BL.RunningApp app)
         {
-            this.Configuration = configuration;
+            this.LangIndex = app.DefaultLangIndex;
             this.Translator = translator;
         }
 
         public ActionResult Index(int code)
         {
-            ViewBag.Message = Translator.DoTranslate(ErrorMessages[code], Configuration.DefaultLanguage);
+            ViewBag.Message = Translator.DoTranslate(ErrorMessages[code], this.LangIndex);
 
             return View("Index");
         }

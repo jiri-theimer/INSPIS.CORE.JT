@@ -13,11 +13,11 @@ namespace UIFT.Controllers
     public class LoginController : Controller
     {
         private readonly UIFT.Repository.RepositoryFactory Factory;
-        private readonly AppConfiguration Configuration;
+        private readonly int LangIndex;
 
-        public LoginController(UIFT.Repository.RepositoryFactory factory, AppConfiguration configuration)
+        public LoginController(UIFT.Repository.RepositoryFactory factory, BL.RunningApp app)
         {
-            this.Configuration = configuration;
+            this.LangIndex = app.DefaultLangIndex;
             this.Factory = factory;
         }
 
@@ -59,11 +59,11 @@ namespace UIFT.Controllers
 
             if (string.IsNullOrEmpty(model.PIN))
             {
-                ModelState.AddModelError("", rep.BL.trawi("Musíte zadat PIN.", Configuration.DefaultLanguage));
+                ModelState.AddModelError("", rep.BL.trawi("Musíte zadat PIN.", this.LangIndex));
             }
             else if (string.IsNullOrEmpty(model.Akce))
             {
-                ModelState.AddModelError("", rep.BL.trawi("Musíte zadat ID akce.", Configuration.DefaultLanguage));
+                ModelState.AddModelError("", rep.BL.trawi("Musíte zadat ID akce.", this.LangIndex));
             }
             else
             {
@@ -98,11 +98,11 @@ namespace UIFT.Controllers
                         }
                     }
 
-                    ModelState.AddModelError("", rep.BL.trawi("Pro zadaný PIN a ID akce systém nedokázal najít otevřenou anketu.", Configuration.DefaultLanguage));
+                    ModelState.AddModelError("", rep.BL.trawi("Pro zadaný PIN a ID akce systém nedokázal najít otevřenou anketu.", this.LangIndex));
                 }
                 catch (Exception)
                 {
-                    ModelState.AddModelError("", rep.BL.trawi("Chybné přístupové údaje.", Configuration.DefaultLanguage));
+                    ModelState.AddModelError("", rep.BL.trawi("Chybné přístupové údaje.", this.LangIndex));
                 }
             }
 

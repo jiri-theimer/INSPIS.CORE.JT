@@ -1,7 +1,4 @@
-﻿.loginBox1 h1 {
-    background-color: #202ee2;
-}
-.loginBox1 h1 span {
+﻿.loginBox1 h1 span {
     color: white;
     font-weight: bold;
     font-size: 21px;
@@ -12,3 +9,11 @@
 .loginBox1 .logo {
     margin: 0 !important;
 }
+#header {
+    background-color: #1E2DE0;
+    border-bottom-color: #1E2DE0;
+    color: white;
+}
+    #header a {
+        color: white;
+    }

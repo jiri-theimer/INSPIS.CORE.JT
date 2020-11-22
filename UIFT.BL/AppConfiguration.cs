@@ -16,12 +16,6 @@ namespace UIFT
 
         public string BaseUrl { get; set; }
 
-        public int DefaultLanguage { get; set; }
-
-        public string AppName { get; set; }
-
-        public string LogoImageLogin { get; set; }
-
         public string ThemeCss { get; set; }
 
         public Auth Authentication { get; set; }

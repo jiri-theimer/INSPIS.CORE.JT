@@ -1,26 +1,25 @@
 ﻿@model LoginModel
-@inject AppConfiguration configuration
 @inject UIFT.Repository.RepositoryFactory factory
 @inject BL.RunningApp app
 @{
     var rep = factory.Get();
 }
 <div class="loginBox1">
-    <h1>
-        <img src="@configuration.LogoImageLogin" alt="Logo" class="logo" />
+    <h1 style="background-color:@(app.BgColor);">
+        <img src="~/css/images/logo_@(app.LogoImageSuffix).png?v=1" alt="Logo" class="logo" />
         <span>@app.AppName</span>
     </h1>
 
     <div id="loginBox">
         @using (Html.BeginForm("Login", "Login", FormMethod.Post, new { autocomplete = "off" }))
         {
-            <p><label>@rep.BL.trawi("ID akce:", configuration.DefaultLanguage) </label>@Html.TextBoxFor(t => t.Akce)</p>
-            <p><label>@rep.BL.trawi("PIN:", configuration.DefaultLanguage) </label>@Html.TextBoxFor(t => t.PIN, null, new { autocomplete = "off" })</p>
+            <p><label>@rep.BL.trawi("ID akce:", app.DefaultLangIndex) </label>@Html.TextBoxFor(t => t.Akce)</p>
+            <p><label>@rep.BL.trawi("PIN:", app.DefaultLangIndex) </label>@Html.TextBoxFor(t => t.PIN, null, new { autocomplete = "off" })</p>
             if (!ViewData.ModelState.IsValid)
             {
                 <div id="loginError">@Html.ValidationSummary()</div>
             }
-            <p><button type="submit" class="buttonSmall">@rep.BL.trawi("Přihlásit se", configuration.DefaultLanguage)</button></p>
+            <p><button type="submit" class="buttonSmall">@rep.BL.trawi("Přihlásit se", app.DefaultLangIndex)</button></p>
         }
     </div>
 </div>

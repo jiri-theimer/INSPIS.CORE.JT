@@ -79,22 +79,21 @@ namespace UIFT
             var execAssembly = System.Reflection.Assembly.GetExecutingAssembly();
             var versionTime = new System.IO.FileInfo(execAssembly.Location).LastWriteTime;
 
-            AppConfig.DefaultLanguage = BO.BAS.InInt(Configuration.GetSection("App")["DefaultLangIndex"]);
-            AppConfig.AppName = Configuration.GetSection("App")["Name"];
-
             services.AddSingleton<BL.RunningApp>(x => new BL.RunningApp()
             {
                 ConnectString = Configuration.GetSection("ConnectionStrings")["AppConnection"],
-                AppName = AppConfig.AppName,
+                AppName = Configuration.GetSection("App")["Name"],
                 AppVersion = Configuration.GetSection("App")["Version"],
                 AppBuild = "build: " + BO.BAS.ObjectDateTime2String(versionTime),
-                LogoImage = Configuration.GetSection("App")["LogoImage"],
                 Implementation = Configuration.GetSection("App")["Implementation"],
                 UploadFolder = AppConfig.UploadFolder,
                 TempFolder = AppConfig.TempFolder,
                 LogFolder = AppConfig.LogFolder,
                 TranslatorMode = Configuration.GetSection("App")["TranslatorMode"],
-                DefaultLangIndex = AppConfig.DefaultLanguage
+                DefaultLangIndex = BO.BAS.InInt(Configuration.GetSection("App")["DefaultLangIndex"]),
+                LogoImageSuffix = Configuration.GetSection("App")["LogoImageSuffix"],
+                BgColor = Configuration.GetSection("App")["BgColor"],
+                FgColor = Configuration.GetSection("App")["FgColor"]
             });
 
             services.AddSingleton<BL.TheEntitiesProvider>();
