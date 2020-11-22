@@ -53,6 +53,7 @@ f18TreePath
 
 [x31Report]
 x31DocSqlSource
+x31Translate
 
 [x32ReportType]
 x32TreePath
