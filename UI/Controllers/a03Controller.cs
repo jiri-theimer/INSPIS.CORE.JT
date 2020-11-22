@@ -202,16 +202,33 @@ namespace UI.Controllers
 
         private void RefreshNavTabs(a03RecPage v)
         {
-            v.NavTabs.Add(AddTab(Factory.App.Terminology_Akce, "a01Event", "/TheGrid/SlaveView?prefix=a01", false));
-            v.NavTabs.Add(AddTab("Kontaktní osoby", "j02Person", "/TheGrid/SlaveView?prefix=a39"));
-            v.NavTabs.Add(AddTab("Činnosti školy", "a37InstitutionDepartment", "/TheGrid/SlaveView?prefix=a37"));
-            v.NavTabs.Add(AddTab("Vzdělávací obory", "a19DomainToInstitutionDepartment", "/TheGrid/SlaveView?prefix=a19"));
+            var c = Factory.a03InstitutionBL.LoadSummary(v.pid);
+            string strBadge = null;            
+            if (c.a01_count > 0 ) strBadge = c.a01_count.ToString();
+            v.NavTabs.Add(AddTab(Factory.App.Terminology_Akce, "a01Event", "/TheGrid/SlaveView?prefix=a01", false,strBadge));
+            strBadge = null;
+            if (c.a39_count > 0) strBadge = c.a39_count.ToString();
+            v.NavTabs.Add(AddTab("Kontaktní osoby", "j02Person", "/TheGrid/SlaveView?prefix=a39",true, strBadge));
+            strBadge = null;
+            if (c.a37_count > 0) strBadge = c.a37_count.ToString();
+            v.NavTabs.Add(AddTab("Činnosti školy", "a37InstitutionDepartment", "/TheGrid/SlaveView?prefix=a37",true,strBadge));
+            strBadge = null;
+            if (c.a19_count > 0) strBadge = c.a19_count.ToString();
+            v.NavTabs.Add(AddTab("Vzdělávací obory", "a19DomainToInstitutionDepartment", "/TheGrid/SlaveView?prefix=a19",true,strBadge));
             v.NavTabs.Add(AddTab("Učitelé", "k01Teacher", "/TheGrid/SlaveView?prefix=k01"));
             v.NavTabs.Add(AddTab("Školy zřizovatele", "a03Institution", "/TheGrid/SlaveView?prefix=a03&master_flag=founder"));
-            v.NavTabs.Add(AddTab("Dohled", "a03Institution", "/TheGrid/SlaveView?prefix=a03&master_flag=supervisor"));
-            v.NavTabs.Add(AddTab("Podřízené", "a03Institution", "/TheGrid/SlaveView?prefix=a03&master_flag=parent"));
-            v.NavTabs.Add(AddTab("INEZ", "a42Qes", "/TheGrid/SlaveView?prefix=a42"));
-            v.NavTabs.Add(AddTab("Pojmenované seznamy", "a29InstitutionList", "/TheGrid/SlaveView?prefix=a29"));
+            strBadge = null;
+            if (c.supervisory_count > 0) strBadge = c.supervisory_count.ToString();
+            v.NavTabs.Add(AddTab("Dohled", "a03Institution", "/TheGrid/SlaveView?prefix=a03&master_flag=supervisor",true,strBadge));
+            strBadge = null;
+            if (c.podrizene_count > 0) strBadge = c.podrizene_count.ToString();
+            v.NavTabs.Add(AddTab("Podřízené", "a03Institution", "/TheGrid/SlaveView?prefix=a03&master_flag=parent",true,strBadge));
+            strBadge = null;
+            if (c.a42_count > 0) strBadge = c.a42_count.ToString();
+            v.NavTabs.Add(AddTab("INEZ", "a42Qes", "/TheGrid/SlaveView?prefix=a42",true,strBadge));
+            strBadge = null;
+            if (c.a29_count > 0) strBadge = c.a29_count.ToString();
+            v.NavTabs.Add(AddTab("Pojmenované seznamy", "a29InstitutionList", "/TheGrid/SlaveView?prefix=a29",true,strBadge));
 
             string strDefTab = Factory.CBL.LoadUserParam("recpage-tab-a03");
             var deftab = v.NavTabs[0];

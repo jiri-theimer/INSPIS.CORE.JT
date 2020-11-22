@@ -181,7 +181,11 @@ namespace UI.Controllers
                             ,
                             j02Phone = v.RecJ02.j02Phone
                         };
-                        c.pid = Factory.j03UserBL.SaveWithNewPersonalProfile(c, cJ02);
+                        if (!Factory.j02PersonBL.ValidateBeforeSave(cJ02))
+                        {
+                            return View(v);
+                        }
+                        c.pid = Factory.j03UserBL.SaveWithNewPersonalProfile(c, cJ02);                        
                         break;
                     case "bind":
                         c.j02ID = v.Rec.j02ID;  //uložení s existujícím osobním profilem
@@ -194,6 +198,7 @@ namespace UI.Controllers
                         break;
                 }
                 
+
                 if (v.rec_pid == 0 && c.pid>0 && v.IsDefinePassword)
                 {
                     c = Factory.j03UserBL.Load(c.pid);  //zakládáme nový účet - je třeba pře-generovat j03PasswordHash
@@ -236,12 +241,13 @@ namespace UI.Controllers
             
             return true;
         }
-        private bool ValidatePreSave(BO.j03User c)
+        private bool ValidatePreSave(BO.j03User recJ03)
         {
-            if (string.IsNullOrEmpty(c.j03Login) || c.j04ID==0)
+            if (string.IsNullOrEmpty(recJ03.j03Login) || recJ03.j04ID==0)
             {
                 this.AddMessage("Přihlašovací jméno (login) a Aplikační role jsou povinná pro uživatelský účet.");return false;
             }
+            
             return true;
         }
 

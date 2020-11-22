@@ -17,7 +17,7 @@ namespace BL
         public string AppName { get; set; }
         public string AppVersion { get; set; }
         public string AppBuild { get; set; }
-        public string LogoImage { get; set; }
+        
         public string LogoImageSuffix { get; set; }
         public string BgColor { get; set; }
         public string FgColor { get; set; }
