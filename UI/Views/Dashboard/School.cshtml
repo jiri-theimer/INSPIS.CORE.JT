@@ -79,7 +79,7 @@
 else
 {
     <button id="cmdNewAccount" class="btn btn-primary" type="button">@_f.tra("Založit nový účet")</button>
-    
+
     <table class="table table-sm table-hover" style="max-width:700px;">
         @foreach (var c in Model.lisA39)
         {
@@ -96,25 +96,29 @@ else
             </tr>
         }
     </table>
-    <div class="card">
-        <div class="card-header">
-            Poučení o ochraně osobních údajů
+    @if (_f.App.Implementation == "Default")
+    {
+        <div class="card">
+            <div class="card-header">
+                Poučení o ochraně osobních údajů
+            </div>
+            <div class="card-body">
+                Česká školní inspekce zřizuje přístup do systému řediteli školy. Oprávnění dalším osobám v jednotlivých modulech InspIS přiděluje ředitel školy zřízením příslušné role.
+                <br />
+                Tím je umožněn dalším uživatelům přístup k informacím v systému, a to včetně osobních údajů.
+                <br />
+                V této souvislosti Vás upozorňujeme na Vaši povinnost stanovenou v § 13 odst. 4 písm. b) zákona č. 101/2000 Sb., o ochraně osobních údajů a o změně některých zákonů, ve znění pozdějších předpisů, podle které je správce povinen zajistit, aby fyzické osoby oprávněné k používání systémů pro automatizovaná zpracování osobních údajů měly přístup pouze k osobním údajům odpovídajícím oprávnění těchto osob, a to na základě zvláštních uživatelských oprávnění zřízených výlučně pro tyto osoby.
+                <br />
+                Současně poukazujeme na skutečnost, že v systému jsou pořizovány elektronické záznamy, které umožní určit a ověřit, kdy a kým byly údaje (např. záznamy o úrazu) vyplněny či aktualizovány.
+                Je tedy plně ve Vaší kompetenci, které zaměstnance pověříte vyplňováním údajů v systému, a jaká organizační opatření přijmete za účelem zamezení neoprávněnému přístupu k osobním údajům.
+                <hr />
+                Osobní údaje jsou na úrovni systému InspIS DATA spravovány zejména v modulu školních úrazů, kde jsou přístupné těmto rolím školních uživatelů: pedagogický pracovník, ředitel školy, školní administrátor, zadavatel úrazů, zástupce ředitele školy, vždy včetně variant s oprávněním k ŠVP.
+                <br />
+                Oprávnění takové role přidělovat pak mají uživatelé v rolích ředitel školy, školní administrátor, zástupce ředitele školy (opět včetně variant s oprávněním k ŠVP)
+            </div>
         </div>
-        <div class="card-body">
-            Česká školní inspekce zřizuje přístup do systému řediteli školy. Oprávnění dalším osobám v jednotlivých modulech InspIS přiděluje ředitel školy zřízením příslušné role.
-            <br />
-            Tím je umožněn dalším uživatelům přístup k informacím v systému, a to včetně osobních údajů.
-            <br />
-            V této souvislosti Vás upozorňujeme na Vaši povinnost stanovenou v § 13 odst. 4 písm. b) zákona č. 101/2000 Sb., o ochraně osobních údajů a o změně některých zákonů, ve znění pozdějších předpisů, podle které je správce povinen zajistit, aby fyzické osoby oprávněné k používání systémů pro automatizovaná zpracování osobních údajů měly přístup pouze k osobním údajům odpovídajícím oprávnění těchto osob, a to na základě zvláštních uživatelských oprávnění zřízených výlučně pro tyto osoby.
-            <br />
-            Současně poukazujeme na skutečnost, že v systému jsou pořizovány elektronické záznamy, které umožní určit a ověřit, kdy a kým byly údaje (např. záznamy o úrazu) vyplněny či aktualizovány.
-            Je tedy plně ve Vaší kompetenci, které zaměstnance pověříte vyplňováním údajů v systému, a jaká organizační opatření přijmete za účelem zamezení neoprávněnému přístupu k osobním údajům.
-            <hr />
-            Osobní údaje jsou na úrovni systému InspIS DATA spravovány zejména v modulu školních úrazů, kde jsou přístupné těmto rolím školních uživatelů: pedagogický pracovník, ředitel školy, školní administrátor, zadavatel úrazů, zástupce ředitele školy, vždy včetně variant s oprávněním k ŠVP.
-            <br />
-            Oprávnění takové role přidělovat pak mají uživatelé v rolích ředitel školy, školní administrátor, zástupce ředitele školy (opět včetně variant s oprávněním k ŠVP)
-        </div>
-    </div>
+    }
+
 }
 
 
