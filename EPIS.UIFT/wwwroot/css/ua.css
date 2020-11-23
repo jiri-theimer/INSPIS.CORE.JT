@@ -9,6 +9,9 @@
 .loginBox1 .logo {
     margin: 0 !important;
 }
+.loginBox1 h1 span {
+    display: block;
+}
 #header {
     background-color: #1E2DE0;
     border-bottom-color: #1E2DE0;
