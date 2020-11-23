@@ -589,9 +589,14 @@ namespace UI.Controllers
                     {
                         string s = "'"+Factory.tra("Opravdu nenávratně odtranit vyčistit odpovědi ve formuláři?")+"'";
                         AMI("Vyčistit data ve formuláři (nenávratně)", "javascript:clear_form("+pid.ToString()+","+s+")");
+                    }                    
+                    if (TUP(BO.j05PermValuEnum.FormDesigner))
+                    {
+                        DIV();
+                        AMI("Návrhář formuláře", string.Format("/AdminOneForm/Index?f06id={0}", recA11.f06ID),null,null,"_top");
                     }
-                    
-                    
+                        
+
                     break;
                 case "a41":
                     var recA41 = Factory.a41PersonToEventBL.Load(pid);
