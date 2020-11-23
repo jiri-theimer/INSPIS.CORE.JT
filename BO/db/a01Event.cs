@@ -33,6 +33,7 @@ namespace BO
         public int a61ID { get; set; }
         public int a22ID { get; set; }
         public int a70ID { get; set; }
+        public int a46ID { get; set; }
         public string a01Name { get; set; }
         public string a01Description { get; set; }
         public string a01CaseCode { get; set; }

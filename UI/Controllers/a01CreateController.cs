@@ -65,7 +65,7 @@ namespace UI.Controllers
             {
                 return RedirectToAction("Index");
             }
-            var v = new a01CreateViewModel() { j02ID = j02id,a10ID=a10id };
+            var v = new a01CreateViewModel() { j02ID = j02id,a10ID=a10id,CloneByPid=clonebypid };
             if (a03id > 0)
             {
                 v.a03ID = a03id;

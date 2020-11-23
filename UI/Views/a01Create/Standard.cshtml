@@ -22,11 +22,24 @@
 
 <form id="form1" asp-controller="a01Create" asp-action="Standard" method="POST">
     <input type="hidden" asp-for="@Model.a10ID" />
+    <input type="hidden" asp-for="@Model.CloneByPid" />
 
     <div class="modal_record_container">
 
         <input type="hidden" asp-for="@Model.ActiveTabIndex" />
-
+        @if (Model.CloneByPid > 0)
+        {
+            <div class="form-row">
+                <select asp-for="@Model.Rec.a46ID" class="form-control">
+                    <option value="0">@_f.tra("Vztah ke zdrojové akci")</option>
+                    <option value="1">@_f.tra("Závisí na")</option>
+                    <option value="2">@_f.tra("Je duplikátem")</option>
+                    <option value="3">@_f.tra("Souvisí s")</option>
+                    <option value="4">@_f.tra("Je podřízená vůči")</option>
+                </select>
+                
+            </div>
+        }
         @if (Model.RecA10.a10IsUse_Name)
         {
             <div class="form-row my-2">
