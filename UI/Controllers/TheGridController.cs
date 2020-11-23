@@ -757,10 +757,15 @@ namespace UI.Controllers
             sb.AppendLine(string.Format("<a href='javascript:tg_export(\"xlsx\",\"selected\")'>" + Factory.tra("MS-EXCEL Export")+"</a>", j72id));
             sb.AppendLine(string.Format("<a style='margin-left:20px;' href='javascript:tg_export(\"csv\",\"selected\")'>"+Factory.tra("CSV Export")+"</a>", j72id));
             sb.AppendLine("</div>");
-
+            sb.AppendLine("<hr class='hr-mini' />");
+            
+            if ("a01,a03".Contains(recJ72.j72Entity.Substring(0, 3)))
+            {                
+                sb.AppendLine("<a class='nav-link' href=\"javascript:tg_batchupdate('" + recJ72.j72Entity.Substring(0, 3) + "')\" >" + Factory.tra("Hromadné operace") + "★</a>");
+                
+            }
             if ("j02,a01,a03,f06".Contains(recJ72.j72Entity.Substring(0, 3)))
-            {
-                sb.AppendLine("<hr class='hr-mini' />");
+            {                
                 sb.AppendLine("<a class='nav-link' href='javascript:tg_tagging();'>" + Factory.tra("Hromadná kategorizace záznamů")+"★</a>");
 
             }

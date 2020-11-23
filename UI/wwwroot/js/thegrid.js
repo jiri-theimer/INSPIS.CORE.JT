@@ -942,6 +942,17 @@ function tg_tagging() {
     _window_open(url,2, "Zatřídit do kategorií");
    
 }
+function tg_batchupdate(prefix) {
+    var pids = $("#tg_selected_pids").val();
+    if (pids === "") {
+        _notify_message("Musíte vybrat minimálně jeden záznam.");
+        return;
+    }
+    var url = "/BatchUpdate/"+prefix+"?pids=" + pids;
+    
+    _window_open(url, 2);
+
+}
 
 
 

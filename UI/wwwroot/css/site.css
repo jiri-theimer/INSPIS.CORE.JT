@@ -704,9 +704,7 @@ a.cm {
     cursor: move;
 }
 
-#myModalContent div:first-child {
-    background-color: #1e2de0 !important;
-}
+   
 
 iframe {
     display: block;

@@ -16,6 +16,7 @@ namespace BL
         public IEnumerable<BO.a24EventRelation> GetList_a24(int pid);
         public int SaveA24Record(BO.a24EventRelation rec);
         public string GetPageUrl(BO.a01Event rec, int pid4url=0);
+        public int BatchUpdate(BO.a01Event rec);
     }
     class a01EventBL : BaseBL, Ia01EventBL
     {
@@ -165,6 +166,28 @@ namespace BL
             
 
             RunSpAfterA01Save(intPID);
+
+            return intPID;
+        }
+        public int BatchUpdate(BO.a01Event rec)
+        {
+            if (ValidateBeforeSave(ref rec, _mother.a10EventTypeBL.Load(rec.a10ID)) == false)
+            {
+                return 0;
+            }
+            var p = new DL.Params4Dapper();
+            p.AddInt("pid", rec.a01ID);
+            p.AddInt("a10ID", rec.a10ID, true);            
+            p.AddInt("a08ID", rec.a08ID, true);
+            p.AddInt("b02ID", rec.b02ID, true);
+            p.AddDateTime("a01DateFrom", rec.a01DateFrom);
+            p.AddDateTime("a01DateUntil", BO.BAS.ConvertDateTo235959(Convert.ToDateTime(rec.a01DateUntil)));
+
+            int intPID = _db.SaveRecord("a01Event", p.getDynamicDapperPars(), rec);
+            if (intPID > 0 && rec.pid > 0)
+            {
+                RunSpAfterA01Save(intPID);         
+            }
 
             return intPID;
         }

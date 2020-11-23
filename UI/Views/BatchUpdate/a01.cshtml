@@ -1,0 +1,109 @@
+﻿@model BatchUpdateA01
+@inject BL.Factory _f
+
+@{
+    Layout = "~/Views/Shared/_LayoutModal.cshtml";
+
+
+
+    ViewData["Title"] = _f.tra("Hromadné operace");
+
+
+
+
+}
+
+
+@addTagHelper *,UI
+
+<h4>@ViewData["Title"]</h4>
+
+<div class="bg-light" style="padding:10px;">
+    <button id="cmdSave" type="button" class="btn btn-success">@_f.tra("Provést změny")</button>
+    <button id="cmdClose" type="button" onclick="_window_close()" class="btn btn-light">@_f.tra("Zavřít")</button>
+    <button type="button" onclick="_helppage()" class="btn btn-light"><b>? </b>@_f.tra("Nápověda")</button>
+</div>
+
+<form id="form1" asp-controller="BatchUpdate" asp-action="a01" method="POST">
+    <input type="hidden" asp-for="@Model.pids" />
+
+    <div class="modal_record_container">
+        @if (Model.CommonB01ID > 0)
+        {
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Nastavit všem workflow stav"):</label>
+                <div class="col-sm-11 col-md-10">
+                    <mycombo entity="b02WorkflowStatus" asp-for="@Model.SelectedB02ID" selectedtext="@Model.SelectedB02Name" view-flag="2" masterprefix="b01" masterpid="@Model.CommonB01ID"></mycombo>
+                </div>
+            </div>
+        }
+
+
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Změnit všem typ na"):</label>
+            <div class="col-sm-11 col-md-10">
+                <mycombo entity="a10EventType" asp-for="@Model.SelectedA10ID" selectedtext="@Model.SelectedA10Name" view-flag="2"></mycombo>
+            </div>
+        </div>
+
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Změnit všem téma na"):</label>
+            <div class="col-sm-11 col-md-10">
+                <mycombo entity="a08Theme" asp-for="@Model.SelectedA08ID" selectedtext="@Model.SelectedA08Name" view-flag="2"></mycombo>
+            </div>
+        </div>
+
+        <div class="form-row my-2">
+            <textarea asp-for="@Model.WorkflowComment" class="form-control" placeholder="@_f.tra("Zapsat komentář")"></textarea>
+
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                @_f.tra("Změnit časový plán")
+            </div>
+            <div class="card-body">
+                <div class="form-row">
+                    <label class="col-1-form-label">@_f.tra("Začátek"):</label>
+
+                    <div class="col-sm-2 col-md-2">
+                        <mydate asp-for="@Model.a01DateFrom"></mydate>
+                    </div>
+                    <label class="col-1-form-label">@_f.tra("Konec"):</label>
+
+                    <div class="col-sm-2 col-md-2">
+                        <mydate asp-for="@Model.a01DateUntil"></mydate>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+<div id="divTableRecords"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#cmdSave").click(function () {
+            $(this).text("Processing...");
+            $(this).attr("disabled", true);
+            form1.submit();
+
+        });
+
+
+        $.post("/Common/GetWorkTable", { entity: "a01", pids:"@Model.pids"}, function (data) {
+            $("#divTableRecords").html(data);
+
+        });
+
+    });
+
+
+
+
+</script>
+
+
+
