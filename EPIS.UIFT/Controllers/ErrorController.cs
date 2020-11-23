@@ -26,7 +26,8 @@ namespace UIFT.Controllers
             { 16, "Formulář v akci je již uzavřen" },
             { 17, "Formulář je uzavřen" },
             { 18, "V této akci nedisponujete oprávněním k vyplňování formulářů." },
-            { 19, "Tato anketa je již uzamčena a nelze pořizovat její náhled." }
+            { 19, "Tato anketa je již uzamčena a nelze pořizovat její náhled." },
+            { 20, "Chyba 500" }
         };
 
         private readonly BL.TheTranslator Translator;
