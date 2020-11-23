@@ -201,7 +201,12 @@ namespace BL
             {
                 rec.a01DateUntil = new DateTime(3000, 1, 1);
             }
+            if (Convert.ToDateTime(rec.a01DateUntil).Year < 3000 && Convert.ToDateTime(rec.a01DateUntil).Hour == 0)
+            {
+                rec.a01DateUntil = BO.BAS.ConvertDateTo235959(Convert.ToDateTime(rec.a01DateUntil));
+            }
             p.AddDateTime("a01DateUntil", rec.a01DateUntil);
+
 
             int intPID = _db.SaveRecord("a01Event", p.getDynamicDapperPars(), rec);
             if (intPID > 0 && rec.pid>0)

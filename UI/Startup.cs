@@ -88,15 +88,13 @@ namespace UI
                 ,
                 AppBuild = "build: " + BO.BAS.ObjectDateTime2String(versionTime)
                 ,
-                LogoImageSuffix = Configuration.GetSection("App")["LogoImageSuffix"]
-                ,
-                BgColor = Configuration.GetSection("App")["BgColor"]
-                ,
-                FgColor = Configuration.GetSection("App")["FgColor"]
+                LogoImageSuffix = Configuration.GetSection("App")["LogoImageSuffix"]                                             
                 ,
                 Implementation = Configuration.GetSection("App")["Implementation"]
                 ,
                 DefaultLangIndex = BO.BAS.InInt(Configuration.GetSection("App")["DefaultLangIndex"])
+                ,                
+                CssCustomSkin = Configuration.GetSection("App")["CssCustomSkin"]
                 ,
                 UploadFolder = Configuration.GetSection("Folders")["Upload"]
                 ,

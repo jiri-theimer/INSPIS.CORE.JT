@@ -223,6 +223,12 @@ namespace BO
                     return "??";
             }
         }
+
+        public static DateTime ConvertDateTo235959(DateTime d)
+        {
+            
+            return new DateTime(d.Year, d.Month, d.Day).AddDays(1).AddSeconds(-1);
+        }
         public static string ObjectDate2String(object d,string format="dd.MM.yyyy ddd")
         {
             if (d == System.DBNull.Value || d==null) return "";

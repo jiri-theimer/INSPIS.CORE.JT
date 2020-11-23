@@ -7,6 +7,8 @@ namespace BL
 {
     public class RunningApp
     {
+        public string BgColor { get; set; } //k odstranění
+        public string FgColor { get; set; } //k odstranění
 
         public string ConnectString { get; set; }
         public string UploadFolder { get; set; }
@@ -19,8 +21,8 @@ namespace BL
         public string AppBuild { get; set; }
         
         public string LogoImageSuffix { get; set; }
-        public string BgColor { get; set; }
-        public string FgColor { get; set; }
+        public string CssCustomSkin { get; set; }
+       
         public string TranslatorMode { get; set; }
 
         public int DefaultLangIndex { get; set; }

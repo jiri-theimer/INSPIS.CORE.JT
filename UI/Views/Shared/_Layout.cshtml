@@ -12,6 +12,7 @@
     <link href="~/lib/qtip/jquery.qtip.css" rel="stylesheet" type="text/css" />
 
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="@_f.App.CssCustomSkin" />
     @if (_f.CurrentUser.j03GridSelectionModeFlag == 1)
     {
         <link rel="stylesheet" href="~/css/thegrid_clipboard.css" />
@@ -59,7 +60,7 @@
     <script src="~/js/mycontrols.js" asp-append-version="true"></script>
 
     <header>
-        <nav id="mainmenu1" class="navbar navbar-expand-lg navbar-dark py-1" style="background-color:@(_f.App.BgColor)">
+        <nav id="mainmenu1" class="navbar navbar-expand-lg navbar-dark py-1">
             <div class="navbar-nav">
                 @if (_f.CurrentUser.j03HomePageUrl == null)
                 {
@@ -182,7 +183,7 @@
 
     <div id="myModalContainer" style="display:none;">
         <div id="myModalContent">
-            <div style="height:30px;background-color: @(_f.App.BgColor);padding:3px;" ondblclick="_window_toggle()">
+            <div id="myModalContentHeader" style="height:30px;padding:3px;" ondblclick="_window_toggle()">
                 <button class="btn btn-secondary btn-sm float-left" onclick="_window_close()" style="margin-left:3px;margin-right:3px;">&times;</button>
                 <span id="myModalContentHeader" style="color:white;"></span>
                 <button class="btn btn-secondary btn-sm float-right" onclick="_window_close()" style="margin-right:3px;">&times;</button>

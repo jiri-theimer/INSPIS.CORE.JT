@@ -151,7 +151,7 @@ namespace UI.Controllers
                 var c = Factory.a01EventBL.Load(v.pid);
                 c.a01DateFrom = v.DateFrom;
                 c.a01DateUntil = v.DateUntil;
-
+                
                 c.pid = Factory.a01EventBL.SaveA01Record(c, Factory.a10EventTypeBL.Load(c.a10ID));
                 if (c.pid > 0)
                 {

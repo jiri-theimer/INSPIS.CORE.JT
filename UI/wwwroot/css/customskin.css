@@ -1,0 +1,23 @@
+﻿#mainmenu1 {
+    background-color: #1E2DE0;
+}
+
+
+#divLoginHeader {
+    background-color: #1E2DE0;
+    margin-bottom:30px;
+}
+
+#imgLoginHeader {
+    display: block;
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+#myModalContentHeader {
+    background-color: #1E2DE0;
+    color:white;
+}
