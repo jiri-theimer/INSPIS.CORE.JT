@@ -8,7 +8,7 @@
 #container_grid {
     overflow-y: hidden;
     overflow-x: hidden;
-    width: 100%;    
+    width: 100%;
     border-right: solid 1px #CCCCCC;
     -webkit-overflow-scrolling: touch !important;
 }
@@ -18,7 +18,7 @@
         table-layout: fixed;
         width: 100%;
         min-width: 1000px;
-        border: solid 1px #CCCCCC;        
+        border: solid 1px #CCCCCC;
     }
 
 
@@ -95,29 +95,40 @@ td.td_nowrap {
 
 .tabgrid_auto th {
     background-color: #F5F5F5;
-    font-weight: normal;
+    font-weight: bold;
     border-left: solid 1px #CCCCCC;
-    
     padding: 3px;
     height: 27px;
 }
+
+    .tabgrid_auto th div {
+        font-weight: normal;
+    }
 
 .tabgrid_fixed th {
     background-color: #F5F5F5;
     font-weight: normal;
     border-left: solid 1px none;
-    
     padding: 3px;
     height: 27px;
+    font-weight: bold;
 }
+
+    .tabgrid_fixed th div {
+        font-weight: normal;
+    }
 
 .tabgrid_manual th {
     font-weight: normal;
     border-left: dashed 1px gray;
-    
     padding: 3px;
     height: 27px;
+    font-weight: bold;
 }
+
+    .tabgrid_manual th div {
+        font-weight: normal;
+    }
 
 
 
@@ -160,9 +171,7 @@ td.td_nowrap {
 
 #tr_header_query button {
     float: right;
-    font-size:14px;
-
-    
+    font-size: 14px;
 }
 
 #tabgrid1_pagenum {
@@ -172,7 +181,7 @@ td.td_nowrap {
 
 #tabgrid1 tr.selrow,
 #tabgrid1 tr.selrow > td {
-    background-color: #448CCB;
+    background-color: #F98B00;
     color: white;
 }
 
@@ -204,7 +213,7 @@ td.td_nowrap {
 
 
 #tabgrid2 th.tdn {
-    text-align: right;    
+    text-align: right;
 }
 
 #tabgrid1 td.tdn_lastcol {
@@ -222,11 +231,10 @@ td.td_nowrap {
 
 #tabgrid1 tr.trbin td {
     text-decoration: line-through;
-    
 }
 
 #tabgrid1 tr.trtestrecord td {
-    color:brown;
+    color: brown;
 }
 
 
@@ -252,7 +260,6 @@ a.grid_context_menu:hover {
     left: 100px;
     top: 300px;
     z-index: 100;
-    
     background-color: #F5F5F5;
     color: silver;
     border: solid 1px #F5F5F5;
@@ -287,8 +294,6 @@ a.grid_context_menu:hover {
     color: white;
     background-color: red;
     white-space: pre-wrap;
-    
-    
 }
 
 #tg_div_setting {
@@ -335,32 +340,35 @@ a.link_in_grid { /*v TD buňce je link na cokoliv - kvůli odlišení od kliku n
 }
 
 
-button.tgp {    
+button.tgp {
     padding-bottom: 2px;
     padding-top: 2px;
-    border-left:solid 1px silver;
+    border-left: solid 1px silver;
 }
+
+  
+
 #divPagerContainer {
     background-color: #E5E5E5;
     padding-bottom: 0px;
     padding-left: 10px;
     width: 100%;
-    height:28px;
+    height: 28px;
 }
 
-.link-in-grid{
-    color:green;
-    text-decoration:underline;
-
+.link-in-grid {
+    color: green;
+    text-decoration: underline;
 }
 
-#gridmessage {    
-    padding:2px 3px 2px 3px;    
-    border-radius: 3px;    
+#gridmessage {
+    padding: 2px 3px 2px 3px;
+    border-radius: 3px;
     background-color: red;
-    font-style:italic;
+    font-style: italic;
     color: white;
 }
+
 #gridname {
     padding: 2px 3px 2px 3px;
     margin-right: 2px;

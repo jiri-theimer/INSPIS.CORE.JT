@@ -150,10 +150,12 @@ a.cm {
 
 /* ----------------------- Kontextové MENU Zleva doprava ----------------------- */
 .cm_left2right {
-    padding: 6px;
+    /* padding: 6px; */
     margin: 0;
     border: none;
-    background-color: aliceblue;
+    background-color: white; /*aliceblue*/
+    border: 1px solid rgba(0,0,0,0.15); /* z bootstrapu */
+    z-index: 1;
 }
 
     .cm_left2right ul, .cm_left2right li {
@@ -220,7 +222,7 @@ a.cm {
     }
 
     .cm_left2right ul {
-        background-color: aliceblue;
+        background-color: white;/* aliceblue */
         border: 1px solid #AAAAAA;
         padding: 4px;
         width: 300px;
@@ -239,7 +241,7 @@ a.cm {
                 .cm_left2right ul li.hover > a, .cm_left2right ul li:hover > a {
                     color: #2D89EF;
                     background: #E5E5E5;
-                    border: 1px solid silver;
+                    /* border: 1px solid silver; */
                 }
 
         .cm_left2right ul ul {
@@ -281,6 +283,7 @@ a.cm {
         right: 5%;
         margin-top: -4px;
         -webkit-transform: rotate(360deg);
+        
     }
 
 /*Kontextové MENU pro mobilní zařízení*/
@@ -535,8 +538,8 @@ a.cm {
 
                 .cm_recpage ul li.hover > a, .cm_recpage ul li:hover > a {
                     color: #2D89EF;
-                    background: #E5E5E5;
-                    border: 1px solid silver;
+                    background: #ECECEC;
+                    /* border: 1px solid silver; */
                 }
 
         .cm_recpage ul ul {
@@ -578,12 +581,13 @@ a.cm {
         right: 5%;
         margin-top: -4px;
         -webkit-transform: rotate(360deg);
+        
     }
 
 .cm_submenu {
-    background-color: #90EE90 !important;
+    background-color: #F8F9FA !important; /* #90EE90 */
     margin-left: 2px;
-    padding: 6px;
+    padding: 6px;    
 }
 /*SPLITTER*/
 /* splitter zleva doprava - horizontální*/
@@ -698,6 +702,9 @@ a.cm {
     cursor: move;
 }
 
+#myModalContent div:first-child {
+    background-color: #1e2de0 !important;
+}
 
 iframe {
     display: block;
@@ -755,72 +762,78 @@ hr.hr-mini { /*používá se v kontextovém menu*/
 }
 
 
-div.dropdown_menu_container {
-    background-color: aliceblue;
+#mainmenu1 div.dropdown_menu_container {
+    background-color: white /* aliceblue */;
     padding: 6px;
     min-width: 200px;
 }
 
-
-
-/* change the brand and text color */
-#mainmenu1 .navbar-text .navbar-brand {
-    color: white;
+#mainmenu1 div.dropdown_menu_container a.nav-link:hover{
+    background-color: #ECECEC;
+    color: black !important;
 }
 
-#mainmenu1 .navbar-nav:nth-last-child(4) {
-    margin-left: auto;
-}
+						   
+    /* change the brand and text color */
+    #mainmenu1 .navbar-text .navbar-brand {
+        color: white;
+    }
 
-/* change the link color */
+    #mainmenu1 .navbar-nav:nth-last-child(4) {
+        margin-left: auto;
+    }
 
-#mainmenu1 .navbar-nav .nav-link {
-    color: #FFFFFF;
-    padding: 6px;
-}
-/* change the color of active or hovered links */
+    /* change the link color */
 
-#mainmenu1 .nav-item:hover .nav-link {
-    color: #FFFFFF;
-}
+    #mainmenu1 .navbar-nav .nav-link {
+        color: #FFFFFF;
+        padding: 6px;
+    }
+    /* change the color of active or hovered links */
+
+    #mainmenu1 .nav-item:hover .nav-link {
+        color: #FFFFFF;
+    }
 
 #mainmenu1 .active {
-    background-color: gray;
+    background-color: white;
+    border-radius: 3px;
+    color: #1e2de0 !important;
 }
 
-#mainmenu1 .nav-link:hover {
-    background-color: royalblue;
-    color: white !important;
-    height: 100%;
-}
-
-#mainmenu1 .dropdown-item {
-    padding: 0px 0px 0px 0px;
-    color: #505050;
-}
-
-
-    #mainmenu1 .dropdown-item .nav-link {
-        padding: 3px 20px 3px 10px;
+    #mainmenu1 .nav-link:hover {
+        background-color: royalblue;
+        color: white !important;
+        height: 100%;
     }
 
-        #mainmenu1 .dropdown-item .nav-link:hover {
-            background-color: #2D89EF;
+    #mainmenu1 .dropdown-item {
+        padding: 0px 0px 0px 0px;
+        color: #505050;
+    }
+
+
+        #mainmenu1 .dropdown-item .nav-link {
+            padding: 3px 20px 3px 10px;
         }
 
-    #mainmenu1 .dropdown-item.active {
-        padding-top: 3px;
-        padding-bottom: 3px;
-        background-color: gray;
+            #mainmenu1 .dropdown-item .nav-link:hover {
+                background-color: #2D89EF;
+            }
+
+        #mainmenu1 .dropdown-item.active {
+            padding-top: 3px;
+            padding-bottom: 3px;
+            background-color: gray;
+        }
+
+
+
+    #mainmenu1 .dropdown-divider {
+        margin-top: 2px;
+        margin-bottom: 0px;
+        border-color: #D3D3D3;
     }
-
-
-
-#mainmenu1 .dropdown-divider {
-    margin-top: 2px;
-    margin-bottom: 0px;
-    border-color: #D3D3D3;
-}
 
 
 .val-readonly {
@@ -871,6 +884,17 @@ div.dropdown_menu_container {
     overflow-x: visible;
     transition: 0.5s;
 }
+
+#layout_sidebar #menu_active_item {
+    background-color: #DCDCDC !important;
+    
+}
+
+#layout_sidebar #menu_active_item a:link,
+#layout_sidebar #menu_active_item a:visited {
+    color: black;
+}
+
 
 #layout_main {
     transition: margin-left .5s;
@@ -995,6 +1019,7 @@ li.root_nocaret {
 div.tabs_container {
     padding-top: 2px;
     margin-bottom: 1px;
+    
     /* background-image: linear-gradient(#E5E5E5, silver);*/
     background-color: white;
     /* background-image: linear-gradient(#E5E5E5, silver);*/

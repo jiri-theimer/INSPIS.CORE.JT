@@ -113,7 +113,7 @@ namespace UI.Controllers
                         {
                             Pid = recF19In.pid,
                             ParentPid = cF26.Pid,
-                            Text = recF19In.f19Name,
+                            Text = recF19In.f19Name,                           
                             Prefix = "f19",
                             TreeIndex = cF26.TreeIndex + x,
                             TreeLevel = cF26.TreeLevel + 1,
@@ -125,10 +125,16 @@ namespace UI.Controllers
                         {
                             cIN.Text += " #" + recF19In.f19Ordinal.ToString();
                         }
+                        
+                        if (recF19In.f19IsRequired)
+                        {
+                            cIN.CssClass += " required";
+                        }
                         if (recF19In.isclosed)
                         {
-                            cIN.CssClass = "closed_item";
+                            cIN.CssClass += " closed_item";
                         }
+                        if (cIN.CssClass != null) cIN.CssClass = cIN.CssClass.Trim();
                         v.treeNodes.Add(cIN);
                         cF26.TreeIndexTo = cF26.TreeIndexFrom + x;
                     }
@@ -158,10 +164,16 @@ namespace UI.Controllers
                         {
                             c.Text += " #" + recP19.f19Ordinal.ToString();
                         }
+                        if (recP19.f19IsRequired)
+                        {
+                            c.CssClass += " required";
+                        }
                         if (recP19.isclosed)
                         {
-                            c.CssClass = "closed_item";
+                            c.CssClass += "closed_item";
                         }
+                        if (c.CssClass != null) c.CssClass = c.CssClass.Trim();
+                        
                         v.treeNodes.Add(c);
                     }
                 }
