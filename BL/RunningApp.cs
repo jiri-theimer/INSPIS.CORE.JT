@@ -6,10 +6,7 @@ using System.Text;
 namespace BL
 {
     public class RunningApp
-    {
-        public string BgColor { get; set; } //k odstranění
-        public string FgColor { get; set; } //k odstranění
-
+    {       
         public string ConnectString { get; set; }
         public string UploadFolder { get; set; }
         public string TempFolder { get; set; }
