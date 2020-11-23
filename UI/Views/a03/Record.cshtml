@@ -16,9 +16,13 @@
         <li class="nav-item onetab">
             <a id="link_tab1" class="nav-link" data-toggle="tab" href="#tab1">@_f.tra("Vlastnosti")</a>
         </li>
-        <li class="nav-item onetab">
-            <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2">@_f.tra("Portál")</a>
-        </li>
+        @if (_f.App.Implementation == "Default")
+        {
+            <li class="nav-item onetab">
+                <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2">@_f.tra("Portál")</a>
+            </li>
+        }
+
 
     </ul>
 </div>
@@ -33,7 +37,7 @@
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
                 <div class="col-sm-7 col-md-6">
                     <input class="form-control" asp-for="Rec.a03Name" />
-                    
+
                 </div>
                 <div class="col-sm-2 col-md-2">
                     <input class="form-control" asp-for="Rec.a03ShortName" placeholder="@_f.tra("Zkrácený název")" />
@@ -49,17 +53,17 @@
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("REDIZO"):</label>
                 <div class="col-sm-3 col-md-2">
                     <input class="form-control" asp-for="Rec.a03REDIZO" />
-                    
+
                 </div>
                 <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("IČ"):</label>
                 <div class="col-sm-2 col-md-2">
                     <input class="form-control" asp-for="Rec.a03ICO" />
-                    
+
                 </div>
                 <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Ředitel"):</label>
                 <div class="col-sm-4 col-md-4">
                     <input class="form-control" asp-for="Rec.a03DirectorFullName" />
-                    
+
                 </div>
             </div>
             <div class="form-row my-2">
@@ -130,17 +134,17 @@
 
                     </div>
                 }
-               
+
 
             </div>
-            
+
 
             <hr />
             <div class="form-row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Ulice"):</label>
                 <div class="col-sm-5 col-md-4">
                     <input class="form-control" asp-for="Rec.a03Street" />
-                    
+
                 </div>
 
 
@@ -149,14 +153,14 @@
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Město"):</label>
                 <div class="col-sm-5 col-md-4">
                     <input class="form-control" asp-for="Rec.a03City" />
-                    
+
                 </div>
             </div>
             <div class="form-row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("PSČ"):</label>
                 <div class="col-sm-1 col-md-1">
                     <input class="form-control" asp-for="Rec.a03PostCode" />
-                    
+
                 </div>
             </div>
             <hr />
@@ -164,12 +168,12 @@
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("E-mail"):</label>
                 <div class="col-sm-5 col-md-4">
                     <input class="form-control" type="email" asp-for="Rec.a03Email" />
-                    
+
                 </div>
                 <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("WWW"):</label>
                 <div class="col-sm-5 col-md-5">
                     <input class="form-control" type="url" asp-for="Rec.a03Web" />
-                    
+
                 </div>
 
             </div>
@@ -177,12 +181,12 @@
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Mobil"):</label>
                 <div class="col-sm-5 col-md-4">
                     <input class="form-control" type="tel" asp-for="Rec.a03Mobile" />
-                    
+
                 </div>
                 <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Telefon"):</label>
                 <div class="col-sm-5 col-md-5">
                     <input class="form-control" type="tel" asp-for="Rec.a03Phone" />
-                    
+
                 </div>
 
             </div>
@@ -190,15 +194,19 @@
 
 
         </div>
-        <div class="tab-pane" id="tab2">
-            <!-- Tab2 -->
-            <p></p>
-            <select asp-for="Rec.a03SchoolPortalFlag" class="form-control">
-                <option value="NotPublish">@_f.tra("Škola nepoužívá školní web na portále")</option>
-                <option value="Publish">@_f.tra("Škola používá (a publikuje) školní web na portále")</option>
-            </select>
+        @if (_f.App.Implementation == "Default")
+        {
+            <div class="tab-pane" id="tab2">
+                <!-- Tab2 -->
+                <p></p>
+                <select asp-for="Rec.a03SchoolPortalFlag" class="form-control">
+                    <option value="NotPublish">@_f.tra("Škola nepoužívá školní web na portále")</option>
+                    <option value="Publish">@_f.tra("Škola používá (a publikuje) školní web na portále")</option>
+                </select>
 
-        </div>
+            </div>
+        }
+
     </div>
 </div>
 

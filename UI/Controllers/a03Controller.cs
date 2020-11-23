@@ -215,7 +215,10 @@ namespace UI.Controllers
             strBadge = null;
             if (c.a19_count > 0) strBadge = c.a19_count.ToString();
             v.NavTabs.Add(AddTab("Vzdělávací obory", "a19DomainToInstitutionDepartment", "/TheGrid/SlaveView?prefix=a19",true,strBadge));
-            v.NavTabs.Add(AddTab("Učitelé", "k01Teacher", "/TheGrid/SlaveView?prefix=k01"));
+            if (Factory.App.Implementation == "Default")
+            {
+                v.NavTabs.Add(AddTab("Učitelé", "k01Teacher", "/TheGrid/SlaveView?prefix=k01"));
+            }            
             v.NavTabs.Add(AddTab("Školy zřizovatele", "a03Institution", "/TheGrid/SlaveView?prefix=a03&master_flag=founder"));
             strBadge = null;
             if (c.supervisory_count > 0) strBadge = c.supervisory_count.ToString();

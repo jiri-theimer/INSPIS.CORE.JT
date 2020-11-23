@@ -121,12 +121,16 @@ namespace BL
                 recF21.f21MaxValue = rec.TextBox_MaxValue;
                 recF21.f21ExportValue = rec.TextBox_ExportValue;
                 recF21.f21Name = rec.f21Name;
-                var intF21ID=_mother.f21ReplyUnitBL.Save(recF21);                
-                if (rec.pid>0 && intF21ID > 0)
+                var intF21ID=_mother.f21ReplyUnitBL.Save(recF21);
+                if (rec.pid > 0 && intF21ID>0)
                 {
-                    _db.RunSql("INSERT INTO f20ReplyUnitToQuestion(f19ID,f21ID) SELECT @pid,f21ID FROM f21ReplyUnit WHERE f21ID=@f21id AND f21ID NOT IN (select f21ID FROM f20ReplyUnitToQuestion WHERE f19ID=@pid AND f21ID=@f21id)", new { pid = intPID,f21id=intF21ID });
-                    _db.RunSql("DELETE FROM f20ReplyUnitToQuestion WHERE f21ID<>@f21id AND f19ID=@f19id", new {f21id=intF21ID, f19id = intPID });
+                    _db.RunSql("DELETE FROM f20ReplyUnitToQuestion WHERE f21ID<>@f21id AND f19ID=@f19id", new { f21id = intF21ID, f19id = intPID });
                 }
+                if (intPID>0 && intF21ID > 0)
+                {
+                    _db.RunSql("INSERT INTO f20ReplyUnitToQuestion(f19ID,f21ID) SELECT @pid,f21ID FROM f21ReplyUnit WHERE f21ID=@f21id AND f21ID NOT IN (select f21ID FROM f20ReplyUnitToQuestion WHERE f19ID=@pid AND f21ID=@f21id)", new { pid = intPID,f21id=intF21ID });                    
+                }
+                
                 f21ids = null;
             }
             if (f21ids != null)

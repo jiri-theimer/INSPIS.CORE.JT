@@ -66,7 +66,7 @@
             </div>
             <div class="col-sm-7 col-md-6">
                 <i>
-                    E-mailová adresa zároveň slouží jako přihlašovací jméno uživatele.
+                    @_f.tra("E-mailová adresa zároveň slouží jako přihlašovací jméno uživatele.")
                 </i>
 
             </div>
@@ -104,13 +104,17 @@
 
             </div>
         </div>
-        <div class="form-row my-2">
-            <div class="col-sm-8 col-md-8">
-                <input type="checkbox" asp-for="@Model.a39IsAllowInspisWS" />
-                <label class="col-form-label" for="a39IsAllowInspisWS">@_f.tra("Oprávnění k integračním službám se školním IS")</label>
+        @if (_f.App.Implementation == "Default")
+        {
+            <div class="form-row my-2">
+                <div class="col-sm-8 col-md-8">
+                    <input type="checkbox" asp-for="@Model.a39IsAllowInspisWS" />
+                    <label class="col-form-label" for="a39IsAllowInspisWS">@_f.tra("Oprávnění k integračním službám se školním IS")</label>
 
+                </div>
             </div>
-        </div>
+        }
+
         <div class="form-row my-2">
             <textarea asp-for="@Model.a39Description" class="form-control" placeholder="@_f.tra("Poznámka k roli")"></textarea>
 
