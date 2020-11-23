@@ -91,9 +91,7 @@ namespace UIFT
                 LogFolder = AppConfig.LogFolder,
                 TranslatorMode = Configuration.GetSection("App")["TranslatorMode"],
                 DefaultLangIndex = BO.BAS.InInt(Configuration.GetSection("App")["DefaultLangIndex"]),
-                LogoImageSuffix = Configuration.GetSection("App")["LogoImageSuffix"],
-                BgColor = Configuration.GetSection("App")["BgColor"],
-                FgColor = Configuration.GetSection("App")["FgColor"]
+                LogoImageSuffix = Configuration.GetSection("App")["LogoImageSuffix"]
             });
 
             services.AddSingleton<BL.TheEntitiesProvider>();
