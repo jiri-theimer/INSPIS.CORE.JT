@@ -30,14 +30,14 @@
         @if (Model.CloneByPid > 0)
         {
             <div class="form-row">
-                <select asp-for="@Model.Rec.a46ID" class="form-control">
-                    <option value="0">@_f.tra("Vztah ke zdrojové akci")</option>
-                    <option value="1">@_f.tra("Závisí na")</option>
-                    <option value="2">@_f.tra("Je duplikátem")</option>
-                    <option value="3">@_f.tra("Souvisí s")</option>
-                    <option value="4">@_f.tra("Je podřízená vůči")</option>
+                <select asp-for="@Model.a46ID" class="form-control" onchange="refresh()">
+                    <option value="0">@(_f.tra("Vztah ke zdrojové akci")+": "+Model.RecCloneByPid.a01Signature)</option>
+                    <option value="1">@(_f.tra("Závisí na")+": "+Model.RecCloneByPid.a01Signature)</option>
+                    <option value="2">@(_f.tra("Je duplikátem")+": "+Model.RecCloneByPid.a01Signature)</option>
+                    <option value="3">@(_f.tra("Souvisí s")+": "+Model.RecCloneByPid.a01Signature)</option>
+                    <option value="4">@(_f.tra("Je podřízená vůči")+": "+Model.RecCloneByPid.a01Signature)</option>
                 </select>
-                
+
             </div>
         }
         @if (Model.RecA10.a10IsUse_Name)
@@ -52,7 +52,7 @@
         }
         @if (Model.RecA10.a10IsUse_A03)
         {
-            <div class="form-row my-2 my-2">
+            <div class="form-row my-2 my-2" id="divA03">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Instituce"):</label>
                 <div class="col-sm-11 col-md-10">
                     <mycombo entity="a03Institution" asp-for="@Model.a03ID" selectedtext="@Model.Institution" filter-flag="1" event_after_changevalue="a03_change"></mycombo>
@@ -106,7 +106,7 @@
             <li class="nav-item onetab">
                 <a id="link_tab1" class="nav-link" data-toggle="tab" href="#tab1" tabindex="-1">@_f.tra("Formuláře")</a>
             </li>
-            <li class="nav-item onetab">
+            <li class="nav-item onetab" id="liTab2">
                 <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2" tabindex="-1">@_f.tra("Okruh účastníků")</a>
             </li>
             <li class="nav-item onetab">
@@ -236,7 +236,7 @@
                         <input type="hidden" asp-for="@Model.lisA41[i].IsTempDeleted" value="@Model.lisA41[i].IsTempDeleted" />
                         <input type="hidden" asp-for="@Model.lisA41[i].j02ID" value="@Model.lisA41[i].j02ID" />
                         <input type="hidden" asp-for="@Model.lisA41[i].PersonCombo" value="@Model.lisA41[i].PersonCombo" />
-                        
+
 
                         <input type="hidden" asp-for="@Model.lisA41[i].a45IsManual" value="@Model.lisA41[i].a45IsManual" />
 
@@ -287,7 +287,14 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-
+        @if (Model.a46ID == 4)
+        {
+        <text>
+        $("#divA03").css("display", "none");
+        $("#liTab2").css("display", "none");
+        $("#tab2").css("display", "none");
+        </text>
+        }
 
         $("#cmdSave").click(function () {
             $(this).text("Processing...");
@@ -347,6 +354,10 @@
 
     }
     function handle_queryj02byprefix_change() {
+        refresh();
+    }
+
+    function refresh() {
         form1.action = "/a01Create/Standard?oper=postback";
         form1.submit();
     }

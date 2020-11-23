@@ -35,7 +35,17 @@
     <script src="~/lib/modal_bootstrap/bootstrap-show-modal.js"></script>
 
     <script src="~/lib/datepicker/bootstrap-datepicker.min.js"></script>
-    <script src="~/lib/datepicker/bootstrap-datepicker.cs.min.js"></script>
+    @switch (_f.CurrentUser.j03LangIndex)
+    {
+        case 0:
+            <script src="~/lib/datepicker/bootstrap-datepicker.cs.min.js"></script>
+            break;
+        case 2:
+            <script src="~/lib/datepicker/bootstrap-datepicker.ua.min.js"></script>
+            break;
+        default:
+            break;
+    }
     <script src="~/lib/qtip/jquery.qtip.min.js"></script>
 
     <script src="~/js/site.js" asp-append-version="true"></script>

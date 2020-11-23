@@ -7,6 +7,8 @@ namespace UI.Models
     public class a01CreateViewModel:BaseViewModel
     {
         public int CloneByPid { get; set; }
+        public BO.a01Event RecCloneByPid { get; set; }
+        public int a46ID { get; set; }
         public BO.a01Event Rec { get; set; }
         public int a10ID { get; set; }
         public string a10Name { get; set; }

@@ -190,6 +190,11 @@ namespace UI.Controllers
                 c.pid = Factory.a01EventBL.Create(c, true, v.lisA11.Where(p=>p.IsTempDeleted==false).ToList(), v.lisA41.Where(p=>p.IsTempDeleted==false).ToList(), null,null);
                 if (c.pid > 0)
                 {
+                    if (v.CloneByPid>0 && v.a46ID > 0)
+                    {
+                        var recA24 = new BO.a24EventRelation() { a01ID_Right = v.CloneByPid, a01ID_Left = c.pid, a46ID = v.a46ID };
+                        Factory.a01EventBL.SaveA24Record(recA24);
+                    }
                     return RedirectToAction("RecPage", "a01", new { pid = c.pid });
 
                 }
@@ -332,6 +337,10 @@ namespace UI.Controllers
         }
         private void RefreshState(Models.a01CreateViewModel v)
         {
+            if (v.CloneByPid > 0)
+            {
+                v.RecCloneByPid = Factory.a01EventBL.Load(v.CloneByPid);
+            }
             if (v.Rec == null)
             {
                 v.Rec = new BO.a01Event();

@@ -1,7 +1,7 @@
 ﻿@model UI.Models.Recpage.a01RecPage
 @inject BL.Factory _f
 
-@{    
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
     if (Model.Rec == null) return;
 
@@ -45,7 +45,7 @@
 
 
 <div id="layout_main">
-    <div class="modal_record_container">        
+    <div class="modal_record_container">
 
         <div class="form-row">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("ID akce"):</label>
@@ -70,11 +70,11 @@
             <div class="col-sm-4 col-md-3">
 
                 <myval value="@Model.Rec.b02Name" hoverprefix="b02" hoverpid="@Model.Rec.b02ID"></myval>
-                
+
             </div>
             <div class="col-sm-1 col-md-1">
                 <myval datatype="html" value="@("<span style='background-color:"+Model.Rec.b02Color+";'>"+Model.Rec.b02Ident+"</span>")"></myval>
-                
+
             </div>
 
             <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Naposledy"):</label>
@@ -82,13 +82,33 @@
             {
                 <div class="col-sm-3 col-md-2">
                     <myval datatype="link" linkurl="/j02/RecPage?pid=@Model.RecLastEvent.j02ID" value="@Model.RecLastEvent.Person" hoverprefix="j02" hoverpid="@Model.RecLastEvent.j02ID"></myval>
-                    
-                    
+
+
                 </div>
                 <div class="col-sm-2 col-md-2">
-                    <myval datatype="datetime" value="@Model.RecLastEvent.DateInsert"></myval>                    
+                    <myval datatype="datetime" value="@Model.RecLastEvent.DateInsert"></myval>
                 </div>
             }
+
+        </div>
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Téma akce"):</label>
+            <div class="col-sm-5 col-md-4">
+
+                <myval value="@Model.Rec.a08Name" hoverprefix="a08" hoverpid="@Model.Rec.a08ID"></myval>
+            </div>
+            
+            <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Založeno"):</label>
+            <div class="col-sm-3 col-md-2">
+                @if (Model.RecIssuer != null)
+                {
+                    <myval datatype="link" linkurl="/j02/RecPage?pid=@Model.RecIssuer.pid" value="Model.RecIssuer.FullNameAsc" hoverprefix="j02" hoverpid="@Model.RecIssuer.pid"></myval>
+                }
+            </div>
+            <div class="col-sm-2 col-md-2">
+                <myval datatype="datetime" value="@Model.Rec.DateInsert"></myval>
+            </div>
+
 
         </div>
         <div class="form-row my-2">
@@ -96,10 +116,10 @@
 
             @if (Model.Rec.a03ID > 0)
             {
-                <div class="col-sm-4 col-md-3">
+                <div class="col-sm-9 col-md-8">
                     <myval datatype="link" linkurl="/a03/RecPage?pid=@Model.Rec.a03ID" value="@Model.Rec.a03Name" tooltip="@Model.Rec.a03Name" hoverprefix="a03" hoverpid="@Model.Rec.a03ID"></myval>
-                    
-                    
+
+
                 </div>
                 <div class="col-sm-1 col-md-1">
                     <myval tooltip="REDIZO" value="@Model.Rec.a03REDIZO"></myval>
@@ -108,41 +128,26 @@
             else
             {
 
-                <div class="col-sm-5 col-md-4">
+                <div class="col-sm-11 col-md-10">
                     <myval value="@Model.Rec.a01InstitutionPlainText"></myval>
                 </div>
             }
-
-
-            <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Založeno"):</label>
-            <div class="col-sm-3 col-md-2">
-                @if (Model.RecIssuer != null)
-                {
-                    <myval datatype="link" linkurl="/j02/RecPage?pid=@Model.RecIssuer.pid" value="Model.RecIssuer.FullNameAsc" hoverprefix="j02" hoverpid="@Model.RecIssuer.pid"></myval>                    
-                }
-            </div>
-            <div class="col-sm-2 col-md-2">
-                <myval datatype="datetime" value="@Model.Rec.DateInsert"></myval>                
-            </div>
         </div>
         <div class="form-row my-2">
-            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Téma akce"):</label>
-            <div class="col-sm-5 col-md-4">
-
-                <myval value="@Model.Rec.a08Name" hoverprefix="a08" hoverpid="@Model.Rec.a08ID"></myval>
-            </div>
             @if (Model.Rec.a01CaseCode != null && Model.Rec.a01ParentID == 0)
             {
-                <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Spis"):</label>
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Spis"):</label>
                 <div class="col-sm-5 col-md-4">
                     <myval datatype="string" value="@Model.Rec.a01CaseCode"></myval>
-                    
+
                 </div>
 
             }
 
 
+
         </div>
+
         @Html.Raw(Model.TagHtml)
     </div>
     @if (Model.Rec.a01Description != null)
@@ -160,7 +165,7 @@
                 <li class="nav-item onetab">
                     <a class="@tab.CssClass" id="tab@(tab.Entity)" href="@tab.Url" target="fra_subgrid" onclick="tabclick(this)">
                         @tab.Name
-                        @if(tab.Badge != null)
+                        @if (tab.Badge != null)
                         {
                             <span class="badge badge-primary">@tab.Badge</span>
                         }

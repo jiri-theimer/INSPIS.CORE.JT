@@ -50,7 +50,18 @@
 
     <script src="~/lib/splitter/jquery-resizable.js"></script>
     <script src="~/lib/datepicker/bootstrap-datepicker.min.js"></script>
-    <script src="~/lib/datepicker/bootstrap-datepicker.cs.min.js"></script>
+    @switch (_f.CurrentUser.j03LangIndex)
+    {
+        case 0:
+            <script src="~/lib/datepicker/bootstrap-datepicker.cs.min.js"></script>
+            break;
+        case 2:
+            <script src="~/lib/datepicker/bootstrap-datepicker.ua.min.js"></script>
+            break;
+        default:            
+            break;
+    }
+    
     <script src="~/lib/qtip/jquery.qtip.min.js"></script>
 
     <script src="~/js/site.js" asp-append-version="true"></script>
@@ -78,7 +89,7 @@
 
 
             <div class="navbar-collapse collapse d-sm-inline-flex">
-                
+
 
                 @if (_f.CurrentUser.HasAdminMenu())
                 {
@@ -183,9 +194,9 @@
 
     <div id="myModalContainer" style="display:none;">
         <div id="myModalContent">
-            <div id="myModalContentHeader" style="height:30px;padding:3px;" ondblclick="_window_toggle()">
+            <div id="myModalContentContainerHeader" ondblclick="_window_toggle()">
                 <button class="btn btn-secondary btn-sm float-left" onclick="_window_close()" style="margin-left:3px;margin-right:3px;">&times;</button>
-                <span id="myModalContentHeader" style="color:white;"></span>
+                <span id="myModalContentHeader"></span>
                 <button class="btn btn-secondary btn-sm float-right" onclick="_window_close()" style="margin-right:3px;">&times;</button>
                 <button class="btn btn-secondary btn-sm float-right" onclick="_window_toggle()" style="margin-right:3px;">&#9600;</button>
             </div>
@@ -200,43 +211,43 @@
     <script type="text/javascript">
         var _modal = document.getElementById("myModalContainer");
         var _modal_current_layout = null;
-        var _header_uschova = "";
+    var _header_uschova = "";
 
         $(document).ready(function ()
         {
-            document.getElementById("site_master_container").style.visibility = "visible";
-            document.getElementById("site_loading1").style.display = "none";
+        document.getElementById("site_master_container").style.visibility = "visible";
+        document.getElementById("site_loading1").style.display = "none";
 
             $("#fraModalContent").on("load", function () {
                 $("#myModalContentHeader").text(_header_uschova);
                 $("#myModalFrame").css("visibility", "visible");
-            });
+        });
 
-           @if (_f.CurrentUser.Messages4Notify != null) {
-           @foreach (var c in _f.CurrentUser.Messages4Notify) {  // <----  placed on the same line, WORKING !!!
+        @if (_f.CurrentUser.Messages4Notify != null) {
+            @foreach (var c in _f.CurrentUser.Messages4Notify) {  // <----  placed on the same line, WORKING !!!
             <text>
             _notify_message("@c.Value","@c.Key");
             </text>
-            }
-            }
-            if ($("#toolbar_changeinfo").length) {
+             }
+        }
+        if ($("#toolbar_changeinfo").length) {
                 //události na editačních formulářích
                 $("form").submit(function () {
-                    if ($(document.activeElement).attr("type") == "submit")
+                if ($(document.activeElement).attr("type") == "submit")
                         return true;
                     else return false;
-                });
+            });
 
                 $("textarea").each(function () {
-                    this.style.height = "auto";
-                    this.style.height = (this.scrollHeight) + "px";
+                this.style.height = "auto";
+                this.style.height = (this.scrollHeight) + "px";
 
                     $(this).on("input", function () {
-                        this.style.height = "auto";
-                        this.style.height = (this.scrollHeight) + "px";
-                    });
+                    this.style.height = "auto";
+                    this.style.height = (this.scrollHeight) + "px";
                 });
-            }
+            });
+        }
 
 
 
@@ -244,20 +255,20 @@
             if (e.target == _modal) {
                 _window_close();
             }
-            });
+        });
             $(document).on("keydown", function (e) {
-                if (e.keyCode == 27 && _modal.style.display == "block") {   //klávese ESCAPE
+            if (e.keyCode == 27 && _modal.style.display == "block") {   //klávese ESCAPE
                 _window_close();
 
-                }
-                if (e.keyCode == 13 && e.target.nodeName != "BUTTON" && e.target.nodeName != "TEXTAREA") { //zabránit submit formuláře po stisknutí ENTER na jakémkoliv non-submit input elementu
-                    e.preventDefault();
-                    return false;
-                }
-            });
+            }
+            if (e.keyCode == 13 && e.target.nodeName != "BUTTON" && e.target.nodeName != "TEXTAREA") { //zabránit submit formuláře po stisknutí ENTER na jakémkoliv non-submit input elementu
+                e.preventDefault();
+                return false;
+            }
+        });
 
 
-            @if (_f.CurrentUser.j03PingTimestamp == null || _f.CurrentUser.j03PingTimestamp.Value.AddSeconds(120) < DateTime.Now)
+        @if (_f.CurrentUser.j03PingTimestamp == null || _f.CurrentUser.j03PingTimestamp.Value.AddSeconds(120) < DateTime.Now)
             {
                 <text>
                 _update_user_ping();     //aktualizace ping logu po 120 sekundách
@@ -266,79 +277,79 @@
 
             $("#cmdLangIndex").click(function () {
                 $.post("/Menu/CurrentUserLangIndex", function (data) {
-                    handle_render_menu_branch("divLangIndexMenu", data);
-                });
+                handle_render_menu_branch("divLangIndexMenu", data);
             });
+        });
             $("#cmdFontStyleFlag").click(function () {
                 $.post("/Menu/CurrentUserFontMenu", function (data) {
-                    handle_render_menu_branch("divFontStyleMenu", data);
-                });
+                handle_render_menu_branch("divFontStyleMenu", data);
             });
+        });
             $("#cmdCurrentUser").click(function () {
                 $.post("/Menu/CurrentUserMenu", function (data) {
-                    handle_render_menu_branch("divCurrentUserMenu", data);
-                   
-                });
+                handle_render_menu_branch("divCurrentUserMenu", data);
+
             });
+        });
             $("#cmdGlobalNavigate").click(function () {
                 $.post("/Menu/GlobalNavigateMenu", function (data) {
-                    handle_render_menu_branch("divGlobalNavigateMenu", data);
-                    
-                })
+                handle_render_menu_branch("divGlobalNavigateMenu", data);
+
+            })
                     .fail(function () {
-                        alert("error");
-                    });
+                alert("error");
             });
-
-
-            _init_qtip_onpage();
-
-
-
         });
 
 
-        function menu_open_by_prefix(prefix) {            
+        _init_qtip_onpage();
+
+
+
+    });
+
+
+        function menu_open_by_prefix(prefix) {
             $.post("/Menu/"+prefix+"Menu", function (data) {
-                //$("#divMenu" + prefix).html(data);
-                handle_render_menu_branch("divMenu" + prefix, data);
+            //$("#divMenu" + prefix).html(data);
+            handle_render_menu_branch("divMenu" + prefix, data);
                 $("#cmd" + prefix).attr("onclick", "");
 
-            });
+        });
+    }
+
+
+
+    function hardrefresh(pid, flag) {
+        var url = window.location.href;
+        if (url.indexOf("#") > 0) {
+            var arr = url.split("#");
+            url = arr[0];
         }
 
-
-
-        function hardrefresh(pid, flag) {
-            var url = window.location.href;
-            if (url.indexOf("#") > 0) {
-                var arr = url.split("#");
-                url = arr[0];
-            }
-
-            if (_modal_current_layout == "subform") {   //volání z iframe -> refreshovat pouze iframe
-                if (document.getElementById("fra_subgrid")) {
-                    document.getElementById("fra_subgrid").contentDocument.location.reload(true);
-                    return;
-
-                }
-            }
-            if (pid != undefined && pid !== null && pid !== 0) {
-                url = _removeUrlParam("go2pid", url);
-                if (url.indexOf("?") > 0) {
-                    url = url + "&go2pid=" + pid;
-                } else {
-                    url = url + "?go2pid=" + pid;
-                }
+        if (_modal_current_layout == "subform") {   //volání z iframe -> refreshovat pouze iframe
+            if (document.getElementById("fra_subgrid")) {
+                document.getElementById("fra_subgrid").contentDocument.location.reload(true);
+                return;
 
             }
-            location.replace(url);
+        }
+        if (pid != undefined && pid !== null && pid !== 0) {
+            url = _removeUrlParam("go2pid", url);
+            if (url.indexOf("?") > 0) {
+                url = url + "&go2pid=" + pid;
+            } else {
+                url = url + "?go2pid=" + pid;
+            }
 
         }
+        location.replace(url);
+
+    }
 
 
-        function save_fontstyle_menu(intFontStyleFlag2Save)
-        {
+    function save_fontstyle_menu(intFontStyleFlag2Save)
+    {
             $.post("/Home/SaveCurrentUserFontStyle", { fontstyleflag: intFontStyleFlag2Save }, function (data) {
                 location.replace(window.location.href);
             });
@@ -435,7 +446,7 @@
         function handle_render_menu_branch(divID, htmldata) {
             var mydiv = $("#" + divID);
             $(mydiv).html(htmldata);
-            
+
             if ($(mydiv).offset().left + $(mydiv).width() > window.innerWidth) {
 
                 $(mydiv).css("margin-left", window.innerWidth - (25+20+$(mydiv).offset().left + $(mydiv).width()));
@@ -451,7 +462,7 @@
 
             });
 
-            
+
 
         }
 

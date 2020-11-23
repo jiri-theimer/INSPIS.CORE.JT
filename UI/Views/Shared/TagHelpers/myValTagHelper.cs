@@ -63,7 +63,7 @@ namespace UI.Views.Shared.TagHelpers
             }
             if (this.HoverPrefix !=null || this.HoverInfo != null || this.HoverUrl != null)
             {
-                output.Attributes.SetAttribute("class", "val-readonly rowvalhover");                
+                output.Attributes.SetAttribute("class", "val-readonly-wrap rowvalhover");                
             }
             else
             {
@@ -81,6 +81,7 @@ namespace UI.Views.Shared.TagHelpers
             }
             if (this.Value != null)
             {
+                
                 switch (this.DataType)
                 {
                     case "date":
@@ -126,6 +127,7 @@ namespace UI.Views.Shared.TagHelpers
 
                         break;
                 }
+                
             }
 
 

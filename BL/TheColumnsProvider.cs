@@ -721,20 +721,23 @@ namespace BL
             AF("x91Translate", "x91Code", "Originál", 1, null, "string", false, true);
             AF("x91Translate", "x91Lang1", "English", 1);
             AF("x91Translate", "x91Lang2", "Українська", 1);
-            
 
 
 
-            //k01 = učitel
-            AF("k01Teacher", "k01fullname_desc", "Příjmení+Jméno", 1, "a.k01LastName+' '+a.k01FirstName+isnull(' '+a.k01TitleBeforeName,'')", "string", false, true);
-            AF("k01Teacher", "k01fullname_asc", "Jméno+Příjmení", 0, "isnull(a.k01TitleBeforeName+' ','')+a.k01FirstName+' '+a.k01LastName+isnull(' '+a.k01TitleAfterName,'')", "string", false, true);
-            onecol = AF("k01Teacher", "k01PID", "Kód", 2, null, "string", false, true);
-            onecol.FixedWidth = 100;            
-            AF("k01Teacher", "k01FirstName", "Jméno");
-            AF("k01Teacher", "k01LastName", "Příjmení");
-            AF("k01Teacher", "k01TitleBeforeName", "Titul před");
-            AF("k01Teacher", "k01TitleAfterName", "Titul za");           
-            AppendTimestamp("k01Teacher");
+            if (_app.Implementation == "Default")
+            {
+                //k01 = učitel
+                AF("k01Teacher", "k01fullname_desc", "Příjmení+Jméno", 1, "a.k01LastName+' '+a.k01FirstName+isnull(' '+a.k01TitleBeforeName,'')", "string", false, true);
+                AF("k01Teacher", "k01fullname_asc", "Jméno+Příjmení", 0, "isnull(a.k01TitleBeforeName+' ','')+a.k01FirstName+' '+a.k01LastName+isnull(' '+a.k01TitleAfterName,'')", "string", false, true);
+                onecol = AF("k01Teacher", "k01PID", "Kód", 2, null, "string", false, true);
+                onecol.FixedWidth = 100;
+                AF("k01Teacher", "k01FirstName", "Jméno");
+                AF("k01Teacher", "k01LastName", "Příjmení");
+                AF("k01Teacher", "k01TitleBeforeName", "Titul před");
+                AF("k01Teacher", "k01TitleAfterName", "Titul za");
+                AppendTimestamp("k01Teacher");
+            }
+                
 
             //o13 = typy příloh
             AF("o13AttachmentType", "TreeItem", "Typ přílohy", 1, "case when a.o13TreeLevel > 1 then replace(space(2 * (a.o13TreeLevel - 1)), ' ', '-') else '' END + a.o13Name", "string", false, true);
@@ -749,10 +752,13 @@ namespace BL
             AF("o15AutoComplete", "o15Value", "Hodnota", 1);
             AF("o15AutoComplete", "o15Flag", "Typ dat",1, "case a.o15Flag when 1 then 'Titul před' when 2 then 'Titul za' when 3 then 'Pracovní funkce' when 328 then 'Stát' when 427 then 'URL adresa' end");
             AF("o15AutoComplete", "o15Ordinary", "#", 2, null, "num0");
-
-            AF("v_uraz_jmenozraneneho", "JmenoZraneneho", "Jméno zraněného", 0,null,"string",false,true);
-            AF("v_uraz_datumzraneni", "DatumZraneni", "Datum zranění", 0,null,"datetime",false,true);
-            AF("v_uraz_poradovecislo", "PoradoveCislo", "Pořadové číslo", 0, null, "string", false, true);
+            if (_app.Implementation == "Default")
+            {
+                AF("v_uraz_jmenozraneneho", "JmenoZraneneho", "Jméno zraněného", 0, null, "string", false, true);
+                AF("v_uraz_datumzraneni", "DatumZraneni", "Datum zranění", 0, null, "datetime", false, true);
+                AF("v_uraz_poradovecislo", "PoradoveCislo", "Pořadové číslo", 0, null, "string", false, true);
+            }
+            
 
             //p86 = Statistika
             AF("p86TempStat", "a01Signature", "ID akce",1);

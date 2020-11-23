@@ -17,7 +17,11 @@
     padding-bottom: 30px;
 }
 
-#myModalContentHeader {
+#myModalContentContainerHeader {
     background-color: #1E2DE0;
+    height: 30px;
+    padding: 3px;
+}
+#myModalContentHeader{
     color:white;
 }

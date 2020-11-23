@@ -122,8 +122,9 @@ namespace BL
 
             AE("x40MailQueue", "OUTBOX", "OUTBOX", "x40MailQueue a", "a.x40ID DESC", "a.x40ID DESC");
             ByPrefix("x40").IsWithoutValidity = true;
-
+            
             AE("k01Teacher", "Učitelé", "Učitel", "k01Teacher a LEFT OUTER JOIN k02TeacherSchool a03_k02 ON a.k01ID=a03_k02.k01ID", "a.k01LastName");
+
             AE("o15AutoComplete", "AutoComplete položky", "AutoComplete položka", "o15AutoComplete a", "a.o15Flag");
             
             AE("o13AttachmentType", "Typy příloh", "Typ přílohy", "o13AttachmentType a", "a.o13TreeIndex", "a.o13TreeIndex");
@@ -179,10 +180,11 @@ namespace BL
 
             AE_TINY("p86TempStat", "Statistika", "Statistika");
             ByPrefix("p86").IsWithoutValidity = true;
-
+            
             AE_TINY("v_uraz_jmenozraneneho", "Úraz1", "Úraz1");
             AE_TINY("v_uraz_datumzraneni", "Úraz2", "Úraz2");
             AE_TINY("v_uraz_poradovecislo", "Úraz3", "Úraz3");
+
 
         }
 
@@ -246,9 +248,13 @@ namespace BL
                     lis.Add(getREL("a42Qes", "a01_a42", "INEZ", "LEFT OUTER JOIN a42Qes a01_a42 ON a.a42ID=a01_a42.a42ID"));
                     lis.Add(getREL("a01Event", "a01_parent", "Nadřízená akce", "LEFT OUTER JOIN a01Event a01_parent ON a.a01ParentID=a01_parent.a01ID"));
                     lis.Add(getREL("o54TagBindingInline", "a01_o54", "Kategorie", "LEFT OUTER JOIN (SELECT * FROM o54TagBindingInline WHERE o54RecordEntity='a01') a01_o54 ON a.a01ID=a01_o54.o54RecordPid"));
-                    lis.Add(getREL("v_uraz_jmenozraneneho", "a01_xxa", "Úraz1", "LEFT OUTER JOIN v_uraz_jmenozraneneho a01_xxa ON a.a01ID=a01_xxa.a01ID"));
-                    lis.Add(getREL("v_uraz_datumzraneni", "a01_xxb", "Úraz2", "LEFT OUTER JOIN v_uraz_datumzraneni a01_xxb ON a.a01ID=a01_xxb.a01ID"));
-                    lis.Add(getREL("v_uraz_poradovecislo", "a01_xxc", "Úraz3", "LEFT OUTER JOIN v_uraz_poradovecislo a01_xxc ON a.a01ID=a01_xxc.a01ID"));
+                    if (_app.Implementation == "Default")
+                    {
+                        lis.Add(getREL("v_uraz_jmenozraneneho", "a01_xxa", "Úraz1", "LEFT OUTER JOIN v_uraz_jmenozraneneho a01_xxa ON a.a01ID=a01_xxa.a01ID"));
+                        lis.Add(getREL("v_uraz_datumzraneni", "a01_xxb", "Úraz2", "LEFT OUTER JOIN v_uraz_datumzraneni a01_xxb ON a.a01ID=a01_xxb.a01ID"));
+                        lis.Add(getREL("v_uraz_poradovecislo", "a01_xxc", "Úraz3", "LEFT OUTER JOIN v_uraz_poradovecislo a01_xxc ON a.a01ID=a01_xxc.a01ID"));
+                    }
+                    
                     break;
                 case "a02":
                     lis.Add(getREL("a04Inspectorate", "a02_a04", "Inspektorát", "INNER JOIN a04Inspectorate a02_a04 ON a.a04ID=a02_a04.a04ID"));
@@ -263,9 +269,16 @@ namespace BL
                     lis.Add(getREL("a03Institution", "a03_supervisory", "Dohled", "LEFT OUTER JOIN a03Institution a03_supervisory ON a.a03ID_Supervisory=a03_supervisory.a03ID"));
                     lis.Add(getREL("a03Institution", "a03_parent", "Nadřízená škola", "LEFT OUTER JOIN a03Institution a03_parent ON a.a03ID_Parent=a03_parent.a03ID"));
                     lis.Add(getREL("a21InstitutionLegalType", "a03_a21", "Právní forma", "LEFT OUTER JOIN a21InstitutionLegalType a03_a21 ON a.a21ID=a03_a21.a21ID"));
-                    lis.Add(getREL("a70SIS", "a03_a70", "Školní IS", "LEFT OUTER JOIN a70SIS a03_a70 ON a.a70ID=a03_a70.a70ID"));
+                    if (_app.Implementation == "Default")
+                    {
+                        lis.Add(getREL("a70SIS", "a03_a70", "Školní IS", "LEFT OUTER JOIN a70SIS a03_a70 ON a.a70ID=a03_a70.a70ID"));
+                    }                    
                     lis.Add(getREL("a28SchoolType", "a03_a28", "Typ školy", "LEFT OUTER JOIN a28SchoolType a03_a28 ON a.a28ID=a03_a28.a28ID"));
-                    lis.Add(getREL("k01Teacher", "a03_k01", "Učitel", "LEFT OUTER JOIN k02TeacherSchool a03_k02 ON a.a03ID=a03_k02.a03ID LEFT OUTER JOIN k01Teacher a03_k01 ON a03_k02.k01ID=a03_k01.k01ID"));
+                    if (_app.Implementation == "Default")
+                    {
+                        lis.Add(getREL("k01Teacher", "a03_k01", "Učitel", "LEFT OUTER JOIN k02TeacherSchool a03_k02 ON a.a03ID=a03_k02.a03ID LEFT OUTER JOIN k01Teacher a03_k01 ON a03_k02.k01ID=a03_k01.k01ID"));
+                    }
+                    
 
                     lis.Add(getREL("o54TagBindingInline", "a03_o54", "Kategorie", "LEFT OUTER JOIN (SELECT * FROM o54TagBindingInline WHERE o54RecordEntity='a03') a03_o54 ON a.a03ID=a03_o54.o54RecordPid"));
                     break;
@@ -280,7 +293,11 @@ namespace BL
                     lis.Add(getREL("f06Form", "a11_f06", "Formulář", "LEFT OUTER JOIN f06Form a11_f06 ON a.f06ID=a11_f06.f06ID"));
                     lis.Add(getREL("a37InstitutionDepartment", "a11_a37", "Činnost školy", "LEFT OUTER JOIN a37InstitutionDepartment a11_a37 ON a.a37ID = a11_a37.a37ID"));
                     lis.Add(getREL("a25EventFormGroup", "a11_a25", "Skupina formulářů", "LEFT OUTER JOIN a25EventFormGroup a11_a25 ON a.a25ID=a11_a25.a25ID"));
-                    lis.Add(getREL("k01Teacher", "a11_k01", "Učitel", "LEFT OUTER JOIN k01Teacher a11_k01 ON a.k01ID=a11_k01.k01ID"));
+                    if (_app.Implementation == "Default")
+                    {
+                        lis.Add(getREL("k01Teacher", "a11_k01", "Učitel", "LEFT OUTER JOIN k01Teacher a11_k01 ON a.k01ID=a11_k01.k01ID"));
+                    }
+                        
                     break;
                 case "a19":
                     lis.Add(getREL("a37InstitutionDepartment", "a19_a37", "Činnost školy", "INNER JOIN a37InstitutionDepartment a19_a37 ON a.a37ID = a19_a37.a37ID"));
