@@ -1,4 +1,7 @@
-﻿.loginBox1 h1 span {
+﻿.loginBox1 h1 {
+    background-color: #1E2DE0;
+}
+.loginBox1 h1 span {
     color: white;
     font-weight: bold;
     font-size: 21px;
