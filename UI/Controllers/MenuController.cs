@@ -27,7 +27,7 @@ namespace UI.Controllers
 
         public string GlobalNavigateMenu()
         {
-            AMI_NOTRA(string.Format("<img src='{0}'/>",Factory.App.LogoImage), null);
+            //AMI_NOTRA(string.Format("<img src='{0}'/>",Factory.App.LogoImage), null);
 
             //if (Factory.App.Implementation == "HD")
             //{

@@ -71,15 +71,12 @@ namespace BL
             {
                 return 0;
             }
-            if (rec.j02ID > 0)
+            rec.j02ID = _mother.j02PersonBL.Save(recJ02);
+            if (rec.j02ID == 0)
             {
-                rec.j02ID = _mother.j02PersonBL.Save(recJ02);
-                if (rec.j02ID == 0)
-                {
-                    this.AddMessage("Nepodařilo se založit osobní profil uživatele."); return 0;
-                }
+                this.AddMessage("Nepodařilo se založit osobní profil uživatele."); return 0;
             }
-            
+
             return Save(rec);
         }
 

@@ -7,6 +7,7 @@ namespace BL
         public BO.a03Institution Load(int pid);
         public BO.a03Institution LoadByRedizo(string redizo, int pid_exclude);
         public BO.a03Institution LoadByFounderCode(string foundercode, int pid_exclude);
+        public BO.a03RecordSummary LoadSummary(int pid);
         public IEnumerable<BO.a03Institution> GetList(BO.myQuery mq);
         public int Save(BO.a03Institution rec);
         public bool ValidateBeforeSave(ref BO.a03Institution c);
@@ -171,6 +172,11 @@ namespace BL
                 this.AddMessage("Škola nemůže být podřízená sama sobě."); return false;
             }
             return true;
+        }
+
+        public BO.a03RecordSummary LoadSummary(int pid)
+        {
+            return _db.Load<BO.a03RecordSummary>("EXEC dbo._core_a03_summary @j03id,@pid,null", new { j03id = _mother.CurrentUser.pid, pid = pid });
         }
 
     }
