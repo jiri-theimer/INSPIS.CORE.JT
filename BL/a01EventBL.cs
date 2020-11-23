@@ -132,6 +132,7 @@ namespace BL
             }
 
             int intPID = SaveA01Record(rec, recA10);
+            var bolSimulation = false;
             if (intPID == 0)
             {
                 this.AddMessage("Záznam akce se nepodařilo založit."); return 0;
@@ -139,6 +140,10 @@ namespace BL
             if (lisA11 != null)
             {
                 AppendA11(intPID, lisA11);
+                if (lisA11.Where(p => p.a11IsSimulation == true).Count() > 0)
+                {
+                    bolSimulation = true;
+                }
             }
             if (lisA41 != null)
             {
@@ -155,7 +160,7 @@ namespace BL
 
             if (bolAutoInitWorkflow)
             {
-                _mother.WorkflowBL.CheckDefaultWorkflowStatus(intPID);
+                _mother.WorkflowBL.CheckDefaultWorkflowStatus(intPID,bolSimulation);
             }
             
 

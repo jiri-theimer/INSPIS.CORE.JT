@@ -13,7 +13,7 @@ namespace BL
         public int SaveWorkflowComment(int intA01ID, string strComment,string strUploadGUID, List<int> a45ids_restrict_to);
         public int RunWorkflowStep(BO.a01Event rec, BO.b06WorkflowStep recB06, List<BO.a41PersonToEvent> lisNominee, string strComment, string strUploadGUID, bool bolManualStep);
         public List<BO.a11EventForm> GetForms4Validation(BO.a01Event rec, BO.b06WorkflowStep recB06);
-        public void CheckDefaultWorkflowStatus(int a01id);
+        public void CheckDefaultWorkflowStatus(int a01id,bool bolSimulation=false);
     }
     class WorkflowBL : BaseBL, IWorkflowBL
     {
@@ -125,7 +125,7 @@ namespace BL
             }
         }
 
-        public void CheckDefaultWorkflowStatus(int a01id)
+        public void CheckDefaultWorkflowStatus(int a01id, bool bolSimulation = false)
         {
             BO.a01Event rec = _mother.a01EventBL.Load(a01id);
             if (rec.b02ID > 0)
@@ -145,7 +145,11 @@ namespace BL
                 return;   //workflow šablona nemá výchozí workflow status
             }
             if (SaveStepWithChangeStatus(rec, null, recDefB02, null, false) > 0)
-            {
+            {       
+                if (bolSimulation)
+                {
+                    return; //v rámci simulace fomuláře raději dále v akci nic automatického nedělat
+                }
                 mq = new BO.myQuery("a41") { a01id = rec.pid };
                 var lisA41 = _mother.a41PersonToEventBL.GetList(mq);
 

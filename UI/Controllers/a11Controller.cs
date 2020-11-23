@@ -71,7 +71,8 @@ namespace UI.Controllers
                     var recA11 = new BO.a11EventForm() { f06ID = v.f06ID, a11IsSimulation = true, a37ID = v.a37ID, a11Description = Factory.tra("Simulace chování formuláře.") };
                     var lis = new List<BO.a11EventForm>();
 
-                    var intA01ID=Factory.a01EventBL.Create(recA01, false, new List<BO.a11EventForm>() { recA11 },null,null,null);
+                    var intA01ID=Factory.a01EventBL.Create(recA01, true, new List<BO.a11EventForm>() { recA11 },null,null,null);
+
                     if (intA01ID > 0)
                     {
                         SaveSimulationData(v);
