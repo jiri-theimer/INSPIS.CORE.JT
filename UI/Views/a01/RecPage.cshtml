@@ -201,7 +201,11 @@
 
         var offset = $("#divTabContent").offset();
         var h_vertical = _device.innerHeight - offset.top;
-        h_vertical = parseInt(h_vertical) + 10;
+        h_vertical = parseInt(h_vertical) + 10;        
+
+        if (_device.type === "Phone") {
+            h_vertical = 400;
+        }
         $("#divTabContent").css("height", h_vertical + "px");
 
         _mainmenu_highlight_current("cmdA01");

@@ -310,7 +310,7 @@
 
 
         function menu_open_by_prefix(prefix) {
-            $.post("/Menu/"+prefix+"Menu", function (data) {
+            $.post("/Menu/" + prefix +"Menu?userdevice="+_device.type, function (data) {
             //$("#divMenu" + prefix).html(data);
             handle_render_menu_branch("divMenu" + prefix, data);
                 $("#cmd" + prefix).attr("onclick", "");
@@ -367,7 +367,7 @@
             var iframe = document.getElementById("fraModalContent");
             var elmnt = iframe.contentWindow.document.getElementById("toolbar_changeinfo");
             if ($(elmnt).text() !== "") {
-                if (confirm("Chcete zavřít okno bez uložení změn?")) {
+                if (confirm("@_f.tra("Chcete zavřít okno bez uložení změn?")")) {
                     $(_modal).css("display", "none");
                 } else {
                     return;

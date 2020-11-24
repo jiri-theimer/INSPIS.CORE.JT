@@ -14,5 +14,6 @@ namespace UI.Models.Record
 
         public string j04IDs { get; set; }
         public string j04Names { get; set; }
+        public string EditorLanguageKey { get; set; } = "cs-CZ";
     }
 }

@@ -115,7 +115,7 @@
             </div>
             @if (Model.RecX31 != null && Model.RecX31.x31ReportFormat == BO.x31ReportFormatEnum.DOC)
             {
-                <button type="button" class="btn btn-primary" onclick="generate_docx()">Vygenerovat dokument</button>
+                <button type="button" class="btn btn-primary" onclick="generate_docx()">@_f.tra("Vygenerovat dokument")</button>
             }
             @if (string.IsNullOrEmpty(Model.GeneratedTempFileName) == false)
             {

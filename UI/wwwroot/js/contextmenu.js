@@ -93,7 +93,12 @@
             }
             $.post("/Menu/ContextMenu", { entity: menuEntity, pid: menuPid, flag: menuFlag }, function (data) {
                 //menu položky natahované dynamicky ze serveru
+                if (_device.type === "Phone") {
+                    data = data + "<hr><button class='btn btn-light' style='margin-left:100px;' type='button'><img src='/images/close.png'/></button>";
+                }
                 $(menuSelector).html(data);
+
+                
 
                 //až nyní je menu stažené ze serveru
                 menu.$menu

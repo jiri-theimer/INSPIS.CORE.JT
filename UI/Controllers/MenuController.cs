@@ -145,7 +145,11 @@ namespace UI.Controllers
         {            
             AMI("Typy formulářů", url_forms("f12"));
             AMI("Šablony formulářů", url_forms("f06"));
-            AMI("PORTAL boxy", url_forms("f29"));
+            if (Factory.App.Implementation == "Default")
+            {
+                AMI("PORTAL boxy", url_forms("f29"));
+            }
+            
             AMI("Klastry otázek", url_forms("f44"));
             AMI("EVALuation funkce", url_forms("x27"));
             AMI("Jednotky odpovědí", url_forms("f21"));
@@ -278,7 +282,7 @@ namespace UI.Controllers
             }
         }
 
-        public string A01Menu()
+        public string A01Menu(string userdevice)
         {
             if (Factory.j04UserRoleBL.IsA01Create(Factory.CurrentUser.j04ID)==true)
             {
@@ -288,7 +292,8 @@ namespace UI.Controllers
             AMI("Stránka", "/a01/RecPage");
             if (TUP(BO.j05PermValuEnum.A01Grid))
             {
-                if (Factory.CBL.LoadUserParamBool("grid-a01-show11", true))
+               
+                if (userdevice != "Phone" && Factory.CBL.LoadUserParamBool("grid-a01-show11", true))
                 {
                     AMI("Grid 1+1", "/TheGrid/MasterView?prefix=a01");
                 }
@@ -316,7 +321,7 @@ namespace UI.Controllers
 
             return FlushResult_NAVLINKs();
         }
-        public string A03Menu()
+        public string A03Menu(string userdevice)
         {
             if (TUP(BO.j05PermValuEnum.A03Admin)==true)
             {
@@ -324,7 +329,7 @@ namespace UI.Controllers
                 DIV();
             }
             AMI("Stránka", "/a03/RecPage");
-            if (Factory.CBL.LoadUserParamBool("grid-a03-show11", true))
+            if (userdevice != "Phone" && Factory.CBL.LoadUserParamBool("grid-a03-show11", true))
             {
                 AMI("Grid 1+1", "/TheGrid/MasterView?prefix=a03");
             }
@@ -335,11 +340,11 @@ namespace UI.Controllers
             
             return FlushResult_NAVLINKs();
         }
-        public string J02Menu()
+        public string J02Menu(string userdevice)
         {
             
             AMI("Stránka", "/j02/RecPage");
-            if (Factory.CBL.LoadUserParamBool("grid-j02-show11", true))
+            if (userdevice != "Phone" && Factory.CBL.LoadUserParamBool("grid-j02-show11", true))
             {
                 AMI("Grid 1+1", "/TheGrid/MasterView?prefix=j02");
             }
@@ -718,11 +723,11 @@ namespace UI.Controllers
             }
 
             
-            if (prefix == "p28" || prefix == "j02" || prefix == "p10" || prefix == "p13" || prefix == "p26" || prefix=="p27" || prefix == "p21" || prefix == "p51" || prefix == "p41" || prefix=="p11" || prefix=="p12" || prefix=="o23")
-            {
-                DIV();
-                AMI("Info", string.Format("javascript:_window_open('/{0}/Index?pid={1}')", prefix, pid));
-            }
+            //if (prefix == "p28" || prefix == "j02" || prefix == "p10" || prefix == "p13" || prefix == "p26" || prefix=="p27" || prefix == "p21" || prefix == "p51" || prefix == "p41" || prefix=="p11" || prefix=="p12" || prefix=="o23")
+            //{
+            //    DIV();
+            //    AMI("Info", string.Format("javascript:_window_open('/{0}/Index?pid={1}')", prefix, pid));
+            //}
           
 
             return FlushResult_UL();

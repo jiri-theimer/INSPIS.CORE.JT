@@ -58,6 +58,7 @@
 
     $(document).ready(function () {
 
+        
         _splitter_init("1", "@Model.prefix");
         var key = "@Model.prefix" + "_panel1_size";
         var defHeight = localStorage.getItem(key);
@@ -67,8 +68,6 @@
         }
 
         _splitter_resize_after_init("1", defHeight);
-
-
 
         tg_adjust_for_screen("splitter_panel1");
 

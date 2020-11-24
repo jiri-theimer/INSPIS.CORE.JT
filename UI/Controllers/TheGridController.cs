@@ -665,9 +665,11 @@ namespace UI.Controllers
 
             
             int intPageNum = intStartIndex/intPageSize; string strClass;
+            
             for (var i = intStartIndex; i <= intEndIndex; i+=intPageSize)
             {
                 intPageNum += 1;
+                
                 if (intCurIndex>=i && intCurIndex < i+ intPageSize)
                 {
                     strClass = "btn btn-secondary tgp";
@@ -676,6 +678,7 @@ namespace UI.Controllers
                 {
                     strClass = "btn btn-light tgp";
                 }
+                
                 _s.Append(string.Format("<button type='button' class='{0}' onclick='tg_pager(\n{1}\n)'>{2}</button>",strClass, i,intPageNum));
                
             }
@@ -722,11 +725,11 @@ namespace UI.Controllers
                     case "j02":
                         if (_grid.GridState.MasterViewFlag==2)
                         {
-                            _s.Append("<button type='button' class='btn btn-secondary btn-sm mx-4' onclick='tg_switchflag(\""+_grid.Entity.Substring(0, 3)+"\",0)'>"+Factory.tra("Vypnout spodní panel")+"</button>");
+                            _s.Append("<button type='button' class='btn btn-secondary btn-sm mx-4' onclick='tg_switchflag(\"" + _grid.Entity.Substring(0, 3)+"\",0)'>"+Factory.tra("Vypnout spodní panel")+"</button>");
                         }
                         else
                         {
-                            _s.Append("<button type='button' class='btn btn-secondary btn-sm mx-4' onclick='tg_switchflag(\"" + _grid.Entity.Substring(0, 3) + "\",1)'>"+Factory.tra("Zapnout spodní panel")+"</button>");
+                            _s.Append("<button type='button' class='btn btn-secondary btn-sm mx-4 nonmobile' onclick='tg_switchflag(\"" + _grid.Entity.Substring(0, 3) + "\",1)'>"+Factory.tra("Zapnout spodní panel")+"</button>");
                         }
                         break;
                 }

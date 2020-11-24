@@ -415,7 +415,7 @@ namespace UI.Controllers
             foreach (var recTemp in lisP85_A03)
             {
                 x += 1;
-                var recA01 = new BO.a01Event() { a42ID = a42id, a01IsTemporary = true, a03ID = recTemp.p85OtherKey1, a10ID = recTemp.p85OtherKey2, a08ID = recA42.a08ID, a01DateFrom = recA42.a42DateFrom, a01DateUntil = recA42.a42DateUntil };
+                var recA01 = new BO.a01Event() { a42ID = a42id, a01IsTemporary = false, a03ID = recTemp.p85OtherKey1, a10ID = recTemp.p85OtherKey2, a08ID = recA42.a08ID, a01DateFrom = recA42.a42DateFrom, a01DateUntil = recA42.a42DateUntil };
                 recA01.j02ID_Issuer = Factory.CurrentUser.j02ID;
                 recA01.j03ID_Creator = Factory.CurrentUser.pid;
 

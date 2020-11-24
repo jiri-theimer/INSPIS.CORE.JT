@@ -102,7 +102,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $("input, textarea").change(function () {
-            _toolbar_warn2save_changes();
+            _toolbar_warn2save_changes("@_f.tra("Změny potvrďte tlačítkem [Uložit změny].")");
 
         });
 
@@ -124,7 +124,7 @@
 
     function toolbar_try_delete() {
         $.showConfirm({
-            title: "@_f.tra("Potvrďte")...", body: "@_f.tra("Opravdu chcete nenávratně odstranit tento záznam?")", textTrue: "ANO", textFalse: "NE",
+            title: "@_f.tra("Potvrďte")...", body: "@_f.tra("Opravdu chcete nenávratně odstranit tento záznam?")", textTrue: "@_f.tra("ANO")", textFalse: "@_f.tra("NE")",
             onSubmit: function (result) {
                 if (result) {
                     var url = '@Url.Action("DeleteRecord", "Common")';

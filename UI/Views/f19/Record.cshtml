@@ -323,17 +323,21 @@
                     <span asp-validation-for="Rec.f19CancelValidateExpression_Message" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-row my-2">
-                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Vztah otázky k portálu"):</label>
-                <div class="col-sm-5 col-md-4">
-                    <select asp-for="Rec.f19PortalPublishFlag" class="form-control">
-                        <option value="None">@_f.tra("Nepublikovat v portálu")</option>
-                        <option value="PublishWithSchoolApprove">@_f.tra("Publikovat se souhlasem školy")</option>
-                        <option value="PublishAlways">@_f.tra("Publikovat vždy")</option>
-                    </select>
-                </div>
+            @if (_f.App.Implementation == "Default")
+            {
+                <div class="form-row my-2">
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Vztah otázky k portálu"):</label>
+                    <div class="col-sm-5 col-md-4">
+                        <select asp-for="Rec.f19PortalPublishFlag" class="form-control">
+                            <option value="None">@_f.tra("Nepublikovat v portálu")</option>
+                            <option value="PublishWithSchoolApprove">@_f.tra("Publikovat se souhlasem školy")</option>
+                            <option value="PublishAlways">@_f.tra("Publikovat vždy")</option>
+                        </select>
+                    </div>
 
-            </div>
+                </div>
+            }
+
         </div>
 
     </div>

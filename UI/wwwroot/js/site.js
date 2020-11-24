@@ -23,7 +23,7 @@ function _edit(controller, pid, header) {
         case "j90":
         case "j92":
         case "p44":
-            _notify_message("Pro tento záznam neexistuje stránka detailu.", "info");
+            _notify_message("Pro tento záznam neexistuje stránka detailu.<hr>Для цього запису немає сторінки деталей.", "info");
             return;
         default:
             url = "/" + controller + "/record?pid=" + pid;
@@ -76,9 +76,12 @@ function _focusAndCursor(selector) {
     }, 200);
 }
 
-function _toolbar_warn2save_changes() {
+function _toolbar_warn2save_changes(message) {
+    if (typeof message === "undefined") {
+        message = "Změny potvrďte tlačítkem [Uložit změny]."
+    }
     if ($("#toolbar_changeinfo").length) {
-        $("#toolbar_changeinfo").text("Změny potvrďte tlačítkem [Uložit změny]...");
+        $("#toolbar_changeinfo").text(message);
     }
 
 }

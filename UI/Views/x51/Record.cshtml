@@ -1,8 +1,7 @@
 ﻿@model UI.Models.Record.x51Record
 @inject BL.Factory _f
 
-@{
-
+@{   
     Layout = "~/Views/Shared/_LayoutRecord.cshtml";
     if (Model.Rec == null) return;
     Model.PageTitle = _f.tra("Nápověda");
@@ -17,7 +16,21 @@
 
 
 <script src="~/lib/summernote/summernote-bs4.min.js"></script>
-<script src="~/lib/summernote/lang/summernote-cs-CZ.js"></script>
+@switch (_f.CurrentUser.j03LangIndex)
+{
+    case 0:
+        <script src="~/lib/summernote/lang/summernote-cs-CZ.js"></script>
+        Model.EditorLanguageKey = "cs-CZ";
+        break;
+    case 1:
+        Model.EditorLanguageKey = "en-US";
+        break;
+    case 2:
+        <script src="~/lib/summernote/lang/summernote-uk-UA.js"></script>
+        Model.EditorLanguageKey = "uk-UA";
+        break;    
+}
+
 
 <input type="hidden" asp-for="@Model.Source" />
 
@@ -62,7 +75,7 @@
         var hh = _device.innerHeight - ofs.top - 120;
 
         $("#editor1").summernote({
-            lang: "cs-CZ", // default: 'en-US'
+            lang: "@Model.EditorLanguageKey", // default: 'en-US', česky: cs-CZ, ukrajinsky: uk-UA
             placeholder: "@_f.tra("Text nápovědy")",
             tabsize: 2,
             height: hh

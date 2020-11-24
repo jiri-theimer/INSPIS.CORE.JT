@@ -12,5 +12,7 @@ namespace UI.Models.Record
         public string HtmlContent { get; set; }
 
         public string Source { get; set; }
+
+        public string EditorLanguageKey { get; set; }= "cs-CZ";
     }
 }

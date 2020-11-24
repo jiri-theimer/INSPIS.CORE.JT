@@ -447,17 +447,21 @@ function mysearch_init(c) {
 
         $("#divDropdown" + c.controlid).css("margin-left", 25 + $("#divDropdown" + c.controlid).width() * -1);      //šírka dropdown oblasti má být zleva 100% jako celý usercontrol
 
+        
+        
+
         var expr = $("#" + c.controlid).val();
         if (expr !== "") {
 
             return;
         }
-
         $.post(c.posturl + "Setting", { controlid: c.controlid, entity: c.entity }, function (data) {
 
             $("#divData" + c.controlid).html(data);
 
         });
+
+        $("#divDropdown" + c.controlid).css("top", "500px");
 
     });
 
@@ -487,6 +491,7 @@ function mysearch_init(c) {
         var expr = $("#" + c.controlid).val();
 
         $.post(c.posturl, { entity: c.entity, searchstring: expr }, function (data) {
+            
             $("#divData" + c.controlid).html(data);
 
             var xx = document.getElementById("divData" + c.controlid);
@@ -495,6 +500,7 @@ function mysearch_init(c) {
             if (xx.scrollHeight > xx.clientHeight && $(xx).height() < 500 && window.innerHeight - ofs.top > 500) {        //je vidět scrollbara -> zvýšit výšku divData                      
                 $("#divData" + c.controlid).css("height", "500px");
             }
+            
 
             $("#hovado .txs").on("click", function () {                
                 var pid = $(this).attr("data-v");
