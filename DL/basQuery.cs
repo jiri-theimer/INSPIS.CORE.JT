@@ -861,8 +861,8 @@ namespace DL
         {
             //výběr uživateli dostupných akcí podle aplikační role a účasti v akcích
             string sw = "(";
-            sw += "a.a01ID IN(SELECT a01ID FROM a41PersonToEvent WHERE j02ID = " + mq.CurrentUser.j02ID.ToString() + ")";
-            sw += " OR a.a01ID IN (SELECT xa.a01ID FROM a41PersonToEvent xa INNER JOIN j12Team_Person xb on xa.j11ID=xb.j11ID WHERE xa.j11ID IS NOT NULL AND (xb.j02ID=" + mq.CurrentUser.j02ID.ToString() + " OR xb.j04ID=" + mq.CurrentUser.j04ID.ToString() + "))";
+            sw += "a.a01ID IN (SELECT a01ID FROM a41PersonToEvent WHERE j02ID = " + mq.CurrentUser.j02ID.ToString() + ")";
+            //na týmy si nehrají: sw += " OR a.a01ID IN (SELECT xa.a01ID FROM a41PersonToEvent xa INNER JOIN j12Team_Person xb on xa.j11ID=xb.j11ID WHERE xa.j11ID IS NOT NULL AND (xb.j02ID=" + mq.CurrentUser.j02ID.ToString() + " OR xb.j04ID=" + mq.CurrentUser.j04ID.ToString() + "))";
             switch (mq.CurrentUser.j04RelationFlag)
             {
                 case BO.j04RelationFlagEnum.A03:    //omezení akcí pouze na svázané instituce
@@ -882,7 +882,7 @@ namespace DL
                     sw += ")";
                     break;
                 case BO.j04RelationFlagEnum.A05:    //omezení akcí pouze na kraj instituce
-                    sw += " OR (a03.a05ID=" + mq.CurrentUser.a05ID.ToString();
+                    sw += " OR (a01_a03.a05ID=" + mq.CurrentUser.a05ID.ToString();
                     if (!mq.CurrentUser.j04IsAllowedAllEventTypes)
                     {
                         if (mq.CurrentUser.a10IDs != null)
@@ -897,13 +897,14 @@ namespace DL
                     sw += ")";
                     //navíc přístup ke všem akcím škol, kde má daný inspektor minimálně jednu otevřenou akci (a01IsClosed=0)
                     sw += " OR a.a03ID IN (SELECT qb.a03ID FROM a41PersonToEvent qa INNER JOIN a01Event qb ON qa.a01ID=qb.a01ID WHERE qb.a01IsClosed=0 AND qa.j02ID=" +mq.CurrentUser.j02ID.ToString()+ ")";
-                    sw += " OR a.a03ID IN (SELECT qb.a03ID FROM a01Event qb INNER JOIN a41PersonToEvent qa ON qb.a01ID=qa.a01ID INNER JOIN j12Team_Person qc on qa.j11ID=qc.j11ID WHERE qb.a01IsClosed=0 AND qa.j11ID IS NOT NULL AND (qc.j02ID=@j02id_xa OR qc.j04ID="+mq.CurrentUser.j04ID.ToString()+"))";
+                    //s týmy nepracují v akcích: sw += " OR a.a03ID IN (SELECT qb.a03ID FROM a01Event qb INNER JOIN a41PersonToEvent qa ON qb.a01ID=qa.a01ID INNER JOIN j12Team_Person qc on qa.j11ID=qc.j11ID WHERE qb.a01IsClosed=0 AND qa.j11ID IS NOT NULL AND (qc.j02ID="+mq.CurrentUser.j02ID.ToString()+" OR qc.j04ID="+mq.CurrentUser.j04ID.ToString()+"))";
 
                     break;
                 case BO.j04RelationFlagEnum.NoRelation: //role bez vazby na region nebo školu - potenciálně neomezený přístup k akcím
                     break;
             }
             sw += ")";
+            System.IO.File.WriteAllText("c:\\temp\\hovado.txt", sw);
             return sw;
         }
     }

@@ -355,7 +355,8 @@ namespace UI.Controllers
             ret.sortdir = gridState.j75SortOrder;
             
             var mq = new BO.myQuery(gridState.j72Entity);
-            mq.MyRecordsDisponible = true;  //pouze záznamy odpovídající oprávnění uživatele
+            mq.MyRecordsDisponible = true;mq.CurrentUser = Factory.CurrentUser;  //pouze záznamy odpovídající oprávnění uživatele
+            
             if (mq.Prefix == "a01")
             {
                 mq.a01IsTemporary = false;  //v gridu zákaz zobrazovat TEMP akce
