@@ -135,15 +135,27 @@ namespace UI.Controllers
 
         private void RefreshNavTabs(j02RecPage v)
         {
-            v.NavTabs.Add(AddTab(string.Format(Factory.tra("{0}: je účastníkem"), Factory.App.Terminology_Akce), "a01Event", "/TheGrid/SlaveView?prefix=a01",false));
-            v.NavTabs.Add(AddTab( string.Format(Factory.tra("{0}: je zakladatelem"), Factory.App.Terminology_Akce),"a01Event", "/TheGrid/SlaveView?prefix=a01&master_flag=issuer",false));
-            v.NavTabs.Add(AddTab(string.Format(Factory.tra("{0}: je vedoucím"), Factory.App.Terminology_Akce), "a01Event", "/TheGrid/SlaveView?prefix=a01&master_flag=leader",false));
-
-            v.NavTabs.Add(AddTab("Instituce", "a03Institution", "/TheGrid/SlaveView?prefix=a03"));
-            v.NavTabs.Add(AddTab("Úkoly/Lhůty", "h04ToDo", "/TheGrid/SlaveView?prefix=h04"));
+            var c = Factory.j02PersonBL.LoadSummary(v.pid);
+            string strBadge = null;
+            if (c.a01_count_in > 0) strBadge = c.a01_count_in.ToString();
+            v.NavTabs.Add(AddTab(string.Format(Factory.tra("{0}: je účastníkem"), Factory.App.Terminology_Akce), "a01Event", "/TheGrid/SlaveView?prefix=a01",false,strBadge));
+            strBadge = null;
+            if (c.a01_count_founder > 0) strBadge = c.a01_count_founder.ToString();
+            v.NavTabs.Add(AddTab( string.Format(Factory.tra("{0}: je zakladatelem"), Factory.App.Terminology_Akce),"a01Event", "/TheGrid/SlaveView?prefix=a01&master_flag=issuer",false,strBadge));
+            strBadge = null;
+            if (c.a01_count_leader > 0) strBadge = c.a01_count_leader.ToString();
+            v.NavTabs.Add(AddTab(string.Format(Factory.tra("{0}: je vedoucím"), Factory.App.Terminology_Akce), "a01Event", "/TheGrid/SlaveView?prefix=a01&master_flag=leader",false,strBadge));
+            strBadge = null;
+            if (c.a39_count > 0) strBadge = c.a39_count.ToString();
+            v.NavTabs.Add(AddTab("Kontaktní osoba", "a03Institution", "/TheGrid/SlaveView?prefix=a03",true,strBadge));
+            strBadge = null;
+            if (c.h04_count > 0) strBadge = c.h04_count.ToString();
+            v.NavTabs.Add(AddTab("Úkoly/Lhůty", "h04ToDo", "/TheGrid/SlaveView?prefix=h04",true,strBadge));
             v.NavTabs.Add(AddTab("Outbox", "x40MailQueue", "/TheGrid/SlaveView?prefix=x40"));
-            v.NavTabs.Add(AddTab("PING Log", "j92PingLog", "/TheGrid/SlaveView?prefix=j92"));
-            v.NavTabs.Add(AddTab("LOGIN Log", "j90LoginAccessLog", "/TheGrid/SlaveView?prefix=j90"));
+            strBadge = null;
+            if (c.ping_when != null) strBadge = BO.BAS.ObjectDateTime2String(c.ping_when);
+            v.NavTabs.Add(AddTab("PING Log", "j92PingLog", "/TheGrid/SlaveView?prefix=j92",true,strBadge));
+            //v.NavTabs.Add(AddTab("LOGIN Log", "j90LoginAccessLog", "/TheGrid/SlaveView?prefix=j90"));
 
 
             string strDefTab = Factory.CBL.LoadUserParam("recpage-tab-j02");

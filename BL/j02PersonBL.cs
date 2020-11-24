@@ -11,7 +11,7 @@ namespace BL
         public IEnumerable<BO.j02Person> GetList(BO.myQuery mq);
         public int Save(BO.j02Person rec);
         public bool ValidateBeforeSave(BO.j02Person rec);
-
+        public BO.j02RecordSummary LoadSummary(int pid);
 
     }
     class j02PersonBL : BaseBL,Ij02PersonBL
@@ -101,6 +101,9 @@ namespace BL
             return true;
         }
 
-
+        public BO.j02RecordSummary LoadSummary(int pid)
+        {
+            return _db.Load<BO.j02RecordSummary>("EXEC dbo._core_j02_summary @j03id,@pid,null", new { j03id = _mother.CurrentUser.pid, pid = pid });
+        }
     }
 }

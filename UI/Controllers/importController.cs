@@ -454,6 +454,12 @@ namespace UI.Controllers
                                     rec.a09ID = lisA09.Where(p => p.a09UIVCode == strVal).First().pid;
                                 }
                                 break;
+                            case "a09Name":
+                                if (strVal != "" && lisA09.Where(p => p.a09Name.ToUpper() == strVal.ToUpper()).Count() > 0)
+                                {
+                                    rec.a09ID = lisA09.Where(p => p.a09Name.ToUpper() == strVal.ToUpper()).First().pid;
+                                }
+                                break;
                             case "a03ValidFrom":
                                 try
                                 {

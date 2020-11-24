@@ -54,7 +54,7 @@ namespace BO
         public DateTime? x40DatetimeProcessed { get; set; }
         public bool x40IsProcessed { get; set; }
         public string x40ErrorMessage { get; set; }
-
+        public bool x40IsAutoNotification { get; set; }
         public string j40Name { get; set; }
 
         public DateTime MessageTime;

@@ -15,7 +15,7 @@
 }
 
 @addTagHelper *, UI
-<link rel="stylesheet" href="~/css/tabcapacity.css" />
+    <link rel="stylesheet" href="~/css/tabcapacity.css" />
 
 <h4>@_f.tra("Upravit časový plán akce")</h4>
 <div class="bg-light" style="padding:10px;">
@@ -175,10 +175,10 @@
                     </td>
                 }
                 <td>
-                    <button type="button" class="btn btn-sm btn-light" title="@_f.tra("Zaškrtni vše")" onclick="check_line(@recA41.j02ID)">✔</button>
+                    <button type="button" class="btn btn-sm btn-light" title="@_f.tra("Zaškrtni vše")" onclick="check_line(@recA41.j02ID)"><img src="~/images/checked.png" /></button>
                 </td>
                 <td>
-                    <button type="button" class="btn btn-sm btn-light" title="@_f.tra("Odšktni vše")" onclick="clear_line(@recA41.j02ID)">⌧</button>
+                    <button type="button" class="btn btn-sm btn-light" title="@_f.tra("Odšktni vše")" onclick="clear_line(@recA41.j02ID)"><img src="~/images/unchecked.png" /></button>
                 </td>
             </tr>
         }

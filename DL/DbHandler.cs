@@ -135,11 +135,15 @@ namespace DL
         }
         public IEnumerable<T> GetList<T>(string strSQL, Dapper.DynamicParameters pars)
         {
+            //var t0 = DateTime.Now;
             using (SqlConnection con = new SqlConnection(_conString))
             {
                 try
                 {
                     return con.Query<T>(strSQL, pars);
+                    //var rst= con.Query<T>(strSQL, pars);
+                    //log_debug(strSQL, t0, DateTime.Now);
+                    //return rst;
                 }
                 catch (Exception e)
                 {
@@ -399,7 +403,13 @@ namespace DL
         }
 
 
-
+        private void log_debug(string strSQL,DateTime t0,DateTime t1)
+        {
+            var strPath = string.Format("{0}\\sql-debug-{1}.log", _logDir, DateTime.Now.ToString("yyyy.MM.dd"));
+            TimeSpan dur = t1 - t0;
+            System.IO.File.AppendAllLines(strPath, new List<string>() { "dur: "+dur.TotalSeconds.ToString()+ ", t0: " + t0.ToString() + ", t1: " + t1.ToString() });
+            System.IO.File.AppendAllLines(strPath, new List<string>() { "sql: " + strSQL });
+        }
         private void log_error(Exception e, string strSQL, DynamicParameters pars)
         {
             CurrentUser.AddMessage(e.Message);

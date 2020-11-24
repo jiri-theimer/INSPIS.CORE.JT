@@ -178,7 +178,13 @@
             @foreach (var tab in Model.NavTabs)
             {
                 <li class="nav-item onetab">
-                    <a class="@tab.CssClass" id="tab@(tab.Entity)" href="@tab.Url" target="fra_subgrid" onclick="tabclick(this)">@tab.Name</a>
+                    <a class="@tab.CssClass" id="tab@(tab.Entity)" href="@tab.Url" target="fra_subgrid" onclick="tabclick(this)">
+                        @tab.Name
+                        @if (tab.Badge != null)
+                        {
+                            <span class="badge badge-primary">@tab.Badge</span>
+                        }
+                    </a>
                 </li>
             }
         </ul>

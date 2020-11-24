@@ -3,9 +3,9 @@
 @inject BL.Factory _f
 
 @{
-    ViewData["Title"] = "Posunout | Doplnit";
+    ViewData["Title"] = _f.tra("Posunout | Doplnit");
     Layout = "~/Views/Shared/_LayoutModal.cshtml";
-
+    
     if (Model.RecA01 == null)
     {
         return;
@@ -17,17 +17,17 @@
 @addTagHelper *, UI
 
 <h4>
-    Posunout | Doplnit akci: @(Model.RecA01.a01Signature)
+    @ViewData["Title"]: @(Model.RecA01.a01Signature)
     @if (Model.RecA01.b02ID > 0)
     {
-        <span>, aktuální stav:</span>
+        <span>, @_f.tra("aktuální stav"):</span>
         <strong style="margin-left:10px;">@Model.RecA01.b02Name</strong>
     }
 </h4>
 
 <div class="bg-light" style="padding:10px;">
-    <button id="cmdSave" type="button" class="btn btn-success">Uložit změny</button>
-    <button type="button" id="cmdClose" onclick="_window_close()" class="btn btn-light" lang="uk">Zavřít</button>
+    <button id="cmdSave" type="button" class="btn btn-success">@_f.tra("Uložit změny")</button>
+    <button type="button" id="cmdClose" onclick="_window_close()" class="btn btn-light" lang="uk">@_f.tra("Zavřít")</button>
     <button type="button" onclick="_helppage()" class="btn btn-light"><b>? </b>@_f.tra("Nápověda")</button>
 
 </div>
@@ -79,7 +79,7 @@
         }
 
         <div class="form-row my-2">
-            <textarea asp-for="@Model.Comment" class="form-control" placeholder="Doplnit komentář..." style="height:100px;"></textarea>
+            <textarea asp-for="@Model.Comment" class="form-control" placeholder="@_f.tra("Doplnit komentář")..." style="height:100px;"></textarea>
             <span asp-validation-for="@Model.Comment" class="text-danger"></span>
         </div>
 

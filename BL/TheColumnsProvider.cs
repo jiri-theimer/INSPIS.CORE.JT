@@ -618,9 +618,10 @@ namespace BL
 
             //b65 = notifikační šablona
             AF("b65WorkflowMessage", "b65Name", "Notifikační šablona", 1, null, "string", false, true);
-            AF("b65WorkflowMessage", "b65MessageSubject", "Předmět zprávy", 2);            
+            AF("b65WorkflowMessage", "b65MessageSubject", "Předmět zprávy", 2);
+            AF("b65WorkflowMessage", "SystemFlag", "🚩", 1, "case when isnull(a.b65SystemFlag,0)>0 then '<div style='+char(34)+'background-color:red;'+char(34)+'>&nbsp;</div>' end");
             AppendTimestamp("b65WorkflowMessage");
-
+            
             //b09 = workflow příkaz
             AF("b09WorkflowCommandCatalog", "b09Name", "Workflow příkaz", 1, null, "string", false, true);
             AF("b09WorkflowCommandCatalog", "b09Hint", "?", 1);

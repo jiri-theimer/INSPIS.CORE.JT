@@ -8,40 +8,48 @@
 }
 @addTagHelper *, UI
 
-<div class="modal_record_container">
-    <div class="form-row">
-        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Entita"):</label>
-        <div class="col-sm-5 col-md-4">
-            <mycombo entity="x29Entity" asp-for="Rec.x29ID" selectedtext="Rec.x29Name" view-flag="2" param1="x29IsReport"></mycombo>
+    <div class="modal_record_container">
+        <div class="form-row">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Entita"):</label>
+            <div class="col-sm-5 col-md-4">
+                <mycombo entity="x29Entity" asp-for="Rec.x29ID" selectedtext="Rec.x29Name" view-flag="2" param1="x29IsReport"></mycombo>
+            </div>
         </div>
-    </div>
 
-    <div class="form-row my-2">
-        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
-        <div class="col-sm-11 col-md-10">
-            <input class="form-control" asp-for="Rec.b65Name" />
-            <span asp-validation-for="Rec.b65Name" class="text-danger"></span>
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
+            <div class="col-sm-11 col-md-10">
+                <input class="form-control" asp-for="Rec.b65Name" />
+                <span asp-validation-for="Rec.b65Name" class="text-danger"></span>
+            </div>
         </div>
-    </div>
 
-    <div class="form-row my-2">
-        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Předmět zprávy"):</label>
-        <div class="col-sm-11 col-md-10">
-            <input class="form-control" asp-for="Rec.b65MessageSubject" />
-            <span asp-validation-for="Rec.b65MessageSubject" class="text-danger"></span>
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Předmět zprávy"):</label>
+            <div class="col-sm-11 col-md-10">
+                <input class="form-control" asp-for="Rec.b65MessageSubject" />
+                <span asp-validation-for="Rec.b65MessageSubject" class="text-danger"></span>
+            </div>
         </div>
+
+
+
+        <div class="form-row my-2">
+            <textarea asp-for="Rec.b65MessageBody" class="form-control" placeholder="@_f.tra("Tělo zprávy")"></textarea>
+            <span asp-validation-for="Rec.b65MessageBody" class="text-danger"></span>
+        </div>
+
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Příznak pro systém"):</label>
+            <div class="col-sm-11 col-md-10">
+                <select asp-for="@Model.Rec.b65SystemFlag" class="form-control">                    
+                    <option value="None">@_f.tra("Bez příznaku")</option>                    
+                    <option value="UserAccountLocked">@_f.tra("Zpráva o automatickém zablokování uživatelského účtu")</option>
+                </select>
+            </div>
+        </div>
+
     </div>
-
-
-
-    <div class="form-row my-2">
-        <textarea asp-for="Rec.b65MessageBody" class="form-control" placeholder="@_f.tra("Tělo zprávy")"></textarea>
-        <span asp-validation-for="Rec.b65MessageBody" class="text-danger"></span>
-    </div>
-
-
-
-</div>
 
 
 

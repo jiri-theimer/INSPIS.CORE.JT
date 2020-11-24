@@ -73,6 +73,9 @@ a42JobGuid
 a42UploadGuid
 a42JobState
 
+[b65WorkflowMessage]
+b65SystemFlag
+
 [j02Person]
 j02FullText
 j02Address

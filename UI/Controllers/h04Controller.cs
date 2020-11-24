@@ -162,7 +162,8 @@ namespace UI.Controllers
                 strBody = recB65.b65MessageBody;
                 strSubject = recB65.b65MessageSubject;
             }
-            
+            strBody += Constants.vbCrLf+"----------------------"+ Constants.vbCrLf + Factory.App.UserUrl + "/h04/RecPage?pid=" + rec.pid.ToString();
+
             mq = new BO.myQuery("j02");
             mq.h04id = pid;
             mq.IsRecordValid = true;

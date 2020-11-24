@@ -209,6 +209,10 @@ namespace BL
 
         private BO.Result handle_smtp_finish(MailMessage m,BO.x40MailQueue rec, bool istest)     //finální odeslání zprávy
         {
+            if (rec.x40MessageGuid == null)
+            {
+                rec.x40MessageGuid = BO.BAS.GetGuid();
+            }
             if (_account == null)
             {
                 return handle_result_error("Chybí poštovní účet odesílatele");
@@ -306,6 +310,7 @@ namespace BL
                         rec.x40ErrorMessage = "";
                     }                    
                     rec.x40Status = BO.x40StateFlag.Proceeded;
+                    rec.x40IsProcessed = true;
                     ret.pid = SaveX40(m, rec);
                     ret.Flag = ResultEnum.Success;
 
@@ -386,6 +391,7 @@ namespace BL
             p.AddDateTime("x40DatetimeProcessed", rec.x40DatetimeProcessed);
             p.AddString("x40ErrorMessage", rec.x40ErrorMessage);
             p.AddEnumInt("x40Status", rec.x40Status);
+            p.AddBool("x40IsAutoNotification", rec.x40IsAutoNotification);
             
             p.AddString("x40EmlFolder", rec.x40EmlFolder);
             p.AddInt("x40EmlFileSize", rec.x40EmlFileSize);

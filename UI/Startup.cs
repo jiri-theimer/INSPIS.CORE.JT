@@ -96,6 +96,8 @@ namespace UI
                 ,                
                 CssCustomSkin = Configuration.GetSection("App")["CssCustomSkin"]
                 ,
+                UserUrl= Configuration.GetSection("App")["UserUrl"]
+                ,
                 UploadFolder = Configuration.GetSection("Folders")["Upload"]
                 ,
                 TempFolder = Configuration.GetSection("Folders")["Temp"]

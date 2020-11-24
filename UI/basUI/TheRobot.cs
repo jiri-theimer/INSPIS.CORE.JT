@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using System.Threading;
 using Microsoft.AspNetCore.Mvc;
 using BL;
-using DocumentFormat.OpenXml.Drawing.Charts;
+using Microsoft.VisualBasic;
 
 namespace UI
 {
@@ -51,19 +51,47 @@ namespace UI
             BL.Factory f = new BL.Factory(ru, _app, null, _gp,_tt);
             if (f.CurrentUser == null)
             {
-                LogInfo("f.CurrentUser is null.");
+                LogInfo("f.CurrentUser is null. SysUser_Login: "+ strLogin);
                 return;
             }
             
             LogInfo(string.Format("Timed Hosted Service is working by user:{0}. Count: {1}",f.CurrentUser.j03Login, count));
 
-
+            Handle_h04_Reminder(f); //odesílač připomenutí úkolů a lhůt
+            Handle_AutoWorkflow(f); //robotické workflow
 
             //čekající pošta na odeslání
             Handle_MailQueue_INEZ(f);
             Handle_MailQueue(f);
+            
         }
 
+        private void Handle_h04_Reminder(BL.Factory f)
+        {            
+            var lisH04 = f.h04ToDoBL.GetList_ReminderWaiting();            
+            foreach(var rec in lisH04)
+            {                
+                var recB65 = new BO.b65WorkflowMessage() { b65MessageSubject = "Připomenutí | " + rec.h07Name + ": " + rec.a01Signature };
+                recB65.b65MessageBody = "Dobrý den," + System.Environment.NewLine + "posíláme Vám připomenutí k:" + System.Environment.NewLine+ rec.h07Name + ": " + rec.h04Name + System.Environment.NewLine + System.Environment.NewLine + rec.h04Description;
+                var intB65ID = f.h07ToDoTypeBL.Load(rec.h07ID).b65ID;
+                if (intB65ID > 0)
+                {
+                    recB65 = f.b65WorkflowMessageBL.Load(intB65ID);
+                }
+                
+                recB65.b65MessageBody += System.Environment.NewLine +System.Environment.NewLine+"------------------------"+System.Environment.NewLine + _app.UserUrl + "/h04/RecPage?pid=" + rec.pid.ToString();
+                
+                var c = new BO.x40MailQueue() {x29ID = 604,x40DataPID=rec.pid, x40IsAutoNotification=true,x40Subject=recB65.b65MessageSubject,x40Body=recB65.b65MessageBody };
+                var mq = new BO.myQuery("j02") { h04id = rec.pid, IsRecordValid = true };
+                c.x40Recipient = string.Join(",", f.j02PersonBL.GetList(mq).Select(p => p.j02Email));
+
+                f.MailBL.SendMessage(c, false);
+            }
+        }
+        private void Handle_AutoWorkflow(BL.Factory f)
+        {
+
+        }
         private void Handle_MailQueue(BL.Factory f)
         {
             var mq = new BO.myQuery("x40");

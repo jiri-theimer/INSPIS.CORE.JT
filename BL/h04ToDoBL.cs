@@ -11,6 +11,7 @@ namespace BL
         public IEnumerable<BO.h04ToDo> GetList(BO.myQuery mq);
         public IEnumerable<BO.h04TodoCapacity> GetListCapacity(BO.myQuery mq);
         public int Save(BO.h04ToDo rec, List<int> j02ids_resitel, List<int> j11ids_resitel, bool bolSendNotification);
+        public IEnumerable<BO.h04ToDo> GetList_ReminderWaiting();
 
     }
     class h04ToDoBL : BaseBL, Ih04ToDoBL
@@ -38,6 +39,14 @@ namespace BL
         {
             if (mq.explicit_orderby == null) mq.explicit_orderby = "a.h04ID DESC";
             DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            return _db.GetList<BO.h04ToDo>(fq.FinalSql, fq.Parameters);
+        }
+        public IEnumerable<BO.h04ToDo> GetList_ReminderWaiting()
+        {
+            var mq = new BO.myQuery("h04");
+            var strW = " WHERE a.h04IsClosed=0 AND DATEDIFF(minute,GETDATE(),a.h04ReminderDate) BETWEEN -500 AND 6";
+            strW += " AND a.h04ID NOT IN (SELECT x40DataPID FROM x40MailQueue WHERE x29ID=604 AND x40IsAutoNotification=1)";            
+            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(strW), mq, _mother.CurrentUser);
             return _db.GetList<BO.h04ToDo>(fq.FinalSql, fq.Parameters);
         }
         public IEnumerable<BO.h04TodoCapacity> GetListCapacity(BO.myQuery mq)

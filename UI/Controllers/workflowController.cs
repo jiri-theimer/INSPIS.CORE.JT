@@ -137,7 +137,7 @@ namespace UI.Controllers
             }
             if (bolIsCommentForbidden == false)
             {
-                var c = new BO.b06WorkflowStep() { b06ID = 0, pid = 0, b06Name = "Doplnit pouze komentář nebo nahrát přílohu" };
+                var c = new BO.b06WorkflowStep() { b06ID = 0, pid = 0, b06Name = Factory.tra("Doplnit pouze komentář nebo nahrát přílohu") };
                 v.lisB06.Add(c);
             }
             if (v.SelectedB06ID > 0)

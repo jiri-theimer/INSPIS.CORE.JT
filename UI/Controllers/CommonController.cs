@@ -103,6 +103,13 @@ namespace UI.Controllers
             }
             foreach (var c in mq.explicit_columns)
             {
+                switch (Factory.CurrentUser.j03LangIndex)
+                {
+                    case 1:
+                        c.Header = c.TranslateLang1;break;
+                    case 2:
+                        c.Header = c.TranslateLang2;break;
+                }
                 if (c.NormalizedTypeName == "num")
                 {
                     sb.Append(string.Format("<th style='text-align:right;'>{0}</th>", c.Header));

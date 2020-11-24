@@ -43,7 +43,8 @@ namespace UI.Controllers
                 c.x29ID = v.Rec.x29ID;
                 c.b65MessageSubject = v.Rec.b65MessageSubject;
                 c.b65MessageBody = v.Rec.b65MessageBody;
-                
+                c.b65SystemFlag = v.Rec.b65SystemFlag;
+
                 c.ValidUntil = v.Toolbar.GetValidUntil(c);
                 c.ValidFrom = v.Toolbar.GetValidFrom(c);
 

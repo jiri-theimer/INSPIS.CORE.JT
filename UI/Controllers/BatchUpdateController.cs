@@ -136,7 +136,7 @@ namespace UI.Controllers
 
             if (ModelState.IsValid)
             {
-                if (v.SelectedA05ID == 0 && v.SelectedA21ID == 0 && v.SelectedA28ID == 0 && v.SelectedSupervisoryID==0 && v.SelectedParentFlag==0)
+                if (v.SelectedA05ID == 0 && v.SelectedA21ID == 0 && v.SelectedA28ID == 0 && v.SelectedSupervisoryID==0 && v.SelectedParentFlag==-1)
                 {
                     this.AddMessage("Musíte specifikovat nějakou změnu.");
                     return View(v);

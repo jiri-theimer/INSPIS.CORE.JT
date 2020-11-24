@@ -7,7 +7,7 @@
 }
 @addTagHelper *, UI
 
-<h4>Přidat účastníky do akce: @Model.RecA01.a01Signature</h4>
+<h4>@ViewData["Title"] : @Model.RecA01.a01Signature</h4>
 <div class="bg-light" style="padding:10px;">
     <button id="cmdSave" type="button" class="btn btn-success">@_f.tra("Uložit změny")</button>
     <button id="cmdClose" type="button" onclick="_window_close()" class="btn btn-light">@_f.tra("Zavřít")</button>
@@ -138,7 +138,7 @@
 
     }
 
-   
+
 
 </script>
 

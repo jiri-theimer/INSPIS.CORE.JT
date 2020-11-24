@@ -19,7 +19,7 @@ namespace BL
         
         public string LogoImageSuffix { get; set; }
         public string CssCustomSkin { get; set; }
-       
+       public string UserUrl { get; set; }
         public string TranslatorMode { get; set; }
 
         public int DefaultLangIndex { get; set; }
