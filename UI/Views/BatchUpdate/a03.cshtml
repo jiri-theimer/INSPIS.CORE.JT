@@ -1,0 +1,99 @@
+﻿@model BatchUpdateA03
+@inject BL.Factory _f
+
+@{
+    Layout = "~/Views/Shared/_LayoutModal.cshtml";
+
+
+
+    ViewData["Title"] = _f.tra("Hromadné operace");
+
+
+
+
+}
+
+
+@addTagHelper *,UI
+
+<h4>@ViewData["Title"]</h4>
+
+<div class="bg-light" style="padding:10px;">
+    <button id="cmdSave" type="button" class="btn btn-success">@_f.tra("Provést změny")</button>
+    <button id="cmdClose" type="button" onclick="_window_close()" class="btn btn-light">@_f.tra("Zavřít")</button>
+    <button type="button" onclick="_helppage()" class="btn btn-light"><b>? </b>@_f.tra("Nápověda")</button>
+</div>
+
+<form id="form1" asp-controller="BatchUpdate" asp-action="a03" method="POST">
+    <input type="hidden" asp-for="@Model.pids" />
+
+    <div class="modal_record_container">
+
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Právní forma"):</label>
+            <div class="col-sm-11 col-md-10">
+                <mycombo entity="a21InstitutionLegalType" asp-for="@Model.SelectedA21ID" selectedtext="@Model.SelectedA21Name" view-flag="2"></mycombo>
+            </div>
+        </div>
+
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kraj"):</label>
+            <div class="col-sm-11 col-md-10">
+                <mycombo entity="a05Region" asp-for="@Model.SelectedA05ID" selectedtext="@Model.SelectedA05Name" view-flag="2"></mycombo>
+            </div>
+        </div>
+
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typ školy"):</label>
+            <div class="col-sm-11 col-md-10">
+                <mycombo entity="a28SchoolType" asp-for="@Model.SelectedA28ID" selectedtext="@Model.SelectedA28Name" view-flag="2"></mycombo>
+            </div>
+        </div>
+
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Dohledový orgán"):</label>
+            <div class="col-sm-11 col-md-10">
+                <mycombo entity="a03Institution" asp-for="@Model.SelectedSupervisoryID" selectedtext="@Model.SelectedSupervisory" view-flag="2"  masterprefix="a06" masterpid="3"></mycombo>
+            </div>
+        </div>
+
+        <div class="form-row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Stupeň nadřízenosti"):</label>
+            <div class="col-sm-11 col-md-10">
+                <select asp-for="@Model.SelectedParentFlag" class="form-control">
+                    <option value="-1">@_f.tra("Neměnit")</option>
+                    <option value="0">@_f.tra("Standard")</option>
+                    <option value="1">@_f.tra("Nadřízená škola")</option>
+                    <option value="2">@_f.tra("Podřízená škola")</option>
+                </select>
+            </div>
+        </div>
+
+    </div>
+</form>
+<div id="divTableRecords"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#cmdSave").click(function () {
+            $(this).text("Processing...");
+            $(this).attr("disabled", true);
+            form1.submit();
+
+        });
+
+
+        $.post("/Common/GetWorkTable", { entity: "a03", pids:"@Model.pids"}, function (data) {
+            $("#divTableRecords").html(data);
+
+        });
+
+    });
+
+
+
+
+</script>
+
+

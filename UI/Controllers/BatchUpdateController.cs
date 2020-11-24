@@ -103,6 +103,103 @@ namespace UI.Controllers
 
 
         }
+
+
+
+
+        public IActionResult a03(string pids)
+        {
+            var v = new BatchUpdateA03() { pids = pids };
+            if (string.IsNullOrEmpty(pids))
+            {
+                return this.StopPage(false, "Na vstupu chybí výběr záznamů.");
+            }
+
+            RefreshStateA03(v);
+            
+
+            return ViewTup(v, BO.j05PermValuEnum.A03Admin);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult a03(Models.BatchUpdateA03 v, string oper)
+        {
+            RefreshStateA03(v);
+
+            if (oper == "postback")
+            {
+                return View(v);
+            }
+
+
+
+            if (ModelState.IsValid)
+            {
+                if (v.SelectedA05ID == 0 && v.SelectedA21ID == 0 && v.SelectedA28ID == 0 && v.SelectedSupervisoryID==0 && v.SelectedParentFlag==0)
+                {
+                    this.AddMessage("Musíte specifikovat nějakou změnu.");
+                    return View(v);
+                }
+                var errs = new List<string>();
+                
+                foreach (var c in v.lisA03)
+                {
+                    if (v.SelectedA05ID > 0)
+                    {
+                        c.a05ID = v.SelectedA05ID;
+                    }
+                    if (v.SelectedA21ID > 0)
+                    {
+                        c.a21ID = v.SelectedA21ID;
+                    }
+                    if (v.SelectedA28ID > 0)
+                    {
+                        c.a28ID = v.SelectedA28ID;
+                    }
+                    if (v.SelectedParentFlag > -1)
+                    {
+                        c.a03ParentFlag = (BO.a03ParentFlagEnum) v.SelectedParentFlag;
+                    }                                       
+                }
+                foreach (var c in v.lisA03)
+                {
+                    var d = c;
+                    if (!Factory.a03InstitutionBL.ValidateBeforeSave(ref d))
+                    {
+                        errs.Add(d.NamePlusRedizo);
+                    }
+                }
+                if (errs.Count() > 0)
+                {
+                    this.AddMessage(string.Format("Chyby v institucích: {0}.", string.Join(", ", errs)));
+                }
+                foreach (var c in v.lisA03)
+                {
+                    if (Factory.a03InstitutionBL.Save(c) == 0)
+                    {
+                        errs.Add(c.NamePlusRedizo);
+                    }
+                }
+                
+
+                v.SetJavascript_CallOnLoad(0);
+                return View(v);
+
+            }
+
+
+            this.Notify_RecNotSaved();
+            return View(v);
+        }
+
+        private void RefreshStateA03(BatchUpdateA03 v)
+        {
+            var mq = new BO.myQuery("a03") { pids = BO.BAS.ConvertString2ListInt(v.pids) };
+            v.lisA03 = Factory.a03InstitutionBL.GetList(mq);            
+
+
+        }
     }
 
 
