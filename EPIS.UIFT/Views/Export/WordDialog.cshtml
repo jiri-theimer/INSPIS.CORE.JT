@@ -1,0 +1,25 @@
+﻿@model ExportTemplateFile[]
+@inject UIFT.Repository.RepositoryFactory factory
+@{
+    Layout = null;
+    var rep = factory.Get();
+}
+<div data-url="@ViewBag.Url">
+    <p><br />@rep.BL.tra("Přejete si exportovat dotazník do MS Word včetně již vyplněných odpovědí?")<br /></p>
+    @if (Model.Length == 1)
+    {
+        <input type="hidden" id="exportToWordTemplate" value="@Model[0].ID" />
+    }
+    else
+    {
+        <p style="margin-top:25px;">
+            @rep.BL.tra("Vyberte šablonu exportu:")
+            <select id="exportToWordTemplate">
+                @foreach (ExportTemplateFile template in Model)
+                {
+                    <option value="@template.ID">@template.Name</option>
+                }
+            </select>
+        </p>
+    }
+</div>
