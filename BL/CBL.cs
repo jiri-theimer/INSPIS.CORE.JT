@@ -33,22 +33,25 @@ namespace BL
             pars.Add("pid", pid, System.Data.DbType.Int32);
             pars.Add("err_ret", "", System.Data.DbType.String, System.Data.ParameterDirection.Output);
             string strSP = entity.ToLower() + "_delete";
-            if (entity.Length <= 3)
-            {
-                strSP = _mother.EProvider.ByPrefix(entity).TableName.ToLower() + "_delete";
-            }
-            if (entity.Substring(0,3) == "x51")
-            {
-                strSP = "_core_x51helpcore_delete";
-            }
-            if (entity.Substring(0, 3) == "j03")
-            {
-                strSP = "_core_j03user_delete";
-            }
-            if (entity.Substring(0, 3) == "o51" || entity.Substring(0, 3) == "o53" || entity.Substring(0, 3) == "x91")
-            {
-                strSP = "_core_"+ entity.Substring(0, 3)+"_delete";
-            }
+           
+            switch(entity.Substring(0, 3))
+            {               
+                case "o51":
+                case "o53":
+                case "x91":
+                case "j40":
+                    strSP = "_core_" + entity.Substring(0, 3) + "_delete";
+                    break;
+                case "j03":
+                    strSP = "_core_j03user_delete";
+                    break;
+                case "x51":
+                    strSP = "_core_x51helpcore_delete";
+                    break;
+                default:
+                    strSP = _mother.EProvider.ByPrefix(entity).TableName.ToLower() + "_delete";
+                    break;
+            }            
             switch (entity)
             {
                 case "":                    
