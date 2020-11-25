@@ -16,7 +16,7 @@ namespace UI.Controllers
             var v = new a10RecPage() { pid = pid };
             if (v.pid > 0)
             {
-                v.Rec = Factory.a10EventTypeBL.Load(v.pid);
+                v.Rec = Factory.a10EventTypeBL.Load(v.pid);                
                 var tg = Factory.o51TagBL.GetTagging("a10", pid);
                 v.TagHtml = tg.TagHtml;
 
@@ -36,8 +36,13 @@ namespace UI.Controllers
                     return RecNotFound(v);
                 }
                 v.lisA20 = Factory.a10EventTypeBL.GetListA20(v.rec_pid).ToList();
-               
-                
+                var lisA08 = Factory.a08ThemeBL.GetList(new BO.myQuery("a08") { a10id = pid });
+                if (lisA08.Count() > 0)
+                {
+                    v.a08IDs = string.Join(",", lisA08.Select(p => p.pid));
+                    v.a08Names = string.Join(", ", lisA08.Select(p => p.a08Name));
+                }
+
             }
             v.Toolbar = new MyToolbarViewModel(v.Rec);
             if (isclone)
@@ -115,6 +120,8 @@ namespace UI.Controllers
                 c.a10Linker_a08ID = v.Rec.a10Linker_a08ID;
                 c.a10LinkerDB = v.Rec.a10LinkerDB;
                 c.a10CoreFlag = v.Rec.a10CoreFlag;
+
+                c.a45ID_Creator = v.Rec.a45ID_Creator;
 
                 c.ValidUntil = v.Toolbar.GetValidUntil(c);
                 c.ValidFrom = v.Toolbar.GetValidFrom(c);

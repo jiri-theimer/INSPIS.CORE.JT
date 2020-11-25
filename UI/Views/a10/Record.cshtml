@@ -140,10 +140,14 @@
                     <input type="checkbox" asp-for="Rec.a10IsUse_Poll" />
                     <label class="col-form-label" for="Rec_a10IsUse_Poll">@_f.tra("Povolit [Anketní formuláře]")</label>
                 </div>
-                <div class="col-sm-3 col-md-3">
-                    <input type="checkbox" asp-for="Rec.a10IsUse_K01" />
-                    <label class="col-form-label" for="Rec_a10IsUse_K01">@_f.tra("Akce patří do modulu [Učitelé]")</label>
-                </div>
+                @if (_f.App.Implementation == "Default")
+                {
+                    <div class="col-sm-3 col-md-3">
+                        <input type="checkbox" asp-for="Rec.a10IsUse_K01" />
+                        <label class="col-form-label" for="Rec_a10IsUse_K01">@_f.tra("Akce patří do modulu [Učitelé]")</label>
+                    </div>
+                }
+
                 <div class="col-sm-6 col-md-6">
                     <input type="checkbox" asp-for="Rec.a10IsUse_A41_J11" />
                     <label class="col-form-label" for="Rec_a10IsUse_A41_J11">@_f.tra("Účastníky akce lze přiřazovat i přes pojmenovaný seznam osob")</label>

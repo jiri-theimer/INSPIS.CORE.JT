@@ -119,13 +119,13 @@
                 }
 
 
-                <div class="form-row my-2">
-                    <div class="col-sm-4 col-md-4">
-                        <input type="checkbox" asp-for="Rec.b06IsCommentRequired" />
-                        <label class="col-form-label" for="Rec_b06IsCommentRequired">@_f.tra("Uživatel má povinnost zapsat komentář")</label>
-                    </div>
-
-                </div>
+        <div class="form-row my-2">
+            <div class="col-sm-4 col-md-4">
+                <input type="checkbox" asp-for="Rec.b06IsCommentRequired" />
+                <label class="col-form-label" for="Rec_b06IsCommentRequired">@_f.tra("Uživatel má povinnost zapsat komentář")</label>
+            </div>
+           
+        </div>
 
             }
             <div class="form-row my-2">
@@ -247,6 +247,27 @@
         </div>
         <div class="tab-pane" id="tab4">
             <!-- Tab4 -->
+            <div>
+                <input type="checkbox" asp-for="Rec.b06IsAutoRun_Missing_Form" />
+                <label class="col-form-label" for="Rec_b06IsAutoRun_Missing_Form">@_f.tra("Krok se automaticky spustí, pokud v akci nejsou vyplněny povinné formuláře")</label>
+            </div>
+            <div>
+                <input type="checkbox" asp-for="Rec.b06IsAutoRun_Missing_Attachment" />
+                <label class="col-form-label" for="Rec_b06IsAutoRun_Missing_Attachment">@_f.tra("Krok se automaticky spustí, pokud v akci nejsou nahrány povinné přílohy")</label>
+            </div>
+            <div>
+                <input type="checkbox" asp-for="Rec.b06IsFormAutoLock" />
+                <label class="col-form-label" for="Rec_b06IsFormAutoLock">@_f.tra("Po spuštění kroku se automaticky uzamknou formuláře v akci")</label>
+            </div>
+            <div>
+                <input type="checkbox" asp-for="Rec.b06IsFormValidationRequired" />
+                <label class="col-form-label" for="Rec_b06IsFormValidationRequired">@_f.tra("Spuštění kroku je podmíněno kontrolou vyplnění všech formulářů v akci")</label>
+            </div>
+            <div>
+                <input type="checkbox" asp-for="Rec.b06IsAttachmentTestRequired" />
+                <label class="col-form-label" for="Rec_b06IsAttachmentTestRequired">@_f.tra("Spuštění kroku je podmíněno kontrolou povinných příloh pro téma akce")</label>
+            </div>
+
             <p>@_f.tra("Kontrolované typy příloh v tomto kroku"):</p>
             <div style="width:100%;">
                 <mycombochecklist asp-for="@Model.o13IDs" entity="o13AttachmentType" selectedtext="@Model.o13Names" placeholder="@_f.tra("Vybrat typ přílohy")..."></mycombochecklist>

@@ -19,6 +19,7 @@ namespace BO
         public bool b06IsEscalation_Timeout_SLA { get; set; }
         public bool b06IsNominee { get; set; }
         public bool b06IsCommentRequired { get; set; }
+        
         public bool b06IsNomineeRequired { get; set; }
         public bool b06IsHistoryAllowedToAll { get; set; }
         public bool b06IsFormAutoLock { get; set; }

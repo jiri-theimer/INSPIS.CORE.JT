@@ -73,6 +73,37 @@
 
 
     </div>
+    <div class="card" style="margin-top:20px;">
+        <div class="card-header">
+            @_f.tra("Povolené přílohy k tématu")
+            <button type="button" id="cmdAddA14" class="btn btn-secondary btn-sm" onclick="create_a14()">@_f.tra("Přidat")</button>
+        </div>
+        <div class="card-body">
+            @for (var i = 0; i < Model.lisA14.Count; i++)
+            {
+                <div class="row" style="@(Model.lisA14[i].CssTempDisplay)">
+                    <input type="hidden" asp-for="lisA14[i].IsTempDeleted" value="@Model.lisA14[i].IsTempDeleted" />
+
+                    <input type="hidden" asp-for="@Model.lisA14[i].TempGuid" value="@Model.lisA14[i].TempGuid" />
+                    <div class="col-sm-8 col-md-8">
+                        <mydropdown asp-for="@Model.lisA14[i].o13ID" datasource="@Model.lisO13" valuefield="pid" textfield="TreeItem" isfirstemptyrow="true" firstemptyrowvalue="0"></mydropdown>
+                        
+                    </div>
+                    <div class="col-sm-2 col-md-2">
+                        <input type="checkbox" id="chk@(Model.lisA14[i].TempGuid)" asp-for="@Model.lisA14[i].a14IsRequired" />
+                        <label for="chk@(Model.lisA14[i].TempGuid)">@_f.tra("Povinné k zařazení")</label>
+                    </div>
+                    <div class="col-1" title="@_f.tra("Pořadí")">
+                        <mynumber asp-for="lisA14[i].a14Ordinal" decimal-digits="0"></mynumber>
+                    </div>
+                    <div class="col-1">
+                        <button type="button" class="btn btn-danger" title="@_f.tra("Odstranit řádek")" onclick="handle_delete_row_a14('@(Model.lisA14[i].TempGuid)')">x</button>
+                    </div>
+
+                </div>
+            }
+        </div>
+    </div>
 
 
 </div>
@@ -105,9 +136,7 @@
 
     }
 
-
-
-
+    
 
     function clear_all() {
 
@@ -124,6 +153,18 @@
     }
 
 
+    function handle_delete_row_a14(guid) {
+        form1.action = "/a08/Record?oper=delete_a14&guid=" + guid;
+        form1.submit();
+
+    }
+
+    function create_a14() {
+
+        form1.action = "/a08/Record?oper=create_a14";
+        form1.submit();
+        
+    }
 
 </script>
 

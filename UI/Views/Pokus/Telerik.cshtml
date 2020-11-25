@@ -18,12 +18,11 @@
 
 <h1>Telerik</h1>
 
-<div id="example">
-    <div class="demo-section k-content">
+
         <ul id="treeview">
             <li data-expanded="true">
-                <span class="k-sprite folder"></span>
-                My Web Site
+                <img src="~/images/form.png" />
+                Docela dlouhý nápis ve stromu
                 <ul>
                     <li data-expanded="true">
                         
@@ -32,10 +31,11 @@
                         <ul>
                             <li>
                                 <a class="cm" onclick="_cm(event, 'f06Form',200683);">☰</a>
+                                <img src="~/images/type_radio.png" />
                                 <span ondblclick="_notify_message('dblclick')">Otázka v segmentu</span>
                             </li>
-                            <li><span class="k-sprite image"></span>body-back.png</li>
-                            <li><span class="k-sprite image"></span>my-photo.jpg</li>
+                            <li><img src="~/images/type_text.png" />body-back.png</li>
+                            <li><img src="~/images/type_text.png" />my-photo.jpg</li>
                         </ul>
                     </li>
                     <li data-expanded="false">
@@ -51,24 +51,21 @@
                             <li><span class="k-sprite folder"></span>zip</li>
                         </ul>
                     </li>
-                    <li><span class="k-sprite html"></span>about.html</li>
-                    <li><span class="k-sprite html"></span>contacts.html</li>
-                    <li><span class="k-sprite html"></span>index.html</li>
-                    <li><span class="k-sprite html"></span>portfolio.html</li>
+                    <li>about.html</li>
+                    <li>contacts.html</li>
+                    <li>index.html</li>
+                    <li>portfolio.html</li>
                 </ul>
             </li>
         </ul>
-    </div>
+    
 
     <script>
         $(document).ready(function () {
             $("#treeview").kendoTreeView();
         });</script>
 
-    <style>
+    
 
-        
-    </style>
-</div>
 
 

@@ -41,6 +41,11 @@ namespace UI.Controllers
                 {
                     c.TempGuid = BO.BAS.GetGuid();
                 }
+                v.lisA14 = Factory.a08ThemeBL.GetListA14(v.rec_pid).ToList();
+                foreach (var c in v.lisA14)
+                {
+                    c.TempGuid = BO.BAS.GetGuid();
+                }
             }
             v.Toolbar = new MyToolbarViewModel(v.Rec);
             if (isclone)
@@ -90,8 +95,18 @@ namespace UI.Controllers
             if (oper == "delete")
             {
                 v.lisA12.First(p => p.TempGuid == guid).IsTempDeleted = true;
-                //var c = v.lisA12.First(p => p.TempGuid == guid);
-                //v.lisA12.Remove(c);
+                
+                return View(v);
+            }
+            if (oper== "delete_a14")
+            {
+                v.lisA14.First(p => p.TempGuid == guid).IsTempDeleted = true;
+                return View(v);
+            }
+            if (oper== "create_a14")
+            {
+                var c = new BO.a14AttachmentToTheme() {TempGuid = BO.BAS.GetGuid() };
+                v.lisA14.Add(c);
                 return View(v);
             }
 
@@ -105,7 +120,7 @@ namespace UI.Controllers
                 c.ValidUntil = v.Toolbar.GetValidUntil(c);
                 c.ValidFrom = v.Toolbar.GetValidFrom(c);
                 
-                c.pid = Factory.a08ThemeBL.Save(c, v.lisA12.Where(p => p.IsTempDeleted == false).ToList());
+                c.pid = Factory.a08ThemeBL.Save(c, v.lisA12.Where(p => p.IsTempDeleted == false).ToList(), v.lisA14.Where(p => p.IsTempDeleted == false).ToList());
                 if (c.pid > 0)
                 {
 
@@ -124,6 +139,11 @@ namespace UI.Controllers
             {
                 v.lisA12 = new List<BO.a12ThemeForm>();
             }
+            if (v.lisA14 == null)
+            {
+                v.lisA14 = new List<BO.a14AttachmentToTheme>();
+            }
+            v.lisO13 = Factory.o13AttachmentTypeBL.GetList(new BO.myQuery("o13"));
         }
 
     }
