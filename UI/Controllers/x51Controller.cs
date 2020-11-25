@@ -14,8 +14,12 @@ namespace UI.Controllers
         public IActionResult Index(string viewurl, string pagetitle)
         {
             var v = new x51RecPage() { InputViewUrl = viewurl,PageTitle=pagetitle };
-            if (string.IsNullOrEmpty(viewurl)==false)
+            if (string.IsNullOrEmpty(v.InputViewUrl) ==false)
             {
+                if (v.InputViewUrl.Contains("?"))
+                {
+                    v.InputViewUrl = v.InputViewUrl.Split("?")[0];
+                }
                 v.Rec = Factory.x51HelpCoreBL.LoadByViewUrl(v.InputViewUrl);
                 if (v.Rec != null)
                 {
