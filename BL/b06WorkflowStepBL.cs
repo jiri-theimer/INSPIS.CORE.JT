@@ -72,6 +72,7 @@ namespace BL
             p.AddString("b06ValidateAutoMoveSQL", rec.b06ValidateAutoMoveSQL);
 
             p.AddBool("b06IsCommentRequired", rec.b06IsCommentRequired);
+            
             p.AddBool("b06IsEscalation_Timeout_Total", rec.b06IsEscalation_Timeout_Total);
             p.AddBool("b06IsEscalation_Timeout_SLA", rec.b06IsEscalation_Timeout_SLA);
             p.AddBool("b06IsManualStep", rec.b06IsManualStep);

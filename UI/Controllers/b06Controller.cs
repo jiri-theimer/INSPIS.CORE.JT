@@ -148,6 +148,7 @@ namespace UI.Controllers
                 c.b06Order = v.Rec.b06Order;
 
                 c.b06IsCommentRequired = v.Rec.b06IsCommentRequired;
+                //c.b06IsUploadRequired = v.Rec.b06IsUploadRequired;
                 c.b06IsEscalation_Timeout_Total = v.Rec.b06IsEscalation_Timeout_Total;
                 c.b06IsEscalation_Timeout_SLA = v.Rec.b06IsEscalation_Timeout_SLA;
                 c.b06IsManualStep = v.Rec.b06IsManualStep;
@@ -173,7 +174,12 @@ namespace UI.Controllers
                 c.b06ToDo_CapacityPlanUntilField = v.Rec.b06ToDo_CapacityPlanUntilField;
                 c.b06ToDo_CapacityPlanUntilMove = v.Rec.b06ToDo_CapacityPlanUntilMove;
                 c.b06ToDo_IsSendMail = v.Rec.b06ToDo_IsSendMail;
-               
+
+                c.b06IsAutoRun_Missing_Form = v.Rec.b06IsAutoRun_Missing_Form;
+                c.b06IsAutoRun_Missing_Attachment = v.Rec.b06IsAutoRun_Missing_Attachment;
+                c.b06IsFormAutoLock = v.Rec.b06IsFormAutoLock;
+                c.b06IsFormValidationRequired = v.Rec.b06IsFormValidationRequired;
+                c.b06IsAttachmentTestRequired = v.Rec.b06IsAttachmentTestRequired;
 
                 c.ValidUntil = v.Toolbar.GetValidUntil(c);
                 c.ValidFrom = v.Toolbar.GetValidFrom(c);

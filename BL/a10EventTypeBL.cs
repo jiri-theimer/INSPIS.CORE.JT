@@ -47,7 +47,7 @@ namespace BL
            
             return _db.GetList<BO.a20EventType_UserRole_PersonalPage>(sbret(), new { a10id = a10id });
         }
-
+        
 
 
         public int Save(BO.a10EventType rec, List<int> a08ids,List<BO.a20EventType_UserRole_PersonalPage> lisA20)
