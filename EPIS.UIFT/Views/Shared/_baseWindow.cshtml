@@ -1,4 +1,5 @@
 ﻿@inject UIFT.Repository.RepositoryFactory factory
+@inject BL.RunningApp app
 @{
     Layout = null;
     var rep = factory.Get();
@@ -12,7 +13,7 @@
 
 <html>
 <head>
-    <title>@rep.BL.tra("InspIS | Formuláře")</title>
+    <title>@app.AppName</title>
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 

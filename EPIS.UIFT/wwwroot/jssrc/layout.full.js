@@ -29,7 +29,7 @@ $(window).load(function () {
             modal: true,
             width: 646,
             height: 640,
-            title: "Posunout / doplnit",
+            title: UIFT.tra("Posunout / doplnit"),
             close: function (event, ui) {
                 /* odstranit dialog z dom */
                 $(this).dialog("destroy").remove();
@@ -54,7 +54,7 @@ $(window).load(function () {
                     },
                     buttons: [
                         {
-                            text: "Včetně odpovědí",
+                            text: UIFT.tra("Včetně odpovědí"),
                             click: function () {
                                 $(this).loading();
                                 location.href = $(this).data("url") + "?showAnswers=true&templateId=" + $("#exportToWordTemplate").val();

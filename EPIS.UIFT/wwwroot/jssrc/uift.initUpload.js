@@ -11,7 +11,7 @@
             
             /* limit mnozstvi souboru */
             if (maxFiles >= dataAtt.maxFiles && maxFiles > 0) {
-                alert('Dosáhli jste maximálního možného množství přiložených souborů k této otázce!');
+                alert(UIFT.tra("Dosáhli jste maximálního možného množství přiložených souborů k této otázce!"));
                 return false;
             }
 
@@ -38,7 +38,7 @@
                         var patt = new RegExp(".*\.(" + extensionsArray.join("|") + ")$", "i");
 
                         if (!patt.test(fileName)) {
-                            errors.push('Soubor ' + fileName + ' nemá požadovaný formát!');
+                            errors.push(fileName + UIFT.tra("Soubor nemá požadovaný formát!"));
                         }
                     }
 
@@ -51,7 +51,7 @@
                         }
                         
                         if (data.originalFiles[0]['size'] > max) {
-                            errors.push('Soubor je příliš velký, maximální povolená velikost je ' + parseInt(max / 1000) + ' kB!');
+                            errors.push(UIFT.tra("Soubor je příliš velký, maximální povolená velikost je (kB): ") + parseInt(max / 1000));
                         }
                     }
 
@@ -80,7 +80,7 @@
                 },
                 /* failed upload */
                 fail: function (e, data) {
-                    data.context.replaceWith('<div class="uploadValidation">Nahrávaný soubor překračuje povolenou velikost 42MB.</div>');
+                    data.context.replaceWith('<div class="uploadValidation">' + UIFT.tra("Nahrávaný soubor překračuje povolenou velikost 42MB.") + '</div>');
                 },
                 /* upload single souboru uspesne dokoncen */
                 done: function (e, data) {
@@ -99,7 +99,7 @@
 
                         $html = null;
                     } else {
-                        data.context.replaceWith('<div class="uploadValidation">Soubor se nepodařilo nahrát: ' + data.result[0].message + '</div>');
+                        data.context.replaceWith('<div class="uploadValidation">' + UIFT.tra("Soubor se nepodařilo nahrát: ") + data.result[0].message + '</div>');
 
                         /* zobrazit upload button */
                         $("#Answer_" + data.result[0].f19id).show();
@@ -122,7 +122,7 @@
 
     /* delete previously uploaded file */
     function _deleteUploadedFile() {
-        if (!confirm("Opravdu si přejete smazat tento soubor?")) {
+        if (!confirm(UIFT.tra("Opravdu si přejete smazat tento soubor?"))) {
             return false;
         }
         var guid = $(this).parent().data("guid");

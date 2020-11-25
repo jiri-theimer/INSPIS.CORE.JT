@@ -28883,13 +28883,13 @@ UIFT.DataTypeEnum =
 window.onerror = function (msg, url, line, col, error) {
     // Note that col & error are new to the HTML 5 spec and may not be 
     // supported in every browser.  It worked for me in Chrome.
-    var extra = !col ? '' : '\ncolumn: ' + col;
-    extra += !error ? '' : '\nerror: ' + error;
+    var extra = !col ? '' : '\n column: ' + col;
+    extra += !error ? '' : '\n error: ' + error;
     if (!url) url = location.href;
 
     // You can view the information in an alert to see things working like this:
-    var message = "V aplikaci nastala chyba. \n";
-    message += "Error: " + msg + "\nurl: " + url + "\nline: " + line + extra;
+    var message = UIFT.tra("V aplikaci nastala chyba ") + " \n ";
+    message += "Error: " + msg + "\n url: " + url + "\n line: " + line + extra;
     alert(message);
 
     var suppressErrorAlert = true;
@@ -28900,28 +28900,9 @@ window.onerror = function (msg, url, line, col, error) {
 
 /* Czech initialisation for the jQuery UI date picker plugin. */
 jQuery(function ($) {
-    $.datepicker.regional['cs'] = {
-        closeText: 'Zavřít',
-        prevText: '&#x3c;Dříve',
-        nextText: 'Později&#x3e;',
-        currentText: 'Nyní',
-        monthNames: ['leden', 'únor', 'březen', 'duben', 'květen', 'červen',
-        'červenec', 'srpen', 'září', 'říjen', 'listopad', 'prosinec'],
-        monthNamesShort: ['led', 'úno', 'bře', 'dub', 'kvě', 'čer',
-		'čvc', 'srp', 'zář', 'říj', 'lis', 'pro'],
-        dayNames: ['neděle', 'pondělí', 'úterý', 'středa', 'čtvrtek', 'pátek', 'sobota'],
-        dayNamesShort: ['ne', 'po', 'út', 'st', 'čt', 'pá', 'so'],
-        dayNamesMin: ['ne', 'po', 'út', 'st', 'čt', 'pá', 'so'],
-        weekHeader: 'Týd',
-        dateFormat: 'dd.mm.yy',
-        firstDay: 1,
-        isRTL: false,
-        showMonthAfterYear: false,
-        yearSuffix: '',
-        changeMonth: true,
-        changeYear: true
-    };
-    $.datepicker.setDefaults($.datepicker.regional['cs']);
+    var lang = localizationLanguageIndex == 2 ? "ua" : "cs";
+    $.datepicker.regional[lang] = datepickerLocalization.find(t => t.k == lang).v;
+    $.datepicker.setDefaults($.datepicker.regional[lang]);
 });
 
 /* nastaveni jQuery ajax */
@@ -28956,7 +28937,7 @@ $.ajaxSetup({
         if (event.status == 403) {  /* odhlasit uzivatele */
             window.open("", "_top");
         } else {
-            alert("V aplikaci nastala chyba: " + event.status);
+            alert(UIFT.tra("V aplikaci nastala chyba ") + event.status);
         }
     }
 });
@@ -29237,7 +29218,7 @@ if (!Array.prototype.indexOf) {
                 data: dataToSave,
                 success: function(data) {
                     /* info hlaska */
-                    $.jGrowl(checked ? "Otázka byla označena jako publikovatelná" : "Otázka již není publikovatelná");
+                    $.jGrowl(checked ? UIFT.tra("Otázka byla označena jako publikovatelná") : UIFT.tra("Otázka již není publikovatelná"));
                 }
             });
         });
@@ -29252,7 +29233,7 @@ if (!Array.prototype.indexOf) {
         $this.find("a.clearAnswer").click(function (e) {
             e.preventDefault();
 
-            if (confirm("Opravdu si přejete vrátit otázku do výchozího stavu?")) {
+            if (confirm(UIFT.tra("Opravdu si přejete vrátit otázku do výchozího stavu?"))) {
                 _disableOnAnswerChange = true;
 
                 var $coll = $(this).parent(),
@@ -29401,7 +29382,7 @@ if (!Array.prototype.indexOf) {
                     UIFT.ProccessDefaultValues(data.defaultValues, data.f19id);
 
                     /* info hlaska */
-                    $.jGrowl("Komentář byl uložen");
+                    $.jGrowl(UIFT.tra("Komentář byl uložen"));
 
                     /* odstranit success class po chvili */
                     window.setTimeout(function () {
@@ -29409,7 +29390,7 @@ if (!Array.prototype.indexOf) {
                         $input = null;
                     }, 1500);
                 } else {
-                    $.jGrowl("Komentář se nepodařilo uložit: " + data.message, { theme: "error", life: 5000 });
+                    $.jGrowl(UIFT.tra("Komentář se nepodařilo uložit: ") + data.message, { theme: "error", life: 5000 });
                 }
             }
         });
@@ -29598,7 +29579,7 @@ if (!Array.prototype.indexOf) {
             
             /* limit mnozstvi souboru */
             if (maxFiles >= dataAtt.maxFiles && maxFiles > 0) {
-                alert('Dosáhli jste maximálního možného množství přiložených souborů k této otázce!');
+                alert(UIFT.tra("Dosáhli jste maximálního možného množství přiložených souborů k této otázce!"));
                 return false;
             }
 
@@ -29625,7 +29606,7 @@ if (!Array.prototype.indexOf) {
                         var patt = new RegExp(".*\.(" + extensionsArray.join("|") + ")$", "i");
 
                         if (!patt.test(fileName)) {
-                            errors.push('Soubor ' + fileName + ' nemá požadovaný formát!');
+                            errors.push(fileName + UIFT.tra("Soubor nemá požadovaný formát!"));
                         }
                     }
 
@@ -29638,7 +29619,7 @@ if (!Array.prototype.indexOf) {
                         }
                         
                         if (data.originalFiles[0]['size'] > max) {
-                            errors.push('Soubor je příliš velký, maximální povolená velikost je ' + parseInt(max / 1000) + ' kB!');
+                            errors.push(UIFT.tra("Soubor je příliš velký, maximální povolená velikost je (kB): ") + parseInt(max / 1000));
                         }
                     }
 
@@ -29667,7 +29648,7 @@ if (!Array.prototype.indexOf) {
                 },
                 /* failed upload */
                 fail: function (e, data) {
-                    data.context.replaceWith('<div class="uploadValidation">Nahrávaný soubor překračuje povolenou velikost 42MB.</div>');
+                    data.context.replaceWith('<div class="uploadValidation">' + UIFT.tra("Nahrávaný soubor překračuje povolenou velikost 42MB.") + '</div>');
                 },
                 /* upload single souboru uspesne dokoncen */
                 done: function (e, data) {
@@ -29686,7 +29667,7 @@ if (!Array.prototype.indexOf) {
 
                         $html = null;
                     } else {
-                        data.context.replaceWith('<div class="uploadValidation">Soubor se nepodařilo nahrát: ' + data.result[0].message + '</div>');
+                        data.context.replaceWith('<div class="uploadValidation">' + UIFT.tra("Soubor se nepodařilo nahrát: ") + data.result[0].message + '</div>');
 
                         /* zobrazit upload button */
                         $("#Answer_" + data.result[0].f19id).show();
@@ -29709,7 +29690,7 @@ if (!Array.prototype.indexOf) {
 
     /* delete previously uploaded file */
     function _deleteUploadedFile() {
-        if (!confirm("Opravdu si přejete smazat tento soubor?")) {
+        if (!confirm(UIFT.tra("Opravdu si přejete smazat tento soubor?"))) {
             return false;
         }
         var guid = $(this).parent().data("guid");
@@ -29872,11 +29853,19 @@ function hardrefresh() {
     location.reload();
 };
 
+UIFT.tra = function (text) {
+    var t = appLocalization.find(t => t.k == text);
+    for (var i = 0; i < appLocalization.length; i++) {
+        if (appLocalization[i].k == text) return appLocalization[i].v;
+    }
+    return "?" + text + "?";
+};
+
 /* Zavrit okno s formularem. Kontroluje, zda se volani window.close() podarilo, pokud ne - da hlasku uzivateli. */
 UIFT.CloseWindow = function () {
     window.close();
     if (!window.closed) {
-        alert("Okno nebylo možné zavřít. Prosím, zavřete okno standardním způsobem.");
+        alert(UIFT.tra("Okno nebylo možné zavřít. Prosím, zavřete okno standardním způsobem."));
     }
 };
 
@@ -29990,7 +29979,7 @@ UIFT.InitShrnuti = function () {
 
     /* ukoncovaci tlacitko */
     $(".shrnutiButton button").click(function (e) {
-        if (confirm("Opravdu si přejete uzamknout tento formulář?")) {
+        if (confirm(UIFT.tra("Opravdu si přejete uzamknout tento formulář?"))) {
             $("#contentContainerInner").loading();
 
             $.ajax({
@@ -30072,7 +30061,7 @@ UIFT.SaveAnswerToDb = function(dataToSave) {
                 }
 
                 /* info hlaska */
-                $.jGrowl("Odpověď byla uložena");
+                $.jGrowl(UIFT.tra("Odpověď byla uložena"));
 
                 /* doplnit nove default values do elementu na strance */
                 UIFT.ProccessDefaultValues(data.defaultValues, data.f19id);

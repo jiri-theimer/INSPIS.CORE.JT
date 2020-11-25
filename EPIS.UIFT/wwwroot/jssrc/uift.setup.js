@@ -2,13 +2,13 @@
 window.onerror = function (msg, url, line, col, error) {
     // Note that col & error are new to the HTML 5 spec and may not be 
     // supported in every browser.  It worked for me in Chrome.
-    var extra = !col ? '' : '\ncolumn: ' + col;
-    extra += !error ? '' : '\nerror: ' + error;
+    var extra = !col ? '' : '\n column: ' + col;
+    extra += !error ? '' : '\n error: ' + error;
     if (!url) url = location.href;
 
     // You can view the information in an alert to see things working like this:
-    var message = "V aplikaci nastala chyba. \n";
-    message += "Error: " + msg + "\nurl: " + url + "\nline: " + line + extra;
+    var message = UIFT.tra("V aplikaci nastala chyba ") + " \n ";
+    message += "Error: " + msg + "\n url: " + url + "\n line: " + line + extra;
     alert(message);
 
     var suppressErrorAlert = true;
@@ -19,28 +19,9 @@ window.onerror = function (msg, url, line, col, error) {
 
 /* Czech initialisation for the jQuery UI date picker plugin. */
 jQuery(function ($) {
-    $.datepicker.regional['cs'] = {
-        closeText: 'Zavřít',
-        prevText: '&#x3c;Dříve',
-        nextText: 'Později&#x3e;',
-        currentText: 'Nyní',
-        monthNames: ['leden', 'únor', 'březen', 'duben', 'květen', 'červen',
-        'červenec', 'srpen', 'září', 'říjen', 'listopad', 'prosinec'],
-        monthNamesShort: ['led', 'úno', 'bře', 'dub', 'kvě', 'čer',
-		'čvc', 'srp', 'zář', 'říj', 'lis', 'pro'],
-        dayNames: ['neděle', 'pondělí', 'úterý', 'středa', 'čtvrtek', 'pátek', 'sobota'],
-        dayNamesShort: ['ne', 'po', 'út', 'st', 'čt', 'pá', 'so'],
-        dayNamesMin: ['ne', 'po', 'út', 'st', 'čt', 'pá', 'so'],
-        weekHeader: 'Týd',
-        dateFormat: 'dd.mm.yy',
-        firstDay: 1,
-        isRTL: false,
-        showMonthAfterYear: false,
-        yearSuffix: '',
-        changeMonth: true,
-        changeYear: true
-    };
-    $.datepicker.setDefaults($.datepicker.regional['cs']);
+    var lang = localizationLanguageIndex == 2 ? "ua" : "cs";
+    $.datepicker.regional[lang] = datepickerLocalization.find(t => t.k == lang).v;
+    $.datepicker.setDefaults($.datepicker.regional[lang]);
 });
 
 /* nastaveni jQuery ajax */
@@ -75,7 +56,7 @@ $.ajaxSetup({
         if (event.status == 403) {  /* odhlasit uzivatele */
             window.open("", "_top");
         } else {
-            alert("V aplikaci nastala chyba: " + event.status);
+            alert(UIFT.tra("V aplikaci nastala chyba ") + event.status);
         }
     }
 });

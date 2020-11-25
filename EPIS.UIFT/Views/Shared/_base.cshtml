@@ -35,8 +35,11 @@
     {
         <link rel="stylesheet" href="@(configuration.ThemeCss)">
     }
+
+    @Html.Partial("_jsLoc")
+    <script type="text/javascript">localizationLanguageIndex = @(app.DefaultLangIndex);</script>
     <script type="text/javascript" src="~/ckeditor/ckeditor.js?v=457"></script>
-    <script type="text/javascript" src="~/js/uift.min.js?v=2"></script>
+    <script type="text/javascript" src="~/js/uift.js?v=2"></script>
     <script type="text/javascript" src="~/js/layout.full.js?v=2"></script>
     <script type="text/javascript">
         UIFT.WebRoot = "@webRoot";
