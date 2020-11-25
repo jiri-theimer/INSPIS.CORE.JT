@@ -130,7 +130,7 @@
                 data: dataToSave,
                 success: function(data) {
                     /* info hlaska */
-                    $.jGrowl(checked ? "Otázka byla označena jako publikovatelná" : "Otázka již není publikovatelná");
+                    $.jGrowl(checked ? UIFT.tra("Otázka byla označena jako publikovatelná") : UIFT.tra("Otázka již není publikovatelná"));
                 }
             });
         });
@@ -145,7 +145,7 @@
         $this.find("a.clearAnswer").click(function (e) {
             e.preventDefault();
 
-            if (confirm("Opravdu si přejete vrátit otázku do výchozího stavu?")) {
+            if (confirm(UIFT.tra("Opravdu si přejete vrátit otázku do výchozího stavu?"))) {
                 _disableOnAnswerChange = true;
 
                 var $coll = $(this).parent(),
@@ -294,7 +294,7 @@
                     UIFT.ProccessDefaultValues(data.defaultValues, data.f19id);
 
                     /* info hlaska */
-                    $.jGrowl("Komentář byl uložen");
+                    $.jGrowl(UIFT.tra("Komentář byl uložen"));
 
                     /* odstranit success class po chvili */
                     window.setTimeout(function () {
@@ -302,7 +302,7 @@
                         $input = null;
                     }, 1500);
                 } else {
-                    $.jGrowl("Komentář se nepodařilo uložit: " + data.message, { theme: "error", life: 5000 });
+                    $.jGrowl(UIFT.tra("Komentář se nepodařilo uložit: ") + data.message, { theme: "error", life: 5000 });
                 }
             }
         });

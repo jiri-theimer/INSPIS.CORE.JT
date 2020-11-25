@@ -8,11 +8,19 @@ function hardrefresh() {
     location.reload();
 };
 
+UIFT.tra = function (text) {
+    var t = appLocalization.find(t => t.k == text);
+    for (var i = 0; i < appLocalization.length; i++) {
+        if (appLocalization[i].k == text) return appLocalization[i].v;
+    }
+    return "?" + text + "?";
+};
+
 /* Zavrit okno s formularem. Kontroluje, zda se volani window.close() podarilo, pokud ne - da hlasku uzivateli. */
 UIFT.CloseWindow = function () {
     window.close();
     if (!window.closed) {
-        alert("Okno nebylo možné zavřít. Prosím, zavřete okno standardním způsobem.");
+        alert(UIFT.tra("Okno nebylo možné zavřít. Prosím, zavřete okno standardním způsobem."));
     }
 };
 
@@ -126,7 +134,7 @@ UIFT.InitShrnuti = function () {
 
     /* ukoncovaci tlacitko */
     $(".shrnutiButton button").click(function (e) {
-        if (confirm("Opravdu si přejete uzamknout tento formulář?")) {
+        if (confirm(UIFT.tra("Opravdu si přejete uzamknout tento formulář?"))) {
             $("#contentContainerInner").loading();
 
             $.ajax({
@@ -208,7 +216,7 @@ UIFT.SaveAnswerToDb = function(dataToSave) {
                 }
 
                 /* info hlaska */
-                $.jGrowl("Odpověď byla uložena");
+                $.jGrowl(UIFT.tra("Odpověď byla uložena"));
 
                 /* doplnit nove default values do elementu na strance */
                 UIFT.ProccessDefaultValues(data.defaultValues, data.f19id);
