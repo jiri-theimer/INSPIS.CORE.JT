@@ -18,54 +18,58 @@
 
 <h1>Telerik</h1>
 
+<peklo>
+    <ul id="treeview">
+        <li>Import školských oborů z XLS</li>
+        <li data-expanded='true'>Inspekční činnost<ul><li>Oznámení o inspekční činnosti</li><li>Oznámení školské radě</li><li>Oznámení zřizovateli</li><li>Podnět obecný</li><li>Potvrzení o přijetí podnětu</li><li>Potvrzení o přijetí podnětu - postoupení</li><li>Potvrzení o přijetí podnětu - postoupení části</li><li>Pověření k inspekční činnosti</li></ul></li>
+        <li data-expanded='true'>Inspekční zpráva<ul><li>Stanoviska k připomínkám</li></ul></li>
+        <li>Inspekční zpráva - sken s podpisem ředitele</li>
+        <li>Jiné</li>
+        <li>MS Excel Import</li>
+        <li>Námitky</li>
+        <li>Obrázek školy na portál</li>
+        <li>Odpověď otázky</li>
+        <li>Podnět</li>
+        <li data-expanded='true'>Protokol o kontrole<ul><li>Oznámení Ministerstvu financí</li><li>Oznámení o podezření na porušení rozpočtové kázně</li><li>Podnět Ministerstvu vnitra</li></ul></li>
+        <li>Protokol o kontrole - sken s podpisem ředitele</li>
+        <li>Protokol o vyplnění...</li>
+        <li>Přijetí opatření</li>
+        <li data-expanded='true'>Příloha k akci<ul><li>Příloha k požadavku</li></ul></li>
+        <li>Příloha k akci II</li>
+        <li>Příloha k formuláři</li>
+        <li>Příloha k nápovědě</li>
+        <li>Příloha k otázce formuláře</li>
+        <li>Příloha k poštovní zprávě</li>
+        <li data-expanded='true'>Příloha k sekci formuláře<ul><li>MULTIMEDIA sekce formuláře</li><li>Příloha sekce formuláře</li></ul></li>
+        <li>Příloha otázky</li>
+        <li>Příloha RVP</li>
+        <li>Příloha v rámci workflow dialogu</li>
+        <li>Přílohy formulářů</li>
+        <li>Připomínky k IZ</li>
+        <li>RŠ příloha</li>
+        <li>Segment</li>
+        <li>Soubor šablony sestavy</li>
+        <li data-expanded='true'>Stížnost<ul><li>Opatření zřizovatele</li><li>Oznámení o přijetí a postoupení části stížnosti (dopis stěžovateli)</li><li>Oznámení o přijetí a postoupení stížnosti (dopis stěžovateli)</li><li>Oznámení o přijetí stížnosti (dopis stěžovateli)</li><li>Postoupení části stížnosti</li><li>Postoupení stížnosti</li><li>Průvodní dopis k výsledku šetření stížnosti (určený řediteli školy)</li><li>Průvodní dopis k výsledku šetření stížnosti (určený zřizovateli)</li><li>Průvodní dopis k výsledku šetření stížnosti (vyrozumění stěžovatele)</li><li>Předání stížnosti k vyjádření</li><li>Výsledek šetření stížnosti</li></ul></li>
+        <li>Šablona ŠVP</li>
+        <li data-expanded='true'>ŠVP výstup<ul><li>Import předmětu - log</li><li>Import učebního plánu - log</li><li>Kopírování ŠVP mezi institucemi - log</li></ul></li>
+        <li>Učební plán</li>
+        <li>XLS import do formulářů</li>
+        <li>XLS šablona cesťáku</li>
+        <li>XML import soubor</li>
+        <li>Zpráva z pilotáže</li>
+    </ul>
 
-        <ul id="treeview">
-            <li data-expanded="true">
-                <img src="~/images/form.png" />
-                Docela dlouhý nápis ve stromu
-                <ul>
-                    <li data-expanded="true">
-                        
-                        <a class="cm" onclick="_cm(event, 'f06Form',200683);">☰</a>
-                        <span ondblclick="_notify_message('dblclick')">Segment formuláře</span>
-                        <ul>
-                            <li>
-                                <a class="cm" onclick="_cm(event, 'f06Form',200683);">☰</a>
-                                <img src="~/images/type_radio.png" />
-                                <span ondblclick="_notify_message('dblclick')">Otázka v segmentu</span>
-                            </li>
-                            <li><img src="~/images/type_text.png" />body-back.png</li>
-                            <li><img src="~/images/type_text.png" />my-photo.jpg</li>
-                        </ul>
-                    </li>
-                    <li data-expanded="false">
-                        <span class="k-sprite folder"></span>resources
-                        <ul>
-                            <li data-expanded="true">
-                                <span class="k-sprite folder"></span>pdf
-                                <ul>
-                                    <li><span class="k-sprite pdf"></span>brochure.pdf</li>
-                                    <li><span class="k-sprite pdf"></span>prices.pdf</li>
-                                </ul>
-                            </li>
-                            <li><span class="k-sprite folder"></span>zip</li>
-                        </ul>
-                    </li>
-                    <li>about.html</li>
-                    <li>contacts.html</li>
-                    <li>index.html</li>
-                    <li>portfolio.html</li>
-                </ul>
-            </li>
-        </ul>
-    
 
     <script>
         $(document).ready(function () {
-            $("#treeview").kendoTreeView();
-        });</script>
 
-    
+            var treeview = $('#treeview').kendoTreeView();
 
+          
+        });
+    </script>
+
+
+</peklo>
 
 

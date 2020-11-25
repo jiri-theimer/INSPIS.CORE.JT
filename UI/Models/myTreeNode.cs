@@ -23,6 +23,8 @@ namespace UI.Models
 
         public string ImgUrl { get; set; }
         public string CssClass { get; set; }
+
+        public bool Expanded { get; set; }
     }
 
     

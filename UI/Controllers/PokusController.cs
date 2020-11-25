@@ -94,8 +94,8 @@ namespace UI.Controllers
         public IActionResult Strom()
         {
             var v = new UI.Models.Pokus();
+            RefreshState(v);
 
-           
 
 
 
@@ -127,7 +127,7 @@ namespace UI.Controllers
         {
             v.treeNodes = new List<myTreeNode>();
 
-            foreach (var rec in Factory.o13AttachmentTypeBL.GetList(new BO.myQuery("o13AttachmentType")))
+            foreach (var rec in Factory.o13AttachmentTypeBL.GetList(new BO.myQuery("o13")))
             {
                 var c = new myTreeNode()
                 {
@@ -138,9 +138,20 @@ namespace UI.Controllers
                     TreeIndexTo = rec.o13TreeIndexTo,
                     Pid = rec.pid,
                     ParentPid = rec.o13ParentID,
-                    Prefix = "o13"
+                    Expanded=true,
+                    Prefix="o13"
+
 
                 };
+                if (c.TreeIndexTo > c.TreeIndexFrom)
+                {
+                    c.CssClass = "cervena";
+                }
+                else
+                {
+                    c.ImgUrl = "/images/type_text.png";
+                    c.Prefix = "";
+                }
                 v.treeNodes.Add(c);
 
             }

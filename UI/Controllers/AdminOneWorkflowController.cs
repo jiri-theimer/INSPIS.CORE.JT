@@ -76,7 +76,10 @@ namespace UI.Controllers
                     TreeIndexFrom = x,
                     TreeIndexTo = x,
                     Pid = recB02.pid,                    
-                    Prefix = "b02"                    
+                    Prefix = "b02",
+                    ImgUrl="/images/ministamp.gif",
+                    CssClass="stav",
+                    Expanded=true
 
                 };
                 if (recB02.isclosed)
@@ -101,7 +104,8 @@ namespace UI.Controllers
                         TreeIndex = x,
                         TreeLevel = 2,
                         TreeIndexFrom = x,
-                        TreeIndexTo = x
+                        TreeIndexTo = x,
+                        ImgUrl= "/images/bullet2.gif"
                     };
                     if (recB06.isclosed)
                     {
@@ -110,6 +114,7 @@ namespace UI.Controllers
                     if (recB06.b02ID_Target > 0)
                     {
                         cB06.Text += " -> " + recB06.TargetStatus;
+                        cB06.ImgUrl = "/images/bullet1.gif";
                     }
                     v.treeNodes.Add(cB06);
                     c.TreeIndexTo = x;
