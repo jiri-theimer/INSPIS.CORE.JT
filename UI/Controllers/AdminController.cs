@@ -165,9 +165,11 @@ namespace UI.Controllers
                     TreeIndexTo = rec.o13TreeIndexTo,
                     Pid = rec.pid,
                     ParentPid = rec.o13ParentID,
-                    Prefix = "o13"
+                    Prefix = "o13",
+                    Expanded=true
 
                 };
+
                 v.treeNodes.Add(c);
 
             }
@@ -187,7 +189,8 @@ namespace UI.Controllers
                     TreeIndexTo = rec.x32TreeIndexTo,
                     Pid = rec.pid,
                     ParentPid = rec.x32ParentID,
-                    Prefix = "x32"
+                    Prefix = "x32",
+                    Expanded=true
 
                 };
                 v.treeNodes.Add(c);
@@ -209,7 +212,8 @@ namespace UI.Controllers
                     TreeIndexTo = rec.f12TreeIndexTo,
                     Pid = rec.pid,
                     ParentPid = rec.f12ParentID,
-                    Prefix = "f12"
+                    Prefix = "f12",
+                    Expanded=true
 
                 };
                 v.treeNodes.Add(c);

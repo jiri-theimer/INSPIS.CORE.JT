@@ -77,7 +77,9 @@ namespace UI.Controllers
                     Pid = recF18.pid,
                     ParentPid = recF18.f18ParentID,
                     Prefix = "f18",
-                    CssClass="f18"
+                    CssClass="segment",
+                    ImgUrl="/images/bullet4.gif",
+                    Expanded=true
 
                 };
                 if (recF18.isclosed)
@@ -99,7 +101,7 @@ namespace UI.Controllers
                         TreeLevel = c.TreeLevel + 1,
                         TreeIndexFrom = c.TreeIndex + 1,
                         TreeIndexTo = c.TreeIndex + 1,
-                        ImgUrl = "battery.png"
+                        ImgUrl = "/images/battery.png"
                     };
                     if (recF26.isclosed)
                     {
@@ -120,7 +122,7 @@ namespace UI.Controllers
                             TreeLevel = cF26.TreeLevel + 1,
                             TreeIndexFrom = cF26.TreeIndex + x,
                             TreeIndexTo = cF26.TreeIndex + x,
-                            ImgUrl = recF19In.Icon
+                            ImgUrl = "/images/"+recF19In.Icon
                         };
                         if (v.IsShowF19ID)
                         {
@@ -163,7 +165,7 @@ namespace UI.Controllers
                             TreeLevel = recF18.f18TreeLevel + 1,
                             TreeIndexFrom = recF18.f18TreeIndex * 100000 + x,
                             TreeIndexTo = recF18.f18TreeIndex * 100000 + x,
-                            ImgUrl=recP19.Icon
+                            ImgUrl="/images/"+recP19.Icon
                         };
                         if (v.IsShowF19ID)
                         {

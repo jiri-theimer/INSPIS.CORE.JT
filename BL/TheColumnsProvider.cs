@@ -438,8 +438,7 @@ namespace BL
 
             //f12 = typ formuláře            
             AF("f12FormType", "TreeItem", "Typ formuláře", 1, "case when a.f12TreeLevel > 1 then replace(space(2 * (a.f12TreeLevel - 1)), ' ', '-') else '' END + a.f12Name", "string", false, true);
-            AF("f12FormType", "f12Name", "Název", 2);
-            AF("f12FormType", "f06ExportCode", "STAT kód", 2);
+            AF("f12FormType", "f12Name", "Název", 2);            
             AF("f12FormType", "ParentPath", "Nadřízený", 1, "dbo._core_f12_get_parent_inline(a.f12ID)");
             AF("f12FormType", "f12Hint", "Úvodní instrukce");
             AF("f12FormType", "f06IsExportToDoc", "Export do DOC");

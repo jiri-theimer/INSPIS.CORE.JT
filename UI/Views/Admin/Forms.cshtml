@@ -9,6 +9,34 @@
 @addTagHelper *, UI
 
 
+
+@if (Model.view == "tree")
+{
+    <style type="text/css">
+
+        #tree1 img {
+            margin-right: 5px;
+            margin-left: 3px;
+            vertical-align: baseline;
+        }
+
+        #tree1 .cm {
+            margin-left: 10px;
+        }
+
+     
+    </style>
+
+    <link href="/kendo/styles/kendo.common.min.css" rel="stylesheet" type="text/css" />
+    <link href="/kendo/styles/kendo.default.min.css" rel="stylesheet" type="text/css" />
+    <link href="/kendo/styles/kendo.default.mobile.min.css" rel="stylesheet" type="text/css" />
+
+    <script src="/kendo/js/kendo.core.min.js"></script>
+
+    <script src="/kendo/js/kendo.data.min.js"></script>
+    <script src="/kendo/js/kendo.treeview.min.js"></script>
+}
+
 <div class="row py-3 bg-light m-0">
     <div class="col-auto" style="width:190px;">
         <a class="cm h4 mx-0" onclick="_cm(event, 'Forms',0,'@Model.prefix');">☰@_f.tra("Formuláře")</a>
@@ -53,7 +81,7 @@
 
     @if (Model.view == "tree")
     {
-        <mytree asp-for="@Model.treeNodes" treestate="@Model.TreeState" expandall="true"></mytree>
+    <tetree asp-for="@Model.treeNodes" auto_client_init="false" clientid="tree1"></tetree>
     }
     else
     {
@@ -77,36 +105,42 @@
     $(document.body).css("overflow", "hidden");
 
     $(document).ready(function () {
+        @if (Model.view == "tree")
+        {
+        <text>
+        $("#tree1").kendoTreeView();
+        </text>
+        }
         $("#cmdNew").click(function () {
-            var prefix = "@Model.prefix";
-            var url = "/"+prefix+"/Record?pid=0";
-            _window_open(url,1,"@Model.entityTitle");
-        });
+                var prefix = "@Model.prefix";
+                var url = "/"+prefix+"/Record?pid=0";
+                _window_open(url,1,"@Model.entityTitle");
+            });
 
         $.post("/Menu/AdminForms", { prefix: "@Model.prefix" }, function (data) {
 
             $("#layout_sidebar").html(data);
 
-            if (document.getElementById("menu_active_item")) {
-                document.getElementById("menu_active_item").scrollIntoView(true);
-            }
+                if (document.getElementById("menu_active_item")) {
+                    document.getElementById("menu_active_item").scrollIntoView(true);
+                }
 
 
 
-        });
+            });
 
 
 
-        _mainmenu_highlight_current("cmdAdmin");
+            _mainmenu_highlight_current("cmdAdmin");
 
 
-        var offset = $("#layout_sidebar").offset();
-        var h_vertical = _device.innerHeight - offset.top;
-        h_vertical = parseInt(h_vertical) + 10;
+            var offset = $("#layout_sidebar").offset();
+            var h_vertical = _device.innerHeight - offset.top;
+            h_vertical = parseInt(h_vertical) + 10;
         $("#layout_sidebar").css("height", h_vertical + "px");
 
 
-    });
+        });
 
 
     /*automaticky volaná událost z thegrid controlu*/

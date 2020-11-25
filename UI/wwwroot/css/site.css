@@ -45,9 +45,7 @@ tr.isclosed td {
     text-decoration: line-through;
 }
 
-.f18 {
-    color: brown;
-}
+
 
 tr.isclosed_by_color td {
     color: gray;
