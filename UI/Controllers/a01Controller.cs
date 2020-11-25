@@ -85,7 +85,7 @@ namespace UI.Controllers
                 c.pid = Factory.a01EventBL.SaveA24Record(c);                
                 if (c.pid > 0)
                 {                    
-                    v.SetJavascript_CallOnLoad(c.pid);
+                    v.SetJavascript_CallOnLoad("/a01/RecPage?pid="+v.SelectedA01ID.ToString());
                     return View(v);
                 }
 

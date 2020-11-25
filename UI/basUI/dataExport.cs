@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BL;
+using BO;
 using ClosedXML.Excel;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using SQLitePCL;
 
 namespace UI
@@ -125,7 +127,7 @@ namespace UI
             {
                 var worksheet = workbook.Worksheets.Add("Grid");
                 int row = 1;
-                int col = 1;
+                int col = 1;                
 
                 foreach (var c in cols)
                 {
@@ -134,17 +136,38 @@ namespace UI
 
                     col += 1;
                 }
-
+                var coltypes = new List<StringPair>();
+                foreach(System.Data.DataColumn c in dt.Columns)
+                {
+                    coltypes.Add(new BO.StringPair() { Key = c.ColumnName, Value = c.DataType.Name });                    
+                }
+                //worksheet.Column(1).CellsUsed().SetDataType(XLDataType.Text);
                 row += 1;
                 foreach (System.Data.DataRow dr in dt.Rows)
                 {
                     col = 1;
                     foreach (var c in cols)
                     {
-
+                        
                         if (!Convert.IsDBNull(dr[c.Key]))
                         {
                             worksheet.Cell(row, col).Value = dr[c.Key];
+                            
+                            if (c.Key.ToUpper().Substring(0, 3) != "COL")    //vynechat v exportu statistiky sloupce colXXXX, které jsou fyzicky stringy!
+                            {
+                                switch (coltypes.Where(p => p.Key == c.Key).First().Value)
+                                {
+                                    case "Boolean":
+                                        worksheet.Cell(row, col).DataType = XLDataType.Boolean;
+                                        break;
+                                    case "String":
+                                        worksheet.Cell(row, col).DataType = XLDataType.Text;                                        
+                                        break;
+                                    case "DateTime":
+                                        worksheet.Cell(row, col).DataType = XLDataType.DateTime;
+                                        break;
+                                }
+                            }
 
                         }
                         col += 1;

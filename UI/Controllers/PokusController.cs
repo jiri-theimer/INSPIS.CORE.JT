@@ -101,6 +101,12 @@ namespace UI.Controllers
 
             return View(v);
         }
+        public IActionResult Telerik()
+        {
+            var v = new UI.Models.Pokus();
+
+            return View(v);
+        }
 
         [HttpPost]
         public IActionResult Strom(Models.Pokus v)

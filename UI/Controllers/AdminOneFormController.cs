@@ -13,6 +13,7 @@ namespace UI.Controllers
         public IActionResult Index(int f06id,string view)
         {
             var v = new AdminOneForm() { f06ID = f06id,view=view };
+            v.IsShowF19ID = Factory.CBL.LoadUserParamBool("AdminOneForm-IsShowF19ID", false);
             if (string.IsNullOrEmpty(v.view) == true)
             {
                 v.view = Factory.CBL.LoadUserParam("AdminOneForm-View-", "tree");
@@ -121,6 +122,10 @@ namespace UI.Controllers
                             TreeIndexTo = cF26.TreeIndex + x,
                             ImgUrl = recF19In.Icon
                         };
+                        if (v.IsShowF19ID)
+                        {
+                            cIN.Text = cIN.Pid.ToString() + " - " + cIN.Text;
+                        }
                         if (recF19In.f19Ordinal != 0)
                         {
                             cIN.Text += " #" + recF19In.f19Ordinal.ToString();
@@ -160,6 +165,10 @@ namespace UI.Controllers
                             TreeIndexTo = recF18.f18TreeIndex * 100000 + x,
                             ImgUrl=recP19.Icon
                         };
+                        if (v.IsShowF19ID)
+                        {
+                            c.Text = c.Pid.ToString() + " - " + c.Text;
+                        }
                         if (recP19.f19Ordinal != 0)
                         {
                             c.Text += " #" + recP19.f19Ordinal.ToString();

@@ -44,10 +44,10 @@
                 <hr />
 
                 <select asp-for="@Model.SelectedA46ID" class="form-control">
-                    <option value="4">@_f.tra("Je podřízena vůči") @(Model.RecA01.a01Signature)</option>
-                    <option value="1">@_f.tra("Závisí na")  @(Model.RecA01.a01Signature)</option>
-                    <option value="2">@_f.tra("Je duplikátem")  @(Model.RecA01.a01Signature)</option>
-                    <option value="3">@_f.tra("Souvisí s")  @(Model.RecA01.a01Signature)</option>
+                    <option value="4">@(Model.RecA01Selected.a01Signature+" "+ _f.tra("Je podřízena vůči")+" "+Model.RecA01.a01Signature)</option>
+                    <option value="1">@(Model.RecA01Selected.a01Signature + " " + _f.tra("Závisí na")+" "+Model.RecA01.a01Signature)</option>
+                    <option value="2">@(Model.RecA01Selected.a01Signature + " " + _f.tra("Je duplikátem")+" "+Model.RecA01.a01Signature)</option>
+                    <option value="3">@(Model.RecA01Selected.a01Signature + " " + _f.tra("Souvisí s")+" "+Model.RecA01.a01Signature)</option>
                 </select>
             </div>
             <div class="form-row my-2">

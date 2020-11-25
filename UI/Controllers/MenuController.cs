@@ -103,7 +103,7 @@ namespace UI.Controllers
         {
             if (Factory.CurrentUser.TestPermCiselniky(j03AdminRoleValueFlagEnum.uzivatel_er,j03AdminRoleValueFlagEnum.uzivatel_ro))
             {
-                AMI("Uživatelé", "/Admin/Users");
+                AMI("Uživatelé", "/Admin/Users?prefix=j03");
             }
             
             
@@ -172,6 +172,7 @@ namespace UI.Controllers
             DIV_TRANS("Osobní profily");
             AMI("Osobní profily", url_users("j02"));
             AMI("Týmy osob", url_users("j11"));
+            AMI("Osoby v inspektorátech", url_users("a02"));
 
             DIV_TRANS("Provoz");
             AMI("PING Log", url_users("j92"));
@@ -415,27 +416,45 @@ namespace UI.Controllers
                         
                         
                         break;
-                    }
-                    if (recA01.a01ChildsCount > 0)
+                    }                    
+                    
+                    var lisA24 = Factory.a01EventBL.GetList_a24(pid);
+                    if (lisA24.Where(p => p.a46ID == 4 && p.a01ID_Right==pid).Count() > 0)
                     {
-                        AMI_NOTRA(Factory.tra("Podřízené akce") + "<img src='/Images/child.png'/>", null, null, "Nadrizena");
-                        RenderPodrizeneAkce(recA01.pid, "Nadrizena",recA01);
+                        AMI_NOTRA(Factory.tra("Podřízené akce") + " (" + lisA24.Where(p => p.a46ID == 4 && p.a01ID_Right == pid).Count().ToString() + ")<img src='/Images/child.png'/>", null, null, "Podrizena");
+                        //RenderPodrizeneAkce(recA01.pid, "Nadrizena", recA01);
+                        RenderAkceSeVztahem("Podrizena", recA01, lisA24.Where(p => p.a46ID == 4));
+                    }
+                    
+                    if (lisA24.Where(p => p.a46ID == 3).Count() > 0)
+                    {
+                        AMI_NOTRA(Factory.tra("Souvisí s") + " (" + lisA24.Where(p => p.a46ID == 3).Count().ToString() + ")<img src='/Images/souvisejici.png'/>", null, null, "Souvisi");
+                        RenderAkceSeVztahem("Souvisi", recA01, lisA24.Where(p => p.a46ID == 3));
+                    }
+                    if (lisA24.Where(p => p.a46ID == 1).Count() > 0)
+                    {
+                        AMI_NOTRA(Factory.tra("Závisí na") + " (" + lisA24.Where(p => p.a46ID == 1).Count().ToString() + ")<img src='/Images/zavisla.png'/>", null, null, "Zavisi");
+                        RenderAkceSeVztahem("Zavisi", recA01, lisA24.Where(p => p.a46ID == 1));
+                    }
+                    if (lisA24.Where(p => p.a46ID == 2).Count() > 0)
+                    {
+                        AMI_NOTRA(Factory.tra("Je duplikátem") + " (" + lisA24.Where(p => p.a46ID == 2).Count().ToString() + ")<img src='/Images/duplikat.png'/>", null, null, "Duplikat");
+                        RenderAkceSeVztahem("Duplikat", recA01, lisA24.Where(p => p.a46ID == 2));
                     }
                     if (recA01.a01ParentID > 0)
                     {
-                        AMI_NOTRA(Factory.tra("Nadřízená akce")+ "<img src='/Images/mother.png'/>", "javascript:_location_replace_top('"+Factory.a01EventBL.GetPageUrl(recA01,recA01.a01ParentID)+"')",null,"Nadrizena");
-
-                        
-                        RenderPodrizeneAkce(recA01.a01ParentID, "Nadrizena",recA01);
-                        
+                        AMI_NOTRA(Factory.tra("Nadřízená")+ "<img src='/Images/mother.png'/>"+Factory.a01EventBL.Load(recA01.a01ParentID).a01Signature, Factory.a01EventBL.GetPageUrl(recA01,recA01.a01ParentID),null,"Nadrizena","_top");
+                        RenderAkceSeVztahem("Nadrizena", recA01, lisA24.Where(p => p.a46ID == 4 && p.a01ID_Left !=pid));
+                        //RenderPodrizeneAkce(recA01.a01ParentID, "Nadrizena",recA01);                        
                     }
                     else
                     {
                         AMI("Posunout/Doplnit", string.Format("javascript: _window_open('/workflow/Dialog?pid={0}')", pid));
                         AMI("Nahrát přílohu", string.Format("javascript:_window_open('/a01/AddAttachment?pid={0}')", pid));
                     }
-                    
-                    
+
+
+
                     AMI("Tisková sestava", string.Format("javascript: _window_open('/x31/ReportContext?pid={0}&prefix=a01',2)", pid));
                   
                     if (permA01.PermValue == a01EventPermissionENUM.ShareTeam_Leader || permA01.PermValue == a01EventPermissionENUM.ShareTeam_Owner || permA01.PermValue == a01EventPermissionENUM.FullAccess)
@@ -732,38 +751,69 @@ namespace UI.Controllers
 
             return FlushResult_UL();
         }
-
-        private void RenderPodrizeneAkce(int intParentA01ID,string strMenuParentID,BO.a01Event recCurrentA01)
+        private void RenderAkceSeVztahem(string strMenuParentID, BO.a01Event recCurrentA01,IEnumerable<BO.a24EventRelation> lisA24)
         {
-            var strName = recCurrentA01.a01Signature+ "<img src='/Images/mother.png'/>";
-            var strURL = Factory.a01EventBL.GetPageUrl(recCurrentA01, intParentA01ID);
-            if (intParentA01ID != recCurrentA01.pid)
+            string strName = "";
+            foreach(var c in lisA24)
             {
-                var cA01 = Factory.a01EventBL.Load(intParentA01ID);
-                strName = cA01.a01Signature+ "<img src='/Images/mother.png'/>";
-                strURL= Factory.a01EventBL.GetPageUrl(cA01);
-            }
-            else
-            {
-                strName += " ✓";
-            }
-
-            AMI_NOTRA(strName, "javascript:_location_replace_top('"+strURL+"')", "Nadrizena");
-
-            DIV(null, "Nadrizena");
-            var mq = new BO.myQuery("a01");
-            mq.a01parentid = intParentA01ID;
-            var lisChilds = Factory.a01EventBL.GetList(mq);
-            foreach (var c in lisChilds)
-            {
-                strName = c.a10Name + ": " + c.a01Signature + "<img src='/Images/child.png'/>";
-                if (c.pid == recCurrentA01.pid)
+                strName = c.a01Signature_Left + " [" + c.a10Name_Left + "]";
+                switch (c.a46ID)
                 {
-                    strName += " ✓";
+                    case 4:
+                        strName += "<img src='/Images/child.png'/>";
+                        break;
+                    case 3:
+                        strName += "<img src='/Images/souvisejici.png'/>";
+                        break;
+                    case 2:
+                        strName += "<img src='/Images/zavisla.png'/>";
+                        break;
+                    case 1:
+                        strName += "<img src='/Images/duplikat.png'/>";
+                        break;
                 }
-                AMI(strName, "javascript:_location_replace_top('"+Factory.a01EventBL.GetPageUrl(c)+"')", strMenuParentID);
+                var recA01 = Factory.a01EventBL.Load(c.a01ID_Left);
+                AMI_NOTRA(strName, Factory.a01EventBL.GetPageUrl(recA01), strMenuParentID,null,"_top");
             }
+           
+           
         }
+
+        //private void RenderPodrizeneAkce(int intParentA01ID,string strMenuParentID,BO.a01Event recCurrentA01)
+        //{
+        //    string strName = "";
+        //    if (recCurrentA01.a01ParentID > 0)
+        //    {
+        //        strName = recCurrentA01.a01Signature + "<img src='/Images/mother.png'/>";
+        //        var strURL = Factory.a01EventBL.GetPageUrl(recCurrentA01, intParentA01ID);
+        //        if (intParentA01ID != recCurrentA01.pid)
+        //        {
+        //            var cA01 = Factory.a01EventBL.Load(intParentA01ID);
+        //            strName = cA01.a01Signature + "<img src='/Images/mother.png'/>";
+        //            strURL = Factory.a01EventBL.GetPageUrl(cA01);
+        //        }
+        //        else
+        //        {
+        //            strName += " ✓";
+        //        }
+
+        //        AMI_NOTRA(strName, "javascript:_location_replace_top('" + strURL + "')", "Nadrizena");
+        //        DIV(null, "Nadrizena");
+        //    }
+
+        //    var mq = new BO.myQuery("a01");
+        //    mq.a01parentid = intParentA01ID;
+        //    var lisChilds = Factory.a01EventBL.GetList(mq);
+        //    foreach (var c in lisChilds)
+        //    {
+        //        strName = c.a10Name + ": " + c.a01Signature + "<img src='/Images/child.png'/>";
+        //        if (c.pid == recCurrentA01.pid)
+        //        {
+        //            strName += " ✓";
+        //        }
+        //        AMI(strName, "javascript:_location_replace_top('"+Factory.a01EventBL.GetPageUrl(c)+"')", strMenuParentID);
+        //    }
+        //}
 
         private void AMI(string strName,string strUrl, string strParentID = null,string strID=null, string strTarget = null)
         {            

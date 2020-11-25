@@ -17,7 +17,7 @@ namespace UI.Models
         public string TreeState { get; set; }
         public List<UI.Models.myTreeNode> treeNodes { get; set; }
         
-
+        public bool IsShowF19ID { get; set; }
 
     }
 }

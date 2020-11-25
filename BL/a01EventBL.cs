@@ -108,6 +108,13 @@ namespace BL
             p.AddString("a24Description", rec.a24Description);          
             
             int intPID = _db.SaveRecord("a24EventRelation", p.getDynamicDapperPars(), rec);
+
+            if (rec.a46ID == 4)
+            {
+                //a01ID_Left je podřízená vůči a01ID_Right
+                _db.RunSql("UPDATE a01Event set a01ParentID=@right WHERE a01ID=@left", new { left = rec.a01ID_Left, right = rec.a01ID_Right });
+                RunSpAfterA01Save(rec.a01ID_Right);  //aktualizace údajů v podřízených akcích     
+            }
             return intPID;
         }
 

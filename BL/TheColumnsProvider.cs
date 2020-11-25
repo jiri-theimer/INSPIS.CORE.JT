@@ -493,6 +493,8 @@ namespace BL
             AF("f21ReplyUnit", "f21IsCommentAllowed", "PKO", 0, null, "bool");
             AF("f21ReplyUnit", "f21IsNegation", "Negovat ostatní jednotky", 0, null, "bool");
             AF("f21ReplyUnit", "f21Ordinal", "#", 1, null, "num0");
+            AF("f21ReplyUnit", "RecPid", "PID", 1, "Convert(varchar(10),a.f21ID)");
+
             AppendTimestamp("f21ReplyUnit");
 
             //f22 = šablony jednotek odpovědi
@@ -500,6 +502,7 @@ namespace BL
             AF("f22ReplySet", "f21Names", "Jednotky v šabloně", 1, "dbo._core_f22_get_f21names_inline(a.f22ID)");
             AF("f22ReplySet", "f22Description", "Popis", 1);
             AF("f22ReplySet", "f22Ordinal", "#", 0, null, "num0");
+            
             AppendTimestamp("f22ReplySet");
 
             //f23 = typy otázek

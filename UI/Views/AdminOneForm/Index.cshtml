@@ -12,44 +12,60 @@
 
 @addTagHelper *, UI
 
-<div class="row py-3 bg-light m-0">
-    <div class="col-auto" style="width:190px;">
-        <a class="cm h4 mx-0" onclick="_cm(event, 'f06Form',@Model.f06ID);">☰@_f.tra("Menu")</a>
+    <div class="row py-3 bg-light m-0">
+        <div class="col-auto" style="width:190px;">
+            <a class="cm h4 mx-0" onclick="_cm(event, 'f06Form',@Model.f06ID);">☰@_f.tra("Menu")</a>
+        </div>
+        <div class="col-sm-3 col-md-3">
+            <mark>@Model.RecF06.f06Name</mark>
+        </div>
+        <div class="col-sm-2 col-md-2">
+            @if (Model.view == "tree")
+            {
+                <a class="btn btn-info" href="/AdminOneForm/Index?f06id=@Model.f06ID&view=grid">@_f.tra("Přepnout na Grid")</a>
+            }
+            else
+            {
+                <a class="btn btn-info" href="/AdminOneForm/Index?f06id=@Model.f06ID&view=tree">@_f.tra("Přepnout na Strom")</a>
+            }
+
+        </div>
+        <div class="col-sm-3 col-md-3">
+            <a class="btn btn-success" target="_blank" href="/a11/Simulation?f06id=@Model.f06ID">@_f.tra("Simulace")</a>
+            <button id="cmdNew" type="button" class="btn btn-primary">@_f.tra("Nový formulář")</button>
+            <button id="cmdGrid" type="button" class="btn btn-secondary">@_f.tra("Grid formulářů")</button>
+        </div>
+        <div class="col-auto">
+            <button id="cmdToggleSetting" type="button" class="btn btn-light dropdown-toggle">
+                @_f.tra("Nastavení")
+            </button>
+        </div>
+
+        <div class="nonmobile nontablet">
+            <a class="btn btn-light" href="/AdminOneForm/Index?f06id=@Model.f06ID">@_f.tra("Občerstvit")</a>
+        </div>
+
+
+
+        
     </div>
-    <div class="col-sm-3 col-md-3">
-        <mark>@Model.RecF06.f06Name</mark>
-    </div>
-    <div class="col-sm-2 col-md-2">
-        @if (Model.view == "tree")
-        {
-            <a class="btn btn-info" href="/AdminOneForm/Index?f06id=@Model.f06ID&view=grid">@_f.tra("Přepnout na Grid")</a>
-        }
-        else
-        {
-            <a class="btn btn-info" href="/AdminOneForm/Index?f06id=@Model.f06ID&view=tree">@_f.tra("Přepnout na Strom")</a>
-        }
-
-    </div>
-    <div class="col-sm-3 col-md-3">
-        <a class="btn btn-success" target="_blank" href="/a11/Simulation?f06id=@Model.f06ID">@_f.tra("Simulace")</a>
-        <button id="cmdNew" type="button" class="btn btn-primary">@_f.tra("Nový formulář")</button>
-        <button id="cmdGrid" type="button" class="btn btn-secondary">@_f.tra("Grid formulářů")</button>
-    </div>
-
-    <div class="nonmobile nontablet">
-        <a class="btn btn-secondary" href="/AdminOneForm/Index?f06id=@Model.f06ID">@_f.tra("Občerstvit")</a>
-    </div>
-
-
-
-
-</div>
+    
 
 <div id="layout_sidebar" class="cm_recpage" style="overflow-y:auto;"></div>
 
 
 
 <div id="layout_main">
+    <div id="divToggleSetting" class="card" style="display:none;overflow:auto;">
+        <div class="card-header">
+            @_f.tra("Nastavení")
+        </div>
+        <div class="card-body">
+            <input type="checkbox" asp-for="@Model.IsShowF19ID" onclick="save_setting()" />
+            <label class="col-form-label" for="IsShowF19ID">@_f.tra("U otázky zobrazovat její ID")</label>
+        </div>
+        
+    </div>
 
     @if (Model.view == "tree")
     {
@@ -74,6 +90,10 @@
 
 
     $(document).ready(function () {
+        $("#cmdToggleSetting").click(function () {
+            $("#divToggleSetting").slideToggle();
+        });
+
         $("#cmdNew").click(function () {
             _window_open("/f06/Record?pid=0",1,"Nový formulář");
         });
@@ -107,6 +127,21 @@
         }
 
     });
+
+    function save_setting() {
+        var chk = document.getElementById("IsShowF19ID");        
+        var ischecked = "0";
+        if (chk.checked==true) {
+            ischecked = "1";
+        }        
+        
+        $.post("/Common/SetUserParam", { key: "AdminOneForm-IsShowF19ID", value: ischecked }, function (data) {
+
+            location.replace("/AdminOneForm/Index?f06id=@Model.f06ID");
+
+        });
+
+    }
 
 
     /*automaticky volaná událost z thegrid controlu*/
