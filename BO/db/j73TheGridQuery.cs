@@ -46,7 +46,7 @@ namespace BO
                 }
                 else
                 {
-                    return "display:flex";
+                    return "display:table-row;";
                 }
             }
         }

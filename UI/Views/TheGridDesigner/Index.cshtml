@@ -137,19 +137,19 @@
 
 </div>
 <form id="form1" asp-controller="TheGridDesigner" asp-action="Index" method="POST">
-    <div class="modal_record_container">
 
 
-        <input type="hidden" asp-for="Rec.j72Columns" class="form-control" />
-        <input type="hidden" asp-for="Rec.pid" />
-        <input type="hidden" asp-for="Rec.j72Entity" />
-        <input type="hidden" asp-for="Rec.j72MasterEntity" />
-        <input type="hidden" asp-for="Rec.j72Name" />
-        <input type="hidden" asp-for="@Model.HasOwnerPermissions" />
-        <input type="hidden" asp-for="@Model.Rec.j72IsSystem" />
-        <div class="row">
+    <input type="hidden" asp-for="Rec.j72Columns" class="form-control" />
+    <input type="hidden" asp-for="Rec.pid" />
+    <input type="hidden" asp-for="Rec.j72Entity" />
+    <input type="hidden" asp-for="Rec.j72MasterEntity" />
+    <input type="hidden" asp-for="Rec.j72Name" />
+    <input type="hidden" asp-for="@Model.HasOwnerPermissions" />
+    <input type="hidden" asp-for="@Model.Rec.j72IsSystem" />
+    <table>
 
-            <div class="col-6">
+        <tr style="vertical-align:top;">
+            <td style="min-width:300px;">
                 <h5>@_f.tra("Katalog sloupců")</h5>
                 <ul id="tree1">
                     @{
@@ -209,18 +209,20 @@
                         </li>
                     }
                 </ul>
-            </div>
-            <div class="col-1">
+            </td>
+            <td>
                 <button type="button" id="cmdRemove" class="btn btn-primary py-0" style="margin-top:100px;float:right;font-size:150%;">
                     ←
                 </button>
-            </div>
-            <div class="col-5">
+            </td>
+            <td>
                 <h5>@_f.tra("Vybrané sloupce")</h5>
 
+                <div>
+                    <select id="list1" multiple="multiple" style="height:330px;min-width:200px;">
+                    </select>
+                </div>
 
-                <select id="list1" multiple="multiple" style="height:330px;width:100%;">
-                </select>
 
 
 
@@ -231,169 +233,170 @@
                 <button type="button" id="cmdDown" class="btn btn-primary py-0" style="font-size:150%;">
                     ↓
                 </button>
-            </div>
-        </div>
-    </div>
+            </td>
+        </tr>
+    </table>
     @if (Model.lisQueryFields.Count() > 0)
     {
         <div class="card">
-            <div class="card-header"><img src="/Images/query.png" /> @_f.tra("GRID vnitřní filtrovací podmínka")</div>
+            <div class="card-header">
+                <img src="/Images/query.png" /> @_f.tra("GRID vnitřní filtrovací podmínka")
+            </div>
             <div class="card-body">
                 <button type="button" class="btn btn-primary" onclick="handle_j73_append()">@_f.tra("Přidat řádek")</button>
                 <button type="button" class="btn btn-warning" onclick="handle_j73_clear()" style="margin-left:100px;">@_f.tra("Vyčistit")</button>
+                <table class="table table-hover" style="table-layout: fixed;min-width:1000px;">
+                    @for (var i = 0; i < Model.lisJ73.Count; i++)
+                    {
+                        <tr style="@(Model.lisJ73[i].CssTempDisplay)">
+                            <td style="width:140px;">
+                                <input type="hidden" asp-for="lisJ73[i].IsTempDeleted" value="@Model.lisJ73[i].IsTempDeleted" />
+                                <input type="hidden" asp-for="lisJ73[i].j73ID" value="@Model.lisJ73[i].j73ID" />
 
-                @for (var i = 0; i < Model.lisJ73.Count; i++)
-                {
-                    <div class="form-row my-1" style="@(Model.lisJ73[i].CssTempDisplay)">
-                        <input type="hidden" asp-for="lisJ73[i].IsTempDeleted" value="@Model.lisJ73[i].IsTempDeleted" />
-                        <input type="hidden" asp-for="lisJ73[i].j73ID" value="@Model.lisJ73[i].j73ID" />
+                                <input type="hidden" asp-for="lisJ73[i].TempGuid" value="@Model.lisJ73[i].TempGuid" />
 
-                        <input type="hidden" asp-for="lisJ73[i].TempGuid" value="@Model.lisJ73[i].TempGuid" />
-                        <div class="col-sm-1 col-md-1">
-                            <select title="@_f.tra("Levá závorka")" asp-for="@Model.lisJ73[i].j73BracketLeft">
-                                <option value=""></option>
-                                <option value="(">(</option>
-                                <option value="((">((</option>
-                            </select>
-                            <select asp-for="@Model.lisJ73[i].j73Op">
-                                <option value="AND">@_f.tra("A zároveň")</option>
-                                <option value="OR">@_f.tra("Nebo")</option>
-                            </select>
+                                <select title="@_f.tra("Levá závorka")" asp-for="@Model.lisJ73[i].j73BracketLeft">
+                                    <option value=""></option>
+                                    <option value="(">(</option>
+                                    <option value="((">((</option>
+                                </select>
+                                <select asp-for="@Model.lisJ73[i].j73Op">
+                                    <option value="AND">@_f.tra("A zároveň")</option>
+                                    <option value="OR">@_f.tra("Nebo")</option>
+                                </select>
 
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <mydropdown asp-for="@Model.lisJ73[i].j73Column" datasource="@Model.lisQueryFields" valuefield="Field" textfield="Header" isfirstemptyrow="false" event_after_changevalue="handle_queryfield_change" datavalue="@Model.lisJ73[i].TempGuid"></mydropdown>
+                            </td>
+                            <td style="width:250px;">
+                                <mydropdown asp-for="@Model.lisJ73[i].j73Column" datasource="@Model.lisQueryFields" valuefield="Field" textfield="Header" isfirstemptyrow="false" event_after_changevalue="handle_queryfield_change" datavalue="@Model.lisJ73[i].TempGuid"></mydropdown>
 
-                        </div>
-                        <div class="col-sm-1 col-md-1">
-                            <select asp-for="@Model.lisJ73[i].j73Operator" class="form-control" onchange="handle_queryoperator_change(this)">
-                                @if (Model.lisJ73[i].FieldType == "number")
+                            </td>
+                            <td style="width:130px;">
+                                <select asp-for="@Model.lisJ73[i].j73Operator" class="form-control" onchange="handle_queryoperator_change(this)">
+                                    @if (Model.lisJ73[i].FieldType == "number")
+                                    {
+                                        <option value="INTERVAL">@_f.tra("Je interval")</option>
+                                        <option value="GREATERZERO">@_f.tra("Je větší než nula")</option>
+                                        <option value="ISNULLORZERO">@_f.tra("Je nula nebo prázdné")</option>
+                                    }
+                                    @if (Model.lisJ73[i].FieldType == "date")
+                                    {
+                                        <option value="INTERVAL">@_f.tra("Je interval")</option>
+                                    }
+                                    @if (Model.lisJ73[i].FieldType != "date" && Model.lisJ73[i].FieldType != "number")
+                                    {
+                                        <option value="EQUAL">@_f.tra("Je rovno")</option>
+                                    }
+                                    @if (Model.lisJ73[i].FieldType != "bool" && Model.lisJ73[i].FieldType != "number" && Model.lisJ73[i].FieldType != "date" && Model.lisJ73[i].FieldType != "bool1")
+                                    {
+                                        <option value="NOT-EQUAL">@_f.tra("Není rovno")</option>
+                                    }
+
+                                    @if (Model.lisJ73[i].FieldType != "bool" && Model.lisJ73[i].FieldType != "bool1")
+                                    {
+                                        <option value="ISNULL">@_f.tra("Je prázdné")</option>
+                                        <option value="NOT-ISNULL">@_f.tra("Není prázdné")</option>
+                                    }
+
+                                    @if (Model.lisJ73[i].FieldType == "string")
+                                    {
+                                        <option value="CONTAINS">@_f.tra("Obsahuje")</option>
+                                        <option value="STARTS">@_f.tra("Začíná na")</option>
+                                    }
+
+                                </select>
+                            </td>
+                            <td>
+                                @if (Model.lisJ73[i].j73Operator != "ISNULL" && Model.lisJ73[i].j73Operator != "NOT-ISNULL" && Model.lisJ73[i].j73Operator != "GREATERZERO" && Model.lisJ73[i].j73Operator != "ISNULLORZERO")
                                 {
-                                    <option value="INTERVAL">@_f.tra("Je interval")</option>
-                                    <option value="GREATERZERO">@_f.tra("Je větší než nula")</option>
-                                    <option value="ISNULLORZERO">@_f.tra("Je nula nebo prázdné")</option>
+                                    @if (Model.lisJ73[i].FieldType == "combo")
+                                    {
+
+                                        <mycombo asp-for="@Model.lisJ73[i].j73ComboValue" entity="@Model.lisJ73[i].FieldEntity" selectedtext="@Model.lisJ73[i].j73ValueAlias" filter-flag="1" masterprefix="@Model.lisJ73[i].MasterPrefix" masterpid="@Model.lisJ73[i].MasterPid"></mycombo>
+
+
+                                    }
+                                    @if (Model.lisJ73[i].FieldType == "multi")
+                                    {
+
+                                        <mycombochecklist asp-for="@Model.lisJ73[i].j73Value" selectedtext="@Model.lisJ73[i].j73ValueAlias" entity="@Model.lisJ73[i].FieldEntity" masterprefix="@Model.lisJ73[i].MasterPrefix" masterpid="@Model.lisJ73[i].MasterPid"></mycombochecklist>
+
+
+                                    }
+                                    @if (Model.lisJ73[i].FieldType == "string")
+                                    {
+
+                                        <input class="form-control" asp-for="@Model.lisJ73[i].j73Value" />
+
+                                    }
+                                    @if (Model.lisJ73[i].FieldType == "number")
+                                    {
+                                        <div class="form-row">
+                                            <div class="col-auto">
+                                                <mynumber asp-for="@Model.lisJ73[i].j73Num1"></mynumber>
+                                            </div>
+                                            <div class="col-auto" style="text-align:center;"> ⮄⮆ </div>
+                                            <div class="col-auto btn-group">
+                                                <mynumber asp-for="@Model.lisJ73[i].j73Num2"></mynumber>
+                                            </div>
+                                        </div>
+
+                                    }
+                                    @if (Model.lisJ73[i].FieldType == "date")
+                                    {
+                                        <div class="form-row">
+                                            <div class="col-auto" title="@_f.tra("Pojmenované období")">
+                                                <mydropdown asp-for="@Model.lisJ73[i].j73DatePeriodFlag" datasource="@Model.lisPeriods" valuefield="pid" textfield="Header" isfirstemptyrow="false"></mydropdown>
+
+                                            </div>
+                                            <div class="col-auto" title="@_f.tra("Začátek období ručně")">
+
+                                                <mydate asp-for="@Model.lisJ73[i].j73Date1"></mydate>
+                                            </div>
+                                            <div class="col-auto" style="text-align:center;"> ⮄⮆ </div>
+                                            <div class="col-auto" title="@_f.tra("Konec období ručně")">
+
+                                                <mydate asp-for="@Model.lisJ73[i].j73Date2"></mydate>
+                                            </div>
+                                        </div>
+
+
+                                    }
+                                    @if (Model.lisJ73[i].FieldType == "bool")
+                                    {
+                                        <select asp-for="@Model.lisJ73[i].j73Value" class="form-control">
+                                            <option value="1">@_f.tra("ANO")</option>
+                                            <option value="0">@_f.tra("NE")</option>
+                                        </select>
+
+                                    }
+                                    @if (Model.lisJ73[i].FieldType == "bool1")
+                                    {
+                                        <select asp-for="@Model.lisJ73[i].j73Value" class="form-control">
+                                            <option value="1">@_f.tra("ANO")</option>
+
+                                        </select>
+
+                                    }
                                 }
-                                @if (Model.lisJ73[i].FieldType == "date")
-                                {
-                                    <option value="INTERVAL">@_f.tra("Je interval")</option>
-                                }
-                                @if (Model.lisJ73[i].FieldType != "date" && Model.lisJ73[i].FieldType != "number")
-                                {
-                                    <option value="EQUAL">@_f.tra("Je rovno")</option>
-                                }
-                                @if (Model.lisJ73[i].FieldType != "bool" && Model.lisJ73[i].FieldType != "number" && Model.lisJ73[i].FieldType != "date" && Model.lisJ73[i].FieldType != "bool1")
-                                {
-                                    <option value="NOT-EQUAL">@_f.tra("Není rovno")</option>
-                                }
-
-                                @if (Model.lisJ73[i].FieldType != "bool" && Model.lisJ73[i].FieldType != "bool1")
-                                {
-                                    <option value="ISNULL">@_f.tra("Je prázdné")</option>
-                                    <option value="NOT-ISNULL">@_f.tra("Není prázdné")</option>
-                                }
-
-                                @if (Model.lisJ73[i].FieldType == "string")
-                                {
-                                    <option value="CONTAINS">@_f.tra("Obsahuje")</option>
-                                    <option value="STARTS">@_f.tra("Začíná na")</option>
-                                }
-
-                            </select>
-                        </div>
-
-                        @if (Model.lisJ73[i].j73Operator != "ISNULL" && Model.lisJ73[i].j73Operator != "NOT-ISNULL" && Model.lisJ73[i].j73Operator != "GREATERZERO" && Model.lisJ73[i].j73Operator != "ISNULLORZERO")
-                        {
-                            @if (Model.lisJ73[i].FieldType == "combo")
-                            {
-                                <div class="col-sm-5 col-md-5">
-                                    <mycombo asp-for="@Model.lisJ73[i].j73ComboValue" entity="@Model.lisJ73[i].FieldEntity" selectedtext="@Model.lisJ73[i].j73ValueAlias" filter-flag="1" masterprefix="@Model.lisJ73[i].MasterPrefix" masterpid="@Model.lisJ73[i].MasterPid"></mycombo>
-
-                                </div>
-                            }
-                            @if (Model.lisJ73[i].FieldType == "multi")
-                            {
-                                <div class="col-sm-5 col-md-5">
-                                    <mycombochecklist asp-for="@Model.lisJ73[i].j73Value" selectedtext="@Model.lisJ73[i].j73ValueAlias" entity="@Model.lisJ73[i].FieldEntity" masterprefix="@Model.lisJ73[i].MasterPrefix" masterpid="@Model.lisJ73[i].MasterPid"></mycombochecklist>
-
-                                </div>
-                            }
-                            @if (Model.lisJ73[i].FieldType == "string")
-                            {
-                                <div class="col-sm-5 col-md-5">
-                                    <input class="form-control" asp-for="@Model.lisJ73[i].j73Value" />
-                                </div>
-                            }
-                            @if (Model.lisJ73[i].FieldType == "number")
-                            {
-                                <div class="col-sm-1 col-md-1">
-                                    <mynumber asp-for="@Model.lisJ73[i].j73Num1"></mynumber>
-                                </div>
-                                <div class="col-sm-1 col-md-1" style="text-align:center;"> ⮄⮆ </div>
-                                <div class="col-sm-1 col-md-1 btn-group">
-                                    <mynumber asp-for="@Model.lisJ73[i].j73Num2"></mynumber>
-                                </div>
-                                <div class="col-sm-2 col-md-2"></div>
-
-                            }
-                            @if (Model.lisJ73[i].FieldType == "date")
-                            {
-                                <div class="col-sm-2 col-md-2" title="@_f.tra("Pojmenované období")">
-                                    <mydropdown asp-for="@Model.lisJ73[i].j73DatePeriodFlag" datasource="@Model.lisPeriods" valuefield="pid" textfield="Header" isfirstemptyrow="false"></mydropdown>
-
-                                </div>
-                                <div class="col-sm-1 col-md-1" title="@_f.tra("Začátek období ručně")">
-
-                                    <mydate asp-for="@Model.lisJ73[i].j73Date1"></mydate>
-                                </div>
-                                <div class="col-sm-1 col-md-1" style="text-align:center;"> ⮄⮆ </div>
-                                <div class="col-sm-1 col-md-1" title="@_f.tra("Konec období ručně")">
-
-                                    <mydate asp-for="@Model.lisJ73[i].j73Date2"></mydate>
-                                </div>
-
-                            }
-                            @if (Model.lisJ73[i].FieldType == "bool")
-                            {
-                                <div class="col-sm-3 col-md-3">
-                                    <select asp-for="@Model.lisJ73[i].j73Value" class="form-control">
-                                        <option value="1">@_f.tra("ANO")</option>
-                                        <option value="0">@_f.tra("NE")</option>
-                                    </select>
-                                </div>
-                                <div class="col-sm-2 col-md-2"></div>
-                            }
-                            @if (Model.lisJ73[i].FieldType == "bool1")
-                            {
-                                <div class="col-sm-3 col-md-3">
-                                    <select asp-for="@Model.lisJ73[i].j73Value" class="form-control">
-                                        <option value="1">@_f.tra("ANO")</option>
-
-                                    </select>
-                                </div>
-                                <div class="col-sm-2 col-md-2"></div>
-                            }
-                        }
-                        else
-                        {
-                            <div class="col-sm-5 col-md-5"></div>
-                        }
+                            </td>
 
 
-                        <div class="col-sm-1 col-md-1">
-                            <select title="@_f.tra("Pravá závorka")" asp-for="@Model.lisJ73[i].j73BracketRight">
-                                <option value=""></option>
-                                <option value=")">)</option>
-                                <option value="))">))</option>
-                            </select>
+                            <td style="width:60px;">
+                                <select title="@_f.tra("Pravá závorka")" asp-for="@Model.lisJ73[i].j73BracketRight">
+                                    <option value=""></option>
+                                    <option value=")">)</option>
+                                    <option value="))">))</option>
+                                </select>
 
 
-                        </div>
-                        <div class="col-1">
-                            <button type="button" class="btn btn-danger" title="@_f.tra("Odstranit řádek")" onclick="handle_delete_j73('@(Model.lisJ73[i].TempGuid)')">x</button>
-                        </div>
+                            </td>
+                            <td style="width:60px;">
+                                <button type="button" class="btn btn-danger" title="@_f.tra("Odstranit řádek")" onclick="handle_delete_j73('@(Model.lisJ73[i].TempGuid)')">x</button>
+                            </td>
 
-                    </div>
-                }
+                        </tr>
+                    }
+                </table>
             </div>
         </div>
     }
