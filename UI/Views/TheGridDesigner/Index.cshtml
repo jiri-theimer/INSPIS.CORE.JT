@@ -238,14 +238,14 @@
     </table>
     @if (Model.lisQueryFields.Count() > 0)
     {
-        <div class="card">
+        <div class="card" style="min-width:1200px;">
             <div class="card-header">
                 <img src="/Images/query.png" /> @_f.tra("GRID vnitřní filtrovací podmínka")
             </div>
             <div class="card-body">
                 <button type="button" class="btn btn-primary" onclick="handle_j73_append()">@_f.tra("Přidat řádek")</button>
                 <button type="button" class="btn btn-warning" onclick="handle_j73_clear()" style="margin-left:100px;">@_f.tra("Vyčistit")</button>
-                <table class="table table-hover" style="table-layout: fixed;min-width:1000px;">
+                <table class="table table-hover" style="table-layout: fixed;min-width:1200px;">
                     @for (var i = 0; i < Model.lisJ73.Count; i++)
                     {
                         <tr style="@(Model.lisJ73[i].CssTempDisplay)">
