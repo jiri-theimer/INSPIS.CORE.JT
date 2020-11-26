@@ -11,16 +11,23 @@ namespace UI.Controllers
 {
     public class x51Controller : BaseController
     {
-        public IActionResult Index(string viewurl, string pagetitle)
+        public IActionResult Index(string viewurl, string pagetitle, int listflag)
         {
-            var v = new x51RecPage() { InputViewUrl = viewurl,PageTitle=pagetitle };
+            var v = new x51RecPage() { InputViewUrl = viewurl,PageTitle=pagetitle,NearListFlag= listflag };
             if (string.IsNullOrEmpty(v.InputViewUrl) ==false)
             {
-                if (v.InputViewUrl.Contains("?"))
-                {
-                    v.InputViewUrl = v.InputViewUrl.Split("?")[0];
-                }
+                                
                 v.Rec = Factory.x51HelpCoreBL.LoadByViewUrl(v.InputViewUrl);
+                if (v.Rec == null && v.InputViewUrl.Contains("="))
+                {
+                    v.InputViewUrl = v.InputViewUrl.Split("=").First();
+                    v.Rec = Factory.x51HelpCoreBL.LoadByViewUrl(v.InputViewUrl);
+                }
+                if (v.Rec == null && v.InputViewUrl.Contains("?"))
+                {
+                    v.InputViewUrl = v.InputViewUrl.Split("?").First();
+                    v.Rec = Factory.x51HelpCoreBL.LoadByViewUrl(v.InputViewUrl);
+                }
                 if (v.Rec != null)
                 {
                     v.HtmlContent = Factory.x51HelpCoreBL.LoadHtmlContent(v.Rec.pid);
@@ -28,7 +35,35 @@ namespace UI.Controllers
                     var tg = Factory.o51TagBL.GetTagging("x51", v.Rec.pid);
                     v.TagHtml = tg.TagHtml;
                 }
+
+                string strNear = v.InputViewUrl;
+                if (v.InputViewUrl.Contains("/"))
+                {
+                    if (strNear.Contains("?"))
+                    {
+                        strNear = strNear.Split("?")[0];
+                    }
+                    var strRemove = strNear.Split("/").Last();
+                    strNear = strNear.Replace("/" + strRemove,"");
+                }
+                v.lisNear = Factory.x51HelpCoreBL.GetList(new BO.myQuery("x51") { IsRecordValid = true }).Where(p => p.x51ViewUrl != null);
+                switch (v.NearListFlag)
+                {
+                    case 1:
+                        v.lisNear = v.lisNear.OrderBy(p => p.x51Name);
+                        break;
+                    default:
+                        v.lisNear = v.lisNear.Where(p => p.x51ViewUrl.ToUpper().StartsWith(strNear.ToUpper())).OrderBy(p => p.x51ViewUrl);
+                        break;
+                }
+               
                 
+                
+                //if (v.Rec != null)
+                //{
+                //    v.lisNear = v.lisNear.Where(p => p.pid != v.Rec.pid);
+                //}
+
 
             }
             return View(v);

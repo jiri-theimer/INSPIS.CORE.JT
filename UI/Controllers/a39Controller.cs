@@ -158,7 +158,7 @@ namespace UI.Controllers
             var v = new a39SchoolAccount() { a39ID = a39id };
 
             RefreshStateSchoolAccount(v);
-            v.SelectedJ04ID = v.Rec.j04ID_Explicit.ToString();
+            v.SelectedJ04ID = v.Rec.j04ID_Explicit.ToString();           
             if (v.IsNotSchoolAccount)
             {
                 return this.StopPage(true, "Tento uživatelský účet je možné spravovat pouze přes ČŠI administrátorské rozhraní systému.");
@@ -177,13 +177,18 @@ namespace UI.Controllers
             {
                 return true;
             }
-            int intJ04ID = rec.j04ID_Explicit;
-            if (intJ04ID == 0)
+            var lisMyA39 = Factory.a39InstitutionPersonBL.GetList(new BO.myQuery("a39") { a03id = rec.a03ID }).Where(p=>p.j02ID==Factory.CurrentUser.j02ID);
+            if (lisMyA39.Count() == 0)
             {
-                intJ04ID = Factory.CurrentUser.j04ID;
+                return false;
             }
-            var recJ04 = Factory.j04UserRoleBL.Load(intJ04ID);
-            if (Factory.CurrentUser.TestPermission(BO.j05PermValuEnum.SchoolAdminUser, recJ04.j04RoleValue))
+            int intMyJ04ID = lisMyA39.First().j04ID_Explicit;
+            if (intMyJ04ID == 0)
+            {
+                intMyJ04ID = Factory.CurrentUser.j04ID;
+            }
+            var recMyJ04 = Factory.j04UserRoleBL.Load(intMyJ04ID);
+            if (Factory.CurrentUser.TestPermission(BO.j05PermValuEnum.SchoolAdminUser, recMyJ04.j04RoleValue))
             {
                 return true;
             }

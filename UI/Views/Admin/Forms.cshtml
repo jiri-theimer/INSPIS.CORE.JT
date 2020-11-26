@@ -12,6 +12,18 @@
 
 @if (Model.view == "tree")
 {
+    @section header_content{
+
+        <link href="/kendo/styles/kendo.common.min.css" rel="stylesheet" type="text/css" />
+        <link href="/kendo/styles/kendo.default.min.css" rel="stylesheet" type="text/css" />
+        <link href="/kendo/styles/kendo.default.mobile.min.css" rel="stylesheet" type="text/css" />
+    }
+
+    <script src="/kendo/js/kendo.core.min.js"></script>
+
+    <script src="/kendo/js/kendo.data.min.js"></script>
+    <script src="/kendo/js/kendo.treeview.min.js"></script>
+
     <style type="text/css">
 
         #tree1 img {
@@ -23,18 +35,7 @@
         #tree1 .cm {
             margin-left: 10px;
         }
-
-     
     </style>
-
-    <link href="/kendo/styles/kendo.common.min.css" rel="stylesheet" type="text/css" />
-    <link href="/kendo/styles/kendo.default.min.css" rel="stylesheet" type="text/css" />
-    <link href="/kendo/styles/kendo.default.mobile.min.css" rel="stylesheet" type="text/css" />
-
-    <script src="/kendo/js/kendo.core.min.js"></script>
-
-    <script src="/kendo/js/kendo.data.min.js"></script>
-    <script src="/kendo/js/kendo.treeview.min.js"></script>
 }
 
 <div class="row py-3 bg-light m-0">
@@ -81,7 +82,7 @@
 
     @if (Model.view == "tree")
     {
-    <tetree asp-for="@Model.treeNodes" auto_client_init="false" clientid="tree1"></tetree>
+        <tetree asp-for="@Model.treeNodes" auto_client_init="false" clientid="tree1"></tetree>
     }
     else
     {

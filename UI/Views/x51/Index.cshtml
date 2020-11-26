@@ -19,13 +19,14 @@
                 <i>
                     @Model.InputViewUrl
                 </i>
-               
+
                 @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.AdminGlobal_Ciselniky))
                 {
 
                     <a class="btn btn-primary" style="margin-left:20px;" href="/x51/Record?source=helppage&pid=@(Model.Rec.pid)">@_f.tra("Upravit")</a>
 
                 }
+                <a class="btn btn-light" style="margin-left:20px;" href="/x51/Index?listflag=1&viewurl=@Model.InputViewUrl">@_f.tra("Rejstřík")</a>
             </div>
         </div>
 
@@ -49,8 +50,8 @@
                     }
                 </div>
             </div>
-            
-            
+
+
         </div>
 
 
@@ -59,8 +60,47 @@
 </div>
 
 
-@if (Model.Rec != null)
+@if (Model.lisNear != null)
 {
-    @Html.Raw(Model.HtmlContent)
+    <div class="row">
+        <div class="col-sm-9 col-md-9">
+            @if (Model.Rec != null)
+            {
+                @Html.Raw(Model.HtmlContent)
+                
+            }
+
+        </div>
+        <div class="col-sm-3 col-md-3">
+            @foreach (var c in Model.lisNear)
+            {
+            <div title="@(@c.UserInsert+"/"+BO.BAS.ObjectDateTime2String(c.DateInsert))">
+
+                @if (Model.Rec != null && c.pid == Model.Rec.pid)
+                {
+                    
+                    <a class="nav-link" href="/x51/Index?listflag=@Model.NearListFlag&viewurl=@c.x51ViewUrl" style="color:gray;"><img src="~/images/bullet1.gif" />@c.x51Name</a>
+                }
+                else
+                {
+                    <a class="nav-link" href="/x51/Index?listflag=@Model.NearListFlag&viewurl=@c.x51ViewUrl"><img src="~/images/bullet2.gif" />@c.x51Name</a>
+                }
+
+            </div>
+            }
+        </div>
+    </div>
+    
+
+
 }
+else
+{
+    @if (Model.Rec != null)
+    {
+        @Html.Raw(Model.HtmlContent)
+        
+    }
+}
+
 
