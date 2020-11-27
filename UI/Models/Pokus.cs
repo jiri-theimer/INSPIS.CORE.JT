@@ -10,5 +10,9 @@ namespace UI.Models
         public string TreeState { get; set; }
 
         public List<UI.Models.myTreeNode> treeNodes { get; set; }
+
+        public List<UI.Models.kendoTreeItem> kendoItems { get; set; }
+
+        public string JsonTreeDatasource { get; set; }
     }
 }

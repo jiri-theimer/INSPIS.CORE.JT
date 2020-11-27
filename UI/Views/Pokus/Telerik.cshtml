@@ -18,58 +18,95 @@
 
 <h1>Telerik</h1>
 
-<peklo>
-    <ul id="treeview">
-        <li>Import školských oborů z XLS</li>
-        <li data-expanded='true'>Inspekční činnost<ul><li>Oznámení o inspekční činnosti</li><li>Oznámení školské radě</li><li>Oznámení zřizovateli</li><li>Podnět obecný</li><li>Potvrzení o přijetí podnětu</li><li>Potvrzení o přijetí podnětu - postoupení</li><li>Potvrzení o přijetí podnětu - postoupení části</li><li>Pověření k inspekční činnosti</li></ul></li>
-        <li data-expanded='true'>Inspekční zpráva<ul><li>Stanoviska k připomínkám</li></ul></li>
-        <li>Inspekční zpráva - sken s podpisem ředitele</li>
-        <li>Jiné</li>
-        <li>MS Excel Import</li>
-        <li>Námitky</li>
-        <li>Obrázek školy na portál</li>
-        <li>Odpověď otázky</li>
-        <li>Podnět</li>
-        <li data-expanded='true'>Protokol o kontrole<ul><li>Oznámení Ministerstvu financí</li><li>Oznámení o podezření na porušení rozpočtové kázně</li><li>Podnět Ministerstvu vnitra</li></ul></li>
-        <li>Protokol o kontrole - sken s podpisem ředitele</li>
-        <li>Protokol o vyplnění...</li>
-        <li>Přijetí opatření</li>
-        <li data-expanded='true'>Příloha k akci<ul><li>Příloha k požadavku</li></ul></li>
-        <li>Příloha k akci II</li>
-        <li>Příloha k formuláři</li>
-        <li>Příloha k nápovědě</li>
-        <li>Příloha k otázce formuláře</li>
-        <li>Příloha k poštovní zprávě</li>
-        <li data-expanded='true'>Příloha k sekci formuláře<ul><li>MULTIMEDIA sekce formuláře</li><li>Příloha sekce formuláře</li></ul></li>
-        <li>Příloha otázky</li>
-        <li>Příloha RVP</li>
-        <li>Příloha v rámci workflow dialogu</li>
-        <li>Přílohy formulářů</li>
-        <li>Připomínky k IZ</li>
-        <li>RŠ příloha</li>
-        <li>Segment</li>
-        <li>Soubor šablony sestavy</li>
-        <li data-expanded='true'>Stížnost<ul><li>Opatření zřizovatele</li><li>Oznámení o přijetí a postoupení části stížnosti (dopis stěžovateli)</li><li>Oznámení o přijetí a postoupení stížnosti (dopis stěžovateli)</li><li>Oznámení o přijetí stížnosti (dopis stěžovateli)</li><li>Postoupení části stížnosti</li><li>Postoupení stížnosti</li><li>Průvodní dopis k výsledku šetření stížnosti (určený řediteli školy)</li><li>Průvodní dopis k výsledku šetření stížnosti (určený zřizovateli)</li><li>Průvodní dopis k výsledku šetření stížnosti (vyrozumění stěžovatele)</li><li>Předání stížnosti k vyjádření</li><li>Výsledek šetření stížnosti</li></ul></li>
-        <li>Šablona ŠVP</li>
-        <li data-expanded='true'>ŠVP výstup<ul><li>Import předmětu - log</li><li>Import učebního plánu - log</li><li>Kopírování ŠVP mezi institucemi - log</li></ul></li>
-        <li>Učební plán</li>
-        <li>XLS import do formulářů</li>
-        <li>XLS šablona cesťáku</li>
-        <li>XML import soubor</li>
-        <li>Zpráva z pilotáže</li>
-    </ul>
+<div id="peklo1"></div>
+
+<hr />
+<div id="peklo2"></div>
 
 
-    <script>
-        $(document).ready(function () {
 
-            var treeview = $('#treeview').kendoTreeView();
 
-          
+
+<script>
+   
+    $(document).ready(function () {
+            @Html.Raw("var ds="+Model.JsonTreeDatasource+";")
+
+
+
+            var tree1 = $("#peklo2").kendoTreeView(
+                {
+                    checkboxes: {
+                        checkChildren: true
+                    },
+                    dataSource: ds,
+                    dataTextField:"text",
+                    check: onCheck,                    
+                    template: "<a class='cm' onclick='_cm(event,\"#: item.prefix #\",#: item.id #)'>☰</a><span> #: item.text # </span>"
+                }
+            );
+
+        init_tree();
+        //recursiveReading(tree1.dataSource.view());
+
         });
-    </script>
 
 
-</peklo>
+
+    function recursiveReading(nodes) {
+        for (var i = 0; i < nodes.length; i++) {
+            _notify_message(i);
+
+            if (nodes[i].hasChildren)
+                recursiveReading(nodes[i].children.view());
+
+        }
+    }
+
+    function init_tree() {
+        var treeView = $("#peklo2").data("kendoTreeView");
+        var nodes = treeView.dataSource.view();
+
+        //nodes[0].set("text", "<a href='#' style='color:red;'>hovado</a>");
+
+    }
+
+
+
+    function onCheck(e) {
+
+        //alert(this.text(e.node) + ": " + this.id(e.node));
+
+            var checkedNodes = [];
+            var treeView = $("#peklo2").data("kendoTreeView");
+            var message;
+
+            checkedNodeIds(treeView.dataSource.view(), checkedNodes);
+
+            if (checkedNodes.length > 0) {
+                message = "IDs of checked nodes: " + checkedNodes.join(",");
+            } else {
+                message = "No nodes checked.";
+            }
+
+            alert(message);
+        }
+
+
+        function checkedNodeIds(nodes, checkedNodes) {
+            for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].checked) {
+                    checkedNodes.push(nodes[i].id);
+                }
+
+                if (nodes[i].hasChildren) {
+                    checkedNodeIds(nodes[i].children.view(), checkedNodes);
+                }
+            }
+        }
+</script>
+
+
+</div>
 
 

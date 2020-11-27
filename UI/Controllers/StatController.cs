@@ -437,5 +437,29 @@ namespace UI.Controllers
 
             return ret;
         }
+
+        private void inhale_tree1(UI.Models.StatViewModel v)
+        {
+            v.treeNodes = new List<myTreeNode>();
+            var lis = Factory.x32ReportTypeBL.GetList(new BO.myQuery("x32Report"));
+            foreach (var rec in lis)
+            {
+                var c = new myTreeNode()
+                {
+                    TreeIndex = rec.x32TreeIndex,
+                    TreeLevel = rec.x32TreeLevel,
+                    Text = rec.x32Name,
+                    TreeIndexFrom = rec.x32TreeIndexFrom,
+                    TreeIndexTo = rec.x32TreeIndexTo,
+                    Pid = rec.pid,
+                    ParentPid = rec.x32ParentID,
+                    Prefix = "x32",
+                    Expanded = true
+
+                };
+                v.treeNodes.Add(c);
+
+            }
+        }
     }
 }

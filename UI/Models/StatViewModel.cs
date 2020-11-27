@@ -45,5 +45,7 @@ namespace UI.Models
 
         public List<BO.StringPair> lisVztah { get; set; }
         public List<BO.StringPair> lisOperator { get; set; }
+
+        public List<UI.Models.myTreeNode> treeNodes { get; set; }
     }
 }

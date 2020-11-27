@@ -11,6 +11,29 @@
 
 @addTagHelper *, UI
 
+@section header_content
+{
+    <link href="/kendo/styles/kendo.common.min.css" rel="stylesheet" type="text/css" />
+    <link href="/kendo/styles/kendo.default.min.css" rel="stylesheet" type="text/css" />
+    <link href="/kendo/styles/kendo.default.mobile.min.css" rel="stylesheet" type="text/css" />
+}
+
+<script src="/kendo/js/kendo.core.min.js"></script>
+<script src="/kendo/js/kendo.data.min.js"></script>
+<script src="/kendo/js/kendo.treeview.min.js"></script>
+
+<style type="text/css">
+
+    #tree1 img {
+        margin-right: 5px;
+        margin-left: 3px;
+        vertical-align: baseline;
+    }
+    #tree1 .cm {
+        margin-left: 10px;
+    }
+</style>
+
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 <link href="/lib/hummingbird-treeview/hummingbird-treeview.css" rel="stylesheet">
 <script src="/lib/hummingbird-treeview/hummingbird-treeview.js"></script>
@@ -110,6 +133,8 @@
             }
             <div id="offset1"></div>
             <div id="divTreeviewContainer" style="overflow:auto;max-width:1000px;">
+                <tetree asp-for="@Model.treeNodes" auto_client_init="false" clientid="tree1"></tetree>
+
                 <div class="hummingbird-treeview-converter">
                     @if (Model.lisF06 != null)
                     {
@@ -164,24 +189,24 @@
                 </div>
             </div>
             <table class="table table-sm table-hover">
-                @for (int i=0;i<Model.lisTemp.Count();i++)
+                @for (int i = 0; i < Model.lisTemp.Count(); i++)
                 {
                     <tr style="@Model.lisTemp[i].CssTempDisplay">
                         <td>
                             <input type="hidden" asp-for="@Model.lisTemp[i].p85GUID" value="@Model.lisTemp[i].p85GUID" />
-                            <input type="hidden" asp-for="@Model.lisTemp[i].p85IsDeleted" value="@Model.lisTemp[i].p85IsDeleted" />                            
+                            <input type="hidden" asp-for="@Model.lisTemp[i].p85IsDeleted" value="@Model.lisTemp[i].p85IsDeleted" />
                             <input type="hidden" asp-for="@Model.lisTemp[i].p85FreeText01" value="@Model.lisTemp[i].p85FreeText01" />
                             <input type="hidden" asp-for="@Model.lisTemp[i].p85FreeText02" value="@Model.lisTemp[i].p85FreeText02" />
-                            
+
                             <mydropdown asp-for="@Model.lisTemp[i].p85FreeText03" datasource="@Model.lisVztah" valuefield="Key" textfield="Value"></mydropdown>
-                           
+
                         </td>
                         <td>
                             @Model.lisTemp[i].p85FreeText02
                         </td>
                         <td>
                             <mydropdown asp-for="@Model.lisTemp[i].p85FreeText04" datasource="@Model.lisOperator" valuefield="Key" textfield="Value"></mydropdown>
-                            
+
                         </td>
                         <td>
                             <input type="text" asp-for="@Model.lisTemp[i].p85FreeText05" />
@@ -225,6 +250,13 @@
 
 
     $(document).ready(function () {
+        @if (1==1)
+        {
+        <text>
+        $("#tree1").kendoTreeView();
+        </text>
+        }
+
         $("#treeview").hummingbird();
 
         @if (!string.IsNullOrEmpty(Model.CheckedIDs))
@@ -276,7 +308,7 @@
             $(this).attr("disabled", true);
             handle_submit("/Stat/Index?oper=excel");
 
-        });        
+        });
 
 
         $("#PeriodValue").on("change", function () {
@@ -329,7 +361,7 @@
         } else {
             $("#divTreeviewContainer").css("height", $("#TreeContainerHeight").val());
         }
-       
+
 
 
 
@@ -366,7 +398,7 @@
     function change_temp_freetext03(i) {
 
     }
-   
+
 
     /*automaticky volaná událost z thegrid controlu*/
     function thegrid_handle_event(event_name, pid) {

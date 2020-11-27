@@ -12,6 +12,8 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 
 
+using System.Text.Json;
+
 namespace UI.Controllers
 {
     public class PokusController : BaseController
@@ -104,6 +106,29 @@ namespace UI.Controllers
         public IActionResult Telerik()
         {
             var v = new UI.Models.Pokus();
+            v.kendoItems = new List<kendoTreeItem>();
+            for (int i = 1; i <= 5; i++)
+            {
+                
+                var c = new kendoTreeItem() { id = i.ToString(), text = "položka " + i.ToString(),expanded=false,imageUrl="/images/form.png" };
+                c.prefix = "j02";
+                if (i == 2) c.expanded = true;
+                
+                c.items = new List<kendoTreeItem>();
+                
+                for (int x = 1; x <= 9; x++)
+                {
+                    var cc = new kendoTreeItem() { id =i.ToString()+x.ToString(), text = "pod-položka " + i.ToString() + "-" + x.ToString() };
+                    c.items.Add(cc);
+                }
+
+                v.kendoItems.Add(c);
+
+            }
+            v.JsonTreeDatasource=JsonSerializer.Serialize(v.kendoItems, new System.Text.Json.JsonSerializerOptions
+            {
+                WriteIndented = false,Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,IgnoreNullValues=true
+            });
 
             return View(v);
         }
