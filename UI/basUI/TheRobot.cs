@@ -64,7 +64,7 @@ namespace UI
             BL.Factory f = new BL.Factory(ru, _app, null, _gp,_tt);
             if (f.CurrentUser == null)
             {
-                LogInfo("f.CurrentUser is null. SysUser_Login: "+ _app.RobotUser);
+                LogInfo("f.CurrentUser is null. _app.RobotUser: " + _app.RobotUser);
                 return;
             }
             

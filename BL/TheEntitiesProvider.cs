@@ -388,6 +388,10 @@ namespace BL
                 case "o51":
                     lis.Add(getREL("o53TagGroup", "o51_o53", "Kategorie", "LEFT OUTER JOIN o53TagGroup o51_o53 ON a.o53ID=o51_o53.o53ID"));
                     break;
+                case "x40":
+                    lis.Add(getREL("a01Event", "x40_a01", "Akce", "LEFT OUTER JOIN a01Event x40_a01 ON (a.x40DataPID=x40_a01.a01ID AND a.x29ID=101)"));
+                    lis.Add(getREL("h04ToDo", "x40_h04", "Úkol/Lhůta", "LEFT OUTER JOIN h04ToDo x40_h04 ON (a.x40DataPID=x40_h04.h04ID AND a.x29ID=604)"));
+                    break;
                 case "x31":
                 case "z01":
                     lis.Add(getREL("x29Entity", "x31_x29", "Entita", "LEFT OUTER JOIN x29Entity x31_x29 ON a.x29ID=x31_x29.x29ID"));
