@@ -20,12 +20,12 @@ namespace UI.Controllers
         public ReportsController(IReportServiceConfiguration reportServiceConfiguration,BL.RunningApp app) : base(reportServiceConfiguration)
         {
             
-            //string strLogin = this.GetUserIdentity().Name;
-            //string strLogin=Telerik.Reporting.Processing.UserIdentity.Current.Name;
-
-
+        
             var resolver = new CustomReportSourceResolver(app);
             reportServiceConfiguration.Storage = new Telerik.Reporting.Cache.File.FileStorage(app.TempFolder);
+            reportServiceConfiguration.HostAppId = "ReportViewer" + app.AppName.Length.ToString()+app.UserUrl.Length.ToString();    //HostAppId musí být unikátní v rámci všech websites na serveru
+
+
             reportServiceConfiguration.ReportSourceResolver = resolver;
 
             

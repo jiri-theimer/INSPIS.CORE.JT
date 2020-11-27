@@ -193,7 +193,13 @@
                 viewMode: telerikReportViewer.ViewModes.INTERACTIVE,
                 scaleMode: telerikReportViewer.ScaleModes.SPECIFIC,
                 scale: 1.0,                
-                enableAccessibility: false,
+                    enableAccessibility: false,
+                    parameters: {
+                        editors: {
+                            singleSelect: telerikReportViewer.ParameterEditorTypes.COMBO_BOX, //  defineds the editor type for the single select parameters
+                            multiSelect: telerikReportViewer.ParameterEditorTypes.COMBO_BOX, //defineds the editor type for the multi select parameters
+                        }
+                    },
                 sendEmail: { enabled: false }
                 }
             );

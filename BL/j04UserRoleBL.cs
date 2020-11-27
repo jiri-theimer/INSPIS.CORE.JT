@@ -103,7 +103,11 @@ namespace BL
                 foreach (var c in lisJ08)
                 {
                     _db.RunSql("INSERT INTO j08UserRole_EventType(j04ID,a10ID,j08IsAllowedCreate,j08IsAllowedRead,j08IsLeader,j08IsMember) VALUES(@pid,@a10id,@iscreate,@isread,@isleader,@ismember)", new { pid = intPID, a10id = c.a10ID, iscreate=c.j08IsAllowedCreate, isread=c.j08IsAllowedRead, isleader=c.j08IsLeader, ismember=c.j08IsMember });
-                }
+                }                
+            }
+            if (rec.pid > 0 && intPID>0)    //vyčistit uživatelskou cache pro účty s vazbou na tuto roli
+            {
+                _db.RunSql("UPDATE j03User_CacheData set j03DateCache=convert(datetime,'01.01.2000',104) WHERE j03ID IN (select j03ID FROM j03User where j04ID=@pid)", new { pid = intPID });
             }
 
             return intPID;

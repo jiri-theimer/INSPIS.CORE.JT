@@ -31,7 +31,7 @@
     <script src="/js/reporting/resources.en.js"></script>
     <script src="/js/reporting/resources.cs.js"></script>
 
-   
+
     <link href="/kendo/styles/kendo.common.min.css" rel="stylesheet" type="text/css" />
     <link href="/kendo/styles/kendo.default.min.css" rel="stylesheet" type="text/css" />
     <link href="/kendo/styles/kendo.default.mobile.min.css" rel="stylesheet" type="text/css" />
@@ -99,11 +99,11 @@
 
                 </div>
                 <div class="col-sm-1 col-md-1">
-                    @if (Model.RecX31 !=null && Model.RecX31.x31Translate != null)
+                    @if (Model.RecX31 != null && Model.RecX31.x31Translate != null)
                     {
                         <select asp-for="@Model.LangIndex" class="form-control" onchange="refresh()">
                             <option value="0">Česky</option>
-                            
+
                             <option value="2">Українська</option>
                         </select>
                     }
@@ -124,7 +124,7 @@
                 <a type="button" class="btn btn-success" href="/FileUpload/FileDownloadTempFile?tempfilename=@Model.GeneratedTempFileName" target="_blank">@_f.tra("Stáhnout vygenerovaný dokument")</a>
                 @if (Model.AllGeneratedTempFileNames != null && Model.AllGeneratedTempFileNames.Count() > 1)
                 {
-                    @for (int i=1;i< Model.AllGeneratedTempFileNames.Count(); i++)
+                    @for (int i = 1; i < Model.AllGeneratedTempFileNames.Count(); i++)
                     {
                         <a type="button" class="btn btn-success" href="/FileUpload/FileDownloadTempFile?tempfilename=@Model.AllGeneratedTempFileNames[i]" target="_blank">#@i</a>
                     }
@@ -153,7 +153,13 @@
                 viewMode: telerikReportViewer.ViewModes.INTERACTIVE,
                 scaleMode: telerikReportViewer.ScaleModes.SPECIFIC,
                 scale: 1.0,
-                enableAccessibility: false,
+                    enableAccessibility: false,
+                    parameters: {
+                        editors: {
+                            singleSelect: telerikReportViewer.ParameterEditorTypes.COMBO_BOX, //  defineds the editor type for the single select parameters
+                            multiSelect: telerikReportViewer.ParameterEditorTypes.COMBO_BOX, //defineds the editor type for the multi select parameters
+                        }
+                    },
                 sendEmail: { enabled: false }
                 }
             );

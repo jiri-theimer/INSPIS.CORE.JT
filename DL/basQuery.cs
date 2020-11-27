@@ -890,7 +890,7 @@ namespace DL
                     sw += " OR (a.a03ID IN (SELECT a03ID FROM a39InstitutionPerson WHERE j02ID=" + mq.CurrentUser.j02ID.ToString() + ")";
                     if (!mq.CurrentUser.j04IsAllowedAllEventTypes)
                     {
-                        if (mq.CurrentUser.a10IDs != null)
+                        if (!string.IsNullOrEmpty(mq.CurrentUser.a10IDs))
                         {
                             sw += " AND a.a10ID IN (" + mq.CurrentUser.a10IDs + ")";
                         }
@@ -906,7 +906,7 @@ namespace DL
                     sw += " OR (a01_a03.a05ID=" + mq.CurrentUser.a05ID.ToString();
                     if (!mq.CurrentUser.j04IsAllowedAllEventTypes)
                     {
-                        if (mq.CurrentUser.a10IDs != null)
+                        if (!string.IsNullOrEmpty(mq.CurrentUser.a10IDs))
                         {
                             sw += " AND a.a10ID IN (" + mq.CurrentUser.a10IDs + ")";
                         }
@@ -922,10 +922,23 @@ namespace DL
 
                     break;
                 case BO.j04RelationFlagEnum.NoRelation: //role bez vazby na region nebo školu - potenciálně neomezený přístup k akcím
+                    if (!mq.CurrentUser.j04IsAllowedAllEventTypes)
+                    {//nemá právo vidět všechny akce v systému
+                        if (!string.IsNullOrEmpty(mq.CurrentUser.a10IDs))
+                        {
+                            sw += " OR a.a10ID IN (" + mq.CurrentUser.a10IDs + ")";                            
+                        }
+                        else
+                        {
+                            sw += " OR a.a10ID IN (SELECT a10ID FROM j08UserRole_EventType WHERE (j08IsAllowedRead=1 OR j08IsLeader=1 OR j08IsMember=1) AND j04ID=" + mq.CurrentUser.j04ID.ToString() + ")";
+                        }
+                        
+                    }
                     break;
+                    
             }
             sw += ")";
-            System.IO.File.WriteAllText("c:\\temp\\hovado.txt", sw);
+            //System.IO.File.WriteAllText("\\hovado.txt", sw);
             return sw;
         }
     }

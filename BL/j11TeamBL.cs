@@ -61,7 +61,10 @@ namespace BL
             {
                 _db.RunSql("INSERT INTO j12Team_Person(j11ID,j02ID) SELECT @pid,j02ID FROM j02Person WHERE j02ID IN (" + string.Join(",", j02ids) + ")", new { pid = intPID });
             }
-
+            if (intPID > 0)    //vyčistit uživatelskou cache pro účty s vazbou na tento tým
+            {
+                _db.RunSql("UPDATE j03User_CacheData set j03DateCache=convert(datetime,'01.01.2000',104) WHERE j03ID IN (select a.j03ID FROM j03User a INNER JOIN j12Team_Person b ON a.j02ID=b.j02ID where b.j11ID=@pid)", new { pid = intPID });
+            }
 
             return intPID;
         }

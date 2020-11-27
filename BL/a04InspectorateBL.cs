@@ -62,7 +62,10 @@ namespace BL
             
             int intPID = _db.SaveRecord("a04Inspectorate", p.getDynamicDapperPars(), rec);
 
-
+            if (rec.pid > 0 && intPID>0)    //vyčistit uživatelskou cache pro účty s vazbou na tento inspektorát
+            {
+                _db.RunSql("UPDATE j03User_CacheData set j03DateCache=convert(datetime,'01.01.2000',104) WHERE a04ID=@pid", new { pid = intPID });
+            }
 
             return intPID;
         }

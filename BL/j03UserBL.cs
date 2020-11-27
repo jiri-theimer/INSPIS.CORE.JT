@@ -13,6 +13,7 @@ namespace BL
         public int Save(BO.j03User rec);
         public int SaveWithNewPersonalProfile(BO.j03User rec, BO.j02Person recJ02);
         public void UpdateCurrentUserPing(BO.j92PingLog c);
+        public void RecoveryUserCache(int j03id,int j02id);
 
     }
     class j03UserBL : BaseBL, Ij03UserBL
@@ -109,7 +110,12 @@ namespace BL
             }
 
 
-            return _db.SaveRecord("j03User", p.getDynamicDapperPars(), rec);
+            var intPID = _db.SaveRecord("j03User", p.getDynamicDapperPars(), rec);
+            if (intPID > 0)
+            {
+                RecoveryUserCache(intPID, 0);
+            }
+            return intPID;
         }
 
         private bool ValidateBeforeSave(BO.j03User rec)
@@ -143,7 +149,14 @@ namespace BL
             return true;
         }
 
-
+        public void RecoveryUserCache(int j03id,int j02id)
+        {
+            if (j02id > 0)
+            {
+                j03id = _db.GetIntegerFromSql("select j03ID FROM j03User WHERE j02ID=" + j02id.ToString());
+            }
+            _db.RunSql("exec dbo._core_j03user_recovery_cache @pid,1", new { pid = j03id });
+        }
 
         public void UpdateCurrentUserPing(BO.j92PingLog c) //zápis pravidelně po 2 minutách do PING logu
         {
@@ -165,5 +178,7 @@ namespace BL
             }
 
         }
+
+        
     }
 }

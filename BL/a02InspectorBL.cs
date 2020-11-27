@@ -55,7 +55,10 @@ namespace BL
             p.AddInt("a04ID", rec.a04ID);
 
             int intPID = _db.SaveRecord("a02Inspector", p.getDynamicDapperPars(), rec);
-
+            if (intPID > 0)
+            {
+                _mother.j03UserBL.RecoveryUserCache(0,rec.j02ID);
+            }
 
 
             return intPID;

@@ -736,7 +736,12 @@ function _init_qtip_onpage() {
 function _helppage() {
     var s = document.title.replace(" - INSPIS.CORE", "");
     var viewurl = window.location.pathname.split('?')[0];
-    _window_open("/x51/Index?viewurl=" + viewurl, 1, "Help");
+    try {
+        _window_open("/x51/Index?viewurl=" + viewurl, 1, "Help");
+    } catch (err) {
+        window.open("/x51/Index?viewurl=" + viewurl + "&pagetitle=" + s, "_blank");     //pokud na stránce není definice metody _window_open (např. reporting)
+    }
+    
     //window.open("/x51/Index?viewurl="+viewurl+"&pagetitle="+s, "_blank");
 }
 
