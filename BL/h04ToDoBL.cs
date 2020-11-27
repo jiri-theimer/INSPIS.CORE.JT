@@ -1,7 +1,9 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using Microsoft.VisualBasic;
 
 namespace BL
 {
@@ -10,8 +12,9 @@ namespace BL
         public BO.h04ToDo Load(int pid);
         public IEnumerable<BO.h04ToDo> GetList(BO.myQuery mq);
         public IEnumerable<BO.h04TodoCapacity> GetListCapacity(BO.myQuery mq);
-        public int Save(BO.h04ToDo rec, List<int> j02ids_resitel, List<int> j11ids_resitel, bool bolSendNotification);
+        public int Save(BO.h04ToDo rec, List<int> j02ids_resitel, List<int> j11ids_resitel);
         public IEnumerable<BO.h04ToDo> GetList_ReminderWaiting();
+        public BO.Result NotifyByMail(int pid);
 
     }
     class h04ToDoBL : BaseBL, Ih04ToDoBL
@@ -61,7 +64,7 @@ namespace BL
         }
 
 
-        public int Save(BO.h04ToDo rec,List<int> j02ids_resitel, List<int> j11ids_resitel,bool bolSendNotification)
+        public int Save(BO.h04ToDo rec,List<int> j02ids_resitel, List<int> j11ids_resitel)
         {
             if (rec.h07ID == 0)
             {
@@ -167,6 +170,30 @@ namespace BL
 
 
             return true;
+        }
+
+        public BO.Result NotifyByMail(int pid)
+        {
+            var rec = Load(pid);           
+            string strBody = rec.h07Name + ": " + rec.h04Name +  Constants.vbCrLf + Constants.vbCrLf + rec.h04Description;
+            string strSubject = rec.h07Name + ": " + rec.h04Signature;
+
+            var recH07 = _mother.h07ToDoTypeBL.Load(rec.h07ID);
+            if (recH07.b65ID > 0)
+            {
+                var recB65 = _mother.b65WorkflowMessageBL.MailMergeRecord(recH07.b65ID, rec.pid, null);
+                strBody = recB65.b65MessageBody;
+                strSubject = recB65.b65MessageSubject;
+            }
+            strBody += Constants.vbCrLf + "----------------------" + Constants.vbCrLf + _mother.App.UserUrl + "/h04/RecPage?pid=" + rec.pid.ToString();
+
+            var mq = new BO.myQuery("j02");
+            mq.h04id = pid;
+            mq.IsRecordValid = true;
+            var strTo = string.Join(",", _mother.j02PersonBL.GetList(mq).Select(p => p.j02Email));
+
+            var ret = _mother.MailBL.SendMessage(0, strTo, null, strSubject, strBody, false, 604, pid);
+            return ret;
         }
 
     }

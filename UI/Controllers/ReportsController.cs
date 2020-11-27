@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using Telerik.Reporting.Services.Engine;
 using System.IO;
 using BL;
+using System;
 
 namespace UI.Controllers
 {    
@@ -15,6 +16,7 @@ namespace UI.Controllers
     public class ReportsController : ReportsControllerBase
     {
         
+
         public ReportsController(IReportServiceConfiguration reportServiceConfiguration,BL.RunningApp app) : base(reportServiceConfiguration)
         {
             
@@ -23,8 +25,10 @@ namespace UI.Controllers
 
 
             var resolver = new CustomReportSourceResolver(app);
+            reportServiceConfiguration.Storage = new Telerik.Reporting.Cache.File.FileStorage(app.TempFolder);
             reportServiceConfiguration.ReportSourceResolver = resolver;
 
+            
             
 
         }
@@ -44,8 +48,9 @@ namespace UI.Controllers
             _app = app;
         }
         public Telerik.Reporting.ReportSource Resolve(string reportId, OperationOrigin operationOrigin, IDictionary<string, object> currentParameterValues)
-        {            
+        {
             //soubor sestavy###login uživatele###j72id
+            
             List<string> lis = BO.BAS.ConvertString2List(reportId, "###");
             reportId = lis[0];
             string strLogin = lis[1];
@@ -58,6 +63,7 @@ namespace UI.Controllers
             
             
             string reportXml = File.ReadAllText(_app.ReportFolder + "\\" + reportId);
+           
 
             if (reportXml.Contains("1=1"))
             {

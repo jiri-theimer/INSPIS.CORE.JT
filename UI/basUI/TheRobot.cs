@@ -35,23 +35,36 @@ namespace UI
             
             return Task.CompletedTask;
         }
+        public Task StopAsync(CancellationToken stoppingToken)
+        {
+            LogInfo("Timed Hosted Service is stopping.");
+
+            _timer?.Change(Timeout.Infinite, 0);
+
+            return Task.CompletedTask;
+        }
+        public void Dispose()
+        {
+            _timer?.Dispose();
+        }
+
 
         private void DoWork(object state)
         {
             var count = Interlocked.Increment(ref executionCount);
 
-            string strLogin = _gp.LoadParam("SysUser_Login");
-            if (string.IsNullOrEmpty(strLogin) == true)
+            
+            if (string.IsNullOrEmpty(_app.RobotUser) == true)
             {
-                LogInfo("SysUser_Login in x35GlobalParam missing.");
+                LogInfo("[RobotUser] of appsettings is missing!");
                 return;
             }
             
-            BO.RunningUser ru = new BO.RunningUser() { j03Login = strLogin };
+            BO.RunningUser ru = new BO.RunningUser() { j03Login = _app.RobotUser };
             BL.Factory f = new BL.Factory(ru, _app, null, _gp,_tt);
             if (f.CurrentUser == null)
             {
-                LogInfo("f.CurrentUser is null. SysUser_Login: "+ strLogin);
+                LogInfo("f.CurrentUser is null. SysUser_Login: "+ _app.RobotUser);
                 return;
             }
             
@@ -76,9 +89,10 @@ namespace UI
                 var intB65ID = f.h07ToDoTypeBL.Load(rec.h07ID).b65ID;
                 if (intB65ID > 0)
                 {
-                    recB65 = f.b65WorkflowMessageBL.Load(intB65ID);
+                    recB65 = f.b65WorkflowMessageBL.MailMergeRecord(intB65ID, rec.pid, null);
                 }
                 
+
                 recB65.b65MessageBody += System.Environment.NewLine +System.Environment.NewLine+"------------------------"+System.Environment.NewLine + _app.UserUrl + "/h04/RecPage?pid=" + rec.pid.ToString();
                 
                 var c = new BO.x40MailQueue() {x29ID = 604,x40DataPID=rec.pid, x40IsAutoNotification=true,x40Subject=recB65.b65MessageSubject,x40Body=recB65.b65MessageBody };
@@ -89,7 +103,83 @@ namespace UI
             }
         }
         private void Handle_AutoWorkflow(BL.Factory f)
-        {
+        {            
+            var mq = new BO.myQuery("b06") {IsRecordValid=true };
+            var lisB06 = f.b06WorkflowStepBL.GetList(mq).Where(p=>p.b06ValidateAutoMoveSQL != null);    //testování automatiky podle návratové podmínky kroku přes b06ValidateAutoMoveSQL
+            foreach (var recB06 in lisB06)
+            {
+                //LogInfo("Test workflow kroku (b06ValidateAutoMoveSQL): " + recB06.b06Name);
+                mq = new BO.myQuery("a01") { b02id = recB06.b02ID,a01IsClosed=false };
+                var lisA01 = f.a01EventBL.GetList(mq).Where(p => p.a01ParentID == 0);
+                foreach(var recA01 in lisA01)
+                {
+                    LogInfo("Test akce pro automaticky spouštěný krok (b06ValidateAutoMoveSQL): " + recA01.a01Signature);
+
+                    if (f.WorkflowBL.RunAutoWorkflowStepByRawSql(recA01, recB06))
+                    {
+                        //krok byl spuštěn
+                        LogInfo("Automaticky spuštěn krok: " + recB06.b06Name + " u akce: " + recA01.a01Signature);
+                    }
+                    else
+                    {
+                        LogInfo("Nedošlo ke spuštění kroku: " + recB06.b06Name + " u akce: " + recA01.a01Signature);
+                    }
+                }
+            }
+
+            mq = new BO.myQuery("b06") { IsRecordValid = true };
+            lisB06 = f.b06WorkflowStepBL.GetList(mq).Where(p => p.b06IsAutoRun_Missing_Form==true || p.b06IsAutoRun_Missing_Attachment==true);    //testování automatiky podle vyplňovaných formulářů
+            foreach (var recB06 in lisB06)
+            {
+                LogInfo("Test workflow kroku (b06IsAutoRun_Missing_Form/b06IsAutoRun_Missing_Attachment): " + recB06.b06Name);
+                mq = new BO.myQuery("a01") { b02id = recB06.b02ID,a01IsClosed=false };
+                var lisA01 = f.a01EventBL.GetList(mq);
+                foreach (var recA01 in lisA01)
+                {
+                    LogInfo("Test akce pro automaticky spouštěný krok (b06IsAutoRun_Missing_Form/b06IsAutoRun_Missing_Attachment): " + recA01.a01Signature);
+                    mq = new BO.myQuery("b05") { a01id = recA01.pid };
+                    var lisB05 = f.b05Workflow_HistoryBL.GetList(mq);
+                    if (recB06.b06IsAutoRun_Missing_Attachment && recA01.a01ParentID == 0)
+                    {
+                        //testovat, zda spustit krok, pokud k akci nejsou přiloženy povinné přílohy - netestovat v podřízených akcích
+                        if (lisB05.Where(p => p.b06ID == recB06.pid).Count() == 0)
+                        {
+                            //v historii ještě nebyl automatický krok spuštěn
+                            var lisA14 = f.a08ThemeBL.GetListA14(recA01.a08ID).Where(p => p.a14IsRequired == true);
+                            foreach(var recA14 in lisA14)
+                            {
+                                var mqx = new BO.myQuery("o27") { a01id = recA01.pid, o13id = recA14.o13ID };
+                                if (f.o27AttachmentBL.GetList(mqx, null).Count() == 0)
+                                {
+                                    //dokument neexistuje -> krok spustit
+                                    f.WorkflowBL.RunWorkflowStep(recA01, recB06, null, "Automaticky spuštěný krok systémem", null, false);
+                                    break;
+                                }
+                                
+                            }
+                        }
+                    }
+                    if (recB06.b06IsAutoRun_Missing_Form && lisB05.Where(p=>p.b06ID==recB06.pid).Count()==0)
+                    {
+                        //testovat, zda spustit krok, pokud v akci nejsou vyplněné povinné formuláře && v historii ještě nebyl automatický krok spuštěn
+                        var mqx = new BO.myQuery("a11") { a01id = recA01.pid };
+                        var lisA11 = f.a11EventFormBL.GetList(mqx);
+                        foreach(var recA11 in lisA11)
+                        {
+                            var cValidate = new FormValidation(f);
+                            var lisErrs = cValidate.GetValidateResult(recA11.pid);
+                            if (lisErrs.Count() > 0)
+                            {
+                                
+                                //minimálně jedna povinná otázka není vyplněna
+                                f.WorkflowBL.RunWorkflowStep(recA01, recB06, null, "Automaticky spuštěný krok systémem: ["+ lisErrs.First().f06Name+"] ["+lisErrs.First().Otazka+"] "+ lisErrs.First().Message, null, false);
+                                break;
+                            }
+                           
+                        }
+                    }
+                }
+            }
 
         }
         private void Handle_MailQueue(BL.Factory f)
@@ -144,25 +234,14 @@ namespace UI
             }                                               
         }
 
-        public Task StopAsync(CancellationToken stoppingToken)
-        {
-            LogInfo("Timed Hosted Service is stopping.");
-
-            _timer?.Change(Timeout.Infinite, 0);
-
-            return Task.CompletedTask;
-        }
-
-        public void Dispose()
-        {
-            _timer?.Dispose();
-        }
-
+        
         private void LogInfo(string strMessage)
         {
             var strPath = string.Format("{0}\\the-robot-{1}.log", _app.LogFolder, DateTime.Now.ToString("yyyy.MM.dd"));
 
-            System.IO.File.AppendAllLines(strPath, new List<string>() { "", DateTime.Now.ToString()+": ", strMessage });
+            System.IO.File.AppendAllLines(strPath, new List<string>() { "", DateTime.Now.ToString() + ": ", strMessage });
         }
+
+
     }
 }

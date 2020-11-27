@@ -1003,7 +1003,14 @@ div.tabs_container_record {
 .required {
     color: red;
 }
-
+.selected {
+    background-color: #F98B00;
+    color:white;
+}
+a.selected:hover {
+    background-color: #F98B00;
+    color: black;
+}
 
 
 .valhover_tooltip {

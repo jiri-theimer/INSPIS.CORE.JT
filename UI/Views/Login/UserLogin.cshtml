@@ -60,12 +60,16 @@
 
                     </a>
 
-                    <div class="dropdown-menu dropdown_menu_container" id="divLangIndexMenu" aria-labelledby="cmdLangIndex">
-                        <a class="btn btn-light" href="javascript:change_lang(0)" style="width:100%;"><img src="~/images/czechrepublic.gif" /> Česky</a>
+                    <div class="dropdown-menu dropdown_menu_container" id="divLangIndexMenu" aria-labelledby="cmdLangIndex" style="float:left;">
+                        <a class="btn btn-light" href="javascript:change_lang(0)" style="width:200px;text-align:left;"><img src="~/images/czechrepublic.gif" /> Česky</a>
+                        @if (1 == 2)
+                        {
+                            <br />
+                            <a class="btn btn-light" href="javascript:change_lang(1)" style="width:100%;"><img src="~/images/uk.gif" /> English</a>
+                        }
+
                         <br />
-                        <a class="btn btn-light" href="javascript:change_lang(1)" style="width:100%;"><img src="~/images/uk.gif" /> English</a>
-                        <br />                        
-                        <a class="btn btn-light" href="javascript:change_lang(2)" style="width:100%;"><img src="~/images/ukraine.gif" /> Українська</a>
+                        <a class="btn btn-light" href="javascript:change_lang(2)" style="width:200px;text-align:left;"><img src="~/images/ukraine.gif" /> Українська</a>
                     </div>
 
                 </div>

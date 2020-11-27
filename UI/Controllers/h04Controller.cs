@@ -87,10 +87,10 @@ namespace UI.Controllers
 
                 var j02ids = BO.BAS.ConvertString2ListInt(v.j02IDs);
                 var j11ids = BO.BAS.ConvertString2ListInt(v.j11IDs);
-                c.pid = Factory.h04ToDoBL.Save(c, j02ids, j11ids, v.IsNotifyAfterSave);
+                c.pid = Factory.h04ToDoBL.Save(c, j02ids, j11ids);
                 if (c.pid > 0)
                 {
-                    if (v.IsNotifyAfterSave) handle_notification(c.pid);
+                    if (v.IsNotifyAfterSave) Factory.h04ToDoBL.NotifyByMail(c.pid);
 
                     v.SetJavascript_CallOnLoad(c.pid);
                     return View(v);
@@ -131,10 +131,10 @@ namespace UI.Controllers
             {
                 var c = Factory.h04ToDoBL.Load(v.pid);
                 c.h05ID = v.SelectedH05ID;
-                c.pid = Factory.h04ToDoBL.Save(c, null, null, v.IsNotifyAfterSave);
+                c.pid = Factory.h04ToDoBL.Save(c, null, null);
                 if (c.pid > 0)
                 {
-                    if (v.IsNotifyAfterSave) handle_notification(c.pid);
+                    if (v.IsNotifyAfterSave) Factory.h04ToDoBL.NotifyByMail(c.pid);
 
                     v.SetJavascript_CallOnLoad(c.pid);
                     return View(v);
@@ -146,31 +146,6 @@ namespace UI.Controllers
             return View(v);
         }
 
-        private void handle_notification(int pid)
-        {
-            var rec = Factory.h04ToDoBL.Load(pid);
-            var mq = new BO.myQuery("b65");
-            mq.IsRecordValid = true;
-            var lis = Factory.b65WorkflowMessageBL.GetList(mq);
-            string strBody = rec.h07Name + ": " + rec.h04Name + Constants.vbCrLf + Constants.vbCrLf + rec.h04Description;
-            string strSubject = rec.h07Name + ": " + rec.h04Signature;
-
-            var recH07 = Factory.h07ToDoTypeBL.Load(rec.h07ID);
-            if (recH07.b65ID > 0)
-            {
-                var recB65 = Factory.b65WorkflowMessageBL.Load(recH07.b65ID);
-                strBody = recB65.b65MessageBody;
-                strSubject = recB65.b65MessageSubject;
-            }
-            strBody += Constants.vbCrLf+"----------------------"+ Constants.vbCrLf + Factory.App.UserUrl + "/h04/RecPage?pid=" + rec.pid.ToString();
-
-            mq = new BO.myQuery("j02");
-            mq.h04id = pid;
-            mq.IsRecordValid = true;
-            var strTo = string.Join(",", Factory.j02PersonBL.GetList(mq).Select(p => p.j02Email));
-
-            var ret=Factory.MailBL.SendMessage(0, strTo, null, strSubject, strBody, false,604,pid);
-
-        }
+        
     }
 }

@@ -20,13 +20,19 @@
                     <a href="javascript:_window_open('/b02/Record?pid=@(Model.pid)')">@_f.tra("Administrace")</a>
                 </div>
             }
-
+            
         </div>
         <div class="form-row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Workflow šablona"):</label>
-            <div class="col-sm-11 col-md-10">
+            <div class="col-sm-9 col-md-8">
                 <myval value="@Model.Rec.b01Name"></myval>
             </div>
+            @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.WorkflowDesigner))
+            {
+                <div class="col-sm-2 col-md-2">
+                    <a href="/AdminOneWorkflow/Index?b01id=@Model.Rec.b01ID" target="_blank">@_f.tra("Workflow návhrář")</a>
+                </div>
+            }
         </div>
         <div class="form-row">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kód"):</label>

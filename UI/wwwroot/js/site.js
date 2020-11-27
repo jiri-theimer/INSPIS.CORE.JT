@@ -736,15 +736,16 @@ function _init_qtip_onpage() {
 function _helppage() {
     var s = document.title.replace(" - INSPIS.CORE", "");
     var viewurl = window.location.pathname.split('?')[0];
-    window.open("/x51/Index?viewurl="+viewurl+"&pagetitle="+s, "_blank");
+    _window_open("/x51/Index?viewurl=" + viewurl, 1, "Help");
+    //window.open("/x51/Index?viewurl="+viewurl+"&pagetitle="+s, "_blank");
 }
 
 function _helppage_layout() {
     var s = document.title.replace(" - INSPIS.CORE", "");
     
     var viewurl = window.location.pathname.split('?')[0] + window.location.search;
-    
-    window.open("/x51/Index?viewurl=" + viewurl + "&pagetitle=" + s, "_blank");
+    _window_open("/x51/Index?viewurl=" + viewurl, 1, "Help");
+    //window.open("/x51/Index?viewurl=" + viewurl + "&pagetitle=" + s, "_blank");
 }
 
 

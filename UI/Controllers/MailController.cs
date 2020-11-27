@@ -206,14 +206,10 @@ namespace UI.Controllers
         }
 
         public BO.StringPair Inhale_MergeTemplate(int b65id,int datapid,string param1)
-        {            
-            var recB65 = Factory.b65WorkflowMessageBL.Load(b65id);              
-            var dt = Factory.gridBL.GetList4MailMerge(recB65.x29Prefix, datapid);
-            var cMerge = new BO.CLS.MergeContent();
-            var ret = new BO.StringPair();            
-            ret.Value = cMerge.GetMergedContent(recB65.b65MessageBody, dt).Replace("#param1",param1,StringComparison.OrdinalIgnoreCase).Replace("#password#",param1);
-            ret.Key = cMerge.GetMergedContent(recB65.b65MessageSubject, dt).Replace("#param1", param1, StringComparison.OrdinalIgnoreCase);
-            return ret;
+        {
+            var rec= Factory.b65WorkflowMessageBL.MailMergeRecord(Factory.b65WorkflowMessageBL.Load(b65id), datapid, param1);
+            var sp = new BO.StringPair() { Key = rec.b65MessageSubject, Value = rec.b65MessageBody };
+            return sp;
         }
         public IActionResult Record(int pid)
         {

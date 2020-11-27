@@ -79,7 +79,11 @@ namespace UI.Controllers
                 if (i == 1) s = "English";
                 if (i == 2) s = "Українська";                
                 if (Factory.CurrentUser.j03LangIndex == i) s += "&#10004;";
-                AMI_NOTRA(s, string.Format("javascript: save_langindex_menu({0})", i));
+                if (i != 1) //English zatím neukazovat!
+                {
+                    AMI_NOTRA(s, string.Format("javascript: save_langindex_menu({0})", i));
+                }
+                
             }
             return FlushResult_NAVLINKs();            
         }

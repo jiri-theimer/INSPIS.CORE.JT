@@ -54,7 +54,12 @@ namespace BL
         }
         public BO.j40MailAccount LoadDefaultJ40()
         {
-            return _db.Load<BO.j40MailAccount>(string.Format("{0} WHERE (a.j02ID=@j02id AND a.j40UsageFlag=1) OR a.j40UsageFlag=2 ORDER BY a.j40UsageFlag", GetSQL1()), new { j02id = _mother.CurrentUser.j02ID });
+            if (_mother.CurrentUser.j02ID == 0)
+            {
+                //pouze globální´smtp účet
+                return _db.Load<BO.j40MailAccount>(string.Format("{0} WHERE a.j40UsageFlag=2 AND GETDATE() BETWEEN a.j40ValidFrom AND a.j40ValidUntil", GetSQL1()));
+            }
+            return _db.Load<BO.j40MailAccount>(string.Format("{0} WHERE ((a.j02ID=@j02id AND a.j40UsageFlag=1) OR a.j40UsageFlag=2) AND GETDATE() BETWEEN a.j40ValidFrom AND a.j40ValidUntil ORDER BY a.j40UsageFlag", GetSQL1()), new { j02id = _mother.CurrentUser.j02ID });
         }
         public IEnumerable<BO.j40MailAccount> GetListJ40()
         {
@@ -142,7 +147,11 @@ namespace BL
             }
             rec.j40ID = _account.pid;
             rec.x40SenderAddress = _account.j40SmtpEmail;
-            rec.x40SenderName = _account.j40SmtpName;            
+            rec.x40SenderName = _account.j40SmtpName;   
+            if (_mother.CurrentUser.j02ID == 0)
+            {
+                _account.j40SmtpUsePersonalReply = false;   //login bez osobního profilu!
+            }
             if (_account.j40SmtpUsePersonalReply)
             {
                 //rec.x40SenderAddress = _mother.CurrentUser.j02Email;

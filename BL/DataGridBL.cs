@@ -11,8 +11,7 @@ namespace BL
     {
         public DataTable GetList(BO.myQuery mq, bool bolGetTotalsRow = false);
         public DataTable GetList4MailMerge(string prefix, int pid);
-        public DataTable GetList4MailMerge(int pid, string individual_sql_source);
-
+        public DataTable GetList4MailMerge(int pid, string individual_sql_source);        
     }
     class DataGridBL:BaseBL,IDataGridBL
     {
@@ -21,6 +20,8 @@ namespace BL
         {
             
         }
+
+        
 
         public DataTable GetList4MailMerge(int pid, string individual_sql_source)
         {
@@ -57,6 +58,12 @@ namespace BL
                     sb.Append(" LEFT OUTER JOIN a06InstitutionType a06 ON a.a06ID=a06.a06ID");
                     sb.Append(" LEFT OUTER JOIN a21InstitutionLegalType a21 ON a.a21ID=a21.a21ID");
                     sb.Append(" LEFT OUTER JOIN a03Institution zri on a.a03ID_Founder=zri.a03ID");
+                    break;
+                case "h04":
+                    sb.Append("a.*,h07.*,a01.*,j02.*,h05.h05Name");
+                    sb.Append(",a03.a03ICO,a03.a03REDIZO,a03.a03Name,a03.a03City,a03.a03Street,a03.a03PostCode,a03.a03Phone,a03.a03Mobile,a03.a03Fax,a03.a03Email,a03.a03Web,a03.a03FounderCode,a03.a03DirectorFullName");
+                    sb.Append(" FROM h04ToDo a INNER JOIN h07ToDoType h07 ON a.h07ID=h07.h07ID INNER JOIN a01Event a01 ON a.a01ID=a01.a01ID INNER JOIN j02Person j02 ON a.j02ID_Owner=j02.j02ID LEFT OUTER JOIN h05ToDoStatus h05 ON a.h05ID=h05.h05ID");
+                    sb.Append(" LEFT OUTER JOIN a03Institution a03 ON a01.a03ID=a03.a03ID");
                     break;
                 case "a11":
                     sb.Append("a.*,a01.*,f06.*,a25.*,a37.*,k01.*");

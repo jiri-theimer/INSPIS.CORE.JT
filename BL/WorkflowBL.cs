@@ -14,6 +14,7 @@ namespace BL
         public int RunWorkflowStep(BO.a01Event rec, BO.b06WorkflowStep recB06, List<BO.a41PersonToEvent> lisNominee, string strComment, string strUploadGUID, bool bolManualStep);
         public List<BO.a11EventForm> GetForms4Validation(BO.a01Event rec, BO.b06WorkflowStep recB06);
         public void CheckDefaultWorkflowStatus(int a01id,bool bolSimulation=false);
+        public bool RunAutoWorkflowStepByRawSql(BO.a01Event recA01, BO.b06WorkflowStep recB06);
     }
     class WorkflowBL : BaseBL, IWorkflowBL
     {
@@ -22,6 +23,27 @@ namespace BL
 
         }
 
+        public bool RunAutoWorkflowStepByRawSql(BO.a01Event recA01, BO.b06WorkflowStep recB06)
+        {
+            //testuje podmínky automaticky spustitelného wrk kroku + případně ho spouští
+            if (GetAutoWorkflowSQLResult(recA01, recB06) == 1)  //pokud sql vrací hodnotu 1, pak je podmínka splněna
+            {
+                if ( RunWorkflowStep(recA01, recB06, null, null, null, false) > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return false;
+        }
+        public int GetAutoWorkflowSQLResult(BO.a01Event recA01,BO.b06WorkflowStep recB06)
+        {
+            string strSQL = DL.BAS.ParseMergeSQL(recB06.b06ValidateAutoMoveSQL, recA01.pid.ToString());
+            return _db.GetIntegerFromSql(strSQL);
+        }
         public int RunWorkflowStep(BO.a01Event rec, BO.b06WorkflowStep recB06, List<BO.a41PersonToEvent> lisNominee, string strComment, string strUploadGUID, bool bolManualStep)
         {
             if (ValidateWorkflowStepBeforeRun(rec, recB06, lisNominee, strComment, strUploadGUID, bolManualStep) == false)
@@ -38,14 +60,34 @@ namespace BL
                 //změnit cílový status akce
                 var recB02 = _mother.b02WorkflowStatusBL.Load(recB06.b02ID_Target);
                 SaveStepWithChangeStatus(rec, recB06, recB02, strComment, bolManualStep);
+                
             }
             else
             {
                 SaveStepWithoutChangeStatus(rec, recB06, strComment, bolManualStep);
             }
+            
             if (recB06.b06IsNominee)
             {
                 SaveNominee(rec, recB06, lisNominee);
+            }
+            TrySendNotificationsToStep(rec, recB06, strComment);
+
+            if (recB06.b02ID_Target > 0)
+            {   //změna stavu může být také notifikována
+                TrySendNotificationsToStatus(rec, recB06.b02ID_Target, strComment);
+            }
+            if (recB06.b06IsFormAutoLock)
+            {   //spuštění kroku uzamyká otevřené formuláře v akci
+                var lisA11 = _mother.a11EventFormBL.GetList(new BO.myQuery("a11") { a01id = rec.pid });
+                foreach(var recA11 in lisA11)
+                {
+                    _mother.a11EventFormBL.LockUnLockForm(recA11.pid, true);
+                }
+            }
+            if (recB06.b06IsToDoGeneration)
+            {   //krok generuje úkol
+                AutoGenerateToDoFromWorkflow(rec, recB06);
             }
             if (string.IsNullOrEmpty(recB06.b06RunSQL)==false)
             {   //krok má spouštět SQL dotaz
@@ -300,6 +342,51 @@ namespace BL
             return intB05ID;
         }
 
+        private void TrySendNotificationsToStep(BO.a01Event rec, BO.b06WorkflowStep recB06, string strComment)
+        {
+            //posílá notifikační zprávy v rámci workflow kroku
+            var lisB11 = _mother.b06WorkflowStepBL.GetListB11(recB06.pid);
+            if (lisB11.Count() == 0) return; //nejsou definovány notifikační pravidla k workflow kroku
+            var lisA41 = _mother.a41PersonToEventBL.GetList(new BO.myQuery("a41") { a01id = rec.pid });
+            foreach(var c in lisB11)
+            {
+                var persons = GetAllPersonsOfEventRole(rec, c.a45ID, c.j04ID, c.j11ID, lisA41);
+                handle_send_notification(rec, persons, c.b65ID, strComment);
+            }
+        }
+        private void TrySendNotificationsToStatus(BO.a01Event rec,int intB02ID,string strComment)
+        {
+            //posílá notifikační zprávy v rámci workflow stavu
+            var lisB07 = _mother.b02WorkflowStatusBL.GetListB07(intB02ID);
+            if (lisB07.Count() == 0) return;    //nejsou definovány notifikační pravidla k workflow kroku
+            var lisA41 = _mother.a41PersonToEventBL.GetList(new BO.myQuery("a41") { a01id = rec.pid });
+            foreach(var c in lisB07)
+            {
+                var persons = GetAllPersonsOfEventRole(rec, c.a45ID, c.j04ID, c.j11ID, lisA41);
+                handle_send_notification(rec, persons, c.b65ID, strComment);                                                    
+            }
+        }
+        private void handle_send_notification(BO.a01Event rec,List<BO.j02Person> persons,int b65id, string strComment)
+        {
+            if (persons.Count() == 0) return;
+            var recB65 = _mother.b65WorkflowMessageBL.MailMergeRecord(b65id, rec.pid, null);
+
+            if (recB65.b65MessageBody.Contains("#comment#"))
+            {
+                recB65.b65MessageBody = recB65.b65MessageBody.Replace("#comment#", strComment);
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(strComment))
+                {
+                    recB65.b65MessageBody = recB65.b65MessageBody + Microsoft.VisualBasic.Constants.vbCrLf + "---------------------" + Microsoft.VisualBasic.Constants.vbCrLf + strComment;
+                }
+            }
+
+            var recX40 = new BO.x40MailQueue() { x29ID = 101, x40DataPID = rec.pid, x40IsAutoNotification = true, x40Subject = recB65.b65MessageSubject, x40Body = recB65.b65MessageBody };
+            recX40.x40Recipient = string.Join(",", persons.Select(p => p.j02Email));
+            _mother.MailBL.SendMessage(recX40, false);
+        }
 
         private void RunB09Commands(BO.a01Event rec,int intB06ID,int intB02ID_Target)
         {
@@ -340,6 +427,184 @@ namespace BL
                     }
                 }
             }
+        }
+
+        private List<BO.j02Person> GetAllPersonsOfEventRole(BO.a01Event rec,int intA45ID,int intJ04ID,int intJ11ID,IEnumerable<BO.a41PersonToEvent> lisA41)
+        {
+            //vrátí seznam osob
+            var ret = new List<BO.j02Person>();
+
+            if (intA45ID > 0)
+            {
+                foreach(var c in lisA41.Where(p=>(int)p.a45ID==intA45ID && p.j02ID>0))
+                {
+                    if (!ret.Exists(p => p.j02ID == c.j02ID))
+                    {
+                        ret.Add(_mother.j02PersonBL.Load(c.j02ID));
+                    }
+                }
+            }
+            if (intJ04ID > 0)
+            {
+                var recJ04 = _mother.j04UserRoleBL.Load(intJ04ID);
+                var lis = new List<BO.j02Person>();
+                switch (recJ04.j04RelationFlag)
+                {
+                    case j04RelationFlagEnum.NoRelation:
+                        lis = _mother.j02PersonBL.GetList(new BO.myQuery("j02") { j04id = recJ04.pid,IsRecordValid=true }).ToList();
+                        break;
+                    case j04RelationFlagEnum.A05:
+                        lis = _mother.j02PersonBL.GetList(new BO.myQuery("j02") {a05id=rec.a05ID, j04id = recJ04.pid, IsRecordValid = true }).ToList();
+                        break;
+                    case j04RelationFlagEnum.A03:
+                        var lisA39 = _mother.a39InstitutionPersonBL.GetList(new BO.myQuery("a39") { a03id = rec.a03ID, j04id = recJ04.pid }).ToList();
+                        foreach(var c in lisA39)
+                        {
+                            lis.Add(_mother.j02PersonBL.Load(c.j02ID));
+                        }
+                        break;                        
+                }
+                foreach(var c in lis)
+                {
+                    if (!ret.Exists(p => p.j02ID == c.pid))
+                    {
+                        ret.Add(c);
+                    }
+                }
+            }
+            if (intJ11ID > 0)
+            {
+                var lis = _mother.j02PersonBL.GetList(new BO.myQuery("j02") { IsRecordValid = true, j11id = intJ11ID });
+                foreach (var c in lis)
+                {
+                    if (!ret.Exists(p => p.j02ID == c.pid))
+                    {
+                        ret.Add(c);
+                    }
+                }
+            }
+
+            return ret;
+        }
+
+        private bool AutoGenerateToDoFromWorkflow(BO.a01Event rec,BO.b06WorkflowStep recB06)
+        {
+            //krok generuje úkol
+            var recH07 = _mother.h07ToDoTypeBL.Load(recB06.b06ToDo_h07ID);
+            var recH04 = new BO.h04ToDo() { a01ID = rec.pid, h07ID = recH07.pid, j03ID_Creator = _mother.CurrentUser.pid, j02ID_Owner = rec.j02ID_Issuer, h04Name = recB06.b06ToDo_Name, h04Description=recB06.b06ToDo_Description };
+            if (recH07.h07IsToDo)
+            {
+                recH04.h05ID = 1;
+                
+            }
+            InhaleTodoKeyDatesFromWorkflow(ref recH04, rec, recB06);
+           
+            var intH04ID=_mother.h04ToDoBL.Save(recH04, CompleteTodoReceivers(rec, recB06).Select(p => p.j02ID).ToList(), null);
+            if (intH04ID > 0)
+            {
+                if (recB06.b06ToDo_IsSendMail)
+                {//odeslat notifikaci na úkol
+                    _mother.h04ToDoBL.NotifyByMail(intH04ID);
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+                
+        }
+        private List<BO.h06ToDoReceiver> CompleteTodoReceivers(BO.a01Event rec, BO.b06WorkflowStep recB06)
+        {//složit tým řešitelů nového úkolu
+            var ret = new List<BO.h06ToDoReceiver>();
+            var lisA41 = _mother.a41PersonToEventBL.GetList(new BO.myQuery("a41") { a01id = rec.pid });
+            switch (recB06.b06ToDo_ReceiverFlag)
+            {
+                case 1: //vedoucí+členové
+                    lisA41 = lisA41.Where(p => p.a45ID == EventRoleENUM.Vedouci || p.a45ID == EventRoleENUM.Ctenar);
+                    break;
+                case 2: //pouze vedoucí
+                    lisA41 = lisA41.Where(p => p.a45ID == EventRoleENUM.Vedouci);
+                    break;
+                case 4: //pouze přizvané osoby
+                    lisA41 = lisA41.Where(p => p.a45ID == EventRoleENUM.PrizvanaOsoba);
+                    break;
+
+            }
+            foreach(var c in lisA41)
+            {
+                ret.Add(new BO.h06ToDoReceiver() { j02ID = c.j02ID, h06TodoRole=h06TodoRoleEnum.Resitel });
+            }
+            return ret;
+        }
+        private void InhaleTodoKeyDatesFromWorkflow(ref BO.h04ToDo recH04,BO.a01Event rec,BO.b06WorkflowStep recB06)
+        {
+            if (recB06.b06ToDo_DeadlineField.ToLower() == "a01datefrom")
+            {
+                recH04.h04Deadline = Convert.ToDateTime(rec.a01DateFrom).AddDays(recB06.b06ToDo_DeadlineMove);
+            }
+            if (recB06.b06ToDo_DeadlineField.ToLower() == "a01dateuntil")
+            {
+                recH04.h04Deadline = Convert.ToDateTime(rec.a01DateUntil).AddDays(recB06.b06ToDo_DeadlineMove);
+            }
+
+            if (recB06.b06ToDo_CapacityPlanFromField.ToLower() == "a01datefrom")
+            {
+                recH04.h04CapacityPlanFrom = Convert.ToDateTime(rec.a01DateFrom).AddDays(recB06.b06ToDo_CapacityPlanFromMove);
+            }
+            if (recB06.b06ToDo_CapacityPlanFromField.ToLower() == "a01dateuntil")
+            {
+                recH04.h04CapacityPlanFrom = Convert.ToDateTime(rec.a01DateUntil).AddDays(recB06.b06ToDo_CapacityPlanFromMove);
+            }
+
+            if (recB06.b06ToDo_CapacityPlanUntilField.ToLower() == "a01datefrom")
+            {
+                recH04.h04CapacityPlanUntil = Convert.ToDateTime(rec.a01DateFrom).AddDays(recB06.b06ToDo_CapacityPlanUntilMove);
+            }
+            if (recB06.b06ToDo_CapacityPlanUntilField.ToLower() == "a01dateuntil")
+            {
+                recH04.h04CapacityPlanUntil = Convert.ToDateTime(rec.a01DateUntil).AddDays(recB06.b06ToDo_CapacityPlanUntilMove);
+            }
+
+            if ((recH04.h04CapacityPlanFrom == null || recH04.h04CapacityPlanUntil==null)==false)
+            {
+                recH04.h04CapacityPlanFrom = OcistiDatumUkoluOVikendy(Convert.ToDateTime(recH04.h04CapacityPlanFrom), recB06.b06ToDo_CapacityPlanFromMove);
+                recH04.h04CapacityPlanUntil = OcistiDatumUkoluOVikendy(Convert.ToDateTime(recH04.h04CapacityPlanUntil), recB06.b06ToDo_CapacityPlanUntilMove);
+
+                var d = Convert.ToDateTime(recH04.h04CapacityPlanUntil);
+                recH04.h04CapacityPlanUntil = new DateTime(d.Year, d.Month, d.Day).AddDays(1).AddSeconds(-1);
+                d = Convert.ToDateTime(recH04.h04CapacityPlanFrom);
+                recH04.h04CapacityPlanFrom = new DateTime(d.Year, d.Month, d.Day);
+
+            }
+        }
+
+        private DateTime OcistiDatumUkoluOVikendy(DateTime d,int intPosunVuciAkci)
+        {   //postarat se o to, aby datum d nespadal do víkendů
+            switch (d.DayOfWeek)
+            {
+                case DayOfWeek.Saturday:
+                    if (intPosunVuciAkci > 0)
+                    {
+                        d = d.AddDays(2);
+                    }
+                    else
+                    {
+                        d = d.AddDays(-1);
+                    }
+                    break;
+                case DayOfWeek.Sunday:
+                    if (intPosunVuciAkci > 0)
+                    {
+                        d = d.AddDays(1);
+                    }
+                    else
+                    {
+                        d = d.AddDays(-2);
+                    }
+                    break;
+            }
+            return d;
         }
     }
 }

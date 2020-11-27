@@ -84,6 +84,7 @@ namespace BO
         public int a01id { get; set; }
         public int a01parentid { get; set; }
         public bool? a01IsTemporary { get; set; }
+        public bool? a01IsClosed { get; set; }
         public int a04id { get; set; }
         public int a05id { get; set; }
         public int a06id { get; set; }
@@ -122,6 +123,7 @@ namespace BO
         public BO.BooleanQueryMode a11ispoll { get; set; }
         public BO.BooleanQueryMode a11issimulation { get; set; }
         public int a08id { get; set; }
+        public int o13id { get; set; }
         public int x31id { get; set; }
         public int x29id { get; set; }
         public int recpid { get; set; }

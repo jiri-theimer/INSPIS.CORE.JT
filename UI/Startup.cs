@@ -98,10 +98,12 @@ namespace UI
                 ,
                 UserUrl= Configuration.GetSection("App")["UserUrl"]
                 ,
+                RobotUser = Configuration.GetSection("App")["RobotUser"]
+                ,
                 UploadFolder = Configuration.GetSection("Folders")["Upload"]
                 ,
                 TempFolder = Configuration.GetSection("Folders")["Temp"]
-                ,
+                ,                
                 ReportFolder = Configuration.GetSection("Folders")["Report"]
                 ,
                 LogFolder = strLogFolder

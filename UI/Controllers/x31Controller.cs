@@ -369,18 +369,18 @@ namespace UI.Controllers
 
             if (dt.Rows.Count > 1)  //join dokumentů, pokud má zdroj více záznamů
             {                
-                System.IO.File.Copy(Factory.App.TempFolder + "\\" + filenames[0], Factory.App.TempFolder + "\\" + strFileName+".docx", true);
-                x = 0;
-                foreach (string filename in filenames)
+                System.IO.File.Copy(Factory.App.TempFolder + "\\" + filenames[0], Factory.App.TempFolder + "\\" + strFileName+".docx", true);   //výsledek pro záznam
+                
+                for (int xx = 1;xx < filenames.Count;xx++)  //join druhého a dalšího záznamu do dokumentu prvního záznamu
                 {
                     using (WordprocessingDocument myDoc = WordprocessingDocument.Open(Factory.App.TempFolder + "\\" + strFileName + ".docx", true))
                     {
                         MainDocumentPart mainPart = myDoc.MainDocumentPart;
-                        x += 1;
-                        string altChunkId = "AltChunkId" + x.ToString();
+                        
+                        string altChunkId = "AltChunkId" + xx.ToString();
                         AlternativeFormatImportPart chunk = mainPart.AddAlternativeFormatImportPart(
                             AlternativeFormatImportPartType.WordprocessingML, altChunkId);
-                        using (FileStream fileStream = System.IO.File.Open(Factory.App.TempFolder + "\\" + filename, FileMode.Open))
+                        using (FileStream fileStream = System.IO.File.Open(Factory.App.TempFolder + "\\" + filenames[xx], FileMode.Open))
                         {
                             chunk.FeedData(fileStream);
                         }

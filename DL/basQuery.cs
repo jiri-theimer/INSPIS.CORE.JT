@@ -188,6 +188,19 @@ namespace DL
             
             if (mq.j04id > 0)
             {
+                switch (mq.Prefix)
+                {
+                    case "a39":
+                        AQ(ref lis, "(a.j04ID_Explicit=@j04id OR j03.j04ID=@j04id)", "j04id", mq.j04id);
+                        break;
+                    case "j02":
+                        AQ(ref lis, "a.j02ID IN (select j02ID FROM j03User WHERE j04ID=@j04id)", "j04id", mq.j04id);
+                        break;
+                    default:
+                        AQ(ref lis, "a.j04ID=@j04id", "j04id", mq.j04id);
+                        break;
+                }
+                    
                 if (mq.Prefix == "a39")
                 {
                     AQ(ref lis, "(a.j04ID_Explicit=@j04id OR j03.j04ID=@j04id)", "j04id", mq.j04id);
@@ -242,6 +255,10 @@ namespace DL
                 if (mq.a01IsTemporary !=null)
                 {
                     AQ(ref lis, "a.a01IsTemporary=@istemp", "istemp", mq.a01IsTemporary);   //temp akce
+                }
+                if (mq.a01IsClosed != null)
+                {
+                    AQ(ref lis, "a.a01IsClosed=@isclosed", "isclosed", mq.a01IsClosed);     //uzavřená akce
                 }
             }
             
@@ -493,6 +510,10 @@ namespace DL
             if (mq.h11id > 0)
             {                
                 if (mq.Prefix == "j04") AQ(ref lis, "a.j04ID IN (select j04ID FROM h12NoticeBoard_Permission WHERE h11ID=@h11id)", "h11id", mq.h11id);
+            }
+            if (mq.o13id > 0)
+            {
+                if (mq.Prefix == "o27") AQ(ref lis, "a.o13ID=@o13id", "o13id", mq.o13id);
             }
             if (mq.x31id > 0)
             {

@@ -20,6 +20,10 @@
 
     <link rel="stylesheet" href="~/css/site.css" />
 
+    <link href="/kendo/styles/kendo.common.min.css" rel="stylesheet" type="text/css" />
+    <link href="/kendo/styles/kendo.default.min.css" rel="stylesheet" type="text/css" />
+    <link href="/kendo/styles/kendo.default.mobile.min.css" rel="stylesheet" type="text/css" />
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/modal_bootstrap/bootstrap-show-modal.js"></script>
@@ -41,13 +45,11 @@
             break;
     }
 
-  
-    <link href="/kendo/styles/kendo.common.min.css" rel="stylesheet" type="text/css" />
-    <link href="/kendo/styles/kendo.default.min.css" rel="stylesheet" type="text/css" />
-    <link href="/kendo/styles/kendo.default.mobile.min.css" rel="stylesheet" type="text/css" />
 
 
-    
+
+
+
 
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/mycombo.js" asp-append-version="true"></script>
@@ -114,7 +116,7 @@
                     {
                         <select asp-for="@Model.LangIndex" class="form-control" onchange="refresh()">
                             <option value="0">Česky</option>
-                            <option value="1">English</option>
+                            
                             <option value="2">Українська</option>
                         </select>
                     }

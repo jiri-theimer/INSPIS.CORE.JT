@@ -188,15 +188,17 @@ namespace UI.Controllers
                         c.pid = Factory.j03UserBL.SaveWithNewPersonalProfile(c, cJ02);                        
                         break;
                     case "bind":
-                        c.j02ID = v.Rec.j02ID;  //uložení s existujícím osobním profilem
+                        c.j02ID = v.Rec.j02ID;  //uložení s existujícím osobním profilem                        
                         c.pid = Factory.j03UserBL.Save(c);
                         break;
                     default:
                         //účet bez vazby na osobní profil
                         c.j02ID = 0;
                         c.j03IsSystemAccount = true;
+                        c.pid = Factory.j03UserBL.Save(c);
                         break;
                 }
+
                 
 
                 if (v.rec_pid == 0 && c.pid>0 && v.IsDefinePassword)

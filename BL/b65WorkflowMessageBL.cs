@@ -11,6 +11,9 @@ namespace BL
         public IEnumerable<BO.b65WorkflowMessage> GetList(BO.myQuery mq);
         public int Save(BO.b65WorkflowMessage rec);
 
+        public BO.b65WorkflowMessage MailMergeRecord(BO.b65WorkflowMessage recB65, int datapid, string param1);
+        public BO.b65WorkflowMessage MailMergeRecord(int b65id, int datapid, string param1);
+
     }
     class b65WorkflowMessageBL : BaseBL, Ib65WorkflowMessageBL
     {
@@ -85,6 +88,23 @@ namespace BL
 
 
             return true;
+        }
+
+        public BO.b65WorkflowMessage MailMergeRecord(int b65id, int datapid, string param1)
+        {
+            if (b65id == 0) return null;
+            return MailMergeRecord(Load(b65id), datapid, param1);
+        }
+        public BO.b65WorkflowMessage MailMergeRecord(BO.b65WorkflowMessage recB65, int datapid, string param1)
+        {
+            if (recB65 == null) return null;
+            var dt = _mother.gridBL.GetList4MailMerge(recB65.x29Prefix, datapid);
+            if (dt.Rows.Count == 0) return recB65;
+
+            var cMerge = new BO.CLS.MergeContent();
+            recB65.b65MessageBody = cMerge.GetMergedContent(recB65.b65MessageBody, dt).Replace("#param1", param1, StringComparison.OrdinalIgnoreCase).Replace("#password#", param1);
+            recB65.b65MessageSubject = cMerge.GetMergedContent(recB65.b65MessageSubject, dt).Replace("#param1", param1, StringComparison.OrdinalIgnoreCase);
+            return recB65;
         }
 
     }

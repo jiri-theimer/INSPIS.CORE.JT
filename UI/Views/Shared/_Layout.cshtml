@@ -383,11 +383,13 @@
         }
         function _window_toggle() {
             var okno = $("#myModalContent");
+            var s = $("#myModalContentHeader").text();
             if (_device.innerWidth - $(okno).width() < 30) {
                 _window_open("", 1);
             } else {
                 _window_open("", 2);
             }
+            $("#myModalContentHeader").text(s);
 
         }
         function _window_open(url, flag, header, layout) {

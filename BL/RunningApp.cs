@@ -27,6 +27,7 @@ namespace BL
         public string Implementation { get; set; }  //HD nebo prázdno
 
         public string UiftUrl { get; set; } //url pro spouštění UIFT
+        public string RobotUser { get; set; }   //pod jakým uživatelským loginem běží robot na pozadí
 
         public string Terminology_Akce
         {
