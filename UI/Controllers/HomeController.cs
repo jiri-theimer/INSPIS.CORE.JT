@@ -39,18 +39,22 @@ namespace UI.Controllers
 
         public BO.Result SaveCurrentUserHomePage(string homepageurl)
         {
-            if (String.IsNullOrEmpty(homepageurl)==false && homepageurl.Substring(0,1) != "/")
+            if (!String.IsNullOrEmpty(homepageurl))
             {
-                homepageurl = "/" + homepageurl;
+                if (homepageurl.Substring(0, 1) != "/")
+                {
+                    homepageurl = "/" + homepageurl;
+                }
+                if (homepageurl.Contains("/RecPage"))
+                {   //ořezat parametry za otazníkem
+                    homepageurl = homepageurl.Split("?")[0];
+                }
+                else
+                {
+                    homepageurl = homepageurl.Replace("pid=", "xxx=");
+                }
             }
-            if (homepageurl.Contains("/RecPage"))
-            {   //ořezat parametry za otazníkem
-                homepageurl = homepageurl.Split("?")[0];
-            }
-            else
-            {
-                homepageurl = homepageurl.Replace("pid=", "xxx=");
-            }
+            
             var c = Factory.j03UserBL.Load(Factory.CurrentUser.pid);
             c.j03HomePageUrl = homepageurl;
             Factory.j03UserBL.Save(c);

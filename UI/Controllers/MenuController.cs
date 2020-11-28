@@ -51,10 +51,14 @@ namespace UI.Controllers
         public string CurrentUserMenu()
         {                
             AMI("Aktuální stránku uložit jako domovskou", "javascript:_save_as_home_page()");
-            if (Factory.CurrentUser.j03HomePageUrl != null)
+            if (Factory.CurrentUser.j03HomePageUrl !=null)
             {
-                AMI("Vyčistit odkaz na domovskou stránku", "javascript:_clear_home_page()");                
-                AMI("Tovární HOME stránka", "/Home/Index");
+                if (Factory.CurrentUser.j04ViewUrl_Page == null || Factory.CurrentUser.j03HomePageUrl.ToLower() != Factory.CurrentUser.j04ViewUrl_Page.ToLower())
+                {
+                    AMI("Vyčistit odkaz na domovskou stránku", "javascript:_clear_home_page()");
+                    AMI("Tovární HOME stránka", "/Home/Index");
+                }
+                    
             }
             DIV();
             AMI("Můj profil", "/Home/MyProfile");
@@ -63,7 +67,7 @@ namespace UI.Controllers
             DIV();
             AMI("Vyplnit anketní formulář", Factory.App.UiftUrl,null,null,"_blank");
             DIV();
-            AMI("Nápověda", "javascript:_helppage_layout()");
+            AMI("Nápověda", "javascript: _window_open('/x51/Index')");
             //AMI("O aplikaci", "/Home/About");
             DIV();
             AMI("Odhlásit se", "/Home/logout");

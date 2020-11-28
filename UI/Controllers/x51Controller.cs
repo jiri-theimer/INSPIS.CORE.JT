@@ -6,14 +6,23 @@ using Microsoft.AspNetCore.Mvc;
 using UI.Models;
 using UI.Models.Record;
 using UI.Models.Recpage;
+using Microsoft.AspNetCore.Hosting;
+
 
 namespace UI.Controllers
 {
     public class x51Controller : BaseController
     {
+        private readonly IWebHostEnvironment _hostingEnvironment;
+        public x51Controller(IWebHostEnvironment hostingEnvironment)
+        {
+            _hostingEnvironment = hostingEnvironment;
+        }
         public IActionResult Index(string viewurl, string pagetitle, int listflag)
         {
+            
             var v = new x51RecPage() { InputViewUrl = viewurl,PageTitle=pagetitle,NearListFlag= listflag };
+          
             if (string.IsNullOrEmpty(v.InputViewUrl) ==false)
             {
                                 
@@ -56,14 +65,18 @@ namespace UI.Controllers
                         v.lisNear = v.lisNear.Where(p => p.x51ViewUrl.ToUpper().StartsWith(strNear.ToUpper())).OrderBy(p => p.x51ViewUrl);
                         break;
                 }
-               
-                
-                
-                //if (v.Rec != null)
-                //{
-                //    v.lisNear = v.lisNear.Where(p => p.pid != v.Rec.pid);
-                //}
 
+            }
+            else
+            {
+                v.NearListFlag = 1;   //pokud se necílí konkrétní url, pak automaticky rejstřík
+                v.lisNear = Factory.x51HelpCoreBL.GetList(new BO.myQuery("x51") { IsRecordValid = true });
+                var pandulak = new ThePandulak(_hostingEnvironment);
+                v.HtmlContent = string.Format("<img src='/images/pandulak/{0}'/>", pandulak.getPandulakImage(1));
+                v.HtmlContent += string.Format("<img src='/images/pandulak/{0}'/>", pandulak.getPandulakImage(2));
+                //v.HtmlContent += string.Format("<hr><img src='/images/splash_help.png'/>", pandulak.getPandulakImage(2));
+
+                
 
             }
             return View(v);

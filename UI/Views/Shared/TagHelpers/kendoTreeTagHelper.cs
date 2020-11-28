@@ -35,16 +35,22 @@ namespace UI.Views.Shared.TagHelpers
             var c = new kendoTreeItem()
             {
                 text = rec.Text,
-                id = rec.Pid.ToString(),
-                parentid = rec.ParentPid.ToString(),
+                id = rec.Pid.ToString()+"-"+rec.TreeLevel.ToString(),   //musí být unikátní                
+                recordid= rec.Pid.ToString(),   //id uchovávající pid záznamu
+                parentid = rec.ParentPid.ToString() + "-" + (rec.TreeLevel - 1).ToString(), //unikátní pid záznamu ve stromu
                 imageUrl = rec.ImgUrl,                
                 prefix = rec.Prefix,
                 cssclass=rec.CssClass,
                 textocas=rec.TextOcas
             };
+            
             if (rec.Expanded)
             {
                 c.expanded = true;
+            }
+            if (rec.Checked)
+            {
+                c.@checked = true;
             }
             return c;
         }
@@ -65,7 +71,7 @@ namespace UI.Views.Shared.TagHelpers
 
             return null;
         }
-        private kendoTreeItem handle_recur_findki(string findid,List<kendoTreeItem> nodes)
+        private kendoTreeItem handle_recur_findki(string find_unique_id,List<kendoTreeItem> nodes)
         {
             if (nodes == null)
             {
@@ -73,13 +79,13 @@ namespace UI.Views.Shared.TagHelpers
             }
             foreach(var c in nodes)
             {
-                if (c.id == findid)
+                if (c.id == find_unique_id)
                 {
                     return c;
                 }
                 if (c.items != null)
                 {                    
-                    var cUnder= handle_recur_findki(findid, c.items);
+                    var cUnder= handle_recur_findki(find_unique_id, c.items);
                     if (cUnder != null)
                     {
                         return cUnder;
@@ -98,29 +104,23 @@ namespace UI.Views.Shared.TagHelpers
                 this.KendoDataSource = new List<kendoTreeItem>();
                 
                 foreach (var rec in this.TreeDataSource.Where(p=>p.TreeLevel<=1))   //top položky stromu
-                {
-                    
+                {                    
                     this.KendoDataSource.Add(createki(rec));
                 }
               
                 for (int intLevel = 2; intLevel <= 9; intLevel++)   //vnořené položky stromu
                 {
                     foreach (var rec in this.TreeDataSource.Where(p => p.TreeLevel == intLevel))
-                    {
-                        var parentki = findki(rec.ParentPid.ToString());
-                        if (parentki == null)
+                    {                        
+                        var parentki = findki(rec.ParentPid.ToString() + "-" + (rec.TreeLevel - 1).ToString()); //najít podle unikátního id
+
+                        if (parentki.items == null)
                         {
-                            int x = 1;  //toto by se stát nemělo
+                            parentki.items = new List<kendoTreeItem>();
                         }
-                        else
-                        {
-                            if (parentki.items == null)
-                            {
-                                parentki.items = new List<kendoTreeItem>();
-                            }
-                            parentki.items.Add(createki(rec));
-                        }
-                        
+                        parentki.items.Add(createki(rec));
+
+
 
                     }
                 }
@@ -129,7 +129,6 @@ namespace UI.Views.Shared.TagHelpers
             }
 
             
-
 
             string strJsonDataSource = JsonSerializer.Serialize(this.KendoDataSource, new System.Text.Json.JsonSerializerOptions
             {

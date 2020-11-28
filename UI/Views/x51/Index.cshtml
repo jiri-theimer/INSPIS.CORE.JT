@@ -3,13 +3,15 @@
 
 @{
     ViewData["Title"] = _f.tra("Nápověda");
-    Layout = "~/Views/Shared/_LayoutSubform.cshtml";
+    Layout = "~/Views/Shared/_LayoutModal.cshtml";
 
 }
 
 @addTagHelper *, UI
 
-<div class="bg-light">
+
+<div class="bg-light" style="padding:0px;margin:0px;">
+
     @if (Model.Rec != null)
     {
 
@@ -33,16 +35,16 @@
     }
     else
     {
-        <div class="bg-light">
-            <div class="row">
-                <div class="col">
+        <div>
+            <div class="form-row" style="padding:0px;margin:0px;">
+                <div class="col-auto">
                     <h4>@Model.InputViewUrl</h4>
 
                 </div>
-                <div class="col">
+                <div class="col-auto">
                     <code>@Model.PageTitle</code>
                 </div>
-                <div class="col">
+                <div class="col-auto">
                     @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.AdminGlobal_Ciselniky))
                     {
                         <a class="btn btn-primary" href="/x51/Record?source=helppage&pid=0&viewurl=@Model.InputViewUrl&pagetitle=@Model.PageTitle">@_f.tra("Založit záznam nápovědy")</a>
@@ -57,50 +59,42 @@
 
     }
 
-</div>
 
+</div>
 
 @if (Model.lisNear != null)
 {
-    <div class="row">
+    <div class="form-row" style="padding:0px;margin:0px;">
         <div class="col-sm-9 col-md-9">
-            @if (Model.Rec != null)
-            {
-                @Html.Raw(Model.HtmlContent)
-                
-            }
+            @Html.Raw(Model.HtmlContent)
 
         </div>
         <div class="col-sm-3 col-md-3">
             @foreach (var c in Model.lisNear)
             {
-            <div title="@(@c.UserInsert+"/"+BO.BAS.ObjectDateTime2String(c.DateInsert))">
+                <div title="@(@c.UserInsert+"/"+BO.BAS.ObjectDateTime2String(c.DateInsert))">
 
-                @if (Model.Rec != null && c.pid == Model.Rec.pid)
-                {
-                    
-                    <a class="nav-link selected" href="/x51/Index?listflag=@Model.NearListFlag&viewurl=@c.x51ViewUrl"><img src="~/images/bullet6.gif" />@c.x51Name</a>
-                }
-                else
-                {
-                    <a class="nav-link" href="/x51/Index?listflag=@Model.NearListFlag&viewurl=@c.x51ViewUrl"><img src="~/images/bullet6.gif" />@c.x51Name</a>
-                }
+                    @if (Model.Rec != null && c.pid == Model.Rec.pid)
+                    {
 
-            </div>
+                        <a class="nav-link selected" href="/x51/Index?listflag=@Model.NearListFlag&viewurl=@c.x51ViewUrl"><img src="~/images/bullet6.gif" />@c.x51Name</a>
+                    }
+                    else
+                    {
+                        <a class="nav-link" href="/x51/Index?listflag=@Model.NearListFlag&viewurl=@c.x51ViewUrl"><img src="~/images/bullet6.gif" />@c.x51Name</a>
+                    }
+
+                </div>
             }
         </div>
     </div>
-    
+
 
 
 }
 else
 {
-    @if (Model.Rec != null)
-    {
-        @Html.Raw(Model.HtmlContent)
-        
-    }
+    @Html.Raw(Model.HtmlContent)
 }
 
 

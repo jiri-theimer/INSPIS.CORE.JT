@@ -26,6 +26,7 @@ namespace UI.Models
         public string CssClass { get; set; }
 
         public bool Expanded { get; set; }
+        public bool @Checked { get; set; }
 
        
     }

@@ -30,6 +30,7 @@ namespace BO
 
         public int j03LangIndex { get; set; }
         public string j03HomePageUrl { get; set; }
+        public string j04ViewUrl_Page { get; set; }
         public int a04ID { get; set; }      //svázaný inspektorát
         public int a05ID { get; set; }      //svázaný region
         public string j11IDs_Cache { get; set; }    //kvůli výkonu SQL - seznam j11ID týmů s účastní uživatele

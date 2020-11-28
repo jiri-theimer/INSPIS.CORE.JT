@@ -27,9 +27,6 @@
    
 </style>
 
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-<link href="/lib/hummingbird-treeview/hummingbird-treeview.css" rel="stylesheet">
-<script src="/lib/hummingbird-treeview/hummingbird-treeview.js"></script>
 
 <h4 class="px-2">@ViewData["Title"]</h4>
 
@@ -125,28 +122,10 @@
                 </table>
             }
             <div id="offset1"></div>
-            <div id="divTreeviewContainer" style="overflow:auto;max-width:1000px;">
+            <div id="divTreeviewContainer" style="overflow:auto;">
                 <kendotree clientid="tree1" tree-datasource="@Model.treeNodes"></kendotree>
 
-                <div class="hummingbird-treeview-converter">
-                    @if (Model.lisF06 != null)
-                    {
-                        @foreach (var cF06 in Model.lisF06)
-                        {
-                            <li id="item-f06-@cF06.pid" data-id="f06-@cF06.pid">@cF06.f06Name</li>
-                            @foreach (var cF18 in Model.lisF18.Where(p => p.f06ID == cF06.pid))
-                            {
-                                <li id="item-f18-@cF18.pid" data-id="f18-@cF18.pid">@(new string('-',cF18.f18TreeLevel)+cF18.f18Name)</li>
-                                @foreach (var cF19 in Model.lisF19.Where(p => p.f18ID == cF18.pid))
-                                {
-                                    <li id="item-f19-@cF19.pid" data-id="f19-@cF19.pid">@(new string('-',cF18.f18TreeLevel+1)+cF19.pid.ToString()+" - "+cF19.f19Name)</li>
-                                }
-                            }
-                        }
-                    }
-
-
-                </div>
+                
             </div>
 
 
@@ -252,24 +231,13 @@
                     checkChildren: true
                 },
                 dataSource: dstree1,
-                check: onCheck
+                check: on_check
             }
         );
         </text>
         }
 
-        $("#treeview").hummingbird();
-
-        @if (!string.IsNullOrEmpty(Model.CheckedIDs))
-        {
-            <text>
-            var pre_check = "@Model.CheckedIDs".split(",");
-
-            $.each(pre_check, function (i, e) {
-                $("#treeview").hummingbird("checkNode", { attr: "id", name: e, expandParents: true });
-            });
-            </text>
-        }
+        
 
     @if(Model.GridGuid != null && Model.ActiveTabIndex !=3)
         {
@@ -390,12 +358,7 @@
         handle_submit("/Stat/Index?oper=delete_temp&index=" + i);
     }
 
-    function handle_checked_ids() {
-        var List = { "id": [], "dataid": [], "text": [] };
-        $("#treeview").hummingbird("getChecked", { list: List, onlyEndNodes: true, onlyParents: false, fromThis: false });
-        $("#CheckedIDs").val(List.id.join(","));
-
-    }
+  
     function change_temp_freetext03(i) {
 
     }
@@ -407,14 +370,13 @@
     }
 
 
-    function handle_submit(action) {
-        handle_checked_ids();
+    function handle_submit(action) {        
         form1.action = action;
         form1.submit();
     }
 
 
-    function onCheck(e) {
+    function on_check(e) {
         var checkedNodes = [];
         var treeView = $("#tree1").data("kendoTreeView");
         var message;
@@ -422,12 +384,24 @@
         checkedNodeIds(treeView.dataSource.view(), checkedNodes);
 
         if (checkedNodes.length > 0) {
+            $("#CheckedIDs").val(checkedNodes.join(","));
             message = "IDs of checked nodes: " + checkedNodes.join(",");
         } else {
-            message = "No nodes checked.";
+            $("#CheckedIDs").val("");
         }
+        
+        
+    }
+    function checkedNodeIds(nodes, checkedNodes) {
+        for (var i = 0; i < nodes.length; i++) {
+            if (nodes[i].checked) {
+                checkedNodes.push(nodes[i].prefix+"-"+nodes[i].recordid);
+            }
 
-        alert(message);
+            if (nodes[i].hasChildren) {
+                checkedNodeIds(nodes[i].children.view(), checkedNodes);
+            }
+        }
     }
 </script>
 

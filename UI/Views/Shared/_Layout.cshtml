@@ -63,10 +63,10 @@
         case 2:
             <script src="~/lib/datepicker/bootstrap-datepicker.ua.min.js"></script>
             break;
-        default:            
+        default:
             break;
     }
-    
+
     <script src="~/lib/qtip/jquery.qtip.min.js"></script>
 
     <script src="~/js/site.js" asp-append-version="true"></script>
@@ -84,7 +84,14 @@
                 }
                 else
                 {
-                    <a id="cmdHome" class="nav-link text-white" href="@_f.CurrentUser.getHomePageUrl()" tabindex="-1">@_f.App.AppName☆</a>
+                    <a id="cmdHome" class="nav-link text-white" href="@_f.CurrentUser.getHomePageUrl()" tabindex="-1">
+                        @_f.App.AppName
+                        @if (_f.CurrentUser.j04ViewUrl_Page ==null || _f.CurrentUser.j03HomePageUrl.ToLower() != _f.CurrentUser.j04ViewUrl_Page.ToLower())
+                        {
+                        <span>☆</span>
+                        }
+                        
+                    </a>
                 }
 
             </div>
