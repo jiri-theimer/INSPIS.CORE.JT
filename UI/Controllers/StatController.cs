@@ -48,6 +48,7 @@ namespace UI.Controllers
             
 
             RefreshStateIndex(v);
+            inhale_tree1(v);
 
             return ViewTup(v, BO.j05PermValuEnum.Menu_Analyze);
         }
@@ -326,6 +327,7 @@ namespace UI.Controllers
                 v.lisF06 = Factory.f06FormBL.GetList(mq);                
                 mq = new BO.myQuery("f18");
                 mq.f06ids = v.lisF06.Select(p => p.pid).ToList();
+                mq.explicit_orderby = "a.f06ID,a.f18TreeIndex";
                 v.lisF18 = Factory.f18FormSegmentBL.GetList(mq);
                 mq = new BO.myQuery("f19");
                 mq.f06ids = v.lisF06.Select(p => p.pid).ToList();
@@ -438,28 +440,44 @@ namespace UI.Controllers
             return ret;
         }
 
+        
         private void inhale_tree1(UI.Models.StatViewModel v)
         {
-            v.treeNodes = new List<myTreeNode>();
-            var lis = Factory.x32ReportTypeBL.GetList(new BO.myQuery("x32Report"));
-            foreach (var rec in lis)
-            {
-                var c = new myTreeNode()
-                {
-                    TreeIndex = rec.x32TreeIndex,
-                    TreeLevel = rec.x32TreeLevel,
-                    Text = rec.x32Name,
-                    TreeIndexFrom = rec.x32TreeIndexFrom,
-                    TreeIndexTo = rec.x32TreeIndexTo,
-                    Pid = rec.pid,
-                    ParentPid = rec.x32ParentID,
-                    Prefix = "x32",
-                    Expanded = true
+            if (v.lisF06 == null) return;
 
-                };
+            v.treeNodes = new List<myTreeNode>();
+            int x = 0;
+            foreach (var recF06 in v.lisF06)
+            {
+                x += 1;
+                var c = new myTreeNode(){TreeIndex = x,TreeLevel = 1,Text = recF06.f06Name,ImgUrl="/images/form.png",Pid = recF06.pid,Prefix = "f06",Expanded = true};
                 v.treeNodes.Add(c);
 
+                foreach (var recF18 in v.lisF18.Where(p => p.f06ID == recF06.pid))
+                {
+                    x += 1;
+                    c = new myTreeNode() { TreeIndex = x, TreeLevel = recF18.f18TreeLevel+1, Text = recF18.f18Name, ImgUrl = "/images/bullet4.gif", Pid = 1000000+recF18.pid, Prefix = "f18" };
+                    if (recF18.f18ParentID== 0)
+                    {
+                        c.ParentPid = recF06.pid;
+                    }
+                    else
+                    {
+                        c.ParentPid = recF18.f18ParentID + 1000000;
+                    }
+                    v.treeNodes.Add(c);
+
+                    foreach (var recF19 in v.lisF19.Where(p => p.f18ID == recF18.pid))
+                    {
+                        x += 1;
+                        c = new myTreeNode() { ParentPid = 1000000+recF18.pid, TreeIndex = x, TreeLevel = recF18.f18TreeLevel + 2, Text = recF19.f19Name, ImgUrl = "/images/"+recF19.Icon, Pid = 10000000+recF19.pid, Prefix = "f19" };
+                        v.treeNodes.Add(c);
+                    }
+                }
             }
+
+
+
         }
     }
 }

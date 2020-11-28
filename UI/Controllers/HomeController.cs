@@ -43,6 +43,14 @@ namespace UI.Controllers
             {
                 homepageurl = "/" + homepageurl;
             }
+            if (homepageurl.Contains("/RecPage"))
+            {   //ořezat parametry za otazníkem
+                homepageurl = homepageurl.Split("?")[0];
+            }
+            else
+            {
+                homepageurl = homepageurl.Replace("pid=", "xxx=");
+            }
             var c = Factory.j03UserBL.Load(Factory.CurrentUser.pid);
             c.j03HomePageUrl = homepageurl;
             Factory.j03UserBL.Save(c);

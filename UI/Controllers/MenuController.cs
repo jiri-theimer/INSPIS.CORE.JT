@@ -107,7 +107,7 @@ namespace UI.Controllers
         {
             if (Factory.CurrentUser.TestPermCiselniky(j03AdminRoleValueFlagEnum.uzivatel_er,j03AdminRoleValueFlagEnum.uzivatel_ro))
             {
-                AMI("Uživatelé", "/Admin/Users?prefix=j03");
+                AMI("Uživatelé", "/Admin/Users");
             }
             
             

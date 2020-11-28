@@ -18,58 +18,36 @@
 
 <h1>Telerik</h1>
 
-<div id="peklo1"></div>
+@addTagHelper *, UI
 
-<hr />
-<div id="peklo2"></div>
+
+<kendotree tree-datasource="@Model.treeNodes" clientid="strom1"></kendotree>
 
 
 
 
 
 <script>
-   
+
     $(document).ready(function () {
-            @Html.Raw("var ds="+Model.JsonTreeDatasource+";")
+           
+        var strom1 = $("#strom1").kendoTreeView(
+            {
+                checkboxes: {
+                    checkChildren: true
+                },
+                dataSource: dsstrom1,
+                check: onCheck,
+                template: "<a class='cm' onclick='_cm(event,\"#: item.prefix #\",#: item.id #)'>☰</a><span> #: item.text # </span>"
+            }
+        );
 
 
-
-            var tree1 = $("#peklo2").kendoTreeView(
-                {
-                    checkboxes: {
-                        checkChildren: true
-                    },
-                    dataSource: ds,
-                    dataTextField:"text",
-                    check: onCheck,                    
-                    template: "<a class='cm' onclick='_cm(event,\"#: item.prefix #\",#: item.id #)'>☰</a><span> #: item.text # </span>"
-                }
-            );
-
-        init_tree();
-        //recursiveReading(tree1.dataSource.view());
-
+            
+       
         });
 
 
-
-    function recursiveReading(nodes) {
-        for (var i = 0; i < nodes.length; i++) {
-            _notify_message(i);
-
-            if (nodes[i].hasChildren)
-                recursiveReading(nodes[i].children.view());
-
-        }
-    }
-
-    function init_tree() {
-        var treeView = $("#peklo2").data("kendoTreeView");
-        var nodes = treeView.dataSource.view();
-
-        //nodes[0].set("text", "<a href='#' style='color:red;'>hovado</a>");
-
-    }
 
 
 
@@ -78,7 +56,7 @@
         //alert(this.text(e.node) + ": " + this.id(e.node));
 
             var checkedNodes = [];
-            var treeView = $("#peklo2").data("kendoTreeView");
+        var treeView = $("#strom1").data("kendoTreeView");
             var message;
 
             checkedNodeIds(treeView.dataSource.view(), checkedNodes);

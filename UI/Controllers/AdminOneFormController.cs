@@ -110,7 +110,7 @@ namespace UI.Controllers
                     v.treeNodes.Add(cF26);
 
                     x = 0;
-                    foreach (var recF19In in lisF19.Where(p => p.f26ID == cF26.Pid)){
+                    foreach (var recF19In in lisF19.Where(p => p.f26ID == cF26.Pid && p.f18ID==recF18.pid)){
                         x += 1;
                         var cIN = new myTreeNode()
                         {

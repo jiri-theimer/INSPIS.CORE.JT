@@ -8,7 +8,7 @@ namespace BL
     public interface ICBL
     {
         public string DeleteRecord(string entity, int pid);
-        public string LoadUserParam(string strKey,string strDefault="");
+        public string LoadUserParam(string strKey,string strDefault=null);
         public int LoadUserParamInt(string strKey, int intDefault =0);
         public bool LoadUserParamBool(string strKey, bool bolDefault);
         public DateTime? LoadUserParamDate(string strKey);

@@ -33,15 +33,7 @@
             font-weight: bold;
         }
 
-        #tree1 img {
-            margin-right: 5px;
-            margin-left: 3px;
-            vertical-align: baseline;
-        }
-
-        #tree1 .cm {
-            margin-left: 10px;
-        }
+        
     </style>
 }
 
@@ -87,7 +79,7 @@
     @if (Model.view == "tree")
     {
         <div id="divTree" style="height:400px;overflow:auto;">
-            <tetree asp-for="@Model.treeNodes" auto_client_init="false" clientid="tree1"></tetree>
+            <kendotree tree-datasource="@Model.treeNodes" clientid="tree1"></kendotree>
 
 
         </div>
@@ -112,8 +104,14 @@
         @if (Model.view == "tree")
         {
         <text>
-        $("#tree1").kendoTreeView();
+         $("#tree1").kendoTreeView(
+            {
+                dataSource: dstree1,
+                 template: "<a class='cm' onclick='_cm(event,\"#: item.prefix #\",#: item.id #)'>☰</a><span class='#: item.cssclass #' ondblclick='_edit(\"#: item.prefix #\",#: item.id #)'> #: item.text # <span style='background-color: #: item.textocas # '>&nbsp;&nbsp;&nbsp;</span></span>"
+            }
+        );
         </text>
+        
         }
 
 

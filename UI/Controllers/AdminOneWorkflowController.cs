@@ -79,7 +79,8 @@ namespace UI.Controllers
                     Prefix = "b02",
                     ImgUrl="/images/ministamp.gif",
                     CssClass="stav",
-                    Expanded=true
+                    Expanded=true,
+                    TextOcas="transparent"
 
                 };
                 if (recB02.isclosed)
@@ -88,7 +89,7 @@ namespace UI.Controllers
                 }
                 if (recB02.b02Color != null)
                 {
-                    c.Text += "<span style='background-color:" + recB02.b02Color + ";'>&nbsp;&nbsp;&nbsp;&nbsp;</span>";
+                    c.TextOcas = recB02.b02Color;
                 }
                 v.treeNodes.Add(c);
 
@@ -105,7 +106,8 @@ namespace UI.Controllers
                         TreeLevel = 2,
                         TreeIndexFrom = x,
                         TreeIndexTo = x,
-                        ImgUrl= "/images/bullet2.gif"
+                        ImgUrl= "/images/bullet2.gif",
+                        TextOcas = "transparent"
                     };
                     if (recB06.isclosed)
                     {

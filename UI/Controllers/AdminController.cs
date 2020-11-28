@@ -67,22 +67,33 @@ namespace UI.Controllers
         public IActionResult Ciselniky(string prefix, int go2pid, string view)
         {
             var v = new AdminPage() { prefix = prefix, go2pid = go2pid, view = view };
-            inhale_entity(ref v, prefix);
-            if (prefix == "o13" || prefix == "x32")
+            if (v.prefix == null)
+            {
+                v.prefix = Factory.CBL.LoadUserParam("Admin/Ciselniky-prefix","a02");
+            }
+            else
+            {
+                if (Factory.CBL.LoadUserParam("Admin/Ciselniky-prefix") != v.prefix)
+                {
+                    Factory.CBL.SetUserParam("Admin/Ciselniky-prefix", v.prefix);
+                }
+            }
+            inhale_entity(ref v, v.prefix);
+            if (v.prefix == "o13" || v.prefix == "x32")
             {
                 if (string.IsNullOrEmpty(v.view) == true)
                 {
-                    v.view = Factory.CBL.LoadUserParam("Admin-Ciselniky-View-" + prefix, "tree");
+                    v.view = Factory.CBL.LoadUserParam("Admin-Ciselniky-View-" + v.prefix, "tree");
                 }
                 else
                 {
-                    Factory.CBL.SetUserParam("Admin-Ciselniky-View-" + prefix, v.view);
+                    Factory.CBL.SetUserParam("Admin-Ciselniky-View-" + v.prefix, v.view);
                 }
-                if (prefix == "o13" && v.view == "tree")
+                if (v.prefix == "o13" && v.view == "tree")
                 {
                     inhale_tree_o13(v);
                 }
-                if (prefix == "x32" && v.view == "tree")
+                if (v.prefix == "x32" && v.view == "tree")
                 {
                     inhale_tree_x32(v);
                 }
@@ -93,23 +104,45 @@ namespace UI.Controllers
         public IActionResult Users(string prefix, int go2pid)
         {
             var v = new AdminPage() { prefix = prefix, go2pid = go2pid };
-            inhale_entity(ref v, prefix);
+            if (v.prefix == null)
+            {
+                v.prefix = Factory.CBL.LoadUserParam("Admin/Users-prefix","j03");
+            }
+            else
+            {
+                if (Factory.CBL.LoadUserParam("Admin/Users-prefix") != v.prefix)
+                {
+                    Factory.CBL.SetUserParam("Admin/Users-prefix", v.prefix);
+                }
+            }
+            inhale_entity(ref v, v.prefix);
 
             return View(v);
         }
         public IActionResult Forms(string prefix, int go2pid, string view)
         {
             var v = new AdminPage() { prefix = prefix, go2pid = go2pid, view = view };
-            inhale_entity(ref v, prefix);
-            if (prefix == "f12")
+            if (v.prefix == null)
+            {
+                v.prefix = Factory.CBL.LoadUserParam("Admin/Forms-prefix","f06");
+            }
+            else
+            {
+                if (Factory.CBL.LoadUserParam("Admin/Forms-prefix") != v.prefix)
+                {
+                    Factory.CBL.SetUserParam("Admin/Forms-prefix", v.prefix);
+                }
+            }
+            inhale_entity(ref v, v.prefix);
+            if (v.prefix == "f12")
             {
                 if (string.IsNullOrEmpty(v.view) == true)
                 {
-                    v.view = Factory.CBL.LoadUserParam("Admin-Forms-View-" + prefix, "tree");
+                    v.view = Factory.CBL.LoadUserParam("Admin-Forms-View-" + v.prefix, "tree");
                 }
                 else
                 {
-                    Factory.CBL.SetUserParam("Admin-Forms-View-" + prefix, v.view);
+                    Factory.CBL.SetUserParam("Admin-Forms-View-" + v.prefix, v.view);
                 }
                 if (v.view == "tree")
                 {

@@ -82,7 +82,9 @@
 
     @if (Model.view == "tree")
     {
-        <tetree asp-for="@Model.treeNodes" auto_client_init="false" clientid="tree1"></tetree>
+        
+
+        <kendotree clientid="tree1" tree-datasource="@Model.treeNodes"></kendotree>
     }
     else
     {
@@ -109,7 +111,12 @@
         @if (Model.view == "tree")
         {
         <text>
-        $("#tree1").kendoTreeView();
+        $("#tree1").kendoTreeView(
+            {
+                dataSource: dstree1,               
+                template: "<a class='cm' onclick='_cm(event,\"#: item.prefix #\",#: item.id #)'>☰</a><span ondblclick='_edit(\"#: item.prefix #\",#: item.id #)'> #: item.text # </span>"
+            }
+        );
         </text>
         }
         $("#cmdNew").click(function () {

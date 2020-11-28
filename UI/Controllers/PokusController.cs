@@ -120,6 +120,13 @@ namespace UI.Controllers
                 {
                     var cc = new kendoTreeItem() { id =i.ToString()+x.ToString(), text = "pod-položka " + i.ToString() + "-" + x.ToString() };
                     c.items.Add(cc);
+
+                    cc.items = new List<kendoTreeItem>();
+                    for (int y = 1; y <= 2; y++)
+                    {
+                        var dd = new kendoTreeItem() { id = i.ToString() + x.ToString()+y.ToString(), text = "super-položka " + i.ToString() + "-" + x.ToString()+"-"+y.ToString() };
+                        cc.items.Add(dd);
+                    }
                 }
 
                 v.kendoItems.Add(c);
@@ -129,6 +136,28 @@ namespace UI.Controllers
             {
                 WriteIndented = false,Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,IgnoreNullValues=true
             });
+
+            //---------------------------------------------------
+            v.treeNodes = new List<myTreeNode>();
+            var lis = Factory.x32ReportTypeBL.GetList(new BO.myQuery("x32Report"));
+            foreach (var rec in lis)
+            {
+                var c = new myTreeNode()
+                {
+                    TreeIndex = rec.x32TreeIndex,
+                    TreeLevel = rec.x32TreeLevel,
+                    Text = rec.x32Name,
+                    TreeIndexFrom = rec.x32TreeIndexFrom,
+                    TreeIndexTo = rec.x32TreeIndexTo,
+                    Pid = rec.pid,
+                    ParentPid = rec.x32ParentID,
+                    Prefix = "x32",
+                    Expanded = false
+
+                };
+                v.treeNodes.Add(c);
+
+            }
 
             return View(v);
         }

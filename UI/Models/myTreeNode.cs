@@ -16,6 +16,7 @@ namespace UI.Models
         public int TreeIndexTo { get; set; }
 
         public string Text { get; set; }
+        public string TextOcas { get; set; }
 
         public string Prefix { get; set; }
 
@@ -25,6 +26,8 @@ namespace UI.Models
         public string CssClass { get; set; }
 
         public bool Expanded { get; set; }
+
+       
     }
 
     

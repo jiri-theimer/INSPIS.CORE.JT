@@ -24,14 +24,7 @@
 
 <style type="text/css">
 
-    #tree1 img {
-        margin-right: 5px;
-        margin-left: 3px;
-        vertical-align: baseline;
-    }
-    #tree1 .cm {
-        margin-left: 10px;
-    }
+   
 </style>
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -133,7 +126,7 @@
             }
             <div id="offset1"></div>
             <div id="divTreeviewContainer" style="overflow:auto;max-width:1000px;">
-                <tetree asp-for="@Model.treeNodes" auto_client_init="false" clientid="tree1"></tetree>
+                <kendotree clientid="tree1" tree-datasource="@Model.treeNodes"></kendotree>
 
                 <div class="hummingbird-treeview-converter">
                     @if (Model.lisF06 != null)
@@ -250,10 +243,18 @@
 
 
     $(document).ready(function () {
-        @if (1==1)
+        @if (Model.lisF06 !=null)
         {
         <text>
-        $("#tree1").kendoTreeView();
+        var thetree1 = $("#tree1").kendoTreeView(
+            {
+                checkboxes: {
+                    checkChildren: true
+                },
+                dataSource: dstree1,
+                check: onCheck
+            }
+        );
         </text>
         }
 
@@ -412,6 +413,22 @@
         form1.submit();
     }
 
+
+    function onCheck(e) {
+        var checkedNodes = [];
+        var treeView = $("#tree1").data("kendoTreeView");
+        var message;
+
+        checkedNodeIds(treeView.dataSource.view(), checkedNodes);
+
+        if (checkedNodes.length > 0) {
+            message = "IDs of checked nodes: " + checkedNodes.join(",");
+        } else {
+            message = "No nodes checked.";
+        }
+
+        alert(message);
+    }
 </script>
 
 
