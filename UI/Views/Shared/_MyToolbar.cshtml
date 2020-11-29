@@ -38,32 +38,33 @@
 
             @if (Model.IsDelete)
             {
-                <div class="btn-group" style="margin-left: 7px;">
+                <div class="btn-group ml-2">
                     <button type="button" class="btn btn-danger" onclick="toolbar_try_delete()">@_f.tra("Odstranit")</button>
 
                 </div>
             }
             @if (Model.IsRefresh)
             {
-                <div class="btn-group" style="margin-left: 7px;">
-                    <a asp-action="@Model.ControllorName" onclick="before_clicked(event)" class="btn btn-light" asp-route-pid="@Model.RecordPID">@_f.tra("Občerstvit")</a>
+                <div class="btn-group">
+                    <a asp-action="@Model.ControllorName" onclick="before_clicked(event)" class="btn btn-light" title="@_f.tra("Občerstvit")" asp-route-pid="@Model.RecordPID"><img src="~/images/refresh.png" /></a>
+
                 </div>
             }
             @if (Model.IsClone)
             {
-                <div class="btn-group" style="margin-left: 7px;">
+                <div class="btn-group ml-2">
                     <a asp-action="@Model.ControllorName" onclick="before_clicked(event)" class="btn btn-light" asp-route-pid="@Model.RecordPID" asp-route-isclone="true">@_f.tra("Kopírovat")</a>
                 </div>
             }
             @if (Model.IsToArchive)
             {
-                <div class="btn-group" style="margin-left: 7px;">
+                <div class="btn-group ml-2">
                     <button type="button" onclick="toolbar_handle_archive(1)" class="btn btn-light">@_f.tra("Přesunout do archivu")</button>
                 </div>
             }
             @if (Model.IsFromArchive)
             {
-                <div class="btn-group" style="margin-left: 7px;">
+                <div class="btn-group ml-2">
                     <button type="button" onclick="toolbar_handle_archive(2)" class="btn btn-warning">@_f.tra("Obnovit z archivu")</button>
                 </div>
             }

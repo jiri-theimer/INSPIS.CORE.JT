@@ -403,7 +403,10 @@ namespace UI.Controllers
             {
                 case "a01":
                     var recA01 = Factory.a01EventBL.Load(pid);
-                    HEADER(recA01.a01Signature);
+                    if (flag != "recpage")
+                    {
+                        HEADER(recA01.a01Signature);
+                    }                    
                     var recA10 = Factory.a10EventTypeBL.Load(recA01.a10ID);
                     var permA01 = Factory.a01EventBL.InhalePermission(recA01);
                     if (recA01.a01IsTemporary)

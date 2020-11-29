@@ -39,18 +39,21 @@
 
 
 <div class="row pb-0 py-1 bg-light m-0">
-    <div id="layout_sidebar_contextmenu" class="col-auto">
+    <div id="layout_sidebar_contextmenu">
         <a id="layout_sidebar_contextmenu_link" class="cm h4 mx-0" onclick="_cm(event, 'b01WorkflowTemplate',@Model.b01ID);">☰@_f.tra("Návrhář workflow")</a>
         <h4 id="layout_sidebar_contextmenu_onlytext">@_f.tra("Návrhář workflow")</h4>
     </div>
-    <div class="col-auto pl-0">
+    <div class="pl-0">
         <ul class="nav nav-tabs">
             <li class="nav-item onetab">
                 <a class="nav-link active" data-toggle="tab">@Model.RecB01.b01Name</a>
             </li>
-        </ul>        
+        </ul>
     </div>
-    <div class="col-auto">
+    <div class="nonmobile ml-2">
+        <a class="btn btn-light" href="/AdminOneWorkflow/Index?b01id=@Model.b01ID" title="@_f.tra("Občerstvit")"><img src="~/images/refresh.png" /></a>
+    </div>
+    <div class="ml-2">
         @if (Model.view == "tree")
         {
             <a class="btn btn-info" href="/AdminOneWorkflow/Index?b01id=@Model.b01ID&view=grid">@_f.tra("Přepnout na Grid")</a>
@@ -61,14 +64,12 @@
         }
 
     </div>
-    <div class="col-auto">
+    <div class="ml-2">
         <button id="cmdNew" type="button" class="btn btn-primary">@_f.tra("Nová workflow šablona")</button>
         <button id="cmdGrid" type="button" class="btn btn-secondary">@_f.tra("Grid workflow šablon")</button>
     </div>
 
-    <div class="nonmobile nontablet">
-        <a class="btn btn-light" href="/AdminOneWorkflow/Index?b01id=@Model.b01ID" title="@_f.tra("Občerstvit")"><img src="~/images/refresh.png" /></a>
-    </div>
+
 
 
 

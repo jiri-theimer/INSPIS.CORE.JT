@@ -11,21 +11,19 @@
 
 
 
-<div class="modal_record_container">
-    <div style="margin-bottom:20px;">
-        @if (Model.IsGridView)
-        {
-            <button type="button" class="btn btn-dark" onclick="change_view('0')">@_f.tra("Vypnout GRID zobrazení")</button>
-        }
-        else
-        {
-            <button type="button" class="btn btn-dark" onclick="change_view('1')">@_f.tra("Přepnout na GRID")</button>
-        }
+<div id="subform_div_commands">
+    @if (Model.IsGridView)
+    {
+        <button type="button" class="btn btn-dark" onclick="change_view('0')">@_f.tra("Vypnout GRID zobrazení")</button>
+    }
+    else
+    {
+        <button type="button" class="btn btn-dark" onclick="change_view('1')">@_f.tra("Přepnout na GRID")</button>
+    }
 
-        <button type="button" class="btn btn-primary" onclick="append()">@_f.tra("Zadat související akci")</button>
+    <button type="button" class="btn btn-primary" onclick="append()">@_f.tra("Zadat související akci")</button>
 
 
-    </div>
 </div>
 
 @if (Model.IsGridView == true)
@@ -67,7 +65,7 @@ else
     function append() {
         _window_open("/a01/AddSouvisejici?pid=@Model.pid");
     }
-   
+
     function change_view(is_grid) {
         $.post("/Common/SetUserParam", { key: "TabSouvisejici-IsGridView", value: is_grid  }, function (data) {
                 location.replace("/a01/TabSouvisejici?pid=@Model.RecA01.pid");

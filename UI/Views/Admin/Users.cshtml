@@ -9,37 +9,30 @@
 @addTagHelper *, UI
 
 
-<div class="row py-1 bg-light m-0">
-    <div id="layout_sidebar_contextmenu" class="col-auto">
-        <a id="layout_sidebar_contextmenu_link" class="cm h4 mx-0" onclick="_cm(event, 'Users',0,'@Model.prefix');">☰@_f.tra("Uživatelé")</a>
-        <h4 id="layout_sidebar_contextmenu_onlytext">@_f.tra("Uživatelé")</h4>
-    </div>
+    <div class="row py-1 bg-light m-0">
+        <div id="layout_sidebar_contextmenu">
+            <a id="layout_sidebar_contextmenu_link" class="cm h4 mx-0" onclick="_cm(event, 'Users',0,'@Model.prefix');">☰@_f.tra("Uživatelé")</a>
+            <h4 id="layout_sidebar_contextmenu_onlytext">@_f.tra("Uživatelé")</h4>
+        </div>
 
-    <div class="col-auto pl-0">
-        <ul class="nav nav-tabs" style="border:none;">
-            <li class="nav-item onetab">
-                <a class="nav-link active" data-toggle="tab">@Model.entityTitle</a>
-            </li>
-        </ul>
-    </div>
-    <div class="col-auto">
+        <div class="pl-0">
+            <ul class="nav nav-tabs" style="border:none;">
+                <li class="nav-item onetab">
+                    <a class="nav-link active" data-toggle="tab">@Model.entityTitle</a>
+                </li>
+            </ul>
+        </div>
+        <div class="nonmobile ml-2">
+            <a class="btn btn-light" href="/Admin/Users?prefix=@Model.prefix" title="@_f.tra("Občerstvit")"><img src="~/images/refresh.png" /></a>
+        </div>
         @if (Model.prefix == "j03" || Model.prefix == "j02" || Model.prefix == "j02" || Model.prefix == "j04" || Model.prefix == "j11" || Model.prefix == "j40")
         {
-            <div class="col-auto">
+            <div class="ml-2">
                 <button id="cmdNew" type="button" class="btn btn-primary">@_f.tra("Nový záznam")</button>
             </div>
         }
 
     </div>
-    <div class="col-auto"></div>
-    <div class="nonmobile nontablet">
-        <a class="btn btn-light" href="/Admin/Users?prefix=@Model.prefix" title="@_f.tra("Občerstvit")"><img src="~/images/refresh.png" /></a>
-    </div>
-
-
-
-
-</div>
 
 <div id="layout_sidebar" class="cm_recpage"></div>
 

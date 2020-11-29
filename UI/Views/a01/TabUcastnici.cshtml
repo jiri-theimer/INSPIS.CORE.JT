@@ -9,50 +9,53 @@
 }
 @addTagHelper *, UI
 
-    <div class="modal_record_container">
-
-        <button type="button" class="btn btn-primary" onclick="append()">@_f.tra("Přidat účastníky")</button>
-
-        @foreach (var c in Model.lisA41)
-        {
-            <div class="form-row my-2">
-                <div class="col-sm-2 col-md-2">
-                    <label>@(c.a45Name+":")</label>
-                    @if (c.a45ID == BO.EventRoleENUM.Vedouci)
-                    {
-                        <img src="~/images/king.png" />
-                    }
-
-                </div>
-                <div class="col-sm-4 col-md-4">
-                    @if (c.j11ID > 0)
-                    {
-                        <myval value="@c.j11Name" hoverprefix="j11" hoverpid="@c.j11ID"></myval>
-                    }
-                    @if (c.j02ID > 0)
-                    {
-
-                        @if (c.a45ID != BO.EventRoleENUM.Vlastnik)
-                        {
-
-                            <myval datatype="link" value="@c.PersonAsc" linkurl="javascript:_edit('a41',@c.pid)" hoverprefix="j02" hoverpid="@c.j02ID" cmdpid="@c.pid" cmprefix="a41"></myval>
-
-                        }
-                        else
-                        {
-                            <myval value="@c.PersonAsc" hoverprefix="j02" hoverpid="@c.j02ID"></myval>
-                        }
+<div id="subform_div_commands">
+    <button type="button" class="btn btn-primary" onclick="append()">@_f.tra("Přidat účastníky")</button>
+</div>
+<div class="modal_record_container">
 
 
-                    }
-                </div>
+
+    @foreach (var c in Model.lisA41)
+    {
+        <div class="form-row my-2">
+            <div class="col-sm-2 col-md-2">
+                <label>@(c.a45Name+":")</label>
+                @if (c.a45ID == BO.EventRoleENUM.Vedouci)
+                {
+                    <img src="~/images/king.png" />
+                }
 
             </div>
-        }
+            <div class="col-sm-4 col-md-4">
+                @if (c.j11ID > 0)
+                {
+                    <myval value="@c.j11Name" hoverprefix="j11" hoverpid="@c.j11ID"></myval>
+                }
+                @if (c.j02ID > 0)
+                {
+
+                    @if (c.a45ID != BO.EventRoleENUM.Vlastnik)
+                    {
+
+                        <myval datatype="link" value="@c.PersonAsc" linkurl="javascript:_edit('a41',@c.pid)" hoverprefix="j02" hoverpid="@c.j02ID" cmdpid="@c.pid" cmprefix="a41"></myval>
+
+                    }
+                    else
+                    {
+                        <myval value="@c.PersonAsc" hoverprefix="j02" hoverpid="@c.j02ID"></myval>
+                    }
+
+
+                }
+            </div>
+
+        </div>
+    }
 
 
 
-    </div>
+</div>
 
 
 

@@ -297,24 +297,27 @@
                 $.post("/Menu/CurrentUserLangIndex", function (data) {
                     handle_render_menu_branch("divLangIndexMenu", data);
                 })
-                .fail(function (response) {
-                    $("html").html(response.responseText);
+                    .fail(function (response) {
+                        alert(response.responseText);
+                    //$("html").html(response.responseText);
                 });
             });
             $("#cmdFontStyleFlag").click(function () {
                 $.post("/Menu/CurrentUserFontMenu", function (data) {
                     handle_render_menu_branch("divFontStyleMenu", data);
                 })
-                .fail(function (response) {
-                    $("html").html(response.responseText);
+                    .fail(function (response) {
+                        alert(response.responseText);
+                    //$("html").html(response.responseText);
                 });
             });
             $("#cmdCurrentUser").click(function () {
                 $.post("/Menu/CurrentUserMenu", function (data) {
                     handle_render_menu_branch("divCurrentUserMenu", data);
                 })
-                .fail(function (response) {
-                    $("html").html(response.responseText);
+                    .fail(function (response) {
+                        alert(response.responseText);
+                    //$("html").html(response.responseText);
                 });
             });
 

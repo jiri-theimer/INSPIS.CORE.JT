@@ -97,6 +97,7 @@ namespace UI.Controllers
                 }
                 else
                 {
+                    v.MenuCode = v.Rec.FullNameAsc;
                     v.TagHtml = Factory.o51TagBL.GetTagging("j02", v.pid).TagHtml;
                     if (pid > 0)
                     {
@@ -109,6 +110,7 @@ namespace UI.Controllers
                     if (v.Rec.j03ID > 0)
                     {
                         v.RecJ03 = Factory.j03UserBL.Load(v.Rec.j03ID);
+                        
                     }
                    
 

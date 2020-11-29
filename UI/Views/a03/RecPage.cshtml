@@ -12,26 +12,43 @@
 @addTagHelper *, UI
 
 
-<div class="row py-3 bg-light m-0">
-    <div class="col-auto" style="width:190px;">
+<div class="row py-1 bg-light m-0">
+    <div id="layout_sidebar_contextmenu">
         @if (Model.pid > 0)
         {
-            <a class="cm h4 mx-1" title="@Model.Rec.a06Name" onclick="_cm(event, 'a03',@Model.Rec.pid);">☰@Model.MenuCode </a>
-            <mark>@Model.Rec.a06Name</mark>
+            <a id="layout_sidebar_contextmenu_link" class="cm h4 mx-1" title="@Model.Rec.a06Name" onclick="_cm(event, 'a03',@Model.Rec.pid);">☰@Model.MenuCode </a>
+            <h4 id="layout_sidebar_contextmenu_onlytext">
+                @if (Model.Rec.a03ParentFlag == BO.a03ParentFlagEnum.Master)
+                {
+                    <img src="~/images/a03ParentFlag1.png" />
+                }
+                @if (Model.Rec.a03ParentFlag == BO.a03ParentFlagEnum.Slave)
+                {
+                    <img src="~/images/a03ParentFlag2.png" />
+                }
+                @Model.MenuCode
+            </h4>
+
         }
 
     </div>
-    <div class="col-sm-8">
-        <mysearch asp-for="@Model.SearchBox" entity="a03Institution" placeholder="@_f.tra("Fulltext hledání")..."></mysearch>
+    <div class="pl-0">
+        <ul class="nav nav-tabs nonmobile nontablet" style="border:none;">
+            <li class="nav-item onetab">
+                <a class="nav-link active" data-toggle="tab">@Model.Rec.a06Name</a>
+            </li>
+        </ul>
+
 
     </div>
-    <div class="col-sm-1"></div>
-    <div class="nonmobile nontablet header">
+    <div class="nonmobile ml-2">
         <a class="btn btn-light" href="/a03/RecPage?pid=@Model.pid" title="@_f.tra("Občerstvit")"><img src="~/images/refresh.png" /></a>
     </div>
 
+    <div class="col-sm-8 col-md-8 pl-0">
+        <mysearch asp-for="@Model.SearchBox" entity="a03Institution" placeholder="@_f.tra("Fulltext hledání")..."></mysearch>
 
-
+    </div>
 
 </div>
 
@@ -42,36 +59,24 @@
     <div class="modal_record_container">
         <div class="form-row">
             <label class="col-sm-1 col-md-2 col-form-label">
-                @_f.tra("Název"):
-                @if (Model.Rec.a03ParentFlag == BO.a03ParentFlagEnum.Master)
-                {
-                    <img src="~/images/a03ParentFlag1.png" />
-                }
-                @if (Model.Rec.a03ParentFlag == BO.a03ParentFlagEnum.Slave)
-                {
-                    <img src="~/images/a03ParentFlag2.png" />
-                }
+                @_f.tra("Název"):                
             </label>
             @if (Model.Rec.a03ShortName == null)
             {
-                <div class="col-sm-8 col-md-7">
+                <div class="col-sm-9 col-md-8">
                     <myval value="@Model.Rec.a03Name" tooltip="@Model.Rec.a03Name"></myval>
                 </div>
             }
             else
             {
-                <div class="col-sm-6 col-md-5">
+                <div class="col-sm-7 col-md-6">
                     <myval value="@Model.Rec.a03Name" tooltip="@Model.Rec.a03Name"></myval>
                 </div>
                 <div class="col-sm-2 col-md-2">
                     <myval value="@Model.Rec.a03ShortName" tooltip="@Model.Rec.a03ShortName"></myval>
                 </div>
             }
-
-
-            <div class="col-sm-1 col-md-1">
-                <myval value="@Model.Rec.a06Name"></myval>
-            </div>
+            
             <div class="col-sm-2 col-md-2">
                 @if (Model.Rec.a21ID > 0)
                 {
@@ -303,7 +308,7 @@
         var offset = $("#divTabContent").offset();
         var h_vertical = _device.innerHeight - offset.top;
         h_vertical = parseInt(h_vertical)+10;
-        
+
         if (_device.type === "Phone") {
             h_vertical = 400;
         }

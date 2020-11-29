@@ -24,5 +24,7 @@ namespace UI.Models.Recpage
         public List<NavTab> NavTabs;
 
         public string DefaultNavTabUrl { get; set; }
+
+        public string MenuCode { get; set; }
     }
 }
