@@ -8,5 +8,7 @@ namespace UI.Models
     public class HomeViewModel:BaseViewModel
     {
         public string Pozdrav { get; set; }
+        public string Pandulak1 { get; set; }
+        public string Pandulak2 { get; set; }
     }
 }

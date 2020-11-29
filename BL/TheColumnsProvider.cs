@@ -598,6 +598,9 @@ namespace BL
             AF("b02WorkflowStatus", "b02IsDefaultStatus", "Výchozí stav", 2, null, "bool");
             AF("b02WorkflowStatus", "b02IsHoldStatus", "Záchytný stav", 2, null, "bool");
             AF("b02WorkflowStatus", "b02Order", "#", 2, null, "num0");
+            AF("b02WorkflowStatus", "b02SynchroTargetFlag", "SynchroTarget",0, null, "num0");
+            AF("b02WorkflowStatus", "b02SynchroFieldsFlag", "SynchroFields", 0, null, "num0");
+
             AppendTimestamp("b02WorkflowStatus");
 
 

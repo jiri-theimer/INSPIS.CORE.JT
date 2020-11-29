@@ -67,6 +67,8 @@ namespace BL
             p.AddBool("b02IsSeparateTab", rec.b02IsSeparateTab);
             p.AddBool("b02IsDurationSLA", rec.b02IsDurationSLA);
             p.AddBool("b02IsCommentForbidden", rec.b02IsCommentForbidden);
+            p.AddEnumInt("b02SynchroTargetFlag", rec.b02SynchroTargetFlag);
+            p.AddEnumInt("b02SynchroFieldsFlag", rec.b02SynchroFieldsFlag);
 
             if (rec.b02UC == null) { rec.b02UC = BO.BAS.GetGuid(); }
             p.AddString("b02UC", rec.b02UC);

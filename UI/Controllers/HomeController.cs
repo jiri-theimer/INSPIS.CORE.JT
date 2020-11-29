@@ -7,11 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using UI.Models;
 using Microsoft.AspNetCore.Http;
-//using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.Http.Extensions;
+
+using Microsoft.AspNetCore.Hosting;
 
 namespace UI.Controllers
 {
@@ -20,12 +19,14 @@ namespace UI.Controllers
 
     public class HomeController : BaseController
     {
+        private readonly IWebHostEnvironment _hostingEnvironment;
+       
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IWebHostEnvironment hostingEnvironment)
         {
-            _logger = logger;            
-
+            _logger = logger;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         public async Task<IActionResult> Logout()
@@ -124,6 +125,10 @@ namespace UI.Controllers
             }
             
             var v = new HomeViewModel();
+
+            var pandulak = new ThePandulak(_hostingEnvironment);
+            v.Pandulak1 = pandulak.getPandulakImage(1);
+            v.Pandulak2 = pandulak.getPandulakImage(2);
 
             return View(v);
         }

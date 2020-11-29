@@ -55,7 +55,7 @@
                 </div>
             </div>
 
-            
+
             <div class="form-row my-2">
                 <div class="col-sm-4 col-md-4">
                     <input type="checkbox" asp-for="Rec.b02IsDefaultStatus" />
@@ -68,6 +68,40 @@
                     <label class="col-form-label" for="Rec_b02IsCommentForbidden">@_f.tra("Ve stavu je zákaz psaní bez-krokového komentáře")</label>
                 </div>
             </div>
+
+
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Barva"):</label>
+                <div class="col-sm-1 col-md-1">
+                    <input type="color" asp-for="Rec.b02Color" />
+                </div>
+                <div class="col-sm-2 col-md-3">
+                    <i>@_f.tra("Černá = žádná barva!")</i>
+                </div>
+            </div>
+            <div class="form-row my-2">
+                <label class="col-sm-2 col-md-2 col-form-label">@_f.tra("V tomto stavu aktualizovat blízké akce"):</label>
+                <div class="col-sm-10 col-md-10">
+                    <select asp-for="@Model.Rec.b02SynchroTargetFlag" class="form-control">
+                        <option value="PodrizeneAkce">@_f.tra("Podřízené akce")</option>
+                        <option value="NadrizenouAkci">@_f.tra("Nadřízená akce")</option>
+                        <option value="SouvisejiciAkce">@_f.tra("Související akce")</option>
+                        <option value="Nic">@_f.tra("Nic neaktualizovat")</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row my-2">
+                <label class="col-sm-2 col-md-2 col-form-label">@_f.tra("Rozsah aktualizace blízkých akcí"):</label>
+                <div class="col-sm-10 col-md-10">
+                    <select asp-for="@Model.Rec.b02SynchroFieldsFlag" class="form-control">
+                        <option value="StavTypInsPlanTym">@_f.tra("Stav+Typ akce+Instituce+Období plánu+Účastníci")</option>
+                        <option value="Stav">@_f.tra("Pouze stav akce")</option>
+                        <option value="TypInsPlanTym">@_f.tra("Typ akce+Instituce+Období plánu+Účastníci")</option>
+                        <option value="Nic">@_f.tra("Nic neaktualizovat")</option>
+                    </select>
+                </div>
+            </div>
+
             <div class="form-row my-2">
                 <div class="col-sm-4 col-md-4">
                     <input type="checkbox" asp-for="Rec.b02IsHoldStatus" />
@@ -80,16 +114,6 @@
                     <label class="col-form-label" for="Rec_b02IsSeparateTab">@_f.tra("Samostatná záložka v osobní stránce řešitele")</label>
                 </div>
 
-            </div>
-
-            <div class="form-row my-2">
-                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Barva"):</label>
-                <div class="col-sm-1 col-md-1">
-                    <input type="color" asp-for="Rec.b02Color" />
-                </div>
-                <div class="col-sm-2 col-md-3">
-                    <i>@_f.tra("Černá = žádná barva!")</i>
-                </div>
             </div>
 
             <div class="form-row my-2">

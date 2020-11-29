@@ -2,6 +2,21 @@
 
 namespace BO
 {
+    public enum b02SynchroTargetEnum
+    {
+        PodrizeneAkce=0,
+        NadrizenouAkci=1,
+        SouvisejiciAkce=2,
+        Nic=3,
+
+    }
+    public enum b02SynchroFieldsEnum
+    {
+        StavTypInsPlanTym=0,
+        Stav=1,
+        TypInsPlanTym=2,
+        Nic = 3
+    }
     public class b02WorkflowStatus:BaseBO
     {
         [Key]
@@ -21,6 +36,8 @@ namespace BO
         public string b02Message4UIFT { get; set; }
 
         public string b02UC { get; set; }
+        public b02SynchroTargetEnum b02SynchroTargetFlag { get; set; }
+        public b02SynchroFieldsEnum b02SynchroFieldsFlag { get; set; }
 
         public string b01Name;
     }

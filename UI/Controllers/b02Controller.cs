@@ -123,6 +123,8 @@ namespace UI.Controllers
                 c.b02TimeOut_Total = v.Rec.b02TimeOut_Total;
                 c.b02TimeOut_SLA = v.Rec.b02TimeOut_SLA;
                 c.b02Message4UIFT = v.Rec.b02Message4UIFT;
+                c.b02SynchroTargetFlag = v.Rec.b02SynchroTargetFlag;
+                c.b02SynchroFieldsFlag = v.Rec.b02SynchroFieldsFlag;
 
                 c.ValidUntil = v.Toolbar.GetValidUntil(c);
                 c.ValidFrom = v.Toolbar.GetValidFrom(c);

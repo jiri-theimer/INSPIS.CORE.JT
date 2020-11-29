@@ -55,10 +55,12 @@ namespace UI.Controllers
             {
                 if (Factory.CurrentUser.j04ViewUrl_Page == null || Factory.CurrentUser.j03HomePageUrl.ToLower() != Factory.CurrentUser.j04ViewUrl_Page.ToLower())
                 {
-                    AMI("Vyčistit odkaz na domovskou stránku", "javascript:_clear_home_page()");
-                    AMI("Tovární HOME stránka", "/Home/Index");
-                }
-                    
+                    AMI("Vyčistit odkaz na domovskou stránku", "javascript:_clear_home_page()");                    
+                }                    
+            }
+            if (Factory.CurrentUser.j04ViewUrl_Page != null)
+            {
+                AMI("Tovární HOME stránka", "/Home/Index");
             }
             DIV();
             AMI("Můj profil", "/Home/MyProfile");
