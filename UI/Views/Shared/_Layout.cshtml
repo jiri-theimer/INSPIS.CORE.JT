@@ -80,7 +80,7 @@
         @if (_f.CurrentUser.j03IsMainLogoVisible)
         {
             <div id="mainmenu1_div_logo">
-                <img src="/images/logo_mainmenu_ua.png" height="48" width="184" />
+                <img src="/images/logo_mainmenu_@(_f.App.LogoImageSuffix).png" height="48" width="184" />
 
             </div>
         }
@@ -89,7 +89,7 @@
             <div class="navbar-nav">
                 @if (_f.CurrentUser.j03HomePageUrl == null)
                 {
-                    <a id="cmdHome" class="nav-link text-white" style="font-weight:bold;letter-spacing:1px;" href="/Home/Index" tabindex="-1">@_f.App.AppName</a>
+                    <a id="cmdHome" class="nav-link text-white" href="/Home/Index" tabindex="-1">@_f.App.AppName</a>
                 }
                 else
                 {
