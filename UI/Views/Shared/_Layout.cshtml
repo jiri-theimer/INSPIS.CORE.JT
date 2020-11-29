@@ -86,11 +86,11 @@
                 {
                     <a id="cmdHome" class="nav-link text-white" href="@_f.CurrentUser.getHomePageUrl()" tabindex="-1">
                         @_f.App.AppName
-                        @if (_f.CurrentUser.j04ViewUrl_Page ==null || _f.CurrentUser.j03HomePageUrl.ToLower() != _f.CurrentUser.j04ViewUrl_Page.ToLower())
+                        @if (_f.CurrentUser.j04ViewUrl_Page == null || _f.CurrentUser.j03HomePageUrl.ToLower() != _f.CurrentUser.j04ViewUrl_Page.ToLower())
                         {
-                        <span>☆</span>
+                            <span>☆</span>
                         }
-                        
+
                     </a>
                 }
 
@@ -223,17 +223,17 @@
     <script type="text/javascript">
         var _modal = document.getElementById("myModalContainer");
         var _modal_current_layout = null;
-    var _header_uschova = "";
+        var _header_uschova = "";
 
         $(document).ready(function ()
         {
-        document.getElementById("site_master_container").style.visibility = "visible";
-        document.getElementById("site_loading1").style.display = "none";
+            document.getElementById("site_master_container").style.visibility = "visible";
+            document.getElementById("site_loading1").style.display = "none";
 
             $("#fraModalContent").on("load", function () {
                 $("#myModalContentHeader").text(_header_uschova);
                 $("#myModalFrame").css("visibility", "visible");
-        });
+            });
 
         @if (_f.CurrentUser.Messages4Notify != null) {
             @foreach (var c in _f.CurrentUser.Messages4Notify) {  // <----  placed on the same line, WORKING !!!
@@ -245,10 +245,15 @@
         if ($("#toolbar_changeinfo").length) {
                 //události na editačních formulářích
                 $("form").submit(function () {
-                if ($(document.activeElement).attr("type") == "submit")
+                    if ($(document.activeElement).attr("type") == "submit")
+                    {
                         return true;
-                    else return false;
-            });
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                });
 
                 $("textarea").each(function () {
                 this.style.height = "auto";
@@ -263,12 +268,13 @@
 
 
 
-            $(document).on("click", function (e) {
+        $(document).on("click", function (e) {
             if (e.target == _modal) {
                 _window_close();
             }
         });
-            $(document).on("keydown", function (e) {
+
+        $(document).on("keydown", function (e) {
             if (e.keyCode == 27 && _modal.style.display == "block") {   //klávese ESCAPE
                 _window_close();
 
@@ -280,7 +286,7 @@
         });
 
 
-        @if (_f.CurrentUser.j03PingTimestamp == null || _f.CurrentUser.j03PingTimestamp.Value.AddSeconds(120) < DateTime.Now)
+            @if (_f.CurrentUser.j03PingTimestamp == null || _f.CurrentUser.j03PingTimestamp.Value.AddSeconds(120) < DateTime.Now)
             {
                 <text>
                 _update_user_ping();     //aktualizace ping logu po 120 sekundách
@@ -289,29 +295,29 @@
 
             $("#cmdLangIndex").click(function () {
                 $.post("/Menu/CurrentUserLangIndex", function (data) {
-                handle_render_menu_branch("divLangIndexMenu", data);
+                    handle_render_menu_branch("divLangIndexMenu", data);
+                })
+                .fail(function (response) {
+                    $("html").html(response.responseText);
+                });
             });
-        });
             $("#cmdFontStyleFlag").click(function () {
                 $.post("/Menu/CurrentUserFontMenu", function (data) {
-                handle_render_menu_branch("divFontStyleMenu", data);
+                    handle_render_menu_branch("divFontStyleMenu", data);
+                })
+                .fail(function (response) {
+                    $("html").html(response.responseText);
+                });
             });
-        });
             $("#cmdCurrentUser").click(function () {
                 $.post("/Menu/CurrentUserMenu", function (data) {
-                handle_render_menu_branch("divCurrentUserMenu", data);
-
+                    handle_render_menu_branch("divCurrentUserMenu", data);
+                })
+                .fail(function (response) {
+                    $("html").html(response.responseText);
+                });
             });
-        });
-            $("#cmdGlobalNavigate").click(function () {
-                $.post("/Menu/GlobalNavigateMenu", function (data) {
-                handle_render_menu_branch("divGlobalNavigateMenu", data);
 
-            })
-                    .fail(function () {
-                alert("error");
-            });
-        });
 
 
         _init_qtip_onpage();
@@ -325,7 +331,7 @@
             $.post("/Menu/" + prefix +"Menu?userdevice="+_device.type, function (data) {
             //$("#divMenu" + prefix).html(data);
             handle_render_menu_branch("divMenu" + prefix, data);
-                $("#cmd" + prefix).attr("onclick", "");
+            $("#cmd" + prefix).attr("onclick", "");
 
         });
     }

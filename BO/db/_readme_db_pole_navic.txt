@@ -1,4 +1,8 @@
-﻿[a10EventType]
+﻿[b02WorkflowStatus]
+b02SynchroTargetFlag
+b02SynchroFieldsFlag
+
+[a10EventType]
 a10ViewUrl_Insert varchar(100)
 a10ViewUrl_Page varchar(100)
 [j03User]
@@ -99,3 +103,5 @@ j74TheGridReceiver
 [o54TagBindingInline]
 x51HelpCore
 x91Translate
+x55Widget
+x56WidgetBinding

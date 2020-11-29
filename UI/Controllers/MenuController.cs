@@ -58,7 +58,7 @@ namespace UI.Controllers
                     AMI("Vyčistit odkaz na domovskou stránku", "javascript:_clear_home_page()");                    
                 }                    
             }
-            if (Factory.CurrentUser.j04ViewUrl_Page != null)
+            if (Factory.CurrentUser.j03HomePageUrl != null)
             {
                 AMI("Tovární HOME stránka", "/Home/Index");
             }
@@ -668,9 +668,13 @@ namespace UI.Controllers
                     
                     break;
                 case "f06":
-                    HEADER(Factory.f06FormBL.Load(pid).f06Name);
-                    AMI("Návrhář formuláře", string.Format("/AdminOneForm/Index?f06id={0}", pid));
-                    DIV();
+                    if (flag != "recpage")
+                    {
+                        HEADER(Factory.f06FormBL.Load(pid).f06Name);
+                        AMI("Návrhář formuláře", string.Format("/AdminOneForm/Index?f06id={0}", pid));
+                        DIV();
+                    }
+                    
                     AMI("Nový segment formuláře", string.Format("javascript: _window_open('/f18/Record?f06id={0}')", pid));
                     AMI("Nová otázka", string.Format("javascript: _window_open('/f19/Record?f06id={0}')", pid));
                     DIV();
@@ -701,9 +705,13 @@ namespace UI.Controllers
                     AMI("Otevřít/Stáhnout dokument", string.Format("/FileUpload/FileDownloadInline?downloadguid={0}", recO27.o27DownloadGUID),null,null,"_blank");
                     break;
                 case "b01":
-                    HEADER(Factory.b01WorkflowTemplateBL.Load(pid).b01Name);
-                    AMI("Návrhář workflow", string.Format("/AdminOneWorkflow/Index?b01id={0}", pid));
-                    DIV();
+                    if (flag != "recpage")
+                    {
+                        HEADER(Factory.b01WorkflowTemplateBL.Load(pid).b01Name);
+                        AMI("Návrhář workflow", string.Format("/AdminOneWorkflow/Index?b01id={0}", pid));
+                        DIV();
+                    }
+                    
                     AMI("Nový workflow stav", string.Format("javascript: _window_open('/b02/Record?b01id={0}')", pid));
                     
                     DIV();

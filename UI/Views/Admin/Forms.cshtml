@@ -38,21 +38,26 @@
     </style>
 }
 
-<div class="row py-3 bg-light m-0">
-    <div class="col-auto" style="width:190px;">
-        <a class="cm h4 mx-0" onclick="_cm(event, 'Forms',0,'@Model.prefix');">☰@_f.tra("Formuláře")</a>
+<div class="row py-1 bg-light m-0">
+    <div id="layout_sidebar_contextmenu" class="col-auto">
+        <a id="layout_sidebar_contextmenu_link" class="cm h4 mx-0" onclick="_cm(event, 'Forms',0,'@Model.prefix');">☰@_f.tra("Formuláře")</a>
+        <h4 id="layout_sidebar_contextmenu_onlytext">@_f.tra("Formuláře")</h4>
     </div>
-    <div class="col-sm-2">
-        <mark>@Model.entityTitle</mark>
+    <div class="col-auto">
+        <ul class="nav nav-tabs" style="border:none;">
+            <li class="nav-item onetab">
+                <a class="nav-link active" data-toggle="tab">@Model.entityTitle</a>
+            </li>
+        </ul>
     </div>
-    <div class="col-sm-3">
+    <div class="col-auto">
         @if (Model.prefix != null)
         {
             <button id="cmdNew" type="button" class="btn btn-primary">@_f.tra("Nový záznam")</button>
         }
 
     </div>
-    <div class="col-sm-2">
+    <div class="col-auto">
         @if (Model.prefix == "f12")
         {
             @if (Model.view == "tree")
@@ -66,7 +71,7 @@
         }
     </div>
     <div class="nonmobile nontablet">
-        <a class="btn btn-secondary" href="/Admin/Ciselniky?prefix=@Model.prefix">@_f.tra("Občerstvit")</a>
+        <a class="btn btn-light" href="/Admin/Ciselniky?prefix=@Model.prefix">@_f.tra("Občerstvit")</a>
     </div>
 
 

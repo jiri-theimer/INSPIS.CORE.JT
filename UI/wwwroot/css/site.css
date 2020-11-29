@@ -900,9 +900,18 @@ hr.hr-mini { /*používá se v kontextovém menu*/
     margin-left: 200px;
     display: block;
 }
+#layout_sidebar_contextmenu{
+    width:190px;
+    text-align:center;    
+}
+#layout_sidebar_contextmenu_link{
+    display:none;
+}
+#layout_sidebar_contextmenu_onlytext{
+    display:block;
+}
 
 @media screen and (max-width: 1000px) {
-
     #layout_sidebar {
         width: 100%;
         height: auto;
@@ -910,7 +919,12 @@ hr.hr-mini { /*používá se v kontextovém menu*/
         display: none;
     }
 
-
+    #layout_sidebar_contextmenu_link {
+        display:block;
+    }
+    #layout_sidebar_contextmenu_onlytext {
+        display:none;
+    }
 
     #layout_main {
         margin-left: 0;
