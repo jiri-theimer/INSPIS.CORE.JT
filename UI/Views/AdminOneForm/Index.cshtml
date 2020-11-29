@@ -48,8 +48,8 @@
         <a id="layout_sidebar_contextmenu_link" class="cm h4 mx-0" onclick="_cm(event, 'f06Form',@Model.f06ID);">☰@_f.tra("Návrhář formuláře")</a>
         <h4 id="layout_sidebar_contextmenu_onlytext">@_f.tra("Návrhář formuláře")</h4>
     </div>
-    <div class="col-auto">
-        <ul class="nav nav-tabs" style="border:none;">
+    <div class="col-auto pl-0">
+        <ul class="nav nav-tabs">
             <li class="nav-item onetab">
                 <a class="nav-link active" data-toggle="tab">@Model.RecF06.f06Name</a>
             </li>
@@ -79,7 +79,7 @@
     </div>
 
     <div class="nonmobile nontablet">
-        <a class="btn btn-light" href="/AdminOneForm/Index?f06id=@Model.f06ID">@_f.tra("Občerstvit")</a>
+        <a class="btn btn-light" href="/AdminOneForm/Index?f06id=@Model.f06ID" title="@_f.tra("Občerstvit")"><img src="~/images/refresh.png" /></a>
     </div>
 
 
@@ -106,7 +106,7 @@
 
     @if (Model.view == "tree")
     {
-        <div id="divTree" style="height:400px;overflow:auto;">
+        <div id="layout_main_divtree">
             
             <kendotree tree-datasource="@Model.treeNodes" clientid="tree1"></kendotree>
         </div>
@@ -172,8 +172,8 @@
         var h_vertical = _device.innerHeight - offset.top;
         h_vertical = parseInt(h_vertical) + 10;
         $("#layout_sidebar").css("height", h_vertical + "px");
-        if (document.getElementById("divTree")) {
-            $("#divTree").css("height", h_vertical + "px");
+        if (document.getElementById("layout_main_divtree")) {
+            $("#layout_main_divtree").css("height", h_vertical + "px");
         }
 
     });

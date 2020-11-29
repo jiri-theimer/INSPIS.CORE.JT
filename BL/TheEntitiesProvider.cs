@@ -55,8 +55,8 @@ namespace BL
         private void SetupPallete()
         {
             _lis = new List<BO.TheEntity>();
-            AE("j02Person", "Lidé", "Osobní profil", "j02Person a", "a.j02LastName,a.j02FirstName");
-            AE("j03User", "Uživatelé", "Uživatel", "j03User a INNER JOIN j04UserRole j03_j04 ON a.j04ID=j03_j04.j04ID", "a.j03Login");
+            AE("j02Person", "Osobní profily", "Osobní profil", "j02Person a", "a.j02LastName,a.j02FirstName");
+            AE("j03User", "Uživatelské účty", "Uživatel", "j03User a INNER JOIN j04UserRole j03_j04 ON a.j04ID=j03_j04.j04ID", "a.j03Login");
             AE("j04UserRole", "Aplikační role", "Aplikační role", "j04UserRole a ", "a.j04Name");
             AE("j11Team", "Týmy osob", "Tým", "j11Team a ", "a.j11Name");
 
@@ -109,15 +109,15 @@ namespace BL
             ByPrefix("b05").IsWithoutValidity = true;
 
             AE("b06WorkflowStep", "Workflow kroky", "Workflow krok", "b06WorkflowStep a", "a.b06Order", "a.b06Order");
-            AE("b65WorkflowMessage", "Workflow notifikační zprávy", "Workflow notifikační zpráva", "b65WorkflowMessage a", "a.b65Name");
+            AE("b65WorkflowMessage", "Šablony notifikačních zpráv", "Workflow notifikační zpráva", "b65WorkflowMessage a", "a.b65Name");
 
-            AE("f06Form", "Formuláře", "Formulář", "f06Form a", "a.f06Ordinal,a.f06Name", "a.f06Ordinal,a.f06Name");
+            AE("f06Form", "Šablony formulářů", "Formulář", "f06Form a", "a.f06Ordinal,a.f06Name", "a.f06Ordinal,a.f06Name");
             AE("f12FormType", "Typy formulářů", "Typ formuláře", "f12FormType a", "a.f12TreeIndex");
             AE("f18FormSegment", "Formulářové segmenty", "Segment formuláře", "f18FormSegment a", "a.f18TreeIndex,a.f18Ordinal");
             AE("f19Question", "Formulářové otázky", "Otázka formuláře", "f19Question a", "a.f18ID,a.f19Ordinal", "a.f18ID,a.f19Ordinal");
 
             AE("h04ToDo", "Úkoly", "Úkol", "h04ToDo a", "a.h04ID DESC");
-            AE("h07ToDoType", "Typy úkolů", "Typ úkolu", "h07ToDoType a", "a.h07ID");
+            AE("h07ToDoType", "Typy úkolů a lhůt", "Typ úkolu", "h07ToDoType a", "a.h07ID");
             AE("h11NoticeBoard", "Články pro nástěnku", "Článek pro nástěnku", "h11NoticeBoard a", "a.h11ID DESC");
 
             AE("x40MailQueue", "OUTBOX", "OUTBOX", "x40MailQueue a", "a.x40ID DESC", "a.x40ID DESC");
@@ -132,10 +132,10 @@ namespace BL
             AE("x29Entity", "Entity", "Entita", "x29Entity a","a.x29Name");
             ByPrefix("x29").IsWithoutValidity = true;
 
-            AE_TINY("a02Inspector", "Inspektoři", "Inspektor");
+            AE_TINY("a02Inspector", "Osoby v inspektorátech", "Inspektor");
             AE_TINY("a24EventRelation", "Související akce", "Související akce");
             AE_TINY("a28SchoolType", "Typy škol", "Typ školy");
-            AE_TINY("a70SIS", "Školní IS", "Školní IS");
+            AE_TINY("a70SIS", "Školní informační systémy", "Školní IS");
 
             AE_TINY("o51Tag", "Položky kategorií", "Položka kategorie");
             AE_TINY("o53TagGroup", "Kategorie", "Kategorie");
@@ -150,7 +150,7 @@ namespace BL
             AE("f29PortalQuestionTab", "Portál boxy", "Portal box", "f29PortalQuestionTab a", "a.f29Ordinal", "a.f29Ordinal");
             AE_TINY("f44QuestionCluster", "Klastry otázek", "Klastr otázek");
             AE("f21ReplyUnit", "Jednotky odpovědí", "Jednotka odpovědi", "f21ReplyUnit a", "a.f21Ordinal,a.f21Name", "a.f21Ordinal,a.f21Name");
-            AE_TINY("f22ReplySet", "Šablony jednotek", "Šablona jednotek");
+            AE_TINY("f22ReplySet", "Šablony jednotek odpovědí", "Šablona jednotek");
             AE_TINY("f25ChessBoard", "Šachovnice otázek", "Šachovnice otázek");
             AE_TINY("f26BatteryBoard", "Baterie otázek", "Baterie otázek");
             //AE_TINY("f31FilledQuestionPublishing", "f31", "f31");
@@ -167,11 +167,11 @@ namespace BL
             AE_TINY("j72TheGridTemplate", "Grid", "Grid");
             ByPrefix("j72").IsWithoutValidity = true;
 
-            AE("x27EvalFunction", "EVAL funkce", "EVAL funkce", "x27EvalFunction a", "a.x27Ordinal", "a.x27Ordinal");
+            AE("x27EvalFunction", "EVALuation funkce", "EVAL funkce", "x27EvalFunction a", "a.x27Ordinal", "a.x27Ordinal");
 
-            AE_TINY("x31Report", "Pevné tiskové sestavy", "Pevná tisková sestava");
-            AE("z01_core_view_reports", "Pevné tiskové sestavy", "Tisková sestava", "z01_core_view_reports a", "a.x31Name", "a.x31Name");
-            AE("x32ReportType", "Kategorie sestav", "Kategorie sestavy", "x32ReportType a", "a.x32TreeIndex", "a.x32TreeIndex");
+            AE_TINY("x31Report", "Report šablony", "Pevná tisková sestava");
+            AE("z01_core_view_reports", "Reporty šablony", "Tisková sestava", "z01_core_view_reports a", "a.x31Name", "a.x31Name");
+            AE("x32ReportType", "Report kategorie", "Kategorie sestavy", "x32ReportType a", "a.x32TreeIndex", "a.x32TreeIndex");
 
             AE_TINY("b65WorkflowMessage", "Notifikační zprávy", "Notifikační zpráva");
             AE_TINY("x51HelpCore", "Uživatelská nápověda", "Uživatelská nápověda");

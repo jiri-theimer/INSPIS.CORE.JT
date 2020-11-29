@@ -38,13 +38,13 @@
 }
 
 
-<div class="row py-1 bg-light m-0">
+<div class="row pb-0 py-1 bg-light m-0">
     <div id="layout_sidebar_contextmenu" class="col-auto">
         <a id="layout_sidebar_contextmenu_link" class="cm h4 mx-0" onclick="_cm(event, 'b01WorkflowTemplate',@Model.b01ID);">☰@_f.tra("Návrhář workflow")</a>
         <h4 id="layout_sidebar_contextmenu_onlytext">@_f.tra("Návrhář workflow")</h4>
     </div>
-    <div class="col-auto">
-        <ul class="nav nav-tabs" style="border:none;">
+    <div class="col-auto pl-0">
+        <ul class="nav nav-tabs">
             <li class="nav-item onetab">
                 <a class="nav-link active" data-toggle="tab">@Model.RecB01.b01Name</a>
             </li>
@@ -67,7 +67,7 @@
     </div>
 
     <div class="nonmobile nontablet">
-        <a class="btn btn-light" href="/AdminOneWorkflow/Index?b01id=@Model.b01ID">@_f.tra("Občerstvit")</a>
+        <a class="btn btn-light" href="/AdminOneWorkflow/Index?b01id=@Model.b01ID" title="@_f.tra("Občerstvit")"><img src="~/images/refresh.png" /></a>
     </div>
 
 
@@ -83,7 +83,7 @@
 
     @if (Model.view == "tree")
     {
-        <div id="divTree" style="height:400px;overflow:auto;">
+        <div id="layout_main_divtree">
             <kendotree tree-datasource="@Model.treeNodes" clientid="tree1"></kendotree>
 
 
@@ -148,8 +148,8 @@
         var h_vertical = _device.innerHeight - offset.top;
         h_vertical = parseInt(h_vertical) + 10;
         $("#layout_sidebar").css("height", h_vertical + "px");
-        if (document.getElementById("divTree")) {
-            $("#divTree").css("height", h_vertical + "px");
+        if (document.getElementById("layout_main_divtree")) {
+            $("#layout_main_divtree").css("height", h_vertical + "px");
         }
 
     });

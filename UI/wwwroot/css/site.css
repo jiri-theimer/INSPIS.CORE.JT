@@ -901,7 +901,7 @@ hr.hr-mini { /*používá se v kontextovém menu*/
     display: block;
 }
 #layout_sidebar_contextmenu{
-    width:190px;
+    width:200px;
     text-align:center;    
 }
 #layout_sidebar_contextmenu_link{
@@ -909,6 +909,11 @@ hr.hr-mini { /*používá se v kontextovém menu*/
 }
 #layout_sidebar_contextmenu_onlytext{
     display:block;
+}
+#layout_main_divtree {
+    height: 400px;
+    overflow: auto;
+    border-top: solid 1px #CCCCCC;
 }
 
 @media screen and (max-width: 1000px) {

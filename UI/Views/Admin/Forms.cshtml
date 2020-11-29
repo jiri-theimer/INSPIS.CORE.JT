@@ -43,20 +43,22 @@
         <a id="layout_sidebar_contextmenu_link" class="cm h4 mx-0" onclick="_cm(event, 'Forms',0,'@Model.prefix');">☰@_f.tra("Formuláře")</a>
         <h4 id="layout_sidebar_contextmenu_onlytext">@_f.tra("Formuláře")</h4>
     </div>
-    <div class="col-auto">
+    <div class="col-auto pl-0">
         <ul class="nav nav-tabs" style="border:none;">
             <li class="nav-item onetab">
                 <a class="nav-link active" data-toggle="tab">@Model.entityTitle</a>
             </li>
         </ul>
     </div>
-    <div class="col-auto">
-        @if (Model.prefix != null)
-        {
-            <button id="cmdNew" type="button" class="btn btn-primary">@_f.tra("Nový záznam")</button>
-        }
 
-    </div>
+    @if (Model.prefix != null)
+    {
+        <div class="col-auto">
+            <button id="cmdNew" type="button" class="btn btn-primary">@_f.tra("Nový záznam")</button>
+        </div>
+    }
+
+
     <div class="col-auto">
         @if (Model.prefix == "f12")
         {
@@ -71,7 +73,7 @@
         }
     </div>
     <div class="nonmobile nontablet">
-        <a class="btn btn-light" href="/Admin/Ciselniky?prefix=@Model.prefix">@_f.tra("Občerstvit")</a>
+        <a class="btn btn-light" href="/Admin/Ciselniky?prefix=@Model.prefix" title="@_f.tra("Občerstvit")"><img src="~/images/refresh.png" /></a>
     </div>
 
 
@@ -87,7 +89,7 @@
 
     @if (Model.view == "tree")
     {
-        
+
 
         <kendotree clientid="tree1" tree-datasource="@Model.treeNodes"></kendotree>
     }
@@ -118,7 +120,7 @@
         <text>
         $("#tree1").kendoTreeView(
             {
-                dataSource: dstree1,               
+                dataSource: dstree1,
                 template: "<a class='cm' onclick='_cm(event,\"#: item.prefix #\",#: item.recordid #)'>☰</a><span ondblclick='_edit(\"#: item.prefix #\",#: item.recordid #)'> #: item.text # </span>"
             }
         );
