@@ -77,6 +77,13 @@ namespace UI.Controllers
             Response.Cookies.Append("inspis.core.langindex", langindex.ToString(), co);
             return new BO.Result(false);
         }
+        public BO.Result SaveCurrentUserLogoVisibility(string isvisible)
+        {
+            var c = Factory.j03UserBL.Load(Factory.CurrentUser.pid);
+            c.j03IsMainLogoVisible = BO.BAS.BG(isvisible);
+            Factory.j03UserBL.Save(c);
+            return new BO.Result(false);
+        }
 
         public BO.Result UpdateCurrentUserPing(BO.j92PingLog c)
         {

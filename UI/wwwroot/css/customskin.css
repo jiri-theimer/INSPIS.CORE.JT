@@ -25,3 +25,20 @@
 #myModalContentHeader{
     color:white;
 }
+
+#mainmenu1_div_logo {
+  
+    padding: 6px;
+}
+#mainmenu1_div_logo_switch{
+    display:block;
+}
+
+@media screen and (max-width: 1200px) {
+    #mainmenu1_div_logo {
+        display: none;
+    }
+    #mainmenu1_div_logo_switch{
+        display:none;
+    }
+}

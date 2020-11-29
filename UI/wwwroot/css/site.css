@@ -761,6 +761,7 @@ hr.hr-mini { /*používá se v kontextovém menu*/
 }
 
 
+
 #mainmenu1 div.dropdown_menu_container {
     background-color: white /* aliceblue */;
     padding: 6px;
@@ -770,6 +771,7 @@ hr.hr-mini { /*používá se v kontextovém menu*/
 #mainmenu1 div.dropdown_menu_container a.nav-link:hover{
     background-color: #ECECEC;
     color: black !important;
+    
 }
 
 						   
@@ -778,16 +780,16 @@ hr.hr-mini { /*používá se v kontextovém menu*/
         color: white;
     }
 
-    #mainmenu1 .navbar-nav:nth-last-child(4) {
+    #mainmenu1 .navbar-nav:nth-last-child(5) {
         margin-left: auto;
     }
 
     /* change the link color */
 
-    #mainmenu1 .navbar-nav .nav-link {
-        color: #FFFFFF;
-        padding: 6px;
-    }
+#mainmenu1 .navbar-nav .nav-link {
+    color: #FFFFFF;
+    padding: 6px;
+}
     /* change the color of active or hovered links */
 
     #mainmenu1 .nav-item:hover .nav-link {
@@ -945,6 +947,7 @@ hr.hr-mini { /*používá se v kontextovém menu*/
     #layout_main {
         margin-left: 0;
     }
+   
 }
 
 @media screen and (max-width: 600px) {

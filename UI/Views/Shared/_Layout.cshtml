@@ -1,6 +1,7 @@
 ﻿@model BaseViewModel
 @inject BL.Factory _f
 
+@addTagHelper *, UI
 <!DOCTYPE html>
 <html lang="cs" style="@_f.CurrentUser.getFontStyle()">
 <head>
@@ -76,11 +77,19 @@
     <script src="~/js/mycontrols.js" asp-append-version="true"></script>
 
     <header>
-        <nav id="mainmenu1" class="navbar navbar-expand-lg navbar-dark py-1">
+        @if (_f.CurrentUser.j03IsMainLogoVisible)
+        {
+            <div id="mainmenu1_div_logo">
+                <img src="/images/logo_mainmenu_ua.png" height="48" width="184" />
+
+            </div>
+        }
+
+        <nav id="mainmenu1" class="navbar navbar-expand-lg navbar-dark py-1 px-0">
             <div class="navbar-nav">
                 @if (_f.CurrentUser.j03HomePageUrl == null)
                 {
-                    <a id="cmdHome" class="nav-link text-white" href="/Home/Index" tabindex="-1">@_f.App.AppName</a>
+                    <a id="cmdHome" class="nav-link text-white" style="font-weight:bold;letter-spacing:1px;" href="/Home/Index" tabindex="-1">@_f.App.AppName</a>
                 }
                 else
                 {
@@ -165,6 +174,17 @@
                     </div>
 
                 }
+                <div id="mainmenu1_div_logo_switch" class="navbar-nav">
+                    @if (_f.CurrentUser.j03IsMainLogoVisible)
+                    {
+                        <a href="javascript:save_mainmenu_logo_visibility('0')"><img src="/images/switch_off_24.png" title="@_f.tra("Vypnout horní pruh")" /></a>
+                    }
+                    else
+                    {
+                        <a href="javascript:save_mainmenu_logo_visibility('1')"><img src="/images/switch_on_24.png" title="@_f.tra("Zapnout horní pruh")" /></a>
+                    }
+
+                </div>
                 <div class="navbar-nav">
                     <div class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="javascript:void(0)" id="cmdLangIndex" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tabindex="-1">@_f.CurrentUser.LangName</a>
@@ -380,7 +400,11 @@
             $.post("/Home/SaveCurrentUserLangIndex", { langindex: intLangIndex2Save }, function (data) {
                 location.replace(window.location.href);
             });
-
+        }
+        function save_mainmenu_logo_visibility(isvisible) {
+            $.post("/Home/SaveCurrentUserLogoVisibility", { isvisible: isvisible }, function (data) {
+                location.replace(window.location.href);
+            });
         }
 
         //vyvolání popup okna - na stránce musí být přítomen DIV: ID=myModalContainer

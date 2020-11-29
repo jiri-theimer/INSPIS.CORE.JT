@@ -29,6 +29,7 @@ namespace BO
         public DateTime? j03PingTimestamp { get; set; }
 
         public int j03LangIndex { get; set; }
+        public bool j03IsMainLogoVisible { get; set; }  //zda je zapnutý pruh s logem nad hlavním menu
         public string j03HomePageUrl { get; set; }
         public string j04ViewUrl_Page { get; set; }
         public int a04ID { get; set; }      //svázaný inspektorát

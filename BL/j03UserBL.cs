@@ -100,6 +100,7 @@ namespace BL
             p.AddInt("j03ModalDialogFlag", rec.j03ModalDialogFlag);
             p.AddInt("j03FontStyleFlag", rec.j03FontStyleFlag);
             p.AddInt("j03LangIndex", rec.j03LangIndex);
+            p.AddBool("j03IsMainLogoVisible", rec.j03IsMainLogoVisible);
             p.AddInt("j03GridSelectionModeFlag", rec.j03GridSelectionModeFlag);
             p.AddDateTime("j03LiveChatTimestamp", rec.j03LiveChatTimestamp);
             p.AddString("j03HomePageUrl",rec.j03HomePageUrl);

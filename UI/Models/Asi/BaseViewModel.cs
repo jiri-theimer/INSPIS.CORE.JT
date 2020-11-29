@@ -19,5 +19,7 @@ namespace UI.Models
         {
             this.Javascript_CallOnLoad = "_close_and_reload_parentsite('"+reloadurl_parentsite+"')";
         }
+
+        
     }
 }

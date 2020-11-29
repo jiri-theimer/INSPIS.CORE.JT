@@ -18,6 +18,19 @@ namespace BO
                 return "0";
             }
         }
+        public static bool BG(string b)
+        {
+            if (b == null) return false;
+
+            if (b=="1" || b.ToLower()=="true")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public static string GS(string s)
         {
             if(string.IsNullOrEmpty(s) == true)
