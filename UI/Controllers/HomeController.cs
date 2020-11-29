@@ -113,24 +113,27 @@ namespace UI.Controllers
 
         public IActionResult Index()
         {
+            bool bolRedirect = false;
             if (HttpContext.Request.Path.Value.Length <= 1)
             {
                 //úvodní spuštění: otestovat nastavení domovské stránky
                 if (Factory.CurrentUser.j03HomePageUrl != null)
                 {
-                    
+                    bolRedirect = true;
                     Response.Redirect(Factory.CurrentUser.getHomePageUrl());
                     
                 }
             }
-            
+
             var v = new HomeViewModel();
-
-            var pandulak = new ThePandulak(_hostingEnvironment);
-            v.Pandulak1 = pandulak.getPandulakImage(1);
-            v.Pandulak2 = pandulak.getPandulakImage(2);
-
+            if (!bolRedirect)
+            {                
+                var pandulak = new ThePandulak(_hostingEnvironment);
+                v.Pandulak1 = pandulak.getPandulakImage(1);
+                v.Pandulak2 = pandulak.getPandulakImage(2);                
+            }
             return View(v);
+
         }
 
         public IActionResult About()
