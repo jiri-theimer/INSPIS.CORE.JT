@@ -87,6 +87,7 @@ namespace BL
         private Ix31ReportBL _x31;
         private Ix32ReportTypeBL _x32;
         private Ix51HelpCoreBL _x51;
+        private Ix55WidgetBL _x55;
         private Ix91TranslateBL _x91;
 
         private IMailBL _mail;
@@ -677,6 +678,14 @@ namespace BL
             {
                 if (_x51 == null) _x51 = new x51HelpCoreBL(this);
                 return _x51;
+            }
+        }
+        public Ix55WidgetBL x55WidgetBL
+        {
+            get
+            {
+                if (_x55 == null) _x55 = new x55WidgetBL(this);
+                return _x55;
             }
         }
         public Ix91TranslateBL x91TranslateBL

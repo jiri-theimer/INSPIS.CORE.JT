@@ -259,6 +259,7 @@ namespace UI.Controllers
                 AMI("Články pro nástěnku", url_ciselniky("h11"));
                 AMI("Dny svátků", url_ciselniky("j26"));
                 AMI("AutoComplete položky", url_ciselniky("o15"));
+                AMI("Dashboard boxy", url_ciselniky("x55"));
                 AMI("Uživatelská nápověda", url_ciselniky("x51"));
                 AMI("Aplikační překlad", url_ciselniky("x91"));
             }

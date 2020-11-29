@@ -713,6 +713,13 @@ namespace BL
             AF("x51HelpCore", "x51ExternalUrl", "Externí Url", 2);
             AppendTimestamp("x51HelpCore");
 
+            //x55 = dashboard box
+            AF("x55Widget", "x55Name", "Dashboard box", 1, null, "string", false, true);
+            AF("x55Widget", "x55Code", "Kód");
+            AF("x55Widget", "x55IsSystem", "Systémový", 2, null, "bool");
+            AF("x55Widget", "x55Ordinal", "#", 2, null, "num0");
+            AppendTimestamp("x55Widget");
+
             //x24 - datový typ
             AF("x24DataType", "x24Name","Datový typ",1,null,"string",false,true);
 
