@@ -9,39 +9,83 @@
 @addTagHelper *, UI
 
 
+<link rel="stylesheet" href="/lib/jquery-ui/jquery-ui.min_sortable.css" />
+<style type="text/css">
+    .column {
+        float: left;
+    }
+
+    .portlet {
+        margin: 0 1em 1em 0;
+        padding: 0.3em;
+    }
+
+    .portlet-header {
+        padding: 0.2em 0.3em;
+        margin-bottom: 0.5em;
+        position: relative;
+        background-color: #E8E8E8;
+        cursor: move;
+    }
+
+    .portlet-toggle {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        margin-top: -8px;
+    }
+
+    .portlet-content {
+        padding: 0.4em;
+        max-height: 300px;
+        overflow: auto;
+    }
+
+    .portlet-placeholder {
+        border: 1px dotted black;
+        margin: 0 1em 1em 0;
+        height: 50px;
+    }
+</style>
+
+<script src="/lib/jquery-ui/jquery-ui.min_sortable.js"></script>
+
 <div class="jumbotron py-4">
     <h1 class="display-4">@_app.AppName <small>@_app.AppVersion</small></h1>
-    
-</div>
-<div style="padding:20px;">
     <h4>Vítej, uživateli [<a href="/Home/MyProfile">@(User.Identity.Name)</a>]!</h4>
-    
 </div>
+
+
 <img src="~/images/pandulak/@Model.Pandulak1" />
 <img src="~/images/pandulak/@Model.Pandulak2" />
 
 
 
+<div id="page_offsetY"></div>
+
+
+<div class="form-row" style="margin:0px;">
+
+</div>
+
+
+
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+            _mainmenu_highlight_current("cmdHome");
+
+            if (location.href.indexOf("Home/Index") == -1) {
+                //úvodní spuštění - default, otestovat domovskou stránku
+            }
+
+
+        });
 
 
 
 
-<script type="text/javascript">
 
 
-    $(document).ready(function () {
-        _mainmenu_highlight_current("cmdHome");
-
-        if (location.href.indexOf("Home/Index") == -1) {
-            //úvodní spuštění - default, otestovat domovskou stránku
-        }
-
-        
-    });
-
-
-
-
-
-
-</script>
+    </script>

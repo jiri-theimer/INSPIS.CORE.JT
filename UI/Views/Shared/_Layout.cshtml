@@ -80,7 +80,7 @@
         @if (_f.CurrentUser.j03IsMainLogoVisible)
         {
             <div id="mainmenu1_div_logo">
-                <img src="/images/logo_mainmenu_@(_f.App.LogoImageSuffix).png" height="48" width="184" />
+                <img src="/images/logo_mainmenu_@(_f.App.LogoImageSuffix).jpg" />
 
             </div>
         }
@@ -262,18 +262,26 @@
             </text>
              }
         }
+        @if (_f.CurrentUser.j03IsMainLogoVisible)
+        {
+            <text>
+            if (_device.type == "Phone") {
+                $("#mainmenu1_div_logo").css("display", "none");
+            }
+            </text>
+        }
         if ($("#toolbar_changeinfo").length) {
                 //události na editačních formulářích
                 $("form").submit(function () {
-                    if ($(document.activeElement).attr("type") == "submit")
+                if ($(document.activeElement).attr("type") == "submit")
                     {
-                        return true;
-                    }
+                    return true;
+                }
                     else
-                    {
-                        return false;
-                    }
-                });
+                {
+                    return false;
+                }
+            });
 
                 $("textarea").each(function () {
                 this.style.height = "auto";
@@ -318,8 +326,8 @@
                     handle_render_menu_branch("divLangIndexMenu", data);
                 })
                     .fail(function (response) {
-                        alert(response.responseText);
-                    //$("html").html(response.responseText);
+                        handle_render_menu_error(response);
+
                 });
             });
             $("#cmdFontStyleFlag").click(function () {
@@ -327,8 +335,7 @@
                     handle_render_menu_branch("divFontStyleMenu", data);
                 })
                     .fail(function (response) {
-                        alert(response.responseText);
-                    //$("html").html(response.responseText);
+                        handle_render_menu_error(response);
                 });
             });
             $("#cmdCurrentUser").click(function () {
@@ -336,8 +343,7 @@
                     handle_render_menu_branch("divCurrentUserMenu", data);
                 })
                     .fail(function (response) {
-                        alert(response.responseText);
-                    //$("html").html(response.responseText);
+                        handle_render_menu_error(response);
                 });
             });
 
@@ -350,13 +356,15 @@
     });
 
 
-        function menu_open_by_prefix(prefix) {
-            $.post("/Menu/" + prefix +"Menu?userdevice="+_device.type, function (data) {
-            //$("#divMenu" + prefix).html(data);
-            handle_render_menu_branch("divMenu" + prefix, data);
-            $("#cmd" + prefix).attr("onclick", "");
+    function menu_open_by_prefix(prefix) {
+            $.post("/Menu/" + prefix + "Menu?userdevice=" + _device.type, function (data) {
+                handle_render_menu_branch("divMenu" + prefix, data);
+                $("#cmd" + prefix).attr("onclick", "");
+            })
+                .fail(function (response) {
+                    handle_render_menu_error(response);
+            });
 
-        });
     }
 
 
@@ -498,6 +506,12 @@
 
                 $(mydiv).css("margin-left", window.innerWidth - (25+20+$(mydiv).offset().left + $(mydiv).width()));
 
+            }
+        }
+        function handle_render_menu_error(response) {
+            if (!response.responseText || 0 === response.responseText.length) {   //checking if a string is empty, null or undefined I use:
+                alert("@_f.tra("Pravděpodobně vypršel čas přihlášení do systému. Musíte se znovu přihlásit.")");
+                location.replace("/Login/UserLogin");
             }
         }
 

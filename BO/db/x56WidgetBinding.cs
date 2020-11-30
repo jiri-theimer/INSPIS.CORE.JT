@@ -2,7 +2,7 @@
 
 namespace BO
 {
-    public class x56WidgetBinding
+    public class x56WidgetBinding:BaseBO
     {
         [Key]
         public int x56ID { get; set; }

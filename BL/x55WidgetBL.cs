@@ -10,6 +10,9 @@ namespace BL
         public IEnumerable<BO.x55Widget> GetList(BO.myQuery mq);
         public int Save(BO.x55Widget rec);
 
+        public BO.x56WidgetBinding LoadState(int j03id);
+        public int SaveState(BO.x56WidgetBinding rec);
+
     }
     class x55WidgetBL : BaseBL, Ix55WidgetBL
     {
@@ -75,5 +78,22 @@ namespace BL
             return true;
         }
 
+        public BO.x56WidgetBinding LoadState(int j03id)
+        {
+            return _db.Load<BO.x56WidgetBinding>(GetSQL1(" WHERE a.j03ID=@j03id"), new { j03id = j03id });
+        }
+
+        public int SaveState(BO.x56WidgetBinding rec)
+        {            
+            var p = new DL.Params4Dapper();
+            p.AddInt("pid", rec.pid);
+            p.AddInt("j03ID", rec.j03ID,true);
+            p.AddString("x56Skin", rec.x56Skin);
+            p.AddString("x56Boxes", rec.x56Boxes);
+            p.AddString("x56DockState", rec.x56DockState);
+           
+            return _db.SaveRecord("x56WidgetBinding", p.getDynamicDapperPars(), rec);
+
+        }
     }
 }

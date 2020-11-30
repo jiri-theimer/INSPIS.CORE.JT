@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Diagnostics;
 
 using Microsoft.AspNetCore.Hosting;
+using UI.Models.Dashboard;
 
 namespace UI.Controllers
 {
@@ -131,14 +132,63 @@ namespace UI.Controllers
                     
                 }
             }
-
             var v = new HomeViewModel();
-            if (!bolRedirect)
-            {                
-                var pandulak = new ThePandulak(_hostingEnvironment);
-                v.Pandulak1 = pandulak.getPandulakImage(1);
-                v.Pandulak2 = pandulak.getPandulakImage(2);                
+
+            if (bolRedirect)
+            {
+                return View(v);
             }
+
+            v.recX56 = Factory.x55WidgetBL.LoadState(Factory.CurrentUser.pid);
+            
+            v.lisAllWidgets = Factory.x55WidgetBL.GetList(new BO.myQuery("x55") { IsRecordValid = true });
+            v.lisUserWidgets = new List<BO.x55Widget>();
+            var boxes = BO.BAS.ConvertString2List(v.recX56.x56Boxes);
+            foreach (string s in boxes)
+            {
+                if (v.lisAllWidgets.Where(p=>p.x55Code == s).Count()>0)
+                {
+                    v.lisUserWidgets.Add(v.lisAllWidgets.Where(p => p.x55Code == s).First());
+                }
+            }
+
+            
+            v.DockStructure = new DockStructure(v.recX56.x56DockState);
+            foreach(var onestate in v.DockStructure.States)
+            {
+                if (v.lisUserWidgets.Where(p => p.pid.ToString() == onestate.Key).Count() > 0)
+                {
+                    var c = v.lisUserWidgets.Where(p => p.pid.ToString() == onestate.Key).First();
+                    switch (onestate.Key)
+                    {
+                        case "2":
+                            if (v.ColumnsPerPage >= 2) v.DockStructure.Col2.Add(c);
+                            break;
+                        case "3":
+                            if (v.ColumnsPerPage >= 3) v.DockStructure.Col3.Add(c);
+                            break;
+                        default:
+                            v.DockStructure.Col1.Add(c);
+                            break;
+                    }
+                }
+            }
+            foreach(var c in v.lisUserWidgets)
+            {
+                if ((v.DockStructure.Col1.Contains(c) || v.DockStructure.Col2.Contains(c) || v.DockStructure.Col3.Contains(c))==false)
+                {
+                    if  (v.ColumnsPerPage == 2 && v.DockStructure.Col1.Count() >= 2)
+                    {
+                        v.DockStructure.Col2.Add(c);
+                    }
+                }
+            }
+            
+
+            var pandulak = new ThePandulak(_hostingEnvironment);
+            v.Pandulak1 = pandulak.getPandulakImage(1);
+            v.Pandulak2 = pandulak.getPandulakImage(2);
+
             return View(v);
 
         }

@@ -1096,6 +1096,9 @@ a.reczoom {
 }
 
 #cmdHome { /* HOME tlačítko v hlavním menu*/
-    font-weight: bold;
-    letter-spacing: 1px;
+    font-weight: bold;    
+    letter-spacing: 2px;
+    min-width:200px;
+    text-align:center;
+    
 }
