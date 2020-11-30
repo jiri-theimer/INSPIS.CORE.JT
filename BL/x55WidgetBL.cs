@@ -80,7 +80,11 @@ namespace BL
 
         public BO.x56WidgetBinding LoadState(int j03id)
         {
-            return _db.Load<BO.x56WidgetBinding>(GetSQL1(" WHERE a.j03ID=@j03id"), new { j03id = j03id });
+            sb("SELECT a.*,");
+            sb(_db.GetSQL1_Ocas("x56"));
+            sb(" FROM x56WidgetBinding a WHERE a.j03ID=@j03id");
+            
+            return _db.Load<BO.x56WidgetBinding>(sbret(), new { j03id = j03id });
         }
 
         public int SaveState(BO.x56WidgetBinding rec)

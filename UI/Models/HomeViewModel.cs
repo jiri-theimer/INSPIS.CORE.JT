@@ -12,16 +12,32 @@ namespace UI.Models
         public string Pandulak1 { get; set; }
         public string Pandulak2 { get; set; }
 
-        public string BoxColClass { get; set; } = "col-lg-6";
+        public string BoxColCss { get; set; } = "col-lg-6";
         
-        public DockStructure DockStructure { get; set; }
+        public WidgetsEnvironment DockStructure { get; set; }
 
         public BO.x56WidgetBinding recX56 { get; set; }
 
         public IEnumerable<BO.x55Widget> lisAllWidgets { get; set; }
         public List<BO.x55Widget> lisUserWidgets { get; set; }
-        public int ColumnsPerPage { get; set; } = 2;
-           
+        public int ColumnsPerPage { get; set; }
 
+        public DateTime DateToday { get; set; } = DateTime.Today;
+
+        public string FormatSnippetHeader(BO.x55Widget c, DateTime datToday)
+        {
+            if (datToday == DateTime.Today)
+            {
+                return c.x55Name;
+            }
+            if (c.x55Name.Contains("dnes"))
+            {
+                return c.x55Name.Replace("DNES", BO.BAS.ObjectDate2String(datToday));
+            }
+            else
+            {
+                return c.x55Name;
+            }
+        }
     }
 }

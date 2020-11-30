@@ -1,15 +1,21 @@
 ﻿@model HomeViewModel
 @inject BL.RunningApp _app
+@inject BL.Factory _f
 
 @{
     ViewData["Title"] = "Home Page";
 
 
 }
+
 @addTagHelper *, UI
 
+@section header_content
+{
+    <link rel="stylesheet" href="/lib/jquery-ui/jquery-ui.min_sortable.css" />
+}
 
-<link rel="stylesheet" href="/lib/jquery-ui/jquery-ui.min_sortable.css" />
+
 <style type="text/css">
     .column {
         float: left;
@@ -37,7 +43,7 @@
 
     .portlet-content {
         padding: 0.4em;
-        max-height: 300px;
+        max-height: 400px;
         overflow: auto;
     }
 
@@ -51,41 +57,208 @@
 <script src="/lib/jquery-ui/jquery-ui.min_sortable.js"></script>
 
 <div class="jumbotron py-4">
-    <h1 class="display-4">@_app.AppName <small>@_app.AppVersion</small></h1>
     <h4>Vítej, uživateli [<a href="/Home/MyProfile">@(User.Identity.Name)</a>]!</h4>
+
+    <div class="row">
+        <div class="dropdown col-auto">
+
+            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownSnippetLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span>@_f.tra("Vložit box na plochu")</span>
+            </a>
+
+            <div class="dropdown-menu" aria-labelledby="dropdownSnippetLink">
+                <ul id="rp1_menu" style="list-style:none;columns:3;width:1000px;">
+                    @foreach (var c in Model.lisAllWidgets)
+                    {
+                    <li class="nav-item">
+                        @if (Model.lisUserWidgets.Where(p => p.pid == c.pid).Count() > 0)
+                        {
+                            <span style="color:silver;">@c.x55Name</span>
+                        }
+                        else
+                        {
+                            <a class="nav-link" href="javascript:handle_insert_snippet(@c.pid)">@c.x55Name</a>
+                        }
+
+
+                    </li>
+                    }
+                   
+                </ul>
+
+
+            </div>
+        </div>
+        <div class="col-auto">
+            <select asp-for="@Model.ColumnsPerPage" class="form-control" onchange="handle_pocet_sloupcu(this)">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
+        </div>
+    </div>
 </div>
 
 
-<img src="~/images/pandulak/@Model.Pandulak1" />
-<img src="~/images/pandulak/@Model.Pandulak2" />
 
 
 
-<div id="page_offsetY"></div>
+@if (Model.lisUserWidgets.Count()>0)
+{
+    <div class="form-row" style="margin:0px;border: dotted 1px #F5F5F5;">
+        <div class="column @Model.BoxColCss" id="col1">
+            @foreach (var c in Model.DockStructure.Col1)
+            {
 
+                <div id="box_@(c.pid)" class="portlet">
+                    <div class="portlet-header" title="Přetáhněte box myší">
+                        <img src="~/images/cursor_mouse_drag.png" /> @Model.FormatSnippetHeader(c, Model.DateToday)<a class="float-right btn btn-sm btn-light p-1" href="javascript:handle_after_close_snippet(@c.pid)">x</a>
 
-<div class="form-row" style="margin:0px;">
+                        <div class="portlet-content" style="overflow: auto;">
+                            @Html.Raw(c.x55Content)
 
-</div>
+                        </div>
+                    </div>
 
-
-
-    <script type="text/javascript">
-
-
-        $(document).ready(function () {
-            _mainmenu_highlight_current("cmdHome");
-
-            if (location.href.indexOf("Home/Index") == -1) {
-                //úvodní spuštění - default, otestovat domovskou stránku
+                </div>
             }
+        </div>
+        @if (Model.ColumnsPerPage > 1)
+        {
+            <div class="column @Model.BoxColCss" id="col2">
+                @foreach (var c in Model.DockStructure.Col2)
+                {
+                    <div id="box_@(c.pid)" class="portlet">
+                        <div class="portlet-header" title="Přetáhněte box myší">
+                            <img src="~/images/cursor_mouse_drag.png" /> @Model.FormatSnippetHeader(c, Model.DateToday)<a class="float-right btn btn-sm btn-light p-1" href="javascript:handle_after_close_snippet(@c.pid)">x</a>
+
+                            <div class="portlet-content" style="overflow: auto;">
+                                @Html.Raw(c.x55Content)
+                            </div>
+                        </div>
+
+                    </div>
+                }
+            </div>
+        }
+        @if (Model.ColumnsPerPage > 2)
+        {
+            <div class="column @Model.BoxColCss" id="col3">
+                @foreach (var c in Model.DockStructure.Col3)
+                {
+                    <div id="box_@(c.pid)" class="portlet">
+                        <div class="portlet-header" title="Přetáhněte box myší">
+                            <img src="~/images/cursor_mouse_drag.png" /> @Model.FormatSnippetHeader(c, Model.DateToday)<a class="float-right btn btn-sm btn-light p-1" href="javascript:handle_after_close_snippet(@c.pid)">x</a>
+
+                            <div class="portlet-content" style="overflow: auto;">
+                                @Html.Raw(c.x55Content)
+                            </div>
+                        </div>
+
+                    </div>
+                }
+            </div>
+        }
+    </div>
+}
+else
+{
+    <img src="~/images/pandulak/@Model.Pandulak1" />
+    <img src="~/images/pandulak/@Model.Pandulak2" />
+}
 
 
+
+
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+        _mainmenu_highlight_current("cmdHome");
+
+        if (location.href.indexOf("Home/Index") == -1) {
+            //úvodní spuštění - default, otestovat domovskou stránku
+        }
+
+
+        $(".column").sortable({
+            connectWith: ".column",
+            handle: ".portlet-header",
+            cancel: ".portlet-toggle",
+            placeholder: "portlet-placeholder ui-corner-all",
+            stop: function (event, ui) {
+                save_dock_state();
+            }
+        });
+
+        $(".portlet")
+            .addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
+            .find(".portlet-header")
+            .addClass("ui-widget-header ui-corner-all");
+
+
+        $(".portlet-toggle").on("click", function () {
+            var icon = $(this);
+            icon.toggleClass("ui-icon-minusthick ui-icon-plusthick");
+            icon.closest(".portlet").find(".portlet-content").toggle();
         });
 
 
 
 
+    });
 
 
-    </script>
+
+    function save_dock_state() {
+
+        var s = $("#col1").sortable("serialize", { key: "sort" });
+        @if (Model.ColumnsPerPage > 1)
+        {
+            <text>
+        s = s + "|" + $("#col2").sortable("serialize", { key: "sort" });
+            </text>
+        }
+        @if (Model.ColumnsPerPage > 2)
+        {
+            <text>
+        s = s + "|" + $("#col3").sortable("serialize", { key: "sort" });
+            </text>
+        }
+
+
+        $.post("/Home/SaveWidgetState", { s: s }, function (data) {
+            _notify_message("Změna rozložení boxů uložena.", "info");
+            //location.replace("/Home/Index");
+
+
+        });
+
+
+    }
+
+    function handle_after_close_snippet(x55id) {
+
+        $.post("/Home/RemoveWidget", { x55id: x55id }, function (data) {
+            location.replace("/Home/Index");
+
+
+        });
+    }
+
+    function handle_insert_snippet(x55id) {
+        $.post("/Home/InsertWidget", { x55id: x55id }, function (data) {
+            location.replace("/Home/Index");
+
+
+        });
+    }
+    function handle_pocet_sloupcu(cbx) {
+        
+        $.post("/Home/SavePocetSloupcu", { x: cbx.value }, function (data) {
+            location.replace("/Home/Index");
+
+
+        });
+    }
+</script>
