@@ -710,7 +710,8 @@ namespace BL
             //x50 = nápověda
             AF("x51HelpCore", "x51Name", "Nápověda", 1, null, "string", false, true);
             AF("x51HelpCore", "x51ViewUrl", "View Url", 2);
-            AF("x51HelpCore", "x51ExternalUrl", "Externí Url", 2);
+            AF("x51HelpCore", "x51NearUrls", "Související Urls", 2);
+            AF("x51HelpCore", "x51ExternalUrl", "Externí Url");
             AppendTimestamp("x51HelpCore");
 
             //x55 = dashboard box

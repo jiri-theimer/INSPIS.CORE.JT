@@ -109,13 +109,26 @@
                         left: getMenuPosition(e.clientX, "width", "scrollLeft"),
                         top: getMenuPosition(e.clientY, "height", "scrollTop")
                     })
-                    .off('click');
+                    .off("click");
 
-                $('.cm_submenu').each(function () {
-                    if ($(this).height() + $(this).offset().top > $(window).height()) {
-                        $(this).css("margin-top", -10 + $(window).height() - ($(this).height() + $(this).offset().top));
+
+
+                $(".cm_submenu").each(function () { //vnořené submenu
+                    var scroll = $(window)["scrollTop"]();
+                    var posy = $(this).offset().top;
+                    var rect = this.getBoundingClientRect();
+
+                    if (_device.type === "Desktop" && (posy - scroll + $(this).height() > $(window).height())) {
+                        
+                        
+                        //alert("html: "+$(this).text()+", rect.top: " +rect.top+", posy: " + posy + ", scroll: " + scroll + ", this.height: " + $(this).height()+", rozdíl: "+(posy-scroll));
+                        var mty = -1 * $(this).height()+20;
+                        
+                        $(this).css("margin-top",mty);
+                        
                     }
 
+                    
                 });
 
 
@@ -180,12 +193,19 @@
                 }
 
             }
-
-
+            
             if (direction === "height" && menu + position > $(window).height()) {
-                position = $(window).height() - menu - 10;
+                //position = scroll + $(window).height() - menu - 10;
+                
+                if (mouse + menu > $(window).height()) {
+                    position = scroll + ($(window).height() - menu);
+                } else {
+                    position = scroll + mouse;
+                }
+                
                 if (_device.type === "Phone") {
-                    position = 0;
+                    
+                    position = scroll;
                 }
 
                 return position;

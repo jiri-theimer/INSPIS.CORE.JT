@@ -74,6 +74,7 @@
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Barva"):</label>
                 <div class="col-sm-1 col-md-1">
                     <input type="color" asp-for="Rec.b02Color" />
+                    <button type="button" style="border:none;" onclick="$('#Rec_b02Color').val(null)">&times;</button>
                 </div>
                 <div class="col-sm-2 col-md-3">
                     <i>@_f.tra("Černá = žádná barva!")</i>

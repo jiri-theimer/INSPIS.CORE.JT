@@ -27,6 +27,15 @@ namespace DL
             DL.Param4DT c = new DL.Param4DT() {ParamType="string", ParName = name, ParValue = String2Db(value) };
             _lis.Add(c);
         }
+        public void AddNonBlackColorString(string name,string value)
+        {
+            if (value== "#000000")
+            {
+                value = null;
+            }
+            DL.Param4DT c = new DL.Param4DT() { ParamType = "string", ParName = name, ParValue = String2Db(value) };
+            _lis.Add(c);
+        }
         public void AddDateTime(string name, DateTime? value)
         {            
 

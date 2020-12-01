@@ -24,7 +24,7 @@ namespace BL
 
         private string GetSQL1(string strAppend = null)
         {
-            sb("SELECT a.x51ID,a.x51Name,a.x51ViewUrl,a.x51ExternalUrl,");  //vynechat sloupec x51Html, protože je ntext
+            sb("SELECT a.x51ID,a.x51Name,a.x51ViewUrl,a.x51ExternalUrl,a.x51NearUrls,");  //vynechat sloupec x51Html, protože je ntext
             
             sb(_db.GetSQL1_Ocas("x51"));
             sb(" FROM x51HelpCore a");
@@ -64,7 +64,7 @@ namespace BL
             p.AddString("x51ExternalUrl", rec.x51ExternalUrl);
             p.AddString("x51Html", rec.x51Html);
             p.AddString("x51PlainText", rec.x51PlainText);
-
+            p.AddString("x51NearUrls", rec.x51NearUrls);
 
             int intPID = _db.SaveRecord("x51HelpCore", p.getDynamicDapperPars(), rec);
 

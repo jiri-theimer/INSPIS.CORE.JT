@@ -184,6 +184,9 @@ namespace UI.Controllers
             AMI("Týmy osob", url_users("j11"));
             AMI("Osoby v inspektorátech", url_users("a02"));
 
+            DIV_TRANS("Prostředí");
+            AMI("Dashboard boxy", url_users("x55"));
+
             DIV_TRANS("Provoz");
             AMI("PING Log", url_users("j92"));
             AMI("Kdo je právě online (+-2 minuty)", url_users("j92"));
@@ -259,7 +262,7 @@ namespace UI.Controllers
                 AMI("Články pro nástěnku", url_ciselniky("h11"));
                 AMI("Dny svátků", url_ciselniky("j26"));
                 AMI("AutoComplete položky", url_ciselniky("o15"));
-                AMI("Dashboard boxy", url_ciselniky("x55"));
+                
                 AMI("Uživatelská nápověda", url_ciselniky("x51"));
                 AMI("Aplikační překlad", url_ciselniky("x91"));
             }

@@ -108,11 +108,7 @@ namespace UI.Controllers
                 if (v.rec_pid > 0) c = Factory.b02WorkflowStatusBL.Load(v.rec_pid);
                 c.b02Name = v.Rec.b02Name;
                 c.b02Ident = v.Rec.b02Ident;
-                c.b01ID = v.b01ID;
-                if (v.Rec.b02Color == "#000000")
-                {
-                    v.Rec.b02Color = "";
-                }                
+                c.b01ID = v.b01ID;                        
                 c.b02Color = v.Rec.b02Color;
                 c.b02Order = v.Rec.b02Order;
                 c.b02IsDefaultStatus = v.Rec.b02IsDefaultStatus;

@@ -50,6 +50,7 @@ namespace BL
 
         public int Save(BO.x55Widget rec, List<int> j04ids)
         {
+            
             if (ValidateBeforeSave(rec) == false)
             {
                 return 0;
@@ -67,6 +68,11 @@ namespace BL
             p.AddEnumInt("x55TypeFlag", rec.x55TypeFlag);
             p.AddString("x55Image", rec.x55Image);
             p.AddString("x55Description", rec.x55Description);
+            p.AddNonBlackColorString("x55BoxBackColor", rec.x55BoxBackColor);
+            p.AddNonBlackColorString("x55HeaderBackColor", rec.x55HeaderBackColor);
+            p.AddNonBlackColorString("x55HeaderForeColor", rec.x55HeaderForeColor);
+            
+            p.AddInt("x55BoxMaxHeight", rec.x55BoxMaxHeight);
             int intPID = _db.SaveRecord("x55Widget", p.getDynamicDapperPars(), rec);
             if (intPID > 0)
             {

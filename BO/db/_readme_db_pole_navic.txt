@@ -105,3 +105,4 @@ x51HelpCore
 x91Translate
 x55Widget
 x56WidgetBinding
+x57WidgetRestriction

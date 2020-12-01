@@ -57,7 +57,7 @@ namespace BL
             p.AddInt("b01ID", rec.b01ID,true);
             p.AddString("b02Name", rec.b02Name);
             p.AddString("b02Ident", rec.b02Ident);
-            p.AddString("b02Color", rec.b02Color);
+            p.AddNonBlackColorString("b02Color", rec.b02Color);
             p.AddString("b02Message4UIFT", rec.b02Message4UIFT);
             p.AddInt("b02Order", rec.b02Order);
             p.AddInt("b02TimeOut_Total", rec.b02TimeOut_Total);

@@ -55,6 +55,10 @@ namespace UI.Controllers
                 c.x55Ordinal = v.Rec.x55Ordinal;
                 c.x55Image = v.Rec.x55Image;
                 c.x55Description = v.Rec.x55Description;
+                c.x55BoxBackColor = v.Rec.x55BoxBackColor;
+                c.x55HeaderForeColor = v.Rec.x55HeaderForeColor;
+                c.x55HeaderBackColor = v.Rec.x55HeaderBackColor;
+                c.x55BoxMaxHeight = v.Rec.x55BoxMaxHeight;
 
                 c.ValidUntil = v.Toolbar.GetValidUntil(c);
                 c.ValidFrom = v.Toolbar.GetValidFrom(c);

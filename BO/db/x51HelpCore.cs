@@ -12,5 +12,6 @@ namespace BO
         public string x51ExternalUrl { get; set; }
         public string x51Html { get; set; }
         public string x51PlainText { get; set; }
+        public string x51NearUrls { get; set; }
     }
 }

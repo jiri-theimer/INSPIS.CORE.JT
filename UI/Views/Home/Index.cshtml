@@ -29,8 +29,7 @@
     div.portlet-header {
         padding: 0.2em 0.3em;
         margin-bottom: 0.5em;
-        position: relative;
-        background-color: #E8E8E8;
+        position: relative;        
         cursor: move;
     }
 
@@ -43,7 +42,7 @@
 
     div.portlet-content {
         padding: 0.4em;
-        max-height: 400px;
+        max-height:400px;
         overflow: auto;
     }
 
@@ -107,20 +106,18 @@
 
 
 
-
-
 @if (Model.lisUserWidgets != null && Model.lisUserWidgets.Count() > 0)
 {
     <div class="form-row" style="margin:0px;border: dotted 1px #F5F5F5;">
-        <div class="column @Model.BoxColCss" id="col1">
+        <div class="column @Model.BoxColCss"  id="col1">
             @foreach (var c in Model.DockStructure.Col1)
             {
 
                 <div id="box_@(c.pid)" class="portlet">
-                    <div class="portlet-header" title="Přetáhněte box myší">
+                    <div class="portlet-header" @Html.Raw(c.CssHeaderDiv)>
                         <img src="~/images/cursor_mouse_drag.png" /> @Model.FormatSnippetHeader(c, Model.DateToday)<a class="float-right btn btn-sm btn-light py-0 px-1" title="@_f.tra("Zavřít")" href="javascript:handle_after_close_snippet(@c.pid)">x</a>
                     </div>
-                    <div class="portlet-content">
+                    <div class="portlet-content" @Html.Raw(c.CssContentDiv)>
                         @Html.Raw(c.x55Content)
 
                     </div>
@@ -135,10 +132,10 @@
                 @foreach (var c in Model.DockStructure.Col2)
                 {
                     <div id="box_@(c.pid)" class="portlet">
-                        <div class="portlet-header" title="Přetáhněte box myší">
+                        <div class="portlet-header" @Html.Raw(c.CssHeaderDiv)>
                             <img src="~/images/cursor_mouse_drag.png" /> @Model.FormatSnippetHeader(c, Model.DateToday)<a class="float-right btn btn-sm btn-light py-0 px-1" title="@_f.tra("Zavřít")" href="javascript:handle_after_close_snippet(@c.pid)">x</a>
                         </div>
-                        <div class="portlet-content">
+                        <div class="portlet-content" @Html.Raw(c.CssContentDiv)>
                             @Html.Raw(c.x55Content)
                         </div>
                     </div>
@@ -153,10 +150,11 @@
                 @foreach (var c in Model.DockStructure.Col3)
                 {
                     <div id="box_@(c.pid)" class="portlet">
-                        <div class="portlet-header" title="Přetáhněte box myší">
+                        <div class="portlet-header" @Html.Raw(c.CssHeaderDiv)>
                             <img src="~/images/cursor_mouse_drag.png" /> @Model.FormatSnippetHeader(c, Model.DateToday)<a class="float-right btn btn-sm btn-light py-0 px-1" title="@_f.tra("Zavřít")" href="javascript:handle_after_close_snippet(@c.pid)">x</a>
+                            
                         </div>
-                        <div class="portlet-content">
+                        <div class="portlet-content" @Html.Raw(c.CssContentDiv)>
                             @Html.Raw(c.x55Content)
                         </div>
                     </div>
@@ -210,7 +208,11 @@ else
         });
 
 
-
+        if (_device.type == "Phone") {
+            $("#ColumnsPerPage").css("display", "none");
+            $("#rp1_menu").css("columns", "1");
+            $("#rp1_menu").css("width", _device.availWidth);
+        }
 
     });
 

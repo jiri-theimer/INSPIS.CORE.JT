@@ -62,7 +62,13 @@ namespace UI.Controllers
                         v.lisNear = v.lisNear.OrderBy(p => p.x51Name);
                         break;
                     default:
-                        v.lisNear = v.lisNear.Where(p => p.x51ViewUrl.ToUpper().StartsWith(strNear.ToUpper())).OrderBy(p => p.x51ViewUrl);
+                        //v.lisNear = v.lisNear.Where(p => p.x51ViewUrl.ToUpper().StartsWith(strNear.ToUpper())).OrderBy(p => p.x51ViewUrl);
+                        var hodnoty = new List<string>() { strNear };
+                        if (v.Rec !=null && v.Rec.x51NearUrls != null)
+                        {
+                            hodnoty.InsertRange(1,BO.BAS.ConvertString2List(v.Rec.x51NearUrls, ","));
+                        }
+                        v.lisNear = v.lisNear.Where(p => hodnoty.Contains(p.x51ViewUrl));
                         break;
                 }
 
@@ -119,6 +125,7 @@ namespace UI.Controllers
                 c.x51ExternalUrl = v.Rec.x51ExternalUrl;
                 c.x51ViewUrl = v.Rec.x51ViewUrl;
                 c.x51Html = v.HtmlContent;
+                c.x51NearUrls = v.Rec.x51NearUrls;
                 c.ValidUntil = v.Toolbar.GetValidUntil(c);
                 c.ValidFrom = v.Toolbar.GetValidFrom(c);
 
