@@ -13,44 +13,77 @@
 
         <div class="form-row">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
-            <div class="col-sm-11 col-md-10">
+            <div class="col-sm-8 col-md-7">
                 <input class="form-control" asp-for="Rec.x55Name" />
 
             </div>
-
-        </div>
-        <hr />
-        <div class="form-row my-2">
-            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Index pořadí"):</label>
+            <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Index pořadí"):</label>
             <div class="col-sm-1 col-md-1">
                 <mynumber asp-for="Rec.x55Ordinal" decimal-digits="0"></mynumber>
             </div>
-
         </div>
+        
+       
         <div class="form-row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kód"):</label>
             <div class="col-sm-5 col-md-4">
                 <input class="form-control" asp-for="Rec.x55Code" />
 
             </div>
-        </div>
-        <div class="form-row my-2">
-            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Ikona"):</label>
+            <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Ikona"):</label>
             <div class="col-sm-5 col-md-4">
                 <input class="form-control" asp-for="Rec.x55Image" />
 
             </div>
         </div>
+       
 
-        <div class="form-row my-2">
-            <textarea asp-for="Rec.x55Sql" class="form-control" placeholder="@_f.tra("Zdrojový sql")"></textarea>
+        <div class="card p-0">
+            <div class="card-header">
+                @_f.tra("Tabulka")
+            </div>
+            <div class="card-body">
+                <div class="form-row">
+                    <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Nadpisy sloupců"):</label>
+                    <div class="col-sm-11 col-md-11">
+                        <input class="form-control" asp-for="Rec.x55TableColHeaders" />
 
+                    </div>
+                </div>
+                <div class="form-row my-2">
+                    <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Typy sloupců"):</label>
+                    <div class="col-sm-11 col-md-11">
+                        <input class="form-control" asp-for="Rec.x55TableColTypes" />
+
+                    </div>
+                </div>
+                <div class="form-row my-2">
+                    <textarea asp-for="Rec.x55TableSql" class="form-control" placeholder="@_f.tra("Zdrojový sql")"></textarea>
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="card p-0">
+            <div class="card-header">
+                @_f.tra("Box dostupný pro role")
+            </div>
+            <div class="card-body">
+                <mycombochecklist asp-for="@Model.j04IDs" entity="j04UserRole" selectedtext="@Model.j04Names" placeholder="@_f.tra("Vybrat aplikační role")..."></mycombochecklist>
+                <i>Pokud není vyplněno, dostupné všem uživatelům.</i>
+            </div>
         </div>
 
         <div class="form-row my-2">
-            <textarea asp-for="Rec.x55Content" class="form-control" placeholder="@_f.tra("Obsah")"></textarea>
+            <textarea asp-for="Rec.x55Content" class="form-control" placeholder="HTML static"></textarea>
 
         </div>
+        <div class="form-row my-2">
+            <textarea asp-for="Rec.x55Description" class="form-control" placeholder="@_f.tra("Poznámka")"></textarea>
 
+        </div>
     </div>
 

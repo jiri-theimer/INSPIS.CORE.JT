@@ -356,7 +356,10 @@ namespace UI.Controllers
             
             var mq = new BO.myQuery(gridState.j72Entity);
             mq.MyRecordsDisponible = true;mq.CurrentUser = Factory.CurrentUser;  //pouze záznamy odpovídající oprávnění uživatele
-            
+            if (Factory.CurrentUser.TestPermission(j05PermValuEnum.AdminGlobal))
+            {
+                mq.MyRecordsDisponible = false; //kvůli gridům v administraci číselníků
+            }
             if (mq.Prefix == "a01")
             {
                 mq.a01IsTemporary = false;  //v gridu zákaz zobrazovat TEMP akce

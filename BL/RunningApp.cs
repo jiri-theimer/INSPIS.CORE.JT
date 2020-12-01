@@ -12,7 +12,7 @@ namespace BL
         public string TempFolder { get; set; }
         public string LogFolder { get; set; }
         public string ReportFolder { get; set; }
-
+        public string AppRootFolder { get; set; }
         public string AppName { get; set; }
         public string AppVersion { get; set; }
         public string AppBuild { get; set; }

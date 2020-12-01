@@ -9,8 +9,8 @@ namespace DL
         public static string ParseMergeSQL(string strSQL,string strPidValue,string par1=null,string par2 = null)
         {
             strSQL = strSQL.Replace("#pid#", strPidValue, StringComparison.OrdinalIgnoreCase);
-            strSQL = strSQL.Replace("[%pid%]", "", StringComparison.OrdinalIgnoreCase);
-            strSQL = strSQL.Replace("@pid", "", StringComparison.OrdinalIgnoreCase);
+            strSQL = strSQL.Replace("[%pid%]", strPidValue, StringComparison.OrdinalIgnoreCase);
+            strSQL = strSQL.Replace("@pid", strPidValue, StringComparison.OrdinalIgnoreCase);
             par1 = OcistitSQL(par1);
             par2 = OcistitSQL(par2);
             strSQL = strSQL.Replace("#par1#", par1, StringComparison.OrdinalIgnoreCase);

@@ -510,7 +510,7 @@
         }
         function handle_render_menu_error(response) {
             if (!response.responseText || 0 === response.responseText.length) {   //checking if a string is empty, null or undefined I use:
-                alert("@_f.tra("Pravděpodobně vypršel čas přihlášení do systému. Musíte se znovu přihlásit.")");
+                alert("@_f.tra("Z důvodu neaktivity pravděpodobně vypršel čas přihlášení v systému. Musíte se znovu přihlásit.")");
                 location.replace("/Login/UserLogin");
             }
         }

@@ -22,7 +22,12 @@ namespace UI.Controllers
                     return RecNotFound(v);
                 }
 
+                var mq = new BO.myQuery("j04") { x55id = v.rec_pid, explicit_orderby = "j04Name" };
+                v.j04IDs = string.Join(",", Factory.j04UserRoleBL.GetList(mq).Select(p => p.pid));
+                v.j04Names = string.Join(",", Factory.j04UserRoleBL.GetList(mq).Select(p => p.j04Name));
             }
+            
+
             v.Toolbar = new MyToolbarViewModel(v.Rec);
             if (isclone)
             {
@@ -43,15 +48,20 @@ namespace UI.Controllers
                 c.x55Code = v.Rec.x55Code;
                 c.x55IsSystem = v.Rec.x55IsSystem;
                 c.x55TypeFlag = v.Rec.x55TypeFlag;
-                c.x55Sql = v.Rec.x55Sql;
+                c.x55TableSql = v.Rec.x55TableSql;
+                c.x55TableColHeaders = v.Rec.x55TableColHeaders;
+                c.x55TableColTypes = v.Rec.x55TableColTypes;
                 c.x55Content = v.Rec.x55Content;
                 c.x55Ordinal = v.Rec.x55Ordinal;
                 c.x55Image = v.Rec.x55Image;
+                c.x55Description = v.Rec.x55Description;
 
                 c.ValidUntil = v.Toolbar.GetValidUntil(c);
                 c.ValidFrom = v.Toolbar.GetValidFrom(c);
 
-                c.pid = Factory.x55WidgetBL.Save(c);
+                List<int> j04ids = BO.BAS.ConvertString2ListInt(v.j04IDs);
+
+                c.pid = Factory.x55WidgetBL.Save(c,j04ids);
                 if (c.pid > 0)
                 {
 

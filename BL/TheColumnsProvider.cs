@@ -716,6 +716,7 @@ namespace BL
             //x55 = dashboard box
             AF("x55Widget", "x55Name", "Dashboard box", 1, null, "string", false, true);
             AF("x55Widget", "x55Code", "Kód");
+            AF("x55Widget", "x55Description", "Poznámka",1);
             AF("x55Widget", "x55IsSystem", "Systémový", 2, null, "bool");
             AF("x55Widget", "x55Ordinal", "#", 2, null, "num0");
             AppendTimestamp("x55Widget");

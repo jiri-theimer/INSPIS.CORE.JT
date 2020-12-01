@@ -21,13 +21,17 @@ namespace UI
 {
     public class Startup
     {
-        public Startup(IWebHostEnvironment env)
+        private readonly IWebHostEnvironment _hostingEnvironment;
+        public Startup(IWebHostEnvironment env, IWebHostEnvironment hostingEnvironment)
         {
             Configuration = new ConfigurationBuilder()
                  .SetBasePath(env.ContentRootPath)
                  .AddJsonFile("appsettings.json", false, true)
                  .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true)
                  .Build();
+
+
+            _hostingEnvironment = hostingEnvironment;
         }
 
         public IConfiguration Configuration { get; }
@@ -107,6 +111,8 @@ namespace UI
                 ReportFolder = Configuration.GetSection("Folders")["Report"]
                 ,
                 LogFolder = strLogFolder
+                ,
+                AppRootFolder= _hostingEnvironment.ContentRootPath
                 ,
                 TranslatorMode = Configuration.GetSection("App")["TranslatorMode"]
                 ,

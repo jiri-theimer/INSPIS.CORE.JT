@@ -21,12 +21,12 @@
         float: left;
     }
 
-    .portlet {
+    div.portlet {
         margin: 0 1em 1em 0;
         padding: 0.3em;
     }
 
-    .portlet-header {
+    div.portlet-header {
         padding: 0.2em 0.3em;
         margin-bottom: 0.5em;
         position: relative;
@@ -41,7 +41,7 @@
         margin-top: -8px;
     }
 
-    .portlet-content {
+    div.portlet-content {
         padding: 0.4em;
         max-height: 400px;
         overflow: auto;
@@ -57,9 +57,12 @@
 <script src="/lib/jquery-ui/jquery-ui.min_sortable.js"></script>
 
 <div class="jumbotron py-4">
-    <h4>Vítej, uživateli [<a href="/Home/MyProfile">@(User.Identity.Name)</a>]!</h4>
+
 
     <div class="row">
+        <div class="col-auto">
+            <h4>Vítej, uživateli [<a href="/Home/MyProfile">@(User.Identity.Name)</a>]!</h4>
+        </div>
         <div class="dropdown col-auto">
 
             <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownSnippetLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -68,29 +71,32 @@
 
             <div class="dropdown-menu" aria-labelledby="dropdownSnippetLink">
                 <ul id="rp1_menu" style="list-style:none;columns:3;width:1000px;">
+
                     @foreach (var c in Model.lisAllWidgets)
                     {
-                    <li class="nav-item">
-                        @if (Model.lisUserWidgets.Where(p => p.pid == c.pid).Count() > 0)
-                        {
-                            <span style="color:silver;">@c.x55Name</span>
-                        }
-                        else
-                        {
-                            <a class="nav-link" href="javascript:handle_insert_snippet(@c.pid)">@c.x55Name</a>
-                        }
+                        <li class="nav-item p-2">
+                            @if (Model.lisUserWidgets.Where(p => p.pid == c.pid).Count() > 0)
+                            {
+                                <span style="color:silver;">@c.x55Name</span>
+                            }
+                            else
+                            {
+                                <a href="javascript:handle_insert_snippet(@c.pid)">@c.x55Name</a>
+                            }
 
 
-                    </li>
+                        </li>
                     }
-                   
+
+
+
                 </ul>
 
 
             </div>
         </div>
         <div class="col-auto">
-            <select asp-for="@Model.ColumnsPerPage" class="form-control" onchange="handle_pocet_sloupcu(this)">
+            <select asp-for="@Model.ColumnsPerPage" class="form-control" onchange="handle_pocet_sloupcu(this)" title="@_f.tra("Počet sloupců na ploše")">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -103,7 +109,7 @@
 
 
 
-@if (Model.lisUserWidgets.Count()>0)
+@if (Model.lisUserWidgets != null && Model.lisUserWidgets.Count() > 0)
 {
     <div class="form-row" style="margin:0px;border: dotted 1px #F5F5F5;">
         <div class="column @Model.BoxColCss" id="col1">
@@ -112,15 +118,15 @@
 
                 <div id="box_@(c.pid)" class="portlet">
                     <div class="portlet-header" title="Přetáhněte box myší">
-                        <img src="~/images/cursor_mouse_drag.png" /> @Model.FormatSnippetHeader(c, Model.DateToday)<a class="float-right btn btn-sm btn-light p-1" href="javascript:handle_after_close_snippet(@c.pid)">x</a>
-
-                        <div class="portlet-content" style="overflow: auto;">
-                            @Html.Raw(c.x55Content)
-
-                        </div>
+                        <img src="~/images/cursor_mouse_drag.png" /> @Model.FormatSnippetHeader(c, Model.DateToday)<a class="float-right btn btn-sm btn-light py-0 px-1" title="@_f.tra("Zavřít")" href="javascript:handle_after_close_snippet(@c.pid)">x</a>
                     </div>
+                    <div class="portlet-content">
+                        @Html.Raw(c.x55Content)
 
+                    </div>
                 </div>
+
+
             }
         </div>
         @if (Model.ColumnsPerPage > 1)
@@ -130,14 +136,14 @@
                 {
                     <div id="box_@(c.pid)" class="portlet">
                         <div class="portlet-header" title="Přetáhněte box myší">
-                            <img src="~/images/cursor_mouse_drag.png" /> @Model.FormatSnippetHeader(c, Model.DateToday)<a class="float-right btn btn-sm btn-light p-1" href="javascript:handle_after_close_snippet(@c.pid)">x</a>
-
-                            <div class="portlet-content" style="overflow: auto;">
-                                @Html.Raw(c.x55Content)
-                            </div>
+                            <img src="~/images/cursor_mouse_drag.png" /> @Model.FormatSnippetHeader(c, Model.DateToday)<a class="float-right btn btn-sm btn-light py-0 px-1" title="@_f.tra("Zavřít")" href="javascript:handle_after_close_snippet(@c.pid)">x</a>
                         </div>
-
+                        <div class="portlet-content">
+                            @Html.Raw(c.x55Content)
+                        </div>
                     </div>
+
+
                 }
             </div>
         }
@@ -148,14 +154,14 @@
                 {
                     <div id="box_@(c.pid)" class="portlet">
                         <div class="portlet-header" title="Přetáhněte box myší">
-                            <img src="~/images/cursor_mouse_drag.png" /> @Model.FormatSnippetHeader(c, Model.DateToday)<a class="float-right btn btn-sm btn-light p-1" href="javascript:handle_after_close_snippet(@c.pid)">x</a>
-
-                            <div class="portlet-content" style="overflow: auto;">
-                                @Html.Raw(c.x55Content)
-                            </div>
+                            <img src="~/images/cursor_mouse_drag.png" /> @Model.FormatSnippetHeader(c, Model.DateToday)<a class="float-right btn btn-sm btn-light py-0 px-1" title="@_f.tra("Zavřít")" href="javascript:handle_after_close_snippet(@c.pid)">x</a>
                         </div>
-
+                        <div class="portlet-content">
+                            @Html.Raw(c.x55Content)
+                        </div>
                     </div>
+
+
                 }
             </div>
         }
@@ -238,7 +244,7 @@ else
     }
 
     function handle_after_close_snippet(x55id) {
-
+        _notify_message("Loading...", "info");
         $.post("/Home/RemoveWidget", { x55id: x55id }, function (data) {
             location.replace("/Home/Index");
 
@@ -254,7 +260,7 @@ else
         });
     }
     function handle_pocet_sloupcu(cbx) {
-        
+
         $.post("/Home/SavePocetSloupcu", { x: cbx.value }, function (data) {
             location.replace("/Home/Index");
 

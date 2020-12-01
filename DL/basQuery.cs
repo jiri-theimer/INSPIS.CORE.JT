@@ -180,6 +180,10 @@ namespace DL
                     
                     AQ(ref lis, GetDisponibleA01Where(mq), null,null);
                 }
+                if (mq.Prefix == "x55")
+                {
+                    AQ(ref lis, "(a.x55ID IN (SELECT x55ID FROM x57WidgetRestriction WHERE j04ID=@j04id_me) OR a.x55ID NOT IN (SELECT x55ID FROM x57WidgetRestriction))", "j04id_me", mq.CurrentUser.j04ID);
+                }
             }
             if (mq.pids != null && mq.pids.Any())
             {
@@ -521,6 +525,10 @@ namespace DL
                 if (mq.Prefix == "j04") AQ(ref lis, "a.j04ID IN (select j04ID FROM x37ReportRestriction_UserRole WHERE x31ID=@x31id)", "x31id", mq.x31id);
                 if (mq.Prefix == "a10") AQ(ref lis, "a.a10ID IN (select a10ID FROM a23EventType_Report WHERE x31ID=@x31id)", "x31id", mq.x31id);
                 if (mq.Prefix == "a08") AQ(ref lis, "a.a08ID IN (select a08ID FROM a27EventTheme_Report WHERE x31ID=@x31id)", "x31id", mq.x31id);
+            }
+            if (mq.x55id > 0)
+            {
+                if (mq.Prefix == "j04") AQ(ref lis, "a.j04ID IN (select j04ID FROM x57WidgetRestriction WHERE x55ID=@x55id)", "x55id", mq.x55id);
             }
             if (mq.Prefix == "x29")
             {

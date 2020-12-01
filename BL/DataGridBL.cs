@@ -11,7 +11,8 @@ namespace BL
     {
         public DataTable GetList(BO.myQuery mq, bool bolGetTotalsRow = false);
         public DataTable GetList4MailMerge(string prefix, int pid);
-        public DataTable GetList4MailMerge(int pid, string individual_sql_source);        
+        public DataTable GetList4MailMerge(int pid, string individual_sql_source);
+        public DataTable GetListFromPureSql(string sql);
     }
     class DataGridBL:BaseBL,IDataGridBL
     {
@@ -85,6 +86,11 @@ namespace BL
             return _db.GetDataTable(sb.ToString());           
         }
       
+        public DataTable GetListFromPureSql(string sql)
+        {
+            sql = DL.BAS.OcistitSQL(sql);            
+            return _db.GetDataTable(sql);
+        }
         public DataTable GetList(BO.myQuery mq,bool bolGetTotalsRow=false)
         {            
             var sb = new System.Text.StringBuilder();
@@ -93,7 +99,7 @@ namespace BL
             {
                 sb.Append("TOP "+mq.TopRecordsOnly.ToString()+" ");
             }
-           
+          
             if (mq.explicit_columns == null || mq.explicit_columns.Count()==0)
             {
                 

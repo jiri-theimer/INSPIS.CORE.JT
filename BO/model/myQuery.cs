@@ -125,6 +125,7 @@ namespace BO
         public int a08id { get; set; }
         public int o13id { get; set; }
         public int x31id { get; set; }
+        public int x55id { get; set; }
         public int x29id { get; set; }
         public int recpid { get; set; }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -57,13 +58,47 @@ namespace UI
             return new BO.Result(true, "widget not found");
         }
 
+        public void InhaleWidgetsDataContent(HomeViewModel v)
+        {
+            foreach(var rec in v.lisUserWidgets)
+            {
+                if (rec.x55TableSql != null && rec.x55TableColHeaders !=null)
+                {
+                    string s = rec.x55TableSql;
+                    s = DL.BAS.ParseMergeSQL(s, _f.CurrentUser.j02ID.ToString());
+                    var dt = _f.gridBL.GetListFromPureSql(s);
+                    var cGen = new BO.CLS.Datatable2Html(new BO.CLS.Datatable2HtmlDef() { ColHeaders = rec.x55TableColHeaders, ColTypes = rec.x55TableColTypes });
+                    rec.x55Content = cGen.CreateHtmlTable(dt,500);
+                }
+                else
+                {
+                    switch (rec.x55Code.ToLower())
+                    {
+                        case "pandulak":                           
+                            var pandulak = new ThePandulak(_f.App.AppRootFolder+"\\wwwroot\\images\\pandulak");
+                            rec.x55Content = string.Format("<img src='/images/pandulak/{0}'/>", pandulak.getPandulakImage(1));
+                            if (v.ColumnsPerPage <= 2)
+                            {
+                                rec.x55Content += string.Format("<img src='/images/pandulak/{0}'/>", pandulak.getPandulakImage(2));
+                            }                            
+                            break;
+                    }
+                }
+                
+            }
+        }
         public void PrepareWidgets(HomeViewModel v)
         {
-            v.ColumnsPerPage = _f.CBL.LoadUserParamInt("Widgets-ColumnsPerPage", 2);
-            v.recX56 = _f.x55WidgetBL.LoadState(_f.CurrentUser.pid);
-
-            v.lisAllWidgets = _f.x55WidgetBL.GetList(new BO.myQuery("x55") { IsRecordValid = true });
+            v.lisAllWidgets = _f.x55WidgetBL.GetList(new BO.myQuery("x55") { IsRecordValid = true, MyRecordsDisponible = true, CurrentUser = _f.CurrentUser });
             v.lisUserWidgets = new List<BO.x55Widget>();
+            v.ColumnsPerPage = _f.CBL.LoadUserParamInt("Widgets-ColumnsPerPage", 2);
+
+            v.recX56 = _f.x55WidgetBL.LoadState(_f.CurrentUser.pid);
+            if (v.recX56==null || v.recX56.x56Boxes == null)
+            {
+                return; //uživatel nemá na ploše žádný widget, dál není třeba pokračovat
+            }                        
+            
             var boxes = BO.BAS.ConvertString2List(v.recX56.x56Boxes);
             foreach (string s in boxes)
             {
@@ -72,7 +107,7 @@ namespace UI
                     v.lisUserWidgets.Add(v.lisAllWidgets.Where(p => p.x55Code == s).First());
                 }
             }
-
+            
 
             v.DockStructure = new WidgetsEnvironment(v.recX56.x56DockState);
             foreach (var onestate in v.DockStructure.States)

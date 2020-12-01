@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 
 namespace UI
 {
-    public class Sql2HtmlTableDef
+    public class Datatable2HtmlDef
     {
         public string ColHeaders { get; set; }
-        public string ColTypes { get; set; }    //bool|num0|num|date|datetime|string
+        public string ColTypes { get; set; }    //bool|num0|num|date|datetime|string        
     }
-    public class Sql2HtmlTable
+    public class Datatable2Html
     {
-        private Sql2HtmlTableDef _def;
+        private Datatable2HtmlDef _def;
         private System.Text.StringBuilder _sb;
         private List<string> _headers;
         private List<string> _types;
-        public Sql2HtmlTable(Sql2HtmlTableDef def)
+        public Datatable2Html(Datatable2HtmlDef def)
         {
             _def = def;
             _sb = new System.Text.StringBuilder();
@@ -29,7 +29,7 @@ namespace UI
 
         }
 
-        public string DataTable2String(System.Data.DataTable dt)
+        public string CreateHtmlTable(System.Data.DataTable dt)
         {
             sb("<table class='table table-sm table-hover'>");
             handle_headers();
@@ -73,6 +73,9 @@ namespace UI
                     {
                         switch (_types[i].ToLower())
                         {
+                            case "rcm":
+                                strVal= string.Format("<a class='btn btn-sm py-0 px-1 rcm2' onclick=\"RCM2(event,this,'{0}_record',{1},'{2}')\">&#9776;</a>", dbRow["prefix"], dbRow["pid"], dbRow["prefix"]);
+                                break;
                             case "b":
                                 if (Convert.ToBoolean(dbRow[i]) == true)
                                 {

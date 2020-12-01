@@ -71,7 +71,7 @@ namespace UI.Controllers
             {
                 v.NearListFlag = 1;   //pokud se necílí konkrétní url, pak automaticky rejstřík
                 v.lisNear = Factory.x51HelpCoreBL.GetList(new BO.myQuery("x51") { IsRecordValid = true });
-                var pandulak = new ThePandulak(_hostingEnvironment);
+                var pandulak = new ThePandulak(_hostingEnvironment.WebRootPath);
                 v.HtmlContent = string.Format("<img src='/images/pandulak/{0}'/>", pandulak.getPandulakImage(1));
                 v.HtmlContent += string.Format("<img src='/images/pandulak/{0}'/>", pandulak.getPandulakImage(2));
                 //v.HtmlContent += string.Format("<hr><img src='/images/splash_help.png'/>", pandulak.getPandulakImage(2));
@@ -119,9 +119,10 @@ namespace UI.Controllers
                 c.x51ExternalUrl = v.Rec.x51ExternalUrl;
                 c.x51ViewUrl = v.Rec.x51ViewUrl;
                 c.x51Html = v.HtmlContent;
-
                 c.ValidUntil = v.Toolbar.GetValidUntil(c);
                 c.ValidFrom = v.Toolbar.GetValidFrom(c);
+
+                
 
                 c.pid = Factory.x51HelpCoreBL.Save(c);
                 if (c.pid > 0)

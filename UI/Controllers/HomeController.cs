@@ -10,8 +10,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Diagnostics;
 
-using Microsoft.AspNetCore.Hosting;
-using UI.Models.Dashboard;
 
 namespace UI.Controllers
 {
@@ -20,14 +18,13 @@ namespace UI.Controllers
 
     public class HomeController : BaseController
     {
-        private readonly IWebHostEnvironment _hostingEnvironment;
        
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger, IWebHostEnvironment hostingEnvironment)
+        public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            _hostingEnvironment = hostingEnvironment;
+            
         }
 
         public async Task<IActionResult> Logout()
@@ -121,31 +118,37 @@ namespace UI.Controllers
 
         public IActionResult Index()
         {
-            bool bolRedirect = false;
+            
             if (HttpContext.Request.Path.Value.Length <= 1)
             {
                 //úvodní spuštění: otestovat nastavení domovské stránky
                 if (Factory.CurrentUser.j03HomePageUrl != null)
                 {
-                    bolRedirect = true;
-                    Response.Redirect(Factory.CurrentUser.getHomePageUrl());
                     
+                    //Response.Redirect(Factory.CurrentUser.getHomePageUrl());
+                    return Redirect(Factory.CurrentUser.getHomePageUrl());
                 }
             }
+            
+
+           
             var v = new HomeViewModel();
-
-            if (bolRedirect)
-            {
-                return View(v);
-            }
-
             var cW = new UI.WidgetSupport(Factory);
             cW.PrepareWidgets(v);
+            if (v.recX56.x56Boxes != null)
+            {
+                cW.InhaleWidgetsDataContent(v);
+            }
+            else
+            {
+                var pandulak = new ThePandulak(Factory.App.AppRootFolder + "\\wwwroot\\images\\pandulak");
+                v.Pandulak1 = pandulak.getPandulakImage(1);
+                v.Pandulak2 = pandulak.getPandulakImage(2);
+            }
+            
 
-
-            var pandulak = new ThePandulak(_hostingEnvironment);
-            v.Pandulak1 = pandulak.getPandulakImage(1);
-            v.Pandulak2 = pandulak.getPandulakImage(2);
+           
+            
 
             return View(v);
 

@@ -19,7 +19,10 @@ namespace BO
         public string x55Code { get; set; }
         public int x55Ordinal { get; set; }
         public string x55Content { get; set; }
-        public string x55Sql { get; set; }
+        public string x55Description { get; set; }
+        public string x55TableSql { get; set; }
+        public string x55TableColHeaders { get; set; }
+        public string x55TableColTypes { get; set; }
         public string x55Image { get; set; }
 
     }
