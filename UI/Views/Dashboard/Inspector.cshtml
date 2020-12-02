@@ -8,162 +8,69 @@
 
 @addTagHelper *, UI
 
-<div class="form-row">
-    <div class="col-auto">
-        <button id="cmdToggleH11" type="button" class="btn btn-light dropdown-toggle">
-            <img src="/Images/textmemo.png" />
-            @_f.tra("Nástěnka")
-            <span style="margin-left:10px;" class="badge badge-primary">@Model.lisH11.Count()</span>
-        </button>
+<div id="divHeader" class="row py-1 bg-light m-0 mb-4">
+    <div class="col-auto pl-0 pr-0">
+        <ul class="nav nav-tabs nonmobile nontablet" style="border:none;">
+            <li class="nav-item onetab">
+                <a class="nav-link active" data-toggle="tab">@Model.Rec.FullNameAsc</a>
+            </li>
+        </ul>
+
+
     </div>
-    <div class="col-auto">
-        <button id="cmdToggleH04" type="button" class="btn btn-light dropdown-toggle">
-            <img src="/Images/task.png" />
-            @_f.tra("Jsem řešitel otevřených úkolů")
-            <span style="margin-left:10px;" class="badge badge-primary">@Model.lisH04.Count()</span>
-        </button>
+    <div class="nonmobile nontablet">
+        <a class="btn btn-light" href="/Dashboard/Inspector" title="@_f.tra("Občerstvit")"><img src="~/images/refresh.png" /></a>
     </div>
-    <div class="col-auto">
-        <h4 class="nonmobile">@ViewData["Title"]</h4>
-    </div>
-
-</div>
-<div id="divToggleH11" style="display:none;overflow:auto;max-height:50%;">
-    <strong>@_f.tra("Články na nástěnce"):</strong>
-    <table class="table table-sm table-hover" style="min-width:800px;">
-        @foreach (var c in Model.lisH11)
-        {
-            <tr>
-                <td>
-                    @BO.BAS.ObjectDateTime2String(c.DateInsert)
-                </td>
-                <td>
-                    @c.UserInsert
-                </td>
-                <td>
-                    <a href="javascript:h11_info(@c.pid)">@c.h11Name</a>
-
-                </td>
-
-            </tr>
-        }
-    </table>
-
-</div>
-
-<div id="divToggleH04" style="display:none;overflow:auto;max-height:50%;">
-    <strong>@_f.tra("Otevřené úkoly, které mám řešit"):</strong>
-    <table class="table table-sm table-hover">
-        @foreach (var c in Model.lisH04)
-        {
-        <tr>
-            <td>
-                <a href="/a01/RecPage?pid=@c.a01ID">@c.a01Signature</a>
-            </td>
-
-
-            <td>
-                @c.h07Name
-            </td>
-            <td>
-                @c.h05Name
-            </td>
-            <td>
-                <a href="javascript:h04_record(@c.pid)">@c.h04Name</a>
-
-            </td>
-            <td>
-                @BO.BAS.ObjectDateTime2String(c.h04Deadline)
-            </td>
-           
-            <td>
-                <small>
-                    @c.UserInsert
-                </small>
-            </td>
-            <td>
-                <small>
-                    <i>@BO.BAS.ObjectDateTime2String(c.DateInsert)</i>
-                </small>
-            </td>
-        </tr>
-        }
-    </table>
-
-</div>
-
-
-<div class="row py-3 bg-light m-0">
-
-    <div class="col-sm-4">
+    <div class="col-sm-5 col-md-5 pl-0">
         <mysearch asp-for="@Model.SearchBoxA01" entity="a01Event" placeholder="@_f.tra("Fulltext: Akce")..."></mysearch>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-5 col-md-5 pl-0">
         <mysearch asp-for="@Model.SearchBoxA03" entity="a03Institution" placeholder="@_f.tra("Fulltext: Instituce")..."></mysearch>
     </div>
-    <div class="col-sm-1"></div>
-    <div class="nonmobile nontablet" style="display:none;">
-        <a class="btn btn-secondary" href="/Dashboard/Inspector">@(_f.tra("Občerstvit"))</a>
-    </div>
-
-
-
-
 </div>
-<table>
-    <tr>
-        <td>
-            <select class="form-control" asp-for="@Model.GridMasterFilter">
-                <option value="">@_f.tra("Účastník akce")</option>
-                <option value="leader">@_f.tra("Vedoucí akce")</option>
-                <option value="member">@_f.tra("Člen akce")</option>
-                <option value="issuer">@_f.tra("Vlastník akce")</option>
-            </select>
-        </td>
-        <td>
-            @Html.EditorFor(m => m.PeriodFilter, "~/Views/Shared/_Period.cshtml")
-        </td>
-    </tr>
-</table>
+
+
+<div class="tabs_container">
+    <ul id="navtabs" class="nav nav-tabs">
+        @foreach (var tab in Model.NavTabs)
+        {
+            <li class="nav-item onetab">
+                <a class="@tab.CssClass" id="tab@(tab.Entity)" href="@tab.Url" target="fra_subgrid" onclick="tabclick(this)">
+                    @tab.Name
+                    @if (tab.Badge != null)
+                    {
+                        <span class="badge badge-primary">@tab.Badge</span>
+                    }
+                </a>
+            </li>
+        }
+    </ul>
+</div>
+
+<div id="divTabContent">
+    <iframe id="fra_subgrid" name="fra_subgrid" src="@Model.DefaultNavTabUrl" frameborder="0" scrolling="yes" style="width:100%;" onload="$('#divTabContent').css('background','none');"></iframe>
+</div>
 
 
 
-<vc:the-grid entity="a01Event" j72id="0" go2pid="0" master_entity="j02User" master_pid="@Model.pid" contextmenuflag="1" ondblclick="tg_dblclick" master_flag="@Model.GridMasterFilter" masterviewflag="3" addfilterid="dashboard" fixedcolumns=""></vc:the-grid>
+
 
 
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#GridMasterFilter").val("@Model.GridMasterFilter");
 
-        
-        $("#cmdToggleH11").click(function () {
-            $("#divToggleH11").slideToggle();
-        });
-        $("#cmdToggleH04").click(function () {
-            $("#divToggleH04").slideToggle();
-        });
+        var offset = $("#divTabContent").offset();
+        var h_vertical = _device.innerHeight - offset.top;
+        h_vertical = parseInt(h_vertical) + 10;
 
-        $("#GridMasterFilter").change(function () {
+        if (_device.type === "Phone") {
+            h_vertical = 400;
+        }
 
-            $.post("/Common/SetUserParam", { key: "DashboardInspector-masterflag", value: $(this).val() }, function (data) {
-                reload();
+        $("#divTabContent").css("height", h_vertical + "px");
 
-            });
-
-
-        });
-
-        $("#PeriodValue").on("change", function () {
-            $.post("/Common/SetUserParam", { key: "grid-period-value", value: $(this).val() }, function (data) {
-                reload();
-
-            });
-        });
-
-        $("#cmdRefreshPeriod").click(function () {
-            reload();
-        });
+        _mainmenu_highlight_current("cmdHome");
 
     });
 
@@ -173,11 +80,14 @@
         location.replace("/Dashboard/Inspector?masterflag=" + $("#GridMasterFilter").val());
     }
 
-    function h11_info(h11id) {
-        _window_open("/h11/Info?pid=" + h11id);
-    }
-    function h04_record(h04id) {
-        _window_open("/h04/Record?pid=" + h04id);
+
+    function tabclick(tab) {    //uložit aktuální záložku do profilu uživatele
+        $("#navtabs .nav-link").removeClass("active");
+        $(tab).addClass("active");
+        $.post("/Common/SetUserParam", { key: "dasboard-tab-inspector", value: tab.id.replace("tab", "") }, function (data) {
+
+
+        });
     }
 
     /*automaticky volaná událost z thegrid controlu*/

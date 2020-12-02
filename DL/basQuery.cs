@@ -173,7 +173,7 @@ namespace DL
                 }
                 if (mq.Prefix == "h11")
                 {
-                    AQ(ref lis, "a.h11IsPublic=1 OR a.h11ID IN (SELECT h11ID FROM h12NoticeBoard_Permission WHERE j04ID=@j04id_me)", "j04id_me", mq.CurrentUser.j04ID);
+                    AQ(ref lis, "(a.h11IsPublic=1 OR a.h11ID IN (SELECT h11ID FROM h12NoticeBoard_Permission WHERE j04ID=@j04id_me)) AND GETDATE() BETWEEN a.h11ValidFrom AND a.h11ValidUntil", "j04id_me", mq.CurrentUser.j04ID);
                 }
                 if (mq.Prefix == "a01" && !(mq.CurrentUser.j04IsAllowedAllEventTypes && mq.CurrentUser.j04RelationFlag == BO.j04RelationFlagEnum.NoRelation))
                 {
@@ -458,7 +458,15 @@ namespace DL
             }
             if (mq.j02id_member > 0)
             {
-                if (mq.Prefix == "a01") AQ(ref lis, "a.a01ID IN (select a01ID FROM a41PersonToEvent WHERE a45ID=2 AND j02ID=@j02id_member)", "j02id_member", mq.j02id_member);   //je člen akce
+                if (mq.Prefix == "a01") AQ(ref lis, "a.a01ID IN (select a01ID FROM a41PersonToEvent WHERE a45ID=1 AND j02ID=@j02id_member)", "j02id_member", mq.j02id_member);   //je člen akce
+            }
+            if (mq.j02id_invited > 0)
+            {
+                if (mq.Prefix == "a01") AQ(ref lis, "a.a01ID IN (select a01ID FROM a41PersonToEvent WHERE a45ID=6 AND j02ID=@j02id_invited)", "j02id_invited", mq.j02id_invited);   //je přizvaná osoba
+            }
+            if (mq.j02id_involved > 0)
+            {
+                if (mq.Prefix == "a01") AQ(ref lis, "a.a01ID IN (select a01ID FROM a41PersonToEvent WHERE j02ID=@j02id_involved)", "j02id_involved", mq.j02id_involved);   //je zapojen do akce
             }
             if (mq.j02id_issuer > 0)
             {

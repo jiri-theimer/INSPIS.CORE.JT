@@ -28,8 +28,10 @@ namespace UI.Controllers
             {
                 masterflag = Factory.CBL.LoadUserParam("DashboardInspector-masterflag", "");
             }
-            var v = new DashboardInspector() { pid = Factory.CurrentUser.j02ID, GridMasterFilter = masterflag };   //leader/member/issuer
+            var v = new DashboardInspector() { pid = Factory.CurrentUser.j02ID, NavTabs = new List<NavTab>(), GridMasterFilter = masterflag };   //leader/member/issuer
             v.Rec = Factory.j02PersonBL.Load(v.pid);
+
+            RefreshNavTabsInspector(v);
 
             v.PeriodFilter = new PeriodViewModel();
             v.PeriodFilter.IsShowButtonRefresh = true;
@@ -47,6 +49,53 @@ namespace UI.Controllers
         }
 
 
+        private void RefreshNavTabsInspector(DashboardInspector v)
+        {
+            var c = Factory.j02PersonBL.LoadSummary(v.pid,"dashboard");
+            v.NavTabs.Add(AddTab(Factory.tra("Dashboard"), "a01Event", "/Dashboard/Widgets"));
+            v.NavTabs.Add(AddTab(Factory.tra("Můj kapacitní plán"), "a01Event", "/j02/TabGantt?pid="+Factory.CurrentUser.j02ID.ToString()));
+            string strBadge = null;
+            if (c.a01_count_involved > 0) strBadge = c.a01_count_involved.ToString();
+            v.NavTabs.Add(AddTab(Factory.tra("Jsem zapojen"), "a01Event", "/TheGrid/SlaveView?prefix=a01&master_flag=involved", false, strBadge));
+            strBadge = null;
+            if (c.a01_count_leader > 0) strBadge = c.a01_count_leader.ToString();
+            v.NavTabs.Add(AddTab(Factory.tra("Vedoucí"),"a01Event", "/TheGrid/SlaveView?prefix=a01&master_flag=leader", false, strBadge));
+            strBadge = null;
+            if (c.a01_count_member > 0) strBadge = c.a01_count_member.ToString();
+            v.NavTabs.Add(AddTab(Factory.tra("Člen"), "a01Event", "/TheGrid/SlaveView?prefix=a01&master_flag=member", false, strBadge));
+            strBadge = null;
+            if (c.a01_count_invited > 0) strBadge = c.a01_count_invited.ToString();
+            v.NavTabs.Add(AddTab(Factory.tra("Přizvaná osoba"), "a01Event", "/TheGrid/SlaveView?prefix=a01&master_flag=invited", false, strBadge));
+            strBadge = null;
+            if (c.a01_count_issuer > 0) strBadge = c.a01_count_issuer.ToString();
+            v.NavTabs.Add(AddTab(Factory.tra("Zakladatel"), "a01Event", "/TheGrid/SlaveView?prefix=a01&master_flag=issuer", false, strBadge));
+
+
+            strBadge = null;            
+            if (c.h04_count > 0) strBadge = c.h04_count.ToString();
+            v.NavTabs.Add(AddTab("Úkoly/Lhůty", "h04ToDo", "/TheGrid/SlaveView?prefix=h04", true, strBadge));
+            strBadge = null;
+            if (c.h11_count > 0) strBadge = c.h11_count.ToString();
+            v.NavTabs.Add(AddTab("Nástěnka", "h11NoticeBoard", "/TheGrid/SlaveView?prefix=h11", true, strBadge));
+
+            v.NavTabs.Add(AddTab("Inbox", "x40MailQueue", "/TheGrid/SlaveView?prefix=x40"));
+           
+
+
+            string strDefTab = Factory.CBL.LoadUserParam("dasboard-tab-inspector");
+            var deftab = v.NavTabs[0];
+
+            foreach (var tab in v.NavTabs)
+            {
+                tab.Url += "&master_entity=j02Person&master_pid=" + v.pid.ToString();
+                if (strDefTab != null && tab.Entity == strDefTab)
+                {
+                    deftab = tab;  //uživatelem naposledy vybraná záložka                    
+                }
+            }
+            deftab.CssClass += " active";
+            v.DefaultNavTabUrl = deftab.Url;
+        }
 
         private BO.ThePeriod InhalePeriodFilter()
         {

@@ -27,7 +27,11 @@ namespace UI.Controllers
         }
         public IActionResult Record(int pid, bool isclone)
         {
-            var v = new h11Record() { rec_pid = pid, rec_entity = "h11" };
+            if (!Factory.CurrentUser.TestPermission(BO.j05PermValuEnum.H11Admin))
+            {
+                return Info(pid);
+            }
+            var v = new h11Record() { rec_pid = pid, rec_entity = "h11" };            
             v.Rec = new BO.h11NoticeBoard();
             if (v.rec_pid > 0)
             {

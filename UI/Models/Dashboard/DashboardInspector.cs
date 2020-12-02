@@ -18,5 +18,8 @@ namespace UI.Models.Dashboard
 
         public IEnumerable<BO.h11NoticeBoard> lisH11 { get; set; }
         public IEnumerable<BO.h04ToDo> lisH04 { get; set; }
+
+        public List<NavTab> NavTabs { get; set; }
+        public string DefaultNavTabUrl { get; set; }
     }
 }

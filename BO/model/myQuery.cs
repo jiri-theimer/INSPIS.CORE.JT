@@ -93,6 +93,8 @@ namespace BO
         public int j02id_issuer { get; set; }
         public int j02id_leader { get; set; }
         public int j02id_member { get; set; }
+        public int j02id_involved { get; set; }
+        public int j02id_invited { get; set; }
         public int j72id { get; set; }
         public int a17id { get; set; }
         public int j11id { get; set; }
@@ -248,6 +250,12 @@ namespace BO
                             break;
                         case "member":
                             this.j02id_member = master_pid;
+                            break;
+                        case "involved":
+                            this.j02id_involved = master_pid;
+                            break;
+                        case "invited":
+                            this.j02id_invited = master_pid;
                             break;
                         default:
                             this.j02id = master_pid;

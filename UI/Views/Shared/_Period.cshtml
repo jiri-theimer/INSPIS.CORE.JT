@@ -9,7 +9,7 @@
     var _lisPeriods = _pp.getPallete();
     if (_f.CurrentUser.j03LangIndex > 0)
     {
-        foreach(BO.ThePeriod c in _lisPeriods)
+        foreach (BO.ThePeriod c in _lisPeriods)
         {
             c.PeriodName = _f.tra(c.PeriodName);
         }
@@ -18,26 +18,26 @@
 
 @addTagHelper *, UI
 
-    <div class="form-row">
-        
-        <div class="col-sm-5 col-md-4">
-            <mydropdown asp-for="@Model.PeriodValue" datasource="@_lisPeriods" valuefield="pid" textfield="Header" isfirstemptyrow="false"></mydropdown>
+<div class="form-row">
 
-        </div>
-        <div class="col-sm-2 col-md-2">
-            <mydate asp-for="@Model.d1"></mydate>
-        </div>
-        <div class="col-sm-2 col-md-2">
-            <mydate asp-for="@Model.d2"></mydate>
-        </div>
-        @if (Model.IsShowButtonRefresh)
-        {
-            <div class="col-sm-1 col-md-1">
-                <button id="cmdRefreshPeriod" type="button" class="btn btn-secondary">@_f.tra("Občerstvit")</button>
-            </div>
-        }
+    <div class="col-sm-5 col-md-4">
+        <mydropdown asp-for="@Model.PeriodValue" datasource="@_lisPeriods" valuefield="pid" textfield="Header" isfirstemptyrow="false"></mydropdown>
 
     </div>
+    <div class="col-sm-2 col-md-2">
+        <mydate asp-for="@Model.d1"></mydate>
+    </div>
+    <div class="col-sm-2 col-md-2">
+        <mydate asp-for="@Model.d2"></mydate>
+    </div>
+    @if (Model.IsShowButtonRefresh)
+    {
+        <div class="col-sm-1 col-md-1">
+            <button type="button" id="cmdRefreshPeriod" class="btn btn-light" title="@_f.tra("Občerstvit")"><img src="~/images/refresh.png" /></button>
+        </div>
+    }
+
+</div>
 
 <script type="text/javascript">
     $("#d1helper").on("change", function () {

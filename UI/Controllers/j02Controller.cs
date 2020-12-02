@@ -137,17 +137,24 @@ namespace UI.Controllers
 
         private void RefreshNavTabs(j02RecPage v)
         {
-            var c = Factory.j02PersonBL.LoadSummary(v.pid);
+            var c = Factory.j02PersonBL.LoadSummary(v.pid,"recpage");
             string strBadge = null;
-            if (c.a01_count_in > 0) strBadge = c.a01_count_in.ToString();
-            v.NavTabs.Add(AddTab(string.Format(Factory.tra("{0}: je účastníkem"), Factory.App.Terminology_Akce), "a01Event", "/TheGrid/SlaveView?prefix=a01",false,strBadge));
-            strBadge = null;
-            if (c.a01_count_founder > 0) strBadge = c.a01_count_founder.ToString();
-            v.NavTabs.Add(AddTab( string.Format(Factory.tra("{0}: je zakladatelem"), Factory.App.Terminology_Akce),"a01Event", "/TheGrid/SlaveView?prefix=a01&master_flag=issuer",false,strBadge));
+            if (c.a01_count_involved > 0) strBadge = c.a01_count_involved.ToString();
+            v.NavTabs.Add(AddTab(Factory.tra("Je zapojen"), "a01Event", "/TheGrid/SlaveView?prefix=a01&master_flag=involved", false,strBadge));            
             strBadge = null;
             if (c.a01_count_leader > 0) strBadge = c.a01_count_leader.ToString();
-            v.NavTabs.Add(AddTab(string.Format(Factory.tra("{0}: je vedoucím"), Factory.App.Terminology_Akce), "a01Event", "/TheGrid/SlaveView?prefix=a01&master_flag=leader",false,strBadge));
+            v.NavTabs.Add(AddTab(Factory.tra("Vedoucí"), "a01Event", "/TheGrid/SlaveView?prefix=a01&master_flag=leader",false,strBadge));
             strBadge = null;
+            if (c.a01_count_leader > 0) strBadge = c.a01_count_leader.ToString();
+            v.NavTabs.Add(AddTab(Factory.tra("Člen"), "a01Event", "/TheGrid/SlaveView?prefix=a01&master_flag=member", false, strBadge));
+            strBadge = null;
+            if (c.a01_count_invited > 0) strBadge = c.a01_count_invited.ToString();
+            v.NavTabs.Add(AddTab(Factory.tra("Přizvaná osoba"), "a01Event", "/TheGrid/SlaveView?prefix=a01&master_flag=invited", false, strBadge));
+            strBadge = null;
+            strBadge = null;
+            if (c.a01_count_issuer > 0) strBadge = c.a01_count_issuer.ToString();
+            v.NavTabs.Add(AddTab(Factory.tra("Zakladatel"), "a01Event", "/TheGrid/SlaveView?prefix=a01&master_flag=issuer", false, strBadge));
+
             if (c.a39_count > 0) strBadge = c.a39_count.ToString();
             v.NavTabs.Add(AddTab("Kontaktní osoba", "a03Institution", "/TheGrid/SlaveView?prefix=a03",true,strBadge));
             strBadge = null;

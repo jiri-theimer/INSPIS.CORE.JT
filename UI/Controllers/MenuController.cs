@@ -189,7 +189,7 @@ namespace UI.Controllers
 
             DIV_TRANS("Provoz");
             AMI("PING Log", url_users("j92"));
-            AMI("Kdo je právě online (+-2 minuty)", url_users("j92"));
+            //AMI_NOTRA(Factory.tra("PING Log")+": "+Factory.tra(string.Format("{0} minut",5)), url_users("j92&dateadd=-5m"));
             AMI("LOGIN Log", url_users("j90"));
             AMI("WORKFLOW Log", url_users("b05"));
             DIV_TRANS("Pošta");
@@ -704,6 +704,19 @@ namespace UI.Controllers
                     AMI("Detail zprávy"+" ["+ recX40.StateAlias+"]", string.Format("javascript:_edit_full('Mail','Record',{0})",pid));
                     DIV();
                     AMI("Zkopírovat do nové zprávy", string.Format(string.Format("javascript: _window_open('/Mail/SendMail?x40id={0}')",pid)));
+                    
+                    if (recX40.x29ID == 101)
+                    {                        
+                        DIV();AMI("Stránka akce",Factory.a01EventBL.GetPageUrl(Factory.a01EventBL.Load(recX40.x40DataPID)),null,null,"_top");
+                    }
+                    if (recX40.x29ID == 604)
+                    {
+                        DIV(); AMI("Stránka úkolu", "/h04/RecPage?pid="+recX40.x40DataPID.ToString(), null, null, "_top");
+                    }
+                    if (recX40.x29ID == 502)
+                    {
+                        DIV(); AMI("Stránka osoby", "/j02/RecPage?pid=" + recX40.x40DataPID.ToString(), null, null, "_top");
+                    }
                     break;
                 case "o27":
                     var recO27 = Factory.o27AttachmentBL.Load(pid);
