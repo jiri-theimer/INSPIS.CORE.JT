@@ -124,9 +124,8 @@ namespace UI.Controllers
                 //úvodní spuštění: otestovat nastavení domovské stránky
                 if (Factory.CurrentUser.j03HomePageUrl != null)
                 {
-                    
-                    //Response.Redirect(Factory.CurrentUser.getHomePageUrl());
-                    return Redirect(Factory.CurrentUser.getHomePageUrl());
+                                        
+                    return Redirect(Factory.CurrentUser.getHomePageUrl());  //pryč na jinou stránku
                 }
             }
             
@@ -141,15 +140,11 @@ namespace UI.Controllers
             }
             else
             {
-                var pandulak = new ThePandulak(Factory.App.AppRootFolder + "\\wwwroot\\images\\pandulak");
+                var pandulak = new ThePandulak(Factory.App.AppRootFolder + "\\wwwroot\\images\\pandulak");  //když nejsou boxy, tak aspoň 2xpanďulák
                 v.Pandulak1 = pandulak.getPandulakImage(1);
                 v.Pandulak2 = pandulak.getPandulakImage(2);
             }
             
-
-           
-            
-
             return View(v);
 
         }

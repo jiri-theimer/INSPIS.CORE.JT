@@ -55,7 +55,7 @@
 <script src="/lib/jquery-ui/jquery-ui.min_sortable.js"></script>
 
 
-<div class="row bg-light">
+<div class="row bg-light m-0">
 
     <div class="dropdown col-auto">
 
@@ -106,7 +106,7 @@
 
             <div id="box_@(c.pid)" class="portlet">
                 <div class="portlet-header" @Html.Raw(c.CssHeaderDiv)>
-                    <img src="~/images/cursor_mouse_drag.png" /> <a class="float-right btn btn-sm btn-light py-0 px-1" title="@_f.tra("Zavřít")" href="javascript:handle_after_close_snippet(@c.pid)">x</a>
+                    <img src="@c.HeaderImage" /><span class="ml-1">@(c.x55Name)</span><a class="float-right btn btn-sm btn-light py-0 px-1" title="@_f.tra("Zavřít")" href="javascript:handle_after_close_snippet(@c.pid)">x</a>
                 </div>
                 <div class="portlet-content" @Html.Raw(c.CssContentDiv)>
                     @Html.Raw(c.x55Content)
@@ -124,7 +124,7 @@
             {
                 <div id="box_@(c.pid)" class="portlet">
                     <div class="portlet-header" @Html.Raw(c.CssHeaderDiv)>
-                        <img src="~/images/cursor_mouse_drag.png" /> <a class="float-right btn btn-sm btn-light py-0 px-1" title="@_f.tra("Zavřít")" href="javascript:handle_after_close_snippet(@c.pid)">x</a>
+                        <img src="@c.HeaderImage" /><span class="ml-1">@(c.x55Name)</span><a class="float-right btn btn-sm btn-light py-0 px-1" title="@_f.tra("Zavřít")" href="javascript:handle_after_close_snippet(@c.pid)">x</a>
                     </div>
                     <div class="portlet-content" @Html.Raw(c.CssContentDiv)>
                         @Html.Raw(c.x55Content)
@@ -142,7 +142,7 @@
             {
                 <div id="box_@(c.pid)" class="portlet">
                     <div class="portlet-header" @Html.Raw(c.CssHeaderDiv)>
-                        <img src="~/images/cursor_mouse_drag.png" /> <a class="float-right btn btn-sm btn-light py-0 px-1" title="@_f.tra("Zavřít")" href="javascript:handle_after_close_snippet(@c.pid)">x</a>
+                        <img src="@c.HeaderImage" /><span class="ml-1">@(c.x55Name)</span><a class="float-right btn btn-sm btn-light py-0 px-1" title="@_f.tra("Zavřít")" href="javascript:handle_after_close_snippet(@c.pid)">x</a>
 
                     </div>
                     <div class="portlet-content" @Html.Raw(c.CssContentDiv)>
@@ -242,7 +242,7 @@
     }
 
     function handle_insert_snippet(x55id) {
-        $.post("/Home/InsertWidget", { x55id: x55id, skin: "widgets" }, function (data) {
+        $.post("/Home/InsertWidget", { x55id: x55id, skin: "widgets" }, function (data) {            
             reload();
 
 

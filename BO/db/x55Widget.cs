@@ -62,5 +62,17 @@ namespace BO
                 return "style='" + s + "'";
             }
         }
+        public string HeaderImage { get
+            {
+                if (this.x55Image == null)
+                {
+                    return "/images/cursor_mouse_drag.png";
+                }
+                else
+                {
+                    return "/images/"+this.x55Image;
+                }
+            } 
+        }
     }
 }

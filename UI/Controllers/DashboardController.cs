@@ -26,12 +26,8 @@ namespace UI.Controllers
             var v = new WidgetsViewModel();
             var cW = new UI.WidgetSupport(Factory, "widgets");
             cW.PrepareWidgets(v);
-            //if (v.recX56.x56Boxes != null)
-            {
-                cW.InhaleWidgetsDataContent(v);
-            }
+            cW.InhaleWidgetsDataContent(v);
             
-
 
             return View(v);
         }
@@ -61,37 +57,37 @@ namespace UI.Controllers
         private void RefreshNavTabsInspector(DashboardInspector v)
         {
             var c = Factory.j02PersonBL.LoadSummary(v.pid,"dashboard");
-            v.NavTabs.Add(AddTab(Factory.tra("Dashboard"), "a01Event", "/Dashboard/Widgets"));
-            v.NavTabs.Add(AddTab(Factory.tra("Můj kapacitní plán"), "a01Event", "/j02/TabGantt?pid="+Factory.CurrentUser.j02ID.ToString()));
+            v.NavTabs.Add(AddTab(Factory.tra("Dashboard"), "dashboard", "/Dashboard/Widgets?pid=" + Factory.CurrentUser.j02ID));
+            v.NavTabs.Add(AddTab(Factory.tra("Můj kapacitní plán"), "gantt", "/j02/TabGantt?pid="+Factory.CurrentUser.j02ID.ToString()));
             string strBadge = null;
             if (c.a01_count_involved > 0) strBadge = c.a01_count_involved.ToString();
-            v.NavTabs.Add(AddTab(Factory.tra("Jsem zapojen"), "a01Event", "/TheGrid/SlaveView?prefix=a01&master_flag=involved", false, strBadge));
+            v.NavTabs.Add(AddTab(Factory.tra("Jsem zapojen"), "involved", "/TheGrid/SlaveView?prefix=a01&master_flag=involved", false, strBadge));
             strBadge = null;
             if (c.a01_count_leader > 0) strBadge = c.a01_count_leader.ToString();
-            v.NavTabs.Add(AddTab(Factory.tra("Vedoucí"),"a01Event", "/TheGrid/SlaveView?prefix=a01&master_flag=leader", false, strBadge));
+            v.NavTabs.Add(AddTab(Factory.tra("Vedoucí"), "leader", "/TheGrid/SlaveView?prefix=a01&master_flag=leader", false, strBadge));
             strBadge = null;
             if (c.a01_count_member > 0) strBadge = c.a01_count_member.ToString();
-            v.NavTabs.Add(AddTab(Factory.tra("Člen"), "a01Event", "/TheGrid/SlaveView?prefix=a01&master_flag=member", false, strBadge));
+            v.NavTabs.Add(AddTab(Factory.tra("Člen"), "member", "/TheGrid/SlaveView?prefix=a01&master_flag=member", false, strBadge));
             strBadge = null;
             if (c.a01_count_invited > 0) strBadge = c.a01_count_invited.ToString();
-            v.NavTabs.Add(AddTab(Factory.tra("Přizvaná osoba"), "a01Event", "/TheGrid/SlaveView?prefix=a01&master_flag=invited", false, strBadge));
+            v.NavTabs.Add(AddTab(Factory.tra("Přizvaná osoba"), "invited", "/TheGrid/SlaveView?prefix=a01&master_flag=invited", false, strBadge));
             strBadge = null;
             if (c.a01_count_issuer > 0) strBadge = c.a01_count_issuer.ToString();
-            v.NavTabs.Add(AddTab(Factory.tra("Zakladatel"), "a01Event", "/TheGrid/SlaveView?prefix=a01&master_flag=issuer", false, strBadge));
+            v.NavTabs.Add(AddTab(Factory.tra("Zakladatel"), "issuer", "/TheGrid/SlaveView?prefix=a01&master_flag=issuer", false, strBadge));
 
 
             strBadge = null;            
             if (c.h04_count > 0) strBadge = c.h04_count.ToString();
-            v.NavTabs.Add(AddTab("Úkoly/Lhůty", "h04ToDo", "/TheGrid/SlaveView?prefix=h04", true, strBadge));
+            v.NavTabs.Add(AddTab("Úkoly/Lhůty", "h04", "/TheGrid/SlaveView?prefix=h04", true, strBadge));
             strBadge = null;
             if (c.h11_count > 0) strBadge = c.h11_count.ToString();
-            v.NavTabs.Add(AddTab("Nástěnka", "h11NoticeBoard", "/TheGrid/SlaveView?prefix=h11", true, strBadge));
+            v.NavTabs.Add(AddTab("Nástěnka", "h11", "/TheGrid/SlaveView?prefix=h11", true, strBadge));
 
-            v.NavTabs.Add(AddTab("Inbox", "x40MailQueue", "/TheGrid/SlaveView?prefix=x40"));
+            v.NavTabs.Add(AddTab("Inbox", "x40", "/TheGrid/SlaveView?prefix=x40"));
            
 
 
-            string strDefTab = Factory.CBL.LoadUserParam("dasboard-tab-inspector");
+            string strDefTab = Factory.CBL.LoadUserParam("dashboard-tab-inspector");
             var deftab = v.NavTabs[0];
 
             foreach (var tab in v.NavTabs)

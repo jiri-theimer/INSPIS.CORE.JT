@@ -94,9 +94,10 @@ namespace UI
         {
             v.lisAllWidgets = _f.x55WidgetBL.GetList(new BO.myQuery("x55") { IsRecordValid = true, MyRecordsDisponible = true, CurrentUser = _f.CurrentUser });
             v.lisUserWidgets = new List<BO.x55Widget>();
-            v.ColumnsPerPage = _f.CBL.LoadUserParamInt("Widgets-ColumnsPerPage", 2);
-
+            v.ColumnsPerPage = _f.CBL.LoadUserParamInt("Widgets-ColumnsPerPage-"+_skin, 2);
             v.recX56 = _f.x55WidgetBL.LoadState(_f.CurrentUser.pid,_skin);
+            v.DockStructure = new WidgetsEnvironment(v.recX56.x56DockState);
+
             if (v.recX56==null || v.recX56.x56Boxes == null)
             {
                 return; //uživatel nemá na ploše žádný widget, dál není třeba pokračovat
@@ -112,7 +113,6 @@ namespace UI
             }
             
 
-            v.DockStructure = new WidgetsEnvironment(v.recX56.x56DockState);
             foreach (var onestate in v.DockStructure.States)
             {
                 if (v.lisUserWidgets.Where(p => p.pid.ToString() == onestate.Value).Count() > 0)
