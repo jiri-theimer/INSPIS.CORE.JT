@@ -65,7 +65,7 @@ namespace UI
                 if (rec.x55TableSql != null && rec.x55TableColHeaders !=null)
                 {
                     string s = rec.x55TableSql;
-                    s = DL.BAS.ParseMergeSQL(s, _f.CurrentUser.j02ID.ToString());
+                    s = DL.BAS.ParseMergeSQL(s, _f.CurrentUser.j02ID.ToString()).Replace("@j04id",_f.CurrentUser.j04ID.ToString().Replace("@j03id",_f.CurrentUser.pid.ToString()));                    
                     var dt = _f.gridBL.GetListFromPureSql(s);
                     var cGen = new BO.CLS.Datatable2Html(new BO.CLS.Datatable2HtmlDef() { ColHeaders = rec.x55TableColHeaders, ColTypes = rec.x55TableColTypes });
                     rec.x55Content = cGen.CreateHtmlTable(dt,500);

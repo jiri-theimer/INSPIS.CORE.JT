@@ -758,6 +758,15 @@ namespace UI.Controllers
                     }
                     
                     break;
+                case "h11":
+                    if (Factory.CurrentUser.TestPermission(j05PermValuEnum.H11Admin))
+                    {
+                        AMI("Karta záznamu", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
+                        AMI("Kopírovat", string.Format("javascript:_clone('{0}',{1})", prefix, pid));
+                        DIV();
+                    }                   
+                    AMI("Náhled", string.Format("javascript: _window_open('/h11/Info?pid={0}',1)", pid));
+                    break;
                 default:
                     AMI("Karta záznamu", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
                     AMI("Kopírovat", string.Format("javascript:_clone('{0}',{1})", prefix, pid));

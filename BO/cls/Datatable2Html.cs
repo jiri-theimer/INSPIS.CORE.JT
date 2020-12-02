@@ -103,6 +103,9 @@ namespace BO.CLS
                             case "dt":
                                 strVal = Convert.ToDateTime(dbRow[i]).ToString("dd.MM.yyyy HH:mm");
                                 break;
+                            case "a":
+                                strVal = dbRow[i].ToString().Replace("€€", "\"").Replace("$$", "'");    //link, odkaz
+                                break;
                             default:
                                 strVal=dbRow[i].ToString();
                                 break;

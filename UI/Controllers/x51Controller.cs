@@ -77,12 +77,11 @@ namespace UI.Controllers
             {
                 v.NearListFlag = 1;   //pokud se necílí konkrétní url, pak automaticky rejstřík
                 v.lisNear = Factory.x51HelpCoreBL.GetList(new BO.myQuery("x51") { IsRecordValid = true });
-                var pandulak = new ThePandulak(_hostingEnvironment.WebRootPath);
-                v.HtmlContent = string.Format("<img src='/images/pandulak/{0}'/>", pandulak.getPandulakImage(1));
-                v.HtmlContent += string.Format("<img src='/images/pandulak/{0}'/>", pandulak.getPandulakImage(2));
-                //v.HtmlContent += string.Format("<hr><img src='/images/splash_help.png'/>", pandulak.getPandulakImage(2));
 
-                
+                v.HtmlContent += "<hr><img src='/images/splash_help.jpg'/>";
+
+
+
 
             }
             return View(v);
