@@ -133,7 +133,7 @@ namespace UI.Controllers
 
            
             var v = new HomeViewModel();
-            var cW = new UI.WidgetSupport(Factory);
+            var cW = new UI.WidgetSupport(Factory,"index");
             cW.PrepareWidgets(v);
             if (v.recX56.x56Boxes != null)
             {
@@ -263,21 +263,21 @@ namespace UI.Controllers
 
 
 
-        public BO.Result SaveWidgetState(string s)
+        public BO.Result SaveWidgetState(string s,string skin)
         {
-            return new WidgetSupport(Factory).SaveWidgetState(s);
+            return new WidgetSupport(Factory,skin).SaveWidgetState(s);
         }
-        public BO.Result RemoveWidget(int x55id)
+        public BO.Result RemoveWidget(int x55id,string skin)
         {
-            return new WidgetSupport(Factory).RemoveWidget(x55id);
+            return new WidgetSupport(Factory,skin).RemoveWidget(x55id);
         }
-        public BO.Result InsertWidget(int x55id)
+        public BO.Result InsertWidget(int x55id,string skin)
         {
-            return new WidgetSupport(Factory).InsertWidget(x55id);
+            return new WidgetSupport(Factory,skin).InsertWidget(x55id);
         }
-        public BO.Result SavePocetSloupcu(int x)
+        public BO.Result SavePocetSloupcu(int x,string skin)
         {
-            return new WidgetSupport(Factory).SavePocetSloupcu(x);           
+            return new WidgetSupport(Factory,skin).SavePocetSloupcu(x);           
         }
 
 

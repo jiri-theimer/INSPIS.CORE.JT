@@ -1,5 +1,4 @@
 ﻿@model HomeViewModel
-@inject BL.RunningApp _app
 @inject BL.Factory _f
 
 @{
@@ -238,7 +237,7 @@ else
         }
 
 
-        $.post("/Home/SaveWidgetState", { s: s }, function (data) {
+        $.post("/Home/SaveWidgetState", { s: s, skin: "index" }, function (data) {
             _notify_message("Změna rozložení boxů uložena.", "info");
             //location.replace("/Home/Index");
 
@@ -248,26 +247,30 @@ else
 
     }
 
+    function reload() {
+        location.replace("/Home/Index");
+    }
+
     function handle_after_close_snippet(x55id) {
         _notify_message("Loading...", "info");
-        $.post("/Home/RemoveWidget", { x55id: x55id }, function (data) {
-            location.replace("/Home/Index");
+        $.post("/Home/RemoveWidget", { x55id: x55id, skin: "index" }, function (data) {
+            reload()
 
 
         });
     }
 
     function handle_insert_snippet(x55id) {
-        $.post("/Home/InsertWidget", { x55id: x55id }, function (data) {
-            location.replace("/Home/Index");
+        $.post("/Home/InsertWidget", { x55id: x55id, skin: "index" }, function (data) {
+            reload()
 
 
         });
     }
     function handle_pocet_sloupcu(cbx) {
 
-        $.post("/Home/SavePocetSloupcu", { x: cbx.value }, function (data) {
-            location.replace("/Home/Index");
+        $.post("/Home/SavePocetSloupcu", { x: cbx.value, skin: "index" }, function (data) {
+            reload()
 
 
         });

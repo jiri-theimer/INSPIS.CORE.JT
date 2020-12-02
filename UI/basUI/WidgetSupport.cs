@@ -4,34 +4,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UI.Models;
+using UI.Models.Dashboard;
 
 namespace UI
 {
     public class WidgetSupport
     {
         private BL.Factory _f;  //podpora k úvodní HOME stránce s obsluhou widgets
-
-        public WidgetSupport(BL.Factory f)
+        private string _skin;   //hodnoty: widgets/index
+        public WidgetSupport(BL.Factory f,string skin)
         {
             _f = f;
+            _skin = skin;
         }
 
         public BO.Result SavePocetSloupcu(int x)
         {
-            _f.CBL.SetUserParam("Widgets-ColumnsPerPage", x.ToString());            
+            _f.CBL.SetUserParam("Widgets-ColumnsPerPage-"+_skin, x.ToString());            
             return new BO.Result(false);
         }
         public BO.Result SaveWidgetState(string s)
         {
-            var rec = _f.x55WidgetBL.LoadState(_f.CurrentUser.pid);
+            var rec = _f.x55WidgetBL.LoadState(_f.CurrentUser.pid,_skin);
             rec.x56DockState = s;
+            rec.x56Skin = _skin;
             _f.x55WidgetBL.SaveState(rec);
             return new BO.Result(false);
         }
         public BO.Result RemoveWidget(int x55id)
         {
             var recX55 = _f.x55WidgetBL.Load(x55id);
-            var recX56 = _f.x55WidgetBL.LoadState(_f.CurrentUser.pid);
+            var recX56 = _f.x55WidgetBL.LoadState(_f.CurrentUser.pid,_skin);
             var boxes = BO.BAS.ConvertString2List(recX56.x56Boxes);
             if (boxes.Where(p => p == recX55.x55Code).Count() > 0)
             {
@@ -46,7 +49,7 @@ namespace UI
         public BO.Result InsertWidget(int x55id)
         {
             var recX55 = _f.x55WidgetBL.Load(x55id);
-            var recX56 = _f.x55WidgetBL.LoadState(_f.CurrentUser.pid);
+            var recX56 = _f.x55WidgetBL.LoadState(_f.CurrentUser.pid,_skin);
             var boxes = BO.BAS.ConvertString2List(recX56.x56Boxes);
             if (boxes.Where(p => p == recX55.x55Code).Count() == 0)
             {
@@ -58,7 +61,7 @@ namespace UI
             return new BO.Result(true, "widget not found");
         }
 
-        public void InhaleWidgetsDataContent(HomeViewModel v)
+        public void InhaleWidgetsDataContent(WidgetsViewModel v)
         {
             foreach(var rec in v.lisUserWidgets)
             {
@@ -87,13 +90,13 @@ namespace UI
                 
             }
         }
-        public void PrepareWidgets(HomeViewModel v)
+        public void PrepareWidgets(WidgetsViewModel v)
         {
             v.lisAllWidgets = _f.x55WidgetBL.GetList(new BO.myQuery("x55") { IsRecordValid = true, MyRecordsDisponible = true, CurrentUser = _f.CurrentUser });
             v.lisUserWidgets = new List<BO.x55Widget>();
             v.ColumnsPerPage = _f.CBL.LoadUserParamInt("Widgets-ColumnsPerPage", 2);
 
-            v.recX56 = _f.x55WidgetBL.LoadState(_f.CurrentUser.pid);
+            v.recX56 = _f.x55WidgetBL.LoadState(_f.CurrentUser.pid,_skin);
             if (v.recX56==null || v.recX56.x56Boxes == null)
             {
                 return; //uživatel nemá na ploše žádný widget, dál není třeba pokračovat

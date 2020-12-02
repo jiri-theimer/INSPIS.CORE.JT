@@ -12,12 +12,10 @@ namespace UI.Models.Dashboard
         public string SearchBoxA01 { get; set; }
         public string SearchBoxA03 { get; set; }
 
-        public string GridMasterFilter { get; set; }    //leader/member/issuer: filtrování
+        
+        //public PeriodViewModel PeriodFilter { get; set; }
 
-        public PeriodViewModel PeriodFilter { get; set; }
-
-        public IEnumerable<BO.h11NoticeBoard> lisH11 { get; set; }
-        public IEnumerable<BO.h04ToDo> lisH04 { get; set; }
+        
 
         public List<NavTab> NavTabs { get; set; }
         public string DefaultNavTabUrl { get; set; }

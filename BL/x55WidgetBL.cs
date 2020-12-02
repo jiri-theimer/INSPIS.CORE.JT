@@ -11,7 +11,7 @@ namespace BL
         public IEnumerable<BO.x55Widget> GetList(BO.myQuery mq);
         public int Save(BO.x55Widget rec, List<int> j04ids);
 
-        public BO.x56WidgetBinding LoadState(int j03id);
+        public BO.x56WidgetBinding LoadState(int j03id,string skin);
         public int SaveState(BO.x56WidgetBinding rec);
 
     }
@@ -111,20 +111,23 @@ namespace BL
             return true;
         }
 
-        public BO.x56WidgetBinding LoadState(int j03id)
+        public BO.x56WidgetBinding LoadState(int j03id,string skin)
         {
+            if (string.IsNullOrEmpty(skin)){
+                skin = "index";
+            }
             sb("SELECT a.*,");
             sb(_db.GetSQL1_Ocas("x56"));
-            sb(" FROM x56WidgetBinding a WHERE a.j03ID=@j03id");
+            sb(" FROM x56WidgetBinding a WHERE a.j03ID=@j03id AND a.x56Skin=@skin");
             
-            var rec= _db.Load<BO.x56WidgetBinding>(sbret(), new { j03id = j03id });
+            var rec= _db.Load<BO.x56WidgetBinding>(sbret(), new { j03id = j03id,skin=skin });
 
             if (rec == null && j03id>0)
             {
-                rec = new BO.x56WidgetBinding() { j03ID = j03id };
+                rec = new BO.x56WidgetBinding() { j03ID = j03id,x56Skin=skin };
                 if (SaveState(rec) > 0)
                 {
-                    return LoadState(j03id);
+                    return LoadState(j03id,skin);
                 }
                 
             }

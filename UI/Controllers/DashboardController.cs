@@ -21,30 +21,39 @@ namespace UI.Controllers
             return View();
         }
 
+        public IActionResult Widgets()
+        {
+            var v = new WidgetsViewModel();
+            var cW = new UI.WidgetSupport(Factory, "widgets");
+            cW.PrepareWidgets(v);
+            //if (v.recX56.x56Boxes != null)
+            {
+                cW.InhaleWidgetsDataContent(v);
+            }
+            
 
+
+            return View(v);
+        }
         public IActionResult Inspector(string masterflag)
         {
             if (string.IsNullOrEmpty(masterflag))
             {
                 masterflag = Factory.CBL.LoadUserParam("DashboardInspector-masterflag", "");
             }
-            var v = new DashboardInspector() { pid = Factory.CurrentUser.j02ID, NavTabs = new List<NavTab>(), GridMasterFilter = masterflag };   //leader/member/issuer
+            var v = new DashboardInspector() { pid = Factory.CurrentUser.j02ID, NavTabs = new List<NavTab>() };   //leader/member/issuer
             v.Rec = Factory.j02PersonBL.Load(v.pid);
 
             RefreshNavTabsInspector(v);
 
-            v.PeriodFilter = new PeriodViewModel();
-            v.PeriodFilter.IsShowButtonRefresh = true;
-            var per = InhalePeriodFilter();
-            v.PeriodFilter.PeriodValue = per.pid;
-            v.PeriodFilter.d1 = per.d1;
-            v.PeriodFilter.d2 = per.d2;
+            //v.PeriodFilter = new PeriodViewModel();
+            //v.PeriodFilter.IsShowButtonRefresh = true;
+            //var per = InhalePeriodFilter();
+            //v.PeriodFilter.PeriodValue = per.pid;
+            //v.PeriodFilter.d1 = per.d1;
+            //v.PeriodFilter.d2 = per.d2;
 
-            var mq = new BO.myQuery("h11") { IsRecordValid = true, MyRecordsDisponible = true };
-            v.lisH11 = Factory.h11NoticeBoardBL.GetList(mq);
-            mq = new BO.myQuery("h04") { IsRecordValid = true, j02id = Factory.CurrentUser.j02ID, h06TodoRole = 1 };
-            v.lisH04 = Factory.h04ToDoBL.GetList(mq).Where(p => (p.h04IsClosed == false && p.h07IsToDo == true) || (p.h07IsToDo == false && DateTime.Now <= p.h04Deadline));
-
+            
             return View(v);
         }
 
