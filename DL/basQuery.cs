@@ -459,6 +459,7 @@ namespace DL
             if (mq.j02id_member > 0)
             {
                 if (mq.Prefix == "a01") AQ(ref lis, "a.a01ID IN (select a01ID FROM a41PersonToEvent WHERE a45ID=1 AND j02ID=@j02id_member)", "j02id_member", mq.j02id_member);   //je člen akce
+                if (mq.Prefix == "h04") AQ(ref lis, "a.h04ID IN (select h04ID FROM h06ToDoReceiver WHERE j02ID=@j02id_member)", "j02id_member", mq.j02id_member);   //je řešitel úkolu
             }
             if (mq.j02id_invited > 0)
             {
@@ -471,6 +472,7 @@ namespace DL
             if (mq.j02id_issuer > 0)
             {
                 if (mq.Prefix == "a01") AQ(ref lis, "a.j02ID_Issuer=@j02id_issuer", "j02id_issuer", mq.j02id_issuer);   //je zakladatelem akce
+                if (mq.Prefix == "h04") AQ(ref lis, "a.j02ID_Owner=@j02id_issuer", "j02id_issuer", mq.j02id_issuer);   //je zakladatelem úkolu
             }
             if (mq.a10id > 0)
             {

@@ -15,6 +15,8 @@ namespace UI.Models
 
 
         public string EmailAddres { get; set; }
+        public string Mobile { get; set; }
+        public string Phone { get; set; }
         public bool IsGridClipboard { get; set; }
         public string userAgent { get; set; }
         public ClientInfo client_info { get; set; }

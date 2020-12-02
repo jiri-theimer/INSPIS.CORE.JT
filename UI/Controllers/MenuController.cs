@@ -308,7 +308,7 @@ namespace UI.Controllers
             if (TUP(BO.j05PermValuEnum.A01Grid))
             {
                
-                if (userdevice != "Phone" && Factory.CBL.LoadUserParamBool("grid-a01-show11", true))
+                if (userdevice != "Phone" && Factory.CBL.LoadUserParamBool("grid-a01-show11", false))
                 {
                     AMI("Grid 1+1", "/TheGrid/MasterView?prefix=a01");
                 }
@@ -344,7 +344,7 @@ namespace UI.Controllers
                 DIV();
             }
             AMI("Stránka", "/a03/RecPage");
-            if (userdevice != "Phone" && Factory.CBL.LoadUserParamBool("grid-a03-show11", true))
+            if (userdevice != "Phone" && Factory.CBL.LoadUserParamBool("grid-a03-show11", false))
             {
                 AMI("Grid 1+1", "/TheGrid/MasterView?prefix=a03");
             }
@@ -359,7 +359,7 @@ namespace UI.Controllers
         {
             
             AMI("Stránka", "/j02/RecPage");
-            if (userdevice != "Phone" && Factory.CBL.LoadUserParamBool("grid-j02-show11", true))
+            if (userdevice != "Phone" && Factory.CBL.LoadUserParamBool("grid-j02-show11", false))
             {
                 AMI("Grid 1+1", "/TheGrid/MasterView?prefix=j02");
             }

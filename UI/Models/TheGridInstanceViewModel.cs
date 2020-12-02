@@ -24,6 +24,7 @@ namespace UI.Models
 
         public string dblclick { get; set; } = "tg_dblclick";
         public PeriodViewModel period { get; set; }
+        
     }
 
 

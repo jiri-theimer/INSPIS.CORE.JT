@@ -18,7 +18,8 @@ namespace BL
 
         private void SetupPallete()
         {
-            _lis.Add(new BO.ThePeriod() { pid = 0, PeriodName = "--Pojmenované období--", PeriodInterval = "" });
+            _lis.Add(new BO.ThePeriod() { pid = 0, PeriodName = "--Nefiltrovat období--", PeriodInterval = "" });
+            _lis.Add(new BO.ThePeriod() { pid = 1, PeriodName = "--Časové období--", PeriodInterval = "" });
             AF(11); //včera
             AF(10); //dnes
             AF(12); //zítra
@@ -56,7 +57,7 @@ namespace BL
             }
             else
             {
-                return null;
+                return _lis[0];
             }
         }
 

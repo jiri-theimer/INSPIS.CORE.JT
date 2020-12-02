@@ -13,40 +13,44 @@
 
 
 
-<div class="row py-1 bg-light m-0">
-    <div id="layout_sidebar_contextmenu">
+    <div class="row py-1 bg-light m-0">
+        <div id="layout_sidebar_contextmenu">
+            @if (Model.pid > 0)
+            {
+                <a id="layout_sidebar_contextmenu_link" class="cm h4 mx-0" title="@Model.Rec.FullNameDesc" onclick="_cm(event, 'j02',@Model.Rec.pid);">☰@(Model.Rec.FullNameAsc) </a>
+                <h4 id="layout_sidebar_contextmenu_onlytext">
+                    @if (Model.Rec.j02IsInvitedPerson)
+                    {
+                        <img src="~/images/superman.png" />
+                    }
+
+                    @Model.Rec.FullNameAsc
+                </h4>
+            }
+
+        </div>
         @if (Model.pid > 0)
         {
-            <a id="layout_sidebar_contextmenu_link" class="cm h4 mx-0" title="@Model.Rec.FullNameDesc" onclick="_cm(event, 'j02',@Model.Rec.pid);">☰@(Model.Rec.FullNameAsc) </a>
-            <h4 id="layout_sidebar_contextmenu_onlytext">
-                @if (Model.Rec.j02IsInvitedPerson)
-                {
-                    <img src="~/images/superman.png" />
-                }
+            <div class="pl-0 pr-0">
+                <ul class="nav nav-tabs nonmobile nontablet" style="border:none;">
+                    <li class="nav-item onetab">
+                        <a class="nav-link active" data-toggle="tab">@Model.MenuCode</a>
+                    </li>
+                </ul>
 
-                @Model.Rec.FullNameAsc
-            </h4>
+
+            </div>
+            <div class="nonmobile">
+                <a class="btn btn-light" href="/j02/RecPage?pid=@Model.pid" title="@_f.tra("Občerstvit")"><img src="~/images/refresh.png" /></a>
+            </div>
         }
 
-    </div>
-    <div class="pl-0 pr-0">
-        <ul class="nav nav-tabs nonmobile nontablet" style="border:none;">
-            <li class="nav-item onetab">
-                <a class="nav-link active" data-toggle="tab">@Model.MenuCode</a>
-            </li>
-        </ul>
+        <div class="col-sm-8 col-md-8 pl-0">
+            <mysearch asp-for="@Model.SearchBox" entity="j02Person" placeholder="@_f.tra("Fulltext hledání")..."></mysearch>
 
+        </div>
 
     </div>
-    <div class="nonmobile">
-        <a class="btn btn-light" href="/j02/RecPage?pid=@Model.pid" title="@_f.tra("Občerstvit")"><img src="~/images/refresh.png" /></a>
-    </div>
-    <div class="col-sm-8 col-md-8 pl-0">
-        <mysearch asp-for="@Model.SearchBox" entity="j02Person" placeholder="@_f.tra("Fulltext hledání")..."></mysearch>
-
-    </div>
-
-</div>
 
 <div id="layout_sidebar" class="cm_recpage"></div>
 

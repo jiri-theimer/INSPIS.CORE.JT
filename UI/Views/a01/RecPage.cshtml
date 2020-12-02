@@ -15,7 +15,7 @@
     <div class="row py-1 bg-light m-0">
         <div id="layout_sidebar_contextmenu">
             @if (Model.pid > 0)
-            {                               
+            {
                 <a id="layout_sidebar_contextmenu_link" class="cm h4 mx-1" title="Menu" onclick="_cm(event, 'a01',@Model.Rec.pid);">☰@Model.Rec.a01Signature</a>
                 <h4 id="layout_sidebar_contextmenu_onlytext">
                     @if (Model.Rec.a01ChildsCount > 0)
@@ -31,18 +31,22 @@
             }
 
         </div>
-        <div class="pl-0 pr-0">
-            <ul class="nav nav-tabs nonmobile nontablet" style="border:none;">
-                <li class="nav-item onetab">
-                    <a class="nav-link active" data-toggle="tab">@Model.Rec.a10Name</a>
-                </li>
-            </ul>
+        @if (Model.pid > 0)
+        {
+            <div class="pl-0 pr-0">
+                <ul class="nav nav-tabs nonmobile nontablet" style="border:none;">
+                    <li class="nav-item onetab">
+                        <a class="nav-link active" data-toggle="tab">@Model.Rec.a10Name</a>
+                    </li>
+                </ul>
 
 
-        </div>
-        <div class="nonmobile">
-            <a class="btn btn-light" href="/a01/RecPage?pid=@Model.pid" title="@_f.tra("Občerstvit")"><img src="~/images/refresh.png" /></a>
-        </div>
+            </div>
+            <div class="nonmobile">
+                <a class="btn btn-light" href="/a01/RecPage?pid=@Model.pid" title="@_f.tra("Občerstvit")"><img src="~/images/refresh.png" /></a>
+            </div>
+        }
+
         <div class="col-sm-8 col-md-8 pl-0">
             <mysearch asp-for="@Model.SearchBox" entity="a01Event" placeholder="@_f.tra("Fulltext hledání")..."></mysearch>
         </div>

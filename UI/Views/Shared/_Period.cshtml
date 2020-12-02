@@ -20,19 +20,19 @@
 
 <div class="form-row">
 
-    <div class="col-sm-5 col-md-4">
+    <div class="col-sm-5 col-md-4" style="min-width:170px;">
         <mydropdown asp-for="@Model.PeriodValue" datasource="@_lisPeriods" valuefield="pid" textfield="Header" isfirstemptyrow="false"></mydropdown>
 
     </div>
-    <div class="col-sm-2 col-md-2">
+    <div id="div_d1helper" class="col-sm-2 col-md-2">
         <mydate asp-for="@Model.d1"></mydate>
     </div>
-    <div class="col-sm-2 col-md-2">
+    <div id="div_d2helper" class="col-sm-2 col-md-2">
         <mydate asp-for="@Model.d2"></mydate>
     </div>
     @if (Model.IsShowButtonRefresh)
     {
-        <div class="col-sm-1 col-md-1">
+        <div id="div_cmdRefreshPeriod" class="col-sm-1 col-md-1">
             <button type="button" id="cmdRefreshPeriod" class="btn btn-light" title="@_f.tra("Občerstvit")"><img src="~/images/refresh.png" /></button>
         </div>
     }
@@ -41,9 +41,16 @@
 
 <script type="text/javascript">
     $("#d1helper").on("change", function () {
-        $("#PeriodValue").val("0");
+        $("#PeriodValue").val("1");
     })
     $("#d2helper").on("change", function () {
-        $("#PeriodValue").val("0");
+        $("#PeriodValue").val("1");
     })
+
+    if ($("#PeriodValue").val() == "0") {
+        $("#div_d1helper").css("display", "none");
+        $("#div_d2helper").css("display", "none");
+        $("#div_cmdRefreshPeriod").css("display", "none");
+        
+    }
 </script>

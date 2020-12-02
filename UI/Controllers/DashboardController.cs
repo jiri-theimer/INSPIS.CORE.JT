@@ -60,20 +60,21 @@ namespace UI.Controllers
             v.NavTabs.Add(AddTab(Factory.tra("Dashboard"), "dashboard", "/Dashboard/Widgets?pid=" + Factory.CurrentUser.j02ID));
             v.NavTabs.Add(AddTab(Factory.tra("Můj kapacitní plán"), "gantt", "/j02/TabGantt?pid="+Factory.CurrentUser.j02ID.ToString()));
             string strBadge = null;
-            if (c.a01_count_involved > 0) strBadge = c.a01_count_involved.ToString();
-            v.NavTabs.Add(AddTab(Factory.tra("Jsem zapojen"), "involved", "/TheGrid/SlaveView?prefix=a01&master_flag=involved", false, strBadge));
-            strBadge = null;
-            if (c.a01_count_leader > 0) strBadge = c.a01_count_leader.ToString();
-            v.NavTabs.Add(AddTab(Factory.tra("Vedoucí"), "leader", "/TheGrid/SlaveView?prefix=a01&master_flag=leader", false, strBadge));
-            strBadge = null;
-            if (c.a01_count_member > 0) strBadge = c.a01_count_member.ToString();
-            v.NavTabs.Add(AddTab(Factory.tra("Člen"), "member", "/TheGrid/SlaveView?prefix=a01&master_flag=member", false, strBadge));
-            strBadge = null;
-            if (c.a01_count_invited > 0) strBadge = c.a01_count_invited.ToString();
-            v.NavTabs.Add(AddTab(Factory.tra("Přizvaná osoba"), "invited", "/TheGrid/SlaveView?prefix=a01&master_flag=invited", false, strBadge));
-            strBadge = null;
-            if (c.a01_count_issuer > 0) strBadge = c.a01_count_issuer.ToString();
-            v.NavTabs.Add(AddTab(Factory.tra("Zakladatel"), "issuer", "/TheGrid/SlaveView?prefix=a01&master_flag=issuer", false, strBadge));
+            //if (c.a01_count_involved > 0) strBadge = c.a01_count_involved.ToString();
+            //v.NavTabs.Add(AddTab(Factory.tra("Akce"), "a01", "/TheGrid/SlaveView?prefix=a01", false, strBadge));
+            v.NavTabs.Add(AddTab(Factory.tra("Akce"), "a01", "/TheGrid/SlaveView?prefix=a01", false, null));
+            //strBadge = null;
+            //if (c.a01_count_leader > 0) strBadge = c.a01_count_leader.ToString();
+            //v.NavTabs.Add(AddTab(Factory.tra("Vedoucí"), "leader", "/TheGrid/SlaveView?prefix=a01&master_flag=leader", false, strBadge));
+            //strBadge = null;
+            //if (c.a01_count_member > 0) strBadge = c.a01_count_member.ToString();
+            //v.NavTabs.Add(AddTab(Factory.tra("Člen"), "member", "/TheGrid/SlaveView?prefix=a01&master_flag=member", false, strBadge));
+            //strBadge = null;
+            //if (c.a01_count_invited > 0) strBadge = c.a01_count_invited.ToString();
+            //v.NavTabs.Add(AddTab(Factory.tra("Přizvaná osoba"), "invited", "/TheGrid/SlaveView?prefix=a01&master_flag=invited", false, strBadge));
+            //strBadge = null;
+            //if (c.a01_count_issuer > 0) strBadge = c.a01_count_issuer.ToString();
+            //v.NavTabs.Add(AddTab(Factory.tra("Zakladatel"), "issuer", "/TheGrid/SlaveView?prefix=a01&master_flag=issuer", false, strBadge));
 
 
             strBadge = null;            
@@ -102,23 +103,7 @@ namespace UI.Controllers
             v.DefaultNavTabUrl = deftab.Url;
         }
 
-        private BO.ThePeriod InhalePeriodFilter()
-        {
-            var ret = _pp.ByPid(0);
-            int x = Factory.CBL.LoadUserParamInt("grid-period-value");
-            if (x > 0)
-            {
-                ret = _pp.ByPid(x);
-            }
-            else
-            {
-                ret.d1 = Factory.CBL.LoadUserParamDate("grid-period-d1");
-                ret.d2 = Factory.CBL.LoadUserParamDate("grid-period-d2");
-
-            }
-
-            return ret;
-        }
+        
 
         public IActionResult School(int a03id, int a10id)
         {

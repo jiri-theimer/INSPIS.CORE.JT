@@ -41,6 +41,7 @@ namespace UI.Models
         public string master_flag { get; set; }
         public string addfilterid { get; set; }
         public string fixedcolumns { get; set; }
+        public int viewflag { get; set; }
 
     }
 }

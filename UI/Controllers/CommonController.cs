@@ -82,7 +82,7 @@ namespace UI.Controllers
                 }
 
             }
-            mq.InhaleMasterEntityQuery(master_entity, master_pid,null);
+            mq.InhaleMasterEntityQuery(master_entity, master_pid,null,null);
 
             if (string.IsNullOrEmpty(queryfield) == false)
             {
@@ -207,7 +207,7 @@ namespace UI.Controllers
         public List<int> GetPidsOfQuery(string entity, string master_prefix,int master_pid)
         {
             var mq = new BO.myQuery(entity);            
-            mq.InhaleMasterEntityQuery(master_prefix, master_pid, null);
+            mq.InhaleMasterEntityQuery(master_prefix, master_pid, null,null);
             mq.IsRecordValid = true;
 
             switch (entity.Substring(0,3))

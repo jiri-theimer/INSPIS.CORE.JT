@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using UI.Models;
 using System.ComponentModel;
 using BO;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace UI.Controllers
 {
@@ -27,13 +28,35 @@ namespace UI.Controllers
             _pp = pp;
         }
 
-        public IActionResult FlatView(string prefix,int go2pid)    //pouze grid bez subform
-        {            
+        public IActionResult FlatView(string prefix,int go2pid,string master_flag)    //pouze grid bez subform
+        {
             var v = inhaleGridViewInstance(prefix, go2pid);
+            v.master_flag = master_flag;
             v.j72id = Factory.CBL.LoadUserParamInt("flatview-j72id-" + prefix);
+
+            if (v.prefix=="a01" || v.prefix == "h04")
+            {
+                if (string.IsNullOrEmpty(v.master_flag))
+                {
+                    v.master_flag = Factory.CBL.LoadUserParam("grid-master_flag-" + v.prefix, "");
+                }                
+                if (!string.IsNullOrEmpty(v.master_flag))
+                {
+                    v.master_entity = "j02Person";
+                    v.master_pid = Factory.CurrentUser.j02ID;
+                }
+                v.period = new PeriodViewModel();
+                v.period.IsShowButtonRefresh = true;
+                var per = InhaleGridPeriodDates(v.prefix);
+                v.period.PeriodValue = per.pid;
+                v.period.d1 = per.d1;
+                v.period.d2 = per.d2;
+            }
             return View(v);
         }
+
         
+
         public IActionResult MasterView(string prefix,int go2pid)    //grid horní + spodní panel
         {
             TheGridInstanceViewModel v = inhaleGridViewInstance(prefix, go2pid);
@@ -135,7 +158,20 @@ namespace UI.Controllers
             {
                 AddMessage("Musíte vybrat záznam z nadřízeného panelu.");
             }
-            
+            if (v.prefix == "a01" || v.prefix == "h04")
+            {
+                if (string.IsNullOrEmpty(v.master_flag))
+                {
+                    v.master_flag = Factory.CBL.LoadUserParam("grid-master_flag-" + v.prefix, "");
+                }                
+                v.period = new PeriodViewModel();
+                v.period.IsShowButtonRefresh = true;
+                var per = InhaleGridPeriodDates(v.prefix);
+                v.period.PeriodValue = per.pid;
+                v.period.d1 = per.d1;
+                v.period.d2 = per.d2;
+            }
+
             return View(v);
         }
         private TheGridInstanceViewModel inhaleGridViewInstance(string prefix,int go2pid)
@@ -149,14 +185,15 @@ namespace UI.Controllers
             {
                 AddMessage("Grid entita nebyla nalezena.");
             }
-            if (c.IsGlobalPeriodQuery)
+            if (v.prefix=="a01" || v.prefix=="h04")
             {
                 v.period = new PeriodViewModel();
                 v.period.IsShowButtonRefresh = true;
-                BO.ThePeriod per = InhaleGridPeriodDates();
+                BO.ThePeriod per = InhaleGridPeriodDates(v.prefix);
                 v.period.PeriodValue = per.pid;
                 v.period.d1 = per.d1;
                 v.period.d2 = per.d2;
+
             }
 
             return v;
@@ -175,6 +212,7 @@ namespace UI.Controllers
             gridState.OnDblClick = tgi.ondblclick;
             gridState.AddFilterID = tgi.addfilterid;
             gridState.FixedColumns = tgi.fixedcolumns;
+            gridState.MasterViewFlag = tgi.viewflag;
             if (string.IsNullOrEmpty(gridState.FixedColumns) == false)
             {
                 gridState.j72Columns = gridState.FixedColumns;
@@ -209,6 +247,7 @@ namespace UI.Controllers
             gridState.OnDblClick = tgi.ondblclick;
             gridState.AddFilterID = tgi.addfilterid;
             gridState.FixedColumns = tgi.fixedcolumns;
+            gridState.MasterViewFlag = tgi.viewflag;
             if (string.IsNullOrEmpty(gridState.FixedColumns) == false)
             {
                 gridState.j72Columns = gridState.FixedColumns;
@@ -272,12 +311,13 @@ namespace UI.Controllers
                 return render_thegrid_error(string.Format("Nelze načíst grid state s id!", tgi.j72id.ToString()));
                 
             }
-            
+           
             gridState.j75CurrentRecordPid = tgi.go2pid;
             gridState.MasterPID = tgi.master_pid;
             gridState.ContextMenuFlag = tgi.contextmenuflag;
             gridState.OnDblClick = tgi.ondblclick;
             gridState.AddFilterID = tgi.addfilterid;
+            gridState.MasterFlag = tgi.master_flag;
             gridState.FixedColumns = tgi.fixedcolumns;
             if (string.IsNullOrEmpty(gridState.FixedColumns) == false)
             {
@@ -303,17 +343,18 @@ namespace UI.Controllers
             mq.lisPeriods = _pp.getPallete();
             
             InhaleAddFilter(gridState.AddFilterID, ref mq);
-            if (string.IsNullOrEmpty(gridState.j72MasterEntity) && Factory.EProvider.ByPrefix(mq.Prefix).IsGlobalPeriodQuery)
+            if (mq.Prefix=="a01" || mq.Prefix=="h04")
             {
-                BO.ThePeriod per = InhaleGridPeriodDates();
+                BO.ThePeriod per = InhaleGridPeriodDates(mq.Prefix);
                 mq.global_d1 = per.d1;
                 mq.global_d2 = per.d2;
+
             }
             if (gridState.j72HashJ73Query)
             {
                 mq.lisJ73 = Factory.j72TheGridTemplateBL.GetList_j73(gridState.j72ID,gridState.j72Entity.Substring(0,3));
             }
-            mq.InhaleMasterEntityQuery(gridState.j72MasterEntity, gridState.MasterPID,gridState.MasterFlag);
+            mq.InhaleMasterEntityQuery(gridState.j72MasterEntity, gridState.MasterPID,gridState.MasterFlag,mq.Prefix);
 
             return Factory.gridBL.GetList(mq);
         }
@@ -324,9 +365,10 @@ namespace UI.Controllers
             switch (strAddFilterID)
             {
                 case "dashboard":
-                    BO.ThePeriod per = InhaleGridPeriodDates();
+                    BO.ThePeriod per = InhaleGridPeriodDates(mq.Prefix);
                     mq.global_d1 = per.d1;
                     mq.global_d2 = per.d2;
+
                     break;
                 case "school":
                     mq.a10id = Factory.CBL.LoadUserParamInt("DashboardSchool-a10id");
@@ -375,9 +417,9 @@ namespace UI.Controllers
             }
             mq.lisPeriods = _pp.getPallete();
             InhaleAddFilter(gridState.AddFilterID, ref mq);
-            if (string.IsNullOrEmpty(gridState.j72MasterEntity) && Factory.EProvider.ByPrefix(mq.Prefix).IsGlobalPeriodQuery)
+            if (mq.Prefix=="a01" || mq.Prefix=="h04")
             {
-                BO.ThePeriod per = InhaleGridPeriodDates();
+                BO.ThePeriod per = InhaleGridPeriodDates(mq.Prefix);                
                 mq.global_d1 = per.d1;
                 mq.global_d2 = per.d2;
             }
@@ -389,7 +431,7 @@ namespace UI.Controllers
 
 
             }
-            mq.InhaleMasterEntityQuery(gridState.j72MasterEntity, gridState.MasterPID,gridState.MasterFlag);
+            mq.InhaleMasterEntityQuery(gridState.j72MasterEntity, gridState.MasterPID,gridState.MasterFlag,mq.Prefix);
                         
             var dtFooter = Factory.gridBL.GetList(mq, true);            
             int intVirtualRowsCount = 0;
@@ -868,21 +910,23 @@ namespace UI.Controllers
         }
 
 
-        private BO.ThePeriod InhaleGridPeriodDates()
-        {
-            var ret = _pp.ByPid(0);
-            var x = Factory.CBL.LoadUserParamInt("grid-period-value");
-            if (x > 0)
+        private BO.ThePeriod InhaleGridPeriodDates(string prefix)
+        {            
+            int x = Factory.CBL.LoadUserParamInt("grid-period-value-"+prefix);
+            switch (x)
             {
-                ret = _pp.ByPid(x);
+                case 0: //nefiltrovat období
+                    return _pp.ByPid(0);
+                case 1:     //ručně zadaný interval d1-d2
+                    var ret = _pp.ByPid(1);
+                    ret.d1 = Factory.CBL.LoadUserParamDate("grid-period-d1-"+prefix);
+                    ret.d2 = Factory.CBL.LoadUserParamDate("grid-period-d2-"+prefix);
+                    return ret;  
+                default:    //pojmenované období
+                    return _pp.ByPid(x);
+                    
             }
-            else
-            {
-                ret.d1 = Factory.CBL.LoadUserParamDate("grid-period-d1");
-                ret.d2 = Factory.CBL.LoadUserParamDate("grid-period-d2");
-
-            }
-            return ret;
+            
         }
 
 

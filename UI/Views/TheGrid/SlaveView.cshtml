@@ -1,10 +1,11 @@
 ﻿@model TheGridInstanceViewModel
+@inject BL.Factory _f
 
 @{
 
     Layout = "~/Views/Shared/_LayoutSubform.cshtml";
 
-    if (Model.entity == null || Model.master_pid==0)
+    if (Model.entity == null || Model.master_pid == 0)
     {
         return;
     }
@@ -12,6 +13,48 @@
 }
 
 @addTagHelper *,UI
+
+@if (Model.prefix == "a01")
+{
+    <table>
+        <tr>
+
+            <td>
+                <select class="form-control" asp-for="@Model.master_flag">
+                    <option value="">@("-- "+_f.tra("Mé zapojení do akce")+" --")</option>
+                    <option value="involved">@_f.tra("Jsem zapojen do akce")</option>
+                    <option value="leader">@_f.tra("Jsem vedoucím týmu")</option>
+                    <option value="member">@_f.tra("Jsem členem týmu")</option>
+                    <option value="invited">@_f.tra("Jsem přizvanou osobou v týmu")</option>
+                    <option value="issuer">@_f.tra("Jsem zakladatelem akce")</option>
+                </select>
+            </td>
+            <td>
+                @Html.EditorFor(m => m.period, "~/Views/Shared/_Period.cshtml")
+            </td>
+        </tr>
+    </table>
+
+}
+@if (Model.prefix == "h04")
+{
+    <table>
+        <tr>
+            <td>
+                <select class="form-control" asp-for="@Model.master_flag">
+                    <option value="">@("-- "+_f.tra("Mé zapojení do úkolu")+" --")</option>
+                    <option value="member">@_f.tra("Jsem řešitelem úkolu")</option>
+                    <option value="issuer">@_f.tra("Jsem zakladatel úkolu")</option>
+
+                </select>
+            </td>
+            <td>
+                @Html.EditorFor(m => m.period, "~/Views/Shared/_Period.cshtml")
+            </td>
+        </tr>
+    </table>
+
+}
 
 <vc:the-grid entity="@Model.entity" j72id="@Model.j72id" go2pid="@Model.go2pid" master_entity="@Model.master_entity" master_pid="@Model.master_pid" contextmenuflag="@Model.contextmenuflag" ondblclick="@Model.dblclick" master_flag="@Model.master_flag" masterviewflag="3" addfilterid="" fixedcolumns=""></vc:the-grid>
 
@@ -23,6 +66,44 @@
 
     $(document).ready(function () {
 
+         $("#master_flag").val("@Model.master_flag");
+
+        $("#master_flag").change(function () {
+            $.post("/Common/SetUserParam", { key: "grid-master_flag-@Model.prefix", value: $(this).val() }, function (data) {
+                reload();
+
+            });
+        });
+
+        @if(Model.period != null)
+        {
+        <text>
+        $("#PeriodValue").on("change", function () {
+            $.post("/Common/SetUserParam", { key: "grid-period-value-@Model.prefix",value:$(this).val()  }, function (data) {
+                reload();
+
+            });
+        });
+
+        $("#cmdRefreshPeriod").on("click", function () {
+            var k = [];
+            var v = [];
+            k.push("grid-period-value-@Model.prefix");
+            v.push($("#PeriodValue").val());
+            k.push("grid-period-d1-@Model.prefix");
+            v.push($("#d1helper").val());
+            k.push("grid-period-d2-@Model.prefix");
+            v.push($("#d2helper").val());
+
+            $.post("/Common/SetUserParams", { keys: k, values:v  }, function (data) {
+                reload();
+
+            });
+
+        });
+
+        </text>
+        }
 
 
 
@@ -35,13 +116,18 @@
 
         }
 
+        function reload() {
+            location.replace("/TheGrid/SlaveView?prefix=@Model.prefix&master_entity=@Model.master_entity&master_pid=@Model.master_pid");
+
+        }
+
 
 
         function change_grid(j72id) {
             var strKey = "slaveview-j72id-@(Model.prefix)-@(Model.master_entity)";
 
             $.post("/Common/SetUserParam", { key: strKey,value:j72id  }, function (data) {
-                location.replace("/TheGrid/SlaveView?prefix=@Model.prefix&master_entity=@Model.master_entity&master_pid=@Model.master_pid");
+                reload();
 
             });
         }

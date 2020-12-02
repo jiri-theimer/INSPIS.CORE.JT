@@ -73,7 +73,7 @@ namespace UI.Controllers
             mq.explicit_orderby = ce.SqlOrderByCombo;
 
 
-            mq.InhaleMasterEntityQuery(masterprefix, masterpid, null);
+            mq.InhaleMasterEntityQuery(masterprefix, masterpid, null,null);
 
 
             var dt = Factory.gridBL.GetList(mq);
@@ -183,7 +183,7 @@ namespace UI.Controllers
             }
             mq.explicit_orderby = ce.SqlOrderByCombo;
 
-            mq.InhaleMasterEntityQuery(masterprefix, masterpid, null);
+            mq.InhaleMasterEntityQuery(masterprefix, masterpid, null,null);
 
             List<int> selpids = null;
             if (String.IsNullOrEmpty(selectedvalues) == false)

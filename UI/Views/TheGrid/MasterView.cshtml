@@ -18,10 +18,7 @@
 
 
 <div id="splitter_container" class="splitter-container-top2bottom">
-    @if (Model.period != null)
-    {
-        @Html.EditorFor(m => m.period, "~/Views/Shared/_Period.cshtml")
-    }
+    
     <div id="splitter_panel1" class="splitter-panel-top">
         <vc:the-grid entity="@Model.entity" j72id="@Model.j72id" go2pid="@Model.go2pid" master_entity="" master_pid="0" contextmenuflag="@Model.contextmenuflag" ondblclick="tg_dblclick" master_flag="@Model.master_flag" masterviewflag="2" addfilterid="" fixedcolumns=""></vc:the-grid>
 
@@ -76,33 +73,7 @@
         _mainmenu_highlight_current(cmdMenuID);
 
 
-        @if(Model.period != null)
-        {
-        <text>
-        $("#PeriodValue").on("change", function () {
-            $.post("/Common/SetUserParam", { key: "grid-period-value",value:$(this).val()  }, function (data) {
-                location.replace("/TheGrid/MasterView?prefix=@Model.prefix");
-
-            });
-        });
-        $("#cmdRefreshPeriod").on("click", function () {
-            var k = [];
-            var v = [];
-            k.push("grid-period-value");
-            v.push($("#PeriodValue").val());
-            k.push("grid-period-d1");
-            v.push($("#d1helper").val());
-            k.push("grid-period-d2");
-            v.push($("#d2helper").val());
-
-            $.post("/Common/SetUserParams", { keys: k, values:v  }, function (data) {
-                location.replace("/TheGrid/MasterView?prefix=@Model.prefix");
-
-            });
-
-        });
-        </text>
-        }
+       
 
     });
 
