@@ -176,7 +176,7 @@ namespace BL
                 case 51:
                     strName = "Minulý rok";
                     d1 = new DateTime(d1.Year - 1, 1, 1);
-                    d2 = new DateTime(d1.Year - 1, 12, 31);
+                    d2 = d1.AddYears(1).AddDays(-1);
                     strInterval = d1.Year.ToString();
                     break;
                 case 52:

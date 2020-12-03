@@ -71,7 +71,7 @@ namespace UI.Views.Shared.Components.TheGrid
             ret.AdhocFilter = _colsProvider.ParseAdhocFilterFromString(gridState.j75Filter, ret.Columns);
             ret.MasterEntity = master_entity;
             ret.MasterPID = master_pid;
-            ret.MasterFlag = master_flag;            
+            
             return View("Default", ret);
 
 

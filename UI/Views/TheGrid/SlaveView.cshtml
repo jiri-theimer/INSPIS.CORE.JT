@@ -20,7 +20,7 @@
         <tr>
 
             <td>
-                <select class="form-control" asp-for="@Model.master_flag">
+                <select class="form-control" asp-for="@Model.addfilterid">
                     <option value="">@("-- "+_f.tra("Mé zapojení do akce")+" --")</option>
                     <option value="involved">@_f.tra("Jsem zapojen do akce")</option>
                     <option value="leader">@_f.tra("Jsem vedoucím týmu")</option>
@@ -41,7 +41,7 @@
     <table>
         <tr>
             <td>
-                <select class="form-control" asp-for="@Model.master_flag">
+                <select class="form-control" asp-for="@Model.addfilterid">
                     <option value="">@("-- "+_f.tra("Mé zapojení do úkolu")+" --")</option>
                     <option value="member">@_f.tra("Jsem řešitelem úkolu")</option>
                     <option value="issuer">@_f.tra("Jsem zakladatel úkolu")</option>
@@ -56,7 +56,8 @@
 
 }
 
-<vc:the-grid entity="@Model.entity" j72id="@Model.j72id" go2pid="@Model.go2pid" master_entity="@Model.master_entity" master_pid="@Model.master_pid" contextmenuflag="@Model.contextmenuflag" ondblclick="@Model.dblclick" master_flag="@Model.master_flag" masterviewflag="3" addfilterid="" fixedcolumns=""></vc:the-grid>
+<vc:the-grid entity="@Model.entity" j72id="@Model.j72id" go2pid="@Model.go2pid" master_entity="@Model.master_entity" master_pid="@Model.master_pid" contextmenuflag="@Model.contextmenuflag" ondblclick="@Model.dblclick" master_flag="@Model.
+    lag" masterviewflag="3" addfilterid="@Model.addfilterid" fixedcolumns=""></vc:the-grid>
 
 
 
@@ -66,10 +67,13 @@
 
     $(document).ready(function () {
 
-         $("#master_flag").val("@Model.master_flag");
+        $("#addfilterid").val("@Model.addfilterid");
+        if ($("#addfilterid").val() != "") {
+            $("#addfilterid").css("background-color", "red");
+        }
 
-        $("#master_flag").change(function () {
-            $.post("/Common/SetUserParam", { key: "grid-master_flag-@Model.prefix", value: $(this).val() }, function (data) {
+        $("#addfilterid").change(function () {
+            $.post("/Common/SetUserParam", { key: "grid-addfilterid-@Model.prefix", value: $(this).val() }, function (data) {
                 reload();
 
             });
@@ -84,6 +88,10 @@
 
             });
         });
+
+        if ($("#PeriodValue").val() != "0" && $("#PeriodValue").val() != "") {
+            $("#PeriodValue").css("background-color", "red");
+        }
 
         $("#cmdRefreshPeriod").on("click", function () {
             var k = [];

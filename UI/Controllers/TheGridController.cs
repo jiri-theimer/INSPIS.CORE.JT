@@ -28,23 +28,20 @@ namespace UI.Controllers
             _pp = pp;
         }
 
-        public IActionResult FlatView(string prefix,int go2pid,string master_flag)    //pouze grid bez subform
+        public IActionResult FlatView(string prefix,int go2pid,string master_flag,string addfilterid)    //pouze grid bez subform
         {
             var v = inhaleGridViewInstance(prefix, go2pid);
             v.master_flag = master_flag;
+            v.addfilterid = addfilterid;
             v.j72id = Factory.CBL.LoadUserParamInt("flatview-j72id-" + prefix);
 
             if (v.prefix=="a01" || v.prefix == "h04")
             {
-                if (string.IsNullOrEmpty(v.master_flag))
+                if (string.IsNullOrEmpty(v.addfilterid))
                 {
-                    v.master_flag = Factory.CBL.LoadUserParam("grid-master_flag-" + v.prefix, "");
+                    v.addfilterid = Factory.CBL.LoadUserParam("grid-addfilterid-" + v.prefix, "");
                 }                
-                if (!string.IsNullOrEmpty(v.master_flag))
-                {
-                    v.master_entity = "j02Person";
-                    v.master_pid = Factory.CurrentUser.j02ID;
-                }
+                
                 v.period = new PeriodViewModel();
                 v.period.IsShowButtonRefresh = true;
                 var per = InhaleGridPeriodDates(v.prefix);
@@ -147,22 +144,23 @@ namespace UI.Controllers
                 return  "@pid";
             }
         }
-        public IActionResult SlaveView(string master_entity,int master_pid, string prefix, int go2pid,string master_flag)    //podřízený subform v rámci MasterView
+        public IActionResult SlaveView(string master_entity,int master_pid, string prefix, int go2pid,string master_flag,string addfilterid)    //podřízený subform v rámci MasterView
         {
             TheGridInstanceViewModel v = inhaleGridViewInstance(prefix, go2pid);
             v.j72id = Factory.CBL.LoadUserParamInt("slaveview-j72id-" + prefix + "-" + master_entity);
             v.master_entity = master_entity;
             v.master_pid = master_pid;
             v.master_flag = master_flag;
+            v.addfilterid = addfilterid;
             if (String.IsNullOrEmpty(v.master_entity) || v.master_pid == 0)
             {
                 AddMessage("Musíte vybrat záznam z nadřízeného panelu.");
             }
             if (v.prefix == "a01" || v.prefix == "h04")
             {
-                if (string.IsNullOrEmpty(v.master_flag))
+                if (string.IsNullOrEmpty(v.addfilterid))
                 {
-                    v.master_flag = Factory.CBL.LoadUserParam("grid-master_flag-" + v.prefix, "");
+                    v.addfilterid = Factory.CBL.LoadUserParam("grid-addfilterid-" + v.prefix, "");
                 }                
                 v.period = new PeriodViewModel();
                 v.period.IsShowButtonRefresh = true;
@@ -185,16 +183,7 @@ namespace UI.Controllers
             {
                 AddMessage("Grid entita nebyla nalezena.");
             }
-            if (v.prefix=="a01" || v.prefix=="h04")
-            {
-                v.period = new PeriodViewModel();
-                v.period.IsShowButtonRefresh = true;
-                BO.ThePeriod per = InhaleGridPeriodDates(v.prefix);
-                v.period.PeriodValue = per.pid;
-                v.period.d1 = per.d1;
-                v.period.d2 = per.d2;
-
-            }
+            
 
             return v;
 
@@ -354,14 +343,54 @@ namespace UI.Controllers
             {
                 mq.lisJ73 = Factory.j72TheGridTemplateBL.GetList_j73(gridState.j72ID,gridState.j72Entity.Substring(0,3));
             }
-            mq.InhaleMasterEntityQuery(gridState.j72MasterEntity, gridState.MasterPID,gridState.MasterFlag,mq.Prefix);
+            mq.InhaleMasterEntityQuery(gridState.j72MasterEntity, gridState.MasterPID,gridState.MasterFlag);
 
             return Factory.gridBL.GetList(mq);
         }
 
-        private void InhaleAddFilter(string strAddFilterID,ref BO.myQuery mq)
+        private void InhaleAddFilter(string strAddFilterID, ref BO.myQuery mq)
+        {
+            if (string.IsNullOrEmpty(strAddFilterID)) return;
+            if (strAddFilterID.Contains("|"))
+            {
+                foreach(string s in BO.BAS.ConvertString2List(strAddFilterID, "|"))
+                {
+                    InhaleOne_Piece_Of_AddFilter(strAddFilterID, ref mq);   //v podmínce pouze je více kusů externích filtrů oddělených |
+                }
+            }
+            else
+            {
+                InhaleOne_Piece_Of_AddFilter(strAddFilterID, ref mq);   //v podmínce pouze jeden externí filtr
+            }
+
+        }
+        private void InhaleOne_Piece_Of_AddFilter(string strAddFilterID,ref BO.myQuery mq)
         {
             
+            if ((mq.Prefix == "a01" || mq.Prefix=="h04") && mq.CurrentUser != null)
+            {
+                switch (strAddFilterID)
+                {
+                    case "issuer":
+                        mq.j02id_issuer = mq.CurrentUser.j02ID;
+                        break;
+                    case "leader":
+                        mq.j02id_leader = mq.CurrentUser.j02ID;
+                        break;
+                    case "member":
+                        mq.j02id_member = mq.CurrentUser.j02ID;
+                        break;
+                    case "involved":
+                        mq.j02id_involved = mq.CurrentUser.j02ID;
+                        break;
+                    case "invited":
+                        mq.j02id_invited = mq.CurrentUser.j02ID;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
             switch (strAddFilterID)
             {
                 case "dashboard":
@@ -431,7 +460,7 @@ namespace UI.Controllers
 
 
             }
-            mq.InhaleMasterEntityQuery(gridState.j72MasterEntity, gridState.MasterPID,gridState.MasterFlag,mq.Prefix);
+            mq.InhaleMasterEntityQuery(gridState.j72MasterEntity, gridState.MasterPID,gridState.MasterFlag);
                         
             var dtFooter = Factory.gridBL.GetList(mq, true);            
             int intVirtualRowsCount = 0;

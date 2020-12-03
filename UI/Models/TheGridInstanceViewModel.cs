@@ -17,6 +17,7 @@ namespace UI.Models
         public string master_entity { get; set; }
         public int master_pid { get; set; }
         public string master_flag { get; set; }
+        public string addfilterid { get; set; }     //externí filtr příznak - lze více hodnot oddělených pipou |
 
         public List<NavTab> NavTabs;
 
