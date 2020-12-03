@@ -177,6 +177,11 @@ namespace UI.Controllers
             v.EmailAddres = v.RecJ02.j02Email;
             v.Mobile = v.RecJ02.j02Mobile;
             v.Phone = v.RecJ02.j02Phone;
+            if (v.RecJ02.a05ID > 0)
+            {
+                v.a05Name = Factory.a05RegionBL.Load(v.RecJ02.a05ID).a05Name;
+            }
+            
 
             return View(v);
         }

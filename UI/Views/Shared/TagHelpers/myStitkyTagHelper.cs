@@ -20,6 +20,9 @@ namespace UI.Views.Shared.TagHelpers
         [HtmlAttributeName("entity")]
         public string Entity { get; set; }
 
+        [HtmlAttributeName("buttontext")]
+        public string ButtonText { get; set; } = "Zatřídit do kategorií";
+
         [HtmlAttributeName("tagnames")]
         public string SelectedTagNames { get; set; }
 
@@ -39,7 +42,7 @@ namespace UI.Views.Shared.TagHelpers
             _sb.AppendLine(string.Format("<input type='hidden' id='TagPids' name='TagPids' value='{0}' />", strSelectedValues));
            
             _sb.AppendLine("<div class='form-group'>");
-            _sb.AppendLine(string.Format("<button id='cmdTagging' type='button' class='btn btn-primary' onclick='mystitky_multiselect(event,\"{0}\")'>Zatřídit do kategorií ★</button>", this.Entity));
+            _sb.AppendLine(string.Format("<button id='cmdTagging' type='button' class='btn btn-primary' onclick='mystitky_multiselect(event,\"{0}\")'>{1} ★</button>", this.Entity,this.ButtonText));
             _sb.AppendLine("</div>");
 
             _sb.AppendLine(string.Format("<input type='hidden' id='TagHtml' name='TagHtml' value=\"{0}\" />", this.SelectedTagHtml));           

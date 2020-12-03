@@ -80,7 +80,12 @@
             </div>
 
             <div class="btn-group">
-                <span id="toolbar_message" class="badge-info">@Model.Message</span>
+                <span id="toolbar_message" class="badge-info">
+                    @if (Model.Message != null)
+                    {
+                        @_f.tra(Model.Message)
+                    }
+                </span>
 
             </div>
 

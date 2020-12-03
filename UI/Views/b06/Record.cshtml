@@ -4,7 +4,7 @@
 @{
     Layout = "~/Views/Shared/_LayoutRecord.cshtml";
     if (Model.Rec == null) return;
-    Model.PageTitle = "Workflow krok";
+    Model.PageTitle = @_f.tra("Workflow krok");
 }
 @addTagHelper *, UI
 
@@ -381,8 +381,8 @@
                 <div class="form-row my-2">
 
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typ úkolu (lhůty)"):</label>
-                    <div class="col-sm-9 col-md-8">
-                        <mycombo entity="h07ToDoType" asp-for="Rec.b06ToDo_h07ID" selectedtext="Rec.h07Name" placeholder="Vybrat typ úkolu..." view-flag="2"></mycombo>
+                    <div class="col-sm-11 col-md-10">
+                        <mycombo entity="h07ToDoType" asp-for="Rec.b06ToDo_h07ID" selectedtext="Rec.h07Name" placeholder="@_f.tra("Vybrat typ úkolu")..." view-flag="2"></mycombo>
 
                     </div>
                 </div>
@@ -469,7 +469,7 @@
                 @_f.tra("Validační SQL dotaz testující možnost provedení kroku"):
             </div>
             <div>
-                (Pokud SQL vrací hodnotu 1, podmínka je splněna)
+                (@_f.tra("Pokud SQL vrací hodnotu 1, podmínka je splněna"))
             </div>
             <div>
                 <textarea asp-for="Rec.b06ValidateBeforeRunSQL" class="form-control" style="min-height:100px;"></textarea>
@@ -479,10 +479,12 @@
                 <input type="text" class="form-control" asp-for="Rec.b06ValidateBeforeErrorMessage" placeholder="Uživatelská hláška v případě nesplnění validačního dotazu" />
             </div>
             <div style="margin-top:20px;">
-                Automatický posun | Krok bude automaticky proveden po splnění následujícího SQL dotazu:
+               @_f.tra("Automatický posun | Krok bude automaticky proveden po splnění následujícího SQL dotazu"):
             </div>
             <div>
-                (Splnění podmínky znamená, že SQL dotaz vrací hodnotu: 1 [typ: int], systém testuje nepřetržitě každých 5 minut)
+                (
+                @_f.tra("Splnění podmínky znamená, že SQL dotaz vrací hodnotu: 1 [typ: int], systém testuje nepřetržitě každých 5 minut")
+                )
             </div>
             <div>
                 <textarea asp-for="Rec.b06ValidateAutoMoveSQL" class="form-control" style="min-height:100px;"></textarea>

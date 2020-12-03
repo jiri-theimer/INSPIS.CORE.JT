@@ -21,6 +21,8 @@ namespace UI.Models
         public string userAgent { get; set; }
         public ClientInfo client_info { get; set; }
 
+        public string a05Name { get; set; }
+
         
     }
 }

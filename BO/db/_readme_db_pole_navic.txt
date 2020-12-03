@@ -17,6 +17,9 @@ j03PingTimestamp
 j03LangIndex
 j03HomePageUrl varchar(50)
 
+[j05Permission]
+j05IsValid
+
 [j90LoginAccessLog]
 j90BrowserFamily varchar(50)
 j90BrowserOS varchar(50)
