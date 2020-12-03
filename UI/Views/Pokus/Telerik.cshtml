@@ -21,70 +21,87 @@
 @addTagHelper *, UI
 
 
-<kendotree tree-datasource="@Model.treeNodes" clientid="strom1"></kendotree>
+<div style="width:300px;">
+    <select asp-for="@Model.SelectedID" class="form-control" onselect="sel()" onfocus="foc()">
+        <option value="0">--Typ akce--</option>
+        
+    </select>
+    
+</div>
+
+<div style="width:300px;">
+    <myselect entity="a10EventType" asp-for="@Model.a10ID" firstemptyrowtext="--Vybrat typ akce--" firstemptyrowvalue="0" textfield="a10Name"></myselect>
+</div>
 
 
-
-
-
-<script>
+<script type="text/javascript">
 
     $(document).ready(function () {
-           
-        var strom1 = $("#strom1").kendoTreeView(
-            {
-                checkboxes: {
-                    checkChildren: true
-                },
-                dataSource: dsstrom1,
-                check: onCheck,
-                template: "<a class='cm' onclick='_cm(event,\"#: item.prefix #\",#: item.id #)'>☰</a><span> #: item.text # </span>"
+
+
+        $("#SelectedIDx").focus(function (e) {            
+            if (!$(this).prop("naplneno")) {
+
+                var s = "<option value='0'>--Typ akce--</option><option value='1'>Hovado</option>";
+                s += "<option value='2'>Debil</option>";
+                s += "<option value='3'>Blbec</option>";
+                $(this).html(s);
+
+                $(this).prop("naplneno", "1");
+               
+                return;
+                $(this).append(new Option("option text 1", "1"));
+                $(this).append(new Option("option text 2", "2"));
+                $(this).append(new Option("option text 3", "3"));
+                $(this).append(new Option("option text 4", "4"));
+                //$(this).trigger("chosen:updated");
+                //$(this).focus();
+                //$(this).trigger("select");
+                //$("#SelectedID").val("0").trigger("chosen:updated");
+
+                //setTimeout(function () {
+
+                //    $("#SelectedID").trigger("change");
+
+                //}, 1000);
+
+                //$("#SelectedID").trigger("chosen:updated");
+                //$(this).val("0");
+                //$(this).click();
+
+
+
             }
-        );
-
-
             
-       
         });
 
 
+    });
+
+    function hovado(cbx) {
+
+        if (!$(cbx).prop("naplneno")) {
+
+            var s = "<option value='0'>--Typ akce--</option><option value='1'>Hovado</option>";
+            s += "<option value='2'>Debil</option>";
+            s += "<option value='3'>Blbec</option>";
+            $(cbx).html(s);
+
+            $(cbx).prop("naplneno", "1");
+           
 
 
-
-    function onCheck(e) {
-
-        //alert(this.text(e.node) + ": " + this.id(e.node));
-
-            var checkedNodes = [];
-        var treeView = $("#strom1").data("kendoTreeView");
-            var message;
-
-            checkedNodeIds(treeView.dataSource.view(), checkedNodes);
-
-            if (checkedNodes.length > 0) {
-                message = "IDs of checked nodes: " + checkedNodes.join(",");
-            } else {
-                message = "No nodes checked.";
-            }
-
-            alert(message);
         }
+    }
 
 
-        function checkedNodeIds(nodes, checkedNodes) {
-            for (var i = 0; i < nodes.length; i++) {
-                if (nodes[i].checked) {
-                    checkedNodes.push(nodes[i].id);
-                }
 
-                if (nodes[i].hasChildren) {
-                    checkedNodeIds(nodes[i].children.view(), checkedNodes);
-                }
-            }
-        }
+    function sel() {
+        _notify_message("select");
+    }
+    function foc() {
+        _notify_message("focus");
+    }
 </script>
-
-
-</div>
 
 

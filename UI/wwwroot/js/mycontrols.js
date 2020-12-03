@@ -596,3 +596,39 @@ function mytree_init(expandall) {
 
 
 }
+
+
+function myselect_focus(e, cbx, entity, textfield) { //zpracování událost focus pro taghelper mySelect
+    
+    if ($(cbx).prop("naplneno")) {
+        return; //dropdown byl již dříve naplněn daty
+    }
+
+    var firstrow = "";
+    if (cbx.options.length > 0) {
+        firstrow = "<option value='" + cbx.options[0].value + "'>" + cbx.options[0].text + "</option>"; //hack kvůli vizualiazci dropdown
+    }
+
+    
+    for (var i = 1; i <= 20; i++) {
+        $(cbx).append(new Option("Loading...",i));
+    }   
+
+    
+    //$(cbx).load("/TheCombo/GetMySelectHtmlOptions?entity=" + entity + "&textfield=" + textfield);
+   
+    $.post("/TheCombo/GetMySelectHtmlOptions", { textfield: textfield, entity: entity }, function (data) {
+        
+        
+        
+        $(cbx).html(firstrow+data);
+
+       
+        $(cbx).prop("naplneno", "1");
+
+        $(cbx).click();
+
+    });
+    
+
+}

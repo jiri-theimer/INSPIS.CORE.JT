@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -416,7 +417,22 @@ namespace UI.Controllers
             return s.ToString();
         }
 
+        public string GetMySelectHtmlOptions(string entity,string textfield)
+        {
+            var sb = new System.Text.StringBuilder();
+            var mq = new BO.myQuery(entity) { IsRecordValid = true };
+            mq.explicit_selectsql = textfield + " AS combotext";
+            mq.explicit_orderby = textfield;
 
+            var dt = Factory.gridBL.GetList(mq);
+            foreach(DataRow dbRow in dt.Rows)
+            {
+                sb.Append(string.Format("<option value='{0}'>{1}</option>", dbRow["pid"].ToString(), dbRow["combotext"]));
+            }
+            
+
+            return sb.ToString();
+        }
 
     }
 }

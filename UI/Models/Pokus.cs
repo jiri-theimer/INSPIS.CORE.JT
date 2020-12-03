@@ -16,5 +16,8 @@ namespace UI.Models
         public List<UI.Models.myTreeNode> treeItems { get; set; }
 
         public string JsonTreeDatasource { get; set; }
+
+        public int SelectedID { get; set; }
+        public int a10ID { get; set; }
     }
 }
