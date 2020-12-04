@@ -240,14 +240,14 @@
                     footer: true,
                     orientation: 'portrait',
                     pageSize: 'A4',
-                    text: 'PDF (na výšku)'
+                    text: '@_f.tra("PDF (na výšku)")'
                 },
                 {
-                    extend: 'pdfHtml5',
+                    extend: "pdfHtml5",
                     footer: true,
-                    orientation: 'landscape',
+                    orientation: "landscape",
                     pageSize: 'A4',
-                    text: 'PDF (na šířku)'
+                    text: "@_f.tra("PDF (na šířku)")"
                 },
                     </text>
                 }
@@ -256,15 +256,15 @@
                     
                     <text>
                 {
-                    extend: 'excelHtml5',
+                    extend: "excelHtml5",
                     footer: true,
-                    text: 'XLS'
+                    text: "XLS"
                 },
-                { extend: 'csvHtml5', footer: true },
-                { extend: 'copyHtml5', footer: true },
+                { extend: "csvHtml5", footer: true },
+                { extend: "copyHtml5", footer: true },
                 {
                     extend: "print",
-                    text: "Tisk",
+                    text: "@_f.tra("Tisk")",
                     footer: true,
                     autoPrint: true
                 }
