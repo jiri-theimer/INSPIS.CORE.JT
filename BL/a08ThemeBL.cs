@@ -37,6 +37,7 @@ namespace BL
 
         public IEnumerable<BO.a08Theme> GetList(BO.myQuery mq)
         {
+            if (mq.explicit_orderby == null) mq.explicit_orderby = "a.a08Name";
             DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.a08Theme>(fq.FinalSql, fq.Parameters);
         }

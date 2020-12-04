@@ -417,16 +417,22 @@ namespace UI.Controllers
             return s.ToString();
         }
 
-        public string GetMySelectHtmlOptions(string entity,string textfield)
+        public string GetMySelectHtmlOptions(string entity,string textfield,string orderfield)
         {
             var sb = new System.Text.StringBuilder();
             var mq = new BO.myQuery(entity) { IsRecordValid = true };
-            mq.explicit_selectsql = textfield + " AS combotext";
-            mq.explicit_orderby = textfield;
-
+            textfield = System.Web.HttpUtility.UrlDecode(textfield).Replace("##", "'");
+            mq.explicit_selectsql =textfield + " AS combotext";
+            if (!string.IsNullOrEmpty(orderfield))
+            {               
+                orderfield = System.Web.HttpUtility.UrlDecode(orderfield).Replace("##", "'");
+                mq.explicit_orderby = orderfield;
+            }
+            
             var dt = Factory.gridBL.GetList(mq);
             foreach(DataRow dbRow in dt.Rows)
             {
+                
                 sb.Append(string.Format("<option value='{0}'>{1}</option>", dbRow["pid"].ToString(), dbRow["combotext"]));
             }
             

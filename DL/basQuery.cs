@@ -481,7 +481,7 @@ namespace DL
             }
             if (mq.a08id > 0)
             {
-                if (mq.Prefix == "a12") AQ(ref lis, "a.a08ID=@a08id", "a08id", mq.a08id);
+                if (mq.Prefix == "a12" || mq.Prefix=="a01") AQ(ref lis, "a.a08ID=@a08id", "a08id", mq.a08id);
                 if (mq.Prefix == "f06") AQ(ref lis, "a.f06ID IN (select f06ID FROM a12ThemeForm WHERE a08ID=@a08id)", "a08id", mq.a08id);
             }
             if (mq.a11id > 0)

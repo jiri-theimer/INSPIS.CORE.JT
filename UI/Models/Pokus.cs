@@ -19,5 +19,6 @@ namespace UI.Models
 
         public int SelectedID { get; set; }
         public int a10ID { get; set; }
+        public int a08ID { get; set; }
     }
 }

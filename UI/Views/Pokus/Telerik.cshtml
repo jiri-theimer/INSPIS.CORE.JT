@@ -29,9 +29,19 @@
     
 </div>
 
-<div style="width:300px;">
-    <myselect entity="a10EventType" asp-for="@Model.a10ID" firstemptyrowtext="--Vybrat typ akce--" firstemptyrowvalue="0" textfield="a10Name"></myselect>
+<div class="row p-0" style="width:700px;">
+    <div class="col-auto">
+        <button type="button" onclick="pokus()">pokus</button>
+    </div>
+    <div class="col-auto">
+        <myselect entity="a10EventType" asp-for="@Model.a10ID" firstemptyrowtext="--Vybrat typ akce--" firstemptyrowvalue="0" textfield="a10Name" selectedvalue="2" selectedtext="Úraz"></myselect>
+    </div>
+
+    <div class="col-auto">
+        <myselect entity="a08Theme" asp-for="@Model.a08ID" firstemptyrowtext="--Vybrat téma akce--" firstemptyrowvalue="0" textfield="a08Name+isnull(' ('+a08Ident+')','')" orderfield="a08Name desc,a.a08ID"></myselect>
+    </div>
 </div>
+
 
 
 <script type="text/javascript">
@@ -78,6 +88,8 @@
 
     });
 
+    
+
     function hovado(cbx) {
 
         if (!$(cbx).prop("naplneno")) {
@@ -96,12 +108,21 @@
 
 
 
-    function sel() {
-        _notify_message("select");
+   
+    function pokus() {
+
+       
+        var cbx = document.getElementById("a10ID");
+        var x = $(cbx).find(":selected").index();        
+        //cbx.options[x].scrollIntoView(top);
+
+        _notify_message(cbx.value);
     }
-    function foc() {
-        _notify_message("focus");
-    }
+
+
+
+
+   
 </script>
 
 

@@ -11,6 +11,8 @@ using UI.Models;
 using System.ComponentModel;
 using BO;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Diagnostics;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace UI.Controllers
 {
@@ -28,37 +30,27 @@ namespace UI.Controllers
             _pp = pp;
         }
 
-        public IActionResult FlatView(string prefix,int go2pid,string master_flag,string addfilterid)    //pouze grid bez subform
+        public IActionResult FlatView(string prefix, int go2pid)    //pouze grid bez subform
         {
-            var v = inhaleGridViewInstance(prefix, go2pid);
-            v.master_flag = master_flag;
-            v.addfilterid = addfilterid;
+            FsmViewModel v = LoadFsmViewModel(prefix, go2pid);
+            
             v.j72id = Factory.CBL.LoadUserParamInt("flatview-j72id-" + prefix);
 
-            if (v.prefix=="a01" || v.prefix == "h04")
-            {
-                if (string.IsNullOrEmpty(v.addfilterid))
-                {
-                    v.addfilterid = Factory.CBL.LoadUserParam("grid-addfilterid-" + v.prefix, "");
-                }                
-                
-                v.period = new PeriodViewModel();
-                v.period.IsShowButtonRefresh = true;
-                var per = InhaleGridPeriodDates(v.prefix);
-                v.period.PeriodValue = per.pid;
-                v.period.d1 = per.d1;
-                v.period.d2 = per.d2;
-            }
+
+            
             return View(v);
         }
 
         
 
-        public IActionResult MasterView(string prefix,int go2pid)    //grid horní + spodní panel
+        public IActionResult MasterView(string prefix,int go2pid)    //grid horní + spodní panel, není zde filtrovací pruh s fixním filtrem
         {
-            TheGridInstanceViewModel v = inhaleGridViewInstance(prefix, go2pid);
-            v.j72id = Factory.CBL.LoadUserParamInt("masterview-j72id-" + prefix);
+            var v = new FsmViewModel() { prefix = prefix, go2pid = go2pid, contextmenuflag = 1 };
             BO.TheEntity ce = Factory.EProvider.ByPrefix(prefix);
+            v.entity = ce.TableName;
+            v.entityTitle = ce.AliasPlural;            
+            v.j72id = Factory.CBL.LoadUserParamInt("masterview-j72id-" + prefix);
+            
             var tabs = new List<NavTab>();
             
             switch (prefix)
@@ -144,24 +136,70 @@ namespace UI.Controllers
                 return  "@pid";
             }
         }
-        public IActionResult SlaveView(string master_entity,int master_pid, string prefix, int go2pid,string master_flag,string addfilterid)    //podřízený subform v rámci MasterView
+        public IActionResult SlaveView(string master_entity,int master_pid, string prefix, int go2pid,string master_flag)    //podřízený subform v rámci MasterView
         {
-            TheGridInstanceViewModel v = inhaleGridViewInstance(prefix, go2pid);
+            FsmViewModel v = LoadFsmViewModel(prefix, go2pid);
             v.j72id = Factory.CBL.LoadUserParamInt("slaveview-j72id-" + prefix + "-" + master_entity);
             v.master_entity = master_entity;
             v.master_pid = master_pid;
             v.master_flag = master_flag;
-            v.addfilterid = addfilterid;
+            
             if (String.IsNullOrEmpty(v.master_entity) || v.master_pid == 0)
             {
                 AddMessage("Musíte vybrat záznam z nadřízeného panelu.");
             }
+         
+
+            return View(v);
+        }
+        private FsmViewModel LoadFsmViewModel(string prefix,int go2pid)
+        {
+            var v = new FsmViewModel() { prefix = prefix, go2pid = go2pid,contextmenuflag=1 };
+            BO.TheEntity c = Factory.EProvider.ByPrefix(prefix);
+            v.entity = c.TableName;
+            v.entityTitle = c.AliasPlural;
+            var afi = new List<string>();
+
+            if (v.entity == "")
+            {
+                AddMessage("Grid entita nebyla nalezena.");
+            }
+            
+            if (v.prefix == "a01")
+            {
+                v.FilterA10ID = Factory.CBL.LoadUserParam("grid-filter-a10id");
+                v.FilterA10Name = Factory.CBL.LoadUserParam("grid-filter-a10name");
+                v.FilterA08ID = Factory.CBL.LoadUserParam("grid-filter-a08id");
+                v.FilterA08Name = Factory.CBL.LoadUserParam("grid-filter-a08name");
+                if (BO.BAS.InInt(v.FilterA10ID)>0)
+                {
+                    afi.Add("a10id*"+v.FilterA10ID);
+                }
+                if (BO.BAS.InInt(v.FilterA08ID) > 0)
+                {
+                    afi.Add("a08id*" + v.FilterA08ID);
+                }
+            }
+            if (v.prefix == "h04")
+            {
+                v.FilterH07ID = Factory.CBL.LoadUserParam("grid-filter-h07id");
+                v.FilterH07Name = Factory.CBL.LoadUserParam("grid-filter-h07name");
+                if (BO.BAS.InInt(v.FilterH07ID) > 0)
+                {
+                    afi.Add("h07id*" + v.FilterH07ID);
+                }
+            }
+
+
             if (v.prefix == "a01" || v.prefix == "h04")
             {
-                if (string.IsNullOrEmpty(v.addfilterid))
+                v.FilterMyInvolvement = Factory.CBL.LoadUserParam("grid-filter-myinvolvement-"+v.prefix);
+                if (!string.IsNullOrEmpty(v.FilterMyInvolvement))
                 {
-                    v.addfilterid = Factory.CBL.LoadUserParam("grid-addfilterid-" + v.prefix, "");
-                }                
+                    afi.Add(v.FilterMyInvolvement);
+                }
+                v.addfilterid += string.Join("|", afi);
+
                 v.period = new PeriodViewModel();
                 v.period.IsShowButtonRefresh = true;
                 var per = InhaleGridPeriodDates(v.prefix);
@@ -169,21 +207,6 @@ namespace UI.Controllers
                 v.period.d1 = per.d1;
                 v.period.d2 = per.d2;
             }
-
-            return View(v);
-        }
-        private TheGridInstanceViewModel inhaleGridViewInstance(string prefix,int go2pid)
-        {
-            var v = new TheGridInstanceViewModel() { prefix = prefix, go2pid = go2pid,contextmenuflag=1 };
-            BO.TheEntity c = Factory.EProvider.ByPrefix(prefix);
-            v.entity = c.TableName;
-            v.entityTitle = c.AliasPlural;
-
-            if (v.entity == "")
-            {
-                AddMessage("Grid entita nebyla nalezena.");
-            }
-            
 
             return v;
 
@@ -355,7 +378,7 @@ namespace UI.Controllers
             {
                 foreach(string s in BO.BAS.ConvertString2List(strAddFilterID, "|"))
                 {
-                    InhaleOne_Piece_Of_AddFilter(strAddFilterID, ref mq);   //v podmínce pouze je více kusů externích filtrů oddělených |
+                    InhaleOne_Piece_Of_AddFilter(s, ref mq);   //v podmínce pouze je více kusů externích filtrů oddělených |
                 }
             }
             else
@@ -366,27 +389,42 @@ namespace UI.Controllers
         }
         private void InhaleOne_Piece_Of_AddFilter(string strAddFilterID,ref BO.myQuery mq)
         {
-            
+            if (strAddFilterID.Contains("*"))
+            {
+                var arr = strAddFilterID.Split("*");
+                switch (arr[0])
+                {
+                    case "a10id":
+                        mq.a10id = Convert.ToInt32(arr[1]);
+                        return;
+                    case "a08id":
+                        mq.a08id = Convert.ToInt32(arr[1]);
+                        return;
+                    case "h04id":
+                        mq.h04id = Convert.ToInt32(arr[1]);
+                        return;
+                }
+            }
             if ((mq.Prefix == "a01" || mq.Prefix=="h04") && mq.CurrentUser != null)
             {
                 switch (strAddFilterID)
                 {
                     case "issuer":
                         mq.j02id_issuer = mq.CurrentUser.j02ID;
-                        break;
+                        return;
                     case "leader":
                         mq.j02id_leader = mq.CurrentUser.j02ID;
-                        break;
+                        return;
                     case "member":
                         mq.j02id_member = mq.CurrentUser.j02ID;
-                        break;
+                        return;
                     case "involved":
                         mq.j02id_involved = mq.CurrentUser.j02ID;
-                        break;
+                        return;
                     case "invited":
                         mq.j02id_invited = mq.CurrentUser.j02ID;
-                        break;
-                    default:
+                        return;
+                    default:                        
                         break;
                 }
             }
@@ -398,10 +436,10 @@ namespace UI.Controllers
                     mq.global_d1 = per.d1;
                     mq.global_d2 = per.d2;
 
-                    break;
+                    return;
                 case "school":
                     mq.a10id = Factory.CBL.LoadUserParamInt("DashboardSchool-a10id");
-                    break;
+                    return;
                 case "stat":
                     Factory.CBL.ClearUserParamsCache(); //docílit toho, aby se guid načetl na 100% z databáze
                     string strGUID = Factory.CBL.LoadUserParam("Stat-GridGuid");
@@ -411,7 +449,7 @@ namespace UI.Controllers
                     {
                         mq.explicit_sqlwhere += " AND (" + strAddFilterSql + ")";
                     }
-                    break;
+                    return;
                 
             }
         }

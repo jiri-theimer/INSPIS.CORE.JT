@@ -29,6 +29,8 @@ namespace BO
         public string x55HeaderBackColor { get; set; }
         public string x55HeaderForeColor { get; set; }
         public int x55BoxMaxHeight { get; set; }
+        public int x550Min4DataTables { get; set; }
+        public bool IsUseDatatables { get; set; }   //není db pole - naplní ho incializátor widgetů na stránce
 
         public string CssHeaderDiv { get
             {

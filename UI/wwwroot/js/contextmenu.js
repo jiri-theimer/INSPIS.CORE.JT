@@ -155,10 +155,7 @@
                 menu.$menu.hide();
                 callOnMenuHide(menu);
             });
-            if (self === top) return;
-            //if (window.parent.$("#site_loading1").length > 0) {
-            //    window.parent.$("#site_loading1").click();
-            //}
+            
 
 
 

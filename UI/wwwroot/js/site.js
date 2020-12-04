@@ -763,3 +763,7 @@ function clear_form(a11id,question) {
     }
     
 }
+
+function _showloading() {
+    $("#site_loading1").css("display", "block");
+}

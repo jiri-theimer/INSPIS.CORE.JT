@@ -1,4 +1,4 @@
-﻿@model TheGridInstanceViewModel
+﻿@model FsmViewModel
 @inject BL.Factory _f
 
 @{
@@ -56,8 +56,7 @@
 
 }
 
-<vc:the-grid entity="@Model.entity" j72id="@Model.j72id" go2pid="@Model.go2pid" master_entity="@Model.master_entity" master_pid="@Model.master_pid" contextmenuflag="@Model.contextmenuflag" ondblclick="@Model.dblclick" master_flag="@Model.
-    lag" masterviewflag="3" addfilterid="@Model.addfilterid" fixedcolumns=""></vc:the-grid>
+<vc:the-grid entity="@Model.entity" j72id="@Model.j72id" go2pid="@Model.go2pid" master_entity="@Model.master_entity" master_pid="@Model.master_pid" contextmenuflag="@Model.contextmenuflag" ondblclick="@Model.dblclick" master_flag="@Model.master_flag" masterviewflag="3" addfilterid="@Model.addfilterid" fixedcolumns=""></vc:the-grid>
 
 
 
@@ -67,9 +66,9 @@
 
     $(document).ready(function () {
 
-        $("#addfilterid").val("@Model.addfilterid");
-        if ($("#addfilterid").val() != "") {
-            $("#addfilterid").css("background-color", "red");
+        
+        if ($("#FilterMyInvolvement").val() != "") {
+            $("#FilterMyInvolvement").css("background-color", "red");
         }
 
         $("#addfilterid").change(function () {

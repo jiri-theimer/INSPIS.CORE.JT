@@ -1,4 +1,4 @@
-﻿@model TheGridInstanceViewModel
+﻿@model FsmViewModel
 @inject BL.Factory _f
 
 @{
@@ -22,9 +22,14 @@
 {
     <table>
         <tr>
-
             <td>
-                <select class="form-control" asp-for="@Model.addfilterid">
+                <myselect entity="a10EventType" asp-for="@Model.FilterA10ID" firstemptyrowtext="--@_f.tra("Typ akce")--" firstemptyrowvalue="0" textfield="a10Name" selectedvalue="@Model.FilterA10ID" selectedtext="@Model.FilterA10Name" event_after_changevalue="a10id_onchange" orderfield="a10Name" cssclass_selected="filtered"></myselect>
+            </td>
+            <td>
+                <myselect entity="a08Theme" asp-for="@Model.FilterA08ID" firstemptyrowtext="--@_f.tra("Téma akce")--" firstemptyrowvalue="0" textfield="a08Name+isnull(' ('+a08Ident+')','')" selectedvalue="@Model.FilterA08ID" selectedtext="@Model.FilterA08Name" event_after_changevalue="a08id_onchange" orderfield="a08Name" cssclass_selected="filtered"></myselect>
+            </td>
+            <td>
+                <select class="form-control" asp-for="@Model.FilterMyInvolvement" onchange="myinvolvement_change(this)">
                     <option value="">@("-- "+_f.tra("Mé zapojení do akce")+" --")</option>
                     <option value="involved">@_f.tra("Jsem zapojen do akce")</option>
                     <option value="leader">@_f.tra("Jsem vedoucím týmu")</option>
@@ -36,6 +41,7 @@
             <td>
                 @Html.EditorFor(m => m.period, "~/Views/Shared/_Period.cshtml")
             </td>
+
         </tr>
     </table>
 
@@ -45,11 +51,10 @@
     <table>
         <tr>           
             <td>
-                <select class="form-control" asp-for="@Model.addfilterid">
+                <select class="form-control" asp-for="@Model.FilterMyInvolvement" onchange="myinvolvement_change(this)">
                     <option value="">@("-- "+_f.tra("Mé zapojení do úkolu")+" --")</option>
                     <option value="member">@_f.tra("Jsem řešitelem úkolu")</option>
                     <option value="issuer">@_f.tra("Jsem zakladatel úkolu")</option>
-
                 </select>
             </td>
             <td>
@@ -72,18 +77,10 @@
     $(document.body).css("overflow", "hidden");
 
     $(document).ready(function () {
-        
-        $("#addfilterid").val("@Model.addfilterid");
-        if ($("#addfilterid").val() != "") {
-            $("#addfilterid").css("background-color", "red");
+
+        if ($("#FilterMyInvolvement").val() != "") {
+            $("#FilterMyInvolvement").addClass("filtered");
         }
-
-        $("#addfilterid").change(function () {
-            $.post("/Common/SetUserParam", { key: "grid-addfilterid-@Model.prefix", value: $(this).val() }, function (data) {
-                reload();
-
-            });
-        });
 
         @if(Model.period != null)
         {
@@ -139,13 +136,33 @@
 
         function change_grid(j72id) {
             $.post("/Common/SetUserParam", { key: "flatview-j72id-@(Model.prefix)",value:j72id  }, function (data) {
-                location.replace("/TheGrid/FlatView?prefix=@Model.prefix");
+                reload();
 
             });
         }
 
         function report_nocontext(x31id) {
             _window_open("/x31/ReportNoContext?x31id=" + x31id, 2);
+        }
+        function a10id_onchange(cbx) {                        
+            $.post("/Common/SetUserParams", { keys: ["grid-filter-a10id", "grid-filter-a10name"], values: [cbx.value, cbx.options[cbx.selectedIndex].text]  }, function (data) {
+                reload();
+            });
+        }
+        function a08id_onchange(cbx) {
+            $.post("/Common/SetUserParams", { keys: ["grid-filter-a08id", "grid-filter-a08name"], values: [cbx.value, cbx.options[cbx.selectedIndex].text] }, function (data) {
+                reload();
+            });
+        }
+        function myinvolvement_change(cbx) {
+            $.post("/Common/SetUserParam", { key: "grid-filter-myinvolvement-@Model.prefix", value: cbx.value }, function (data) {
+                reload();
+            });
+        }
+
+        function reload() {  
+            _showloading();
+            location.replace("/TheGrid/FlatView?prefix=@Model.prefix");
         }
     </script>
 

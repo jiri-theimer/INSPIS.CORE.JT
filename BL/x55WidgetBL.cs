@@ -71,6 +71,7 @@ namespace BL
             p.AddNonBlackColorString("x55BoxBackColor", rec.x55BoxBackColor);
             p.AddNonBlackColorString("x55HeaderBackColor", rec.x55HeaderBackColor);
             p.AddNonBlackColorString("x55HeaderForeColor", rec.x55HeaderForeColor);
+            p.AddInt("x550Min4DataTables", rec.x550Min4DataTables);
             
             p.AddInt("x55BoxMaxHeight", rec.x55BoxMaxHeight);
             int intPID = _db.SaveRecord("x55Widget", p.getDynamicDapperPars(), rec);

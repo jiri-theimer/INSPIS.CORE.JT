@@ -18,6 +18,8 @@ namespace UI.Models.Dashboard
         public List<BO.x55Widget> lisUserWidgets { get; set; }
         public int ColumnsPerPage { get; set; }
 
+        public string DataTables_Localisation { get; set; }
+
         
     }
 }

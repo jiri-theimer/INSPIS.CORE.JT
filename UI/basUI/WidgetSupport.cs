@@ -16,6 +16,7 @@ namespace UI
         {
             _f = f;
             _skin = skin;
+            
         }
 
         public BO.Result SavePocetSloupcu(int x)
@@ -70,8 +71,13 @@ namespace UI
                     string s = rec.x55TableSql;
                     s = DL.BAS.ParseMergeSQL(s, _f.CurrentUser.j02ID.ToString()).Replace("@j04id",_f.CurrentUser.j04ID.ToString().Replace("@j03id",_f.CurrentUser.pid.ToString()));                    
                     var dt = _f.gridBL.GetListFromPureSql(s);
-                    var cGen = new BO.CLS.Datatable2Html(new BO.CLS.Datatable2HtmlDef() { ColHeaders = rec.x55TableColHeaders, ColTypes = rec.x55TableColTypes });
-                    rec.x55Content = cGen.CreateHtmlTable(dt,500);
+                    if (dt.Rows.Count >= rec.x550Min4DataTables && rec.x550Min4DataTables>0)
+                    {
+                        rec.IsUseDatatables = true;
+                    }
+                    var cGen = new BO.CLS.Datatable2Html(new BO.CLS.Datatable2HtmlDef() { ColHeaders = rec.x55TableColHeaders, ColTypes = rec.x55TableColTypes,ClientID=rec.x55Code,IsUseDatatables= rec.IsUseDatatables });                    
+                    rec.x55Content = cGen.CreateHtmlTable(dt,1000);
+                    
                 }
                 else
                 {
@@ -97,6 +103,15 @@ namespace UI
             v.ColumnsPerPage = _f.CBL.LoadUserParamInt("Widgets-ColumnsPerPage-"+_skin, 2);
             v.recX56 = _f.x55WidgetBL.LoadState(_f.CurrentUser.pid,_skin);
             v.DockStructure = new WidgetsEnvironment(v.recX56.x56DockState);
+
+            if (_f.CurrentUser.j03LangIndex == 2)
+            {
+                v.DataTables_Localisation = "/lib/datatables/localisation/uk_UA.json";
+            }
+            else
+            {
+                v.DataTables_Localisation = "/lib/datatables/localisation/cs_CZ.json";
+            }
 
             if (v.recX56==null || v.recX56.x56Boxes == null)
             {
