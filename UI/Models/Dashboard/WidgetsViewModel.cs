@@ -20,6 +20,7 @@ namespace UI.Models.Dashboard
 
         public string DataTables_Localisation { get; set; }
 
+        public bool IsPdfSupport { get; set; }
         
     }
 }
