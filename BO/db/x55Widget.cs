@@ -10,6 +10,13 @@ namespace BO
         ExternalPage = 3,
         BuildIn = 4
     }
+    public enum x55DataTablesBtns
+    {
+        None=0,
+        Export=1,
+        ExportPrint=2,
+        ExportPrintPdf=3
+    }
     public class x55Widget : BaseBO
     {
         [Key]
@@ -28,8 +35,9 @@ namespace BO
         public string x55BoxBackColor { get; set; }
         public string x55HeaderBackColor { get; set; }
         public string x55HeaderForeColor { get; set; }
-        public int x55BoxMaxHeight { get; set; }
-        public int x550Min4DataTables { get; set; }
+        public int x55BoxMaxHeight { get; set; }        
+        public int x55DataTablesLimit { get; set; }
+        public x55DataTablesBtns x55DataTablesButtons { get; set; }
         public bool IsUseDatatables { get; set; }   //není db pole - naplní ho incializátor widgetů na stránce
 
         public string CssHeaderDiv { get

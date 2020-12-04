@@ -56,12 +56,12 @@
                 </div>
                 <div class="form-row my-2">
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typy sloupců"):</label>
-                    <div class="col-sm-7 col-md-6">
+                    <div class="col-sm-4 col-md-3">
                         <input class="form-control" asp-for="Rec.x55TableColTypes" />
 
                     </div>
-                    <div class="col-sm-4 col-md-4">
-                        <select asp-for="@Model.Rec.x550Min4DataTables" class="form-control">
+                    <div class="col-sm-3 col-md-3">
+                        <select asp-for="@Model.Rec.x55DataTablesLimit" class="form-control">
                             <option value="0">@_f.tra("Od kolika záznamů zapínat [DataTables]")</option>
                             <option value="1">1</option>
                             <option value="5">5</option>
@@ -73,7 +73,13 @@
                             <option value="999">999</option>
                         </select>
                     </div>
-
+                    <div class="col-sm-4 col-md-4">
+                        <select asp-for="@Model.Rec.x55DataTablesButtons" class="form-control">
+                            <option value="None">@_f.tra("[DataTables] bez tlačítek")</option>                            
+                            <option value="ExportPrint">XLS/CSV/COPY + @_f.tra("Tisk")</option>
+                            <option value="ExportPrintPdf">XLS/CSV/COPY + @_f.tra("Tisk") + PDF</option>                            
+                        </select>
+                    </div>
                 </div>
                 <div class="form-row my-2">
                     <textarea asp-for="Rec.x55TableSql" class="form-control" placeholder="@_f.tra("Zdrojový sql")"></textarea>

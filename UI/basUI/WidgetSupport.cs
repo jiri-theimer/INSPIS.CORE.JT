@@ -71,7 +71,7 @@ namespace UI
                     string s = rec.x55TableSql;
                     s = DL.BAS.ParseMergeSQL(s, _f.CurrentUser.j02ID.ToString()).Replace("@j04id",_f.CurrentUser.j04ID.ToString().Replace("@j03id",_f.CurrentUser.pid.ToString()));                    
                     var dt = _f.gridBL.GetListFromPureSql(s);
-                    if (dt.Rows.Count >= rec.x550Min4DataTables && rec.x550Min4DataTables>0)
+                    if (dt.Rows.Count >= rec.x55DataTablesLimit && rec.x55DataTablesLimit > 0)
                     {
                         rec.IsUseDatatables = true;
                     }
@@ -93,7 +93,19 @@ namespace UI
                             break;
                     }
                 }
-                
+                if (rec.IsUseDatatables && rec.x55DataTablesButtons > BO.x55DataTablesBtns.None)
+                {
+                    v.IsExportButtons = true;   //zobrazovat tlačítka XLS/CSV/COPY
+                }
+                if (rec.IsUseDatatables && rec.x55DataTablesButtons == BO.x55DataTablesBtns.ExportPrintPdf)
+                {
+                    v.IsPdfButtons = true;      //zobrazovat i tlačítko PDF
+                }
+                if (v.IsPdfButtons || rec.x55DataTablesButtons==BO.x55DataTablesBtns.ExportPrint)
+                {
+                    v.IsPrintButton = true;      //zobrazovat i tlačítko PDF
+                }
+
             }
         }
         public void PrepareWidgets(WidgetsViewModel v)
@@ -148,7 +160,7 @@ namespace UI
                 }
             }
             foreach (var c in v.lisUserWidgets)
-            {
+            {                
                 if ((v.DockStructure.Col1.Contains(c) || v.DockStructure.Col2.Contains(c) || v.DockStructure.Col3.Contains(c)) == false)
                 {
                     switch (v.ColumnsPerPage)

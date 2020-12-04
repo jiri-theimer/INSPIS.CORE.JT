@@ -59,7 +59,8 @@ namespace UI.Controllers
                 c.x55HeaderForeColor = v.Rec.x55HeaderForeColor;
                 c.x55HeaderBackColor = v.Rec.x55HeaderBackColor;
                 c.x55BoxMaxHeight = v.Rec.x55BoxMaxHeight;
-                c.x550Min4DataTables = v.Rec.x550Min4DataTables;
+                c.x55DataTablesLimit = v.Rec.x55DataTablesLimit;
+                c.x55DataTablesButtons = v.Rec.x55DataTablesButtons;
 
                 c.ValidUntil = v.Toolbar.GetValidUntil(c);
                 c.ValidFrom = v.Toolbar.GetValidFrom(c);
