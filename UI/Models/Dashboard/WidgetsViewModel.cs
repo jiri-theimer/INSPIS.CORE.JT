@@ -9,6 +9,7 @@ namespace UI.Models.Dashboard
     {
         public BO.j02Person Rec { get; set; }
         public string Skin { get; set; }
+        public bool IsSubform { get; set; }     //true: jedná se o podformulář
         public string BoxColCss { get; set; } = "col-lg-6";
 
         public WidgetsEnvironment DockStructure { get; set; }

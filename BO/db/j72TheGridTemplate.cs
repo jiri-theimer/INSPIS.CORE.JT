@@ -27,7 +27,7 @@ namespace BO
         
         public int j72SelectableFlag { get; set; } = 1;
 
-        public int MasterViewFlag { get; set; }    //1: flatview s testem na masterview, 2:masterview, 3: vždy pouze flatview bez možnosti přepnout
+        public int MasterViewFlag { get; set; }    //1: flatview s možností přepnutí na masterview, 2:masterview s možností přepnutí na flatview, 3: vždy pouze flatview bez možnosti přepnout
         
 
         public bool j72HashJ73Query;

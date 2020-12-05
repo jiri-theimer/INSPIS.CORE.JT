@@ -3,56 +3,30 @@
 
 @{
     ViewData["Title"] = "Dashboard";
-    Layout = "~/Views/Shared/_LayoutSubform.cshtml";
+    if (Model.IsSubform)
+    {
+        Layout = "~/Views/Shared/_LayoutSubform.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+
 }
 @addTagHelper *, UI
 
 
 <link rel="stylesheet" href="/lib/jquery-ui/jquery-ui.min_sortable.css" />
-<link rel="stylesheet" href="/lib/datatables/css/jquery.dataTables.min.css" />
-<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css" />
+@if (Model.lisUserWidgets.Any(p => p.IsUseDatatables))
+{
+    <link rel="stylesheet" href="/lib/datatables/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css" />
+}
+
+<link rel="stylesheet" href="~/css/widgets.css" />
 
 
-<style type="text/css">
-    .column {
-        float: left;
-    }
 
-    div.portlet {
-        margin: 0 1em 1em 0;
-        padding: 0.3em;
-    }
-
-    div.portlet-header {
-        padding: 0.2em 0.3em;
-        margin-bottom: 0.5em;
-        position: relative;
-        cursor: move;
-    }
-
-    .portlet-toggle {
-        position: absolute;
-        top: 50%;
-        right: 0;
-        margin-top: -8px;
-    }
-
-    div.portlet-content {
-        padding: 0.4em;
-        max-height: 400px;
-        overflow: auto;
-    }
-
-        div.portlet-content a {
-            color: #007BFF;
-        }
-
-    .portlet-placeholder {
-        border: 1px dotted black;
-        margin: 0 1em 1em 0;
-        height: 50px;
-    }
-</style>
 
 <script src="/lib/jquery-ui/jquery-ui.min_sortable.js"></script>
 @if (Model.lisUserWidgets.Where(p => p.IsUseDatatables).Count() > 0)
@@ -75,8 +49,19 @@
 
 }
 
-<div class="row bg-light m-0">
+<div id="@(BO.BAS.IIFS(Model.IsSubform,"header_subform","header_index"))" class="row bg-light" >
+    @if (!Model.IsSubform)
+    {
+        <div class="col-auto">
+            <ul class="nav nav-tabs" style="border:none;">
+                <li class="nav-item onetab">
+                    <a class="nav-link active" data-toggle="tab">@_f.CurrentUser.FullName</a>
+                </li>
+            </ul>
 
+
+        </div>
+    }
     <div class="dropdown col-auto">
 
         <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownSnippetLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -105,18 +90,23 @@
 
 
             </ul>
-            <hr />
-            <div style="padding:8px;">
-                @if (Model.lisUserWidgets.Count() > 0)
-                {
-                    <button type="button" onclick="clear_to_factory_confirm()" class="btn btn-sm btn-light">@_f.tra("Nahodit plochu do výchozího (továrního) nastavení")</button>
-                }
-                else
-                {
-                    <button type="button" onclick="clear_to_factory_silent()" class="btn btn-sm btn-light">@_f.tra("Nahodit plochu do výchozího (továrního) nastavení")</button>
-                }
 
-            </div>
+            @if (Model.IsSubform)
+            {
+                <hr />
+                <div style="padding:8px;">
+                    @if (Model.lisUserWidgets.Count() > 0)
+                    {
+                        <button type="button" onclick="clear_to_factory_confirm()" class="btn btn-sm btn-light">@_f.tra("Nahodit plochu do výchozího (továrního) nastavení")</button>
+                    }
+                    else
+                    {
+                        <button type="button" onclick="clear_to_factory_silent()" class="btn btn-sm btn-light">@_f.tra("Nahodit plochu do výchozího (továrního) nastavení")</button>
+                    }
+
+                </div>
+            }
+
 
 
         </div>
@@ -131,7 +121,9 @@
 </div>
 
 
-<div class="form-row" style="margin:0px;border: dotted 1px #F5F5F5;">
+
+
+<div id="@(BO.BAS.IIFS(Model.IsSubform,"container_subform","container_index"))" class="form-row">
     <div class="column @Model.BoxColCss" id="col1">
         @foreach (var c in Model.DockStructure.Col1)
         {
@@ -221,13 +213,10 @@
 
 
     $(document).ready(function () {
-
+        
         _mainmenu_highlight_current("cmdHome");
 
-        if (location.href.indexOf("Home/Index") == -1) {
-            //úvodní spuštění - default, otestovat domovskou stránku
-        }
-
+        
 
         $(".column").sortable({
             connectWith: ".column",

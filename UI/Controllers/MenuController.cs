@@ -60,7 +60,7 @@ namespace UI.Controllers
             }
             if (Factory.CurrentUser.j03HomePageUrl != null)
             {
-                AMI("Tovární HOME stránka", "/Home/Index");
+                AMI("Tovární HOME stránka", "/Dashboard/Widgets");
             }
             DIV();
             AMI("Můj profil", "/Home/MyProfile");

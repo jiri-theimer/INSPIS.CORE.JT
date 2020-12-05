@@ -128,24 +128,10 @@ namespace UI.Controllers
                     return Redirect(Factory.CurrentUser.getHomePageUrl());  //pryč na jinou stránku
                 }
             }
-            
 
+            return RedirectToAction("Widgets", "Dashboard");
            
-            var v = new HomeViewModel();
-            var cW = new UI.WidgetSupport(Factory,"index");
-            cW.PrepareWidgets(v);
-            if (v.recX56.x56Boxes != null)
-            {
-                cW.InhaleWidgetsDataContent(v);
-            }
-            else
-            {
-                var pandulak = new ThePandulak(Factory.App.AppRootFolder + "\\wwwroot\\images\\pandulak");  //když nejsou boxy, tak aspoň 2xpanďulák
-                v.Pandulak1 = pandulak.getPandulakImage(1);
-                v.Pandulak2 = pandulak.getPandulakImage(2);
-            }
             
-            return View(v);
 
         }
 

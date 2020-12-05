@@ -39,9 +39,9 @@ namespace UI.Models
         public string ondblclick { get; set; }
 
         public string master_flag { get; set; }
-        public string addfilterid { get; set; }
+        public string addfilterid { get; set; } //fixní filtrování podle období, typu akce, tématu a zapojení do akce/úkolu
         public string fixedcolumns { get; set; }
-        public int viewflag { get; set; }
+        public int viewflag { get; set; }   //1: flatview s možností přepnutí na masterview, 2:masterview s možností přepnutí na flatview, 3: vždy pouze flatview bez možnosti přepnout
 
     }
 }

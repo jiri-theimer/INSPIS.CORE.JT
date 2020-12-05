@@ -148,9 +148,9 @@ namespace BO
                 case "j02_framework_institution_general.aspx":
                     return "/Dashboard/School";
                 case "j02_framework_administrator.aspx":
-                    return "/Home/Index";
+                    return "/Dashboard/Widgets?skin=index";
                 case null:
-                    return "/Home/Index";
+                    return "/Dashboard/Widgets";
                 default:
                     return this.j03HomePageUrl;
 

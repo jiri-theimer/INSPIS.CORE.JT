@@ -18,16 +18,21 @@ namespace UI.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Widgets");
         }
 
         public IActionResult Widgets(string skin)
         {
-            var v = new WidgetsViewModel() { Skin = skin };
-            if (string.IsNullOrEmpty(v.Skin))
+            if (string.IsNullOrEmpty(skin))
             {
-                return this.StopPageSubform("skin missing");
+                skin = "index";
             }
+            var v = new WidgetsViewModel() { Skin = skin,IsSubform=false };
+            if (v.Skin=="inspector" || v.Skin == "school")
+            {
+                v.IsSubform = true;
+            }
+            
             var cW = new UI.WidgetSupport(Factory, skin);
             cW.PrepareWidgets(v);
             cW.InhaleWidgetsDataContent(v);
@@ -45,13 +50,6 @@ namespace UI.Controllers
             v.Rec = Factory.j02PersonBL.Load(v.pid);
 
             RefreshNavTabsInspector(v);
-
-            //v.PeriodFilter = new PeriodViewModel();
-            //v.PeriodFilter.IsShowButtonRefresh = true;
-            //var per = InhalePeriodFilter();
-            //v.PeriodFilter.PeriodValue = per.pid;
-            //v.PeriodFilter.d1 = per.d1;
-            //v.PeriodFilter.d2 = per.d2;
 
             
             return View(v);

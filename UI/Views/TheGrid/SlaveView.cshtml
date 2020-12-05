@@ -18,9 +18,12 @@
 {
     <table>
         <tr>
-
             <td>
-                <select class="form-control" asp-for="@Model.addfilterid">
+                <myselect entity="a10EventType" asp-for="@Model.FilterA10ID" firstemptyrowtext="--@_f.tra("Typ akce")--" firstemptyrowvalue="0" textfield="a10Name" selectedvalue="@Model.FilterA10ID" selectedtext="@Model.FilterA10Name" event_after_changevalue="a10id_onchange" orderfield="a10Name" cssclass_selected="filtered"></myselect>
+            </td>
+            
+            <td>
+                <select class="form-control" asp-for="@Model.FilterMyInvolvement" onchange="myinvolvement_change(this)">
                     <option value="">@("-- "+_f.tra("Mé zapojení do akce")+" --")</option>
                     <option value="involved">@_f.tra("Jsem zapojen do akce")</option>
                     <option value="leader">@_f.tra("Jsem vedoucím týmu")</option>
@@ -41,7 +44,7 @@
     <table>
         <tr>
             <td>
-                <select class="form-control" asp-for="@Model.addfilterid">
+                <select class="form-control" asp-for="@Model.FilterMyInvolvement" onchanage="myinvolvement_change(this)">
                     <option value="">@("-- "+_f.tra("Mé zapojení do úkolu")+" --")</option>
                     <option value="member">@_f.tra("Jsem řešitelem úkolu")</option>
                     <option value="issuer">@_f.tra("Jsem zakladatel úkolu")</option>
@@ -66,23 +69,18 @@
 
     $(document).ready(function () {
 
-        
+
         if ($("#FilterMyInvolvement").val() != "") {
             $("#FilterMyInvolvement").css("background-color", "red");
         }
 
-        $("#addfilterid").change(function () {
-            $.post("/Common/SetUserParam", { key: "grid-addfilterid-@Model.prefix", value: $(this).val() }, function (data) {
-                reload();
 
-            });
-        });
 
         @if(Model.period != null)
         {
         <text>
         $("#PeriodValue").on("change", function () {
-            $.post("/Common/SetUserParam", { key: "grid-period-value-@Model.prefix",value:$(this).val()  }, function (data) {
+            $.post("/Common/SetUserParam", { key: "grid-period-value-@(Model.prefix+"-"+Model.master_entity)",value:$(this).val()  }, function (data) {
                 reload();
 
             });
@@ -139,7 +137,17 @@
             });
         }
 
+        function a10id_onchange(cbx) {
+            $.post("/Common/SetUserParams", { keys: ["grid-filter-a10id-@Model.master_entity", "grid-filter-a10name-@Model.master_entity"], values: [cbx.value, cbx.options[cbx.selectedIndex].text] }, function (data) {
+                reload();
+            });
+        }
 
+        function myinvolvement_change(cbx) {
+            $.post("/Common/SetUserParam", { key: "grid-filter-myinvolvement-@(Model.prefix+"-"+Model.master_entity)", value: cbx.value }, function (data) {
+                reload();
+            });
+        }
     </script>
 
 }
