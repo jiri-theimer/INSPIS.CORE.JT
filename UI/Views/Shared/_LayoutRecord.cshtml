@@ -106,7 +106,17 @@
 
     $(document).ready(function ()
     {
+        if (document.getElementById("link_tab1")) {
+            $("#tab@(Model.ActiveTabIndex)").attr("class", "tab-pane active");
+            $("#link_tab@(Model.ActiveTabIndex)").attr("class", "nav-link active");
 
+            $('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
+                // v e.target.id je id kliknutá záložka
+                var tabindex = e.target.id.substring(e.target.id.length - 1, e.target.id.length);
+                $("#ActiveTabIndex").val(tabindex);
+                _resize_textareas();
+            })
+        }
 
         @if (_f.CurrentUser.Messages4Notify != null) {
             @foreach (var c in _f.CurrentUser.Messages4Notify) {  // <----  placed on the same line, WORKING !!!
@@ -123,16 +133,9 @@
                 else return false;
             });
 
-            $("textarea").each(function () {
-                this.style.height = "auto";
-                this.style.height = (this.scrollHeight) + "px";
-
-                $(this).on("input", function () {
-                    this.style.height = "auto";
-                    this.style.height = (this.scrollHeight) + "px";
-                });
-            });
+            _resize_textareas();
         }
+
 
 
         $(document).on("click", function (e) {
@@ -152,16 +155,7 @@
         });
 
 
-        if (document.getElementById("link_tab1")) {
-            $("#tab@(Model.ActiveTabIndex)").attr("class", "tab-pane active");
-            $("#link_tab@(Model.ActiveTabIndex)").attr("class", "nav-link active");
 
-            $('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
-                // v e.target.id je id kliknutá záložka
-                var tabindex = e.target.id.substring(e.target.id.length - 1, e.target.id.length);
-                $("#ActiveTabIndex").val(tabindex);
-            })
-        }
 
         _init_qtip_onpage(document);
 
@@ -252,6 +246,7 @@
         }
 
 
+    
 </script>
 
     @RenderSection("Scripts", required: false)

@@ -43,5 +43,7 @@ namespace BO
         public bool j04IsElearningNeeded { get; set; }
 
         public string j04ViewUrl_Page { get; set; } //nové CORE pole - výchozí stránka role
+        public string j04DefaultWidgets_Inspector { get; set; } //tovární sada widgetů na osobní stránku inspektora
+        public string j04DefaultWidgets_School { get; set; } //tovární sada widgetů na osobní stránku školy
     }
 }

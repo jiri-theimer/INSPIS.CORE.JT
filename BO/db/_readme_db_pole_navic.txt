@@ -90,6 +90,8 @@ j02Position
 
 [j04UserRole]
 j04ViewUrl_Page varchar(255)
+j04DefaultWidgets_Inspector
+j04DefaultWidgets_School
 
 [h07ToDoType]
 b65ID

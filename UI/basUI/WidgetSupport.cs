@@ -18,7 +18,11 @@ namespace UI
             _skin = skin;
             
         }
-
+        public BO.Result Clear2FactoryState()
+        {                        
+            _f.x55WidgetBL.Clear2FactoryState(_f.x55WidgetBL.LoadState(_f.CurrentUser.pid, _skin));
+            return new BO.Result(false);                       
+        }
         public BO.Result SavePocetSloupcu(int x)
         {
             _f.CBL.SetUserParam("Widgets-ColumnsPerPage-"+_skin, x.ToString());            

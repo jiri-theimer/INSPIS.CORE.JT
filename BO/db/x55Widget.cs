@@ -3,13 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BO
 {
-    public enum x55TypeFlagEnum
-    {
-        DynamicHtml = 1,
-        StaticHtml = 2,
-        ExternalPage = 3,
-        BuildIn = 4
-    }
+    
     public enum x55DataTablesBtns
     {
         None=0,
@@ -21,8 +15,7 @@ namespace BO
     {
         [Key]
         public int x55ID { get; set; }
-        public x55TypeFlagEnum x55TypeFlag { get; set; }
-        public bool x55IsSystem { get; set; }
+       
         public string x55Name { get; set; }
         public string x55Code { get; set; }
         public int x55Ordinal { get; set; }
@@ -38,6 +31,7 @@ namespace BO
         public int x55BoxMaxHeight { get; set; }        
         public int x55DataTablesLimit { get; set; }
         public x55DataTablesBtns x55DataTablesButtons { get; set; }
+        public string x55Help { get; set; }
         public bool IsUseDatatables { get; set; }   //není db pole - naplní ho incializátor widgetů na stránce
 
         public string CssHeaderDiv { get
@@ -76,7 +70,7 @@ namespace BO
             {
                 if (this.x55Image == null)
                 {
-                    return "/images/cursor_mouse_drag.png";
+                    return "/images/widget.png";
                 }
                 else
                 {

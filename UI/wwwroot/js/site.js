@@ -767,3 +767,15 @@ function clear_form(a11id,question) {
 function _showloading() {
     $("#site_loading1").css("display", "block");
 }
+
+function _resize_textareas() {
+    $("textarea").each(function () {
+        this.style.height = "auto";
+        this.style.height = (this.scrollHeight) + "px";
+
+        $(this).on("input", function () {
+            this.style.height = "auto";
+            this.style.height = (this.scrollHeight) + "px";
+        });
+    });
+}

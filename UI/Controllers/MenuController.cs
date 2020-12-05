@@ -185,7 +185,7 @@ namespace UI.Controllers
             AMI("Osoby v inspektorátech", url_users("a02"));
 
             DIV_TRANS("Prostředí");
-            AMI("Dashboard boxy", url_users("x55"));
+            AMI("Widgety", url_users("x55"));
 
             DIV_TRANS("Provoz");
             AMI("PING Log", url_users("j92"));

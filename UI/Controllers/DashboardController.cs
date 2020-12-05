@@ -21,10 +21,14 @@ namespace UI.Controllers
             return View();
         }
 
-        public IActionResult Widgets()
+        public IActionResult Widgets(string skin)
         {
-            var v = new WidgetsViewModel();
-            var cW = new UI.WidgetSupport(Factory, "widgets");
+            var v = new WidgetsViewModel() { Skin = skin };
+            if (string.IsNullOrEmpty(v.Skin))
+            {
+                return this.StopPageSubform("skin missing");
+            }
+            var cW = new UI.WidgetSupport(Factory, skin);
             cW.PrepareWidgets(v);
             cW.InhaleWidgetsDataContent(v);
             
@@ -57,7 +61,7 @@ namespace UI.Controllers
         private void RefreshNavTabsInspector(DashboardInspector v)
         {
             var c = Factory.j02PersonBL.LoadSummary(v.pid,"dashboard");
-            v.NavTabs.Add(AddTab(Factory.tra("Dashboard"), "dashboard", "/Dashboard/Widgets?pid=" + Factory.CurrentUser.j02ID));
+            v.NavTabs.Add(AddTab(Factory.tra("Dashboard"), "dashboard", "/Dashboard/Widgets?skin=inspector&pid=" + Factory.CurrentUser.j02ID));
             v.NavTabs.Add(AddTab(Factory.tra("Můj kapacitní plán"), "gantt", "/j02/TabGantt?pid="+Factory.CurrentUser.j02ID.ToString()));
             string strBadge = null;
             //if (c.a01_count_involved > 0) strBadge = c.a01_count_involved.ToString();

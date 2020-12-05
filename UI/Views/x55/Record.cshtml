@@ -5,131 +5,156 @@
 
     Layout = "~/Views/Shared/_LayoutRecord.cshtml";
     if (Model.Rec == null) return;
-    Model.PageTitle = _f.tra("Dashboard box");
+    Model.PageTitle = _f.tra("Widget");
 }
 @addTagHelper *, UI
 
-    <div class="modal_record_container">
+<div class="tabs_container_record">
+    <!-- Tab panes -->
+    <ul class="nav nav-tabs">
+        <li class="nav-item onetab">
+            <a id="link_tab1" class="nav-link" data-toggle="tab" href="#tab1">@_f.tra("Vlastnosti")</a>
+        </li>
+        <li class="nav-item onetab">
+            <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2">@_f.tra("Tabulka")</a>
+        </li>
+        <li class="nav-item onetab">
+            <a id="link_tab3" class="nav-link" data-toggle="tab" href="#tab3">@_f.tra("Widget nápověda")</a>
+        </li>
 
-        <div class="form-row">
-            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
-            <div class="col-sm-6 col-md-5">
-                <input class="form-control" asp-for="Rec.x55Name" />
+    </ul>
+</div>
 
-            </div>
-            <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Index pořadí"):</label>
-            <div class="col-sm-1 col-md-1">
-                <mynumber asp-for="Rec.x55Ordinal" decimal-digits="0"></mynumber>
-            </div>
-            <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Max výška"):</label>
-            <div class="col-sm-1 col-md-1">
-                <mynumber asp-for="Rec.x55BoxMaxHeight" decimal-digits="0"></mynumber>
-            </div>
-        </div>
+<div class="modal_record_container">
+    <div class="tab-content">
+        <div class="tab-pane" id="tab1">
+            <div class="form-row">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
+                <div class="col-sm-6 col-md-5">
+                    <input class="form-control" asp-for="Rec.x55Name" />
 
-
-        <div class="form-row my-2">
-            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kód"):</label>
-            <div class="col-sm-5 col-md-4">
-                <input class="form-control" asp-for="Rec.x55Code" />
-
-            </div>
-            <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Ikona"):</label>
-            <div class="col-sm-5 col-md-4">
-                <input class="form-control" asp-for="Rec.x55Image" />
-
-            </div>
-        </div>
-
-
-        <div class="card p-0">
-            <div class="card-header">
-                @_f.tra("Tabulka")
-            </div>
-            <div class="card-body">
-                <div class="form-row">
-                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Nadpisy sloupců"):</label>
-                    <div class="col-sm-11 col-md-10">
-                        <input class="form-control" asp-for="Rec.x55TableColHeaders" />
-
-                    </div>
                 </div>
-                <div class="form-row my-2">
-                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typy sloupců"):</label>
-                    <div class="col-sm-4 col-md-3">
-                        <input class="form-control" asp-for="Rec.x55TableColTypes" />
-
-                    </div>
-                    <div class="col-sm-3 col-md-3">
-                        <select asp-for="@Model.Rec.x55DataTablesLimit" class="form-control">
-                            <option value="0">@_f.tra("Od kolika záznamů zapínat [DataTables]")</option>
-                            <option value="1">1</option>
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="20">20</option>
-                            <option value="50">50</option>
-                            <option value="100">100</option>
-                            <option value="200">100</option>
-                            <option value="999">999</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-4 col-md-4">
-                        <select asp-for="@Model.Rec.x55DataTablesButtons" class="form-control">
-                            <option value="None">@_f.tra("[DataTables] bez tlačítek")</option>                            
-                            <option value="ExportPrint">XLS/CSV/COPY + @_f.tra("Tisk")</option>
-                            <option value="ExportPrintPdf">XLS/CSV/COPY + @_f.tra("Tisk") + PDF</option>                            
-                        </select>
-                    </div>
+                <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Index pořadí"):</label>
+                <div class="col-sm-1 col-md-1">
+                    <mynumber asp-for="Rec.x55Ordinal" decimal-digits="0"></mynumber>
                 </div>
-                <div class="form-row my-2">
-                    <textarea asp-for="Rec.x55TableSql" class="form-control" placeholder="@_f.tra("Zdrojový sql")"></textarea>
+                
+            </div>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kód"):</label>
+                <div class="col-sm-5 col-md-4">
+                    <input class="form-control" asp-for="Rec.x55Code" />
+
+                </div>
+                
+            </div>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Ikona"):</label>
+                <div class="col-sm-5 col-md-4">
+                    <input class="form-control" asp-for="Rec.x55Image" />
 
                 </div>
             </div>
-            
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Max výška"):</label>
+                <div class="col-sm-1 col-md-2">
+                    <mynumber asp-for="Rec.x55BoxMaxHeight" decimal-digits="0"></mynumber>
+                </div>
+            </div>
+            <div class="card p-0">
+                <div class="card-header">
+                    @_f.tra("Dostupné pro role")
+                </div>
+                <div class="card-body">
+                    <mycombochecklist asp-for="@Model.j04IDs" entity="j04UserRole" selectedtext="@Model.j04Names" placeholder="@_f.tra("Vybrat aplikační role")..."></mycombochecklist>
+                    <i>Pokud není vyplněno, dostupné všem uživatelům.</i>
+                </div>
+            </div>
+
+            <div class="form-row my-2">
+                <textarea asp-for="Rec.x55Content" class="form-control" placeholder="HTML static"></textarea>
+
+            </div>
+            <div class="form-row my-2">
+                <textarea asp-for="Rec.x55Description" class="form-control" placeholder="@_f.tra("Poznámka")"></textarea>
+
+            </div>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Header pozadí"):</label>
+                <div class="col-sm-1 col-md-1">
+                    <input type="color" asp-for="Rec.x55HeaderBackColor" />
+                    <button type="button" style="border:none;" onclick="$('#Rec_x55HeaderBackColor').val(null)">&times;</button>
+                </div>
+                <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Header písmo"):</label>
+                <div class="col-sm-1 col-md-1">
+                    <input type="color" asp-for="Rec.x55HeaderForeColor" />
+                    <button type="button" style="border:none;" onclick="$('#Rec_x55HeaderForeColor').val(null)">&times;</button>
+                </div>
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Barva pozadí boxu"):</label>
+                <div class="col-sm-1 col-md-1">
+                    <input type="color" asp-for="Rec.x55BoxBackColor" />
+                    <button type="button" style="border:none;" onclick="$('#Rec_x55BoxBackColor').val(null)">&times;</button>
+                </div>
+
+                <div class="col-sm-2 col-md-3">
+                    <i>@_f.tra("Černá = žádná barva!")</i>
+                </div>
+            </div>
         </div>
+        <div class="tab-pane" id="tab2">
+            <div class="form-row">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Nadpisy sloupců"):</label>
+                <div class="col-sm-11 col-md-10">
+                    <input class="form-control" asp-for="Rec.x55TableColHeaders" />
 
-
-
-
-        <div class="card p-0">
-            <div class="card-header">
-                @_f.tra("Dostupné pro role")
+                </div>
             </div>
-            <div class="card-body">
-                <mycombochecklist asp-for="@Model.j04IDs" entity="j04UserRole" selectedtext="@Model.j04Names" placeholder="@_f.tra("Vybrat aplikační role")..."></mycombochecklist>
-                <i>Pokud není vyplněno, dostupné všem uživatelům.</i>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typy sloupců"):</label>
+                <div class="col-sm-11 col-md-10">
+                    <input class="form-control" asp-for="Rec.x55TableColTypes" />
+
+                </div>                                
+            </div>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kdy zapnout [DataTables]"):</label>
+                <div class="col-sm-4 col-md-3">
+                    <select asp-for="@Model.Rec.x55DataTablesLimit" class="form-control">
+                        <option value="0">@_f.tra("Počet záznamů")</option>
+                        <option value="1">1</option>
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                        <option value="200">100</option>
+                        <option value="999">999</option>
+                    </select>
+
+                </div>
+            </div>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Tlačítka k [DataTables]"):</label>
+                <div class="col-sm-4 col-md-4">
+                    <select asp-for="@Model.Rec.x55DataTablesButtons" class="form-control">
+                        <option value="None">@_f.tra("[DataTables] bez tlačítek")</option>
+                        <option value="ExportPrint">XLS/CSV/COPY + @_f.tra("Tisk")</option>
+                        <option value="ExportPrintPdf">XLS/CSV/COPY + @_f.tra("Tisk") + PDF</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row my-2">
+                <textarea asp-for="Rec.x55TableSql" class="form-control" placeholder="@_f.tra("Zdrojový sql")"></textarea>
+
             </div>
         </div>
+        <div class="tab-pane" id="tab3">
+            <textarea asp-for="Rec.x55Help" class="form-control" placeholder="@_f.tra("Obsah nápovědy")" ></textarea>
 
-        <div class="form-row my-2">
-            <textarea asp-for="Rec.x55Content" class="form-control" placeholder="HTML static"></textarea>
-
-        </div>
-        <div class="form-row my-2">
-            <textarea asp-for="Rec.x55Description" class="form-control" placeholder="@_f.tra("Poznámka")"></textarea>
-
-        </div>
-        <div class="form-row my-2">
-            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Header pozadí"):</label>
-            <div class="col-sm-1 col-md-1">
-                <input type="color" asp-for="Rec.x55HeaderBackColor" />
-                <button type="button" style="border:none;" onclick="$('#Rec_x55HeaderBackColor').val(null)">&times;</button>
-            </div>
-            <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Header písmo"):</label>
-            <div class="col-sm-1 col-md-1">
-                <input type="color" asp-for="Rec.x55HeaderForeColor" />
-                <button type="button" style="border:none;" onclick="$('#Rec_x55HeaderForeColor').val(null)">&times;</button>
-            </div>
-            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Barva pozadí boxu"):</label>
-            <div class="col-sm-1 col-md-1">
-                <input type="color" asp-for="Rec.x55BoxBackColor" />
-                <button type="button" style="border:none;" onclick="$('#Rec_x55BoxBackColor').val(null)">&times;</button>
-            </div>
-
-            <div class="col-sm-2 col-md-3">
-                <i>@_f.tra("Černá = žádná barva!")</i>
-            </div>
         </div>
     </div>
+
+    
+    
+</div>
 

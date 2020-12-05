@@ -13,6 +13,7 @@ namespace BL
 
         public BO.x56WidgetBinding LoadState(int j03id,string skin);
         public int SaveState(BO.x56WidgetBinding rec);
+        public int Clear2FactoryState(BO.x56WidgetBinding rec);
 
     }
     class x55WidgetBL : BaseBL, Ix55WidgetBL
@@ -63,9 +64,7 @@ namespace BL
             p.AddString("x55TableColHeaders", rec.x55TableColHeaders);
             p.AddString("x55TableColTypes", rec.x55TableColTypes);
             p.AddString("x55Content", rec.x55Content);
-            p.AddInt("x55Ordinal", rec.x55Ordinal);
-            p.AddBool("x55IsSystem", rec.x55IsSystem);
-            p.AddEnumInt("x55TypeFlag", rec.x55TypeFlag);
+            p.AddInt("x55Ordinal", rec.x55Ordinal);                        
             p.AddString("x55Image", rec.x55Image);
             p.AddString("x55Description", rec.x55Description);
             p.AddNonBlackColorString("x55BoxBackColor", rec.x55BoxBackColor);
@@ -73,6 +72,7 @@ namespace BL
             p.AddNonBlackColorString("x55HeaderForeColor", rec.x55HeaderForeColor);
             p.AddInt("x55DataTablesLimit", rec.x55DataTablesLimit);
             p.AddEnumInt("x55DataTablesButtons", rec.x55DataTablesButtons);
+            p.AddString("x55Help", rec.x55Help);
 
             p.AddInt("x55BoxMaxHeight", rec.x55BoxMaxHeight);
             int intPID = _db.SaveRecord("x55Widget", p.getDynamicDapperPars(), rec);
@@ -107,12 +107,28 @@ namespace BL
             }
             if (LoadByCode(rec.x55Code, rec.pid) != null)
             {
-                this.AddMessageTranslated(string.Format(_mother.tra("V systému již existuje jiný dashboard box s kódem: {0}."), rec.x55Code)); return false;
+                this.AddMessageTranslated(string.Format(_mother.tra("V systému již existuje jiný widget s kódem: {0}."), rec.x55Code)); return false;
             }
 
             return true;
         }
 
+        public int Clear2FactoryState(BO.x56WidgetBinding rec)
+        {
+            if (rec == null) return 0;
+
+            _mother.CBL.SetUserParam("Widgets-ColumnsPerPage-" + rec.x56Skin, "2");    //výchozí jsou 2 sloupce
+
+            //výchozí paletů widgetů natáhnout z aplikační role
+            var recJ04 = _mother.j04UserRoleBL.Load(_mother.j03UserBL.Load(rec.j03ID).j04ID);
+            if (rec.x56Skin == "inspector") rec.x56Boxes = recJ04.j04DefaultWidgets_Inspector;
+            if (rec.x56Skin == "school") rec.x56Boxes = recJ04.j04DefaultWidgets_School;
+
+            rec.x56DockState = null;
+            return SaveState(rec);
+           
+
+        }
         public BO.x56WidgetBinding LoadState(int j03id,string skin)
         {
             if (string.IsNullOrEmpty(skin)){
@@ -122,17 +138,17 @@ namespace BL
             sb(_db.GetSQL1_Ocas("x56"));
             sb(" FROM x56WidgetBinding a WHERE a.j03ID=@j03id AND a.x56Skin=@skin");
             
-            var rec= _db.Load<BO.x56WidgetBinding>(sbret(), new { j03id = j03id,skin=skin });
-
-            if (rec == null && j03id>0)
-            {
-                rec = new BO.x56WidgetBinding() { j03ID = j03id,x56Skin=skin };
-                if (SaveState(rec) > 0)
+            var rec= _db.Load<BO.x56WidgetBinding>(sbret(), new { j03id = j03id,skin=skin });           
+            if (rec==null)
+            {                
+                rec = new BO.x56WidgetBinding() { j03ID = j03id, x56Skin = skin };  //zatím nebyl vytvořený state widgetů
+                if (Clear2FactoryState(rec) > 0)
                 {
-                    return LoadState(j03id,skin);
+                    return LoadState(j03id, skin);
                 }
                 
             }
+                        
 
             return rec;
         }

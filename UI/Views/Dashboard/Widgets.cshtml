@@ -80,7 +80,7 @@
     <div class="dropdown col-auto">
 
         <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownSnippetLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span>@_f.tra("Vložit box na plochu")</span>
+            <span>@_f.tra("Vložit widget na plochu")</span>
         </a>
 
         <div class="dropdown-menu" aria-labelledby="dropdownSnippetLink">
@@ -105,6 +105,18 @@
 
 
             </ul>
+            <hr />
+            <div style="padding:8px;">
+                @if (Model.lisUserWidgets.Count() > 0)
+                {
+                    <button type="button" onclick="clear_to_factory_confirm()" class="btn btn-sm btn-light">@_f.tra("Nahodit plochu do výchozího (továrního) nastavení")</button>
+                }
+                else
+                {
+                    <button type="button" onclick="clear_to_factory_silent()" class="btn btn-sm btn-light">@_f.tra("Nahodit plochu do výchozího (továrního) nastavení")</button>
+                }
+
+            </div>
 
 
         </div>
@@ -126,7 +138,14 @@
 
             <div id="box_@(c.pid)" class="portlet">
                 <div class="portlet-header" @Html.Raw(c.CssHeaderDiv)>
-                    <img src="@c.HeaderImage" /><span class="ml-1">@(c.x55Name)</span><a class="float-right btn btn-sm btn-light py-0 px-1" title="@_f.tra("Zavřít")" href="javascript:handle_after_close_snippet(@c.pid)">x</a>
+                    <img src="@c.HeaderImage" />
+                    <span class="ml-1">@(c.x55Name)</span>
+
+                    <a class="float-right btn btn-sm btn-light py-0 px-1" title="@_f.tra("Zavřít")" href="javascript:handle_after_close_snippet(@c.pid)">x</a>
+                    @if (c.x55Help != null)
+                    {
+                        <a class="float-right btn btn-sm btn-light py-0 px-1 mx-3" title="@_f.tra("Widget nápověda")" href="javascript:widget_help(@c.pid)">?</a>
+                    }
                 </div>
                 <div class="portlet-content" @Html.Raw(c.CssContentDiv)>
                     @Html.Raw(c.x55Content)
@@ -144,7 +163,14 @@
             {
                 <div id="box_@(c.pid)" class="portlet">
                     <div class="portlet-header" @Html.Raw(c.CssHeaderDiv)>
-                        <img src="@c.HeaderImage" /><span class="ml-1">@(c.x55Name)</span><a class="float-right btn btn-sm btn-light py-0 px-1" title="@_f.tra("Zavřít")" href="javascript:handle_after_close_snippet(@c.pid)">x</a>
+                        <img src="@c.HeaderImage" />
+                        <span class="ml-1">@(c.x55Name)</span>
+
+                        <a class="float-right btn btn-sm btn-light py-0 px-1" title="@_f.tra("Zavřít")" href="javascript:handle_after_close_snippet(@c.pid)">x</a>
+                        @if (c.x55Help != null)
+                        {
+                            <a class="float-right btn btn-sm btn-light py-0 px-1 mx-3" title="@_f.tra("Widget nápověda")" href="javascript:widget_help(@c.pid)">?</a>
+                        }
                     </div>
                     <div class="portlet-content" @Html.Raw(c.CssContentDiv)>
                         @Html.Raw(c.x55Content)
@@ -162,8 +188,14 @@
             {
                 <div id="box_@(c.pid)" class="portlet">
                     <div class="portlet-header" @Html.Raw(c.CssHeaderDiv)>
-                        <img src="@c.HeaderImage" /><span class="ml-1">@(c.x55Name)</span><a class="float-right btn btn-sm btn-light py-0 px-1" title="@_f.tra("Zavřít")" href="javascript:handle_after_close_snippet(@c.pid)">x</a>
+                        <img src="@c.HeaderImage" />
+                        <span class="ml-1">@(c.x55Name)</span>
 
+                        <a class="float-right btn btn-sm btn-light py-0 px-1" title="@_f.tra("Zavřít")" href="javascript:handle_after_close_snippet(@c.pid)">x</a>
+                        @if (c.x55Help != null)
+                        {
+                            <a class="float-right btn btn-sm btn-light py-0 px-1 mx-3" title="@_f.tra("Widget nápověda")" href="javascript:widget_help(@c.pid)">?</a>
+                        }
                     </div>
                     <div class="portlet-content" @Html.Raw(c.CssContentDiv)>
                         @Html.Raw(c.x55Content)
@@ -175,6 +207,14 @@
         </div>
     }
 </div>
+
+@if (Model.lisUserWidgets.Count == 0)
+{
+    <div>
+        <img src="~/images/pandulak/16452374_s.jpg" />
+        <i>@_f.tra("Jsem tak prázdný...")</i>
+    </div>
+}
 
 
 <script type="text/javascript">
@@ -253,7 +293,7 @@
                 }
                 @if (Model.IsExportButtons)
                 {
-                    
+
                     <text>
                 {
                     extend: "excelHtml5",
@@ -269,7 +309,7 @@
                     autoPrint: true
                 }
                     </text>
-                        
+
                 }
             ],
             paging: true
@@ -300,9 +340,9 @@
         }
 
 
-        $.post("/Home/SaveWidgetState", { s: s, skin: "widgets" }, function (data) {
-            _notify_message("Změna rozložení boxů uložena.", "info");
-            //location.replace("/Home/Index");
+        $.post("/Home/SaveWidgetState", { s: s, skin: "@Model.Skin" }, function (data) {
+            _notify_message("Změna rozložení plochy uložena.", "info");
+
 
 
         });
@@ -311,12 +351,12 @@
     }
 
     function reload() {
-        location.replace("/Dashboard/Widgets");
+        location.replace("/Dashboard/Widgets?skin=@Model.Skin");
     }
 
     function handle_after_close_snippet(x55id) {
         _notify_message("Loading...", "info");
-        $.post("/Home/RemoveWidget", { x55id: x55id, skin: "widgets" }, function (data) {
+        $.post("/Home/RemoveWidget", { x55id: x55id, skin: "@Model.Skin" }, function (data) {
             reload();
 
 
@@ -324,7 +364,7 @@
     }
 
     function handle_insert_snippet(x55id) {
-        $.post("/Home/InsertWidget", { x55id: x55id, skin: "widgets" }, function (data) {
+        $.post("/Home/InsertWidget", { x55id: x55id, skin: "@Model.Skin" }, function (data) {
             reload();
 
 
@@ -332,10 +372,33 @@
     }
     function handle_pocet_sloupcu(cbx) {
 
-        $.post("/Home/SavePocetSloupcu", { x: cbx.value, skin: "widgets" }, function (data) {
+        $.post("/Home/SavePocetSloupcu", { x: cbx.value, skin: "@Model.Skin" }, function (data) {
             reload();
 
 
         });
+    }
+    function widget_help(x55id) {
+        _window_open("/x55/Help?pid=" + x55id);
+    }
+    function clear_to_factory_confirm() {
+        var s = "@_f.tra("Dojde k přepsání plochy tovární sadou widgetů pro vaší aplikační roli.")";
+        s += "⚡OK?";
+        if (confirm(s)) {
+            $.post("/Home/Clear2FactoryState", { skin: "@Model.Skin" }, function (data) {
+                reload();
+
+
+            });
+        }
+
+    }
+    function clear_to_factory_silent() {
+        $.post("/Home/Clear2FactoryState", { skin: "@Model.Skin" }, function (data) {
+                reload();
+
+
+            });
+
     }
 </script>

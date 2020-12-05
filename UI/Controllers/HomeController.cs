@@ -284,7 +284,10 @@ namespace UI.Controllers
             return new WidgetSupport(Factory,skin).SavePocetSloupcu(x);           
         }
 
-
+        public BO.Result Clear2FactoryState(string skin)
+        {
+            return new WidgetSupport(Factory, skin).Clear2FactoryState();  //vyčistí plochu do továrního nastavení
+        }
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

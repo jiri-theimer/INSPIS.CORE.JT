@@ -8,6 +8,7 @@ namespace UI.Models.Dashboard
     public class WidgetsViewModel: BaseViewModel
     {
         public BO.j02Person Rec { get; set; }
+        public string Skin { get; set; }
         public string BoxColCss { get; set; } = "col-lg-6";
 
         public WidgetsEnvironment DockStructure { get; set; }

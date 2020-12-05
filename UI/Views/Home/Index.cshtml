@@ -75,7 +75,7 @@
         <div class="dropdown col-auto">
 
             <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownSnippetLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span>@_f.tra("Vložit box na plochu")</span>
+                <span>@_f.tra("Vložit WIDGET na plochu")</span>
             </a>
 
             <div class="dropdown-menu" aria-labelledby="dropdownSnippetLink">
@@ -261,7 +261,7 @@ else
 
 
         $.post("/Home/SaveWidgetState", { s: s, skin: "index" }, function (data) {
-            _notify_message("Změna rozložení boxů uložena.", "info");
+            _notify_message("Změna rozložení plochy uložena.", "info");
             //location.replace("/Home/Index");
 
 

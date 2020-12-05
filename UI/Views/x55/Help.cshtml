@@ -1,0 +1,29 @@
+﻿@model UI.Models.Recpage.x55RecPage
+@inject BL.Factory _f
+
+@{
+    ViewData["Title"] = "Help";
+    Layout = "~/Views/Shared/_LayoutModal.cshtml";
+}
+
+@addTagHelper *, UI
+
+    <h4>
+        @Model.Rec.x55Name
+        <span class="badge badge-primary">@_f.tra("widget nápověda")</span>
+        
+    </h4>
+
+
+
+<div class="bg-light" style="padding:10px;">
+
+    <button type="button" id="cmdClose" onclick="_window_close()" class="btn btn-light">@_f.tra("Zavřít")</button>
+
+
+</div>
+
+<div>
+    @Html.Raw(Model.HtmlContent)
+</div>
+
