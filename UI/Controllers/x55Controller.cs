@@ -22,8 +22,7 @@ namespace UI.Controllers
             {
                 v.Rec = Factory.x55WidgetBL.Load(v.pid);
             }
-            v.HtmlContent = BO.BAS.Text2Html(v.Rec.x55Help);
-
+            
             return View(v);
         }
         public IActionResult Record(int pid, bool isclone)
@@ -37,7 +36,7 @@ namespace UI.Controllers
                 {
                     return RecNotFound(v);
                 }
-
+                v.HtmlHelp = v.Rec.x55Help;
                 var mq = new BO.myQuery("j04") { x55id = v.rec_pid, explicit_orderby = "j04Name" };
                 v.j04IDs = string.Join(",", Factory.j04UserRoleBL.GetList(mq).Select(p => p.pid));
                 v.j04Names = string.Join(",", Factory.j04UserRoleBL.GetList(mq).Select(p => p.j04Name));
@@ -76,7 +75,7 @@ namespace UI.Controllers
                 c.x55BoxMaxHeight = v.Rec.x55BoxMaxHeight;
                 c.x55DataTablesLimit = v.Rec.x55DataTablesLimit;
                 c.x55DataTablesButtons = v.Rec.x55DataTablesButtons;
-                c.x55Help = v.Rec.x55Help;
+                c.x55Help = v.HtmlHelp;
 
                 c.ValidUntil = v.Toolbar.GetValidUntil(c);
                 c.ValidFrom = v.Toolbar.GetValidFrom(c);

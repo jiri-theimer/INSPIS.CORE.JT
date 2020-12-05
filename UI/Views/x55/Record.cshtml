@@ -9,6 +9,12 @@
 }
 @addTagHelper *, UI
 
+@section header_content{
+
+    <link href="~/lib/summernote/summernote-bs4.css" rel="stylesheet">
+}
+<script src="~/lib/summernote/summernote-bs4.min.js"></script>
+
 <div class="tabs_container_record">
     <!-- Tab panes -->
     <ul class="nav nav-tabs">
@@ -25,7 +31,7 @@
     </ul>
 </div>
 
-<div class="modal_record_container">
+<div class="modal_record_container" id="divForm">
     <div class="tab-content">
         <div class="tab-pane" id="tab1">
             <div class="form-row">
@@ -38,7 +44,7 @@
                 <div class="col-sm-1 col-md-1">
                     <mynumber asp-for="Rec.x55Ordinal" decimal-digits="0"></mynumber>
                 </div>
-                
+
             </div>
             <div class="form-row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kód"):</label>
@@ -46,7 +52,7 @@
                     <input class="form-control" asp-for="Rec.x55Code" />
 
                 </div>
-                
+
             </div>
             <div class="form-row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Ikona"):</label>
@@ -56,7 +62,7 @@
                 </div>
             </div>
             <div class="form-row my-2">
-                <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Max výška"):</label>
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Max výška"):</label>
                 <div class="col-sm-1 col-md-2">
                     <mynumber asp-for="Rec.x55BoxMaxHeight" decimal-digits="0"></mynumber>
                 </div>
@@ -85,19 +91,25 @@
                     <input type="color" asp-for="Rec.x55HeaderBackColor" />
                     <button type="button" style="border:none;" onclick="$('#Rec_x55HeaderBackColor').val(null)">&times;</button>
                 </div>
-                <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Header písmo"):</label>
+                
+                
+
+                <div class="col-sm-2 col-md-3">
+                    <i>@_f.tra("Černá = žádná barva!")</i>
+                </div>
+            </div>
+            <div class="form-row">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Header písmo"):</label>
                 <div class="col-sm-1 col-md-1">
                     <input type="color" asp-for="Rec.x55HeaderForeColor" />
                     <button type="button" style="border:none;" onclick="$('#Rec_x55HeaderForeColor').val(null)">&times;</button>
                 </div>
+            </div>
+            <div class="form-row">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Barva pozadí boxu"):</label>
                 <div class="col-sm-1 col-md-1">
                     <input type="color" asp-for="Rec.x55BoxBackColor" />
                     <button type="button" style="border:none;" onclick="$('#Rec_x55BoxBackColor').val(null)">&times;</button>
-                </div>
-
-                <div class="col-sm-2 col-md-3">
-                    <i>@_f.tra("Černá = žádná barva!")</i>
                 </div>
             </div>
         </div>
@@ -114,7 +126,7 @@
                 <div class="col-sm-11 col-md-10">
                     <input class="form-control" asp-for="Rec.x55TableColTypes" />
 
-                </div>                                
+                </div>
             </div>
             <div class="form-row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kdy zapnout [DataTables]"):</label>
@@ -149,12 +161,43 @@
             </div>
         </div>
         <div class="tab-pane" id="tab3">
-            <textarea asp-for="Rec.x55Help" class="form-control" placeholder="@_f.tra("Obsah nápovědy")" ></textarea>
+            <input type="hidden" id="hidContent" asp-for="@Model.HtmlHelp" />
+            <div id="editor1"></div>
 
         </div>
     </div>
 
-    
-    
+
+
 </div>
 
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var ofs = $("#divForm").offset();
+        var hh = window.innerHeight - ofs.top - 120;
+       
+        $("#editor1").summernote({
+            lang: "@Model.EditorLanguageKey", // default: 'en-US'
+            placeholder: "@_f.tra("Obsah nápovědy")",
+            tabsize: 2,
+            height: hh
+        });
+
+
+        var firstdata = $("#hidContent").val();
+        $("#editor1").summernote("code", firstdata);
+
+        $("#editor1").on("summernote.change", function (e) {   // callback as jquery custom event
+            var s = $("#editor1").summernote("code");
+            $("#hidContent").val(s);
+        });
+
+    });
+
+
+
+
+
+
+</script>

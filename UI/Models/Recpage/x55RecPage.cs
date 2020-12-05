@@ -8,7 +8,7 @@ namespace UI.Models.Recpage
     public class x55RecPage:BaseViewModel
     {
         public BO.x55Widget Rec { get; set; }
-        public string HtmlContent { get; set; }
+        
         public int pid { get; set; }
 
         
