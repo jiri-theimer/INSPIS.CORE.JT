@@ -93,11 +93,11 @@
         $("#cmdRefreshPeriod").on("click", function () {
             var k = [];
             var v = [];
-            k.push("grid-period-value-@Model.prefix");
+            k.push("grid-period-value-@(Model.prefix+"-"+Model.master_entity)");
             v.push($("#PeriodValue").val());
-            k.push("grid-period-d1-@Model.prefix");
+            k.push("grid-period-d1-@(Model.prefix+"-"+Model.master_entity)");
             v.push($("#d1helper").val());
-            k.push("grid-period-d2-@Model.prefix");
+            k.push("grid-period-d2-@(Model.prefix+"-"+Model.master_entity)");
             v.push($("#d2helper").val());
 
             $.post("/Common/SetUserParams", { keys: k, values:v  }, function (data) {

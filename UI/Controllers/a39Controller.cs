@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using UI.Models;
 using UI.Models.Record;
+using UI.Models.Tab;
 
 namespace UI.Controllers
 {
     public class a39Controller : BaseController
-    {
+    {        
         public IActionResult RecordByPerson(int pid, int j02id, bool isclone)
         {
             if (pid == 0 && j02id == 0)

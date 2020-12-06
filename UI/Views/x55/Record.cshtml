@@ -14,6 +14,20 @@
     <link href="~/lib/summernote/summernote-bs4.css" rel="stylesheet">
 }
 <script src="~/lib/summernote/summernote-bs4.min.js"></script>
+@switch (_f.CurrentUser.j03LangIndex)
+{
+    case 0:
+        <script src="~/lib/summernote/lang/summernote-cs-CZ.js"></script>
+        Model.EditorLanguageKey = "cs-CZ";
+        break;
+    case 1:
+        Model.EditorLanguageKey = "en-US";
+        break;
+    case 2:
+        <script src="~/lib/summernote/lang/summernote-uk-UA.js"></script>
+        Model.EditorLanguageKey = "uk-UA";
+        break;
+}
 
 <div class="tabs_container_record">
     <!-- Tab panes -->
@@ -91,8 +105,8 @@
                     <input type="color" asp-for="Rec.x55HeaderBackColor" />
                     <button type="button" style="border:none;" onclick="$('#Rec_x55HeaderBackColor').val(null)">&times;</button>
                 </div>
-                
-                
+
+
 
                 <div class="col-sm-2 col-md-3">
                     <i>@_f.tra("Černá = žádná barva!")</i>
@@ -106,7 +120,7 @@
                 </div>
             </div>
             <div class="form-row">
-                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Barva pozadí boxu"):</label>
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Barva pozadí widgetu"):</label>
                 <div class="col-sm-1 col-md-1">
                     <input type="color" asp-for="Rec.x55BoxBackColor" />
                     <button type="button" style="border:none;" onclick="$('#Rec_x55BoxBackColor').val(null)">&times;</button>
@@ -176,7 +190,7 @@
     $(document).ready(function () {
         var ofs = $("#divForm").offset();
         var hh = window.innerHeight - ofs.top - 120;
-       
+
         $("#editor1").summernote({
             lang: "@Model.EditorLanguageKey", // default: 'en-US'
             placeholder: "@_f.tra("Obsah nápovědy")",

@@ -1,0 +1,109 @@
+﻿@model UI.Models.Tab.a01TabSchoolGrid
+@inject BL.Factory _f
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutSubform.cshtml";
+
+
+
+}
+
+@addTagHelper *,UI
+
+
+<div class="row" id="subform_div_commands">
+    @if (Model.IsAllowCreateA01)
+    {
+        <div class="col-auto">
+            <a class="btn btn-primary" href="/a01Create/Index?a03id=@Model.a03ID&a10id=@Model.a10ID">@_f.tra("Nový záznam")</a>
+        </div>
+    }
+
+
+    <div class="col-auto">
+        @Html.EditorFor(m => m.period, "~/Views/Shared/_Period.cshtml")
+    </div>
+
+</div>
+
+
+
+<vc:the-grid entity="a01" j72id="@Model.j72id" go2pid="@Model.go2pid" master_entity="a03Institution" master_pid="@Model.a03ID" contextmenuflag="1" ondblclick="tg_dblclick" master_flag="" masterviewflag="3" addfilterid="school" fixedcolumns="@Model.GridColumns"></vc:the-grid>
+
+
+
+@section Scripts{
+
+    <script type="text/javascript">
+
+    $(document).ready(function () {
+
+
+        @if(Model.period != null)
+        {
+        <text>
+        $("#PeriodValue").on("change", function () {
+            $.post("/Common/SetUserParam", { key: "grid-period-value-a01-a03Institution",value:$(this).val()  }, function (data) {
+                reload();
+
+            });
+        });
+
+        if ($("#PeriodValue").val() != "0" && $("#PeriodValue").val() != "") {
+            $("#PeriodValue").css("background-color", "red");
+        }
+
+        $("#cmdRefreshPeriod").on("click", function () {
+            var k = [];
+            var v = [];
+            k.push("grid-period-value-a01-a03Institution");
+            v.push($("#PeriodValue").val());
+            k.push("grid-period-d1-a01-a03Institution");
+            v.push($("#d1helper").val());
+            k.push("grid-period-d2-a01-a03Institution");
+            v.push($("#d2helper").val());
+
+            $.post("/Common/SetUserParams", { keys: k, values:v  }, function (data) {
+                reload();
+
+            });
+
+        });
+
+        </text>
+        }
+
+
+
+    });
+
+
+
+        /*automaticky volaná událost z thegrid controlu*/
+        function thegrid_handle_event(event_name, pid) {
+
+        }
+
+        function reload() {
+            location.replace("/Dashboard/TabSchool?a03id=@Model.a03ID");
+
+        }
+
+
+
+        function change_grid(j72id) {
+            var strKey = "slaveview-j72id-a01-a03Institution)";
+
+            $.post("/Common/SetUserParam", { key: strKey,value:j72id  }, function (data) {
+                reload();
+
+            });
+        }
+
+
+    </script>
+
+}
+
+
