@@ -81,6 +81,18 @@
                     <mynumber asp-for="Rec.x55BoxMaxHeight" decimal-digits="0"></mynumber>
                 </div>
             </div>
+            <div class="form-row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Cílový dashboard"):</label>
+                <div class="col-sm-1 col-md-2">
+                    <select asp-for="@Model.Rec.x55Skin" class="form-control">
+                        <option value="">@_f.tra("Bez omezení")</option>
+                        <option value="inspector_index">inspector+index</option>
+                        <option value="inspector">inspector</option>
+                        <option value="index">index</option>
+                        <option value="school">school</option>
+                    </select>
+                </div>
+            </div>
             <div class="card p-0">
                 <div class="card-header">
                     @_f.tra("Dostupné pro role")

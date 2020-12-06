@@ -329,7 +329,7 @@
         }
 
 
-        $.post("/Home/SaveWidgetState", { s: s, skin: "@Model.Skin" }, function (data) {
+        $.post("/Dashboard/SaveWidgetState", { s: s, skin: "@Model.Skin" }, function (data) {
             _notify_message("Změna rozložení plochy uložena.", "info");
 
 
@@ -345,7 +345,7 @@
 
     function handle_after_close_snippet(x55id) {
         _notify_message("Loading...", "info");
-        $.post("/Home/RemoveWidget", { x55id: x55id, skin: "@Model.Skin" }, function (data) {
+        $.post("/Dashboard/RemoveWidget", { x55id: x55id, skin: "@Model.Skin" }, function (data) {
             reload();
 
 
@@ -353,7 +353,7 @@
     }
 
     function handle_insert_snippet(x55id) {
-        $.post("/Home/InsertWidget", { x55id: x55id, skin: "@Model.Skin" }, function (data) {
+        $.post("/Dashboard/InsertWidget", { x55id: x55id, skin: "@Model.Skin" }, function (data) {
             reload();
 
 
@@ -361,7 +361,7 @@
     }
     function handle_pocet_sloupcu(cbx) {
 
-        $.post("/Home/SavePocetSloupcu", { x: cbx.value, skin: "@Model.Skin" }, function (data) {
+        $.post("/Dashboard/SavePocetSloupcu", { x: cbx.value, skin: "@Model.Skin" }, function (data) {
             reload();
 
 
@@ -374,7 +374,7 @@
         var s = "@_f.tra("Dojde k přepsání plochy tovární sadou widgetů pro vaší aplikační roli.")";
         s += "⚡OK?";
         if (confirm(s)) {
-            $.post("/Home/Clear2FactoryState", { skin: "@Model.Skin" }, function (data) {
+            $.post("/Dashboard/Clear2FactoryState", { skin: "@Model.Skin" }, function (data) {
                 reload();
 
 
@@ -383,7 +383,7 @@
 
     }
     function clear_to_factory_silent() {
-        $.post("/Home/Clear2FactoryState", { skin: "@Model.Skin" }, function (data) {
+        $.post("/Dashboard/Clear2FactoryState", { skin: "@Model.Skin" }, function (data) {
                 reload();
 
 

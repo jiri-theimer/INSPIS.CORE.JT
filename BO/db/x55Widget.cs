@@ -33,6 +33,7 @@ namespace BO
         public x55DataTablesBtns x55DataTablesButtons { get; set; }
         public string x55Help { get; set; }
         public bool IsUseDatatables { get; set; }   //není db pole - naplní ho incializátor widgetů na stránce
+        public string x55Skin { get; set; }
 
         public string CssHeaderDiv { get
             {

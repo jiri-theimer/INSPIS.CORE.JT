@@ -76,6 +76,7 @@ namespace UI.Controllers
                 c.x55DataTablesLimit = v.Rec.x55DataTablesLimit;
                 c.x55DataTablesButtons = v.Rec.x55DataTablesButtons;
                 c.x55Help = v.HtmlHelp;
+                c.x55Skin = v.Rec.x55Skin;
 
                 c.ValidUntil = v.Toolbar.GetValidUntil(c);
                 c.ValidFrom = v.Toolbar.GetValidFrom(c);

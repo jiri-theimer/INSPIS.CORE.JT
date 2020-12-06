@@ -47,13 +47,13 @@ namespace UI
 
         private static string get_param_key(string strKey, string strMasterEntity)
         {
-            if (strMasterEntity != null)
+            if (string.IsNullOrEmpty(strMasterEntity))
             {
-                return (strKey += "-" + strMasterEntity);
+                return strKey;                
             }
             else
             {
-                return strKey;
+                return (strKey + "-" + strMasterEntity);
             }
         }
     }

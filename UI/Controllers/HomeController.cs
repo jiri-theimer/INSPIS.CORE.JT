@@ -253,27 +253,7 @@ namespace UI.Controllers
 
 
 
-        public BO.Result SaveWidgetState(string s,string skin)
-        {
-            return new WidgetSupport(Factory,skin).SaveWidgetState(s);
-        }
-        public BO.Result RemoveWidget(int x55id,string skin)
-        {
-            return new WidgetSupport(Factory,skin).RemoveWidget(x55id);
-        }
-        public BO.Result InsertWidget(int x55id,string skin)
-        {
-            return new WidgetSupport(Factory,skin).InsertWidget(x55id);
-        }
-        public BO.Result SavePocetSloupcu(int x,string skin)
-        {
-            return new WidgetSupport(Factory,skin).SavePocetSloupcu(x);           
-        }
-
-        public BO.Result Clear2FactoryState(string skin)
-        {
-            return new WidgetSupport(Factory, skin).Clear2FactoryState();  //vyčistí plochu do továrního nastavení
-        }
+        
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

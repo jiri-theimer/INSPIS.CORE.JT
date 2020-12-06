@@ -718,6 +718,7 @@ namespace BL
             AF("x55Widget", "x55Name", "Widget", 1, null, "string", false, true);
             AF("x55Widget", "x55Code", "Kód widgetu",0,null,"string",false,true);
             AF("x55Widget", "x55Description", "Poznámka",1);
+            AF("x55Widget", "x55Skin", "Cílový dashboard");
             AF("x55Widget", "x55DataTablesLimit", "Minimum záznamů pro [DataTables]", 2);            
             AF("x55Widget", "x55Ordinal", "#", 2, null, "num0");
             AppendTimestamp("x55Widget");

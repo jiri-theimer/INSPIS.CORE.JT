@@ -1,6 +1,6 @@
 ﻿@model FsmViewModel
 @inject BL.Factory _f
- 
+
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 
@@ -17,60 +17,60 @@
 
 
 
+@if (Model.prefix == "a01")
+{
+    <table>
+        <tr>
+            <td>
+                <myselect entity="a10EventType" asp-for="@Model.FilterA10ID" firstemptyrowtext="--@_f.tra("Typ akce")--" firstemptyrowvalue="0" textfield="a10Name" selectedvalue="@Model.FilterA10ID" selectedtext="@Model.FilterA10Name" event_after_changevalue="a10id_onchange" orderfield="a10Name" cssclass_selected="filtered"></myselect>
+            </td>
+            <td>
+                <myselect entity="a08Theme" asp-for="@Model.FilterA08ID" firstemptyrowtext="--@_f.tra("Téma akce")--" firstemptyrowvalue="0" textfield="a08Name+isnull(' ('+a08Ident+')','')" selectedvalue="@Model.FilterA08ID" selectedtext="@Model.FilterA08Name" event_after_changevalue="a08id_onchange" orderfield="a08Name" cssclass_selected="filtered"></myselect>
+            </td>
+            <td>
+                <select class="form-control" asp-for="@Model.FilterMyInvolvement" onchange="myinvolvement_change(this)">
+                    <option value="">@("-- "+_f.tra("Mé zapojení do akce")+" --")</option>
+                    <option value="involved">@_f.tra("Jsem zapojen do akce")</option>
+                    <option value="leader">@_f.tra("Jsem vedoucím týmu")</option>
+                    <option value="member">@_f.tra("Jsem členem týmu")</option>
+                    <option value="invited">@_f.tra("Jsem přizvanou osobou v týmu")</option>
+                    <option value="issuer">@_f.tra("Jsem zakladatelem akce")</option>
+                </select>
+            </td>
+            <td>
+                @Html.EditorFor(m => m.period, "~/Views/Shared/_Period.cshtml")
+            </td>
 
-    <div id="splitter_container" class="splitter-container-top2bottom">
-        @if (Model.prefix == "a01")
-        {
-            <table>
-                <tr>
-                    <td>
-                        <myselect entity="a10EventType" asp-for="@Model.FilterA10ID" firstemptyrowtext="--@_f.tra("Typ akce")--" firstemptyrowvalue="0" textfield="a10Name" selectedvalue="@Model.FilterA10ID" selectedtext="@Model.FilterA10Name" event_after_changevalue="a10id_onchange" orderfield="a10Name" cssclass_selected="filtered"></myselect>
-                    </td>
-                    <td>
-                        <myselect entity="a08Theme" asp-for="@Model.FilterA08ID" firstemptyrowtext="--@_f.tra("Téma akce")--" firstemptyrowvalue="0" textfield="a08Name+isnull(' ('+a08Ident+')','')" selectedvalue="@Model.FilterA08ID" selectedtext="@Model.FilterA08Name" event_after_changevalue="a08id_onchange" orderfield="a08Name" cssclass_selected="filtered"></myselect>
-                    </td>
-                    <td>
-                        <select class="form-control" asp-for="@Model.FilterMyInvolvement" onchange="myinvolvement_change(this)">
-                            <option value="">@("-- "+_f.tra("Mé zapojení do akce")+" --")</option>
-                            <option value="involved">@_f.tra("Jsem zapojen do akce")</option>
-                            <option value="leader">@_f.tra("Jsem vedoucím týmu")</option>
-                            <option value="member">@_f.tra("Jsem členem týmu")</option>
-                            <option value="invited">@_f.tra("Jsem přizvanou osobou v týmu")</option>
-                            <option value="issuer">@_f.tra("Jsem zakladatelem akce")</option>
-                        </select>
-                    </td>
-                    <td>
-                        @Html.EditorFor(m => m.period, "~/Views/Shared/_Period.cshtml")
-                    </td>
+        </tr>
+    </table>
 
-                </tr>
-            </table>
+}
+<div id="splitter_container" class="splitter-container-top2bottom">
 
-        }
-        <div id="splitter_panel1" class="splitter-panel-top">
+    <div id="splitter_panel1" class="splitter-panel-top">
 
-            <vc:the-grid entity="@Model.entity" j72id="@Model.j72id" go2pid="@Model.go2pid" master_entity="" master_pid="0" contextmenuflag="@Model.contextmenuflag" ondblclick="tg_dblclick" master_flag="@Model.master_flag" masterviewflag="2" addfilterid="@Model.addfilterid" fixedcolumns=""></vc:the-grid>
+        <vc:the-grid entity="@Model.entity" j72id="@Model.j72id" go2pid="@Model.go2pid" master_entity="" master_pid="0" contextmenuflag="@Model.contextmenuflag" ondblclick="tg_dblclick" master_flag="@Model.master_flag" masterviewflag="2" addfilterid="@Model.addfilterid" fixedcolumns=""></vc:the-grid>
 
-        </div>
-        <div class="tabs_container" style="background-color:#F0F8FF;">
-            <ul id="navtabs" class="nav nav-tabs">
-                @foreach (var tab in Model.NavTabs)
-                {
-                    <li class="nav-item onetab">
-                        <a class="@tab.CssClass" id="tab@(tab.Entity)" href="@tab.Url" target="fra_subgrid" onclick="tabclick(this)">@tab.Name</a>
-                    </li>
-
-                }
-            </ul>
-        </div>
-
-        <div id="splitter_resizer" class="splitter-resizer-top2bottom"></div>
-
-        <div id="splitter_panel2" class="splitter-panel-bottom">
-
-            <iframe id="fra_subgrid" name="fra_subgrid" frameborder="0" src="@Model.go2pid_url_in_iframe" scrolling="yes" style="width:100%;" onload="$('#splitter_panel2').css('background','none');"></iframe>
-        </div>
     </div>
+    <div class="tabs_container" style="background-color:#F0F8FF;">
+        <ul id="navtabs" class="nav nav-tabs">
+            @foreach (var tab in Model.NavTabs)
+            {
+                <li class="nav-item onetab">
+                    <a class="@tab.CssClass" id="tab@(tab.Entity)" href="@tab.Url" target="fra_subgrid" onclick="tabclick(this)">@tab.Name</a>
+                </li>
+
+            }
+        </ul>
+    </div>
+
+    <div id="splitter_resizer" class="splitter-resizer-top2bottom"></div>
+
+    <div id="splitter_panel2" class="splitter-panel-bottom">
+
+        <iframe id="fra_subgrid" name="fra_subgrid" frameborder="0" src="@Model.go2pid_url_in_iframe" scrolling="yes" style="width:100%;" onload="$('#splitter_panel2').css('background','none');"></iframe>
+    </div>
+</div>
 
 
 

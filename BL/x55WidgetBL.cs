@@ -73,6 +73,7 @@ namespace BL
             p.AddInt("x55DataTablesLimit", rec.x55DataTablesLimit);
             p.AddEnumInt("x55DataTablesButtons", rec.x55DataTablesButtons);
             p.AddString("x55Help", rec.x55Help);
+            p.AddString("x55Skin", rec.x55Skin);
 
             p.AddInt("x55BoxMaxHeight", rec.x55BoxMaxHeight);
             int intPID = _db.SaveRecord("x55Widget", p.getDynamicDapperPars(), rec);
