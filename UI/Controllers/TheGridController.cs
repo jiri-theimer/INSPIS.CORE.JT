@@ -693,7 +693,7 @@ namespace UI.Controllers
                 return;
             }
             _s.Append("<tr id='tabgrid1_tr_totals'>");
-            _s.Append(string.Format("<th class='th0' title='Celkový počet záznamů' colspan=3 style='width:60px;'><span class='badge badge-primary'>{0}</span></th>", string.Format("{0:#,0}", dt.Rows[0]["RowsCount"])));
+            _s.Append(string.Format("<th class='th0' title='{0}' colspan=3 style='width:60px;'><span class='badge badge-primary'>{1}</span></th>", Factory.tra("Celkový počet záznamů"), string.Format("{0:#,0}", dt.Rows[0]["RowsCount"])));
             //_s.Append("<th style='width:20px;'></th>");
             //_s.Append("<th class='th0' style='width:20px;'></th>");
             string strVal = "";
