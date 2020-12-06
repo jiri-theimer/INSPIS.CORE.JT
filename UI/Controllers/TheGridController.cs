@@ -216,7 +216,7 @@ namespace UI.Controllers
 
                 v.period = new PeriodViewModel();
                 v.period.IsShowButtonRefresh = true;
-                var per = InhaleGridPeriodDates(v.prefix,masterentity);
+                var per = basUI.InhalePeriodDates(_pp,Factory,v.prefix,masterentity);
                 v.period.PeriodValue = per.pid;
                 v.period.d1 = per.d1;
                 v.period.d2 = per.d2;
@@ -371,7 +371,7 @@ namespace UI.Controllers
             InhaleAddFilter(gridState.AddFilterID, ref mq);
             if (mq.Prefix=="a01" || mq.Prefix=="h04")
             {
-                BO.ThePeriod per = InhaleGridPeriodDates(mq.Prefix,gridState.j72MasterEntity);
+                BO.ThePeriod per = basUI.InhalePeriodDates(_pp,Factory,mq.Prefix,gridState.j72MasterEntity);
                 mq.global_d1 = per.d1;
                 mq.global_d2 = per.d2;
 
@@ -445,15 +445,12 @@ namespace UI.Controllers
 
             switch (strAddFilterID)
             {
-                case "dashboard":
-                    BO.ThePeriod per = InhaleGridPeriodDates(mq.Prefix,null);
-                    mq.global_d1 = per.d1;
-                    mq.global_d2 = per.d2;
+                //case "dashboard":
+                //    BO.ThePeriod per = basUI.InhalePeriodDates(_pp,Factory,mq.Prefix,null);
+                //    mq.global_d1 = per.d1;
+                //    mq.global_d2 = per.d2;
 
-                    return;
-                case "school":
-                    mq.a10id = Factory.CBL.LoadUserParamInt("DashboardSchool-a10id");
-                    return;
+                //    return;                
                 case "stat":
                     Factory.CBL.ClearUserParamsCache(); //docílit toho, aby se guid načetl na 100% z databáze
                     string strGUID = Factory.CBL.LoadUserParam("Stat-GridGuid");
@@ -500,7 +497,7 @@ namespace UI.Controllers
             InhaleAddFilter(gridState.AddFilterID, ref mq);
             if (mq.Prefix=="a01" || mq.Prefix=="h04")
             {
-                BO.ThePeriod per = InhaleGridPeriodDates(mq.Prefix,gridState.j72MasterEntity);                
+                BO.ThePeriod per = basUI.InhalePeriodDates(_pp,Factory,mq.Prefix,gridState.j72MasterEntity);                
                 mq.global_d1 = per.d1;
                 mq.global_d2 = per.d2;
             }
@@ -992,24 +989,7 @@ namespace UI.Controllers
         }
 
 
-        private BO.ThePeriod InhaleGridPeriodDates(string prefix,string masterentity)
-        {            
-            int x = Factory.CBL.LoadUserParamInt(get_param_key("grid-period-value-"+prefix,masterentity));  //podformuláře filtrují období za sebe a nikoliv globálně jako flatview/masterview
-            switch (x)
-            {
-                case 0: //nefiltrovat období
-                    return _pp.ByPid(0);
-                case 1:     //ručně zadaný interval d1-d2
-                    var ret = _pp.ByPid(1);
-                    ret.d1 = Factory.CBL.LoadUserParamDate(get_param_key("grid-period-d1-"+prefix, masterentity));  
-                    ret.d2 = Factory.CBL.LoadUserParamDate(get_param_key("grid-period-d2-"+prefix,masterentity));
-                    return ret;  
-                default:    //pojmenované období
-                    return _pp.ByPid(x);
-                    
-            }
-            
-        }
+        
 
 
        

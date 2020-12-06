@@ -12,24 +12,27 @@
 @addTagHelper *,UI
 
 
-<div class="row" id="subform_div_commands">
-    @if (Model.IsAllowCreateA01)
-    {
+<div id="subform_div_commands">
+    <div class="row m-0">
+        @if (Model.IsAllowCreateA01)
+        {
+            <div class="col-auto">
+                <a class="btn btn-primary" target="_top" href="/a01Create/Index?a03id=@Model.a03ID&a10id=@Model.a10ID">@_f.tra("Nový záznam")</a>
+            </div>
+        }
+
+
         <div class="col-auto">
-            <a class="btn btn-primary" href="/a01Create/Index?a03id=@Model.a03ID&a10id=@Model.a10ID">@_f.tra("Nový záznam")</a>
+            @Html.EditorFor(m => m.period, "~/Views/Shared/_Period.cshtml")
         </div>
-    }
-
-
-    <div class="col-auto">
-        @Html.EditorFor(m => m.period, "~/Views/Shared/_Period.cshtml")
     </div>
+    
 
 </div>
 
 
 
-<vc:the-grid entity="a01" j72id="@Model.j72id" go2pid="@Model.go2pid" master_entity="a03Institution" master_pid="@Model.a03ID" contextmenuflag="1" ondblclick="tg_dblclick" master_flag="" masterviewflag="3" addfilterid="school" fixedcolumns="@Model.GridColumns"></vc:the-grid>
+<vc:the-grid entity="a01" j72id="@Model.j72id" go2pid="@Model.go2pid" master_entity="a03Institution" master_pid="@Model.a03ID" contextmenuflag="1" ondblclick="a01_doubleclick" master_flag="" masterviewflag="3" addfilterid="a10id*@Model.a10ID" fixedcolumns="@Model.GridColumns"></vc:the-grid>
 
 
 
@@ -86,7 +89,8 @@
         }
 
         function reload() {
-            location.replace("/Dashboard/TabSchool?a03id=@Model.a03ID");
+            _showloading("2");
+            location.replace("/Dashboard/TabSchoolA01Grid?a03id=@Model.a03ID&a10id=@Model.a10ID");
 
         }
 
@@ -99,6 +103,13 @@
                 reload();
 
             });
+        }
+
+        function a01_doubleclick(row) {
+            _showloading("2");
+            var pid = row.id.replace("r", "");
+            window.open("/a01/RecPage?pid=" + pid,"_top");
+            
         }
 
 

@@ -84,6 +84,7 @@
 
 
     function tabclick(tab) {    //uložit aktuální záložku do profilu uživatele
+        
         $("#navtabs .nav-link").removeClass("active");
         $(tab).addClass("active");
         $.post("/Common/SetUserParam", { key: "dashboard-tab-inspector", value: tab.id.replace("tab", "") }, function (data) {

@@ -764,8 +764,12 @@ function clear_form(a11id,question) {
     
 }
 
-function _showloading() {
-    $("#site_loading1").css("display", "block");
+function _showloading(index) {
+    if (typeof index === "undefined") {
+        index="1"
+    }
+    
+    $("#site_loading"+index).css("display", "block");
 }
 
 function _resize_textareas() {

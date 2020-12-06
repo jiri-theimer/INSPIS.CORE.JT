@@ -76,8 +76,7 @@
 
     });
 
-    function change_a03id(cbx) {
-
+    function change_a03id(cbx) {       
         $.post("/Common/SetUserParam", { key: "DashboardSchool-a03id", value: cbx.value }, function (data) {
 
             reload();
@@ -86,6 +85,7 @@
     }
 
     function tabclick(tab) {    //uložit aktuální záložku do profilu uživatele
+        
         $("#navtabs .nav-link").removeClass("active");
         $(tab).addClass("active");
         $.post("/Common/SetUserParam", { key: "dashboard-tab-school", value: tab.id.replace("tab", "") }, function (data) {

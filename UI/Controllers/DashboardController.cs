@@ -29,6 +29,16 @@ namespace UI.Controllers
                 intCurrentJ04ID = Factory.CurrentUser.j04ID;
             }
             v.RecJ04 = Factory.j04UserRoleBL.Load(intCurrentJ04ID);
+            if (v.a10ID>0 && Factory.j04UserRoleBL.GetListJ08(v.RecJ04.pid).Where(p => p.a10ID == v.a10ID && p.j08IsAllowedCreate).Count() > 0)
+            {
+                v.IsAllowCreateA01 = true;  //může zakládat akce tohoto typu
+            }
+
+            v.period = new PeriodViewModel() { IsShowButtonRefresh = true };            
+            var per =basUI.InhalePeriodDates(_pp,Factory,"a01", "a03Institution");
+            v.period.PeriodValue = per.pid;
+            v.period.d1 = per.d1;
+            v.period.d2 = per.d2;
 
             return View(v);
         }

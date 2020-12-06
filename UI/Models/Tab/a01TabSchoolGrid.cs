@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace UI.Models.Tab
 {
-    public class a01TabSchoolGrid
+    public class a01TabSchoolGrid:BaseViewModel
     {
         public int a10ID { get; set; }
         public int a03ID { get; set; }
