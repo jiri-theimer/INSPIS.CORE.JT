@@ -247,6 +247,7 @@ namespace BL
                     lis.Add(getREL("a05Region", "a01_a05", "Kraj", "LEFT OUTER JOIN a05Region a01_a05 ON a01_a03.a05ID=a01_a05.a05ID", "a01_a03"));
                     lis.Add(getREL("a09FounderType", "a01_a09", "Typ zřizovatele", "LEFT OUTER JOIN a09FounderType a01_a09 ON a01_a03.a09ID=a01_a09.a09ID", "a01_a03"));
                     lis.Add(getREL("a42Qes", "a01_a42", "INEZ", "LEFT OUTER JOIN a42Qes a01_a42 ON a.a42ID=a01_a42.a42ID"));
+                    lis.Add(getREL("b01WorkflowTemplate", "a10_b01", "Workflow šablona", "LEFT OUTER JOIN b01WorkflowTemplate a10_b01 ON a01_a10.b01ID=a10_b01.b01ID", "a01_a10"));
                     lis.Add(getREL("a01Event", "a01_parent", "Nadřízená akce", "LEFT OUTER JOIN a01Event a01_parent ON a.a01ParentID=a01_parent.a01ID"));
                     lis.Add(getREL("o54TagBindingInline", "a01_o54", "Kategorie", "LEFT OUTER JOIN (SELECT * FROM o54TagBindingInline WHERE o54RecordEntity='a01') a01_o54 ON a.a01ID=a01_o54.o54RecordPid"));
                     if (_app.Implementation == "Default")

@@ -9,6 +9,7 @@
 
     <div class="modal_record_container">
         <input type="hidden" asp-for="@Model.a01ID" />
+        <input type="hidden" asp-for="@Model.Rec.a11IsPoll" />
 
         <div class="alert alert-primary" role="alert">
             @Html.Raw(Model.Rec.FullNameHtml)

@@ -310,7 +310,7 @@ namespace BL
                     this.AddMessage("V řádku předané nominace není osoba ani tým."); return false;
                 }
             }
-            if (recB06.b06IsRunOneInstanceOnly)
+            if (recB06.b06IsRunOneInstanceOnly) //krok je povolen spustit v akci pouze jednou
             {
                 var mq = new BO.myQuery("b05");
                 mq.a01id = rec.pid;
@@ -326,6 +326,32 @@ namespace BL
                 if (_db.GetIntegerFromSql(strSQL) != 1)
                 {
                     this.AddMessage(recB06.b06ValidateBeforeErrorMessage); return false;
+                }
+            }
+            if (recB06.b06IsAttachmentTestRequired) //spuštění kroku vyžaduje přiložení povinných příloh podle nastavení tématu akce
+            {
+                var lisA14 = _mother.a08ThemeBL.GetListA14(rec.a08ID).Where(p => p.a14IsRequired == true);
+                foreach(var c in lisA14)
+                {
+                    var lisO27 = _mother.o27AttachmentBL.GetList(new BO.myQuery("o27") { a01id = rec.pid, o13id = c.o13ID },null);
+                    if (lisO27.Count() == 0)
+                    {
+                        this.AddMessage(string.Format("Povinný typ dokumentu [{0}] není přiložen v akci.", _mother.o13AttachmentTypeBL.Load(c.o13ID).o13Name));
+                        return false;
+                    }
+                }
+                
+            }
+            if (_mother.b06WorkflowStepBL.GetNeededO13IDs(recB06.pid).Count() > 0) //spuštění kroku kontroluje existenci vybraných typů dokumentů v akci
+            {
+                foreach (int intO13ID in _mother.b06WorkflowStepBL.GetNeededO13IDs(recB06.pid))
+                {
+                    var lisO27 = _mother.o27AttachmentBL.GetList(new BO.myQuery("o27") { a01id = rec.pid, o13id = intO13ID }, null);
+                    if (lisO27.Count() == 0)
+                    {
+                        this.AddMessage(string.Format("Tento krok vyžaduje v akci přiložený dokument typu [{0}].", _mother.o13AttachmentTypeBL.Load(intO13ID).o13Name));
+                        return false;
+                    }
                 }
             }
 

@@ -14,7 +14,7 @@ namespace BL
         public IEnumerable<BO.b13WorkflowRequiredFormsToStep> GetListB13(int b06id);
         public IEnumerable<BO.b10WorkflowCommandCatalog_Binding> GetListB10(int b06id);
         public int Save(BO.b06WorkflowStep rec, List<BO.b08WorkflowReceiverToStep> lisB08, List<BO.b11WorkflowMessageToStep> lisB11, List<BO.b13WorkflowRequiredFormsToStep> lisB13, List<int> o13ids, List<int> b12_j04ids, List<int> b12_a45ids, List<BO.b10WorkflowCommandCatalog_Binding> lisB10);
-
+        public List<int> GetNeededO13IDs(int b06id);    //vrací ID typů příloh, jeichž existenci v akci vyžaduje krok b06id
     }
     class b06WorkflowStepBL : BaseBL, Ib06WorkflowStepBL
     {
@@ -302,6 +302,9 @@ namespace BL
 
             return _db.GetList<BO.b10WorkflowCommandCatalog_Binding>(sbret(), new { b06id = b06id });
         }
-
+        public List<int> GetNeededO13IDs(int b06id)
+        {
+            return _db.GetList<BO.GetInteger>("select o13ID as Value FROM b14WorkflowRequiredAttachmentTypeToStep WHERE b06ID=@pid", new { pid = b06id }).Select(p => p.Value).ToList();
+        }
     }
 }
