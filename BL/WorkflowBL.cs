@@ -96,7 +96,11 @@ namespace BL
 
             if (recB06 != null)
             {
-                RunB09Commands(rec, recB06.pid, recB06.b02ID_Target);
+                RunB09Commands_By_Step(rec, recB06);
+                if (recB06.b02ID_Target > 0)
+                {
+                    RunB09Commands_By_Status(rec, recB06.b02ID_Target);
+                }
             }
            
             
@@ -107,12 +111,25 @@ namespace BL
         private int SaveStepWithChangeStatus(BO.a01Event rec, BO.b06WorkflowStep recB06, BO.b02WorkflowStatus recB02, string strComment, bool bolManualStep)
         {
             _db.RunSql("UPDATE a01Event SET b02ID=@b02id WHERE a01ID=@pid", new { b02id = recB02.pid, pid = rec.pid });
-            var slave = _db.Load<BO.GetInteger>("SELECT TOP 1 a01ID as Value FROM a01Event WHERE a01ParentID=@pid", new { pid = rec.pid });
-            if (slave != null && slave.Value > 0)
+            switch (recB02.b02AutoUpdateScopeFlag)
             {
-                //aktualizovat statusy u dětí matky
-                _db.RunSql("UPDATE a01Event SET b02ID=@b02id WHERE a01ParentID=@pid", new { b02id = recB06.b02ID_Target, pid = rec.pid });
+                case b02AutoUpdateScope.Slaves:
+                    //aktualizovat statusy u dětí matky
+                    var slave = _db.Load<BO.GetInteger>("SELECT TOP 1 a01ID as Value FROM a01Event WHERE a01ParentID=@pid", new { pid = rec.pid });
+                    if (slave != null && slave.Value > 0)
+                    {
+                        //aktualizovat statusy u dětí matky
+                        _db.RunSql("UPDATE a01Event SET b02ID=@b02id WHERE a01ParentID=@pid", new { b02id = recB06.b02ID_Target, pid = rec.pid });
+                    }
+                    break;
+                case b02AutoUpdateScope.Parent:
+                    if (rec.a01ParentID > 0)
+                    {
+                        _db.RunSql("UPDATE a01Event SET b02ID=@b02id WHERE a01ID=@parentid", new { b02id = recB06.b02ID_Target, parentid = rec.a01ParentID });
+                    }
+                    break;
             }
+            
             //zápis do historie workflow
             var c = new BO.b05Workflow_History() { a01ID = rec.pid, b05IsCommentOnly = false, b05IsManualStep = bolManualStep, b05Comment = strComment, b02ID_From = rec.b02ID, b02ID_To = recB02.pid };
             if (recB06 != null)
@@ -211,7 +228,7 @@ namespace BL
                     _mother.a41PersonToEventBL.Save(recA41, true);
                 }
                 
-                RunB09Commands(rec, 0, recDefB02.pid);  //spouštění pevných SQL příkazů, kterou jsou spojeny s výchozím stavem
+                RunB09Commands_By_Status(rec, recDefB02.pid);  //spouštění pevných SQL příkazů, kterou jsou spojeny s výchozím stavem
             }
 
             
@@ -388,45 +405,144 @@ namespace BL
             _mother.MailBL.SendMessage(recX40, false);
         }
 
-        private void RunB09Commands(BO.a01Event rec,int intB06ID,int intB02ID_Target)
+        private void RunB09Commands_Slaves(BO.a01Event rec, int intB06ID,BO.b10WorkflowCommandCatalog_Binding prikaz)
         {
-            if (intB06ID > 0)
+            if (rec.a01ChildsCount > 0 && rec.a01ParentID == 0)
             {
-                //spuštění případných příkazů spojených s krokem
-                foreach(var prikaz in _mother.b06WorkflowStepBL.GetListB10(intB06ID).Where(p=>p.b09SQL !=null)){
-                    _db.RunSql(_db.ParseMergeSQL(prikaz.b09SQL, rec.pid.ToString(), prikaz.b10Parameter1, prikaz.b10Parameter2));
-                    if (rec.a01ChildsCount > 0 && rec.a01ParentID==0)
-                    {
-                        //spuštění SQL příkazů podřízených dětí vůči matce
-                        var mq = new BO.myQuery("a01");
-                        mq.a01parentid = rec.pid;
-                        var lisChilds = _mother.a01EventBL.GetList(mq);
-                        foreach (var c in lisChilds)
-                        {
-                            _db.RunSql(_db.ParseMergeSQL(prikaz.b09SQL, c.pid.ToString(), prikaz.b10Parameter1, prikaz.b10Parameter2));
-                        }
-                    }
-                }
-            }
-            if (intB02ID_Target > 0)
-            {
-                //spuštění případných příkazů spojených s cílovým statusem
-                foreach (var prikaz in _mother.b02WorkflowStatusBL.GetListB10(intB02ID_Target).Where(p => p.b09SQL != null))
+                //spuštění SQL příkazů podřízených dětí vůči matce
+                var mq = new BO.myQuery("a01");
+                mq.a01parentid = rec.pid;
+                if (prikaz.a10ID_TargetUpdate > 0)
                 {
-                    _db.RunSql(_db.ParseMergeSQL(prikaz.b09SQL, rec.pid.ToString(), prikaz.b10Parameter1, prikaz.b10Parameter2));
-                    if (rec.a01ChildsCount > 0 && rec.a01ParentID == 0)
+                    mq.a10id = prikaz.a10ID_TargetUpdate;
+                }
+                var lisChilds = _mother.a01EventBL.GetList(mq);                               
+                foreach (var c in lisChilds)
+                {
+                    if (prikaz.b09SQL != null)
                     {
-                        //spuštění SQL příkazů podřízených dětí vůči matce
-                        var mq = new BO.myQuery("a01");
-                        mq.a01parentid = rec.pid;
-                        var lisChilds = _mother.a01EventBL.GetList(mq);
-                        foreach (var c in lisChilds)
-                        {
-                            _db.RunSql(_db.ParseMergeSQL(prikaz.b09SQL, c.pid.ToString(), prikaz.b10Parameter1, prikaz.b10Parameter2));
-                        }
+                        //spustit příkaz u podřízených akcí
+                        _db.RunSql(_db.ParseMergeSQL(prikaz.b09SQL, c.pid.ToString(), prikaz.b10Parameter1, prikaz.b10Parameter2));
+                    }
+
+                    if (prikaz.b02ID_TargetUpdate > 0)
+                    {
+                        //nahodit cílový stav u podřízených akcí
+                        SaveStepWithChangeStatus(rec, _mother.b06WorkflowStepBL.Load(intB06ID), _mother.b02WorkflowStatusBL.Load(prikaz.b02ID_TargetUpdate), null, false);
                     }
                 }
+                
             }
+        }
+        private void RunB09Commands_By_Status(BO.a01Event rec,int intB02ID_Target)
+        {
+            //spuštění případných příkazů spojených s nahozením nového stavu u akce
+            foreach (var prikaz in _mother.b02WorkflowStatusBL.GetListB10(intB02ID_Target).Where(p => p.b09SQL != null))
+            {
+                switch (prikaz.b10TargetScopeFlag)
+                {
+                    case b10TargetScopeEnum.ThisAndSlaves:
+                    case b10TargetScopeEnum.SlavesOnly:
+                        if (prikaz.b10TargetScopeFlag == BO.b10TargetScopeEnum.ThisAndSlaves && (prikaz.a10ID_TargetUpdate==0 || rec.a10ID==prikaz.a10ID_TargetUpdate))
+                        {
+                            _db.RunSql(_db.ParseMergeSQL(prikaz.b09SQL, rec.pid.ToString(), prikaz.b10Parameter1, prikaz.b10Parameter2));
+                        }                        
+                        if (rec.a01ChildsCount > 0 && rec.a01ParentID == 0)
+                        {
+                            //spuštění SQL příkazů podřízených dětí vůči matce
+                            var mq = new BO.myQuery("a01");
+                            if (prikaz.a10ID_TargetUpdate > 0)
+                            {
+                                mq.a10id = prikaz.a10ID_TargetUpdate;
+                            }
+                            mq.a01parentid = rec.pid;
+                            var lisChilds = _mother.a01EventBL.GetList(mq);                            
+                            foreach (var c in lisChilds)
+                            {
+                                _db.RunSql(_db.ParseMergeSQL(prikaz.b09SQL, c.pid.ToString(), prikaz.b10Parameter1, prikaz.b10Parameter2));
+                            }
+                        }
+                        break;
+                        
+                    case b10TargetScopeEnum.ThisOnly:
+                        if (prikaz.a10ID_TargetUpdate == 0 || rec.a10ID == prikaz.a10ID_TargetUpdate)
+                        {
+                            _db.RunSql(_db.ParseMergeSQL(prikaz.b09SQL, rec.pid.ToString(), prikaz.b10Parameter1, prikaz.b10Parameter2));
+                        }                        
+                        break;
+                    
+                    case b10TargetScopeEnum.ParentOnly:
+                        if (rec.a01ParentID > 0)
+                        {
+                            if (prikaz.a10ID_TargetUpdate == 0 || _mother.a01EventBL.Load(rec.a01ParentID).a10ID == prikaz.a10ID_TargetUpdate)
+                            {
+                                _db.RunSql(_db.ParseMergeSQL(prikaz.b09SQL, rec.a01ParentID.ToString(), prikaz.b10Parameter1, prikaz.b10Parameter2));
+                            }
+                            
+                            
+                        }
+                        break;
+                }
+                
+                
+            }
+
+            
+        }
+
+        private void RunB09Commands_By_Step(BO.a01Event rec,BO.b06WorkflowStep recB06)
+        {            
+            //spuštění případných příkazů spojených s krokem
+            foreach (var prikaz in _mother.b06WorkflowStepBL.GetListB10(recB06.pid).Where(p => p.b09SQL != null || p.b02ID_TargetUpdate > 0))
+            {
+                switch (prikaz.b10TargetScopeFlag)
+                {
+                    case b10TargetScopeEnum.ThisAndSlaves:  //tato a podřízené akce
+                        if (prikaz.b09SQL != null && (prikaz.a10ID_TargetUpdate==0 || rec.a10ID==prikaz.a10ID_TargetUpdate))
+                        {
+                            _db.RunSql(_db.ParseMergeSQL(prikaz.b09SQL, rec.pid.ToString(), prikaz.b10Parameter1, prikaz.b10Parameter2));
+                        }
+                        RunB09Commands_Slaves(rec, recB06.pid, prikaz);
+
+                        break;
+                    case b10TargetScopeEnum.ThisOnly:   //pouze tato akce
+                        if (prikaz.a10ID_TargetUpdate==0 || rec.a10ID == prikaz.a10ID_TargetUpdate)
+                        {
+                            _db.RunSql(_db.ParseMergeSQL(prikaz.b09SQL, rec.pid.ToString(), prikaz.b10Parameter1, prikaz.b10Parameter2));
+                            if (prikaz.b02ID_TargetUpdate > 0)
+                            {
+                                //nahodit cílový stav u akce
+                                SaveStepWithChangeStatus(rec, recB06, _mother.b02WorkflowStatusBL.Load(prikaz.b02ID_TargetUpdate), null, false);
+                            }
+                        }
+                        
+                        break;
+
+                    case b10TargetScopeEnum.SlavesOnly: //pouze podřízené akce
+                        RunB09Commands_Slaves(rec, recB06.pid, prikaz);
+                        break;
+                    case b10TargetScopeEnum.ParentOnly: //pouze nadřízená akce
+                        if (rec.a01ParentID > 0)
+                        {
+                            if (prikaz.a10ID_TargetUpdate==0 || prikaz.a10ID_TargetUpdate == _mother.a01EventBL.Load(rec.a01ParentID).a10ID)
+                            {
+                                _db.RunSql(_db.ParseMergeSQL(prikaz.b09SQL, rec.a01ParentID.ToString(), prikaz.b10Parameter1, prikaz.b10Parameter2));
+                                if (prikaz.b02ID_TargetUpdate > 0)
+                                {
+                                    //nahodit cílový stav u akce
+                                    SaveStepWithChangeStatus(_mother.a01EventBL.Load(rec.a01ParentID), recB06, _mother.b02WorkflowStatusBL.Load(prikaz.b02ID_TargetUpdate), null, false);
+                                }
+                            }
+                            
+                        }
+
+                        break;
+                }
+
+
+            }
+
+
         }
 
         private List<BO.j02Person> GetAllPersonsOfEventRole(BO.a01Event rec,int intA45ID,int intJ04ID,int intJ11ID,IEnumerable<BO.a41PersonToEvent> lisA41)

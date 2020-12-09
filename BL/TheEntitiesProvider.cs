@@ -104,7 +104,7 @@ namespace BL
             ByPrefix("a45").IsWithoutValidity = true;
 
             AE("b01WorkflowTemplate", "Workflow šablony", "Workflow šablona", "b01WorkflowTemplate a", "a.b01Name");
-            AE("b02WorkflowStatus", "Workflow stavy", "Workflow stav", "b02WorkflowStatus a", "a.b02Order,a.b02Name","a.b02Order,a.b02Name");
+            AE("b02WorkflowStatus", "Workflow stavy", "Workflow stav", "b02WorkflowStatus a", "a.b01ID,a.b02Order,a.b02Name", "a.b01ID,a.b02Order,a.b02Name");
             AE("b05Workflow_History", "Workflow historie", "Workflow historie", "b05Workflow_History a", "a.b05ID DESC");
             ByPrefix("b05").IsWithoutValidity = true;
 

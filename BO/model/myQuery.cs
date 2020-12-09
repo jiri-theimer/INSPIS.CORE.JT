@@ -22,6 +22,7 @@ namespace BO
             _Entity = strEntity;
             this.Refresh();
         }
+      
         private void Refresh()
         {
             _prefix = _Entity.Substring(0, 3);

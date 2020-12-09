@@ -216,7 +216,7 @@ namespace DL
                 pars.Add(strPrefix + "UserUpdate", this.CurrentUser.j03Login, System.Data.DbType.String);
             }
             
-            if (isvalidity == true)
+            if (isvalidity)
             {
                 if (rec.ValidFrom == null) rec.ValidFrom = System.DateTime.Now;
                 pars.Add(strPrefix + "ValidFrom", rec.ValidFrom, System.Data.DbType.DateTime);

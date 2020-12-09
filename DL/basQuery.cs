@@ -478,6 +478,7 @@ namespace DL
             {
                 if (mq.Prefix == "a08") AQ(ref lis, "a.a08ID IN (SELECT a08ID FROM a26EventTypeThemeScope WHERE a10ID=@a10id)", "a10id", mq.a10id);
                 if (mq.Prefix == "a01") AQ(ref lis, "a.a10ID=@a10id", "a10id", mq.a10id);
+                if (mq.Prefix == "b02") AQ(ref lis, "a.b01ID IN (select b01ID FROM a10EventType WHERE a10ID=@a10id)", "a10id", mq.a10id);
             }
             if (mq.a08id > 0)
             {

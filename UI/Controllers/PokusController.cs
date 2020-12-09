@@ -98,7 +98,7 @@ namespace UI.Controllers
             var v = new UI.Models.Pokus();
             RefreshState(v);
 
-
+           
 
 
             return View(v);
@@ -165,6 +165,7 @@ namespace UI.Controllers
         [HttpPost]
         public IActionResult Strom(Models.Pokus v)
         {
+            
             RefreshState(v);
             return View(v);
         }
@@ -172,6 +173,8 @@ namespace UI.Controllers
         public int test1()
         {
             var c = Factory.a11EventFormBL.LoadPoll(646278, "7076");
+            
+
 
             return c.pid;
         }

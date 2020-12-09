@@ -51,7 +51,7 @@ namespace BL
 
         public int Save(BO.b06WorkflowStep rec, List<BO.b08WorkflowReceiverToStep> lisB08, List<BO.b11WorkflowMessageToStep> lisB11, List<BO.b13WorkflowRequiredFormsToStep> lisB13, List<int> o13ids, List<int> b12_j04ids, List<int> b12_a45ids, List<BO.b10WorkflowCommandCatalog_Binding> lisB10)
         {
-            if (ValidateBeforeSave(ref rec, lisB08) == false)
+            if (ValidateBeforeSave(ref rec, lisB08,lisB10) == false)
             {
                 return 0;
             }
@@ -174,14 +174,24 @@ namespace BL
                 }
                 foreach (var c in lisB10)
                 {
-                    _db.RunSql("INSERT INTO b10WorkflowCommandCatalog_Binding(b06ID,b09ID,b10Parameter1) VALUES (@pid,@b09id,@par1)", new { pid = intPID, b09id = c.b09ID, par1 = c.b10Parameter1 });
+                    p = new DL.Params4Dapper();
+                    p.AddInt("b06ID",intPID,true);
+                    p.AddInt("b09ID", c.b09ID, true);
+                    p.AddString("b10Parameter1", c.b10Parameter1);
+                    p.AddString("b10Parameter2", c.b10Parameter2);
+                    p.AddString("b10Parameter3", c.b10Parameter3);
+                    p.AddEnumInt("b10TargetScopeFlag", c.b10TargetScopeFlag);
+                    p.AddInt("a10ID_TargetUpdate", c.a10ID_TargetUpdate);
+                    p.AddInt("b02ID_TargetUpdate", c.b02ID_TargetUpdate, true);
+                    _db.SaveRecord("b10WorkflowCommandCatalog_Binding", p.getDynamicDapperPars(), c, false, false);
+                    //_db.RunSql("INSERT INTO b10WorkflowCommandCatalog_Binding(b06ID,b09ID,b10Parameter1,b02ID_TargetUpdate) VALUES (@pid,@b09id,@par1)", new { pid = intPID, b09id = c.b09ID, par1 = c.b10Parameter1, });
                 }
             }
 
             return intPID;
         }
 
-        public bool ValidateBeforeSave(ref BO.b06WorkflowStep rec, List<BO.b08WorkflowReceiverToStep> lisB08)
+        public bool ValidateBeforeSave(ref BO.b06WorkflowStep rec, List<BO.b08WorkflowReceiverToStep> lisB08, List<BO.b10WorkflowCommandCatalog_Binding> lisB10)
         {            
             if (rec.b02ID == 0)
             {
@@ -191,7 +201,7 @@ namespace BL
             {
                 this.AddMessage("Pokud se nemění cílový stav, název kroku je povinný."); return false;
             }
-
+            
             if (rec.b06IsManualStep)
             {
                 if (lisB08.Count() == 0)
@@ -237,6 +247,16 @@ namespace BL
             {
                 rec.b06IsNomineeRequired = false; rec.a45ID_NomineeTarget = 0;rec.x26ID_Nominee_J02 = 0;rec.x26ID_Nominee_J11 = 0;
             }
+            if (lisB10 != null){
+                if (lisB10.Any(p=>p.b09ID==0))
+                {
+                    this.AddMessage("V rozpisu příkazů chybí vybrat příkaz.");return false;                    
+                }
+                if (lisB10.Any(p => p.IsUpdateStatusCommand && p.b02ID_TargetUpdate == 0))
+                {
+                    this.AddMessage("V rozpisu příkazů chybí vybrat cílový workflow stav."); return false;
+                }
+            }
 
 
             return true;
@@ -272,10 +292,12 @@ namespace BL
         }
         public IEnumerable<BO.b10WorkflowCommandCatalog_Binding> GetListB10(int b06id)
         {
-            sb("SELECT a.*,b09.b09Name,b09.b09ParametersCount,b09.b09SQL,");
+            sb("SELECT a.*,b09.b09Name,b09.b09ParametersCount,b09.b09SQL,b02.b02Name as b02Name_TargetUpdate,a10.a10Name as a10Name_TargetUpdate,b09.b09Ident,");
             sb(_db.GetSQL1_Ocas("b10", false, false, false));
             sb(" FROM b10WorkflowCommandCatalog_Binding a");
-            sb(" INNER JOIN b09WorkflowCommandCatalog b09 ON a.b09ID=b09.b09ID");
+            sb(" LEFT OUTER JOIN b09WorkflowCommandCatalog b09 ON a.b09ID=b09.b09ID");
+            sb(" LEFT OUTER JOIN b02WorkflowStatus b02 ON a.b02ID_TargetUpdate=b02.b02ID");
+            sb(" LEFT OUTER JOIN a10EventType a10 ON a.a10ID_TargetUpdate=a10.a10ID");
             sb(" WHERE a.b06ID=@b06id");
 
             return _db.GetList<BO.b10WorkflowCommandCatalog_Binding>(sbret(), new { b06id = b06id });
