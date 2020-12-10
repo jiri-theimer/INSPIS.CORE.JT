@@ -101,6 +101,7 @@ namespace UI.Controllers
             var cc = new BO.myQueryA11() { a01id = 1, f06id = 2 };
            
 
+
             return View(v);
         }
         public IActionResult Telerik()

@@ -5,12 +5,16 @@ using System.Text;
 namespace BO
 {
     public class myQueryA11 : baseQuery
-    {
+    {        
         public int a01id { get; set; }
         public int a03id { get; set; }
         public int f06id { get; set; }
         public bool? a11ispoll {get;set;}
         public bool? a11issimulation { get; set; }
+        public myQueryA11()
+        {
+            this.Prefix = "a11";
+        }
         public override List<QRow> GetRows()
         {
             if (this.a01id > 0)
