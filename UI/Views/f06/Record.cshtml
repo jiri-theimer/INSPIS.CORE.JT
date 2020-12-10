@@ -91,46 +91,55 @@
                     <input type="checkbox" asp-for="Rec.f06IsA37Required" />
                     <label class="col-form-label" for="Rec_f06IsA37Required">@_f.tra("Povinná vazba na IZO školy")</label>
                 </div>
-                <label class="col-sm-2 col-md-2 col-form-label">@_f.tra("Vazba k entitě [Učitel]"):</label>
-                <div class="col-sm-6 col-md-6">
-                    <select asp-for="Rec.f06RelationWithTeacher" class="form-control">
-                        <option value="None">@_f.tra("Bez povinné vazby na entitu [Učitel]")</option>
-                        <option value="All">@_f.tra("Povinně založit novou vazbu nebo vybrat z existujících")</option>
-                        <option value="OnlyNew">@_f.tra("Povinně založit novou vazbu ke škole")</option>
-                        <option value="OnlyBoundWithSchool">@_f.tra("Povinně vybrat z existujících vazeb ke škole")</option>
-                    </select>
-                </div>
+                @if (_f.App.Implementation == "Default")
+                {
+                    <label class="col-sm-2 col-md-2 col-form-label">@_f.tra("Vazba k entitě [Učitel]"):</label>
+                    <div class="col-sm-6 col-md-6">
+                        <select asp-for="Rec.f06RelationWithTeacher" class="form-control">
+                            <option value="None">@_f.tra("Bez povinné vazby na entitu [Učitel]")</option>
+                            <option value="All">@_f.tra("Povinně založit novou vazbu nebo vybrat z existujících")</option>
+                            <option value="OnlyNew">@_f.tra("Povinně založit novou vazbu ke škole")</option>
+                            <option value="OnlyBoundWithSchool">@_f.tra("Povinně vybrat z existujících vazeb ke škole")</option>
+                        </select>
+                    </div>
+                }
+
 
             </div>
             <div class="form-row my-2">
-                <div class="col-sm-4 col-md-4">
+                <div class="col-auto">
                     <input type="checkbox" asp-for="Rec.f06IsA01ClosedStrict" />
                     <label class="col-form-label" for="Rec_f06IsA01ClosedStrict">@_f.tra("Formulář nelze vyplňovat, pokud je uzavřena jeho akce")</label>
-                </div>
-                <div class="col-sm-4 col-md-4">
+                </div>                                
+
+            </div>
+            <div class="form-row">
+                <div class="col-auto">
                     <input type="checkbox" asp-for="Rec.f06IsA01PeriodStrict" />
                     <label class="col-form-label" for="Rec_f06IsA01PeriodStrict">@_f.tra("Formulář lze vyplňovat pouze v plánovaném období akce")</label>
                 </div>
-                <div class="col-sm-4 col-md-4">
+            </div>
+            <div class="form-row">
+                <div class="col-auto">
                     <input type="checkbox" asp-for="Rec.f06IsReportDialog" />
                     <label class="col-form-label" for="Rec_f06IsReportDialog">@_f.tra("U vyplňování formuláře nabízet funkci [Tisková sestava]")</label>
                 </div>
-
             </div>
-            <div class="form-row my-2">
-                <div class="col-sm-4 col-md-4">
-                    <input type="checkbox" asp-for="Rec.f06IsWorkflowDialog" />
-                    <label class="col-form-label" for="Rec_f06IsWorkflowDialog">@_f.tra("U vyplňování formuláře nabízet funkci [Posunout/doplnit]")</label>
-                </div>
-                <div class="col-sm-4 col-md-4">
+            <div class="form-row">
+                <div class="col-auto">
                     <input type="checkbox" asp-for="Rec.f06IsExportToDoc" />
                     <label class="col-form-label" for="Rec_f06IsExportToDoc">@_f.tra("Povolit funkci [Exportovat do MS Word]")</label>
                 </div>
-
-
+            </div>
+            <div class="form-row">
+                <div class="col-auto">
+                    <input type="checkbox" asp-for="Rec.f06IsWorkflowDialog" />
+                    <label class="col-form-label" for="Rec_f06IsWorkflowDialog">@_f.tra("U vyplňování formuláře nabízet funkci [Posunout/doplnit]")</label>
+                </div>
+                
             </div>
             <hr />
-            <div class="form-row my-2">
+            <div class="form-row">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Razor šablona"):</label>
                 <div class="col-sm-7 col-md-6">
                     <input class="form-control" asp-for="Rec.f06RazorTemplate" />
@@ -186,7 +195,7 @@
 
             <h4>@_f.tra("Přímo svázané přílohy k šabloně formuláře (metodiky, návody apod.)"):</h4>
 
-            <iframe id="fraUpload" src="/FileUpload/Index?prefix=f06&recpid=@(Model.Rec.pid)&guid=@Model.UploadGuid" height="350" scrolling="no"></iframe>
+            <iframe id="fraUpload" src="/FileUpload/Index?prefix=f06&recpid=@(Model.rec_pid)&guid=@Model.UploadGuid" height="350" scrolling="no"></iframe>
 
 
 

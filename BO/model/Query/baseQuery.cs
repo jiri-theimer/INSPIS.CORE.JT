@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BO
 {
-    public class peQueryRow
+    public class QRow
     {
         public string StringWhere { get; set; }
         public string ParName { get; set; }
@@ -20,11 +20,11 @@ namespace BO
         public object Par2Value { get; set; }
     }
     
-    public class peQuery
+    public class baseQuery
     {
         private string _pkfield;
         private string _prefix;
-        private List<peQueryRow> _lis;
+        private List<QRow> _lis;
 
         public string Prefix
         {
@@ -60,21 +60,26 @@ namespace BO
         public bool MyRecordsDisponible;
 
 
-        public virtual string GetSqlWhere()
+        public virtual List<QRow> GetRows()
+        {
+            return InhaleRows();
+
+        }
+        protected List<QRow> InhaleRows()
         {
             if (this.pids != null && this.pids.Any())
             {
                 AQ(_pkfield + " IN (" + String.Join(",", this.pids) + ")", "", null);
             }
 
-            return "";
+            return _lis;
         }
 
         protected void AQ(string strWhere, string strParName, object ParValue, string strAndOrZleva = "AND", string strBracketLeft = null, string strBracketRight = null, string strPar2Name = null, object Par2Value = null)
         {
             if (_lis == null)
             {
-                _lis = new List<peQueryRow>();
+                _lis = new List<QRow>();
             }
             if (_lis.Count == 0)
             {
@@ -85,7 +90,7 @@ namespace BO
             {
                 return; //parametr strParName již byl dříve přidán
             }
-            _lis.Add(new peQueryRow() { StringWhere = strWhere, ParName = strParName, ParValue = ParValue, AndOrZleva = strAndOrZleva, BracketLeft = strBracketLeft, BracketRight = strBracketRight, Par2Name = strPar2Name, Par2Value = Par2Value });
+            _lis.Add(new QRow() { StringWhere = strWhere, ParName = strParName, ParValue = ParValue, AndOrZleva = strAndOrZleva, BracketLeft = strBracketLeft, BracketRight = strBracketRight, Par2Name = strPar2Name, Par2Value = Par2Value });
         }
 
         private static object get_param_value(string colType, string colValue)

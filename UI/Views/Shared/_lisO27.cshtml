@@ -1,10 +1,10 @@
 ﻿@model FileUploadViewModel
-
+@inject BL.Factory _f
 
 @if (Model.lisO27 != null && Model.lisO27.Count()>0)
 {
     <div class="card my-2">
-        <div class="card-header">Uložené přílohy</div>
+        <div class="card-header">@_f.tra("Uložené přílohy")</div>
         <div class="card-body py-0 px-0">
             <table class="table table-hover table-sm">
                 @foreach (var c in Model.lisO27)
@@ -23,7 +23,7 @@
                         <i>
                             @if (string.IsNullOrEmpty(c.o27Label) == true)
                             {
-                                <a href="javascript:changelabel_saved('@(c.o27DownloadGUID)','@(c.o27Label)')">Popis/název</a>
+                                <a href="javascript:changelabel_saved('@(c.o27DownloadGUID)','@(c.o27Label)')">@_f.tra("Popis/název přílohy")</a>
                             }
                             else
                             {
@@ -35,7 +35,7 @@
                         @(c.o27PressMark)
                     </td>
                     <td>
-                        <button type="button" class="btn btn-danger" title="Odstranit řádek" onclick="handle_delete_row('@(c.o27DownloadGUID)')">x</button>
+                        <button type="button" class="btn btn-danger" title="@_f.tra("Odstranit řádek")" onclick="handle_delete_row('@(c.o27DownloadGUID)')">x</button>
                     </td>
                 </tr>
                 }

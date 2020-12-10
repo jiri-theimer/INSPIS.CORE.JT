@@ -707,7 +707,7 @@ namespace UI.Controllers
                     DIV();
                     AMI("Nová otázka", string.Format("javascript: _window_open('/f19/Record?f18id={0}')", pid));
                     AMI("Nová baterie otázek", string.Format("javascript: _window_open('/f26/Record?f18id={0}')", pid));
-                    AMI("Nová šachovnice otázek", string.Format("javascript: _window_open('/f25/Record?f18id={0}')", pid));
+                    //AMI("Nová šachovnice otázek", string.Format("javascript: _window_open('/f25/Record?f18id={0}')", pid));
                     break;
                 case "x40":
                     var recX40 = Factory.MailBL.LoadMessageByPid(pid);

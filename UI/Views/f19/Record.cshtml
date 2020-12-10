@@ -141,33 +141,37 @@
                 </div>
 
             </div>
-            <div class="form-row my-2">
-                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Entitní pole k aktualizaci"):</label>
-                <div class="col-sm-5 col-md-4">
-                    <select asp-for="Rec.f19EntityField" class="form-control">
-                        <option value=""></option>
-                        <option disabled="disabled">--------- Entita [Učitel] ---------</option>
-                        <option value="k01PID">Klíč (RČ)</option>
-                        <option value="k01TitleBeforeName">Titul před jménem</option>
-                        <option value="k01FirstName">Křestní jméno</option>
-                        <option value="k01LastName">Příjmení</option>
-                        <option value="k01TitleAfterName">Titul za jménem</option>
-                        <option value="k02ValidFrom">Zahájení platnosti vazby na školu</option>
-                        <option value="k02ValidUntil">Ukončení platnosti vazby na školu</option>
-                        <option disabled="disabled">--------- Entita [Instituce] ---------</option>
-                        <option value="a03Name">Název instituce</option>
-                        <option value="a03ICO">IČ</option>
-                        <option value="a03City">Obec</option>
-                        <option value="a03Street">Ulice</option>
-                        <option value="a03PostCode">PSČ</option>
-                        <option value="a03Phone">TEL</option>
-                        <option value="a03Mobile">MOBIL</option>
-                        <option value="a03Web">WWW</option>
-                        <option value="a03Email">E-mail</option>
-                    </select>
-                </div>
+            @if (_f.App.Implementation == "Default")
+            {
+                <div class="form-row my-2">
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Entitní pole k aktualizaci"):</label>
+                    <div class="col-sm-5 col-md-4">
+                        <select asp-for="Rec.f19EntityField" class="form-control">
+                            <option value=""></option>
+                            <option disabled="disabled">--------- Entita [Učitel] ---------</option>
+                            <option value="k01PID">Klíč (RČ)</option>
+                            <option value="k01TitleBeforeName">Titul před jménem</option>
+                            <option value="k01FirstName">Křestní jméno</option>
+                            <option value="k01LastName">Příjmení</option>
+                            <option value="k01TitleAfterName">Titul za jménem</option>
+                            <option value="k02ValidFrom">Zahájení platnosti vazby na školu</option>
+                            <option value="k02ValidUntil">Ukončení platnosti vazby na školu</option>
+                            <option disabled="disabled">--------- Entita [Instituce] ---------</option>
+                            <option value="a03Name">Název instituce</option>
+                            <option value="a03ICO">IČ</option>
+                            <option value="a03City">Obec</option>
+                            <option value="a03Street">Ulice</option>
+                            <option value="a03PostCode">PSČ</option>
+                            <option value="a03Phone">TEL</option>
+                            <option value="a03Mobile">MOBIL</option>
+                            <option value="a03Web">WWW</option>
+                            <option value="a03Email">E-mail</option>
+                        </select>
+                    </div>
 
-            </div>
+                </div>
+            }
+
             <div class="form-row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Klastr otázky"):</label>
                 <div class="col-sm-11 col-md-10">
@@ -269,7 +273,7 @@
         </div>
         <div class="tab-pane" id="tab3" style="height:500px;">
             <!-- Tab3 -->
-            <iframe id="fraUpload" src="/FileUpload/Index?prefix=f19&recpid=@(Model.Rec.pid)&guid=@Model.UploadGuid" height="450" scrolling="no"></iframe>
+            <iframe id="fraUpload" src="/FileUpload/Index?prefix=f19&recpid=@(Model.rec_pid)&guid=@Model.UploadGuid" height="450" scrolling="no"></iframe>
 
 
 
