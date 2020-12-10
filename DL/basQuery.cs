@@ -169,7 +169,8 @@ namespace DL
             {
                 if (mq.Prefix == "a41")
                 {
-                    AQ(ref lis, "a.j02ID=@j02id_me OR a.j11ID IN (select j11ID FROM j12Team_Person WHERE j02ID=@j02id_me OR j04ID=@j04id_me) OR a.j11ID IN (select xa.j11ID FROM j12Team_Person xa INNER JOIN a02Inspector xb ON xa.a04ID=xb.a04ID WHERE xb.j02ID=@j02id_me)", "j02id_me",mq.CurrentUser.j02ID,"AND",null,null,"j04id_me",mq.CurrentUser.j04ID);
+                    //AQ(ref lis, "a.j02ID=@j02id_me OR a.j11ID IN (select j11ID FROM j12Team_Person WHERE j02ID=@j02id_me OR j04ID=@j04id_me) OR a.j11ID IN (select xa.j11ID FROM j12Team_Person xa INNER JOIN a02Inspector xb ON xa.a04ID=xb.a04ID WHERE xb.j02ID=@j02id_me)", "j02id_me",mq.CurrentUser.j02ID,"AND",null,null,"j04id_me",mq.CurrentUser.j04ID);
+                    AQ(ref lis, "a.j02ID=@j02id_me", "j02id_me", mq.CurrentUser.j02ID);    //nebudeme brát v potaz členy týmů osob
                 }
                 if (mq.Prefix == "h11")
                 {

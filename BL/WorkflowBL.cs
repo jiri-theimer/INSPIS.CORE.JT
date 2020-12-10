@@ -71,12 +71,7 @@ namespace BL
             {
                 SaveNominee(rec, recB06, lisNominee);
             }
-            TrySendNotificationsToStep(rec, recB06, strComment);
-
-            if (recB06.b02ID_Target > 0)
-            {   //změna stavu může být také notifikována
-                TrySendNotificationsToStatus(rec, recB06.b02ID_Target, strComment);
-            }
+            
             if (recB06.b06IsFormAutoLock)
             {   //spuštění kroku uzamyká otevřené formuláře v akci
                 var lisA11 = _mother.a11EventFormBL.GetList(new BO.myQuery("a11") { a01id = rec.pid });
@@ -94,16 +89,19 @@ namespace BL
                 _db.RunSql(_db.ParseMergeSQL(recB06.b06RunSQL, rec.pid.ToString()));
             }
 
-            if (recB06 != null)
+            RunB09Commands_By_Step(rec, recB06);    //spustit SQL příkazy spojené s krokem
+            if (recB06.b02ID_Target > 0)
             {
-                RunB09Commands_By_Step(rec, recB06);
-                if (recB06.b02ID_Target > 0)
-                {
-                    RunB09Commands_By_Status(rec, recB06.b02ID_Target);
-                }
+                RunB09Commands_By_Status(rec, recB06.b02ID_Target); //spustit SQL příkazy spojené s novým stavem
             }
-           
-            
+
+
+            TrySendNotificationsToStep(rec, recB06, strComment);
+
+            if (recB06.b02ID_Target > 0)
+            {   //změna stavu může být také notifikována
+                TrySendNotificationsToStatus(rec, recB06.b02ID_Target, strComment);
+            }
 
             return rec.pid;
         }

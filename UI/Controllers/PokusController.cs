@@ -98,8 +98,8 @@ namespace UI.Controllers
             var v = new UI.Models.Pokus();
             RefreshState(v);
 
-           
-
+            var cc = new BO.peQueryA11() { a01id = 1, f06id = 2 };
+            
 
             return View(v);
         }

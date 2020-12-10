@@ -37,6 +37,7 @@ namespace BO
 
         public string b09Name { get; set; } //combo
         public string b09Ident { get; set; }    //combo
+        public string b09SQL;
         public int b09ParametersCount { get; set; }
         
         public bool IsUpdateStatusCommand { get     //true = Nabízet pro tento příkaz možnost nahodit jiný stav akce
@@ -49,7 +50,7 @@ namespace BO
             }
         }
 
-        public string b09SQL;
+        
 
         public bool IsTempDeleted { get; set; }
         public string TempGuid { get; set; }
