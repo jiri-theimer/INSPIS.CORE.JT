@@ -295,7 +295,7 @@ namespace BL
             sb("SELECT a.*,b09.b09Name,b09.b09ParametersCount,b09.b09SQL,b02.b02Name as b02Name_TargetUpdate,a10.a10Name as a10Name_TargetUpdate,b09.b09Ident,");
             sb(_db.GetSQL1_Ocas("b10", false, false, false));
             sb(" FROM b10WorkflowCommandCatalog_Binding a");
-            sb(" LEFT OUTER JOIN b09WorkflowCommandCatalog b09 ON a.b09ID=b09.b09ID");
+            sb(" INNER JOIN b09WorkflowCommandCatalog b09 ON a.b09ID=b09.b09ID");
             sb(" LEFT OUTER JOIN b02WorkflowStatus b02 ON a.b02ID_TargetUpdate=b02.b02ID");
             sb(" LEFT OUTER JOIN a10EventType a10 ON a.a10ID_TargetUpdate=a10.a10ID");
             sb(" WHERE a.b06ID=@b06id");

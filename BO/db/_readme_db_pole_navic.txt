@@ -19,6 +19,7 @@ j03PasswordHash varchar(200)
 j03PingTimestamp
 j03LangIndex
 j03HomePageUrl varchar(50)
+j03IsDebugLog
 
 [j05Permission]
 j05IsValid

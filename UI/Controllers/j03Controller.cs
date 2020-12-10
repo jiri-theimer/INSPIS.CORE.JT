@@ -121,6 +121,7 @@ namespace UI.Controllers
                 c.j03IsMustChangePassword = v.Rec.j03IsMustChangePassword;
                 c.j03IsSystemAccount = v.Rec.j03IsSystemAccount;
                 c.j03LangIndex = v.Rec.j03LangIndex;
+                c.j03IsDebugLog = v.Rec.j03IsDebugLog;
                 c.j03AdminRoleValue = "";
                 foreach(var cc in v.lisAdminRoleValues)
                 {

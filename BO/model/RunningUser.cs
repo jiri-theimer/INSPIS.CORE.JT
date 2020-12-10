@@ -30,6 +30,7 @@ namespace BO
 
         public int j03LangIndex { get; set; }
         public bool j03IsMainLogoVisible { get; set; }  //zda je zapnutý pruh s logem nad hlavním menu
+        public bool j03IsDebugLog { get; set; }     //zda je zapnuté logování uživatelovo SQL dotazů
         public string j03HomePageUrl { get; set; }
         public string j04ViewUrl_Page { get; set; }
         public int a04ID { get; set; }      //svázaný inspektorát

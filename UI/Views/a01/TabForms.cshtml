@@ -21,14 +21,21 @@
         <button type="button" class="btn btn-dark" onclick="change_view('1')">@_f.tra("Přepnout na GRID")</button>
     }
 
-    <button type="button" class="btn btn-primary" onclick="append_f06()">@_f.tra("Přidat formuláře")</button>
-    @if (Model.RecA10.a10IsUse_Poll)
+    @if (!Model.RecA01.isclosed && !Model.RecA01.a01IsAllFormsClosed)
+    {
+        <button type="button" class="btn btn-primary" onclick="append_f06()">@_f.tra("Přidat formuláře")</button>
+    }
+
+    @if (Model.RecA10.a10IsUse_Poll && !Model.RecA01.isclosed && !Model.RecA01.a01IsAllFormsClosed)
     {
         <button type="button" class="btn btn-info" onclick="append_poll()">@_f.tra("Anketní formuláře")</button>
         <button type="button" class="btn btn-info" onclick="append_pollwizard()">@_f.tra("Přidat anketu s notifikací")</button>
     }
+    @if (!Model.RecA01.isclosed && !Model.RecA01.a01IsAllFormsClosed)
+    {
+        <button type="button" class="btn btn-secondary" onclick="append_a25()">@_f.tra("Přidat skupinu formulářů")</button>
+    }
 
-    <button type="button" class="btn btn-secondary" onclick="append_a25()">@_f.tra("Přidat skupinu formulářů")</button>
 
 </div>
 
@@ -41,7 +48,7 @@ else
 {
     <div class="modal_record_container">
         <table class="table table-sm" style="min-width:1000px;">
-            @foreach (var c in Model.lisA11.Where(p => p.a11IsPoll == false))
+            @foreach (var c in Model.lisA11)
             {
                 <tr>
                     <td style="width:20px;">
@@ -98,6 +105,13 @@ else
                             }
                         }
 
+                    </td>
+                    <td style="width:60px;">
+                        @if (c.a11IsPoll)
+                        {
+                            <span>@c.a11AccessToken</span>
+                            <img src="~/images/poll.png" />
+                        }
                     </td>
                 </tr>
 

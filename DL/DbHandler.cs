@@ -106,6 +106,10 @@ namespace DL
             {
                 try
                 {
+                    if (CurrentUser.j03IsDebugLog)
+                    {
+                        log_debug(strSQL, "GetList strSQL", null);
+                    }
                     return con.Query<T>(strSQL);
                 }
                 catch (Exception e)
@@ -123,6 +127,10 @@ namespace DL
             {
                 try
                 {
+                    if (CurrentUser.j03IsDebugLog)
+                    {
+                        log_debug(strSQL, "GetList param", param);
+                    }
                     return con.Query<T>(strSQL, param);
                 }
                 catch (Exception e)
@@ -140,10 +148,12 @@ namespace DL
             {
                 try
                 {
+                    if (CurrentUser.j03IsDebugLog)
+                    {
+                        log_debug(strSQL, "GetList Dapper.DynamicParameters pars", pars);
+                    }
                     return con.Query<T>(strSQL, pars);
-                    //var rst= con.Query<T>(strSQL, pars);
-                    //log_debug(strSQL, t0, DateTime.Now);
-                    //return rst;
+                   
                 }
                 catch (Exception e)
                 {
@@ -176,6 +186,10 @@ namespace DL
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 try
                 {
+                    if (CurrentUser.j03IsDebugLog)
+                    {
+                        log_debug(strSQL, "GetDataTable", null);
+                    }
                     adapter.Fill(dt);
                 }
                 catch (Exception e)
@@ -316,6 +330,11 @@ namespace DL
                     
                     if (con.Execute(strSQL, param,null,timeout_seconds) > 0)
                     {
+                        
+                        if (CurrentUser.j03IsDebugLog)
+                        {
+                            log_debug(strSQL, "RunSql", param);
+                        }                        
                         return true;
                     }
                 }
@@ -403,12 +422,42 @@ namespace DL
         }
 
 
-        private void log_debug(string strSQL,DateTime t0,DateTime t1)
+        private void log_debug(string strSQL,string strProc, object param=null)
         {
-            var strPath = string.Format("{0}\\sql-debug-{1}.log", _logDir, DateTime.Now.ToString("yyyy.MM.dd"));
-            TimeSpan dur = t1 - t0;
-            System.IO.File.AppendAllLines(strPath, new List<string>() { "dur: "+dur.TotalSeconds.ToString()+ ", t0: " + t0.ToString() + ", t1: " + t1.ToString() });
+            var strPath = string.Format("{0}\\sql-debug-{1}-{2}.log", _logDir,CurrentUser.j03Login, DateTime.Now.ToString("yyyy.MM.dd"));
+            System.IO.File.AppendAllLines(strPath, new List<string>() { "", "", "------------------------------", DateTime.Now.ToString() + ", proc: " + strProc });
+
+            //TimeSpan dur = t1 - t0;
+            //System.IO.File.AppendAllLines(strPath, new List<string>() { "dur: "+dur.TotalSeconds.ToString()+ ", t0: " + t0.ToString() + ", t1: " + t1.ToString() });
             System.IO.File.AppendAllLines(strPath, new List<string>() { "sql: " + strSQL });
+            if (param != null)
+            {
+                System.IO.File.AppendAllLines(strPath, new List<string>() { "PARAMs: " + param.ToString() });
+            }
+            
+        }
+        private void log_debug(string strSQL, string strProc, DynamicParameters pars)
+        {
+            var strPath = string.Format("{0}\\sql-debug-{1}-{2}.log", _logDir, CurrentUser.j03Login, DateTime.Now.ToString("yyyy.MM.dd"));
+            System.IO.File.AppendAllLines(strPath, new List<string>() { "", "", "------------------------------", DateTime.Now.ToString() + ", proc: " + strProc });
+
+            System.IO.File.AppendAllLines(strPath, new List<string>() { "sql: " + strSQL });
+            if (pars != null)
+            {
+                string strVal = "";
+                foreach (var strP in pars.ParameterNames)
+                {
+                    if (pars.Get<dynamic>(strP) != null)
+                    {
+                        strVal = pars.Get<dynamic>(strP).ToString();
+                    }
+                    else
+                    {
+                        strVal = "NULL";
+                    }
+                    System.IO.File.AppendAllLines(strPath, new List<string>() { "PARAM: " + strP + ", VALUE: " + strVal });
+                }
+            }
         }
         private void log_error(Exception e, string strSQL, DynamicParameters pars)
         {

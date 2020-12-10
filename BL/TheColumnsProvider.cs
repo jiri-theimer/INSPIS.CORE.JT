@@ -319,6 +319,7 @@ namespace BL
             AF("j03User", "j04Name", "Role", 1, "j03_j04.j04Name","string",false,true);
             AF("j03User", "Lang", "Jazyk", 1, "case isnull(a.j03LangIndex,0) when 0 then 'Česky' when 1 then 'English' when 2 then convert(nvarchar(20),N'Українська') end");
             AF("j03User", "j03PingTimestamp", "Last ping", 0, "a.j03PingTimestamp", "datetime");
+            AF("j03User", "j03IsDebugLog", "Debug log", 0, null, "bool");
             AppendTimestamp("j03User");
 
             //j04=aplikační role
