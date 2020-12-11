@@ -521,7 +521,7 @@ namespace UIFT.Repository
                 // true v pripade, ze odpoved ma spravny tvar vzhledem k nastaveni otazky
                 if (!otazka.Validate(ref value))
                 {
-                    this._LastError = "Odpověď nemá správný formát!";
+                    this._LastError = BL.tra("Odpověď nemá správný formát!");
                     return false;
                 }
 

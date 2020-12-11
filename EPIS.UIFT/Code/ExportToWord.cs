@@ -125,7 +125,7 @@ namespace UIFT
 
                 case BO.ReplyKeyEnum.RadiobuttonList:
                 case BO.ReplyKeyEnum.DropdownList:
-                    BuildAnswerHint("Zaškrtněte jednu odpověď.");
+                    BuildAnswerHint(_Repository.BL.tra("Zaškrtněte jednu odpověď."));
                     // jednotlive odpovedi
                     BuildListAnswers(otazka.Odpovedi, showAnswers ? otazka.VyplneneOdpovedi : null);
                     break;
