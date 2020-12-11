@@ -15,6 +15,7 @@ namespace BO
         public int f29id { get; set; }
         public int x29id { get; set; }
         public int x55id { get; set; }
+        public int a11id { get; set; }
         public myQuery000(string prefix)
         {
             this.Prefix = prefix;
@@ -80,57 +81,22 @@ namespace BO
                 AQ("a.x31Is4SingleRecord=1", "", null);    //pouze kontextové sestavy
             }
 
-
-
-            switch (this.Prefix)
+            if (this.a11id > 0)
             {
-                case "a08":
-                    if (this.x31id > 0)
-                    {
-                        AQ("a.a08ID IN (select a08ID FROM a27EventTheme_Report WHERE x31ID=@x31id)", "x31id", this.x31id);
-                    }
-                    if (this.a10id > 0)
-                    {
-                        AQ("a.a08ID IN (SELECT a08ID FROM a26EventTypeThemeScope WHERE a10ID=@a10id)", "a10id", this.a10id);
-                    }
-                    break;
-                case "x31":
-                    break;
-                case "a10":
-                    if (this.x31id > 0)
-                    {
-                        AQ("a.a10ID IN (select a10ID FROM a23EventType_Report WHERE x31ID=@x31id)", "x31id", this.x31id);
-                    }
-                    break;
-                case "b02":
-                    if (this.param1 != null)
-                    {
-                        AQ("a.b02Entity=@prefix", "prefix", this.param1);    //filtr seznamu stavů podle druhu entity
-                    }
-                    if (this.b01id > 0)
-                    {
-                        AQ("a.b01ID=@b01id", "b01id", this.b01id);
-                    }
-                    if (this.a10id > 0)
-                    {
-                        AQ("a.b01ID IN (select b01ID FROM a10EventType WHERE a10ID=@a10id)", "a10id", this.a10id);
-                    }
-
-                    break;
-                case "a17":
-                    if (this.f29id > 0)
-                    {
-                        AQ("a.a17ID IN (select a17ID FROM f41PortalQuestionTab_a17Binding WHERE f29ID=@f29id)", "f29id", this.f29id);
-                    }
-                    break;
-                case "o13":
-                    if (this.x29id > 0)
-                    {
-                        AQ("a.x29ID=@x29id", "x29id", this.x29id);
-                    }
-                    break;
+                if (this.Prefix == "f32") AQ("a.a11ID=@a11id", "a11id", this.a11id);
             }
-            
+            if (this.f06id > 0)
+            {
+                if (this.Prefix == "j04") AQ("a.j04ID IN (select j04ID FROM f07Form_UserRole_EncryptedPermission WHERE f06ID=@f06id)", "f06id", this.f06id);
+                if (this.Prefix == "x31") AQ("a.x31ID IN (select x31ID FROM f08Form_Report WHERE f06ID=@f06id)", "f06id", this.f06id);
+                if (this.Prefix == "f18" || this.Prefix == "a11") AQ("a.f06ID=@f06id", "f06id", this.f06id);
+                if (this.Prefix == "f19") AQ("a.f18ID IN (SELECT f18ID FROM f18FormSegment WHERE f06ID=@f06id)", "f06id", this.f06id);
+                if (this.Prefix == "f32") AQ("a11.f06ID=@f06id", "f06id", this.f06id);
+                if (this.Prefix == "xx1") AQ("f18.f06ID=@f06id", "f06id", this.f06id); //f21ReplyUnitJoinedF19: GetListJoinedF19
+                if (this.Prefix == "f31") AQ("a11.f06ID=@f06id", "f06id", this.f06id);                
+            }
+
+
             return this.InhaleRows();
 
         }

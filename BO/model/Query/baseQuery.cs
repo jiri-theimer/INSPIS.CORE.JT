@@ -18,9 +18,9 @@ namespace BO
 
         public string Par2Name { get; set; }
         public object Par2Value { get; set; }
-        
+
     }
-    
+
     public abstract class baseQuery
     {
         private string _pkfield;
@@ -30,7 +30,7 @@ namespace BO
         public string Prefix
         {
             get
-            {                
+            {
                 return _prefix;
             }
             set
@@ -54,6 +54,8 @@ namespace BO
         }
         public int OFFSET_PageSize { get; set; }
         public int OFFSET_PageNum { get; set; }
+
+        public IEnumerable<BO.TheGridColumn> explicit_columns { get; set; }
         public string explicit_orderby { get; set; }
         public string explicit_selectsql { get; set; }
         public string explicit_sqlwhere { get; set; }
@@ -63,7 +65,7 @@ namespace BO
         public string param1 { get; set; }
         public DateTime? global_d1;
         public DateTime? global_d2;
-        
+
         protected string _searchstring;
         public string SearchString
         {
@@ -74,7 +76,7 @@ namespace BO
             set
             {
                 _searchstring = value;
-                _searchstring= _searchstring.ToLower().Trim();
+                _searchstring = _searchstring.ToLower().Trim();
                 _searchstring = _searchstring.Replace("--", "").Replace("drop", "").Replace("delete", "").Replace("truncate", "").Replace(";", " or ").Replace(",", " or ").Replace("  ", " ");
                 _searchstring = _searchstring.Replace(" or ", "#or#").Replace(" and ", "#and#");
                 _searchstring = _searchstring.Replace(" ", " and ");
@@ -115,7 +117,7 @@ namespace BO
             {
                 strAndOrZleva = ""; //první podmínka zleva
             }
-            
+
             if (String.IsNullOrEmpty(strParName) == false && _lis.Where(p => p.ParName == strParName).Count() > 0)
             {
                 return; //parametr strParName již byl dříve přidán
@@ -273,4 +275,5 @@ namespace BO
 
 
         }
+    }
 }

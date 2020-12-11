@@ -223,9 +223,9 @@
             master_entity: "@Model.MasterEntity",
             master_pid: "@Model.MasterPID",
             master_flag: "@Model.MasterFlag",
-            dataurl: "@Url.Action("GetHtml4TheGrid", "TheGrid")",
-            handlerurl: "@Url.Action("HandleTheGridOper", "TheGrid")",
-            filterurl: "@Url.Action("HandleTheGridFilter", "TheGrid")",
+            dataurl: "@Url.Action("GetHtml4TheGrid", Model.ControllerName)",
+            handlerurl: "@Url.Action("HandleTheGridOper", Model.ControllerName)",
+            filterurl: "@Url.Action("HandleTheGridFilter", Model.ControllerName)",
             j72id: "@Model.GridState.j72ID",
             go2pid: "@Model.GridState.j75CurrentRecordPid",
             contextmenuflag: "@Model.GridState.ContextMenuFlag",
@@ -243,7 +243,7 @@
         $("#cmdTheGridBatchSelect").click(function () {
             if (_gridMenuFilled == true) return;
 
-            $.post("/TheGrid/getHTML_ContextMenu", { j72id:@Model.GridState.pid}, function (data) {
+            $.post("@Url.Action("HandleTheGridMenu", Model.ControllerName)", { j72id:@Model.GridState.pid}, function (data) {
                 if (_device.innerHeight <= 300) {
                     data = data.replace(/nav-link/g, "nav-link-mini");
 

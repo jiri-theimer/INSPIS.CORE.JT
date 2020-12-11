@@ -1,0 +1,30 @@
+﻿@model UI.Models.Pokus
+
+@{
+    ViewData["Title"] = "GRID testování";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+}
+
+
+
+
+@addTagHelper *, UI
+
+<h1>Grid</h1>
+
+
+<vc:the-grid entity="a01Event" j72id="0" go2pid="0" master_entity="" ondblclick="tg_dblclick" oncmclick="tg_cm(event)" fixedcolumns="" extendpagerhtml="@Model.ExtendPagerHtml" controllername="Pokus" myquery="@Model.myQueryGrid"></vc:the-grid>
+
+
+
+
+
+<script type="text/javascript">
+    /*automaticky volaná událost z thegrid controlu*/
+    function thegrid_handle_event(event_name, pid) {
+
+    }
+</script>
+

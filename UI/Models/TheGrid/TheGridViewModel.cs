@@ -8,6 +8,7 @@ namespace UI.Models
     public class TheGridViewModel
     {        
         public string Entity { get; set; }
+        public string ControllerName { get; set; }
         public int MasterPID { get; set; }
         public string MasterEntity { get; set; }
         public string MasterFlag { get; set; }

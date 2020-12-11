@@ -65,7 +65,7 @@ namespace BO
                 string sw = string.Format("Contains((a.a03REDIZO,a.a03Name,a.a03ICO,a.a03City,a.a03Street),'{0}')", _searchstring);
                 if (_searchstring.Length == 9 && BO.BAS.InDouble(_searchstring) > 0)
                 {
-                    sw = string.Format("Contains((a.a03REDIZO),'{0}')", s);
+                    sw = string.Format("Contains((a.a03REDIZO),'{0}')", _searchstring);
                     sw += string.Format(" OR a.a03ID IN (SELECT a03ID FROM a37InstitutionDepartment WHERE a37IZO = '{0}')", _searchstring);
                 }
 

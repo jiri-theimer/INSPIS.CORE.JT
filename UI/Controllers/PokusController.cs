@@ -18,6 +18,15 @@ namespace UI.Controllers
 {
     public class PokusController : BaseController
     {
+        private readonly BL.TheColumnsProvider _colsProvider;
+        private readonly BL.ThePeriodProvider _pp;
+
+        public PokusController(BL.TheColumnsProvider cp, BL.ThePeriodProvider pp)
+        {
+            _colsProvider = cp;
+            _pp = pp;
+        }
+
         public IActionResult Evaluator()
         {
             var v = new UI.Models.Pokus();
@@ -26,6 +35,46 @@ namespace UI.Controllers
             //this.AddMessage(s.ToString());
             return View(v);
         }
+
+        private BO.myQuery GetGridQuery()
+        {
+            var mq = new BO.myQuery("a01");
+            mq.a10id = 35;
+            return mq;
+        }
+
+        public IActionResult Grid()
+        {
+            var v = new UI.Models.Pokus();
+            v.myQueryGrid = GetGridQuery();
+            v.ExtendPagerHtml = "<button type='button' class='btn btn-secondary btn-sm mx-4 nonmobile' onclick='tg_switchflag(\"a01\",1)'>Zapnout spodní panel</button>";
+
+            return View(v);
+
+        }
+        public TheGridOutput HandleTheGridFilter(TheGridUIContext tgi, List<BO.TheGridColumnFilter> filter)
+        {            
+            var c = new UI.TheGridSupport(Factory, _colsProvider);
+            c.extendpagerhtml= "HandleTheGridFilter<button type='button' class='btn btn-secondary btn-sm mx-4 nonmobile' onclick='tg_switchflag(\"a01\",1)'>Zapnout spodní panel</button>";
+
+            return c.Event_HandleTheGridFilter(tgi, filter, GetGridQuery());
+        }
+        public TheGridOutput HandleTheGridOper(TheGridUIContext tgi)
+        {
+            
+            var c = new UI.TheGridSupport(Factory, _colsProvider);
+            c.extendpagerhtml = "HandleTheGridOper<button type='button' class='btn btn-secondary btn-sm mx-4 nonmobile' onclick='tg_switchflag(\"a01\",1)'>Zapnout spodní panel</button>";
+
+            return c.Event_HandleTheGridOper(tgi, GetGridQuery());
+
+        }
+        public string HandleTheGridMenu(int j72id)
+        {
+            var c = new UI.TheGridSupport(Factory, _colsProvider);
+            return c.Event_HandleTheGridMenu(j72id);
+        }
+
+
         public IActionResult PokusWord()
         {
             System.IO.File.Copy("c:\\temp\\hovado2.docx", "c:\\temp\\hovado3.docx", true);
