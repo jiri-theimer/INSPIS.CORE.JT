@@ -65,7 +65,7 @@
     
 }
 
-<vc:the-grid entity="@Model.entity" j72id="@Model.j72id" go2pid="@Model.go2pid" master_entity="@Model.master_entity" master_pid="@Model.master_pid" contextmenuflag="@Model.contextmenuflag" ondblclick="tg_dblclick" master_flag="" masterviewflag="1" addfilterid="@Model.addfilterid" fixedcolumns=""></vc:the-grid>
+<vc:the-grid entity="@Model.entity" j72id="@Model.j72id" go2pid="@Model.go2pid" master_entity="@Model.master_entity" oncmclick="tg_cm(event)" ondblclick="tg_dblclick" fixedcolumns="" extendpagerhtml="@Model.ExtendPagerHtml" controllername="TheGrid" myquery="@Model.myQueryGrid"></vc:the-grid>
 
 
 

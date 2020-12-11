@@ -52,16 +52,16 @@ namespace UI.Views.Shared.Components.TheGrid
             {
                 gridState.j72Columns = fixedcolumns;
             }
+            gridState.j75CurrentRecordPid = go2pid;
+            gridState.j72MasterEntity = master_entity;
+
             //gridState.MasterViewFlag = masterviewflag;
             //gridState.MasterFlag = master_flag;
-            gridState.j75CurrentRecordPid = go2pid;
             //gridState.ContextMenuFlag = contextmenuflag;
-            gridState.j72MasterEntity = master_entity;
             //gridState.MasterPID = master_pid;
             //gridState.OnDblClick = ondblclick;
             //gridState.AddFilterID = addfilterid;
             //gridState.FixedColumns = fixedcolumns;
-
             //var cc = new TheGridController(_colsProvider, _pp);
             //cc.Factory = _f;
 

@@ -3,7 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using UI.Models;
+
+
 
 namespace UI
 {
@@ -629,6 +632,69 @@ namespace UI
             return sb.ToString();
         }
 
+
+        public string Event_TheGridExport(string format, int j72id, string pids, BO.myQuery mq)
+        {
+            var gridState = this._Factory.j72TheGridTemplateBL.LoadState(j72id, _Factory.CurrentUser.pid);
+                                          
+            if (String.IsNullOrEmpty(pids) == false)
+            {
+                mq.SetPids(pids);
+            }
+
+
+            System.Data.DataTable dt = prepare_datatable_4export(ref mq, gridState);
+            string filepath = _Factory.App.TempFolder + "\\" + BO.BAS.GetGuid() + "." + format;
+
+            var cExport = new UI.dataExport();
+            string strFileClientName = "gridexport_" + mq.Prefix + "." + format;
+
+            if (format == "csv")
+            {
+                if (cExport.ToCSV(dt, filepath, mq))
+                {
+                    //return File(System.IO.File.ReadAllBytes(filepath), "application/CSV", strFileClientName);
+                    return filepath;
+
+
+                }
+            }
+            if (format == "xlsx")
+            {
+                if (cExport.ToXLSX(dt, filepath, mq))
+                {
+
+                    //return File(System.IO.File.ReadAllBytes(filepath), "application/vnd.ms-excel", strFileClientName);
+                    return filepath;
+                }
+            }
+
+
+            return null;
+
+        }
+
+        private System.Data.DataTable prepare_datatable_4export(ref BO.myQuery mq, BO.TheGridState gridState)
+        {
+
+            mq.explicit_columns = _colsProvider.ParseTheGridColumns(mq.Prefix, gridState.j72Columns, _Factory.CurrentUser.j03LangIndex);
+            if (string.IsNullOrEmpty(gridState.j75SortDataField) == false)
+            {
+
+                mq.explicit_orderby = _colsProvider.ByUniqueName(gridState.j75SortDataField).getFinalSqlSyntax_ORDERBY() + " " + gridState.j75SortOrder;
+            }
+            if (String.IsNullOrEmpty(gridState.j75Filter) == false)
+            {
+                mq.TheGridFilter = _colsProvider.ParseAdhocFilterFromString(gridState.j75Filter, mq.explicit_columns);
+            }                                  
+            if (gridState.j72HashJ73Query)
+            {
+                mq.lisJ73 = _Factory.j72TheGridTemplateBL.GetList_j73(gridState.j72ID, gridState.j72Entity.Substring(0, 3));
+            }
+            mq.InhaleMasterEntityQuery(gridState.j72MasterEntity, gridState.MasterPID, gridState.MasterFlag);
+
+            return _Factory.gridBL.GetList(mq);
+        }
 
     }
 }

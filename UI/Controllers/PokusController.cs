@@ -13,6 +13,7 @@ using DocumentFormat.OpenXml.Wordprocessing;
 
 
 using System.Text.Json;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace UI.Controllers
 {
@@ -39,7 +40,7 @@ namespace UI.Controllers
         private BO.myQuery GetGridQuery()
         {
             var mq = new BO.myQuery("a01");
-            mq.a10id = 35;
+            //mq.a10id = 35;
             return mq;
         }
 
@@ -52,26 +53,42 @@ namespace UI.Controllers
             return View(v);
 
         }
-        public TheGridOutput HandleTheGridFilter(TheGridUIContext tgi, List<BO.TheGridColumnFilter> filter)
+        public TheGridOutput HandleTheGridFilter(TheGridUIContext tgi, List<BO.TheGridColumnFilter> filter) //TheGrid povinná metoda
         {            
             var c = new UI.TheGridSupport(Factory, _colsProvider);
             c.extendpagerhtml= "HandleTheGridFilter<button type='button' class='btn btn-secondary btn-sm mx-4 nonmobile' onclick='tg_switchflag(\"a01\",1)'>Zapnout spodní panel</button>";
-
+          
             return c.Event_HandleTheGridFilter(tgi, filter, GetGridQuery());
         }
-        public TheGridOutput HandleTheGridOper(TheGridUIContext tgi)
-        {
-            
+        public TheGridOutput HandleTheGridOper(TheGridUIContext tgi)    //TheGrid povinná metoda
+        {            
             var c = new UI.TheGridSupport(Factory, _colsProvider);
-            c.extendpagerhtml = "HandleTheGridOper<button type='button' class='btn btn-secondary btn-sm mx-4 nonmobile' onclick='tg_switchflag(\"a01\",1)'>Zapnout spodní panel</button>";
+            c.extendpagerhtml = tgi.pathname+"<button type='button' class='btn btn-secondary btn-sm mx-4 nonmobile' onclick='tg_switchflag(\"a01\",1)'>Zapnout spodní panel</button>";
 
             return c.Event_HandleTheGridOper(tgi, GetGridQuery());
 
         }
-        public string HandleTheGridMenu(int j72id)
+        public string HandleTheGridMenu(int j72id)  //TheGrid povinná metoda
         {
+            
             var c = new UI.TheGridSupport(Factory, _colsProvider);
             return c.Event_HandleTheGridMenu(j72id);
+        }
+        public FileResult HandleTheGridExport(string format, int j72id, string pids)  //TheGrid povinná metoda
+        {
+            
+            var c = new UI.TheGridSupport(Factory, _colsProvider);
+            var mq = GetGridQuery();
+            var fullpath=c.Event_TheGridExport(format, j72id, pids, mq);
+            if (format == "csv")
+            {
+                return File(System.IO.File.ReadAllBytes(fullpath), "application/CSV", "export_" + mq.Prefix + ".csv");
+            }
+            if (format == "xlsx")
+            {
+                return File(System.IO.File.ReadAllBytes(fullpath), "application/vnd.ms-excel", "export_" + mq.Prefix + ".xlsx");
+            }
+            return null;
         }
 
 

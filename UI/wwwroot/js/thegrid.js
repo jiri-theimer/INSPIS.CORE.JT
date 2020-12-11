@@ -2,6 +2,7 @@
 var _tg_url_data;
 var _tg_url_handler;
 var _tg_url_filter;
+var _tg_url_export;
 var _tg_entity;
 var _tg_filterinput_timeout;
 var _tg_filter_is_active;
@@ -28,6 +29,7 @@ function tg_init(c) {
     _tg_url_data = c.dataurl;
     _tg_url_handler = c.handlerurl;
     _tg_url_filter = c.filterurl;
+    _tg_url_export = c.exporturl;
     _tg_go2pid = c.go2pid;
     _tg_master_entity = c.master_entity;
     _tg_master_pid = c.master_pid;    
@@ -142,7 +144,8 @@ function tg_post_data() {
         master_flag: _tg_master_flag,
         addfilterid: _tg_addfilterid,
         fixedcolumns: _tg_fixedcolumns,
-        viewflag: _tg_viewflag
+        viewflag: _tg_viewflag,
+        pathname: location.pathname
     }    
     
     $.post(_tg_url_data, {tgi:params}, function (data) {        
@@ -176,6 +179,7 @@ function tg_post_handler(strOper, strKey, strValue) {
     //_notify_message("odesílá se: oper: " + strOper + ", key: " + strKey + ", value: " + strValue);    
     var params = {
         j72id: _j72id,
+        entity:_tg_entity,
         oper: strOper,
         key: strKey,
         value: strValue,
@@ -186,7 +190,8 @@ function tg_post_handler(strOper, strKey, strValue) {
         ondblclick: _tg_ondblclick,
         addfilterid: _tg_addfilterid,
         fixedcolumns: _tg_fixedcolumns,
-        viewflag: _tg_viewflag
+        viewflag: _tg_viewflag,
+        pathname:location.pathname
     }    
     $.post(_tg_url_handler, { tgi: params}, function (data) {
        // _notify_message("vrátilo se: oper: " + strOper + ", key: " + strKey + ", value: " + strValue);
@@ -797,7 +802,8 @@ function tg_filter_send2server() {
     });
 
     var params = {
-        j72id: _j72id,        
+        j72id: _j72id,
+        entity: _tg_entity,
         master_entity: _tg_master_entity,
         master_pid: _tg_master_pid,
         master_flag: _tg_master_flag,
@@ -805,7 +811,8 @@ function tg_filter_send2server() {
         ondblclick: _tg_ondblclick,
         addfilterid: _tg_addfilterid,
         fixedcolumns: _tg_fixedcolumns,
-        viewflag: _tg_viewflag
+        viewflag: _tg_viewflag,
+        pathname: location.pathname
     }    
 
     
@@ -926,7 +933,7 @@ function tg_dblclick(row) {
 
 function tg_export(format,scope) {
         
-    var url = "/TheGrid/GridExport?j72id=" + _j72id + "&format=" + format + "&master_pid=" + _tg_master_pid + "&master_entity=" + _tg_master_entity+"&master_flag="+_tg_master_flag;
+    var url = _tg_url_export+"?j72id=" + _j72id + "&format=" + format + "&master_pid=" + _tg_master_pid + "&master_entity=" + _tg_master_entity+"&master_flag="+_tg_master_flag;
     if (scope === "selected") {
         var pids = $("#tg_selected_pids").val();
         if (pids === "") {

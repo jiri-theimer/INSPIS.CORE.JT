@@ -8,6 +8,12 @@ namespace UI.Models
     public class FsmViewModel:BaseViewModel
     {
         public string entity { get; set; }
+        public BO.myQuery myQueryGrid { get; set; }
+        public string ExtendPagerHtml { get; set; }
+        
+
+
+
         public string entityTitle { get; set; }
         public string prefix { get; set; }
         public int j72id { get; set; }

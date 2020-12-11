@@ -4,23 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-
-
-
 using UI.Models;
-using System.ComponentModel;
-using BO;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System.Diagnostics;
-using DocumentFormat.OpenXml.Wordprocessing;
+
 
 namespace UI.Controllers
 {
     public class TheGridController : BaseController        
     {
        
-        private System.Text.StringBuilder _s;
-        private UI.Models.TheGridViewModel _grid;
+        
         private readonly BL.TheColumnsProvider _colsProvider;
         private readonly BL.ThePeriodProvider _pp;
 
@@ -28,6 +20,35 @@ namespace UI.Controllers
         {
             _colsProvider = cp;
             _pp = pp;
+        }
+
+        public TheGridOutput HandleTheGridFilter(TheGridUIContext tgi, List<BO.TheGridColumnFilter> filter) //TheGrid povinná metoda
+        {
+            var v = LoadFsmViewModel(tgi.entity.Substring(0, 3), 0, tgi.pathname.Split("/")[1].ToLower(), tgi.master_entity);
+            var c = new UI.TheGridSupport(Factory, _colsProvider);
+           
+            return c.Event_HandleTheGridFilter(tgi, filter, v.myQueryGrid);
+        }
+        public TheGridOutput HandleTheGridOper(TheGridUIContext tgi)    //TheGrid povinná metoda
+        {
+            var v = LoadFsmViewModel(tgi.entity.Substring(0, 3), 0, tgi.pathname.Split("/")[1].ToLower(), tgi.master_entity);
+            var c = new UI.TheGridSupport(Factory, _colsProvider);
+            c.extendpagerhtml = tgi.pathname + "<button type='button' class='btn btn-secondary btn-sm mx-4 nonmobile' onclick='tg_switchflag(\"a01\",1)'>Zapnout spodní panel</button>";
+
+            return c.Event_HandleTheGridOper(tgi, v.myQueryGrid);
+
+        }
+        public string HandleTheGridMenu(int j72id)  //TheGrid povinná metoda
+        {
+
+            var c = new UI.TheGridSupport(Factory, _colsProvider);
+            return c.Event_HandleTheGridMenu(j72id);
+        }
+        public FileResult HandleTheGridExport(string format, int j72id, string pids)  //TheGrid povinná metoda
+        {
+            
+
+            return null;
         }
 
         public IActionResult FlatView(string prefix, int go2pid)    //pouze grid bez subform
@@ -161,13 +182,17 @@ namespace UI.Controllers
                 return strKey;
             }
         }
+
+        
+
+
         private FsmViewModel LoadFsmViewModel(string prefix,int go2pid,string pagename,string masterentity)
         {
-            var v = new FsmViewModel() { prefix = prefix, go2pid = go2pid,contextmenuflag=1 };
+            var v = new FsmViewModel() { prefix = prefix, go2pid = go2pid,contextmenuflag=1,myQueryGrid=new BO.myQuery(prefix) };
             BO.TheEntity c = Factory.EProvider.ByPrefix(prefix);
             v.entity = c.TableName;
             v.entityTitle = c.AliasPlural;
-            var afi = new List<string>();
+            
             
             if (v.entity == "")
             {
@@ -175,44 +200,57 @@ namespace UI.Controllers
             }
             
             if (v.prefix == "a01")
-            {                
-                v.FilterA10ID = Factory.CBL.LoadUserParam(get_param_key("grid-filter-a10id", masterentity));
-                v.FilterA10Name = Factory.CBL.LoadUserParam(get_param_key("grid-filter-a10name", masterentity));
-                if (BO.BAS.InInt(v.FilterA10ID) > 0)
+            {           
+                v.myQueryGrid.a10id= Factory.CBL.LoadUserParamInt(get_param_key("grid-filter-a10id", masterentity));
+                if (v.myQueryGrid.a10id > 0)
                 {
-                    afi.Add("a10id*" + v.FilterA10ID);
+                    v.FilterA10ID = v.myQueryGrid.a10id.ToString();
+                    v.FilterA10Name = Factory.CBL.LoadUserParam(get_param_key("grid-filter-a10name", masterentity));
                 }
+                
+                
                 if (pagename != "slaveview")    //v podformuláři akcí se nefiltruje podle tématu
                 {
-                    v.FilterA08ID = Factory.CBL.LoadUserParam(get_param_key("grid-filter-a08id",masterentity));
-                    v.FilterA08Name = Factory.CBL.LoadUserParam(get_param_key("grid-filter-a08name",masterentity));
-
-                    if (BO.BAS.InInt(v.FilterA08ID) > 0)
+                    v.myQueryGrid.a08id= Factory.CBL.LoadUserParamInt(get_param_key("grid-filter-a08id", masterentity));
+                    if (v.myQueryGrid.a08id > 0)
                     {
-                        afi.Add("a08id*" + v.FilterA08ID);
+                        v.FilterA08ID = v.myQueryGrid.a08id.ToString();
+                        v.FilterA08Name = Factory.CBL.LoadUserParam(get_param_key("grid-filter-a08name", masterentity));
                     }
+                    
                 }
                 
             }
             if (v.prefix == "h04")
-            {
+            {                
                 v.FilterH07ID = Factory.CBL.LoadUserParam(get_param_key("grid-filter-h07id",masterentity));
                 v.FilterH07Name = Factory.CBL.LoadUserParam(get_param_key("grid-filter-h07name",masterentity));
-                if (BO.BAS.InInt(v.FilterH07ID) > 0)
-                {
-                    afi.Add("h07id*" + v.FilterH07ID);
-                }
+               
             }
 
 
             if (v.prefix == "a01" || v.prefix == "h04")
             {
                 v.FilterMyInvolvement = Factory.CBL.LoadUserParam(get_param_key("grid-filter-myinvolvement-" +v.prefix,masterentity));
-                if (!string.IsNullOrEmpty(v.FilterMyInvolvement))
+                switch (v.FilterMyInvolvement)
                 {
-                    afi.Add(v.FilterMyInvolvement);
+                    case "issuer":
+                        v.myQueryGrid.j02id_issuer = Factory.CurrentUser.j02ID;                        
+                        break;
+                    case "leader":
+                        v.myQueryGrid.j02id_leader = Factory.CurrentUser.j02ID;
+                        break;
+                    case "member":
+                        v.myQueryGrid.j02id_member = Factory.CurrentUser.j02ID;
+                        break;
+                    case "involved":
+                        v.myQueryGrid.j02id_involved = Factory.CurrentUser.j02ID;
+                        break;
+                    case "invited":
+                        v.myQueryGrid.j02id_invited = Factory.CurrentUser.j02ID;
+                        break;
                 }
-                v.addfilterid += string.Join("|", afi);
+                
 
                 v.period = new PeriodViewModel();
                 v.period.IsShowButtonRefresh = true;
@@ -226,773 +264,6 @@ namespace UI.Controllers
 
         }
         
-
-
-
-
-        public TheGridOutput HandleTheGridFilter(TheGridUIContext tgi, List<BO.TheGridColumnFilter> filter)
-        {
-            var gridState = this.Factory.j72TheGridTemplateBL.LoadState(tgi.j72id,Factory.CurrentUser.pid);
-            gridState.MasterPID = tgi.master_pid;
-            gridState.ContextMenuFlag = tgi.contextmenuflag;
-            gridState.OnDblClick = tgi.ondblclick;
-            gridState.AddFilterID = tgi.addfilterid;
-            gridState.FixedColumns = tgi.fixedcolumns;
-            gridState.MasterViewFlag = tgi.viewflag;
-            if (string.IsNullOrEmpty(gridState.FixedColumns) == false)
-            {
-                gridState.j72Columns = gridState.FixedColumns;
-            }
-            var lis = new List<string>();
-            foreach (var c in filter)
-            {                
-                lis.Add(c.field + "###" + c.oper + "###" + c.value);
-                
-            }
-            gridState.j75CurrentPagerIndex = 0; //po změně filtrovací podmínky je nutné vyčistit paměť stránky
-            gridState.j75CurrentRecordPid = 0;
-
-            gridState.j75Filter = string.Join("$$$", lis);
-            
-            if (this.Factory.j72TheGridTemplateBL.SaveState(gridState,Factory.CurrentUser.pid) > 0)
-            {
-                return render_thegrid_html(gridState);
-            }
-            else
-            {
-                return render_thegrid_error("Nepodařilo se zpracovat filtrovací podmínku.");
-            }
-        }
-        //public TheGridOutput HandleTheGridOper(int j72id,string oper,string key,string value, int master_pid,int contextmenuflag)
-        public TheGridOutput HandleTheGridOper(TheGridUIContext tgi)
-        {
-            var gridState = this.Factory.j72TheGridTemplateBL.LoadState(tgi.j72id, Factory.CurrentUser.pid);            
-            gridState.MasterPID = tgi.master_pid;
-            gridState.ContextMenuFlag = tgi.contextmenuflag;
-            gridState.MasterFlag = tgi.master_flag;
-            gridState.OnDblClick = tgi.ondblclick;
-            gridState.AddFilterID = tgi.addfilterid;
-            gridState.FixedColumns = tgi.fixedcolumns;
-            gridState.MasterViewFlag = tgi.viewflag;
-            if (string.IsNullOrEmpty(gridState.FixedColumns) == false)
-            {
-                gridState.j72Columns = gridState.FixedColumns;
-            }
-            switch (tgi.key)
-            {
-                
-                case "pagerindex":
-                    gridState.j75CurrentPagerIndex = BO.BAS.InInt(tgi.value);
-                    break;
-                case "pagesize":
-                    gridState.j75PageSize = BO.BAS.InInt(tgi.value);
-                    break;
-                case "sortfield":
-                    if (gridState.j75SortDataField != tgi.value)
-                    {
-                        gridState.j75SortOrder = "asc";
-                        gridState.j75SortDataField = tgi.value;
-                    }
-                    else
-                    {
-                        if (gridState.j75SortOrder == "desc")
-                        {
-                            gridState.j75SortDataField = "";//vyčisitt třídění, třetí stav
-                            gridState.j75SortOrder = "";
-                        }
-                        else
-                        {
-                            if (gridState.j75SortOrder == "asc")
-                            {
-                                gridState.j75SortOrder = "desc";
-                            }
-                        }
-                    }
-                    
-                    
-                    break;
-                case "filter":
-                    break;
-            }
-
-            if (this.Factory.j72TheGridTemplateBL.SaveState(gridState,Factory.CurrentUser.pid)> 0)
-            {
-                return render_thegrid_html(gridState);
-            }
-            else
-            {
-                return render_thegrid_error("Nepodařilo se uložit GRIDSTATE");
-            }
-
-            
-        }
-        
-        
-        public TheGridOutput GetHtml4TheGrid(TheGridUIContext tgi) //Vrací HTML zdroj tabulky pro TheGrid v rámci j72TheGridState
-        {
-            
-            var gridState = this.Factory.j72TheGridTemplateBL.LoadState(tgi.j72id,Factory.CurrentUser.pid);
-            if (gridState == null)
-            {
-                return render_thegrid_error(string.Format("Nelze načíst grid state s id!", tgi.j72id.ToString()));
-                
-            }
-           
-            gridState.j75CurrentRecordPid = tgi.go2pid;
-            gridState.MasterPID = tgi.master_pid;
-            gridState.ContextMenuFlag = tgi.contextmenuflag;
-            gridState.OnDblClick = tgi.ondblclick;
-            gridState.AddFilterID = tgi.addfilterid;
-            gridState.MasterFlag = tgi.master_flag;
-            gridState.FixedColumns = tgi.fixedcolumns;
-            if (string.IsNullOrEmpty(gridState.FixedColumns) == false)
-            {
-                gridState.j72Columns = gridState.FixedColumns;
-            }
-
-            return render_thegrid_html(gridState);
-        }
-        
-        private System.Data.DataTable prepare_datatable_4export(ref BO.myQuery mq, BO.TheGridState gridState)
-        {            
-            
-            mq.explicit_columns = _colsProvider.ParseTheGridColumns(mq.Prefix, gridState.j72Columns,Factory.CurrentUser.j03LangIndex);
-            if (string.IsNullOrEmpty(gridState.j75SortDataField)==false)
-            {
-                
-                mq.explicit_orderby = _colsProvider.ByUniqueName(gridState.j75SortDataField).getFinalSqlSyntax_ORDERBY() + " " + gridState.j75SortOrder;
-            }          
-            if (String.IsNullOrEmpty(gridState.j75Filter) == false)
-            {
-                mq.TheGridFilter = _colsProvider.ParseAdhocFilterFromString(gridState.j75Filter, mq.explicit_columns);
-            }
-            mq.lisPeriods = _pp.getPallete();
-            
-            InhaleAddFilter(gridState.AddFilterID, ref mq);
-            if (mq.Prefix=="a01" || mq.Prefix=="h04")
-            {
-                BO.ThePeriod per = basUI.InhalePeriodDates(_pp,Factory,mq.Prefix,gridState.j72MasterEntity);
-                mq.global_d1 = per.d1;
-                mq.global_d2 = per.d2;
-
-            }
-            if (gridState.j72HashJ73Query)
-            {
-                mq.lisJ73 = Factory.j72TheGridTemplateBL.GetList_j73(gridState.j72ID,gridState.j72Entity.Substring(0,3));
-            }
-            mq.InhaleMasterEntityQuery(gridState.j72MasterEntity, gridState.MasterPID,gridState.MasterFlag);
-
-            return Factory.gridBL.GetList(mq);
-        }
-
-        private void InhaleAddFilter(string strAddFilterID, ref BO.myQuery mq)
-        {
-            if (string.IsNullOrEmpty(strAddFilterID)) return;
-            if (strAddFilterID.Contains("|"))
-            {
-                foreach(string s in BO.BAS.ConvertString2List(strAddFilterID, "|"))
-                {
-                    InhaleOne_Piece_Of_AddFilter(s, ref mq);   //v podmínce pouze je více kusů externích filtrů oddělených |
-                }
-            }
-            else
-            {
-                InhaleOne_Piece_Of_AddFilter(strAddFilterID, ref mq);   //v podmínce pouze jeden externí filtr
-            }
-
-        }
-        private void InhaleOne_Piece_Of_AddFilter(string strAddFilterID,ref BO.myQuery mq)
-        {
-            if (strAddFilterID.Contains("*"))
-            {
-                var arr = strAddFilterID.Split("*");
-                switch (arr[0])
-                {
-                    case "a10id":
-                        mq.a10id = Convert.ToInt32(arr[1]);
-                        return;
-                    case "a08id":
-                        mq.a08id = Convert.ToInt32(arr[1]);
-                        return;
-                    case "h04id":
-                        mq.h04id = Convert.ToInt32(arr[1]);
-                        return;
-                }
-            }
-            if ((mq.Prefix == "a01" || mq.Prefix=="h04") && mq.CurrentUser != null)
-            {
-                switch (strAddFilterID)
-                {
-                    case "issuer":
-                        mq.j02id_issuer = mq.CurrentUser.j02ID;
-                        return;
-                    case "leader":
-                        mq.j02id_leader = mq.CurrentUser.j02ID;
-                        return;
-                    case "member":
-                        mq.j02id_member = mq.CurrentUser.j02ID;
-                        return;
-                    case "involved":
-                        mq.j02id_involved = mq.CurrentUser.j02ID;
-                        return;
-                    case "invited":
-                        mq.j02id_invited = mq.CurrentUser.j02ID;
-                        return;
-                    default:                        
-                        break;
-                }
-            }
-
-            switch (strAddFilterID)
-            {
-                //case "dashboard":
-                //    BO.ThePeriod per = basUI.InhalePeriodDates(_pp,Factory,mq.Prefix,null);
-                //    mq.global_d1 = per.d1;
-                //    mq.global_d2 = per.d2;
-
-                //    return;                
-                case "stat":
-                    Factory.CBL.ClearUserParamsCache(); //docílit toho, aby se guid načetl na 100% z databáze
-                    string strGUID = Factory.CBL.LoadUserParam("Stat-GridGuid");
-                    mq.explicit_sqlwhere = "a.p86GUID=" + BO.BAS.GS(strGUID);   //v addfilterid je předaná hodnota p86GUID
-                    string strAddFilterSql = Factory.CBL.LoadUserParam("Stat-AddFilterSql");
-                    if (!string.IsNullOrEmpty(strAddFilterSql))
-                    {
-                        mq.explicit_sqlwhere += " AND (" + strAddFilterSql + ")";
-                    }
-                    return;
-                
-            }
-        }
-        
-        public TheGridOutput render_thegrid_html(BO.TheGridState gridState)
-        {
-            var ret = new TheGridOutput();
-            _grid = new TheGridViewModel() { Entity = gridState.j72Entity };
-            _grid.GridState = gridState;
-
-            ret.sortfield = gridState.j75SortDataField;
-            ret.sortdir = gridState.j75SortOrder;
-            
-            var mq = new BO.myQuery(gridState.j72Entity);
-            mq.MyRecordsDisponible = true;mq.CurrentUser = Factory.CurrentUser;  //pouze záznamy odpovídající oprávnění uživatele
-            if (Factory.CurrentUser.TestPermission(j05PermValuEnum.AdminGlobal))
-            {
-                mq.MyRecordsDisponible = false; //kvůli gridům v administraci číselníků
-            }
-            if (mq.Prefix == "a01")
-            {
-                mq.a01IsTemporary = false;  //v gridu zákaz zobrazovat TEMP akce
-            }
-            _grid.Columns =_colsProvider.ParseTheGridColumns(mq.Prefix,gridState.j72Columns, Factory.CurrentUser.j03LangIndex);            
-
-
-            mq.explicit_columns = _grid.Columns.ToList();
-                        
-            if (String.IsNullOrEmpty(gridState.j75Filter) == false)
-            {
-                mq.TheGridFilter = _colsProvider.ParseAdhocFilterFromString(gridState.j75Filter, mq.explicit_columns);
-            }
-            mq.lisPeriods = _pp.getPallete();
-            InhaleAddFilter(gridState.AddFilterID, ref mq);
-            if (mq.Prefix=="a01" || mq.Prefix=="h04")
-            {
-                BO.ThePeriod per = basUI.InhalePeriodDates(_pp,Factory,mq.Prefix,gridState.j72MasterEntity);                
-                mq.global_d1 = per.d1;
-                mq.global_d2 = per.d2;
-            }
-            if (gridState.j72HashJ73Query)
-            {
-                mq.lisJ73 = Factory.j72TheGridTemplateBL.GetList_j73(gridState.j72ID,gridState.j72Entity.Substring(0,3));
-                //_grid.GridMessage = getFiltrAlias(gridState, mq);
-                _grid.GridMessage = Factory.j72TheGridTemplateBL.getFiltrAlias(gridState.j72Entity.Substring(0, 3), mq);
-
-
-            }
-            mq.InhaleMasterEntityQuery(gridState.j72MasterEntity, gridState.MasterPID,gridState.MasterFlag);
-                        
-            var dtFooter = Factory.gridBL.GetList(mq, true);            
-            int intVirtualRowsCount = 0;
-            if (dtFooter.Columns.Count > 0)
-            {
-                intVirtualRowsCount = Convert.ToInt32(dtFooter.Rows[0]["RowsCount"]);
-            }
-            else
-            {
-                AddMessage("GRID Error: Dynamic SQL failed.");
-            }
-
-            if (intVirtualRowsCount > 500)
-            {   //dotazy nad 500 záznamů budou mít zapnutý OFFSET režim stránkování
-                mq.OFFSET_PageSize = gridState.j75PageSize;
-                mq.OFFSET_PageNum = gridState.j75CurrentPagerIndex / gridState.j75PageSize;
-            }
-
-            //třídění řešit až po spuštění FOOTER summary DOTAZu
-            if (String.IsNullOrEmpty(gridState.j75SortDataField) == false && _grid.Columns.Where(p => p.UniqueName == gridState.j75SortDataField).Count() > 0)
-            {
-                var c = _grid.Columns.Where(p => p.UniqueName == gridState.j75SortDataField).First();
-                mq.explicit_orderby = c.getFinalSqlSyntax_ORDERBY() + " " + gridState.j75SortOrder;
-            }
-
-            var dt = Factory.gridBL.GetList(mq);
-            
-            
-
-            if (_grid.GridState.j75CurrentRecordPid > 0 && intVirtualRowsCount > gridState.j75PageSize)
-            {
-                //aby se mohlo skočit na cílový záznam, je třeba najít stránku, na které se záznam nachází
-                System.Data.DataRow[] recs = dt.Select("pid=" + _grid.GridState.j75CurrentRecordPid.ToString());
-                if (recs.Count() > 0)
-                {
-                    var intIndex = dt.Rows.IndexOf(recs[0]);
-                    _grid.GridState.j75CurrentPagerIndex = intIndex-(intIndex % _grid.GridState.j75PageSize);
-                }
-            }
-
-            _s = new System.Text.StringBuilder();
-
-            Render_DATAROWS(dt,mq);
-            ret.body = _s.ToString();
-            _s = new System.Text.StringBuilder();
-
-            Render_TOTALS(dtFooter);
-            ret.foot = _s.ToString();
-            _s = new System.Text.StringBuilder();
-
-            RENDER_PAGER(intVirtualRowsCount);
-            ret.pager = _s.ToString();
-            return ret;
-        }
-
-        private void Render_DATAROWS(System.Data.DataTable dt,BO.myQuery mq)
-        {            
-            int intRows = dt.Rows.Count;
-            int intStartIndex = 0;
-            int intEndIndex = 0;
-            
-            if (mq.OFFSET_PageSize > 0)
-            {   //Zapnutý OFFSET - pouze jedna stránka díky OFFSET
-                intStartIndex = 0;
-                intEndIndex = intRows - 1;
-            }
-            else
-            {   //bez OFFSET               
-                intStartIndex = _grid.GridState.j75CurrentPagerIndex;
-                intEndIndex = intStartIndex + _grid.GridState.j75PageSize - 1;
-                if (intEndIndex + 1 > intRows) intEndIndex = intRows - 1;
-            }
-
-            for (int i = intStartIndex; i <= intEndIndex; i++)
-            {
-                System.Data.DataRow dbRow = dt.Rows[i];
-                string strRowClass = "selectable";
-                if (Convert.ToBoolean(dbRow["isclosed"])==true)
-                {
-                    strRowClass+= " trbin";
-                }
-                if (mq.Prefix == "a03" && Convert.ToBoolean(dbRow["istestrecord"]))
-                {
-                    strRowClass += " trtestrecord";
-                }
-                if (_grid.GridState.OnDblClick == null)
-                {
-                    _s.Append(string.Format("<tr id='r{0}' class='{1}'>", dbRow["pid"], strRowClass));
-                }
-                else
-                {
-                    _s.Append(string.Format("<tr id='r{0}' class='{1}' ondblclick='{2}(this)'>", dbRow["pid"], strRowClass, _grid.GridState.OnDblClick));
-                }
-                
-
-                
-                if (_grid.GridState.j72SelectableFlag>0)
-                {
-                    _s.Append(string.Format("<td class='td0' style='width:20px;'><input type='checkbox' id='chk{0}'/></td>", dbRow["pid"]));
-                }
-                else
-                {
-                    _s.Append("<td class='td0' style='width:20px;'></td>");
-                }
-
-                if ((mq.Prefix=="a01" || mq.Prefix=="a11") && dbRow["bgcolor"] != System.DBNull.Value)
-                {
-                    _s.Append(string.Format("<td class='td1' style='width:20px;background-color:{0}'>", dbRow["bgcolor"]));
-                }
-                else
-                {
-                    _s.Append("<td class='td1' style='width:20px;'>");
-                }
-
-                if (mq.Prefix == "a01")
-                {
-                    if (dbRow["parentpid"] != DBNull.Value)
-                    {
-                        _s.Append("<img src='/images/child.png'/>");
-                    }
-                    else
-                    {
-                        if (Convert.ToInt32(dbRow["childscount"])>0) _s.Append("<img src='/images/mother.png'/>");
-                    }
-                }
-                if (mq.Prefix == "a03")
-                {
-                    if (dbRow["parentflag"] != DBNull.Value)
-                    {
-                        if (Convert.ToInt32(dbRow["parentflag"]) == 1)
-                        {
-                            _s.Append("<img src='/images/a03ParentFlag1.png'/>");
-                        }
-                        if (Convert.ToInt32(dbRow["parentflag"]) == 2)
-                        {
-                            _s.Append("<img src='/images/a03ParentFlag2.png'/>");
-                        }
-
-                    }
-                    
-                    
-                }
-                _s.Append("</td>");
-                
-                
-                if (_grid.GridState.ContextMenuFlag > 0)
-                {
-                    _s.Append(string.Format("<td class='td2' style='width:20px;'><a class='cm' onclick='tg_cm(event)'>&#9776;</a></td>"));      //hamburger menu
-                }
-                else
-                {
-                    _s.Append("<td class='td2' style='width:20px;'>");  //bez hamburger menu
-                }
-                
-
-
-                foreach (var col in _grid.Columns)
-                {
-                    _s.Append("<td");
-                    if (col.CssClass != null)
-                    {
-                        _s.Append(string.Format(" class='{0}'", col.CssClass));                        
-                    }
-                    
-                    if (i==intStartIndex)   //první řádek musí mít explicitně šířky, aby to z něj zdědili další řádky
-                    {
-                        _s.Append(string.Format(" style='width:{0}'", col.ColumnWidthPixels));
-                    }
-                    _s.Append(string.Format(">{0}</td>", BO.BAS.ParseCellValueFromDb(dbRow, col)));
-                    
-
-                }
-                _s.Append("</tr>");
-            }
-        }
-
-        private void Render_TOTALS(System.Data.DataTable dt)
-        {
-            if (dt.Columns.Count == 0)
-            {
-                return;
-            }
-            _s.Append("<tr id='tabgrid1_tr_totals'>");
-            _s.Append(string.Format("<th class='th0' title='{0}' colspan=3 style='width:60px;'><span class='badge badge-primary'>{1}</span></th>", Factory.tra("Celkový počet záznamů"), string.Format("{0:#,0}", dt.Rows[0]["RowsCount"])));
-            //_s.Append("<th style='width:20px;'></th>");
-            //_s.Append("<th class='th0' style='width:20px;'></th>");
-            string strVal = "";
-            foreach (var col in _grid.Columns)
-            {
-                _s.Append("<th");
-                if (col.CssClass != null)
-                {
-                    _s.Append(string.Format(" class='{0}'", col.CssClass));
-                }
-
-                strVal = "&nbsp;";
-                if (dt.Rows[0][col.UniqueName] != System.DBNull.Value)
-                {
-                    strVal = BO.BAS.ParseCellValueFromDb(dt.Rows[0], col);
-                }
-                _s.Append(string.Format(" style='width:{0}'>{1}</th>",col.ColumnWidthPixels, strVal));
-
-
-            }
-            _s.Append("</tr>");
-        }
-
-
-
-        
-
-
-        private void render_select_option(string strValue,string strText,string strSelValue)
-        {
-            if (strSelValue == strValue)
-            {
-                _s.Append(string.Format("<option selected value='{0}'>{1}</option>", strValue, strText));
-            }
-            else
-            {
-                _s.Append(string.Format("<option value='{0}'>{1}</option>", strValue, strText));
-            }
-            
-        }
-
-        private void RENDER_PAGER(int intRowsCount) //pager má maximálně 10 čísel, j72PageNum začíná od 0
-        {
-            int intPageSize = _grid.GridState.j75PageSize;
-
-            _s.Append("<select title='"+Factory.tra("Stránkování záznamů")+"' onchange='tg_pagesize(this)'>");            
-            render_select_option("50", "50", intPageSize.ToString());
-            render_select_option("100", "100", intPageSize.ToString());
-            render_select_option("200", "200", intPageSize.ToString());
-            render_select_option("500", "500", intPageSize.ToString());
-            render_select_option("1000", "1000", intPageSize.ToString());            
-            _s.Append("</select>");
-            if (intRowsCount < 0)
-            {
-                RenderPanelsSwitchFlag();
-                RenderGridMessage();
-                return;
-            }
-            
-            if (intRowsCount <= intPageSize)
-            {
-                RenderPanelsSwitchFlag();
-                RenderGridMessage();
-                return;
-            }
-
-            _s.Append("<button title='"+Factory.tra("První")+"' class='btn btn-light tgp' style='margin-left:6px;' onclick='tg_pager(\n0\n)'>&lt;&lt;</button>");
-
-            int intCurIndex = _grid.GridState.j75CurrentPagerIndex;
-            int intPrevIndex = intCurIndex - intPageSize;
-            if (intPrevIndex < 0) intPrevIndex = 0;
-            _s.Append(string.Format("<button title='"+Factory.tra("Předchozí")+"' class='btn btn-light tgp' style='margin-right:10px;' onclick='tg_pager(\n{0}\n)'>&lt;</button>", intPrevIndex));
-
-            if (intCurIndex >= intPageSize * 10)
-            {
-                intPrevIndex = intCurIndex - 10 * intPageSize;
-                _s.Append(string.Format("<button class='btn btn-light tgp' onclick='tg_pager(\n{0}\n)'>...</button>", intPrevIndex));
-            }
-            
-
-            int intStartIndex = 0;
-            for (int i = 0; i <= intRowsCount; i += intPageSize*10)
-            {
-                if (intCurIndex>=i && intCurIndex<i+intPageSize*10)
-                {
-                    intStartIndex = i;
-                    break;
-                }
-            }
-                           
-            int intEndIndex = intStartIndex+(9 * intPageSize);
-            if (intEndIndex+1 > intRowsCount) intEndIndex = intRowsCount-1;
-
-            
-            int intPageNum = intStartIndex/intPageSize; string strClass;
-            
-            for (var i = intStartIndex; i <= intEndIndex; i+=intPageSize)
-            {
-                intPageNum += 1;
-                
-                if (intCurIndex>=i && intCurIndex < i+ intPageSize)
-                {
-                    strClass = "btn btn-secondary tgp";
-                }
-                else
-                {
-                    strClass = "btn btn-light tgp";
-                }
-                
-                _s.Append(string.Format("<button type='button' class='{0}' onclick='tg_pager(\n{1}\n)'>{2}</button>",strClass, i,intPageNum));
-               
-            }
-            if (intEndIndex+1 < intRowsCount)
-            {
-                intEndIndex += intPageSize;
-                if (intEndIndex + 1 > intRowsCount) intEndIndex = intRowsCount - intPageSize;
-                _s.Append(string.Format("<button type='button' class='btn btn-light tgp' onclick='tg_pager(\n{0}\n)'>...</button>", intEndIndex));
-            }
-
-            int intNextIndex = intCurIndex + intPageSize;
-            if (intNextIndex + 1>intRowsCount) intNextIndex = intRowsCount-intPageSize;
-            _s.Append(string.Format("<button type='button' title='"+Factory.tra("Další")+"' class='btn btn-light tgp' style='margin-left:10px;' onclick='tg_pager(\n{0}\n)'>&gt;</button>", intNextIndex));
-
-            int intLastIndex = intRowsCount - (intRowsCount % intPageSize);  //% je zbytek po celočíselném dělení
-            _s.Append(string.Format("<button type='button' title='"+Factory.tra("Poslední")+"' class='btn btn-light tgp' onclick='tg_pager(\n{0}\n)'>&gt;&gt;</button>", intLastIndex));
-
-            RenderPanelsSwitchFlag();
-
-            RenderGridMessage();
-        }
-
-        private void RenderGridMessage()
-        {
-            if (!_grid.GridState.j72IsSystem)
-            {
-                _s.Append("<span id='gridname'>" + _grid.GridState.j72Name + "</span>");
-            }
-            
-            if (_grid.GridMessage != null)
-            {
-                // _s.Append("<div class='text-nowrap bd-highlight'>" + _grid.GridMessage + "</div>");
-                _s.Append("<span id='gridmessage'>" + _grid.GridMessage + "</span>");
-            }
-        }
-        private void RenderPanelsSwitchFlag()
-        {
-            if (_grid.GridState.MasterViewFlag<3)
-            {
-                switch (_grid.Entity.Substring(0, 3))
-                {
-                    case "a01":
-                    case "a03":
-                    case "j02":
-                        if (_grid.GridState.MasterViewFlag==2)
-                        {
-                            _s.Append("<button type='button' class='btn btn-secondary btn-sm mx-4' onclick='tg_switchflag(\"" + _grid.Entity.Substring(0, 3)+"\",0)'>"+Factory.tra("Vypnout spodní panel")+"</button>");
-                        }
-                        else
-                        {
-                            _s.Append("<button type='button' class='btn btn-secondary btn-sm mx-4 nonmobile' onclick='tg_switchflag(\"" + _grid.Entity.Substring(0, 3) + "\",1)'>"+Factory.tra("Zapnout spodní panel")+"</button>");
-                        }
-                        break;
-                }
-            }            
-        }
-
-
-        private TheGridOutput render_thegrid_error(string strError)
-        {
-            var ret = new TheGridOutput();
-            ret.message = strError;
-            if (this.Factory.CurrentUser.Messages4Notify.Count > 0)
-            {
-                ret.message += " | " + string.Join(",", this.Factory.CurrentUser.Messages4Notify.Select(p => p.Value));
-            }
-            return ret;
-        }
-
-       
-
-        public string getHTML_ContextMenu(int j72id)
-        {
-            var sb = new System.Text.StringBuilder();
-            var recJ72 = Factory.j72TheGridTemplateBL.LoadState(j72id,Factory.CurrentUser.pid);
-                   
-            sb.AppendLine("<div style='background-color:#ADD8E6;padding-left:10px;font-weight:bold;'>"+Factory.tra("VYBRANÉ (zaškrtlé) záznamy")+"</div>");
-            sb.AppendLine("<div style='padding-left:10px;'>");
-            sb.AppendLine(string.Format("<a href='javascript:tg_export(\"xlsx\",\"selected\")'>" + Factory.tra("MS-EXCEL Export")+"</a>", j72id));
-            sb.AppendLine(string.Format("<a style='margin-left:20px;' href='javascript:tg_export(\"csv\",\"selected\")'>"+Factory.tra("CSV Export")+"</a>", j72id));
-            sb.AppendLine("</div>");
-            sb.AppendLine("<hr class='hr-mini' />");
-            
-            if ("a01,a03".Contains(recJ72.j72Entity.Substring(0, 3)))
-            {                
-                sb.AppendLine("<a class='nav-link' href=\"javascript:tg_batchupdate('" + recJ72.j72Entity.Substring(0, 3) + "')\" >" + Factory.tra("Hromadné operace") + "★</a>");
-                
-            }
-            if ("j02,a01,a03,f06".Contains(recJ72.j72Entity.Substring(0, 3)))
-            {                
-                sb.AppendLine("<a class='nav-link' href='javascript:tg_tagging();'>" + Factory.tra("Hromadná kategorizace záznamů")+"★</a>");
-
-            }
-
-
-            //sb.AppendLine(string.Format("<div style='margin-top:20px;background-color:#ADD8E6;padding-left:10px;font-weight:bold;'>GRID <kbd>{0}</kbd></div>", Factory.EProvider.ByTable(recJ72.j72Entity).TranslateLang1));
-            sb.AppendLine(string.Format("<div style='margin-top:20px;background-color:#ADD8E6;padding-left:10px;font-weight:bold;'>{0}</div>", Factory.tra("Seznam pojmenovaných GRID šablon")));
-
-            var lis = Factory.j72TheGridTemplateBL.GetList(recJ72.j72Entity, recJ72.j03ID, recJ72.j72MasterEntity);
-            sb.AppendLine("<table style='width:100%;margin-bottom:20px;'>");
-            string strGridNavrhar = Factory.tra("Grid návrhář");
-            foreach (var c in lis)
-            {
-                sb.AppendLine("<tr>");
-                if (c.j72HashJ73Query)
-                {
-                    sb.Append("<td><img src='/Images/query.png'/></td>");
-                }
-                else
-                {
-                    sb.Append("<td><img src='/Images/griddesigner.png'/></td>");
-                }
-                if (c.j72IsSystem)
-                {
-                    c.j72Name = Factory.tra("Výchozí GRID");
-                }
-                if (c.pid == recJ72.pid)
-                {
-                    c.j72Name += " ✔";
-                }
-                sb.Append(string.Format("<td><a class='nav-link py-0' href='javascript:change_grid({0})'>{1}</a></td>", c.pid, c.j72Name));
-                
-                sb.AppendLine(string.Format("<td style='width:30px;'><a title='"+ strGridNavrhar+"' class='btn btn-sm btn-primary py-0' href='javascript:_window_open(\"/TheGridDesigner/Index?j72id={0}\",2);'>...</a></td>", c.pid));
-                sb.AppendLine("</tr>");
-            }
-            sb.AppendLine("</table>");
-
-            
-
-            sb.AppendLine("<div style='padding-left:10px;'>");
-            sb.AppendLine(string.Format("<a href='javascript:tg_export(\"xlsx\")'>" + Factory.tra("MS-EXCEL Export (vše)")+"</a>", j72id));
-            sb.AppendLine(string.Format("<a style='margin-left:20px;' href='javascript:tg_export(\"csv\")'>" + Factory.tra("CSV Export (vše)")+"</a>", j72id));
-            sb.AppendLine("</div>");
-
-
-
-            sb.AppendLine("<hr class='hr-mini' />");
-            sb.AppendLine("<a  href='javascript:tg_select(20)'>" + Factory.tra(string.Format("Vybrat prvních {0}",20))+"</a>⌾");
-            sb.AppendLine("<a  href='javascript:tg_select(50)'>" + Factory.tra(string.Format("Vybrat prvních {0}", 50)) +"</a>⌾");
-            sb.AppendLine("<a href='javascript:tg_select(100)'>" + Factory.tra(string.Format("Vybrat prvních {0}", 100)) +"</a>⌾");
-            sb.AppendLine("<a href='javascript:tg_select(1000)'>" + Factory.tra("Vybrat všechny záznamy na stránce")+"</a>");
-
-            return sb.ToString();
-        }
-
-        public FileResult GridExport(string format,int j72id,int master_pid,string master_entity,string pids,string master_flag)
-        {
-            var gridState = this.Factory.j72TheGridTemplateBL.LoadState(j72id,Factory.CurrentUser.pid);
-            gridState.j72MasterEntity = master_entity;
-            gridState.MasterPID = master_pid;
-            gridState.MasterFlag = master_flag;
-            var mq = new BO.myQuery(gridState.j72Entity);
-            
-            if (String.IsNullOrEmpty(pids) == false)
-            {
-                mq.SetPids(pids);
-            }
-            
-           
-            System.Data.DataTable dt = prepare_datatable_4export(ref mq,gridState);
-            string filepath = Factory.App.TempFolder+"\\"+BO.BAS.GetGuid()+"."+ format;
-
-            var cExport = new UI.dataExport();
-            string strFileClientName = "gridexport_" + mq.Prefix + "." + format;
-
-            if (format == "csv")
-            {
-                if (cExport.ToCSV(dt, filepath, mq))
-                {                    
-                    return File(System.IO.File.ReadAllBytes(filepath), "application/CSV", strFileClientName);
-                }
-            }
-            if (format == "xlsx")
-            {
-                if (cExport.ToXLSX(dt, filepath, mq))
-                {                    
-                    return File(System.IO.File.ReadAllBytes(filepath), "application/vnd.ms-excel", strFileClientName);
-                }
-            }
-
-
-            return null;
-
-        }
-
-
-        
-
-
-       
 
     }
 }
