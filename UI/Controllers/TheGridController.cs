@@ -24,14 +24,14 @@ namespace UI.Controllers
 
         public TheGridOutput HandleTheGridFilter(TheGridUIContext tgi, List<BO.TheGridColumnFilter> filter) //TheGrid povinná metoda: sloupcový filtr
         {
-            var v = LoadFsmViewModel(tgi.prefix, 0, tgi.pathname.Split("/").Last().ToLower(), tgi.master_entity);
+            var v = LoadFsmViewModel(tgi.prefix, 0, tgi.pathname.Split("/").Last().ToLower(), tgi.master_entity,tgi.master_pid);
             var c = new UI.TheGridSupport(Factory, _colsProvider) { extendpagerhtml = v.ExtendPagerHtml };
            
             return c.Event_HandleTheGridFilter(tgi, filter, v.myQueryGrid);
         }
         public TheGridOutput HandleTheGridOper(TheGridUIContext tgi)    //TheGrid povinná metoda: změna třídění, pageindex, změna stránky
         {
-            var v = LoadFsmViewModel(tgi.prefix, 0, tgi.pathname.Split("/").Last().ToLower(), tgi.master_entity);
+            var v = LoadFsmViewModel(tgi.prefix, 0, tgi.pathname.Split("/").Last().ToLower(), tgi.master_entity,tgi.master_pid);
             var c = new UI.TheGridSupport(Factory, _colsProvider) { extendpagerhtml = v.ExtendPagerHtml };
             
             return c.Event_HandleTheGridOper(tgi, v.myQueryGrid);
@@ -43,10 +43,10 @@ namespace UI.Controllers
             var c = new UI.TheGridSupport(Factory, _colsProvider);
             return c.Event_HandleTheGridMenu(tgi.j72id);
         }
-        public FileResult HandleTheGridExport(int j72id,string pathname,string format, string pids)  //TheGrid povinná metoda pro export dat
+        public FileResult HandleTheGridExport(int j72id,string pathname,string format, string pids,int master_pid)  //TheGrid povinná metoda pro export dat
         {
             var gridState = Factory.j72TheGridTemplateBL.LoadState(j72id, Factory.CurrentUser.pid);
-            var v = LoadFsmViewModel(gridState.j72Entity.Substring(0,3), 0, pathname.Split("/")[1].ToLower(), gridState.j72MasterEntity);
+            var v = LoadFsmViewModel(gridState.j72Entity.Substring(0,3), 0, pathname.Split("/")[1].ToLower(), gridState.j72MasterEntity,master_pid);
             var c = new UI.TheGridSupport(Factory, _colsProvider);
             
             var fullpath = c.Event_TheGridExport(format, j72id, pids, v.myQueryGrid);
@@ -65,7 +65,7 @@ namespace UI.Controllers
 
         public IActionResult FlatView(string prefix, int go2pid)    //pouze grid bez subform
         {
-            FsmViewModel v = LoadFsmViewModel(prefix, go2pid,"flatview",null);
+            FsmViewModel v = LoadFsmViewModel(prefix, go2pid,"flatview",null,0);
             
             v.j72id = Factory.CBL.LoadUserParamInt("flatview-j72id-" + prefix);
 
@@ -76,7 +76,7 @@ namespace UI.Controllers
 
         public IActionResult MasterView(string prefix,int go2pid)    //grid horní + spodní panel, není zde filtrovací pruh s fixním filtrem
         {
-            FsmViewModel v = LoadFsmViewModel(prefix, go2pid,"masterview",null);
+            FsmViewModel v = LoadFsmViewModel(prefix, go2pid,"masterview",null,0);
                       
             v.j72id = Factory.CBL.LoadUserParamInt("masterview-j72id-" + prefix);
             
@@ -165,14 +165,15 @@ namespace UI.Controllers
                 return  "@pid";
             }
         }
-        public IActionResult SlaveView(string master_entity,int master_pid, string prefix, int go2pid,string master_flag)    //podřízený subform v rámci MasterView
+        public IActionResult SlaveView(string master_entity,int master_pid, string prefix, int go2pid)    //podřízený subform v rámci MasterView
         {
-            FsmViewModel v = LoadFsmViewModel(prefix, go2pid,"slaveview", master_entity);
+            FsmViewModel v = LoadFsmViewModel(prefix, go2pid,"slaveview", master_entity,master_pid);
             v.j72id = Factory.CBL.LoadUserParamInt("slaveview-j72id-" + prefix + "-" + master_entity);
             v.master_entity = master_entity;
             v.master_pid = master_pid;
-            v.master_flag = master_flag;
+
             
+
             if (String.IsNullOrEmpty(v.master_entity) || v.master_pid == 0)
             {
                 AddMessage("Musíte vybrat záznam z nadřízeného panelu.");
@@ -196,9 +197,9 @@ namespace UI.Controllers
         
 
 
-        private FsmViewModel LoadFsmViewModel(string prefix,int go2pid,string pagename,string masterentity)
+        private FsmViewModel LoadFsmViewModel(string prefix,int go2pid,string pagename,string masterentity,int master_pid)
         {
-            var v = new FsmViewModel() { prefix = prefix, go2pid = go2pid,contextmenuflag=1,myQueryGrid=new BO.myQuery(prefix) };
+            var v = new FsmViewModel() { prefix = prefix,master_entity=masterentity,master_pid=master_pid, go2pid = go2pid,myQueryGrid=new BO.myQuery(prefix) };
             BO.TheEntity c = Factory.EProvider.ByPrefix(prefix);
             v.entity = c.TableName;
             v.entityTitle = c.AliasPlural;
@@ -208,6 +209,20 @@ namespace UI.Controllers
             {
                 AddMessage("Grid entita nebyla nalezena.");
             }
+
+            if (v.master_pid > 0)
+            {
+                switch (v.master_entity.Substring(0, 3))
+                {
+                    case "a01":
+                        v.myQueryGrid.a01id = v.master_pid; break;
+                    case "a03":
+                        v.myQueryGrid.a03id = v.master_pid; break;
+                    case "j02":
+                        v.myQueryGrid.j02id = v.master_pid; break;
+                }
+            }
+            
             
             if (v.prefix == "a01")
             {           
@@ -283,6 +298,8 @@ namespace UI.Controllers
                     v.ExtendPagerHtml = "<button type='button' class='btn btn-secondary btn-sm mx-4' onclick='switch_to_flat(\"" + v.prefix + "\")'>" + Factory.tra("Vypnout spodní panel") + "</button>";
                 }
             }
+
+            
 
             return v;
 

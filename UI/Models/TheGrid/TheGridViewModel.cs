@@ -11,7 +11,7 @@ namespace UI.Models
         public string ControllerName { get; set; }
         public string FixedColumns { get; set; }
         public string MasterEntity { get; set; }
-        
+        public int MasterPid { get; set; }
         public string ondblclick { get; set; }
         public string oncmclick { get; set; }
         public BO.TheGridState GridState { get; set; }
@@ -41,6 +41,7 @@ namespace UI.Models
         public string value { get; set; }
         
         public string master_entity { get; set; }
+        public int master_pid { get; set; }
         
         public string ondblclick { get; set; }
         public string oncmclick { get; set; }

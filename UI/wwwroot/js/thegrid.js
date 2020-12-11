@@ -8,6 +8,7 @@ var _tg_filterinput_timeout;
 var _tg_filter_is_active;
 var _tg_go2pid;
 var _tg_master_entity;
+var _tg_master_pid;
 var _tg_oncmclick;
 var _tg_ondblclick;
 var _tg_tablerows;
@@ -29,6 +30,7 @@ function tg_init(c) {
     _tg_url_export = c.exporturl;
     _tg_go2pid = c.go2pid;
     _tg_master_entity = c.master_entity;
+    _tg_master_pid = c.master_pid;
     _tg_oncmclick = c.oncmclick;
     _tg_ondblclick = c.ondblclick;
     _tg_fixedcolumns = c.fixedcolumns;
@@ -132,6 +134,7 @@ function get_all_params() {
         j72id: _j72id,
         go2pid: _tg_go2pid,
         master_entity: _tg_master_entity,
+        master_pid: _tg_master_pid,
         oncmclick: _tg_oncmclick,
         ondblclick: _tg_ondblclick,
         fixedcolumns: _tg_fixedcolumns,
@@ -179,12 +182,13 @@ function tg_post_handler(strOper, strKey, strValue) {
         key: strKey,
         value: strValue,
         master_entity: _tg_master_entity,
+        master_pid: _tg_master_pid,
         oncmclick: _tg_oncmclick,
         ondblclick: _tg_ondblclick,
         fixedcolumns: _tg_fixedcolumns,
         pathname: location.pathname
     }
-
+    
 
     $("#tabgrid1_tbody").html("<b>Loading...</b>");
     $.post(_tg_url_handler, { tgi: params }, function (data) {
@@ -909,7 +913,7 @@ function tg_dblclick(row) {
 
 function tg_export(format, scope) {
 
-    var url = _tg_url_export + "?j72id=" + _j72id + "&format=" + format + "&pathname=" + location.pathname;
+    var url = _tg_url_export + "?j72id=" + _j72id + "&format=" + format + "&pathname=" + location.pathname+"&master_pid="+_tg_master_pid;
     if (scope === "selected") {
         var pids = $("#tg_selected_pids").val();
         if (pids === "") {

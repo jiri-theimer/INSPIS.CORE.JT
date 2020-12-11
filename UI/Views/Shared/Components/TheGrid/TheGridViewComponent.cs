@@ -21,7 +21,7 @@ namespace UI.Views.Shared.Components.TheGrid
         }
 
         public IViewComponentResult
-            Invoke(string entity, int j72id, int go2pid, string master_entity, string oncmclick, string ondblclick, string fixedcolumns,string extendpagerhtml,string controllername,BO.myQuery myquery)
+            Invoke(string entity, int j72id, int go2pid, string master_entity,int master_pid, string oncmclick, string ondblclick, string fixedcolumns,string extendpagerhtml,string controllername,BO.myQuery myquery)
         {
 
             var ret = new TheGridViewModel() { ControllerName = controllername };
@@ -67,6 +67,7 @@ namespace UI.Views.Shared.Components.TheGrid
             ret.Columns = _colsProvider.ParseTheGridColumns(myquery.Prefix, gridState.j72Columns, _f.CurrentUser.j03LangIndex);
             ret.AdhocFilter = _colsProvider.ParseAdhocFilterFromString(gridState.j75Filter, ret.Columns);
             ret.MasterEntity = master_entity;
+            ret.MasterPid = master_pid;
             ret.FixedColumns = fixedcolumns;
             
             

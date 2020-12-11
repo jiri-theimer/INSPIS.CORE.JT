@@ -21,6 +21,7 @@ namespace UI
         public string oncmclick { get; set; }
         public string ondblclick { get; set; }
         public string fixedcolumns { get; set; }
+        
         public TheGridSupport(BL.Factory f,BL.TheColumnsProvider cp)
         {
             _Factory = f;            
