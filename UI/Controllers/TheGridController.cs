@@ -11,6 +11,8 @@ using UI.Models;
 using System.ComponentModel;
 using BO;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Diagnostics;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace UI.Controllers
 {
@@ -28,40 +30,25 @@ namespace UI.Controllers
             _pp = pp;
         }
 
-        public IActionResult FlatView(string prefix,int go2pid,string master_flag)    //pouze grid bez subform
+        public IActionResult FlatView(string prefix, int go2pid)    //pouze grid bez subform
         {
-            var v = inhaleGridViewInstance(prefix, go2pid);
-            v.master_flag = master_flag;
+            FsmViewModel v = LoadFsmViewModel(prefix, go2pid,"flatview",null);
+            
             v.j72id = Factory.CBL.LoadUserParamInt("flatview-j72id-" + prefix);
 
-            if (v.prefix=="a01" || v.prefix == "h04")
-            {
-                if (string.IsNullOrEmpty(v.master_flag))
-                {
-                    v.master_flag = Factory.CBL.LoadUserParam("grid-master_flag-" + v.prefix, "");
-                }                
-                if (!string.IsNullOrEmpty(v.master_flag))
-                {
-                    v.master_entity = "j02Person";
-                    v.master_pid = Factory.CurrentUser.j02ID;
-                }
-                v.period = new PeriodViewModel();
-                v.period.IsShowButtonRefresh = true;
-                var per = InhaleGridPeriodDates(v.prefix);
-                v.period.PeriodValue = per.pid;
-                v.period.d1 = per.d1;
-                v.period.d2 = per.d2;
-            }
+
+            
             return View(v);
         }
 
         
 
-        public IActionResult MasterView(string prefix,int go2pid)    //grid horní + spodní panel
+        public IActionResult MasterView(string prefix,int go2pid)    //grid horní + spodní panel, není zde filtrovací pruh s fixním filtrem
         {
-            TheGridInstanceViewModel v = inhaleGridViewInstance(prefix, go2pid);
+            FsmViewModel v = LoadFsmViewModel(prefix, go2pid,"masterview",null);
+                      
             v.j72id = Factory.CBL.LoadUserParamInt("masterview-j72id-" + prefix);
-            BO.TheEntity ce = Factory.EProvider.ByPrefix(prefix);
+            
             var tabs = new List<NavTab>();
             
             switch (prefix)
@@ -116,8 +103,8 @@ namespace UI.Controllers
             {
                if (tab.Url.Contains("?pid")==false)
                 {
-                    tab.Url += "&master_entity=" + ce.TableName + "&master_pid=" + AppendPid2Url(v.go2pid);
-
+                    tab.Url += "&master_entity=" + v.entity + "&master_pid=" + AppendPid2Url(v.go2pid);
+                   
                 }
 
                 if (strDefTab !="" && tab.Entity== strDefTab)
@@ -149,51 +136,90 @@ namespace UI.Controllers
         }
         public IActionResult SlaveView(string master_entity,int master_pid, string prefix, int go2pid,string master_flag)    //podřízený subform v rámci MasterView
         {
-            TheGridInstanceViewModel v = inhaleGridViewInstance(prefix, go2pid);
+            FsmViewModel v = LoadFsmViewModel(prefix, go2pid,"slaveview", master_entity);
             v.j72id = Factory.CBL.LoadUserParamInt("slaveview-j72id-" + prefix + "-" + master_entity);
             v.master_entity = master_entity;
             v.master_pid = master_pid;
             v.master_flag = master_flag;
+            
             if (String.IsNullOrEmpty(v.master_entity) || v.master_pid == 0)
             {
                 AddMessage("Musíte vybrat záznam z nadřízeného panelu.");
             }
-            if (v.prefix == "a01" || v.prefix == "h04")
-            {
-                if (string.IsNullOrEmpty(v.master_flag))
-                {
-                    v.master_flag = Factory.CBL.LoadUserParam("grid-master_flag-" + v.prefix, "");
-                }                
-                v.period = new PeriodViewModel();
-                v.period.IsShowButtonRefresh = true;
-                var per = InhaleGridPeriodDates(v.prefix);
-                v.period.PeriodValue = per.pid;
-                v.period.d1 = per.d1;
-                v.period.d2 = per.d2;
-            }
+            
 
             return View(v);
         }
-        private TheGridInstanceViewModel inhaleGridViewInstance(string prefix,int go2pid)
+        private string get_param_key(string strKey,string strMasterEntity)
         {
-            var v = new TheGridInstanceViewModel() { prefix = prefix, go2pid = go2pid,contextmenuflag=1 };
+            if (strMasterEntity != null)
+            {
+                return (strKey += "-" + strMasterEntity);
+            }
+            else
+            {
+                return strKey;
+            }
+        }
+        private FsmViewModel LoadFsmViewModel(string prefix,int go2pid,string pagename,string masterentity)
+        {
+            var v = new FsmViewModel() { prefix = prefix, go2pid = go2pid,contextmenuflag=1 };
             BO.TheEntity c = Factory.EProvider.ByPrefix(prefix);
             v.entity = c.TableName;
             v.entityTitle = c.AliasPlural;
-
+            var afi = new List<string>();
+            
             if (v.entity == "")
             {
                 AddMessage("Grid entita nebyla nalezena.");
             }
-            if (v.prefix=="a01" || v.prefix=="h04")
+            
+            if (v.prefix == "a01")
+            {                
+                v.FilterA10ID = Factory.CBL.LoadUserParam(get_param_key("grid-filter-a10id", masterentity));
+                v.FilterA10Name = Factory.CBL.LoadUserParam(get_param_key("grid-filter-a10name", masterentity));
+                if (BO.BAS.InInt(v.FilterA10ID) > 0)
+                {
+                    afi.Add("a10id*" + v.FilterA10ID);
+                }
+                if (pagename != "slaveview")    //v podformuláři akcí se nefiltruje podle tématu
+                {
+                    v.FilterA08ID = Factory.CBL.LoadUserParam(get_param_key("grid-filter-a08id",masterentity));
+                    v.FilterA08Name = Factory.CBL.LoadUserParam(get_param_key("grid-filter-a08name",masterentity));
+
+                    if (BO.BAS.InInt(v.FilterA08ID) > 0)
+                    {
+                        afi.Add("a08id*" + v.FilterA08ID);
+                    }
+                }
+                
+            }
+            if (v.prefix == "h04")
             {
+                v.FilterH07ID = Factory.CBL.LoadUserParam(get_param_key("grid-filter-h07id",masterentity));
+                v.FilterH07Name = Factory.CBL.LoadUserParam(get_param_key("grid-filter-h07name",masterentity));
+                if (BO.BAS.InInt(v.FilterH07ID) > 0)
+                {
+                    afi.Add("h07id*" + v.FilterH07ID);
+                }
+            }
+
+
+            if (v.prefix == "a01" || v.prefix == "h04")
+            {
+                v.FilterMyInvolvement = Factory.CBL.LoadUserParam(get_param_key("grid-filter-myinvolvement-" +v.prefix,masterentity));
+                if (!string.IsNullOrEmpty(v.FilterMyInvolvement))
+                {
+                    afi.Add(v.FilterMyInvolvement);
+                }
+                v.addfilterid += string.Join("|", afi);
+
                 v.period = new PeriodViewModel();
                 v.period.IsShowButtonRefresh = true;
-                BO.ThePeriod per = InhaleGridPeriodDates(v.prefix);
+                var per = basUI.InhalePeriodDates(_pp,Factory,v.prefix,masterentity);
                 v.period.PeriodValue = per.pid;
                 v.period.d1 = per.d1;
                 v.period.d2 = per.d2;
-
             }
 
             return v;
@@ -345,7 +371,7 @@ namespace UI.Controllers
             InhaleAddFilter(gridState.AddFilterID, ref mq);
             if (mq.Prefix=="a01" || mq.Prefix=="h04")
             {
-                BO.ThePeriod per = InhaleGridPeriodDates(mq.Prefix);
+                BO.ThePeriod per = basUI.InhalePeriodDates(_pp,Factory,mq.Prefix,gridState.j72MasterEntity);
                 mq.global_d1 = per.d1;
                 mq.global_d2 = per.d2;
 
@@ -354,25 +380,77 @@ namespace UI.Controllers
             {
                 mq.lisJ73 = Factory.j72TheGridTemplateBL.GetList_j73(gridState.j72ID,gridState.j72Entity.Substring(0,3));
             }
-            mq.InhaleMasterEntityQuery(gridState.j72MasterEntity, gridState.MasterPID,gridState.MasterFlag,mq.Prefix);
+            mq.InhaleMasterEntityQuery(gridState.j72MasterEntity, gridState.MasterPID,gridState.MasterFlag);
 
             return Factory.gridBL.GetList(mq);
         }
 
-        private void InhaleAddFilter(string strAddFilterID,ref BO.myQuery mq)
+        private void InhaleAddFilter(string strAddFilterID, ref BO.myQuery mq)
         {
-            
+            if (string.IsNullOrEmpty(strAddFilterID)) return;
+            if (strAddFilterID.Contains("|"))
+            {
+                foreach(string s in BO.BAS.ConvertString2List(strAddFilterID, "|"))
+                {
+                    InhaleOne_Piece_Of_AddFilter(s, ref mq);   //v podmínce pouze je více kusů externích filtrů oddělených |
+                }
+            }
+            else
+            {
+                InhaleOne_Piece_Of_AddFilter(strAddFilterID, ref mq);   //v podmínce pouze jeden externí filtr
+            }
+
+        }
+        private void InhaleOne_Piece_Of_AddFilter(string strAddFilterID,ref BO.myQuery mq)
+        {
+            if (strAddFilterID.Contains("*"))
+            {
+                var arr = strAddFilterID.Split("*");
+                switch (arr[0])
+                {
+                    case "a10id":
+                        mq.a10id = Convert.ToInt32(arr[1]);
+                        return;
+                    case "a08id":
+                        mq.a08id = Convert.ToInt32(arr[1]);
+                        return;
+                    case "h04id":
+                        mq.h04id = Convert.ToInt32(arr[1]);
+                        return;
+                }
+            }
+            if ((mq.Prefix == "a01" || mq.Prefix=="h04") && mq.CurrentUser != null)
+            {
+                switch (strAddFilterID)
+                {
+                    case "issuer":
+                        mq.j02id_issuer = mq.CurrentUser.j02ID;
+                        return;
+                    case "leader":
+                        mq.j02id_leader = mq.CurrentUser.j02ID;
+                        return;
+                    case "member":
+                        mq.j02id_member = mq.CurrentUser.j02ID;
+                        return;
+                    case "involved":
+                        mq.j02id_involved = mq.CurrentUser.j02ID;
+                        return;
+                    case "invited":
+                        mq.j02id_invited = mq.CurrentUser.j02ID;
+                        return;
+                    default:                        
+                        break;
+                }
+            }
+
             switch (strAddFilterID)
             {
-                case "dashboard":
-                    BO.ThePeriod per = InhaleGridPeriodDates(mq.Prefix);
-                    mq.global_d1 = per.d1;
-                    mq.global_d2 = per.d2;
+                //case "dashboard":
+                //    BO.ThePeriod per = basUI.InhalePeriodDates(_pp,Factory,mq.Prefix,null);
+                //    mq.global_d1 = per.d1;
+                //    mq.global_d2 = per.d2;
 
-                    break;
-                case "school":
-                    mq.a10id = Factory.CBL.LoadUserParamInt("DashboardSchool-a10id");
-                    break;
+                //    return;                
                 case "stat":
                     Factory.CBL.ClearUserParamsCache(); //docílit toho, aby se guid načetl na 100% z databáze
                     string strGUID = Factory.CBL.LoadUserParam("Stat-GridGuid");
@@ -382,7 +460,7 @@ namespace UI.Controllers
                     {
                         mq.explicit_sqlwhere += " AND (" + strAddFilterSql + ")";
                     }
-                    break;
+                    return;
                 
             }
         }
@@ -419,7 +497,7 @@ namespace UI.Controllers
             InhaleAddFilter(gridState.AddFilterID, ref mq);
             if (mq.Prefix=="a01" || mq.Prefix=="h04")
             {
-                BO.ThePeriod per = InhaleGridPeriodDates(mq.Prefix);                
+                BO.ThePeriod per = basUI.InhalePeriodDates(_pp,Factory,mq.Prefix,gridState.j72MasterEntity);                
                 mq.global_d1 = per.d1;
                 mq.global_d2 = per.d2;
             }
@@ -431,7 +509,7 @@ namespace UI.Controllers
 
 
             }
-            mq.InhaleMasterEntityQuery(gridState.j72MasterEntity, gridState.MasterPID,gridState.MasterFlag,mq.Prefix);
+            mq.InhaleMasterEntityQuery(gridState.j72MasterEntity, gridState.MasterPID,gridState.MasterFlag);
                         
             var dtFooter = Factory.gridBL.GetList(mq, true);            
             int intVirtualRowsCount = 0;
@@ -615,7 +693,7 @@ namespace UI.Controllers
                 return;
             }
             _s.Append("<tr id='tabgrid1_tr_totals'>");
-            _s.Append(string.Format("<th class='th0' title='Celkový počet záznamů' colspan=3 style='width:60px;'><span class='badge badge-primary'>{0}</span></th>", string.Format("{0:#,0}", dt.Rows[0]["RowsCount"])));
+            _s.Append(string.Format("<th class='th0' title='{0}' colspan=3 style='width:60px;'><span class='badge badge-primary'>{1}</span></th>", Factory.tra("Celkový počet záznamů"), string.Format("{0:#,0}", dt.Rows[0]["RowsCount"])));
             //_s.Append("<th style='width:20px;'></th>");
             //_s.Append("<th class='th0' style='width:20px;'></th>");
             string strVal = "";
@@ -820,7 +898,8 @@ namespace UI.Controllers
             }
 
 
-            sb.AppendLine(string.Format("<div style='margin-top:20px;background-color:#ADD8E6;padding-left:10px;font-weight:bold;'>GRID <kbd>{0}</kbd></div>", Factory.EProvider.ByTable(recJ72.j72Entity).AliasPlural));
+            //sb.AppendLine(string.Format("<div style='margin-top:20px;background-color:#ADD8E6;padding-left:10px;font-weight:bold;'>GRID <kbd>{0}</kbd></div>", Factory.EProvider.ByTable(recJ72.j72Entity).TranslateLang1));
+            sb.AppendLine(string.Format("<div style='margin-top:20px;background-color:#ADD8E6;padding-left:10px;font-weight:bold;'>{0}</div>", Factory.tra("Seznam pojmenovaných GRID šablon")));
 
             var lis = Factory.j72TheGridTemplateBL.GetList(recJ72.j72Entity, recJ72.j03ID, recJ72.j72MasterEntity);
             sb.AppendLine("<table style='width:100%;margin-bottom:20px;'>");
@@ -910,111 +989,10 @@ namespace UI.Controllers
         }
 
 
-        private BO.ThePeriod InhaleGridPeriodDates(string prefix)
-        {            
-            int x = Factory.CBL.LoadUserParamInt("grid-period-value-"+prefix);
-            switch (x)
-            {
-                case 0: //nefiltrovat období
-                    return _pp.ByPid(0);
-                case 1:     //ručně zadaný interval d1-d2
-                    var ret = _pp.ByPid(1);
-                    ret.d1 = Factory.CBL.LoadUserParamDate("grid-period-d1-"+prefix);
-                    ret.d2 = Factory.CBL.LoadUserParamDate("grid-period-d2-"+prefix);
-                    return ret;  
-                default:    //pojmenované období
-                    return _pp.ByPid(x);
-                    
-            }
-            
-        }
+        
 
 
-        //private string getFiltrAlias(BO.TheGridState gridState,BO.myQuery mq)
-        //{            
-        //    if (mq.lisJ73.Count() == 0) return "";
-        //    var lisFields = new BL.TheQueryFieldProvider(gridState.j72Entity.Substring(0, 3)).getPallete();
-           
-        //    var lis = new List<string>();
-            
-        //    foreach(var c in mq.lisJ73)
-        //    {
-        //        string ss = "";
-        //        BO.TheQueryField cField = null;
-        //        if (c.j73BracketLeft != null)
-        //        {
-        //            ss += "(";
-        //        }
-        //        if (c.j73Op == "OR")
-        //        {
-        //            ss += " OR ";
-        //        }
-        //        if (lisFields.Where(p => p.Field == c.j73Column).Count()>0)
-        //        {
-        //            cField = lisFields.Where(p => p.Field == c.j73Column).First();
-        //            string s=cField.Header;
-        //            if (Factory.CurrentUser.j03LangIndex > 0)
-        //            {
-        //                s = Factory.tra(s);
-        //            }
-        //            ss = "[" + s + "] ";
-        //        }
-        //        switch (c.j73Operator)
-        //        {
-        //            case "EQUAL":
-        //                ss += "=";
-        //                break;
-        //            case "NOT-ISNULL":
-        //                ss += Factory.tra("Není prázdné");
-        //                break;
-        //            case "ISNULL":
-        //                ss+=Factory.tra("Je prázdné");
-        //                break;
-        //            case "INTERVAL":
-        //                ss += Factory.tra("Je interval");
-        //                break;
-        //            case "GREATERZERO":
-        //                ss += Factory.tra("Je větší než nula");
-        //                break;
-        //            case "ISNULLORZERO":
-        //                ss += Factory.tra("Je nula nebo prázdné");
-        //                break;
-        //            case "NOT-EQUAL":
-        //                ss += Factory.tra("Není rovno");
-        //                break;
-        //            case "CONTAINS":
-        //                lis.Add(Factory.tra("Obsahuje"));
-        //                break;
-        //            case "STARTS":
-        //                ss += Factory.tra("Začíná na");
-        //                break;
-        //            default:
-        //                break;
-        //        }
-        //        if (c.j73ValueAlias != null)
-        //        {
-        //            ss += c.j73ValueAlias;
-        //        }
-        //        else
-        //        {
-        //            ss += c.j73Value;
-        //        }
-        //        if (c.j73DatePeriodFlag > 0)
-        //        {
-        //            var d1 = mq.lisPeriods.Where(p => p.pid == c.j73DatePeriodFlag).First().d1;
-        //            var d2 = Convert.ToDateTime(mq.lisPeriods.Where(p => p.pid == c.j73DatePeriodFlag).First().d2).AddDays(1).AddMinutes(-1);
-        //            ss += ": "+BO.BAS.ObjectDate2String(d1, "dd.MM.yyyy") + " - " + BO.BAS.ObjectDate2String(d2, "dd.MM.yyyy");
-        //        }
-                
-        //        if (c.j73BracketRight != null)
-        //        {
-        //            ss += ")";
-        //        }
-        //        lis.Add(ss);
-        //    }
-
-        //    return string.Join("; ",lis);
-        //}
+       
 
     }
 }

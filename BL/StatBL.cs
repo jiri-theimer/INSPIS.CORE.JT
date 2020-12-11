@@ -26,7 +26,7 @@ namespace BL
            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql("", mq, _mother.CurrentUser);
            
             string strW_A01 = fq.SqlWhere;  //sql where klauzule seznamu akcí
-            if (string.IsNullOrEmpty(strW_A01)) strW_A01 = "a.a01ID>0";
+            if (string.IsNullOrEmpty(strW_A01)) strW_A01 = "a.a01IsTemporary=0";
             
             string strF_A01 = "a01Event a INNER JOIN a10EventType a10 ON a.a10ID=a10.a10ID LEFT OUTER JOIN a03Institution a03 ON a.a03ID=a03.a03ID LEFT OUTER JOIN a08Theme a08 ON a.a08ID=a08.a08ID LEFT OUTER JOIN b02WorkflowStatus b02 ON a.b02ID=b02.b02ID";    //sql pro vnořený seznam akcí
 

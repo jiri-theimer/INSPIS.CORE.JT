@@ -49,6 +49,7 @@ namespace BO
         public int j03FontStyleFlag { get; set; }
         public DateTime? j03LiveChatTimestamp { get; set; }   //na 20 minut zapnutý live-chat
         public bool j03IsMainLogoVisible { get; set; }  //zda je zapnutý pruh s logem nad hlavním menu
+        public bool j03IsDebugLog { get; set; } //zda je u uživatele zapnuté logování jeho SQL dotazů
         public DateTime? j03PingTimestamp { get; set; }
 
         public int j03GridSelectionModeFlag { get; set; }

@@ -26,7 +26,7 @@ namespace BL
 
         public IEnumerable<BO.j05Permission> GetListJ05()
         {
-            return _db.GetList<BO.j05Permission>("SELECT * FROM j05Permission ORDER BY j05Order");
+            return _db.GetList<BO.j05Permission>("SELECT * FROM j05Permission WHERE j05IsValid=1 ORDER BY j05Order");
         }
         public IEnumerable<BO.a21InstitutionLegalType> GetListA21()
         {

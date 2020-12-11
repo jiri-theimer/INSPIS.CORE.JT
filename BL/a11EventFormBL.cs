@@ -114,6 +114,16 @@ namespace BL
             //{
             //    this.AddMessageTranslated("a01id missing."); return false;
             //}
+            if (c.a11IsPoll)
+            {
+                if (string.IsNullOrEmpty(c.a11AccessToken.Trim())){
+                    this.AddMessage("Musíte definovat anketní PIN."); return false;
+                }
+                if (GetList(new BO.myQuery("a11") { a01id = c.a01ID }).Where(p => p.a11IsPoll == true && p.pid != c.pid).Any(p => p.a11AccessToken == c.a11AccessToken)){
+                    this.AddMessage("Anketní PIN v rámci akce nesmí být duplicitní."); return false;
+                }
+                
+            }
             if (c.f06ID == 0)
             {
                 this.AddMessage("Na vstupu chybí formulář.");return false;
@@ -129,11 +139,11 @@ namespace BL
 
         public void LockUnLockPolls(int a01id,bool bolLock)
         {
-            _db.RunSql("UPDATE a11EventForm SET a11IsLocked=@islocked,a11LockDate=CASE WHEN @islocked=1 THEN GETDATE() ELSE NULL END WHERE a01ID=@a01id AND a11IsPoll=1", new {islock=bolLock,a01id=a01id});
+            _db.RunSql("UPDATE a11EventForm SET a11IsLocked=@islock,a11LockDate=CASE WHEN @islock=1 THEN GETDATE() ELSE NULL END WHERE a01ID=@a01id AND a11IsPoll=1", new {islock=bolLock,a01id=a01id});
         }
         public void LockUnLockForm(int a11id, bool bolLock)
         {
-            _db.RunSql("UPDATE a11EventForm SET a11IsLocked=@islocked,a11LockDate=CASE WHEN @islocked=1 THEN GETDATE() ELSE NULL END WHERE a11ID=@pid", new { islock = bolLock, pid = a11id });
+            _db.RunSql("UPDATE a11EventForm SET a11IsLocked=@islock,a11LockDate=CASE WHEN @islock=1 THEN GETDATE() ELSE NULL END WHERE a11ID=@pid", new { islock = bolLock, pid = a11id });
         }
 
         public void ClearF32(int a11id)

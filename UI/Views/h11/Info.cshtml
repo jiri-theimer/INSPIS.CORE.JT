@@ -9,7 +9,10 @@
 
 @addTagHelper *, UI
 
-<h4>@Model.Rec.h11Name</h4>
+    <h4>
+        @Model.Rec.h11Name
+        <span class="badge badge-primary">@_f.tra("článek na nástěnce")</span>
+    </h4>
 @Html.Raw(Model.TagHtml)
 
 <hr />

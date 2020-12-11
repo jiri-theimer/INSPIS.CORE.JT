@@ -5,11 +5,26 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using UI.Models;
 using UI.Models.Record;
+using UI.Models.Recpage;
 
 namespace UI.Controllers
 {
     public class x55Controller : BaseController
     {
+        public IActionResult Help(int pid, string x55code)
+        {
+            var v = new x55RecPage() { pid = pid };
+            if (!string.IsNullOrEmpty(x55code))
+            {
+                v.Rec = Factory.x55WidgetBL.LoadByCode(x55code,0);
+            }
+            else
+            {
+                v.Rec = Factory.x55WidgetBL.Load(v.pid);
+            }
+            
+            return View(v);
+        }
         public IActionResult Record(int pid, bool isclone)
         {
             var v = new x55Record() { rec_pid = pid, rec_entity = "x55" };
@@ -21,7 +36,7 @@ namespace UI.Controllers
                 {
                     return RecNotFound(v);
                 }
-
+                v.HtmlHelp = v.Rec.x55Help;
                 var mq = new BO.myQuery("j04") { x55id = v.rec_pid, explicit_orderby = "j04Name" };
                 v.j04IDs = string.Join(",", Factory.j04UserRoleBL.GetList(mq).Select(p => p.pid));
                 v.j04Names = string.Join(",", Factory.j04UserRoleBL.GetList(mq).Select(p => p.j04Name));
@@ -46,8 +61,7 @@ namespace UI.Controllers
                 if (v.rec_pid > 0) c = Factory.x55WidgetBL.Load(v.rec_pid);
                 c.x55Name = v.Rec.x55Name;
                 c.x55Code = v.Rec.x55Code;
-                c.x55IsSystem = v.Rec.x55IsSystem;
-                c.x55TypeFlag = v.Rec.x55TypeFlag;
+                
                 c.x55TableSql = v.Rec.x55TableSql;
                 c.x55TableColHeaders = v.Rec.x55TableColHeaders;
                 c.x55TableColTypes = v.Rec.x55TableColTypes;
@@ -59,6 +73,10 @@ namespace UI.Controllers
                 c.x55HeaderForeColor = v.Rec.x55HeaderForeColor;
                 c.x55HeaderBackColor = v.Rec.x55HeaderBackColor;
                 c.x55BoxMaxHeight = v.Rec.x55BoxMaxHeight;
+                c.x55DataTablesLimit = v.Rec.x55DataTablesLimit;
+                c.x55DataTablesButtons = v.Rec.x55DataTablesButtons;
+                c.x55Help = v.HtmlHelp;
+                c.x55Skin = v.Rec.x55Skin;
 
                 c.ValidUntil = v.Toolbar.GetValidUntil(c);
                 c.ValidFrom = v.Toolbar.GetValidFrom(c);

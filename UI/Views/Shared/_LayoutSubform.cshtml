@@ -64,7 +64,7 @@
     }
     </script>
 
-    
+    <div id="site_loading2">Loading...</div>
     <div>
         @RenderBody()
     </div>
@@ -76,6 +76,8 @@
 
     $(document).ready(function ()
     {
+        document.getElementById("site_loading2").style.display = "none";
+
         $(document).on("keydown", function (e) {
             if (e.keyCode == 27) {   //klávese ESCAPE zavře modální okno
                 var modalwindow = window.parent.document.getElementById("myModalContainer");

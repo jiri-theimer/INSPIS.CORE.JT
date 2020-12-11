@@ -319,6 +319,7 @@ namespace BL
             AF("j03User", "j04Name", "Role", 1, "j03_j04.j04Name","string",false,true);
             AF("j03User", "Lang", "Jazyk", 1, "case isnull(a.j03LangIndex,0) when 0 then 'Česky' when 1 then 'English' when 2 then convert(nvarchar(20),N'Українська') end");
             AF("j03User", "j03PingTimestamp", "Last ping", 0, "a.j03PingTimestamp", "datetime");
+            AF("j03User", "j03IsDebugLog", "Debug log", 0, null, "bool");
             AppendTimestamp("j03User");
 
             //j04=aplikační role
@@ -692,7 +693,7 @@ namespace BL
 
             //z01 = pevné tiskové sestavy pro tisk
             AF("z01_core_view_reports", "x31Name", "Tisková sestava", 1, null, "string", false, true);
-            AF("z01_core_view_reports", "Preview", "Náhled", 2, "'<a class='+char(34)+'grid-link'+char(34)+' href='+char(34)+'javascript:report_nocontext('+convert(varchar(10),a.x31ID)+')'+CHAR(34)+'>Náhled</a>'");
+            AF("z01_core_view_reports", "Preview", "Náhled", 2, "'<a class='+char(34)+'grid-link'+char(34)+' href='+char(34)+'javascript:report_nocontext('+convert(varchar(10),a.x31ID)+')'+CHAR(34)+'><img src='+CHAR(34)+'/images/print.png'+CHAR(34)+'/></a>'");
             AF("z01_core_view_reports", "x31PID", "Kód sestavy", 2);
             AF("z01_core_view_reports", "Categories", "Kategorie", 1, "dbo._core_x31_get_category_inline(a.x31ID)");
             AF("z01_core_view_reports", "x31Description", "Popis",1);
@@ -714,11 +715,12 @@ namespace BL
             AF("x51HelpCore", "x51ExternalUrl", "Externí Url");
             AppendTimestamp("x51HelpCore");
 
-            //x55 = dashboard box
-            AF("x55Widget", "x55Name", "Dashboard box", 1, null, "string", false, true);
-            AF("x55Widget", "x55Code", "Kód");
+            //x55 = dashboard widget
+            AF("x55Widget", "x55Name", "Widget", 1, null, "string", false, true);
+            AF("x55Widget", "x55Code", "Kód widgetu",0,null,"string",false,true);
             AF("x55Widget", "x55Description", "Poznámka",1);
-            AF("x55Widget", "x55IsSystem", "Systémový", 2, null, "bool");
+            AF("x55Widget", "x55Skin", "Cílový dashboard");
+            AF("x55Widget", "x55DataTablesLimit", "Minimum záznamů pro [DataTables]", 2);            
             AF("x55Widget", "x55Ordinal", "#", 2, null, "num0");
             AppendTimestamp("x55Widget");
 

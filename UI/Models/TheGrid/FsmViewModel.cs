@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace UI.Models
 {
-    public class TheGridInstanceViewModel:BaseViewModel
+    public class FsmViewModel:BaseViewModel
     {
         public string entity { get; set; }
         public string entityTitle { get; set; }
@@ -17,14 +17,24 @@ namespace UI.Models
         public string master_entity { get; set; }
         public int master_pid { get; set; }
         public string master_flag { get; set; }
+        public string addfilterid { get; set; }     //externí filtr příznak - lze více hodnot oddělených pipou |
 
         public List<NavTab> NavTabs;
 
         public string go2pid_url_in_iframe { get; set; }
 
         public string dblclick { get; set; } = "tg_dblclick";
-        public PeriodViewModel period { get; set; }
-        
+        public PeriodViewModel period { get; set; } //fixní filtr v horním pruhu
+
+        public string FilterA10ID { get; set; }     //fixní filtr v horním pruhu
+        public string FilterA10Name { get; set; }   //fixní filtr v horním pruhu
+        public string FilterA08ID { get; set; }     //fixní filtr v horním pruhu
+        public string FilterA08Name { get; set; }   //fixní filtr v horním pruhu
+        public string FilterMyInvolvement { get; set; } //fixní filtr v horním pruhu
+        public string FilterH07ID { get; set; }     //fixní filtr v horním pruhu
+        public string FilterH07Name { get; set; }   //fixní filtr v horním pruhu
+
+
     }
 
 

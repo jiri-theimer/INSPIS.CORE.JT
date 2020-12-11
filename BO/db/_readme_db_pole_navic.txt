@@ -1,6 +1,9 @@
 ﻿[b02WorkflowStatus]
-b02SynchroTargetFlag
-b02SynchroFieldsFlag
+b02AutoUpdateScopeFlag
+
+[b10WorkflowCommandCatalog_Binding]
+b10TargetScopeFlag
+b02ID_TargetUpdate
 
 [a10EventType]
 a10ViewUrl_Insert varchar(100)
@@ -16,6 +19,10 @@ j03PasswordHash varchar(200)
 j03PingTimestamp
 j03LangIndex
 j03HomePageUrl varchar(50)
+j03IsDebugLog
+
+[j05Permission]
+j05IsValid
 
 [j90LoginAccessLog]
 j90BrowserFamily varchar(50)
@@ -87,6 +94,8 @@ j02Position
 
 [j04UserRole]
 j04ViewUrl_Page varchar(255)
+j04DefaultWidgets_Inspector
+j04DefaultWidgets_School
 
 [h07ToDoType]
 b65ID

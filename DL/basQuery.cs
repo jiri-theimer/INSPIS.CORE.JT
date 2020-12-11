@@ -169,7 +169,8 @@ namespace DL
             {
                 if (mq.Prefix == "a41")
                 {
-                    AQ(ref lis, "a.j02ID=@j02id_me OR a.j11ID IN (select j11ID FROM j12Team_Person WHERE j02ID=@j02id_me OR j04ID=@j04id_me) OR a.j11ID IN (select xa.j11ID FROM j12Team_Person xa INNER JOIN a02Inspector xb ON xa.a04ID=xb.a04ID WHERE xb.j02ID=@j02id_me)", "j02id_me",mq.CurrentUser.j02ID,"AND",null,null,"j04id_me",mq.CurrentUser.j04ID);
+                    //AQ(ref lis, "a.j02ID=@j02id_me OR a.j11ID IN (select j11ID FROM j12Team_Person WHERE j02ID=@j02id_me OR j04ID=@j04id_me) OR a.j11ID IN (select xa.j11ID FROM j12Team_Person xa INNER JOIN a02Inspector xb ON xa.a04ID=xb.a04ID WHERE xb.j02ID=@j02id_me)", "j02id_me",mq.CurrentUser.j02ID,"AND",null,null,"j04id_me",mq.CurrentUser.j04ID);
+                    AQ(ref lis, "a.j02ID=@j02id_me", "j02id_me", mq.CurrentUser.j02ID);    //nebudeme brát v potaz členy týmů osob
                 }
                 if (mq.Prefix == "h11")
                 {
@@ -478,10 +479,11 @@ namespace DL
             {
                 if (mq.Prefix == "a08") AQ(ref lis, "a.a08ID IN (SELECT a08ID FROM a26EventTypeThemeScope WHERE a10ID=@a10id)", "a10id", mq.a10id);
                 if (mq.Prefix == "a01") AQ(ref lis, "a.a10ID=@a10id", "a10id", mq.a10id);
+                if (mq.Prefix == "b02") AQ(ref lis, "a.b01ID IN (select b01ID FROM a10EventType WHERE a10ID=@a10id)", "a10id", mq.a10id);
             }
             if (mq.a08id > 0)
             {
-                if (mq.Prefix == "a12") AQ(ref lis, "a.a08ID=@a08id", "a08id", mq.a08id);
+                if (mq.Prefix == "a12" || mq.Prefix=="a01") AQ(ref lis, "a.a08ID=@a08id", "a08id", mq.a08id);
                 if (mq.Prefix == "f06") AQ(ref lis, "a.f06ID IN (select f06ID FROM a12ThemeForm WHERE a08ID=@a08id)", "a08id", mq.a08id);
             }
             if (mq.a11id > 0)

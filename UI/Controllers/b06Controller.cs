@@ -212,7 +212,7 @@ namespace UI.Controllers
                     }
                 }
 
-                c.pid = Factory.b06WorkflowStepBL.Save(c,lisB08, v.lisB11.Where(p => p.IsTempDeleted == false).ToList(),v.lisB13.Where(p=>p.IsTempDeleted==false).ToList(),o13ids,b12_j04ids,b12_a45ids, v.lisB10.Where(p => p.IsTempDeleted == false).ToList());
+                c.pid = Factory.b06WorkflowStepBL.Save(c,lisB08, v.lisB11.Where(p => p.IsTempDeleted == false).ToList(),v.lisB13.Where(p=>p.IsTempDeleted==false).ToList(),o13ids,b12_j04ids,b12_a45ids,v.lisB10.Where(p => p.IsTempDeleted == false).ToList());
                 if (c.pid > 0)
                 {
 
@@ -246,7 +246,10 @@ namespace UI.Controllers
             }
             foreach (var c in v.lisB10.Where(p => p.b09ID > 0))
             {
-                c.b09ParametersCount = Factory.FBL.LoadB09(c.b09ID).b09ParametersCount;
+                var cc = Factory.FBL.LoadB09(c.b09ID);
+                c.b09ParametersCount = cc.b09ParametersCount;
+                c.b09Ident = cc.b09Ident;
+               
             }
         }
     }

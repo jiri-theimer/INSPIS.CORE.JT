@@ -763,3 +763,23 @@ function clear_form(a11id,question) {
     }
     
 }
+
+function _showloading(index) {
+    if (typeof index === "undefined") {
+        index="1"
+    }
+    
+    $("#site_loading"+index).css("display", "block");
+}
+
+function _resize_textareas() {
+    $("textarea").each(function () {
+        this.style.height = "auto";
+        this.style.height = (this.scrollHeight) + "px";
+
+        $(this).on("input", function () {
+            this.style.height = "auto";
+            this.style.height = (this.scrollHeight) + "px";
+        });
+    });
+}

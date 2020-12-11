@@ -174,8 +174,12 @@ namespace UI
             app.UseAuthorization();
 
             app.UseRequestLocalization();
-            System.Globalization.CultureInfo.DefaultThreadCurrentCulture = new System.Globalization.CultureInfo("cs-CZ");
-            System.Globalization.CultureInfo.DefaultThreadCurrentUICulture = new System.Globalization.CultureInfo("cs-CZ");
+
+            var strCultureCode = Configuration.GetSection("App")["CultureCode"];
+            if (string.IsNullOrEmpty(strCultureCode)) strCultureCode = "cs-CZ";
+            System.Globalization.CultureInfo.DefaultThreadCurrentCulture = new System.Globalization.CultureInfo(strCultureCode);
+            System.Globalization.CultureInfo.DefaultThreadCurrentUICulture = new System.Globalization.CultureInfo(strCultureCode);
+
 
 
             app.UseEndpoints(endpoints =>
@@ -183,7 +187,7 @@ namespace UI
                 endpoints.MapControllers(); //kvùli teleri reporting
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");     
             });
 
 

@@ -22,6 +22,7 @@ namespace BO
             _Entity = strEntity;
             this.Refresh();
         }
+      
         private void Refresh()
         {
             _prefix = _Entity.Substring(0, 3);
@@ -153,43 +154,8 @@ namespace BO
 
 
 
-        public void InhaleMasterEntityQuery(string master_entity, int master_pid, string master_flag,string prefix)
-        {
-            if (master_flag != null && prefix=="a01" && this.CurrentUser !=null)
-            {
-                switch (master_flag)
-                {
-                    case "issuer":
-                        this.j02id_issuer = this.CurrentUser.j02ID;
-                        break;
-                    case "leader":
-                        this.j02id_leader = this.CurrentUser.j02ID;
-                        break;
-                    case "member":
-                        this.j02id_member = this.CurrentUser.j02ID;
-                        break;
-                    case "involved":
-                        this.j02id_involved = this.CurrentUser.j02ID;
-                        break;
-                    case "invited":
-                        this.j02id_invited = this.CurrentUser.j02ID;
-                        break;
-                    default:                        
-                        break;
-                }                
-            }
-            if (master_flag != null && prefix == "h04" && this.CurrentUser != null)
-            {
-                switch (master_flag)
-                {
-                    case "member":
-                        this.j02id_member = this.CurrentUser.j02ID;
-                        break;
-                    case "issuer":
-                        this.j02id_issuer = this.CurrentUser.j02ID;
-                        break;                    
-                }
-            }
+        public void InhaleMasterEntityQuery(string master_entity, int master_pid, string master_flag)
+        {                       
             if (master_pid == 0 || master_entity == null)
             {
                 return;

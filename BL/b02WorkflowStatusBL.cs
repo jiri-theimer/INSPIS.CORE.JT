@@ -39,7 +39,7 @@ namespace BL
 
         public IEnumerable<BO.b02WorkflowStatus> GetList(BO.myQuery mq)
         {
-            if (mq.explicit_orderby == null) { mq.explicit_orderby = "a.b02Order"; };
+            if (mq.explicit_orderby == null) { mq.explicit_orderby = "a.b01ID,a.b02Order"; };
             DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.b02WorkflowStatus>(fq.FinalSql, fq.Parameters);
         }
@@ -67,14 +67,23 @@ namespace BL
             p.AddBool("b02IsSeparateTab", rec.b02IsSeparateTab);
             p.AddBool("b02IsDurationSLA", rec.b02IsDurationSLA);
             p.AddBool("b02IsCommentForbidden", rec.b02IsCommentForbidden);
+            p.AddEnumInt("b02AutoUpdateScopeFlag", rec.b02AutoUpdateScopeFlag);
             
             if (rec.b02UC == null) { rec.b02UC = BO.BAS.GetGuid(); }
             p.AddString("b02UC", rec.b02UC);
 
             int intPID = _db.SaveRecord("b02WorkflowStatus", p.getDynamicDapperPars(), rec);
-            if (intPID>0 && rec.b02IsDefaultStatus)
+            if (intPID>0)
             {
-                _db.RunSql("UPDATE b02WorkflowStatus SET b02IsDefaultStatus=0 WHERE b01ID=@b01id AND b02ID<>@pid", new { b01id = rec.b01ID,pid=intPID });
+                if (rec.b02IsDefaultStatus)
+                {
+                    _db.RunSql("UPDATE b02WorkflowStatus SET b02IsDefaultStatus=0 WHERE b01ID=@b01id AND b02ID<>@pid", new { b01id = rec.b01ID, pid = intPID });
+                }
+                else
+                {
+                    _db.RunSql("IF NOT EXISTS(select b02ID FROM b02WorkflowStatus WHERE b02IsDefaultStatus=1 AND b01ID=@b01id) UPDATE b02WorkflowStatus SET b02IsDefaultStatus=1 WHERE b01ID=@b01id AND b02ID=@pid", new { b01id = rec.b01ID, pid = intPID });
+                }
+                
             }
             if (lisB07 != null)
             {
@@ -106,7 +115,15 @@ namespace BL
                 }
                 foreach (var c in lisB10)
                 {
-                    _db.RunSql("INSERT INTO b10WorkflowCommandCatalog_Binding(b02ID,b09ID,b10Parameter1) VALUES (@pid,@b09id,@par1)", new { pid = intPID, b09id = c.b09ID, par1 = c.b10Parameter1 });
+                    p = new DL.Params4Dapper();
+                    p.AddInt("b02ID", intPID, true);
+                    p.AddInt("b09ID", c.b09ID, true);
+                    p.AddString("b10Parameter1", c.b10Parameter1);
+                    p.AddString("b10Parameter2", c.b10Parameter2);
+                    p.AddString("b10Parameter3", c.b10Parameter3);
+                    p.AddEnumInt("b10TargetScopeFlag", c.b10TargetScopeFlag);
+                    p.AddInt("a10ID_TargetUpdate", c.a10ID_TargetUpdate);
+                    _db.SaveRecord("b10WorkflowCommandCatalog_Binding", p.getDynamicDapperPars(), c, false, false);                    
                 }
             }
 
@@ -129,14 +146,22 @@ namespace BL
             {
                 this.AddMessage("Tablka změn okruhu účastníků akce není korektně vyplněna.");return false;
             }
-            if (lisB10.Count() > lisB10.Select(p => p.b09ID).Distinct().Count())
+            if (lisB10 != null)
             {
-                this.AddMessage("V tabulce příkazů je duplicitní příkaz."); return false;
+                if (lisB10.Count() > lisB10.Select(p => p.b09ID).Distinct().Count())
+                {
+                    this.AddMessage("V tabulce příkazů je duplicitní příkaz."); return false;
+                }
+                if (lisB10.Where(p => p.b09ID == 0).Count() > 0)
+                {
+                    this.AddMessage("V tabulce příkaznů je prázdný řádek."); return false;
+                }
+                if (lisB10.Any(p => p.IsUpdateStatusCommand))
+                {
+                    this.AddMessage("V nastavení stavu není povoleno definovat příkaz pro změnu stavu."); return false;
+                }
             }
-            if (lisB10.Where(p => p.b09ID == 0).Count() > 0)
-            {
-                this.AddMessage("V tabulce příkaznů je prázdný řádek."); return false;
-            }
+            
 
 
             return true;
@@ -165,10 +190,11 @@ namespace BL
         }
         public IEnumerable<BO.b10WorkflowCommandCatalog_Binding> GetListB10(int b02id)
         {
-            sb("SELECT a.*,b09.b09Name,b09.b09ParametersCount,");
+            sb("SELECT a.*,b09.b09Name,b09.b09ParametersCount,b09.b09SQL,a10.a10Name as a10Name_TargetUpdate,b09.b09Ident,");
             sb(_db.GetSQL1_Ocas("b10", false, false, false));
             sb(" FROM b10WorkflowCommandCatalog_Binding a");
             sb(" INNER JOIN b09WorkflowCommandCatalog b09 ON a.b09ID=b09.b09ID");
+            sb(" LEFT OUTER JOIN a10EventType a10 ON a.a10ID_TargetUpdate=a10.a10ID");
             sb(" WHERE a.b02ID=@b02id");
             
             return _db.GetList<BO.b10WorkflowCommandCatalog_Binding>(sbret(), new { b02id = b02id });

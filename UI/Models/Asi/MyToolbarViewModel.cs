@@ -45,46 +45,7 @@ namespace UI.Models
             this.RecordPID = rec.pid;
             this.RecordIsClosed = rec.isclosed;
             
-            //if (rec.pid>0)
-            //{
-            //    var sb = new System.Text.StringBuilder();
-            //    sb.AppendLine("<div style='border-top:solid 1px #F5F5F5;margin-top:20px;'>");
-            //    if (rec.DateInsert != null)
-            //    {
-            //        sb.Append("<small>Záznam založen:</small>");
-            //        sb.Append("<small class='text-info'>");
-            //        sb.Append(rec.UserInsert + " / " + rec.DateInsert.ToString());
-            //        sb.Append("</small>");            
-            //    }
-            //    if (rec.DateUpdate>rec.DateInsert)
-            //    {
-            //        sb.Append("<small style='margin-left:20px;'>Poslední aktualizace:</small>");
-            //        sb.Append("<small class='text-info'>");
-            //        sb.Append(rec.UserUpdate + " / " + rec.DateUpdate.ToString());
-            //        sb.Append("</small>");
-            //    }
-            //    if (bolAllowArchive && rec.ValidFrom !=null && rec.ValidUntil != null)
-            //    {
-            //        this.ExplicitValidFrom = BO.BAS.ObjectDateTime2String(rec.ValidFrom);
-            //        this.ExplicitValidUntil = BO.BAS.ObjectDateTime2String(rec.ValidUntil);
-
-            //        sb.Append("<small style='margin-left:20px;'>Platnost záznamu:</small>");
-            //        sb.Append("<small class='text-info'>");
-            //        if (rec.ValidUntil>DateTime.Now && rec.ValidFrom <= DateTime.Now)
-            //        {
-            //            sb.Append(" Záznam je časově platný.");
-            //        }
-            //        else
-            //        {
-            //            sb.Append(rec.ValidFrom.ToString() + " - " + rec.ValidUntil.ToString());
-            //            sb.Append("<kbd style='font-size:120%;'>Záznam je v archivu.</kbd>");
-            //        }
-            //        sb.Append("</small>");
-            //    }
-
-            //    sb.AppendLine("</div>");
-            //    this.TimeStamp = sb.ToString();
-            //}
+           
 
             RefreshState();
 

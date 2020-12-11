@@ -14,7 +14,7 @@ namespace UI.Controllers
     {
         public IActionResult Simulation(int f06id)
         {
-            var v = new a11SimulationViewModel() { f06ID=f06id };
+            var v = new a11SimulationViewModel() { f06ID = f06id };
             if (v.f06ID == 0)
             {
                 return StopPage(false, "f06id missing");
@@ -35,49 +35,49 @@ namespace UI.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Simulation(Models.a11SimulationViewModel v,string oper)
+        public IActionResult Simulation(Models.a11SimulationViewModel v, string oper)
         {
             RefreshStateSimulation(v);
             if (oper == "postback")
-            {                
+            {
                 return View(v);
             }
-            if (oper== "cleardata")
-            {                
+            if (oper == "cleardata")
+            {
                 var lisA11 = Factory.a11EventFormBL.GetList(new BO.myQuery("a11") { f06id = v.f06ID, a11issimulation = BO.BooleanQueryMode.TrueQuery });
                 if (lisA11.Count() > 0)
                 {
-                    foreach(var c in lisA11)
+                    foreach (var c in lisA11)
                     {
                         Factory.a11EventFormBL.ClearF32(c.pid);
                     }
                 }
                 this.AddMessage("Provedeno.", "info");
                 return View(v);
-                
+
             }
             if (ModelState.IsValid)
             {
-                if (v.a10ID==0 || v.a08ID == 0 || v.a03ID==0)
+                if (v.a10ID == 0 || v.a08ID == 0 || v.a03ID == 0)
                 {
                     this.AddMessage("Chybí vyplnit typ, téma akce nebo instituci.");
                     return View(v);
                 }
-                var mq = new BO.myQuery("a11") { f06id = v.f06ID,a11issimulation=BO.BooleanQueryMode.TrueQuery };
+                var mq = new BO.myQuery("a11") { f06id = v.f06ID, a11issimulation = BO.BooleanQueryMode.TrueQuery };
                 var lisA11 = Factory.a11EventFormBL.GetList(mq);
                 if (lisA11.Count() == 0)
                 {
-                    var recA01 = new BO.a01Event() { a01IsTemporary = true,a10ID=v.a10ID,a08ID=v.a08ID,a03ID=v.a03ID, a01DateFrom=DateTime.Now, a01DateUntil=new DateTime(3000,1,1), j03ID_Creator=Factory.CurrentUser.pid,j02ID_Issuer=Factory.CurrentUser.j02ID };
+                    var recA01 = new BO.a01Event() { a01IsTemporary = true, a10ID = v.a10ID, a08ID = v.a08ID, a03ID = v.a03ID, a01DateFrom = DateTime.Now, a01DateUntil = new DateTime(3000, 1, 1), j03ID_Creator = Factory.CurrentUser.pid, j02ID_Issuer = Factory.CurrentUser.j02ID };
                     var recA11 = new BO.a11EventForm() { f06ID = v.f06ID, a11IsSimulation = true, a37ID = v.a37ID, a11Description = Factory.tra("Simulace chování formuláře.") };
                     var lis = new List<BO.a11EventForm>();
 
-                    var intA01ID=Factory.a01EventBL.Create(recA01, true, new List<BO.a11EventForm>() { recA11 },null,null,null);
+                    var intA01ID = Factory.a01EventBL.Create(recA01, true, new List<BO.a11EventForm>() { recA11 }, null, null, null);
 
                     if (intA01ID > 0)
                     {
                         SaveSimulationData(v);
                         mq.a01id = intA01ID;
-                        lisA11= Factory.a11EventFormBL.GetList(mq);
+                        lisA11 = Factory.a11EventFormBL.GetList(mq);
                         return Redirect(Factory.App.UiftUrl + "/formular/" + lisA11.Last().pid.ToString());
                     }
                 }
@@ -87,14 +87,14 @@ namespace UI.Controllers
                     recA01.a10ID = v.a10ID;
                     recA01.a08ID = v.a01ID;
                     recA01.a03ID = v.a03ID;
-                    Factory.a01EventBL.SaveA01Record(recA01,Factory.a10EventTypeBL.Load(v.a10ID));
+                    Factory.a01EventBL.SaveA01Record(recA01, Factory.a10EventTypeBL.Load(v.a10ID));
                     SaveSimulationData(v);
                     return Redirect(Factory.App.UiftUrl + "/formular/" + lisA11.Last().pid.ToString());
                 }
             }
 
 
-            
+
             return View(v);
         }
 
@@ -105,7 +105,7 @@ namespace UI.Controllers
             Factory.CBL.SetUserParam("Simulation-a03ID", v.a03ID.ToString());
         }
 
-        
+
 
         private void RefreshStateSimulation(Models.a11SimulationViewModel v)
         {
@@ -136,38 +136,38 @@ namespace UI.Controllers
             {
                 Factory.a11EventFormBL.ClearF32(a11id);
             }
-            return new BO.Result(false,Factory.tra("Operace dokončena."));
+            return new BO.Result(false, Factory.tra("Operace dokončena."));
         }
-        public IActionResult ValidateForms(int pid,int a01id)
+        public IActionResult ValidateForms(int pid, int a01id)
         {
-            var v = new a11ValidateForms() { pid = pid,a01ID=a01id };
+            var v = new a11ValidateForms() { pid = pid, a01ID = a01id };
             var mq = new BO.myQuery("a11");
             if (v.pid > 0)
             {
                 var recA11 = Factory.a11EventFormBL.Load(pid);
                 v.RecA01 = Factory.a01EventBL.Load(recA11.a01ID);
-                mq.pids = new List<int> { pid };                
-                
+                mq.pids = new List<int> { pid };
+
             }
             else
             {
-                v.RecA01 = Factory.a01EventBL.Load(a01id);                
+                v.RecA01 = Factory.a01EventBL.Load(a01id);
                 mq.a01id = a01id;
             }
 
 
             v.lisA11 = Factory.a11EventFormBL.GetList(mq);
             v.lisResult = new List<BO.ItemValidationResult>();
-            foreach(var recA11 in v.lisA11)
+            foreach (var recA11 in v.lisA11)
             {
                 var cValidate = new FormValidation(Factory);
-                var lis=cValidate.GetValidateResult(recA11.pid);
-                foreach(var c in lis)
+                var lis = cValidate.GetValidateResult(recA11.pid);
+                foreach (var c in lis)
                 {
                     v.lisResult.Add(c);
                 }
             }
-            
+
 
             return View(v);
         }
@@ -196,7 +196,7 @@ namespace UI.Controllers
                     return RecNotFound(v);
                 }
                 v.a01ID = v.Rec.a01ID;
-              
+
             }
             if (v.a01ID == 0)
             {
@@ -216,8 +216,8 @@ namespace UI.Controllers
         {
             RefreshState(ref v);
             if (ModelState.IsValid)
-            {                
-                BO.a11EventForm c = Factory.a11EventFormBL.Load(v.rec_pid);               
+            {
+                BO.a11EventForm c = Factory.a11EventFormBL.Load(v.rec_pid);
                 c.a11Description = v.Rec.a11Description;
                 c.a37ID = v.Rec.a37ID;
                 c.a11IsLocked = v.Rec.a11IsLocked;
@@ -257,7 +257,7 @@ namespace UI.Controllers
         //Přidat formuláře do akce:
         public IActionResult Append(int a01id)
         {
-            var v = new a11AppendViewModel() { a01ID = a01id,SelectedKolikrat=1 };
+            var v = new a11AppendViewModel() { a01ID = a01id, SelectedKolikrat = 1 };
             if (v.a01ID == 0)
             {
                 return this.StopPage(true, "a01id missing");
@@ -267,7 +267,14 @@ namespace UI.Controllers
             {
                 return RecNotFound(v);
             }
-
+            if (v.RecA01.a01IsAllFormsClosed)
+            {
+                return this.StopPage(true, "Formuláře v akci jsou globálně uzavřeny.");
+            }
+            if (v.RecA01.isclosed)
+            {
+                return this.StopPage(true, "Tato akce je již uzavřena.");
+            }
 
             return View(v);
         }
@@ -282,9 +289,9 @@ namespace UI.Controllers
             }
             if (oper == "add")
             {
-                if (v.SelectedF06ID > 0 && v.SelectedKolikrat>0)
+                if (v.SelectedF06ID > 0 && v.SelectedKolikrat > 0)
                 {
-                    for(int i = 1; i <= v.SelectedKolikrat; i++)
+                    for (int i = 1; i <= v.SelectedKolikrat; i++)
                     {
                         var c = new BO.a11EventForm() { TempGuid = BO.BAS.GetGuid() };
 
@@ -298,7 +305,7 @@ namespace UI.Controllers
 
                         v.lisA11.Add(c);
                     }
-                    
+
                     return View(v);
                 }
                 else
@@ -318,7 +325,7 @@ namespace UI.Controllers
                 v.lisA11 = v.lisA11.Where(p => p.IsTempDeleted == false).ToList();
                 if (v.lisA11.Count() == 0)
                 {
-                    this.AddMessage("Pro uložení chybí výběr formulářů.");return View(v);
+                    this.AddMessage("Pro uložení chybí výběr formulářů."); return View(v);
                 }
                 foreach (var c in v.lisA11)
                 {
@@ -335,7 +342,7 @@ namespace UI.Controllers
                     rec.a25ID = c.a25ID;
                     rec.a37ID = c.a37ID;
                     rec.a11Description = c.a11Description;
-                    int intA11ID= Factory.a11EventFormBL.Save(rec);
+                    int intA11ID = Factory.a11EventFormBL.Save(rec);
                     if (intA11ID == 0)
                     {
                         return View(v);
@@ -380,22 +387,29 @@ namespace UI.Controllers
             {
                 return RecNotFound(v);
             }
-
+            if (v.RecA01.a01IsAllFormsClosed)
+            {
+                return this.StopPage(true, "Formuláře v akci jsou globálně uzavřeny.");
+            }
+            if (v.RecA01.isclosed)
+            {
+                return this.StopPage(true, "Tato akce je již uzavřena.");
+            }
 
             return View(v);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AppendPoll(Models.a11AppendPollViewModel v, string oper, string guid,string pids)
+        public IActionResult AppendPoll(Models.a11AppendPollViewModel v, string oper, string guid, string pids)
         {
             RefreshStateAppendPoll(v);
             if (oper == "postback")
             {
                 return View(v);
             }
-            if (oper == "lock" || oper=="unlock")
+            if (oper == "lock" || oper == "unlock")
             {
-                foreach(var c in v.lisA11Saved)
+                foreach (var c in v.lisA11Saved)
                 {
                     if (oper == "lock")
                     {
@@ -410,9 +424,10 @@ namespace UI.Controllers
                 v.SetJavascript_CallOnLoad("/a01/RecPage?pid=" + v.RecA01.pid.ToString());
                 return View(v);
             }
-            if (oper=="delete" && pids != ""){
+            if (oper == "delete" && pids != "")
+            {
                 var a11ids = BO.BAS.ConvertString2ListInt(pids);
-                for(int i = 0; i <= a11ids.Count - 1; i++)
+                for (int i = 0; i <= a11ids.Count - 1; i++)
                 {
                     Factory.CBL.DeleteRecord("a11", a11ids[i]);
                 }
@@ -424,21 +439,16 @@ namespace UI.Controllers
             {
                 if (v.SelectedF06ID > 0 && v.SelectedKolikrat > 0)
                 {
-                    var intMinToken = v.AccessTokenMinValue;
+                    
                     v.lisA11 = new List<BO.a11EventForm>();
+                    var pins = GeneratePins(v);
+                   
                     for (int i = 1; i <= v.SelectedKolikrat; i++)
                     {
                         var c = new BO.a11EventForm();
                         c.a01ID = v.RecA01.pid;
                         c.a11IsPoll = true;
-                        if (intMinToken <= 0)
-                        {
-                            c.a11AccessToken = Factory.a11EventFormBL.GetRandomToken();
-                        }
-                        else
-                        {
-                            c.a11AccessToken = (BO.BAS.RightString("0000" + (intMinToken + i - 1).ToString(),4));
-                        }                        
+                        c.a11AccessToken = pins[i - 1];                        
                         c.f06ID = v.SelectedF06ID;
                         c.f06Name = v.SelectedForm;
                         c.a25ID = v.SelectedA25ID;
@@ -447,9 +457,9 @@ namespace UI.Controllers
                         c.a37Name = v.SelectedA37Name;
                         c.a11Description = v.a11Description;
                         c.k01ID = v.SelectedK01ID;
-                        v.lisA11.Add(c);                                                
+                        v.lisA11.Add(c);
                     }
-                    foreach(var c in v.lisA11)
+                    foreach (var c in v.lisA11)
                     {
                         if (!Factory.a11EventFormBL.ValidateBeforeSave(c))
                         {
@@ -460,10 +470,10 @@ namespace UI.Controllers
                     {
                         Factory.a11EventFormBL.Save(c);
                     }
-                    v.SetJavascript_CallOnLoad("/a01/RecPage?pid="+v.RecA01.pid.ToString());
+                    v.SetJavascript_CallOnLoad("/a01/RecPage?pid=" + v.RecA01.pid.ToString());
                     return View(v);
                     //RefreshStateAppendPoll(v);
-                    
+
                 }
                 else
                 {
@@ -477,21 +487,56 @@ namespace UI.Controllers
                 v.lisA11.First(p => p.TempGuid == guid).IsTempDeleted = true;
                 return View(v);
             }
-            
 
-            
+
+
             return View(v);
         }
 
+        private List<string> GeneratePins(Models.a11AppendPollViewModel v)  //vygeneruje sadu anketních PINů
+        {
+            var pins = new List<string>();
+            var lisTestDuplPins = Factory.a11EventFormBL.GetList(new BO.myQuery("a11") { a01id = v.a01ID }).Where(p => p.a11IsPoll == true);
+
+            for (int i = 1; i <= v.SelectedKolikrat; i++)
+            {
+                string strPIN = "";
+                var x = i;
+                if (v.AccessTokenMinValue <= 0)
+                {
+                    strPIN = Factory.a11EventFormBL.GetRandomToken();
+                }
+                else
+                {
+                    strPIN = BO.BAS.RightString("0000" + (v.AccessTokenMinValue + i - 1).ToString(), 4);
+                }
+                while (pins.Contains(strPIN) || lisTestDuplPins.Where(p=>p.a11AccessToken==strPIN).Count()>0)
+                {
+                    if (v.AccessTokenMinValue <= 0)
+                    {
+                        strPIN = Factory.a11EventFormBL.GetRandomToken();
+                    }
+                    else
+                    {
+                        strPIN = BO.BAS.RightString("0000" + (v.AccessTokenMinValue + x - 1).ToString(), 4);
+                    }                                        
+                    x += 1;
+                    if (x > 9000) break;
+                }
+                pins.Add(strPIN);
+
+            }
+            return pins;
+        }
         private void RefreshStateAppendPoll(a11AppendPollViewModel v)
         {
             v.RecA01 = Factory.a01EventBL.Load(v.a01ID);
 
-            
+
             var mq = new BO.myQuery("a11");
             mq.a01id = v.a01ID;
-            
-            v.lisA11Saved = Factory.a11EventFormBL.GetList(mq).Where(p=>p.a11IsPoll==true);
+
+            v.lisA11Saved = Factory.a11EventFormBL.GetList(mq).Where(p => p.a11IsPoll == true);
 
         }
 
@@ -500,7 +545,7 @@ namespace UI.Controllers
         //Plus notifikační zpráva
         public IActionResult AppendPollWizard(int a01id)
         {
-            var v = new a11AppendPollWizardViewModel() { a01ID = a01id,AccessToken= Factory.a11EventFormBL.GetRandomToken()};
+            var v = new a11AppendPollWizardViewModel() { a01ID = a01id, AccessToken = Factory.a11EventFormBL.GetRandomToken() };
             if (v.a01ID == 0)
             {
                 return this.StopPage(true, "a01id missing");
@@ -510,7 +555,14 @@ namespace UI.Controllers
             {
                 return RecNotFound(v);
             }
-
+            if (v.RecA01.a01IsAllFormsClosed)
+            {
+                return this.StopPage(true, "Formuláře v akci jsou globálně uzavřeny.");
+            }
+            if (v.RecA01.isclosed)
+            {
+                return this.StopPage(true, "Tato akce je již uzavřena.");
+            }
 
             return View(v);
         }
@@ -529,30 +581,30 @@ namespace UI.Controllers
                 if (v.SelectedEmail != null)
                 {
                     v.EmailAddress = v.SelectedEmail;
-                }                
+                }
                 return View(v);
             }
 
             if (ModelState.IsValid)
             {
-                if (string.IsNullOrEmpty(v.AccessToken) || v.AccessToken.Length <4)
+                if (string.IsNullOrEmpty(v.AccessToken) || v.AccessToken.Length < 4)
                 {
-                    this.AddMessage("Přístupový PIN je příliš krátký.");return View(v);
+                    this.AddMessage("Přístupový PIN je příliš krátký."); return View(v);
                 }
                 if (string.IsNullOrEmpty(v.EmailAddress))
                 {
-                    this.AddMessage("Není vyplněn příjemce (e-mail adresa) poštovní zprávy.");return View(v);
+                    this.AddMessage("Není vyplněn příjemce (e-mail adresa) poštovní zprávy."); return View(v);
                 }
                 var c = new BO.a11EventForm();
                 c.a01ID = v.RecA01.pid;
                 c.a11IsPoll = true;
                 c.a11AccessToken = v.AccessToken;
                 c.f06ID = v.SelectedF06ID;
-                c.f06Name = v.SelectedForm;                
+                c.f06Name = v.SelectedForm;
                 c.a37ID = v.SelectedA37ID;
                 c.a37Name = v.SelectedA37Name;
                 c.a11Description = v.a11Description;
-               
+
 
                 c.pid = Factory.a11EventFormBL.Save(c);
                 if (c.pid > 0)
@@ -561,9 +613,9 @@ namespace UI.Controllers
                     var dt = Factory.gridBL.GetList4MailMerge("a11", c.pid);
                     var cMerge = new BO.CLS.MergeContent();
                     var strBody = cMerge.GetMergedContent(v.MessageBody, dt);
-                    
-                    var ret=Factory.MailBL.SendMessage(0, v.EmailAddress, "", v.MessageSubject, strBody, false, 111, c.pid);
-                    
+
+                    var ret = Factory.MailBL.SendMessage(0, v.EmailAddress, "", v.MessageSubject, strBody, false, 111, c.pid);
+
                     v.SetJavascript_CallOnLoad(c.pid);
                     return View(v);
                 }
@@ -581,11 +633,11 @@ namespace UI.Controllers
             v.RecA01 = Factory.a01EventBL.Load(v.a01ID);
 
             v.lisEmails = new List<BO.StringPair>();
-            
+
             var mq = new BO.myQuery("a39");
             mq.a03id = v.RecA01.a03ID;
             var lisA39 = Factory.a39InstitutionPersonBL.GetList(mq).Where(p => p.j02Email != null);
-            foreach (var c in lisA39.OrderBy(p=>p.Person))
+            foreach (var c in lisA39.OrderBy(p => p.Person))
             {
                 v.lisEmails.Add(new BO.StringPair() { Key = c.j02Email, Value = c.Person + " [" + c.j02Email + "]" });
             }
@@ -598,6 +650,6 @@ namespace UI.Controllers
             return Factory.b65WorkflowMessageBL.Load(b65id);
         }
 
-        
+
     }
 }

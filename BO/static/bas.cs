@@ -376,6 +376,23 @@ namespace BO
             return "********";
         }
 
+        public static string Text2Html(string s)
+        {
+            if (s == null) return s;
+            if (s.Contains("\r\n"))
+            {
+                return s.Replace("\r\n", "<br>");
+            }
+            else
+            {
+                if (s.Contains("\r"))
+                {
+                    return s.Replace("\r", "<br>");
+                }
+            }
+
+            return s;
+        }
 
        
     }

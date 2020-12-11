@@ -76,7 +76,7 @@ namespace UI.Views.Shared.TagHelpers
             sb("</div>");            
             sb("");
 
-            sb(string.Format("<button type='button' id='cmdCombo{0}' class='btn btn-outline-light dropdown-toggle form-control' title='Vybrat z nabídky' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' tabindex='-1' style='text-align:left;border:none;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;color:gray;'>{1}</button>",strControlID,this.PlaceHolder));
+            sb(string.Format("<button type='button' id='cmdCombo{0}' class='btn btn-outline-light dropdown-toggle form-control' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' tabindex='-1' style='text-align:left;border:none;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;color:gray;'>{1}</button>",strControlID,this.PlaceHolder));
             
             sb(string.Format("<button type='button' id='cmdClear{0}' class='btn btn-secondary close' aria-label='Close' tabindex='-1' title='Vyčistit' style='width:30px;border:none;display:none;'>",strControlID));
             sb("<span aria-hidden='true'>&times;</span>");

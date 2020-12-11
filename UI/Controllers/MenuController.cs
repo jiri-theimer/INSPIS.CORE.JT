@@ -60,7 +60,7 @@ namespace UI.Controllers
             }
             if (Factory.CurrentUser.j03HomePageUrl != null)
             {
-                AMI("Tovární HOME stránka", "/Home/Index");
+                AMI("Tovární HOME stránka", "/Dashboard/Widgets");
             }
             DIV();
             AMI("Můj profil", "/Home/MyProfile");
@@ -185,7 +185,7 @@ namespace UI.Controllers
             AMI("Osoby v inspektorátech", url_users("a02"));
 
             DIV_TRANS("Prostředí");
-            AMI("Dashboard boxy", url_users("x55"));
+            AMI("Widgety", url_users("x55"));
 
             DIV_TRANS("Provoz");
             AMI("PING Log", url_users("j92"));
@@ -467,7 +467,11 @@ namespace UI.Controllers
                     else
                     {
                         AMI("Posunout/Doplnit", string.Format("javascript: _window_open('/workflow/Dialog?pid={0}')", pid));
-                        AMI("Nahrát přílohu", string.Format("javascript:_window_open('/a01/AddAttachment?pid={0}')", pid));
+                        if (!recA01.isclosed)
+                        {
+                            AMI("Nahrát přílohu", string.Format("javascript:_window_open('/a01/AddAttachment?pid={0}')", pid));
+                        }
+                        
                     }
 
 
@@ -483,20 +487,27 @@ namespace UI.Controllers
                         }                            
                         if (recA10.a10IsUse_ReChangeForms)
                         {
-                            AMI("Přidat formuláře", string.Format("javascript: _window_open('/a11/Append?a01id={0}')", pid), "Formulare");
-                            AMI("Přidat skupinu formulářů", string.Format("javascript: _window_open('/a25/Record?a01id={0}')", pid), "Formulare");
+                            if (!recA01.a01IsAllFormsClosed && !recA01.isclosed)
+                            {
+                                AMI("Přidat formuláře", string.Format("javascript: _window_open('/a11/Append?a01id={0}')", pid), "Formulare");
+                                AMI("Přidat skupinu formulářů", string.Format("javascript: _window_open('/a25/Record?a01id={0}')", pid), "Formulare");
+                            }                            
                             AMI("Otestovat vyplnění formulářů v akci", string.Format("javascript: _window_open('/a11/ValidateForms?a01id={0}')", pid), "Formulare");
                         }
-                        if (recA10.a10IsUse_Poll)
+                        if (!recA01.isclosed)
                         {
-                            DIV(null, "Formulare");
-                            AMI("Anketní formuláře", string.Format("javascript: _window_open('/a11/AppendPoll?a01id={0}',2)", pid), "Formulare");
-                            AMI("Založit+notifikovat anketu", string.Format("javascript: _window_open('/a11/AppendPollWizard?a01id={0}')", pid), "Formulare");
+                            if (recA10.a10IsUse_Poll)
+                            {
+                                DIV(null, "Formulare");
+                                AMI("Anketní formuláře", string.Format("javascript: _window_open('/a11/AppendPoll?a01id={0}',2)", pid), "Formulare");
+                                AMI("Založit+notifikovat anketu", string.Format("javascript: _window_open('/a11/AppendPollWizard?a01id={0}')", pid), "Formulare");
+                            }
+                            if (recA10.a10IsUse_A41 && recA01.a01ParentID == 0)
+                            {
+                                AMI("Přidat účastníky akce", string.Format("javascript: _window_open('/a41/Append?a01id={0}')", pid));
+                            }
                         }
-                        if (recA10.a10IsUse_A41 && recA01.a01ParentID == 0)
-                        {
-                            AMI("Přidat účastníky akce", string.Format("javascript: _window_open('/a41/Append?a01id={0}')", pid));
-                        }
+                        
                         if (recA10.a10IsUse_Period && recA01.a01ParentID == 0)
                         {
                             DIV();
@@ -696,7 +707,7 @@ namespace UI.Controllers
                     DIV();
                     AMI("Nová otázka", string.Format("javascript: _window_open('/f19/Record?f18id={0}')", pid));
                     AMI("Nová baterie otázek", string.Format("javascript: _window_open('/f26/Record?f18id={0}')", pid));
-                    AMI("Nová šachovnice otázek", string.Format("javascript: _window_open('/f25/Record?f18id={0}')", pid));
+                    //AMI("Nová šachovnice otázek", string.Format("javascript: _window_open('/f25/Record?f18id={0}')", pid));
                     break;
                 case "x40":
                     var recX40 = Factory.MailBL.LoadMessageByPid(pid);

@@ -68,6 +68,20 @@
                     <label class="col-form-label" for="Rec_b02IsCommentForbidden">@_f.tra("Ve stavu je zákaz psaní bez-krokového komentáře")</label>
                 </div>
             </div>
+            <div class="form-row my-2">
+
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Synchronizace stavu"):</label>
+                <div class="col-sm-4 col-md-4">
+                    <select asp-for="@Model.Rec.b02AutoUpdateScopeFlag" class="form-control">
+                        <option value="None">@_f.tra("Nic")</option>
+                        <option value="Slaves">@_f.tra("Stav nahazovat u podřízených akcí")</option>
+                        <option value="Parent">@_f.tra("Stav nahazovat u nadřízené akce")</option>
+                    </select>
+
+                </div>
+            </div>
+
+            
 
 
             <div class="form-row my-2">
@@ -80,7 +94,7 @@
                     <i>@_f.tra("Černá = žádná barva!")</i>
                 </div>
             </div>
-           
+
 
             <div class="form-row my-2">
                 <div class="col-sm-4 col-md-4">
@@ -186,33 +200,44 @@
             <button type="button" class="btn btn-primary" onclick="handle_b10_append()">@_f.tra("Přidat")</button>
             <table class="table table-hover">
                 <tr>
-                    <th>@_f.tra("Příkaz")</th>
-                    <th>@_f.tra("Parametr")</th>
+                    <th style="width:150px;">@_f.tra("Cílový okruh akcí")</th>
+                    <th>@_f.tra("Příkaz")</th>                    
                     <th></th>
                 </tr>
                 @for (var i = 0; i < Model.lisB10.Count; i++)
                 {
                     <tr style="@(Model.lisB10[i].CssTempDisplay)">
-                        <td style="width:45%;">
+                        <td style="width:300px;">
+                            <select class="form-control" asp-for="lisB10[i].b10TargetScopeFlag">
+                                <option value="ThisAndSlaves">@_f.tra("Aktuální + podřízené akce")</option>
+                                <option value="ThisOnly">@_f.tra("Pouze aktuální akce")</option>
+                                <option value="SlavesOnly">@_f.tra("Pouze podřízené akce")</option>
+                                <option value="ParentOnly">@_f.tra("Pouze nadřízená akce")</option>
+                            </select>
+                            <div>
+                                <mycombo entity="a10EventType" asp-for="lisB10[i].a10ID_TargetUpdate" selectedtext="lisB10[i].a10Name_TargetUpdate" view-flag="2" placeholder="@(_f.tra("Pouze akce typu")+"...")"></mycombo>
+                            </div>
+                        </td>
+                        <td>
                             <input type="hidden" asp-for="lisB10[i].IsTempDeleted" value="@Model.lisB10[i].IsTempDeleted" />
                             <input type="hidden" asp-for="lisB10[i].TempGuid" value="@Model.lisB10[i].TempGuid" />
                             <mycombo entity="b09WorkflowCommandCatalog" asp-for="lisB10[i].b09ID" selectedtext="lisB10[i].b09Name" placeholder="Vybrat příkaz..." view-flag="2" event_after_changevalue="handle_b09id_change"></mycombo>
-
+                            <div>
+                                @if (Model.lisB10[i].b09ParametersCount > 0)
+                                {
+                                    <input type="text" class="form-control" asp-for="lisB10[i].b10Parameter1" placeholder="@_f.tra("Parametr")" />
+                                }
+                                else
+                                {
+                                    <input type="text" class="form-control" asp-for="lisB10[i].b10Parameter1" style="display:none;" />
+                                }
+                            </div>
 
 
                         </td>
-                        <td style="width:45%;">
-                            @if (Model.lisB10[i].b09ParametersCount > 0)
-                            {
-                                <input type="text" class="form-control" asp-for="lisB10[i].b10Parameter1" />
-                            }
-                            else
-                            {
-                                <input type="text" class="form-control" asp-for="lisB10[i].b10Parameter1" disabled="disabled" />
-                            }
-
-                        </td>
-                        <td style="width:10%;">
+                       
+                        
+                        <td style="width:20px;">
                             <button type="button" class="btn btn-danger" title="@_f.tra("Odstranit řádek")" onclick="handle_delete_b10('@(Model.lisB10[i].TempGuid)')">x</button>
                         </td>
                     </tr>
@@ -234,7 +259,7 @@
                 </div>
             </div>
 
-            
+
             <div class="form-row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label">TOTAL TIMEOUT:</label>
                 <div class="col-sm-1 col-md-1">

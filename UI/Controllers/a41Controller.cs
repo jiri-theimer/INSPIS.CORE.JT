@@ -84,7 +84,10 @@ namespace UI.Controllers
             {
                 return RecNotFound(v);
             }
-
+            if (v.RecA01.isclosed)
+            {
+                return this.StopPage(true, "Tato akce je již uzavřena.");
+            }
 
             return View(v);
         }

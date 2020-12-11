@@ -2,7 +2,13 @@
 
 namespace BO
 {
-    
+    public enum b02AutoUpdateScope
+    {
+        None = 0,
+        Slaves = 1,
+        Parent = 2
+    }
+
     public class b02WorkflowStatus:BaseBO
     {
         [Key]
@@ -22,7 +28,9 @@ namespace BO
         public string b02Message4UIFT { get; set; }
 
         public string b02UC { get; set; }
-        
+        public b02AutoUpdateScope b02AutoUpdateScopeFlag { get; set; }
+
+
 
         public string b01Name;
     }

@@ -113,8 +113,12 @@ namespace UI.Controllers
             {
                 return this.StopPageSubform("pid is missing");
             }
-
+            
             RefreshStateAddAttachment(v);
+            if (v.RecA01.isclosed)
+            {
+                return this.StopPage(true, "Tato akce je již uzavřena.");
+            }
             return View(v);
         }
         [HttpPost]

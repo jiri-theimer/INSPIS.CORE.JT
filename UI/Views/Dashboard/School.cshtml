@@ -8,151 +8,75 @@
 
 @addTagHelper *, UI
 
+<div id="divHeader" class="row py-1 bg-light m-0 mb-4">
+    <div class="col-auto pl-0 pr-0">
+        <ul class="nav nav-tabs nonmobile nontablet" style="border:none;">
+            <li class="nav-item onetab">
+                <a class="nav-link active" data-toggle="tab">@(Model.Rec.FullNameAsc)</a>
+            </li>
+        </ul>
 
-<div class="form-row">
-    <div class="col-auto">
-        <button id="cmdToggleH11" type="button" class="btn btn-light dropdown-toggle">
-            <img src="/Images/textmemo.png" />
-            @_f.tra("Nástěnka")
-            <span style="margin-left:10px;" class="badge badge-primary">@Model.lisH11.Count()</span>
-        </button>
+
     </div>
-
-    <div class="col-auto">
+    <div class="nonmobile nontablet">
+        <a class="btn btn-light" href="/Dashboard/School" title="@_f.tra("Občerstvit")"><img src="~/images/refresh.png" /></a>
+    </div>
+    <div class="col-auto pl-0">
         <mydropdown asp-for="@Model.a03ID" datasource="@Model.lisA03" textfield="NamePlusRedizo" valuefield="pid" event_after_changevalue="change_a03id"></mydropdown>
     </div>
+    <div class="col-auto">
+        @Model.RecJ04.j04Name
+    </div>
 
 </div>
 
-<div class="form-row my-2">
 
-    <div class="col-auto">
-        <label>@_f.tra("Role v instituci"):</label>
-        <strong>@Model.RecJ04.j04Name</strong>
-    </div>
-    <div class="col-auto">
-        <label>@_f.tra("Pracovat v modulu"):</label>
-    </div>
-    <div class="col-auto">
-        <select asp-for="@Model.a10ID" class="form-control">
-            @foreach (var c in Model.lisA10)
-            {
-                <option value="@c.pid">@c.a10Name</option>
-            }
-        </select>
-    </div>
-    @if (Model.IsAllowCreateA01)
-    {
-        <div class="col-auto">
-            <a class="btn btn-primary" href="/a01Create/Index?a03id=@Model.a03ID&a10id=@Model.a10ID">@_f.tra("Nový záznam")</a>
-        </div>
-    }
-</div>
 
-<div id="divToggleH11" style="display:none;overflow:auto;max-height:50%;">
-    <strong>@_f.tra("Články na nástěnce"):</strong>
-    <table class="table table-sm table-hover" style="min-width:800px;">
-        @foreach (var c in Model.lisH11)
+<div class="tabs_container">
+    <ul id="navtabs" class="nav nav-tabs">
+        @foreach (var tab in Model.NavTabs)
         {
-            <tr>
-                <td>
-                    @BO.BAS.ObjectDateTime2String(c.DateInsert)
-                </td>
-                <td>
-                    @c.UserInsert
-                </td>
-                <td>
-                    <a href="javascript:h11_info(@c.pid)">@c.h11Name</a>
-
-                </td>
-
-            </tr>
+        <li class="nav-item onetab">
+            <a class="@tab.CssClass" id="tab@(tab.Entity)" href="@tab.Url" target="fra_subgrid" onclick="tabclick(this)">
+                @tab.Name
+                @if (tab.Badge != null)
+                    {
+                <span class="badge badge-primary">@tab.Badge</span>
+                    }
+            </a>
+        </li>
         }
-    </table>
-
+    </ul>
 </div>
 
-@if (Model.a10ID > 0)
-{
-    <vc:the-grid entity="a01Event" j72id="0" go2pid="0" master_entity="a03Institution" master_pid="@Model.a03ID" contextmenuflag="1" ondblclick="tg_dblclick" master_flag="" masterviewflag="3" addfilterid="school" fixedcolumns="@Model.GridColumns"></vc:the-grid>
-}
-else
-{
-    <button id="cmdNewAccount" class="btn btn-primary" type="button">@_f.tra("Založit nový účet")</button>
-
-    <table class="table table-sm table-hover" style="max-width:700px;">
-        @foreach (var c in Model.lisA39)
-        {
-            <tr>
-                <td>
-                    @c.Person
-                </td>
-                <td>
-                    @c.RoleName
-                </td>
-                <td>
-                    <button type="button" onclick="a39_edit(@c.pid)" class="btn btn-sm btn-light">@_f.tra("Upravit")</button>
-                </td>
-            </tr>
-        }
-    </table>
-    @if (_f.App.Implementation == "Default")
-    {
-        <div class="card">
-            <div class="card-header">
-                Poučení o ochraně osobních údajů
-            </div>
-            <div class="card-body">
-                Česká školní inspekce zřizuje přístup do systému řediteli školy. Oprávnění dalším osobám v jednotlivých modulech InspIS přiděluje ředitel školy zřízením příslušné role.
-                <br />
-                Tím je umožněn dalším uživatelům přístup k informacím v systému, a to včetně osobních údajů.
-                <br />
-                V této souvislosti Vás upozorňujeme na Vaši povinnost stanovenou v § 13 odst. 4 písm. b) zákona č. 101/2000 Sb., o ochraně osobních údajů a o změně některých zákonů, ve znění pozdějších předpisů, podle které je správce povinen zajistit, aby fyzické osoby oprávněné k používání systémů pro automatizovaná zpracování osobních údajů měly přístup pouze k osobním údajům odpovídajícím oprávnění těchto osob, a to na základě zvláštních uživatelských oprávnění zřízených výlučně pro tyto osoby.
-                <br />
-                Současně poukazujeme na skutečnost, že v systému jsou pořizovány elektronické záznamy, které umožní určit a ověřit, kdy a kým byly údaje (např. záznamy o úrazu) vyplněny či aktualizovány.
-                Je tedy plně ve Vaší kompetenci, které zaměstnance pověříte vyplňováním údajů v systému, a jaká organizační opatření přijmete za účelem zamezení neoprávněnému přístupu k osobním údajům.
-                <hr />
-                Osobní údaje jsou na úrovni systému InspIS DATA spravovány zejména v modulu školních úrazů, kde jsou přístupné těmto rolím školních uživatelů: pedagogický pracovník, ředitel školy, školní administrátor, zadavatel úrazů, zástupce ředitele školy, vždy včetně variant s oprávněním k ŠVP.
-                <br />
-                Oprávnění takové role přidělovat pak mají uživatelé v rolích ředitel školy, školní administrátor, zástupce ředitele školy (opět včetně variant s oprávněním k ŠVP)
-            </div>
-        </div>
-    }
-
-}
-
-
+<div id="divTabContent">
+    <iframe id="fra_subgrid" name="fra_subgrid" src="@Model.DefaultNavTabUrl" frameborder="0" scrolling="yes" style="width:100%;" onload="$('#divTabContent').css('background','none');"></iframe>
+</div>
 
 
 <script type="text/javascript">
+    $(document.body).css("overflow", "hidden");
+
     $(document).ready(function () {
 
-        $("#cmdNewAccount").click(function () {
-            _window_open("/a39/CreateSchoolAccount?a03id=@Model.a03ID");
 
-        });
+        var offset = $("#divTabContent").offset();
+        var h_vertical = _device.innerHeight - offset.top;
+        h_vertical = parseInt(h_vertical);
 
-        $("#cmdToggleH11").click(function () {
-            $("#divToggleH11").slideToggle();
-        });
+        if (_device.type === "Phone") {
+            h_vertical = 400;
+        }
 
+        $("#divTabContent").css("height", h_vertical + "px");
 
-        $("#a10ID").change(function () {
-
-            $.post("/Common/SetUserParam", { key: "DashboardSchool-a10id", value: $(this).val() }, function (data) {
-                reload();
-
-            });
-
-
-        });
+        _mainmenu_highlight_current("cmdHome");
 
 
 
     });
 
-    function change_a03id(cbx) {
-
+    function change_a03id(cbx) {       
         $.post("/Common/SetUserParam", { key: "DashboardSchool-a03id", value: cbx.value }, function (data) {
 
             reload();
@@ -160,23 +84,21 @@ else
         });
     }
 
+    function tabclick(tab) {    //uložit aktuální záložku do profilu uživatele
+        
+        $("#navtabs .nav-link").removeClass("active");
+        $(tab).addClass("active");
+        $.post("/Common/SetUserParam", { key: "dashboard-tab-school", value: tab.id.replace("tab", "") }, function (data) {
+
+
+        });
+    }
 
     function reload() {
-
-        location.replace("/Dashboard/School?a03id=" + $("#a03ID").val() + "&a10id=" + $("#a10ID").val());
-    }
-
-    function h11_info(h11id) {
-        _window_open("/h11/Info?pid=" + h11id);
-    }
-    function a39_edit(a39id) {
-        _window_open("/a39/SchoolAccount?a39id=" + a39id);
+        _showloading();
+        location.replace("/Dashboard/School?a03id=" + $("#a03ID").val());
     }
 
 
-    /*automaticky volaná událost z thegrid controlu*/
-    function thegrid_handle_event(event_name, pid) {
-
-    }
 
 </script>

@@ -128,24 +128,10 @@ namespace UI.Controllers
                     return Redirect(Factory.CurrentUser.getHomePageUrl());  //pryč na jinou stránku
                 }
             }
-            
 
+            return RedirectToAction("Widgets", "Dashboard");
            
-            var v = new HomeViewModel();
-            var cW = new UI.WidgetSupport(Factory,"index");
-            cW.PrepareWidgets(v);
-            if (v.recX56.x56Boxes != null)
-            {
-                cW.InhaleWidgetsDataContent(v);
-            }
-            else
-            {
-                var pandulak = new ThePandulak(Factory.App.AppRootFolder + "\\wwwroot\\images\\pandulak");  //když nejsou boxy, tak aspoň 2xpanďulák
-                v.Pandulak1 = pandulak.getPandulakImage(1);
-                v.Pandulak2 = pandulak.getPandulakImage(2);
-            }
             
-            return View(v);
 
         }
 
@@ -177,6 +163,11 @@ namespace UI.Controllers
             v.EmailAddres = v.RecJ02.j02Email;
             v.Mobile = v.RecJ02.j02Mobile;
             v.Phone = v.RecJ02.j02Phone;
+            if (v.RecJ02.a05ID > 0)
+            {
+                v.a05Name = Factory.a05RegionBL.Load(v.RecJ02.a05ID).a05Name;
+            }
+            
 
             return View(v);
         }
@@ -262,24 +253,7 @@ namespace UI.Controllers
 
 
 
-        public BO.Result SaveWidgetState(string s,string skin)
-        {
-            return new WidgetSupport(Factory,skin).SaveWidgetState(s);
-        }
-        public BO.Result RemoveWidget(int x55id,string skin)
-        {
-            return new WidgetSupport(Factory,skin).RemoveWidget(x55id);
-        }
-        public BO.Result InsertWidget(int x55id,string skin)
-        {
-            return new WidgetSupport(Factory,skin).InsertWidget(x55id);
-        }
-        public BO.Result SavePocetSloupcu(int x,string skin)
-        {
-            return new WidgetSupport(Factory,skin).SavePocetSloupcu(x);           
-        }
-
-
+        
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

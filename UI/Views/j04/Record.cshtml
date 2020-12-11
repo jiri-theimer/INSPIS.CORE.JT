@@ -18,6 +18,9 @@
         <li class="nav-item onetab">
             <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2">@_f.tra("Oprávnění")</a>
         </li>
+        <li class="nav-item onetab">
+            <a id="link_tab6" class="nav-link" data-toggle="tab" href="#tab6">@_f.tra("Widgety")</a>
+        </li>
         @if (_f.App.Implementation == "Default")
         {
             <li class="nav-item onetab">
@@ -167,6 +170,27 @@
 
             <mycheckboxlist asp-for="@Model.SelectedJ05IDs_EPIS1" textfield="j05Name" valuefield="j05ID" datasource="@Model.lisJ05_EPIS1"></mycheckboxlist>
 
+
+        </div>
+        <div class="tab-pane" id="tab6">
+            <!-- Tab6 -->
+            <p></p>
+            <div class="form-row">
+
+                <label class="col-sm-2 col-md-3 col-form-label">@_f.tra("Výchozí paleta widgetů pro inspektora"):</label>
+                <div class="col-sm-10 col-md-9">
+                    <input class="form-control" asp-for="Rec.j04DefaultWidgets_Inspector" />
+
+                </div>
+            </div>
+            <div class="form-row my-2">
+
+                <label class="col-sm-2 col-md-3 col-form-label">@_f.tra("Výchozí paleta widgetů pro školu"):</label>
+                <div class="col-sm-10 col-md-9">
+                    <input class="form-control" asp-for="Rec.j04DefaultWidgets_School" />
+
+                </div>
+            </div>
 
         </div>
         @if (_f.App.Implementation == "Default")

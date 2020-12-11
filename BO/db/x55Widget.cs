@@ -3,19 +3,19 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BO
 {
-    public enum x55TypeFlagEnum
+    
+    public enum x55DataTablesBtns
     {
-        DynamicHtml = 1,
-        StaticHtml = 2,
-        ExternalPage = 3,
-        BuildIn = 4
+        None=0,
+        Export=1,
+        ExportPrint=2,
+        ExportPrintPdf=3
     }
     public class x55Widget : BaseBO
     {
         [Key]
         public int x55ID { get; set; }
-        public x55TypeFlagEnum x55TypeFlag { get; set; }
-        public bool x55IsSystem { get; set; }
+       
         public string x55Name { get; set; }
         public string x55Code { get; set; }
         public int x55Ordinal { get; set; }
@@ -28,7 +28,12 @@ namespace BO
         public string x55BoxBackColor { get; set; }
         public string x55HeaderBackColor { get; set; }
         public string x55HeaderForeColor { get; set; }
-        public int x55BoxMaxHeight { get; set; }
+        public int x55BoxMaxHeight { get; set; }        
+        public int x55DataTablesLimit { get; set; }
+        public x55DataTablesBtns x55DataTablesButtons { get; set; }
+        public string x55Help { get; set; }
+        public bool IsUseDatatables { get; set; }   //není db pole - naplní ho incializátor widgetů na stránce
+        public string x55Skin { get; set; }
 
         public string CssHeaderDiv { get
             {
@@ -66,7 +71,7 @@ namespace BO
             {
                 if (this.x55Image == null)
                 {
-                    return "/images/cursor_mouse_drag.png";
+                    return "/images/widget.png";
                 }
                 else
                 {

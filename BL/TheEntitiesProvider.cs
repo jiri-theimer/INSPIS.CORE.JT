@@ -104,7 +104,7 @@ namespace BL
             ByPrefix("a45").IsWithoutValidity = true;
 
             AE("b01WorkflowTemplate", "Workflow šablony", "Workflow šablona", "b01WorkflowTemplate a", "a.b01Name");
-            AE("b02WorkflowStatus", "Workflow stavy", "Workflow stav", "b02WorkflowStatus a", "a.b02Order,a.b02Name","a.b02Order,a.b02Name");
+            AE("b02WorkflowStatus", "Workflow stavy", "Workflow stav", "b02WorkflowStatus a", "a.b01ID,a.b02Order,a.b02Name", "a.b01ID,a.b02Order,a.b02Name");
             AE("b05Workflow_History", "Workflow historie", "Workflow historie", "b05Workflow_History a", "a.b05ID DESC");
             ByPrefix("b05").IsWithoutValidity = true;
 
@@ -175,7 +175,7 @@ namespace BL
 
             AE_TINY("b65WorkflowMessage", "Notifikační zprávy", "Notifikační zpráva");
             AE_TINY("x51HelpCore", "Uživatelská nápověda", "Uživatelská nápověda");
-            AE_TINY("x55Widget", "Dashboard boxy", "Dashboard box");
+            AE_TINY("x55Widget", "Widgety", "Widget");
             AE_TINY("x91Translate", "Aplikační překlad", "Aplikační překlad");
             ByPrefix("x91").IsWithoutValidity = true;
 
@@ -247,6 +247,7 @@ namespace BL
                     lis.Add(getREL("a05Region", "a01_a05", "Kraj", "LEFT OUTER JOIN a05Region a01_a05 ON a01_a03.a05ID=a01_a05.a05ID", "a01_a03"));
                     lis.Add(getREL("a09FounderType", "a01_a09", "Typ zřizovatele", "LEFT OUTER JOIN a09FounderType a01_a09 ON a01_a03.a09ID=a01_a09.a09ID", "a01_a03"));
                     lis.Add(getREL("a42Qes", "a01_a42", "INEZ", "LEFT OUTER JOIN a42Qes a01_a42 ON a.a42ID=a01_a42.a42ID"));
+                    lis.Add(getREL("b01WorkflowTemplate", "a10_b01", "Workflow šablona", "LEFT OUTER JOIN b01WorkflowTemplate a10_b01 ON a01_a10.b01ID=a10_b01.b01ID", "a01_a10"));
                     lis.Add(getREL("a01Event", "a01_parent", "Nadřízená akce", "LEFT OUTER JOIN a01Event a01_parent ON a.a01ParentID=a01_parent.a01ID"));
                     lis.Add(getREL("o54TagBindingInline", "a01_o54", "Kategorie", "LEFT OUTER JOIN (SELECT * FROM o54TagBindingInline WHERE o54RecordEntity='a01') a01_o54 ON a.a01ID=a01_o54.o54RecordPid"));
                     if (_app.Implementation == "Default")

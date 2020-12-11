@@ -89,7 +89,7 @@
             <div class="navbar-nav">
                 @if (_f.CurrentUser.j03HomePageUrl == null)
                 {
-                    <a id="cmdHome" class="nav-link text-white" href="/Home/Index" tabindex="-1">@_f.App.AppName</a>
+                    <a id="cmdHome" class="nav-link text-white" href="/Dashboard/Widgets" tabindex="-1">@_f.App.AppName</a>
                 }
                 else
                 {
@@ -284,12 +284,12 @@
             });
 
                 $("textarea").each(function () {
-                this.style.height = "auto";
-                this.style.height = (this.scrollHeight) + "px";
-
-                    $(this).on("input", function () {
                     this.style.height = "auto";
                     this.style.height = (this.scrollHeight) + "px";
+
+                    $(this).on("input", function () {
+                        this.style.height = "auto";
+                        this.style.height = (this.scrollHeight) + "px";
                 });
             });
         }

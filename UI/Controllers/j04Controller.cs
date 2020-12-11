@@ -85,6 +85,8 @@ namespace UI.Controllers
                 c.j04IsAllowInSchoolAdmin = v.Rec.j04IsAllowInSchoolAdmin;
                 c.j04PortalFaceFlag = v.Rec.j04PortalFaceFlag;
                 c.j04ViewUrl_Page = v.Rec.j04ViewUrl_Page;
+                c.j04DefaultWidgets_Inspector = v.Rec.j04DefaultWidgets_Inspector;
+                c.j04DefaultWidgets_School = v.Rec.j04DefaultWidgets_School;
 
                 c.ValidUntil = v.Toolbar.GetValidUntil(c);
                 c.ValidFrom = v.Toolbar.GetValidFrom(c);

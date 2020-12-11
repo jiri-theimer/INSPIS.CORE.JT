@@ -1045,6 +1045,10 @@ a.selected:hover {
     color: black;
 }
 
+.filtered {
+    background-color: red;
+    color: white;
+}
 
 .valhover_tooltip {
     visibility: hidden;
@@ -1101,4 +1105,29 @@ a.reczoom {
     min-width:200px;
     text-align:center;
     
+}
+
+#site_loading1{
+    position:absolute;
+    font-weight:bold;
+    z-index:9999;
+    background-color:cornflowerblue;
+    border-radius:4px;
+    padding:4px;
+    top:5px;
+    left:5px;
+    letter-spacing:4px;    
+    width:190px;
+}
+#site_loading2 {
+    position: absolute;
+    font-weight:bold;
+    z-index: 9999;
+    background-color: #E5E5E5;
+    border-radius: 4px;
+    padding: 4px;
+    margin-left:700px;
+   
+
+
 }

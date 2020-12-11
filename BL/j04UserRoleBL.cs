@@ -74,6 +74,8 @@ namespace BL
             p.AddInt("j04ElearningDuration", rec.j04ElearningDuration);
             p.AddBool("j04IsElearningNeeded", rec.j04IsElearningNeeded);
             p.AddString("j04ViewUrl_Page", rec.j04ViewUrl_Page);
+            p.AddString("j04DefaultWidgets_Inspector", rec.j04DefaultWidgets_Inspector);
+            p.AddString("j04DefaultWidgets_School", rec.j04DefaultWidgets_School);
 
             int intPID= _db.SaveRecord("j04UserRole", p.getDynamicDapperPars(), rec);
             

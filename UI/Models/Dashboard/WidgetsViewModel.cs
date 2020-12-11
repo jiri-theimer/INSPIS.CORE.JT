@@ -8,6 +8,8 @@ namespace UI.Models.Dashboard
     public class WidgetsViewModel: BaseViewModel
     {
         public BO.j02Person Rec { get; set; }
+        public string Skin { get; set; }
+        public bool IsSubform { get; set; }     //true: jedná se o podformulář
         public string BoxColCss { get; set; } = "col-lg-6";
 
         public WidgetsEnvironment DockStructure { get; set; }
@@ -18,6 +20,11 @@ namespace UI.Models.Dashboard
         public List<BO.x55Widget> lisUserWidgets { get; set; }
         public int ColumnsPerPage { get; set; }
 
-        
+        public string DataTables_Localisation { get; set; }
+
+        public bool IsPdfButtons { get; set; }
+        public bool IsExportButtons { get; set; }
+        public bool IsPrintButton { get; set; }
+
     }
 }

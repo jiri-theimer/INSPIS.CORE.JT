@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using UI.Models;
@@ -119,7 +120,9 @@ namespace UI.Controllers
                 c.b02TimeOut_Total = v.Rec.b02TimeOut_Total;
                 c.b02TimeOut_SLA = v.Rec.b02TimeOut_SLA;
                 c.b02Message4UIFT = v.Rec.b02Message4UIFT;
-               
+                c.b02AutoUpdateScopeFlag = v.Rec.b02AutoUpdateScopeFlag;
+
+
                 c.ValidUntil = v.Toolbar.GetValidUntil(c);
                 c.ValidFrom = v.Toolbar.GetValidFrom(c);
 
@@ -154,8 +157,10 @@ namespace UI.Controllers
                 v.lisB10 = new List<BO.b10WorkflowCommandCatalog_Binding>();
             }
             foreach(var c in v.lisB10.Where(p=>p.b09ID>0))
-            {
-                c.b09ParametersCount = Factory.FBL.LoadB09(c.b09ID).b09ParametersCount;
+            {                
+                var cc = Factory.FBL.LoadB09(c.b09ID);
+                c.b09ParametersCount = cc.b09ParametersCount;
+                c.b09Ident = cc.b09Ident;
             }
         }
     }

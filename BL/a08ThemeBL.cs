@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace BL
@@ -37,6 +38,7 @@ namespace BL
 
         public IEnumerable<BO.a08Theme> GetList(BO.myQuery mq)
         {
+            if (mq.explicit_orderby == null) mq.explicit_orderby = "a.a08Name";
             DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.a08Theme>(fq.FinalSql, fq.Parameters);
         }
@@ -97,19 +99,28 @@ namespace BL
                 }
                 if (lisA14 != null)
                 {
+                    List<int> o13ids_saved_in_a16 = _db.GetList<BO.GetInteger>("select o13ID as Value FROM a14AttachmentToTheme WHERE a08ID=@pid AND a14ID IN (select a14ID FROM a16EventThemeAttachment)", new { pid = intPID }).Select(p => p.Value).ToList();
                     if (rec.pid > 0)
                     {
-                        _db.RunSql("DELETE FROM a14AttachmentToTheme WHERE a08ID=@pid", new { pid = intPID });
+                        _db.RunSql("DELETE FROM a14AttachmentToTheme WHERE a08ID=@pid AND a14ID NOT IN (select a14ID FROM a16EventThemeAttachment)", new { pid = intPID });
                     }
+
                     foreach (var c in lisA14)
                     {
                         p = new DL.Params4Dapper();
-                        p.AddInt("pid", c.pid, true);
                         p.AddInt("a08ID", intPID, true);
                         p.AddInt("o13ID", c.o13ID, true);
                         p.AddBool("a14IsRequired", c.a14IsRequired);
                         p.AddInt("a14Ordinal", c.a14Ordinal);
+
+                        if (o13ids_saved_in_a16.Contains(c.o13ID))
+                        {
+                            //update, nikoliv insert
+                            c.pid = _db.GetIntegerFromSql("select a14ID FROM a14AttachmentToTheme WHERE a08ID=" + intPID.ToString() + " AND o13ID=" + c.o13ID.ToString());                                                 
+                        }
+                        p.AddInt("pid", c.pid, true);
                         _db.SaveRecord("a14AttachmentToTheme", p.getDynamicDapperPars(), c, false, false);
+
                     }
 
 

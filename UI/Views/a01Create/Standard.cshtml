@@ -87,8 +87,9 @@
                 <div class="col-sm-2 col-md-2">
                     <mydate asp-for="@Model.Rec.a01DateFrom"></mydate>
                 </div>
-                <div class="col-1">
-                    @_f.tra("Konec"):
+                <div class="col-sm-1 col-md-1">
+                    <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Konec"):</label>
+                    
                 </div>
                 <div class="col-sm-2 col-md-2">
                     <mydate asp-for="@Model.Rec.a01DateUntil"></mydate>
@@ -166,7 +167,7 @@
                     <div class="col-6">
                         @if (Model.Rec.a08ID == 0)
                         {
-                            <i>Vyberte téma akce...</i>
+                            <i>@_f.tra("Vyberte téma akce")...</i>
                         }
                         @if (Model.lisA11.Where(p => p.IsTempDeleted == false).Count() > 0)
                         {
@@ -206,16 +207,16 @@
 
 
             </div>
-            <div class="tab-pane" id="tab2" style="max-width:1000px;padding-left:20px;">
+            <div class="tab-pane" id="tab2" style="max-width:1070px;padding-left:20px;">
                 <p></p>
                 <div class="my-2">
                     @if (Model.MasterPrefixComboJ02 == "j02IsInvitedPerson")
                     {
-                        <mycombo entity="j02Person" asp-for="@Model.SelectedJ02ID" selectedtext="@Model.SelectedPerson" filter-flag="1" placeholder="Přidat přizvanou osobu..." event_after_changevalue="handle_j02id_append" param1="j02IsInvitedPerson"></mycombo>
+                        <mycombo entity="j02Person" asp-for="@Model.SelectedJ02ID" selectedtext="@Model.SelectedPerson" filter-flag="1" placeholder="@_f.tra("Přidat přizvanou osobu")..." event_after_changevalue="handle_j02id_append" param1="j02IsInvitedPerson"></mycombo>
                     }
                     else
                     {
-                        <mycombo entity="j02Person" asp-for="@Model.SelectedJ02ID" selectedtext="@Model.SelectedPerson" filter-flag="1" placeholder="Přidat jméno..." event_after_changevalue="handle_j02id_append" masterprefix="@Model.MasterPrefixComboJ02" masterpid="@Model.MasterPidComboJ02"></mycombo>
+                        <mycombo entity="j02Person" asp-for="@Model.SelectedJ02ID" selectedtext="@Model.SelectedPerson" filter-flag="1" placeholder="@_f.tra("Přidat jméno")..." event_after_changevalue="handle_j02id_append" masterprefix="@Model.MasterPrefixComboJ02" masterpid="@Model.MasterPidComboJ02"></mycombo>
                     }
 
 

@@ -54,6 +54,7 @@
             <label class="col-form-label" for="Rec_j03IsSystemAccount">@_f.tra("Jedná se o systémový účet")</label>
 
         </div>
+        
         <div class="col-sm-3 col-md-3">
             @if (Model.IsDefinePassword == false)
             {
@@ -183,9 +184,20 @@
 
         </div>
         <button id="cmdCiselniky" class="btn btn-light" type="button">@_f.tra("Oprávnění správce číselníků")<img src="~/images/caret_down.gif" /></button>
+        <button id="cmdOther" class="btn btn-light" type="button">@_f.tra("Ostatní")<img src="~/images/caret_down.gif" /></button>
+
+
     </div>
 
-
+    <div id="divOther" style="display:none;padding:20px;">
+       
+        <div class="form-row">
+            <div class="col">
+                <input type="checkbox" asp-for="Rec.j03IsDebugLog" />
+                <label class="col-form-label" for="Rec_j03IsDebugLog">@_f.tra("DEBUG loggging (for IT)")</label>
+            </div>
+        </div>
+    </div>
 
     <div id="divCiselniky" style="display:none;">
         <i>
@@ -231,6 +243,9 @@
     $(document).ready(function () {
         $("#cmdCiselniky").click(function () {
             $("#divCiselniky").toggle();
+        });
+        $("#cmdOther").click(function () {
+            $("#divOther").toggle();
         });
 
         $("#user_profile_create").on("change", function () {

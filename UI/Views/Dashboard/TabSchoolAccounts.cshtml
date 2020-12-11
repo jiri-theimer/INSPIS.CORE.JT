@@ -1,0 +1,64 @@
+﻿@model UI.Models.Tab.a39TabSchoolAccount
+@inject BL.Factory _f
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutSubform.cshtml";
+}
+@addTagHelper *, UI
+
+
+    <div id="subform_div_commands">
+        <button id="cmdNewAccount" class="btn btn-primary" type="button">@_f.tra("Založit nový účet")</button>
+
+        
+
+    </div>
+
+    <table class="table table-sm table-hover" style="max-width:700px;">
+        @foreach (var c in Model.lisA39)
+        {
+            <tr>
+                <td>
+                    @c.Person
+                </td>
+                <td>
+                    @c.RoleName
+                </td>
+                <td>
+                    @c.a39Description
+                </td>
+                <td>
+                    <button type="button" onclick="a39_edit(@c.pid)" class="btn btn-sm btn-light">@_f.tra("Upravit")</button>
+                </td>
+            </tr>
+        }
+    </table>
+
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#cmdNewAccount").click(function () {
+            _window_open("/a39/CreateSchoolAccount?a03id=@Model.RecA03.pid");
+
+        });
+
+       
+
+
+
+    });
+
+    
+    
+
+    
+    function a39_edit(a39id) {
+        _window_open("/a39/SchoolAccount?a39id=" + a39id);
+    }
+
+
+    
+
+    </script>
