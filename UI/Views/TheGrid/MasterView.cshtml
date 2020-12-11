@@ -48,8 +48,8 @@
 <div id="splitter_container" class="splitter-container-top2bottom">
 
     <div id="splitter_panel1" class="splitter-panel-top">
-
-        <vc:the-grid entity="@Model.entity" j72id="@Model.j72id" go2pid="@Model.go2pid" master_entity="" master_pid="0" contextmenuflag="@Model.contextmenuflag" ondblclick="tg_dblclick" master_flag="@Model.master_flag" masterviewflag="2" addfilterid="@Model.addfilterid" fixedcolumns=""></vc:the-grid>
+        
+        <vc:the-grid entity="@Model.entity" j72id="@Model.j72id" go2pid="@Model.go2pid" master_entity="" oncmclick="tg_cm(event)" ondblclick="tg_dblclick" fixedcolumns="" extendpagerhtml="@Model.ExtendPagerHtml" controllername="TheGrid" myquery="@Model.myQueryGrid"></vc:the-grid>
 
     </div>
     <div class="tabs_container" style="background-color:#F0F8FF;">
@@ -222,6 +222,14 @@
             });
         }
 
+
+        function switch_to_flat(prefix) {    //vypnout spodní panel
+            $.post("/Common/SetUserParam", { key: "grid-" + prefix + "-show11", value: "0" }, function (data) {
+                location.replace("/TheGrid/FlatView?prefix=" + prefix);
+
+            });
+
+        }
     </script>
 
 }

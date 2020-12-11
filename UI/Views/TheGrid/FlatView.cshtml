@@ -164,6 +164,14 @@
             _showloading();
             location.replace("/TheGrid/FlatView?prefix=@Model.prefix");
         }
+
+        function switch_to_master(prefix) {    //zapnout spodní panel
+            $.post("/Common/SetUserParam", { key: "grid-" + prefix + "-show11", value: "1" }, function (data) {
+                location.replace("/TheGrid/MasterView?prefix=" + prefix);
+
+            });
+
+        }
     </script>
 
 }

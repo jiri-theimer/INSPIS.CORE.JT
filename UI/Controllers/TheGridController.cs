@@ -22,33 +22,45 @@ namespace UI.Controllers
             _pp = pp;
         }
 
-        public TheGridOutput HandleTheGridFilter(TheGridUIContext tgi, List<BO.TheGridColumnFilter> filter) //TheGrid povinná metoda
+        public TheGridOutput HandleTheGridFilter(TheGridUIContext tgi, List<BO.TheGridColumnFilter> filter) //TheGrid povinná metoda: sloupcový filtr
         {
-            var v = LoadFsmViewModel(tgi.entity.Substring(0, 3), 0, tgi.pathname.Split("/")[1].ToLower(), tgi.master_entity);
-            var c = new UI.TheGridSupport(Factory, _colsProvider);
+            var v = LoadFsmViewModel(tgi.prefix, 0, tgi.pathname.Split("/").Last().ToLower(), tgi.master_entity);
+            var c = new UI.TheGridSupport(Factory, _colsProvider) { extendpagerhtml = v.ExtendPagerHtml };
            
             return c.Event_HandleTheGridFilter(tgi, filter, v.myQueryGrid);
         }
-        public TheGridOutput HandleTheGridOper(TheGridUIContext tgi)    //TheGrid povinná metoda
+        public TheGridOutput HandleTheGridOper(TheGridUIContext tgi)    //TheGrid povinná metoda: změna třídění, pageindex, změna stránky
         {
-            var v = LoadFsmViewModel(tgi.entity.Substring(0, 3), 0, tgi.pathname.Split("/")[1].ToLower(), tgi.master_entity);
-            var c = new UI.TheGridSupport(Factory, _colsProvider);
-            c.extendpagerhtml = tgi.pathname + "<button type='button' class='btn btn-secondary btn-sm mx-4 nonmobile' onclick='tg_switchflag(\"a01\",1)'>Zapnout spodní panel</button>";
-
+            var v = LoadFsmViewModel(tgi.prefix, 0, tgi.pathname.Split("/").Last().ToLower(), tgi.master_entity);
+            var c = new UI.TheGridSupport(Factory, _colsProvider) { extendpagerhtml = v.ExtendPagerHtml };
+            
             return c.Event_HandleTheGridOper(tgi, v.myQueryGrid);
 
         }
-        public string HandleTheGridMenu(int j72id)  //TheGrid povinná metoda
+        public string HandleTheGridMenu(TheGridUIContext tgi)  //TheGrid povinná metoda: zobrazení grid menu
         {
 
             var c = new UI.TheGridSupport(Factory, _colsProvider);
-            return c.Event_HandleTheGridMenu(j72id);
+            return c.Event_HandleTheGridMenu(tgi.j72id);
         }
-        public FileResult HandleTheGridExport(string format, int j72id, string pids)  //TheGrid povinná metoda
+        public FileResult HandleTheGridExport(int j72id,string pathname,string format, string pids)  //TheGrid povinná metoda pro export dat
         {
+            var gridState = Factory.j72TheGridTemplateBL.LoadState(j72id, Factory.CurrentUser.pid);
+            var v = LoadFsmViewModel(gridState.j72Entity.Substring(0,3), 0, pathname.Split("/")[1].ToLower(), gridState.j72MasterEntity);
+            var c = new UI.TheGridSupport(Factory, _colsProvider);
             
-
+            var fullpath = c.Event_TheGridExport(format, j72id, pids, v.myQueryGrid);
+            if (format == "csv")
+            {
+                return File(System.IO.File.ReadAllBytes(fullpath), "application/CSV", "export_" + v.prefix + ".csv");
+            }
+            if (format == "xlsx")
+            {
+                return File(System.IO.File.ReadAllBytes(fullpath), "application/vnd.ms-excel", "export_" + v.prefix + ".xlsx");
+            }
             return null;
+
+
         }
 
         public IActionResult FlatView(string prefix, int go2pid)    //pouze grid bez subform
@@ -57,8 +69,6 @@ namespace UI.Controllers
             
             v.j72id = Factory.CBL.LoadUserParamInt("flatview-j72id-" + prefix);
 
-
-            
             return View(v);
         }
 
@@ -258,11 +268,26 @@ namespace UI.Controllers
                 v.period.PeriodValue = per.pid;
                 v.period.d1 = per.d1;
                 v.period.d2 = per.d2;
+                v.myQueryGrid.global_d1 = v.period.d1;
+                v.myQueryGrid.global_d2 = v.period.d2;
+            }
+
+            if (v.prefix=="a01" || v.prefix=="a03" || v.prefix == "j02")
+            {
+                if (pagename == "flatview")
+                {
+                    v.ExtendPagerHtml= "<button type='button' class='btn btn-secondary btn-sm mx-4 nonmobile' onclick='switch_to_master(\"" + v.prefix+"\")'>Zapnout spodní panel</button>";
+                }
+                if (pagename == "masterview")
+                {
+                    v.ExtendPagerHtml = "<button type='button' class='btn btn-secondary btn-sm mx-4' onclick='switch_to_flat(\"" + v.prefix + "\")'>" + Factory.tra("Vypnout spodní panel") + "</button>";
+                }
             }
 
             return v;
 
         }
+        
         
 
     }

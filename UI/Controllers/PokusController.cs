@@ -56,6 +56,7 @@ namespace UI.Controllers
         public TheGridOutput HandleTheGridFilter(TheGridUIContext tgi, List<BO.TheGridColumnFilter> filter) //TheGrid povinná metoda
         {            
             var c = new UI.TheGridSupport(Factory, _colsProvider);
+          
             c.extendpagerhtml= "HandleTheGridFilter<button type='button' class='btn btn-secondary btn-sm mx-4 nonmobile' onclick='tg_switchflag(\"a01\",1)'>Zapnout spodní panel</button>";
           
             return c.Event_HandleTheGridFilter(tgi, filter, GetGridQuery());
@@ -63,6 +64,7 @@ namespace UI.Controllers
         public TheGridOutput HandleTheGridOper(TheGridUIContext tgi)    //TheGrid povinná metoda
         {            
             var c = new UI.TheGridSupport(Factory, _colsProvider);
+            
             c.extendpagerhtml = tgi.pathname+"<button type='button' class='btn btn-secondary btn-sm mx-4 nonmobile' onclick='tg_switchflag(\"a01\",1)'>Zapnout spodní panel</button>";
 
             return c.Event_HandleTheGridOper(tgi, GetGridQuery());

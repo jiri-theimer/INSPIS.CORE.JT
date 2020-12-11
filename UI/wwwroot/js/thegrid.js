@@ -8,10 +8,8 @@ var _tg_filterinput_timeout;
 var _tg_filter_is_active;
 var _tg_go2pid;
 var _tg_master_entity;
-var _tg_master_pid;
-var _tg_master_flag;
-var _tg_contextmenuflag;
-var _tg_dblclick;
+var _tg_oncmclick;
+var _tg_ondblclick;
 var _tg_tablerows;
 var _tg_drag_is_active = false;
 var _tg_drag_tbodyrows = [];
@@ -19,9 +17,8 @@ var _tg_rowindex = 0;
 var _tg_mousedown_active = false;
 var _tg_current_pid;
 var _tg_is_enable_clipboard = true;
-var _tg_addfilterid;
 var _tg_fixedcolumns;
-var _tg_viewflag;
+
 
 function tg_init(c) {
     _tg_entity = c.entity;
@@ -32,14 +29,11 @@ function tg_init(c) {
     _tg_url_export = c.exporturl;
     _tg_go2pid = c.go2pid;
     _tg_master_entity = c.master_entity;
-    _tg_master_pid = c.master_pid;    
-    _tg_master_flag = c.master_flag;
-    _tg_contextmenuflag = c.contextmenuflag;
-    _tg_ondblclick = c.ondblclick;    
-    _tg_addfilterid = c.addfilterid;
+    _tg_oncmclick = c.oncmclick;
+    _tg_ondblclick = c.ondblclick;
     _tg_fixedcolumns = c.fixedcolumns;
-    _tg_viewflag = c.viewflag;
-    
+
+
     $("#container_grid").scroll(function () {
         $("#container_vScroll").width($("#container_grid").width() + $("#container_grid").scrollLeft());
     });
@@ -55,23 +49,23 @@ function tg_init(c) {
     //$("#container_grid").css("visibility", "visible");
 
     var parentElement = document.getElementById("container_grid").parentNode;
-    if (parentElement.id !== "splitter_panel1") {               
+    if (parentElement.id !== "splitter_panel1") {
         tg_adjust_for_screen(); //bude voláno až po inicializaci splitteru v mateřské stránce gridu
     }
-    
+
     tg_adjust_parts_width();
 
     var basewidth = $("#tabgrid0").width();
     $("#tabgrid1").width(basewidth);
     $("#tabgrid2").width(basewidth);
-    
+
     tg_setup_selectable();  //inicializace selectable
-    
+
 
     if (_tg_go2pid !== null && _tg_go2pid !== 0) {  //automaticky vybrat záznam _tg_go2pid
         tg_go2pid(_tg_go2pid);
     }
-    
+
 
     $("#tabgrid1_thead .query_textbox").on("focus", function (e) {
         $(this).select();
@@ -97,14 +91,14 @@ function tg_init(c) {
                 $("#txtqry_" + field).css("color", "");
             }
 
-            
+
             tg_filter_send2server();
-            
+
 
 
         }, 500);
 
-        
+
     });
 
     $("#tabgrid1_thead button.query_button").on("click", function (e) {
@@ -132,32 +126,33 @@ function tg_init(c) {
     _tg_filter_is_active = tg_is_filter_active();
 }
 
-function tg_post_data() {
+function get_all_params() {
     var params = {
         entity: _tg_entity,
         j72id: _j72id,
         go2pid: _tg_go2pid,
         master_entity: _tg_master_entity,
-        master_pid: _tg_master_pid,
-        contextmenuflag: _tg_contextmenuflag,
+        oncmclick: _tg_oncmclick,
         ondblclick: _tg_ondblclick,
-        master_flag: _tg_master_flag,
-        addfilterid: _tg_addfilterid,
         fixedcolumns: _tg_fixedcolumns,
-        viewflag: _tg_viewflag,
         pathname: location.pathname
-    }    
-    
-    $.post(_tg_url_data, {tgi:params}, function (data) {        
-        
+    }
+    return params;
+}
+
+function tg_post_data() {
+
+
+    $.post(_tg_url_data, { tgi: get_all_params() }, function (data) {
+
         refresh_environment_after_post("first_data", data);
 
         if (_tg_go2pid !== null && _tg_go2pid !== 0) {
             tg_go2pid(_tg_go2pid);
         }
-        
 
-        
+
+
     });
 
 }
@@ -179,36 +174,39 @@ function tg_post_handler(strOper, strKey, strValue) {
     //_notify_message("odesílá se: oper: " + strOper + ", key: " + strKey + ", value: " + strValue);    
     var params = {
         j72id: _j72id,
-        entity:_tg_entity,
+        entity: _tg_entity,
         oper: strOper,
         key: strKey,
         value: strValue,
         master_entity: _tg_master_entity,
-        master_pid: _tg_master_pid,
-        master_flag: _tg_master_flag,
-        contextmenuflag: _tg_contextmenuflag,
+        oncmclick: _tg_oncmclick,
         ondblclick: _tg_ondblclick,
-        addfilterid: _tg_addfilterid,
         fixedcolumns: _tg_fixedcolumns,
-        viewflag: _tg_viewflag,
-        pathname:location.pathname
-    }    
-    $.post(_tg_url_handler, { tgi: params}, function (data) {
-       // _notify_message("vrátilo se: oper: " + strOper + ", key: " + strKey + ", value: " + strValue);
+        pathname: location.pathname
+    }
 
-        refresh_environment_after_post(strOper,data);
-    });
+
+    $("#tabgrid1_tbody").html("<b>Loading...</b>");
+    $.post(_tg_url_handler, { tgi: params }, function (data) {
+        // _notify_message("vrátilo se: oper: " + strOper + ", key: " + strKey + ", value: " + strValue);
+
+        refresh_environment_after_post(strOper, data);
+    })
+        .fail(function (error) {
+            $("#tabgrid1_tbody").html("<code>" + error.responseJSON + "</code>");
+            alert(error.responseJSON)
+        });
 
 }
 
 
-function refresh_environment_after_post(strOper,data) {    
+function refresh_environment_after_post(strOper, data) {
     $("#thegrid_message").text(data.message);
     $("#tabgrid1_tbody").html(data.body);
     $("#tabgrid1_tfoot").html(data.foot);
     $("#divPager").html(data.pager);
 
-    if (strOper === "sorter" || strOper ==="first_data") {
+    if (strOper === "sorter" || strOper === "first_data") {
         tg_refresh_sorter(data.sortfield, data.sortdir);
     }
 
@@ -221,7 +219,7 @@ function refresh_environment_after_post(strOper,data) {
     _tg_tablerows = $("#tabgrid1_tbody").find("tr");
     tg_setup_selectable();
 
-    
+
 }
 
 function tg_adjust_parts_width() {
@@ -230,7 +228,7 @@ function tg_adjust_parts_width() {
 }
 
 
-function tg_setup_selectable() {      
+function tg_setup_selectable() {
     _tg_tablerows = $("#tabgrid1_tbody").find("tr");
 
 
@@ -263,7 +261,7 @@ function tg_setup_selectable() {
 
 
         _tg_mousedown_active = true;
-        
+
         if (_tg_is_enable_clipboard === false) {   //pokud je true, pak uživatelé mohou v gridu označovat text
             e.preventDefault(); // this prevents text selection from happening
         }
@@ -357,7 +355,7 @@ function tg_setup_selectable() {
 
     });
 
-    
+
 }
 
 
@@ -366,17 +364,17 @@ function tg_setup_selectable() {
 
 function tg_setup_checkbox_handler() {
     $("#tabgrid1").on("change", "input:checkbox", function () {
-                
+
         var tr_row = this.parentNode.parentNode;
         if (this.checked === true) {
-            tr_row.classList.add("selrow");            
+            tr_row.classList.add("selrow");
         } else {
-            tr_row.classList.remove("selrow");            
+            tr_row.classList.remove("selrow");
         }
 
         tg_save_selected_pids(null);
 
-        
+
 
 
     });
@@ -384,20 +382,20 @@ function tg_setup_checkbox_handler() {
 
 function tg_go2pid(pid) {       //již musí být ze serveru odstránkováno!
     if (document.getElementById("r" + pid)) {
-        var row = document.getElementById("r" + pid);      
+        var row = document.getElementById("r" + pid);
         tg_select_one_row(row, pid);
-        
+
         row.scrollIntoView(true);
 
         //var rowpos = $(row).position();
         //$("#container_vScroll").scrollTop(rowpos.top);
     }
-    
+
 }
 
 function tg_select(records_count) {     //označí prvních X (records_count) záznamů
     tg_clear_selection();
-    var arr = [];    
+    var arr = [];
     var rows = $("#tabgrid1_tbody tr");
     if (records_count > rows.length) {
         records_count = rows.length;
@@ -406,11 +404,11 @@ function tg_select(records_count) {     //označí prvních X (records_count) z�
         $(rows[i]).addClass("selrow");
         var pid = rows[i].id.replace("r", "");
         arr.push(pid);
-        
+
         $("#chk" + pid).prop("checked", true);
     }
     tg_save_selected_pids(arr.join(","));
-    
+
 
 }
 
@@ -423,29 +421,17 @@ function tg_pagesize(ctl) {//změna velikosti stránky
 }
 
 
-function tg_switchflag(prefix, show_view_11) {    //zapnout/vypnout spodní panel
-    
-    $.post("/Common/SetUserParam", { key: "grid-" + prefix + "-show11", value: show_view_11 }, function (data) {
-        if (show_view_11 === 1) {
-            location.replace("/TheGrid/MasterView?prefix=" + prefix);
-        } else {
-            location.replace("/TheGrid/FlatView?prefix=" + prefix);
-        }
-        
 
-    });
-
-}
 
 
 
 function tg_is_filter_active() {
     var b = new Boolean;
     $("#cmdDestroyFilter").css("display", "none");
-    
+
     $("#tr_header_query").find("input:hidden").each(function () {
         if (this.id.indexOf("hidqry_") > -1 && this.value !== "") {
-            
+
             $("#cmdDestroyFilter").css("display", "block");
             b = true;
             return b;
@@ -491,20 +477,20 @@ function tg_filter_clear() {
 
         }
     });
-    
-    
-    
+
+
+
     tg_filter_send2server();
 
 }
 function normalize_coltype_name(coltypename) {
-    if (coltypename ==="num0" || coltypename === "num3" || coltypename === "num") coltypename = "number";
+    if (coltypename === "num0" || coltypename === "num3" || coltypename === "num") coltypename = "number";
     if (coltypename === "datetime") coltypename = "date";
     return (coltypename);
 }
 function tg_filter_ok() {
     $("#cmdDestroyShowOnlyPID").css("display", "none");
-   
+
     if ($("input[name='chlfilter']:checked").length === 0) {
         _notify_message("Musíte zaškrtnout jeden z filtrovacích operátorů.", "warning");
         return;
@@ -513,8 +499,8 @@ function tg_filter_ok() {
     var c2 = document.getElementById("qryval2");
     var field = $("#tg_div_filter_field").val();
     var coltypename = normalize_coltype_name($("#th_" + field).attr("columntypename"));
-    
-    
+
+
     var operator = $("input[name='chlfilter']:checked").val();
     var av = tg_filter_operator_as_alias(operator);
 
@@ -559,7 +545,7 @@ function tg_filter_ok() {
         if (operator === "5") av = "[*=] " + av;
         if (operator === "6") av = "[=] " + av;
         if (operator === "7") av = "[<>] " + av;
-        
+
         $("#txtqry_" + field).css("display", "block");
         if (operator === "3" || operator === "0") {
             $("#qryalias_" + field).css("visibility", "hidden");
@@ -575,9 +561,9 @@ function tg_filter_ok() {
             $("#txtqry_" + field).css("background-color", "");
             $("#txtqry_" + field).css("color", "");
         }
-        
+
     }
-    
+
     if (operator === "0") {
         $("#hidqry_" + field).val("");
     } else {
@@ -585,18 +571,18 @@ function tg_filter_ok() {
     }
 
     $("#qryalias_" + field).html(av);
-    
-    
+
+
     $("#hidoper_" + field).val(operator);
 
     _tg_filter_is_active = tg_is_filter_active();
     //if (filter_before !== _tg_filter_is_active && _tg_filter_is_active === true) {
-    
+
     //    //tg_raise_page_event("filter-change");   //odeslat událost do mateřské stránky
     //}
     if (_tg_filter_is_active === false && filter_before === true) {
         tg_filter_clear();
-        
+
         //tg_raise_page_event("filter-clear");   //odeslat událost do mateřské stránky
     }
 
@@ -612,15 +598,15 @@ function tg_get_qry_value(field, coltypename) {
         c1value: "",
         c2value: "",
         aliasvalue: ""
-    }    
-    
-    ret.operator = parseInt($("#hidoper_" + field).val());    
+    }
+
+    ret.operator = parseInt($("#hidoper_" + field).val());
     var s = $("#hidqry_" + field).val();
     ret.filtervalue = s;
     if (s === "") {
         return ret;
     }
-    
+
 
     if ((coltypename === "date" || coltypename === "number") && ret.filtervalue !== "") {
         arr = ret.filtervalue.split("|");
@@ -653,12 +639,12 @@ function tg_filter_radio_change(ctl) {
     $("#hidoper_" + $("#tg_div_filter_field").val()).val(ctl.value);
 
     if (ctl.value === "0" || ctl.value === "1" || ctl.value === "2" || ctl.value === "8" || ctl.value === "9" || ctl.value === "10" || ctl.value === "11") {
-        
-        
+
+
         tg_filter_hide_popup();
         tg_filter_ok();
     }
-    if (ctl.value ==="3" || ctl.value === "4" || ctl.value === "5" || ctl.value === "6" || ctl.value === "7") {
+    if (ctl.value === "3" || ctl.value === "4" || ctl.value === "5" || ctl.value === "6" || ctl.value === "7") {
         $("#tg_div_filter_inputs").css("visibility", "visible");
         document.getElementById("qryval1").focus();
         document.getElementById("qryval1").select();
@@ -671,7 +657,7 @@ function tg_filter_prepare_popup(field, coltypename) {
     var c1 = document.getElementById("qryval1");
     var c2 = document.getElementById("qryval2");
     var curqryvalue = tg_get_qry_value(field, coltypename);
-    
+
     $(c1).datepicker("destroy");
     $(c2).datepicker("destroy");
     c1.attributes["type"].value = "text"
@@ -686,13 +672,13 @@ function tg_filter_prepare_popup(field, coltypename) {
     $("#tg_div_filter_inputs").find("label").css("visibility", "visible");
 
     $("#tg_div_filter input:radio").prop("checked", false);
-    
-    if (curqryvalue.operator !== -1) {        
+
+    if (curqryvalue.operator !== -1) {
         $("#chkf" + curqryvalue.operator).prop("checked", true);
     }
 
     if (coltypename === "date") {
-        
+
         $("#tg_div_filter [cdate|='1']").css("display", "block");
         if (curqryvalue.operator === -1) {
             $("#chkf4").prop("checked", true)
@@ -700,7 +686,7 @@ function tg_filter_prepare_popup(field, coltypename) {
             c1.value = curqryvalue.c1value;
             c2.value = curqryvalue.c2value;
         }
-        
+
         $(c1).datepicker({
             format: "dd.mm.yyyy",
             todayBtn: "linked",
@@ -723,7 +709,7 @@ function tg_filter_prepare_popup(field, coltypename) {
         $("#tg_div_filter [cnumber|='1']").css("display", "block");
         c1.attributes["type"].value = "number";
         c2.attributes["type"].value = "number";
-       
+
         if (curqryvalue.operator === -1) {
             $("#chkf4").prop("checked", true)
         } else {
@@ -752,8 +738,8 @@ function tg_filter_prepare_popup(field, coltypename) {
     }
 
     //var operator = $("input[name='chlfilter']:checked").val();
-    
-    
+
+
     if (curqryvalue.operator === 0 || curqryvalue.operator === 1 || curqryvalue.operator === 2) {
         $("#tg_div_filter_inputs").css("visibility", "hidden");
     }
@@ -770,22 +756,22 @@ function tg_filter_hide_popup() {
 }
 
 
-function tg_filter_send2server() {      
+function tg_filter_send2server() {
     //odeslat filtrovací podmínku na server, na serveru musí odpovídat třídě BO.TheGridColumnFilter
     var rec;
-    var ret = [];    
+    var ret = [];
     $("#tr_header_query").find("input[type='hidden']").each(function () {
         if (this.id.indexOf("hidqry_") >= 0) {
             var fieldname = this.id.replace("hidqry_", "");
             var coltypename = normalize_coltype_name($("#th_" + fieldname).attr("columntypename"));
             var oper = $("#hidoper_" + fieldname).val();
             var val = $(this).val();
-            
-            if (coltypename === "string") {                
+
+            if (coltypename === "string") {
                 if (val !== "" && oper === "") oper = "3";
             }
 
-            
+
             if (val !== "" || parseInt(oper) > 0) {
                 rec = {
                     field: fieldname,
@@ -797,27 +783,13 @@ function tg_filter_send2server() {
                 ret.push(rec);
             }
         }
-        
-        
+
+
     });
 
-    var params = {
-        j72id: _j72id,
-        entity: _tg_entity,
-        master_entity: _tg_master_entity,
-        master_pid: _tg_master_pid,
-        master_flag: _tg_master_flag,
-        contextmenuflag: _tg_contextmenuflag,    
-        ondblclick: _tg_ondblclick,
-        addfilterid: _tg_addfilterid,
-        fixedcolumns: _tg_fixedcolumns,
-        viewflag: _tg_viewflag,
-        pathname: location.pathname
-    }    
+    $("#tabgrid1_tbody").html("<b>Loading...</b>");
+    $.post(_tg_url_filter, { tgi: get_all_params(), filter: ret }, function (data) {
 
-    
-    $.post(_tg_url_filter, {tgi:params, filter: ret}, function (data) {
-        
         refresh_environment_after_post("filter", data);
 
 
@@ -830,16 +802,20 @@ function tg_filter_send2server() {
 
         }
 
-    });
+    })
+        .fail(function (error) {
+            $("#tabgrid1_tbody").html("<code>"+error.responseJSON+"</code>");
+            alert(error.responseJSON)
+        });
 
 
-    
+
 }
 
 function tg_cm(e) {     //vyvolání kontextového menu k vybranému záznamu
     var link = e.target;
-    var pid = link.parentNode.parentNode.id.replace("r","");
-    
+    var pid = link.parentNode.parentNode.id.replace("r", "");
+
     _cm(e, _tg_entity, pid);
 }
 
@@ -847,20 +823,20 @@ function tg_cm(e) {     //vyvolání kontextového menu k vybranému záznamu
 function tg_adjust_for_screen(strParentElementID) {
     if (!document.getElementById("tabgrid0")) return;
 
-    
-            
+
+
     var w0 = 0;
-    if (typeof strParentElementID !=="undefined") {
+    if (typeof strParentElementID !== "undefined") {
         //výška gridu bude odvozená podle nadřízeného elementu strParentElementID
         var parentElement = document.getElementById(strParentElementID);
         var hh = $(parentElement).height() - $("#tabgrid0").height() - $("#tabgrid2").height() - $("#divPagerContainer").height() - 2;
-        
+
         if ($("#tabgrid2").height() <= 2) {
             hh = hh - 35;   //rezerva pro tfoot s TOTALS            
         } else {
             //hh = hh - $("#tabgrid1_tfoot").height();
         }
-        
+
 
         w0 = $(parentElement).width();
 
@@ -868,7 +844,7 @@ function tg_adjust_for_screen(strParentElementID) {
             //hh = hh - 20;   //je vidět horizontální scrollbara, ubereme výšku, aby byla vidět, 20: odhad výšky scrollbary            
         }
         //hh = hh + 5;
-        
+
         $("#container_vScroll").css("height", hh + "px");
 
 
@@ -878,19 +854,19 @@ function tg_adjust_for_screen(strParentElementID) {
         var div_horizontal = $("#container_grid");
         var offset = $(div_horizontal).offset();
         var h_vertical = _device.innerHeight - offset.top - $("#tabgrid0").height() - $("#tabgrid2").height() - $("#divPagerContainer").height();
-        
+
         w0 = document.getElementById("container_grid").scrollWidth; //nefunguje přes jquery
-        var w1 = $(div_horizontal).width();        
+        var w1 = $(div_horizontal).width();
         if (w0 > w1) h_vertical = h_vertical - 20;   //je vidět horizontální scrollbara, ubereme výšku, aby byla vidět
         if ($("#tabgrid1_tfoot").height() <= 2) {
             h_vertical = h_vertical - 35;   //rezerva pro tfoot s TOTALS
         }
 
-        h_vertical = parseInt(h_vertical);    
-        
+        h_vertical = parseInt(h_vertical);
+
         $("#container_vScroll").css("height", h_vertical + "px");
         $(document.body).css("overflow-y", "hidden");
-        
+
     }
 
     $("#container_vScroll").width($("#container_grid").width() + $("#container_grid").scrollLeft());
@@ -898,22 +874,22 @@ function tg_adjust_for_screen(strParentElementID) {
     //var basewidth = $("#tabgrid0").width();
     //$("#tabgrid1").width(basewidth);
     //$("#tabgrid2").width(basewidth);
-    
 
-    
+
+
 }
 
-function tg_dblclick(row) { 
+function tg_dblclick(row) {
     var prefix = _tg_entity.substr(0, 3);
     var pid = row.id.replace("r", "");
 
-    if (prefix === "a01" || prefix === "a03" || prefix==="j02") {
+    if (prefix === "a01" || prefix === "a03" || prefix === "j02") {
         var url = "/" + prefix + "/RecPage?pid=" + pid;
         if (window !== top) {   //voláno uvnitř iframe
             window.open(url, "_top");
         } else {
             location.replace(url);
-        }        
+        }
         return;
     }
     if (prefix === "f06") {
@@ -925,15 +901,15 @@ function tg_dblclick(row) {
         return;
     }
     if (prefix === "z01") {
-        _window_open("/x31/ReportNoContext?x31id=" + pid,2);
+        _window_open("/x31/ReportNoContext?x31id=" + pid, 2);
         return;
     }
     _edit(prefix, pid);
 }
 
-function tg_export(format,scope) {
-        
-    var url = _tg_url_export+"?j72id=" + _j72id + "&format=" + format + "&master_pid=" + _tg_master_pid + "&master_entity=" + _tg_master_entity+"&master_flag="+_tg_master_flag;
+function tg_export(format, scope) {
+
+    var url = _tg_url_export + "?j72id=" + _j72id + "&format=" + format + "&pathname=" + location.pathname;
     if (scope === "selected") {
         var pids = $("#tg_selected_pids").val();
         if (pids === "") {
@@ -953,8 +929,8 @@ function tg_tagging() {
         return;
     }
     url = url + "&pids=" + pids;
-    _window_open(url,2, "Zatřídit do kategorií");
-   
+    _window_open(url, 2, "Zatřídit do kategorií");
+
 }
 function tg_batchupdate(prefix) {
     var pids = $("#tg_selected_pids").val();
@@ -962,8 +938,8 @@ function tg_batchupdate(prefix) {
         _notify_message("Musíte vybrat minimálně jeden záznam.");
         return;
     }
-    var url = "/BatchUpdate/"+prefix+"?pids=" + pids;
-    
+    var url = "/BatchUpdate/" + prefix + "?pids=" + pids;
+
     _window_open(url, 2);
 
 }
@@ -984,13 +960,13 @@ function tg_save_selected_pids(explicit_pids) {
         pids = explicit_pids.split(",");
     } else {
         var rows = $("#tabgrid1_tbody").find("tr.selrow");
-        if (rows.length > 0) {            
+        if (rows.length > 0) {
             for (i = 0; i < rows.length; i++) {
                 pid = rows[i].id.replace("r", "");
                 pids.push(pid);
                 $("#chk" + pid).prop("checked", true);
             }
-        }                
+        }
     }
 
     if (pids.length > 0) {
@@ -1000,9 +976,9 @@ function tg_save_selected_pids(explicit_pids) {
         $("#tg_selected_pid").val("");
         $("#tg_selected_pids").val("");
     }
-    
 
-    
+
+
 }
 
 function tg_select_one_row(ctl, pid) {
@@ -1010,7 +986,7 @@ function tg_select_one_row(ctl, pid) {
 
     if (ctl.classList.contains("selrow") === false) {
         ctl.classList.add("selrow");
-    }   
+    }
 
     $("#chk" + pid).prop("checked", true);
     //$("#tg_chkAll").prop("checked", false);

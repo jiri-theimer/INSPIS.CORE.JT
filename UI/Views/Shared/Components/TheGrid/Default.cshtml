@@ -221,19 +221,15 @@
         var _thegrid={
             entity: "@Model.Entity",
             master_entity: "@Model.MasterEntity",
-            master_pid: "@Model.MasterPID",
-            master_flag: "@Model.MasterFlag",
             dataurl: "@Url.Action("GetHtml4TheGrid", Model.ControllerName)",
             handlerurl: "@Url.Action("HandleTheGridOper", Model.ControllerName)",
             filterurl: "@Url.Action("HandleTheGridFilter", Model.ControllerName)",
             exporturl: "@Url.Action("HandleTheGridExport", Model.ControllerName)",
             j72id: "@Model.GridState.j72ID",
             go2pid: "@Model.GridState.j75CurrentRecordPid",
-            contextmenuflag: "@Model.GridState.ContextMenuFlag",
-            addfilterid: "@Model.GridState.AddFilterID",
-            fixedcolumns:"@Model.GridState.FixedColumns",
+            fixedcolumns:"@Model.FixedColumns",
             ondblclick: "@Model.ondblclick",
-            viewflag: "@Model.GridState.MasterViewFlag"
+            oncmclick: "@Model.oncmclick"
 
         };
 

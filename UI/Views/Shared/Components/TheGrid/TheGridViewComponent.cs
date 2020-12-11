@@ -55,27 +55,21 @@ namespace UI.Views.Shared.Components.TheGrid
             gridState.j75CurrentRecordPid = go2pid;
             gridState.j72MasterEntity = master_entity;
 
-            //gridState.MasterViewFlag = masterviewflag;
-            //gridState.MasterFlag = master_flag;
-            //gridState.ContextMenuFlag = contextmenuflag;
-            //gridState.MasterPID = master_pid;
-            //gridState.OnDblClick = ondblclick;
-            //gridState.AddFilterID = addfilterid;
-            //gridState.FixedColumns = fixedcolumns;
-            //var cc = new TheGridController(_colsProvider, _pp);
-            //cc.Factory = _f;
+            
 
             var cSup = new UI.TheGridSupport(_f, _colsProvider) { extendpagerhtml = extendpagerhtml,oncmclick=oncmclick,ondblclick=ondblclick,fixedcolumns=fixedcolumns };
 
             ret.firstdata = cSup.GetFirstData(gridState, myquery);
-
-            //ret.firstdata = cc.render_thegrid_html(gridState);
+            
             ret.ondblclick = ondblclick;
+            ret.oncmclick = oncmclick;
             ret.GridState = gridState;
             ret.Columns = _colsProvider.ParseTheGridColumns(myquery.Prefix, gridState.j72Columns, _f.CurrentUser.j03LangIndex);
             ret.AdhocFilter = _colsProvider.ParseAdhocFilterFromString(gridState.j75Filter, ret.Columns);
             ret.MasterEntity = master_entity;
-            //ret.MasterPID = master_pid;
+            ret.FixedColumns = fixedcolumns;
+            
+            
 
             return View("Default", ret);
 

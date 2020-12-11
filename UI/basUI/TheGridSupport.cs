@@ -69,14 +69,11 @@ namespace UI
 
         public TheGridOutput Event_HandleTheGridOper(TheGridUIContext tgi, BO.myQuery mq)     //grid událost: třídění, změna stránky a pagesize
         {
+            this.oncmclick = tgi.oncmclick;
+            this.ondblclick = tgi.ondblclick;
+            this.fixedcolumns = tgi.fixedcolumns;
             var gridState = _Factory.j72TheGridTemplateBL.LoadState(tgi.j72id, _Factory.CurrentUser.pid);   //načtení naposledy uloženého grid stavu uživatele
-            //gridState.MasterPID = tgi.master_pid;
-            //gridState.ContextMenuFlag = tgi.contextmenuflag;
-            //gridState.MasterFlag = tgi.master_flag;
-            //gridState.OnDblClick = tgi.ondblclick;
-            //gridState.AddFilterID = tgi.addfilterid;
-            //gridState.FixedColumns = tgi.fixedcolumns;
-            //gridState.MasterViewFlag = tgi.viewflag;
+           
             if (!string.IsNullOrEmpty(this.fixedcolumns))
             {
                 gridState.j72Columns = this.fixedcolumns;
@@ -132,16 +129,15 @@ namespace UI
 
         public TheGridOutput Event_HandleTheGridFilter(TheGridUIContext tgi, List<BO.TheGridColumnFilter> filter, BO.myQuery mq)    //grid událost: Změna sloupcového filtru
         {
-            var gridState = _Factory.j72TheGridTemplateBL.LoadState(tgi.j72id, _Factory.CurrentUser.pid);
-            //gridState.MasterPID = tgi.master_pid;
-            //gridState.ContextMenuFlag = tgi.contextmenuflag;
-            //gridState.OnDblClick = tgi.ondblclick;
-            //gridState.AddFilterID = tgi.addfilterid;
-            //gridState.FixedColumns = tgi.fixedcolumns;
-            //gridState.MasterViewFlag = tgi.viewflag;
-            if (string.IsNullOrEmpty(gridState.FixedColumns) == false)
+            this.oncmclick = tgi.oncmclick;
+            this.ondblclick = tgi.ondblclick;
+            this.fixedcolumns = tgi.fixedcolumns;
+            var gridState = _Factory.j72TheGridTemplateBL.LoadState(tgi.j72id, _Factory.CurrentUser.pid);            
+
+            
+            if (string.IsNullOrEmpty(this.fixedcolumns) == false)
             {
-                gridState.j72Columns = gridState.FixedColumns;
+                gridState.j72Columns = this.fixedcolumns;
             }
             var lis = new List<string>();
             foreach (var c in filter)
@@ -691,7 +687,7 @@ namespace UI
             {
                 mq.lisJ73 = _Factory.j72TheGridTemplateBL.GetList_j73(gridState.j72ID, gridState.j72Entity.Substring(0, 3));
             }
-            mq.InhaleMasterEntityQuery(gridState.j72MasterEntity, gridState.MasterPID, gridState.MasterFlag);
+            //mq.InhaleMasterEntityQuery(gridState.j72MasterEntity, gridState.MasterPID, gridState.MasterFlag);
 
             return _Factory.gridBL.GetList(mq);
         }
