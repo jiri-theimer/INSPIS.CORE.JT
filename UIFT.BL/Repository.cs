@@ -265,7 +265,7 @@ namespace UIFT.Repository
                     sekce.SubSekce = formular.Sekce.FindAll(t => t.Base.f18ParentID == sekce.Base.pid);
 
                     // ma byt sekce skryta?
-                    sekce.IsHidden = sekce.Otazky.All(t => t.IsHidden) && sekce.SubSekce.Count == 0;
+                    sekce.IsHidden = sekce.Otazky.Any() && sekce.Otazky.All(t => t.IsHidden) && sekce.SubSekce.Count == 0;
 
                     // pokud se jedna o top level node, zarad ho do formulare
                     if (sekce.Base.f18ParentID <= 0)
