@@ -16,5 +16,8 @@ namespace UI.Models
 
         public string TreeState { get; set; }
         public List<UI.Models.myTreeNode> treeNodes { get; set; }
+
+        public TheGridInput gridinput { get; set; }
+        
     }
 }

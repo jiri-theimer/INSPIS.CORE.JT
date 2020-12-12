@@ -10,6 +10,43 @@ namespace UI.Controllers
 {
     public class AdminOneWorkflowController : BaseController
     {
+        private readonly BL.TheColumnsProvider _colsProvider;
+        public AdminOneWorkflowController(BL.TheColumnsProvider cp)
+        {
+            _colsProvider = cp;
+        }
+
+        //-----------Začátek GRID událostí-------------
+        public TheGridOutput HandleTheGridFilter(TheGridUIContext tgi, List<BO.StringPair> pathpars, List<BO.TheGridColumnFilter> filter) //TheGrid povinná metoda: sloupcový filtr
+        {
+            var b01id = Convert.ToInt32(tgi.viewstate[0]);
+            var c = new UI.TheGridSupport(GetGridInput(b01id),Factory, _colsProvider);
+            
+            return c.Event_HandleTheGridFilter(tgi, filter);
+        }
+        public TheGridOutput HandleTheGridOper(TheGridUIContext tgi, List<BO.StringPair> pathpars)    //TheGrid povinná metoda: změna třídění, pageindex, změna stránky
+        {
+            var b01id = Convert.ToInt32(tgi.viewstate[0]);
+            var c = new UI.TheGridSupport(GetGridInput(b01id), Factory, _colsProvider);
+
+            return c.Event_HandleTheGridOper(tgi);
+
+        }
+        public string HandleTheGridMenu(TheGridUIContext tgi, List<BO.StringPair> pathpars)  //TheGrid povinná metoda: zobrazení grid menu
+        {
+            var b01id = Convert.ToInt32(tgi.viewstate[0]);
+            var c = new UI.TheGridSupport(GetGridInput(b01id), Factory, _colsProvider);
+            return c.Event_HandleTheGridMenu(tgi.j72id);
+        }
+        public TheGridExportedFile HandleTheGridExport(string format, string pids, TheGridUIContext tgi, List<BO.StringPair> pathpars)  //TheGrid povinná metoda pro export dat
+        {
+            var b01id = Convert.ToInt32(tgi.viewstate[0]);
+            var c = new UI.TheGridSupport(GetGridInput(b01id), Factory, _colsProvider);
+
+            return c.Event_HandleTheGridExport(format, tgi.j72id, pids);
+        }
+        //-----------Konec GRID událostí-------------
+
         public IActionResult Index(int b01id, string view)
         {
             var v = new AdminOneWorkflow() { b01ID = b01id, view = view };
@@ -46,7 +83,19 @@ namespace UI.Controllers
             {
                 inhale_tree(v);
             }
+
+            v.gridinput = GetGridInput(v.b01ID);
+            
+
             return ViewTup(v, BO.j05PermValuEnum.WorkflowDesigner);
+        }
+
+        private TheGridInput GetGridInput(int b01id)
+        {
+            var gi = new TheGridInput();
+            gi.query= new BO.myQuery("b02") { b01id = b01id };
+            gi.viewstate = b01id.ToString();
+            return gi;
         }
 
         private void inhale_tree(UI.Models.AdminOneWorkflow v)

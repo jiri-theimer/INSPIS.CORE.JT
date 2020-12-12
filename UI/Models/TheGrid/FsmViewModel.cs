@@ -8,15 +8,16 @@ namespace UI.Models
     public class FsmViewModel:BaseViewModel
     {
         public string entity { get; set; }
-        public BO.myQuery myQueryGrid { get; set; }
-        public string ExtendPagerHtml { get; set; }
+        //public BO.myQuery myQueryGrid { get; set; }
+        //public string ExtendPagerHtml { get; set; }
+        public TheGridInput gridinput { get; set; }
         
         public string entityTitle { get; set; }
         public string prefix { get; set; }
-        public int j72id { get; set; }
-        public int go2pid { get; set; }
+        //public int j72id { get; set; }
+        //public int go2pid { get; set; }
         
-        public string master_entity { get; set; }
+        //public string master_entity { get; set; }
         public int master_pid { get; set; }
         public string master_flag { get; set; } //dodatečný parametr k master_entity+master_pid, příklad: parent/founder
 

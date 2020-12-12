@@ -7,13 +7,16 @@ namespace UI.Models
 {
     public class TheGridViewModel
     {        
-        public string Entity { get; set; }
-        public string ControllerName { get; set; }
-        public string FixedColumns { get; set; }
-        public string MasterEntity { get; set; }
+        //public string Entity { get; set; }
+        //public string ControllerName { get; set; }
+        //public string FixedColumns { get; set; }
+        //public string MasterEntity { get; set; }
         
-        public string ondblclick { get; set; }
-        public string oncmclick { get; set; }
+        //public string ondblclick { get; set; }
+        //public string oncmclick { get; set; }
+        //public string viewstate { get; set; }   //informance, kterou grid přenáší z klienta na server: oddělovač pipe |
+
+        public TheGridInput GridInput { get; set; }
         public BO.TheGridState GridState { get; set; }
         
         public IEnumerable<BO.TheGridColumn> Columns { get; set; }
@@ -41,7 +44,7 @@ namespace UI.Models
         public string value { get; set; }
         
         public string master_entity { get; set; }
-        public int master_pid { get; set; }
+        //public int master_pid { get; set; }
         
         public string ondblclick { get; set; }
         public string oncmclick { get; set; }
@@ -50,6 +53,7 @@ namespace UI.Models
         public string fixedcolumns { get; set; }
         
         public string pathname { get; set; }   //volající url v prohlížeči
+        public List<string> viewstate { get; set; }   //data ze serveru, aby se přenášela s gridem z klienta na server: oddělovač pipe
 
     }
 }

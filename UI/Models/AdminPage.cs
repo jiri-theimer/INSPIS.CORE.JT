@@ -29,6 +29,6 @@ namespace UI.Models
 
         public List<UI.Models.myTreeNode> treeNodes { get; set; }
 
-        public BO.myQuery myQueryGrid { get; set; }
+        public TheGridInput gridinput { get; set; }
     }
 }

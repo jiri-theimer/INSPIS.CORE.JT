@@ -219,17 +219,19 @@
     var _gridMenuFilled = false;
     $(document).ready(function () {
         var _thegrid={
-            entity: "@Model.Entity",
-            master_entity: "@Model.MasterEntity",            
-            dataurl: "@Url.Action("GetHtml4TheGrid", Model.ControllerName)",
-            handlerurl: "@Url.Action("HandleTheGridOper", Model.ControllerName)",
-            filterurl: "@Url.Action("HandleTheGridFilter", Model.ControllerName)",
-            exporturl: "@Url.Action("HandleTheGridExport", Model.ControllerName)",
+            entity: "@Model.GridInput.entity",
+            master_entity: "@Model.GridInput.master_entity",            
+            dataurl: "@Url.Action("GetHtml4TheGrid", Model.GridInput.controllername)",
+            handlerurl: "@Url.Action("HandleTheGridOper", Model.GridInput.controllername)",
+            filterurl: "@Url.Action("HandleTheGridFilter", Model.GridInput.controllername)",
+            exporturl: "@Url.Action("HandleTheGridExport", Model.GridInput.controllername)",
             j72id: "@Model.GridState.j72ID",
             go2pid: "@Model.GridState.j75CurrentRecordPid",
-            fixedcolumns:"@Model.FixedColumns",
-            ondblclick: "@Model.ondblclick",
-            oncmclick: "@Model.oncmclick"
+            fixedcolumns:"@Model.GridInput.fixedcolumns",
+            ondblclick: "@Model.GridInput.ondblclick",
+            oncmclick: "@Model.GridInput.oncmclick",
+            viewstate:"@Model.GridInput.viewstate"
+
 
         };
 
@@ -240,7 +242,7 @@
         $("#cmdTheGridBatchSelect").click(function () {
             if (_gridMenuFilled == true) return;
 
-            $.post("@Url.Action("HandleTheGridMenu", Model.ControllerName)", { j72id:@Model.GridState.pid}, function (data) {
+            $.post("@Url.Action("HandleTheGridMenu", Model.GridInput.controllername)", { tgi: get_all_tgi_params()}, function (data) {
                 if (_device.innerHeight <= 300) {
                     data = data.replace(/nav-link/g, "nav-link-mini");
 

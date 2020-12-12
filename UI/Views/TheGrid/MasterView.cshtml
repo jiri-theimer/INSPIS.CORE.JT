@@ -49,7 +49,7 @@
 
     <div id="splitter_panel1" class="splitter-panel-top">
         
-        <vc:the-grid entity="@Model.entity" j72id="@Model.j72id" go2pid="@Model.go2pid" master_entity="" oncmclick="tg_cm(event)" ondblclick="tg_dblclick" fixedcolumns="" extendpagerhtml="@Model.ExtendPagerHtml" controllername="TheGrid" myquery="@Model.myQueryGrid"></vc:the-grid>
+        <vc:the-grid input="@Model.gridinput"></vc:the-grid>
 
     </div>
     <div class="tabs_container" style="background-color:#F0F8FF;">
@@ -74,7 +74,7 @@
 
 
 
-<input type="hidden" id="cur_pid" asp-for="@Model.go2pid" />
+<input type="hidden" id="cur_pid" asp-for="@Model.gridinput.go2pid" />
 
 @section Scripts{
 

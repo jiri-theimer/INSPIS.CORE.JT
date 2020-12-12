@@ -18,6 +18,6 @@ namespace UI.Models
         public List<UI.Models.myTreeNode> treeNodes { get; set; }
         
         public bool IsShowF19ID { get; set; }
-        public BO.myQuery myQueryGrid { get; set; }
+        public TheGridInput gridinput { get; set; }
     }
 }

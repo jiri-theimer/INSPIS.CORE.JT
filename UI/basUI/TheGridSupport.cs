@@ -17,31 +17,32 @@ namespace UI
         private BL.Factory _Factory { get; set; }
         private UI.Models.TheGridViewModel _grid;
 
-        public string extendpagerhtml { get; set; }
-        public string oncmclick { get; set; }
-        public string ondblclick { get; set; }
-        public string fixedcolumns { get; set; }
+        public TheGridInput gridinput { get; set; }
+        //public string extendpagerhtml { get; set; }
+        //public string oncmclick { get; set; }
+        //public string ondblclick { get; set; }
+        //public string fixedcolumns { get; set; }
         
-        public TheGridSupport(BL.Factory f,BL.TheColumnsProvider cp)
+        public TheGridSupport(TheGridInput input,BL.Factory f,BL.TheColumnsProvider cp)
         {
             _Factory = f;            
             _colsProvider = cp;
-            
+            this.gridinput = input;
         }
 
-        public TheGridOutput GetFirstData(TheGridState gridState, BO.myQuery mq) //vrátí grid html pro úvodní načtení na stránku
+        public TheGridOutput GetFirstData(TheGridState gridState) //vrátí grid html pro úvodní načtení na stránku
         {           
             if (gridState == null)
             {
                 return render_thegrid_error("gridState is null!");
             }
            
-            if (!string.IsNullOrEmpty(this.fixedcolumns))
+            if (!string.IsNullOrEmpty(this.gridinput.fixedcolumns))
             {
-                gridState.j72Columns = this.fixedcolumns;
+                gridState.j72Columns = this.gridinput.fixedcolumns;
             }
 
-            return render_thegrid_html(gridState, mq);
+            return render_thegrid_html(gridState, this.gridinput.query);
         }
 
         //public TheGridOutput Event_GetHtml4TheGrid(TheGridUIContext tgi, BO.myQuery mq) //výchozí grid událost na úvod: Vrací HTML zdroj tabulky pro TheGrid v rámci j72TheGridState
@@ -68,16 +69,16 @@ namespace UI
         //    return render_thegrid_html(gridState,mq);
         //}
 
-        public TheGridOutput Event_HandleTheGridOper(TheGridUIContext tgi, BO.myQuery mq)     //grid událost: třídění, změna stránky a pagesize
+        public TheGridOutput Event_HandleTheGridOper(TheGridUIContext tgi)     //grid událost: třídění, změna stránky a pagesize
         {
-            this.oncmclick = tgi.oncmclick;
-            this.ondblclick = tgi.ondblclick;
-            this.fixedcolumns = tgi.fixedcolumns;
+            //this.oncmclick = tgi.oncmclick;
+            //this.ondblclick = tgi.ondblclick;
+            //this.fixedcolumns = tgi.fixedcolumns;
             var gridState = _Factory.j72TheGridTemplateBL.LoadState(tgi.j72id, _Factory.CurrentUser.pid);   //načtení naposledy uloženého grid stavu uživatele
            
-            if (!string.IsNullOrEmpty(this.fixedcolumns))
+            if (!string.IsNullOrEmpty(this.gridinput.fixedcolumns))
             {
-                gridState.j72Columns = this.fixedcolumns;
+                gridState.j72Columns = this.gridinput.fixedcolumns;
             }
             switch (tgi.key)
             {
@@ -118,7 +119,7 @@ namespace UI
 
             if (_Factory.j72TheGridTemplateBL.SaveState(gridState, _Factory.CurrentUser.pid) > 0)   //uložení změny grid stavu
             {
-                return render_thegrid_html(gridState,mq);
+                return render_thegrid_html(gridState,gridinput.query);
             }
             else
             {
@@ -128,17 +129,17 @@ namespace UI
 
         }
 
-        public TheGridOutput Event_HandleTheGridFilter(TheGridUIContext tgi, List<BO.TheGridColumnFilter> filter, BO.myQuery mq)    //grid událost: Změna sloupcového filtru
+        public TheGridOutput Event_HandleTheGridFilter(TheGridUIContext tgi, List<BO.TheGridColumnFilter> filter)    //grid událost: Změna sloupcového filtru
         {
-            this.oncmclick = tgi.oncmclick;
-            this.ondblclick = tgi.ondblclick;
-            this.fixedcolumns = tgi.fixedcolumns;
+            //this.oncmclick = tgi.oncmclick;
+            //this.ondblclick = tgi.ondblclick;
+            //this.fixedcolumns = tgi.fixedcolumns;
             var gridState = _Factory.j72TheGridTemplateBL.LoadState(tgi.j72id, _Factory.CurrentUser.pid);            
 
             
-            if (string.IsNullOrEmpty(this.fixedcolumns) == false)
+            if (string.IsNullOrEmpty(this.gridinput.fixedcolumns) == false)
             {
-                gridState.j72Columns = this.fixedcolumns;
+                gridState.j72Columns = this.gridinput.fixedcolumns;
             }
             var lis = new List<string>();
             foreach (var c in filter)
@@ -153,7 +154,7 @@ namespace UI
 
             if (_Factory.j72TheGridTemplateBL.SaveState(gridState, _Factory.CurrentUser.pid) > 0)
             {
-                return render_thegrid_html(gridState,mq);
+                return render_thegrid_html(gridState,gridinput.query);
             }
             else
             {
@@ -165,8 +166,9 @@ namespace UI
         private TheGridOutput render_thegrid_html(BO.TheGridState gridState, BO.myQuery mq) //vrací kompletní html gridu: header+body+footer+message
         {
             var ret = new TheGridOutput();
-            _grid = new TheGridViewModel() { Entity = gridState.j72Entity };
+            _grid = new TheGridViewModel();
             _grid.GridState = gridState;
+            
 
             ret.sortfield = gridState.j75SortDataField;
             ret.sortdir = gridState.j75SortOrder;
@@ -272,13 +274,13 @@ namespace UI
                 {
                     strRowClass += " trtestrecord";
                 }
-                if (string.IsNullOrEmpty(this.ondblclick))
+                if (string.IsNullOrEmpty(this.gridinput.ondblclick))
                 {
                     _s.Append(string.Format("<tr id='r{0}' class='{1}'>", dbRow["pid"], strRowClass));
                 }
                 else
                 {
-                    _s.Append(string.Format("<tr id='r{0}' class='{1}' ondblclick='{2}(this)'>", dbRow["pid"], strRowClass, this.ondblclick));
+                    _s.Append(string.Format("<tr id='r{0}' class='{1}' ondblclick='{2}(this)'>", dbRow["pid"], strRowClass, this.gridinput.ondblclick));
                 }
 
 
@@ -332,9 +334,9 @@ namespace UI
                 _s.Append("</td>");
 
 
-                if (!string.IsNullOrEmpty(this.oncmclick))
+                if (!string.IsNullOrEmpty(this.gridinput.oncmclick))
                 {
-                    _s.Append(string.Format("<td class='td2' style='width:20px;'><a class='cm' onclick='{0}'>&#9776;</a></td>",this.oncmclick));      //hamburger menu
+                    _s.Append(string.Format("<td class='td2' style='width:20px;'><a class='cm' onclick='{0}'>&#9776;</a></td>",this.gridinput.oncmclick));      //hamburger menu
                 }
                 else
                 {
@@ -517,11 +519,11 @@ namespace UI
         }
         private void Render_ExtendPagerHtml()
         {
-            if (string.IsNullOrEmpty(this.extendpagerhtml))
+            if (string.IsNullOrEmpty(this.gridinput.extendpagerhtml))
             {
                 return;
             }
-            _s.Append(this.extendpagerhtml);
+            _s.Append(this.gridinput.extendpagerhtml);
 
             //if (_grid.GridState.MasterViewFlag < 3)
             //{
@@ -630,39 +632,40 @@ namespace UI
         }
 
 
-        public string Event_TheGridExport(string format, int j72id, string pids, BO.myQuery mq)
+        public TheGridExportedFile Event_HandleTheGridExport(string format, int j72id, string pids)
         {
             var gridState = this._Factory.j72TheGridTemplateBL.LoadState(j72id, _Factory.CurrentUser.pid);
                                           
             if (String.IsNullOrEmpty(pids) == false)
             {
-                mq.SetPids(pids);
+                this.gridinput.query.SetPids(pids);
             }
 
 
-            System.Data.DataTable dt = prepare_datatable_4export(ref mq, gridState);
-            string filepath = _Factory.App.TempFolder + "\\" + BO.BAS.GetGuid() + "." + format;
+            System.Data.DataTable dt = prepare_datatable_4export(gridState);
+            string strTempFileName = BO.BAS.GetGuid();
+            string filepath = _Factory.App.TempFolder + "\\" + strTempFileName + "." + format;
 
             var cExport = new UI.dataExport();
-            string strFileClientName = "gridexport_" + mq.Prefix + "." + format;
+            string strFileClientName = "gridexport_" + this.gridinput.query.Prefix + "." + format;
 
             if (format == "csv")
             {
-                if (cExport.ToCSV(dt, filepath, mq))
+                if (cExport.ToCSV(dt, filepath, this.gridinput.query))
                 {
                     //return File(System.IO.File.ReadAllBytes(filepath), "application/CSV", strFileClientName);
-                    return filepath;
+                    return new TheGridExportedFile() { contenttype = "application/CSV", downloadfilename = strFileClientName, fullpath = filepath,tempfilename= strTempFileName + "." + format };
 
 
                 }
             }
             if (format == "xlsx")
             {
-                if (cExport.ToXLSX(dt, filepath, mq))
+                if (cExport.ToXLSX(dt, filepath, this.gridinput.query))
                 {
 
                     //return File(System.IO.File.ReadAllBytes(filepath), "application/vnd.ms-excel", strFileClientName);
-                    return filepath;
+                    return new TheGridExportedFile() { contenttype = "application/vnd.ms-excel", downloadfilename = strFileClientName, fullpath = filepath,tempfilename= strTempFileName + "." + format };
                 }
             }
 
@@ -671,26 +674,25 @@ namespace UI
 
         }
 
-        private System.Data.DataTable prepare_datatable_4export(ref BO.myQuery mq, BO.TheGridState gridState)
+        private System.Data.DataTable prepare_datatable_4export(BO.TheGridState gridState)
         {
 
-            mq.explicit_columns = _colsProvider.ParseTheGridColumns(mq.Prefix, gridState.j72Columns, _Factory.CurrentUser.j03LangIndex);
+            this.gridinput.query.explicit_columns = _colsProvider.ParseTheGridColumns(this.gridinput.query.Prefix, gridState.j72Columns, _Factory.CurrentUser.j03LangIndex);
             if (string.IsNullOrEmpty(gridState.j75SortDataField) == false)
             {
 
-                mq.explicit_orderby = _colsProvider.ByUniqueName(gridState.j75SortDataField).getFinalSqlSyntax_ORDERBY() + " " + gridState.j75SortOrder;
+                this.gridinput.query.explicit_orderby = _colsProvider.ByUniqueName(gridState.j75SortDataField).getFinalSqlSyntax_ORDERBY() + " " + gridState.j75SortOrder;
             }
             if (String.IsNullOrEmpty(gridState.j75Filter) == false)
             {
-                mq.TheGridFilter = _colsProvider.ParseAdhocFilterFromString(gridState.j75Filter, mq.explicit_columns);
+                this.gridinput.query.TheGridFilter = _colsProvider.ParseAdhocFilterFromString(gridState.j75Filter, this.gridinput.query.explicit_columns);
             }                                  
             if (gridState.j72HashJ73Query)
             {
-                mq.lisJ73 = _Factory.j72TheGridTemplateBL.GetList_j73(gridState.j72ID, gridState.j72Entity.Substring(0, 3));
+                this.gridinput.query.lisJ73 = _Factory.j72TheGridTemplateBL.GetList_j73(gridState.j72ID, gridState.j72Entity.Substring(0, 3));
             }
-            //mq.InhaleMasterEntityQuery(gridState.j72MasterEntity, gridState.MasterPID, gridState.MasterFlag);
-
-            return _Factory.gridBL.GetList(mq);
+            
+            return _Factory.gridBL.GetList(this.gridinput.query);
         }
 
     }

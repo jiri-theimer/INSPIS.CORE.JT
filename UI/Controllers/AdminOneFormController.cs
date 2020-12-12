@@ -16,31 +16,42 @@ namespace UI.Controllers
         {
             _colsProvider = cp;            
         }
-        public TheGridOutput HandleTheGridFilter(TheGridUIContext tgi, List<BO.StringPair> pathpars, List<BO.TheGridColumnFilter> filter) //TheGrid povinná metoda: sloupcový filtr
-        {            
-            var c = new UI.TheGridSupport(Factory, _colsProvider);
-            var mq = new BO.myQuery("f19");
-            mq.f06id = Convert.ToInt32(pathpars.Where(p => p.Key == "f06id").First().Value);
 
-            return c.Event_HandleTheGridFilter(tgi, filter, mq);
+        //-----------Začátek GRID událostí-------------
+        public TheGridOutput HandleTheGridFilter(TheGridUIContext tgi, List<BO.StringPair> pathpars, List<BO.TheGridColumnFilter> filter) //TheGrid povinná metoda: sloupcový filtr
+        {
+            var f06id = Convert.ToInt32(tgi.viewstate[0]);
+            var c = new UI.TheGridSupport(GetGridInput(f06id), Factory, _colsProvider);
+
+            return c.Event_HandleTheGridFilter(tgi, filter);
+
         }
         public TheGridOutput HandleTheGridOper(TheGridUIContext tgi, List<BO.StringPair> pathpars)    //TheGrid povinná metoda: změna třídění, pageindex, změna stránky
         {
-            var c = new UI.TheGridSupport(Factory, _colsProvider);
-            var mq = new BO.myQuery("f19");
-            mq.f06id = Convert.ToInt32(pathpars.Where(p => p.Key == "f06id").First().Value);
+            var f06id = Convert.ToInt32(tgi.viewstate[0]);
+            var c = new UI.TheGridSupport(GetGridInput(f06id), Factory, _colsProvider);
 
-            return c.Event_HandleTheGridOper(tgi, mq);
+            return c.Event_HandleTheGridOper(tgi);      
 
         }
         public string HandleTheGridMenu(TheGridUIContext tgi, List<BO.StringPair> pathpars)  //TheGrid povinná metoda: zobrazení grid menu
         {
-            var c = new UI.TheGridSupport(Factory, _colsProvider);
+            var f06id = Convert.ToInt32(tgi.viewstate[0]);
+            var c = new UI.TheGridSupport(GetGridInput(f06id), Factory, _colsProvider);
+            
             return c.Event_HandleTheGridMenu(tgi.j72id);
         }
+        public TheGridExportedFile HandleTheGridExport(string format, string pids, TheGridUIContext tgi, List<BO.StringPair> pathpars)  //TheGrid povinná metoda pro export dat
+        {
+            var f06id = Convert.ToInt32(tgi.viewstate[0]);
+            var c = new UI.TheGridSupport(GetGridInput(f06id), Factory, _colsProvider);
+            
+            return c.Event_HandleTheGridExport(format, tgi.j72id, pids);
+        }        
+        //-----------Konec GRID událostí-------------
 
         public IActionResult Index(int f06id,string view)
-        {
+        {            
             var v = new AdminOneForm() { f06ID = f06id,view=view };
             v.IsShowF19ID = Factory.CBL.LoadUserParamBool("AdminOneForm-IsShowF19ID", false);
             if (string.IsNullOrEmpty(v.view) == true)
@@ -71,14 +82,21 @@ namespace UI.Controllers
             {
                 return this.StopPage(false, "Formulář nelze načíst.");
             }
-            v.myQueryGrid = new BO.myQuery("f19");
-            v.myQueryGrid.f06id = v.f06ID;
-
+            v.gridinput = GetGridInput(v.f06ID);
+            
             if (v.view=="tree")
             {
                 inhale_tree(v);
             }
             return ViewTup(v, BO.j05PermValuEnum.FormDesigner);
+        }
+
+        private TheGridInput GetGridInput(int f06id)
+        {
+            var gi = new TheGridInput();
+            gi.query = new BO.myQuery("f19") { f06id = f06id };
+            gi.viewstate = f06id.ToString();
+            return gi;
         }
 
 

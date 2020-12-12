@@ -190,9 +190,10 @@ namespace UI.Controllers
 
         }
         
+
         public ActionResult FileDownloadTempFile(string tempfilename)
         {
-            if (System.IO.File.Exists(Factory.App.TempFolder + "\\" + tempfilename) == false)
+            if (!System.IO.File.Exists(Factory.App.TempFolder + "\\" + tempfilename))
             {
                 return FileDownloadNotFound(new BO.o27Attachment() { o27OriginalFileName = tempfilename, o27ArchiveFolder = "TEMP" });
             }
@@ -219,7 +220,19 @@ namespace UI.Controllers
             }
 
         }
-        
+
+        public ActionResult FileDownloadTempFileNDB(string tempfilename,string contenttype,string downloadfilename)
+        {
+            if (!System.IO.File.Exists(Factory.App.TempFolder + "\\" + tempfilename))
+            {
+                return FileDownloadNotFound(new BO.o27Attachment() { o27OriginalFileName = tempfilename, o27ArchiveFolder = "TEMP" });
+            }
+            Response.Headers["Content-Disposition"] = string.Format("inline; filename={0}", downloadfilename);
+            var fileContentResult = new FileContentResult(System.IO.File.ReadAllBytes(Factory.App.TempFolder + "\\" + tempfilename), contenttype);
+            return fileContentResult;
+        }
+
+
 
 
 

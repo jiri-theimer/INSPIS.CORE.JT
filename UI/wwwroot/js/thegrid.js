@@ -18,6 +18,7 @@ var _tg_mousedown_active = false;
 var _tg_current_pid;
 var _tg_is_enable_clipboard = true;
 var _tg_fixedcolumns;
+var _tg_viewstate;
 
 
 function tg_init(c) {
@@ -32,7 +33,7 @@ function tg_init(c) {
     _tg_oncmclick = c.oncmclick;
     _tg_ondblclick = c.ondblclick;
     _tg_fixedcolumns = c.fixedcolumns;
-
+    _tg_viewstate = c.viewstate;
 
     $("#container_grid").scroll(function () {
         $("#container_vScroll").width($("#container_grid").width() + $("#container_grid").scrollLeft());
@@ -170,10 +171,13 @@ function tg_post_handler(strOper, strKey, strValue) {
         oncmclick: _tg_oncmclick,
         ondblclick: _tg_ondblclick,
         fixedcolumns: _tg_fixedcolumns,
+        viewstate: [],
         pathname: location.pathname
     }
+    if (_tg_viewstate !== "") {
+        params.viewstate = _tg_viewstate.split("|");
+    }
     
-
     $("#tabgrid1_tbody").html("<b>Loading...</b>");
     $.post(_tg_url_handler, { tgi: params, pathpars: get_all_path_values() }, function (data) {
         // _notify_message("vrátilo se: oper: " + strOper + ", key: " + strKey + ", value: " + strValue);
@@ -896,17 +900,22 @@ function tg_dblclick(row) {
 }
 
 function tg_export(format, scope) {
-
-    var url = _tg_url_export + "?j72id=" + _j72id + "&format=" + format + "&pathname=" + location.pathname;
+    var pids = "";
     if (scope === "selected") {
-        var pids = $("#tg_selected_pids").val();
+        pids = $("#tg_selected_pids").val();
         if (pids === "") {
             _notify_message("Musíte vybrat minimálně jeden záznam.");
             return;
-        }
-        url = url + "&pids=" + pids;
+        }        
     }
-    location.replace(url);
+    
+
+    $.post(_tg_url_export, { format: format, pids: pids, tgi: get_all_tgi_params(), pathpars: get_all_path_values() }, function (data) {
+        location.replace("/FileUpload/FileDownloadTempFileNDB?tempfilename=" + data.tempfilename + "&contenttype=" + data.contenttype + "&downloadfilename=" + data.downloadfilename);
+        
+
+    });
+    
 
 }
 function tg_tagging() {
@@ -994,7 +1003,11 @@ function get_all_tgi_params() {
         oncmclick: _tg_oncmclick,
         ondblclick: _tg_ondblclick,
         fixedcolumns: _tg_fixedcolumns,
+        viewstate: [],
         pathname: location.pathname
+    }
+    if (_tg_viewstate !== "") {
+        params.viewstate = _tg_viewstate.split("|");
     }
     return params;
 }
