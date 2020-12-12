@@ -79,6 +79,7 @@ namespace UI.Controllers
                 }
             }
             inhale_entity(ref v, v.prefix);
+            v.myQueryGrid = new BO.myQuery(v.prefix);
             if (v.prefix == "o13" || v.prefix == "x32")
             {
                 if (string.IsNullOrEmpty(v.view) == true)
@@ -116,7 +117,7 @@ namespace UI.Controllers
                 }
             }
             inhale_entity(ref v, v.prefix);
-
+            v.myQueryGrid = new BO.myQuery(v.prefix);
             return View(v);
         }
         public IActionResult Forms(string prefix, int go2pid, string view)
@@ -134,6 +135,7 @@ namespace UI.Controllers
                 }
             }
             inhale_entity(ref v, v.prefix);
+            v.myQueryGrid = new BO.myQuery(v.prefix);
             if (v.prefix == "f12")
             {
                 if (string.IsNullOrEmpty(v.view) == true)
@@ -156,7 +158,7 @@ namespace UI.Controllers
         {
             var v = new AdminPage() { prefix = prefix, go2pid = go2pid };
             inhale_entity(ref v, prefix);
-
+            v.myQueryGrid = new BO.myQuery(v.prefix);
             return View(v);
         }
 

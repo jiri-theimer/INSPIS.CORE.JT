@@ -57,7 +57,7 @@
 
     </div>
     <div class="nonmobile ml-2">
-        <a class="btn btn-light" href="/AdminOneForm/Index?f06id=@Model.f06ID" title="@_f.tra("Občerstvit")"><img src="~/images/refresh.png" /></a>
+        <a class="btn btn-light" href="javascript:reload()" title="@_f.tra("Občerstvit")"><img src="~/images/refresh.png" /></a>
     </div>
     <div class="ml-2">
         @if (Model.view == "tree")
@@ -108,14 +108,14 @@
     @if (Model.view == "tree")
     {
         <div id="layout_main_divtree">
-            
+
             <kendotree tree-datasource="@Model.treeNodes" clientid="tree1"></kendotree>
         </div>
 
     }
     else
-    {
-        <vc:the-grid entity="f19Question" j72id="0" go2pid="@Model.go2pid" master_entity="f06Form" master_pid="@Model.f06ID" contextmenuflag="1" ondblclick="tg_dblclick" master_flag="" masterviewflag="3" addfilterid="" fixedcolumns=""></vc:the-grid>
+    {        
+        <vc:the-grid entity="f19Question" j72id="0" go2pid="@Model.go2pid" master_entity="f06Form" oncmclick="tg_cm(event)" ondblclick="tg_dblclick" fixedcolumns="" extendpagerhtml="" controllername="AdminOneForm" myquery="@Model.myQueryGrid"></vc:the-grid>
     }
 
 
@@ -149,8 +149,10 @@
             _window_open("/f06/Record?pid=0",1,"Nový formulář");
         });
         $("#cmdGrid").click(function () {
-            location.replace("/Admin/Forms?prefix=f06");
+            reload();
         });
+
+
 
         $.post("/Menu/ContextMenu", { entity: "f06Form",flag:"recpage", pid:@Model.f06ID }, function (data) {
 
@@ -188,7 +190,7 @@
 
         $.post("/Common/SetUserParam", { key: "AdminOneForm-IsShowF19ID", value: ischecked }, function (data) {
 
-            location.replace("/AdminOneForm/Index?f06id=@Model.f06ID");
+            reload();
 
         });
 
@@ -200,5 +202,8 @@
 
     }
 
+    function reload() {
 
+        location.replace("/AdminOneForm/Index?f06id=@Model.f06ID");
+    }
 </script>

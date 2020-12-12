@@ -10,6 +10,35 @@ namespace UI.Controllers
 {
     public class AdminOneFormController : BaseController
     {
+        private readonly BL.TheColumnsProvider _colsProvider;
+
+        public AdminOneFormController(BL.TheColumnsProvider cp)
+        {
+            _colsProvider = cp;            
+        }
+        public TheGridOutput HandleTheGridFilter(TheGridUIContext tgi, List<BO.StringPair> pathpars, List<BO.TheGridColumnFilter> filter) //TheGrid povinná metoda: sloupcový filtr
+        {            
+            var c = new UI.TheGridSupport(Factory, _colsProvider);
+            var mq = new BO.myQuery("f19");
+            mq.f06id = Convert.ToInt32(pathpars.Where(p => p.Key == "f06id").First().Value);
+
+            return c.Event_HandleTheGridFilter(tgi, filter, mq);
+        }
+        public TheGridOutput HandleTheGridOper(TheGridUIContext tgi, List<BO.StringPair> pathpars)    //TheGrid povinná metoda: změna třídění, pageindex, změna stránky
+        {
+            var c = new UI.TheGridSupport(Factory, _colsProvider);
+            var mq = new BO.myQuery("f19");
+            mq.f06id = Convert.ToInt32(pathpars.Where(p => p.Key == "f06id").First().Value);
+
+            return c.Event_HandleTheGridOper(tgi, mq);
+
+        }
+        public string HandleTheGridMenu(TheGridUIContext tgi, List<BO.StringPair> pathpars)  //TheGrid povinná metoda: zobrazení grid menu
+        {
+            var c = new UI.TheGridSupport(Factory, _colsProvider);
+            return c.Event_HandleTheGridMenu(tgi.j72id);
+        }
+
         public IActionResult Index(int f06id,string view)
         {
             var v = new AdminOneForm() { f06ID = f06id,view=view };
@@ -42,6 +71,8 @@ namespace UI.Controllers
             {
                 return this.StopPage(false, "Formulář nelze načíst.");
             }
+            v.myQueryGrid = new BO.myQuery("f19");
+            v.myQueryGrid.f06id = v.f06ID;
 
             if (v.view=="tree")
             {

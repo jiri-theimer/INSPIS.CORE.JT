@@ -12,5 +12,7 @@ namespace UI.Models.Tab
         public int pid { get; set; }
 
         public bool IsGridView { get; set; }
+
+        public BO.myQuery myQueryGrid { get; set; }
     }
 }

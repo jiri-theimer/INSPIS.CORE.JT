@@ -157,11 +157,12 @@ namespace UI.Controllers
 
         public IActionResult TabSouvisejici(int pid)
         {
-            var v = new a01TabSouvisejici() { pid = pid };
+            var v = new a01TabSouvisejici() { pid = pid, myQueryGrid = new BO.myQuery("a01") };
             if (v.pid == 0)
             {
                 return this.StopPageSubform("pid is missing");
             }
+            v.myQueryGrid.a01id = pid;
             v.IsGridView = Factory.CBL.LoadUserParamBool("TabSouvisejici-IsGridView", false);
             v.RecA01 = Factory.a01EventBL.Load(v.pid);
             if (v.IsGridView == false)
