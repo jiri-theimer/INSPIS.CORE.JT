@@ -103,12 +103,12 @@ namespace BL
             
             p.AddInt("o27FileSize", rec.o27FileSize);
             p.AddString("o27ContentType", rec.o27ContentType);
-            p.AddString("o27GUID", rec.o27GUID);
-            if (rec.o27DownloadGUID==null)
+            p.AddString("o27GUID", rec.o27GUID);   
+            if (rec.o27GUID == null)
             {
-                rec.o27DownloadGUID = BO.BAS.GetGuid();
+                rec.o27GUID = BO.BAS.GetGuid();
             }
-            p.AddString("o27DownloadGUID", rec.o27DownloadGUID);
+            p.AddString("o27DownloadGUID", rec.o27GUID);
             p.AddString("o27Description", rec.o27Description);
 
             p.AddString("o27ArchivePdfFileName", rec.o27ArchivePdfFileName);

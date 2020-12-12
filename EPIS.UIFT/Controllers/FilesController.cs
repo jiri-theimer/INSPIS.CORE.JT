@@ -259,7 +259,8 @@ namespace UIFT.Controllers
             string finalFilename = string.IsNullOrEmpty(attachment.o27ArchivePdfFileName) ? attachment.o27OriginalFileName : attachment.o27ArchivePdfFileName;
 
             // cesta k ulozenemu souboru
-            string path = UiRepository.BL.GlobalParams.LoadParam("UploadFolder");
+            //string path = UiRepository.BL.GlobalParams.LoadParam("UploadFolder");
+            string path = UiRepository.BL.App.UploadFolder;
             if (!path.EndsWith("\\"))
                 path += "\\";
             if (!string.IsNullOrEmpty(attachment.o27ArchiveFolder))
