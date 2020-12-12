@@ -8,7 +8,6 @@ var _tg_filterinput_timeout;
 var _tg_filter_is_active;
 var _tg_go2pid;
 var _tg_master_entity;
-var _tg_master_pid;
 var _tg_oncmclick;
 var _tg_ondblclick;
 var _tg_tablerows;
@@ -29,8 +28,7 @@ function tg_init(c) {
     _tg_url_filter = c.filterurl;
     _tg_url_export = c.exporturl;
     _tg_go2pid = c.go2pid;
-    _tg_master_entity = c.master_entity;
-    _tg_master_pid = c.master_pid;
+    _tg_master_entity = c.master_entity;    
     _tg_oncmclick = c.oncmclick;
     _tg_ondblclick = c.ondblclick;
     _tg_fixedcolumns = c.fixedcolumns;
@@ -128,25 +126,12 @@ function tg_init(c) {
     _tg_filter_is_active = tg_is_filter_active();
 }
 
-function get_all_params() {
-    var params = {
-        entity: _tg_entity,
-        j72id: _j72id,
-        go2pid: _tg_go2pid,
-        master_entity: _tg_master_entity,
-        master_pid: _tg_master_pid,
-        oncmclick: _tg_oncmclick,
-        ondblclick: _tg_ondblclick,
-        fixedcolumns: _tg_fixedcolumns,
-        pathname: location.pathname
-    }
-    return params;
-}
+
 
 function tg_post_data() {
 
 
-    $.post(_tg_url_data, { tgi: get_all_params() }, function (data) {
+    $.post(_tg_url_data, { tgi: get_all_tgi_params(), pathpars: get_all_path_values() }, function (data) {
 
         refresh_environment_after_post("first_data", data);
 
@@ -181,8 +166,7 @@ function tg_post_handler(strOper, strKey, strValue) {
         oper: strOper,
         key: strKey,
         value: strValue,
-        master_entity: _tg_master_entity,
-        master_pid: _tg_master_pid,
+        master_entity: _tg_master_entity,        
         oncmclick: _tg_oncmclick,
         ondblclick: _tg_ondblclick,
         fixedcolumns: _tg_fixedcolumns,
@@ -191,7 +175,7 @@ function tg_post_handler(strOper, strKey, strValue) {
     
 
     $("#tabgrid1_tbody").html("<b>Loading...</b>");
-    $.post(_tg_url_handler, { tgi: params }, function (data) {
+    $.post(_tg_url_handler, { tgi: params, pathpars: get_all_path_values() }, function (data) {
         // _notify_message("vrátilo se: oper: " + strOper + ", key: " + strKey + ", value: " + strValue);
 
         refresh_environment_after_post(strOper, data);
@@ -792,7 +776,7 @@ function tg_filter_send2server() {
     });
 
     $("#tabgrid1_tbody").html("<b>Loading...</b>");
-    $.post(_tg_url_filter, { tgi: get_all_params(), filter: ret }, function (data) {
+    $.post(_tg_url_filter, { tgi: get_all_tgi_params(), pathpars: get_all_path_values(), filter: ret }, function (data) {
 
         refresh_environment_after_post("filter", data);
 
@@ -913,7 +897,7 @@ function tg_dblclick(row) {
 
 function tg_export(format, scope) {
 
-    var url = _tg_url_export + "?j72id=" + _j72id + "&format=" + format + "&pathname=" + location.pathname+"&master_pid="+_tg_master_pid;
+    var url = _tg_url_export + "?j72id=" + _j72id + "&format=" + format + "&pathname=" + location.pathname;
     if (scope === "selected") {
         var pids = $("#tg_selected_pids").val();
         if (pids === "") {
@@ -997,4 +981,36 @@ function tg_select_one_row(ctl, pid) {
 
     $("#tg_selected_pid").val(pid);
     $("#tg_selected_pids").val(pid);
+}
+
+
+function get_all_tgi_params() {
+    
+    var params = {
+        entity: _tg_entity,
+        j72id: _j72id,
+        go2pid: _tg_go2pid,
+        master_entity: _tg_master_entity,        
+        oncmclick: _tg_oncmclick,
+        ondblclick: _tg_ondblclick,
+        fixedcolumns: _tg_fixedcolumns,
+        pathname: location.pathname
+    }
+    return params;
+}
+
+function get_all_path_values() {    //rozloží kompletní querystring do pole vhodné pro BO.StringPair
+    var onepar;
+    var pars = [];
+    var in_url_str = window.location.search.replace("?", "").split("&");
+    $.each(in_url_str, function (kay, val) {
+        var v = val.split("=");
+        onepar = {
+            Key: v[0],
+            Value: v[1]
+        }
+        pars.push(onepar);
+    });
+
+    return pars;
 }

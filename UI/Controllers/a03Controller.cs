@@ -222,10 +222,10 @@ namespace UI.Controllers
             v.NavTabs.Add(AddTab("Školy zřizovatele", "a03Institution", "/TheGrid/SlaveView?prefix=a03&master_flag=founder"));
             strBadge = null;
             if (c.supervisory_count > 0) strBadge = c.supervisory_count.ToString();
-            v.NavTabs.Add(AddTab("Dohled", "a03Institution", "/TheGrid/SlaveView?prefix=a03&master_flag=supervisor",true,strBadge));
+            v.NavTabs.Add(AddTab("Dohled", "Dohled", "/TheGrid/SlaveView?prefix=a03&master_flag=supervisor",true,strBadge));
             strBadge = null;
             if (c.podrizene_count > 0) strBadge = c.podrizene_count.ToString();
-            v.NavTabs.Add(AddTab("Podřízené", "a03Institution", "/TheGrid/SlaveView?prefix=a03&master_flag=parent",true,strBadge));
+            v.NavTabs.Add(AddTab("Podřízené", "Podrizene", "/TheGrid/SlaveView?prefix=a03&master_flag=parent",true,strBadge));
             strBadge = null;
             if (c.a42_count > 0) strBadge = c.a42_count.ToString();
             v.NavTabs.Add(AddTab("INEZ", "a42Qes", "/TheGrid/SlaveView?prefix=a42",true,strBadge));

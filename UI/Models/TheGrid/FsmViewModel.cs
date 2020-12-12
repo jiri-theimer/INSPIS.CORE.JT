@@ -18,7 +18,7 @@ namespace UI.Models
         
         public string master_entity { get; set; }
         public int master_pid { get; set; }
-        
+        public string master_flag { get; set; } //dodatečný parametr k master_entity+master_pid, příklad: parent/founder
 
         public List<NavTab> NavTabs;
 
