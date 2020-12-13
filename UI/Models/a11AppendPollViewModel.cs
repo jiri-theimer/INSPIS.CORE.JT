@@ -12,5 +12,7 @@ namespace UI.Models
         public int AccessTokenMinValue { get; set; }
         public int SelectedK01ID { get; set; }
         public string SelectedK01fullname_desc { get; set; }
+
+        public TheGridInput gridinput { get; set; }
     }
 }

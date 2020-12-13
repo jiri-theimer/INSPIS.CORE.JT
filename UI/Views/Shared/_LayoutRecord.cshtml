@@ -101,7 +101,7 @@
 
 
 
-<script type="text/javascript">
+    <script type="text/javascript">
         var _modal;
 
     $(document).ready(function ()
@@ -197,6 +197,8 @@
             if (typeof header === "undefined") header = "";
             if (document.getElementById("myModalContainer")) {
                 //modal div na stránce již existuje
+                $("#fraModalContent").css("visibility", "hidden");
+                $("#iframe_is_loading").text("Loading...");
             } else {
                 var el = document.createElement("DIV");
                 $(el).css("position", "absolute");
@@ -207,11 +209,11 @@
                 var s = "<div id='myModalContent'>";
                 s+= "<div style='height:30px;background-color: green;color:white;padding:3px;'>";
                 s += "<button class='btn btn-success btn-sm float-left' onclick='_window_in_modal_close()' style='margin-left:3px;margin-right:3px;'>&times;</button>";
-                s += "<span>" + header + "</span>";
+                s += "<span>" + header + "</span><span id='iframe_is_loading'>Loading...</span>";
                 s += "<button class='btn btn-success btn-sm float-right' onclick='_window_in_modal_close()' style='margin-right:3px;'>&times;</button>";
                 s += "</div>";
-                s += "<div id='myModalFrame' style='padding: 0px; margin:0px 0px 0px 10px; overflow: auto; -webkit-overflow-scrolling: touch;'>";
-                s += "<iframe id='fraModalContent' name='fraModalContent' frameborder='0'></iframe>";
+                s += "<div id='myModalFrame' style='padding: 0px; margin:0px 0px 0px 10px; overflow: auto; -webkit-overflow-scrolling: touch;'>";                
+                s += "<iframe id='fraModalContent' name='fraModalContent' frameborder='0' onload='iframe_loaded()'></iframe>";
                 s += "</div>";
                 s += "</div>";
 
@@ -243,11 +245,17 @@
 
 
             $(_modal).css("display", "block");
+    }
+
+
+        function iframe_loaded() {
+            $("#fraModalContent").css("visibility", "visible");
+            $("#iframe_is_loading").text("");
         }
 
 
-    
-</script>
+
+    </script>
 
     @RenderSection("Scripts", required: false)
 

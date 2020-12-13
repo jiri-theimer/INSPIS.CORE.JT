@@ -16,6 +16,7 @@ namespace UI.Models
         public string ondblclick { get; set; } = "tg_dblclick";
         public string controllername { get; set; } = "TheGrid";
         public string fixedcolumns { get; set; }
+    
         public string extendpagerhtml { get; set; }
         public string viewstate { get; set; }
     }

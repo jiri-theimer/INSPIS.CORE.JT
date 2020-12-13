@@ -20,6 +20,8 @@ var _tg_is_enable_clipboard = true;
 var _tg_fixedcolumns;
 var _tg_viewstate;
 
+const event_thegridbound = new Event("thegrid_rebound");
+//const event_thegridrowselect = new CustomEvent("thegrid_rowselect", { detail: { pid: 0 } });
 
 function tg_init(c) {
     _tg_entity = c.entity;
@@ -183,6 +185,10 @@ function tg_post_handler(strOper, strKey, strValue) {
         // _notify_message("vrátilo se: oper: " + strOper + ", key: " + strKey + ", value: " + strValue);
 
         refresh_environment_after_post(strOper, data);
+        
+        document.dispatchEvent(event_thegridbound);
+
+
     })
         .fail(function (error) {
             $("#tabgrid1_tbody").html("<code>" + error.responseJSON + "</code>");
@@ -236,9 +242,12 @@ function tg_setup_selectable() {
 
         var pid_pre = $("#tg_selected_pid").val();
 
-        if (pid !== pid_pre) {
+        if (pid !== pid_pre) { 
+            var event_thegridrowselect = new CustomEvent("thegrid_rowselect", { detail: { pid: pid,pid_pre:pid_pre } });                  
+            document.dispatchEvent(event_thegridrowselect);
+            
 
-            thegrid_handle_event("rowselect", pid); //povinná metoda na hostitelské stránce gridu!
+            //thegrid_handle_event("rowselect", pid); //již se nepoužívá
         }
         if (e.ctrlKey) {
 
@@ -568,14 +577,11 @@ function tg_filter_ok() {
     $("#hidoper_" + field).val(operator);
 
     _tg_filter_is_active = tg_is_filter_active();
-    //if (filter_before !== _tg_filter_is_active && _tg_filter_is_active === true) {
-
-    //    //tg_raise_page_event("filter-change");   //odeslat událost do mateřské stránky
-    //}
+   
     if (_tg_filter_is_active === false && filter_before === true) {
         tg_filter_clear();
 
-        //tg_raise_page_event("filter-clear");   //odeslat událost do mateřské stránky
+        
     }
 
     tg_filter_hide_popup();
@@ -793,6 +799,8 @@ function tg_filter_send2server() {
             $("#cmdDestroyFilter").css("display", "none");
 
         }
+
+        document.dispatchEvent(event_thegridbound);
 
     })
         .fail(function (error) {

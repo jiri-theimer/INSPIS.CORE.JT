@@ -47,7 +47,7 @@ namespace UI.Controllers
                 v.CheckedIDs = System.IO.File.ReadAllText(GetTempFilePath());
             }
 
-            RefreshStateIndex(v);
+            RefreshStateIndex(v);            
             inhale_tree1(v);
             
 
@@ -59,6 +59,16 @@ namespace UI.Controllers
             var gi = new TheGridInput() { entity = "p86TempStat", controllername = "Stat", ondblclick = null, oncmclick = null, fixedcolumns = fixedcolumns };
             gi.viewstate = gridguid;
             gi.query = new BO.myQuery("p86");
+
+            Factory.CBL.ClearUserParamsCache(); //docílit toho, aby se guid načetl na 100% z databáze
+            var strGUID = Factory.CBL.LoadUserParam("Stat-GridGuid");
+            gi.query.explicit_sqlwhere = "a.p86GUID=" + BO.BAS.GS(strGUID);     //základní podmínka podle GUID statistiky
+            var strAddFilterSql = Factory.CBL.LoadUserParam("Stat-AddFilterSql");
+            if (!string.IsNullOrEmpty(strAddFilterSql))
+            {
+                gi.query.explicit_sqlwhere += " AND (" + strAddFilterSql + ")";     //dodatečný filtr podle záložky [Filtrování dat]
+            }
+            
             
             return gi;
         }
@@ -188,6 +198,8 @@ namespace UI.Controllers
 
             }
 
+            v.gridinput = GetGridInput(v.GridColumns, v.GridGuid);  //do gridu načíst aktuální filtrovací podmínky a vstupy
+            
             return View(v);
         }
 
@@ -371,6 +383,7 @@ namespace UI.Controllers
             SaveAddFilter2Temp(v);
 
             v.gridinput = GetGridInput(v.GridColumns, v.GridGuid);
+
         }
 
         private string GetAddFilterSqlWhere(StatViewModel v)

@@ -129,11 +129,6 @@
         }
 
 
-        /*automaticky volaná událost z thegrid controlu*/
-        function thegrid_handle_event(event_name, pid) {
-
-        }
-
 
         function change_grid(j72id) {
             $.post("/Common/SetUserParam", { key: "flatview-j72id-@(Model.prefix)",value:j72id  }, function (data) {

@@ -395,9 +395,18 @@ namespace UI.Controllers
             {
                 return this.StopPage(true, "Tato akce je již uzavřena.");
             }
-
+            
             return View(v);
         }
+
+        //private TheGridInput GetGridInput(int a01id)
+        //{
+        //    var gi = new TheGridInput() { entity= "a11EventForm", master_entity = "a01Event" };
+        //    gi.query = new BO.myQuery("a11") { a01id = a01id };
+        //    gi.viewstate = a01id.ToString();
+        //    return gi;
+        //}
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult AppendPoll(Models.a11AppendPollViewModel v, string oper, string guid, string pids)
@@ -538,6 +547,7 @@ namespace UI.Controllers
 
             v.lisA11Saved = Factory.a11EventFormBL.GetList(mq).Where(p => p.a11IsPoll == true);
 
+            //v.gridinput = GetGridInput(v.a01ID);
         }
 
 

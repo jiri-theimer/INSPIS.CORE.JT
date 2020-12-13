@@ -239,6 +239,13 @@
 
         
 
+        document.addEventListener("thegrid_rebound", event => {
+            UkazSpravneNazvySloupcu();
+        });
+
+        
+        
+
     @if(Model.GridGuid != null && Model.ActiveTabIndex !=3)
         {
             <text>
@@ -308,17 +315,7 @@
         });
 
 
-        var h = $("#GridHeaders").val();
-        var c = $("#GridColumns").val();
-        if (c != "") {
-            var arrh = h.split(",");
-            var arrc = c.split(",");
-            for (var i = 0; i <= arrc.length - 1; i++) {
-                if (arrh[i] != "") {
-                    $("#th_" + arrc[i]).text(arrh[i]);
-                }
-            }
-        }
+        
 
         if ($("#TreeContainerHeight").val() == "") {
             var offset = $("#offset1").offset();
@@ -332,7 +329,7 @@
         }
 
 
-
+        UkazSpravneNazvySloupcu();
 
 
     });
@@ -364,10 +361,7 @@
     }
 
 
-    /*automaticky volaná událost z thegrid controlu*/
-    function thegrid_handle_event(event_name, pid) {
-
-    }
+    
 
 
     function handle_submit(action) {        
@@ -400,6 +394,23 @@
 
             if (nodes[i].hasChildren) {
                 checkedNodeIds(nodes[i].children.view(), checkedNodes);
+            }
+        }
+    }
+
+    function UkazSpravneNazvySloupcu() {
+        var h = $("#GridHeaders").val();
+        
+        var c = $("#GridColumns").val();
+        
+        if (c != "") {
+            var arrh = h.split(",");
+            var arrc = c.split(",");
+            for (var i = 0; i <= arrc.length - 1; i++) {
+                if (arrh[i] != "") {
+                    $("#th_" + arrc[i]).html(arrh[i]);
+                    
+                }
             }
         }
     }

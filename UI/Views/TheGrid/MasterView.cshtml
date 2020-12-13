@@ -106,6 +106,10 @@
             $("#FilterMyInvolvement").addClass("filtered");
         }
 
+        document.addEventListener("thegrid_rowselect", function (e) {       //změna řádku gridu: automaticky vyvolávaná událost z gridu
+            thegrid_handle_rowselect(e.detail.pid);
+        });
+
         @if(Model.period != null)
         {
         <text>
@@ -144,8 +148,8 @@
     });
 
 
-     /*automaticky volaná událost z thegrid controlu*/
-        function thegrid_handle_event(event_name, pid) {
+     
+        function thegrid_handle_rowselect(pid) {
             $("#cur_pid").val(pid);
             var tabUrl = "";
 
