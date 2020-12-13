@@ -194,7 +194,7 @@ namespace UI.Controllers
 
             if (!v.IsGridView)
             {
-                v.lisA11 = Factory.a11EventFormBL.GetList(v.gridinput.query);
+                v.lisA11 = Factory.a11EventFormBL.GetList(v.gridinput.query).OrderBy(p => p.a11IsPoll);
             }
 
             return View(v);

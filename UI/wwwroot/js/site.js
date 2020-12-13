@@ -764,12 +764,15 @@ function clear_form(a11id,question) {
     
 }
 
-function _showloading(index) {
-    if (typeof index === "undefined") {
-        index="1"
+function _showloading() {    
+    var index = "1";
+    if (window !== top) {   //voláno uvnitř iframe
+        index = "2";
+    } 
+    if (document.getElementById("#site_loading" + index)) {
+        $("#site_loading" + index).css("display", "block");
     }
     
-    $("#site_loading"+index).css("display", "block");
 }
 
 function _resize_textareas() {

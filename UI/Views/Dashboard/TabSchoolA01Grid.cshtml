@@ -32,7 +32,7 @@
 
 
 
-<vc:the-grid entity="a01" j72id="@Model.j72id" go2pid="@Model.go2pid" master_entity="a03Institution" master_pid="@Model.a03ID" contextmenuflag="1" ondblclick="a01_doubleclick" master_flag="" masterviewflag="3" addfilterid="a10id*@Model.a10ID" fixedcolumns="@Model.GridColumns"></vc:the-grid>
+<vc:the-grid input="@Model.gridinput"></vc:the-grid>
 
 
 
@@ -89,7 +89,7 @@
         }
 
         function reload() {
-            _showloading("2");
+            _showloading();
             location.replace("/Dashboard/TabSchoolA01Grid?a03id=@Model.a03ID&a10id=@Model.a10ID");
 
         }
@@ -106,7 +106,7 @@
         }
 
         function a01_doubleclick(row) {
-            _showloading("2");
+            _showloading();
             var pid = row.id.replace("r", "");
             window.open("/a01/RecPage?pid=" + pid,"_top");
             

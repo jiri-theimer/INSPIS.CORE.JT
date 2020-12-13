@@ -1122,8 +1122,7 @@ a.reczoom {
 #site_loading2 {
     position: absolute;
     font-weight:bold;
-    z-index: 9999;
-    background-color: #E5E5E5;
+    z-index: 9999;    
     border-radius: 4px;
     padding: 4px;
     margin-left:700px;

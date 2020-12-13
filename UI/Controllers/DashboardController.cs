@@ -12,10 +12,49 @@ namespace UI.Controllers
     public class DashboardController : BaseController
     {
         private readonly BL.ThePeriodProvider _pp;
-        public DashboardController(BL.ThePeriodProvider pp)
+        private readonly BL.TheColumnsProvider _colsProvider;
+        public DashboardController(BL.ThePeriodProvider pp, BL.TheColumnsProvider cp)
         {
             _pp = pp;
+            _colsProvider = cp;
         }
+
+        //-----------Začátek GRID událostí-------------
+        public TheGridOutput HandleTheGridFilter(TheGridUIContext tgi, List<BO.StringPair> pathpars, List<BO.TheGridColumnFilter> filter) //TheGrid povinná metoda: sloupcový filtr
+        {
+            var a03id = Convert.ToInt32(tgi.viewstate[0]);
+            var a10id = Convert.ToInt32(tgi.viewstate[1]);
+            var c = new UI.TheGridSupport(GetSchoolA01GridInput(a03id,a10id,tgi.fixedcolumns), Factory, _colsProvider);
+
+            return c.Event_HandleTheGridFilter(tgi, filter);
+
+        }
+        public TheGridOutput HandleTheGridOper(TheGridUIContext tgi, List<BO.StringPair> pathpars)    //TheGrid povinná metoda: změna třídění, pageindex, změna stránky
+        {
+            var a03id = Convert.ToInt32(tgi.viewstate[0]);
+            var a10id = Convert.ToInt32(tgi.viewstate[1]);
+            var c = new UI.TheGridSupport(GetSchoolA01GridInput(a03id, a10id, tgi.fixedcolumns), Factory, _colsProvider);
+
+            return c.Event_HandleTheGridOper(tgi);
+
+        }
+        public string HandleTheGridMenu(TheGridUIContext tgi, List<BO.StringPair> pathpars)  //TheGrid povinná metoda: zobrazení grid menu
+        {
+            var a03id = Convert.ToInt32(tgi.viewstate[0]);
+            var a10id = Convert.ToInt32(tgi.viewstate[1]);
+            var c = new UI.TheGridSupport(GetSchoolA01GridInput(a03id, a10id, tgi.fixedcolumns), Factory, _colsProvider);
+
+            return c.Event_HandleTheGridMenu(tgi.j72id);
+        }
+        public TheGridExportedFile HandleTheGridExport(string format, string pids, TheGridUIContext tgi, List<BO.StringPair> pathpars)  //TheGrid povinná metoda pro export dat
+        {
+            var a03id = Convert.ToInt32(tgi.viewstate[0]);
+            var a10id = Convert.ToInt32(tgi.viewstate[1]);
+            var c = new UI.TheGridSupport(GetSchoolA01GridInput(a03id, a10id, tgi.fixedcolumns), Factory, _colsProvider);
+
+            return c.Event_HandleTheGridExport(format, tgi.j72id, pids);
+        }
+        //-----------Konec GRID událostí-------------
 
         public IActionResult TabSchoolA01Grid(int a03id,int a10id)   //podformulář pro grid školních akcí
         {
@@ -34,6 +73,8 @@ namespace UI.Controllers
                 v.IsAllowCreateA01 = true;  //může zakládat akce tohoto typu
             }
 
+            v.gridinput = GetSchoolA01GridInput(v.a03ID, v.a10ID,v.GridColumns);
+
             v.period = new PeriodViewModel() { IsShowButtonRefresh = true };            
             var per =basUI.InhalePeriodDates(_pp,Factory,"a01", "a03Institution");
             v.period.PeriodValue = per.pid;
@@ -42,6 +83,17 @@ namespace UI.Controllers
 
             return View(v);
         }
+
+        private TheGridInput GetSchoolA01GridInput(int a03id,int a10id,string fixedcolumns)
+        {
+            var gi = new TheGridInput() {entity="a01Event", controllername = "Dashboard" };
+            gi.query = new BO.myQuery("a01") { a03id = a03id,a10id=a10id };
+            gi.fixedcolumns = fixedcolumns;
+            gi.ondblclick = "a01_doubleclick";
+            gi.viewstate = a03id.ToString() + "|" + a10id.ToString();
+            return gi;
+        }
+
         public IActionResult TabSchoolAccounts(int a03id)   //podformulář pro správu školních účtů v rámci školy
         {
             var v = new a39TabSchoolAccount() { a03ID = a03id };
@@ -241,10 +293,18 @@ namespace UI.Controllers
                 v.IsAllowCreateA01 = true;  //může zakládat všechny akce
                 var mq = new BO.myQuery("a10") { IsRecordValid = true };
                 var lis = Factory.a10EventTypeBL.GetList(mq).Where(p => p.a10IsUse_K01 == false);
-                foreach (var c in lis)
+                if (lis.Count() <= 8)
                 {
-                    v.NavTabs.Add(AddTab(c.a10Name, "a01", "/Dashboard/TabSchoolA01Grid?a03id=" + v.a03ID.ToString() + "&a10id=" + c.a10ID.ToString(), false, null));
+                    foreach (var c in lis)
+                    {
+                        v.NavTabs.Add(AddTab(c.a10Name, "a01", "/Dashboard/TabSchoolA01Grid?a03id=" + v.a03ID.ToString() + "&a10id=" + c.a10ID.ToString(), false, null));
+                    }
                 }
+                else
+                {
+                    v.NavTabs.Add(AddTab("Akce", "a01", "/Dashboard/TabSchoolA01Grid?a03id=" + v.a03ID.ToString(), false, null));
+                }
+                
             }
 
             

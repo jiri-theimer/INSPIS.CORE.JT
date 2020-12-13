@@ -44,7 +44,7 @@
     <table>
         <tr>
             <td>
-                <select class="form-control" asp-for="@Model.FilterMyInvolvement" onchanage="myinvolvement_change(this)">
+                <select class="form-control" asp-for="@Model.FilterMyInvolvement" onchange="myinvolvement_change(this)">
                     <option value="">@("-- "+_f.tra("Mé zapojení do úkolu")+" --")</option>
                     <option value="member">@_f.tra("Jsem řešitelem úkolu")</option>
                     <option value="issuer">@_f.tra("Jsem zakladatel úkolu")</option>
@@ -122,6 +122,7 @@
         }
 
         function reload() {
+            _showloading();
             location.replace("/TheGrid/SlaveView?prefix=@Model.prefix&master_entity=@Model.gridinput.master_entity&master_pid=@Model.master_pid");
 
         }
@@ -143,8 +144,8 @@
             });
         }
 
-        function myinvolvement_change(cbx) {
-            $.post("/Common/SetUserParam", { key: "grid-filter-myinvolvement-@(Model.prefix+"-"+Model.gridinput.master_entity)", value: cbx.value }, function (data) {
+        function myinvolvement_change(cbx) {            
+            $.post("/Common/SetUserParam", { key: "grid-filter-myinvolvement-@(Model.prefix+"-"+Model.gridinput.master_entity)", value: cbx.value }, function (data) {                
                 reload();
             });
         }

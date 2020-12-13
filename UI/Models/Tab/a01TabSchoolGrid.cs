@@ -17,5 +17,7 @@ namespace UI.Models.Tab
         public string GridColumns { get; set; }
         public PeriodViewModel period { get; set; } //fixní filtr v horním pruhu
         public bool IsAllowCreateA01 { get; set; }
+
+        public TheGridInput gridinput { get; set; }
     }
 }
