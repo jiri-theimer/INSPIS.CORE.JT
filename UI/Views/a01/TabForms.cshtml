@@ -42,7 +42,7 @@
 @if (Model.IsGridView == true)
 {
     
-    <vc:the-grid entity="a11EventForm" j72id="0" go2pid="0" master_entity="a01Event" oncmclick="tg_cm(event)" ondblclick="tg_dblclick" fixedcolumns="" extendpagerhtml="" controllername="TheGrid" myquery="@Model.myQueryGrid"></vc:the-grid>
+    <vc:the-grid  input="@Model.gridinput"></vc:the-grid>
 }
 else
 {

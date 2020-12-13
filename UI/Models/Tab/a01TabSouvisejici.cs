@@ -13,6 +13,6 @@ namespace UI.Models.Tab
 
         public bool IsGridView { get; set; }
 
-        public BO.myQuery myQueryGrid { get; set; }
+        public TheGridInput gridinput { get; set; }
     }
 }

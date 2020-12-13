@@ -13,8 +13,14 @@ namespace UI.Controllers
 {
     public class a01Controller : BaseController
     {
+        private readonly BL.TheColumnsProvider _colsProvider;
+        public a01Controller(BL.TheColumnsProvider cp)
+        {
+            _colsProvider = cp;
+        }
+
         //Odstranit akci
-        public IActionResult KillRecord(int pid,bool confirm)
+        public IActionResult KillRecord(int pid, bool confirm)
         {
             var v = new a01RecPage() { pid = pid };
             v.Rec = Factory.a01EventBL.Load(v.pid);
@@ -29,9 +35,9 @@ namespace UI.Controllers
                 {
                     return this.StopPage(true, "Funkce je dostupná pouze administrátorovi.");
                 }
-            }                        
+            }
 
-            if (confirm && Factory.CBL.DeleteRecord("a01",v.Rec.pid)=="1")
+            if (confirm && Factory.CBL.DeleteRecord("a01", v.Rec.pid) == "1")
             {
                 Factory.CBL.SetUserParam("a01-RecPage-pid", null);
                 v.SetJavascript_CallOnLoad(v.Rec.pid);
@@ -48,7 +54,7 @@ namespace UI.Controllers
             if (v.a01id == 0)
             {
                 return this.StopPageSubform("pid is missing");
-            }            
+            }
             RefreshStateAddSouvisejici(v);
             var perm = Factory.a01EventBL.InhalePermission(v.RecA01);
             if (perm.PermValue == BO.a01EventPermissionENUM.FullAccess || perm.PermValue == BO.a01EventPermissionENUM.ShareTeam_Owner || perm.PermValue == BO.a01EventPermissionENUM.ShareTeam_Leader)
@@ -62,7 +68,7 @@ namespace UI.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddSouvisejici(a01AddSouvisejici v,string oper,int pid)
+        public IActionResult AddSouvisejici(a01AddSouvisejici v, string oper, int pid)
         {
             if (oper == "add_a01id")
             {
@@ -77,15 +83,15 @@ namespace UI.Controllers
                 return View(v);
             }
             RefreshStateAddSouvisejici(v);
-            
+
             if (ModelState.IsValid)
             {
 
-                var c = new BO.a24EventRelation() { a01ID_Left = v.SelectedA01ID, a01ID_Right = v.RecA01.pid,a46ID=v.SelectedA46ID };
-                c.pid = Factory.a01EventBL.SaveA24Record(c);                
+                var c = new BO.a24EventRelation() { a01ID_Left = v.SelectedA01ID, a01ID_Right = v.RecA01.pid, a46ID = v.SelectedA46ID };
+                c.pid = Factory.a01EventBL.SaveA24Record(c);
                 if (c.pid > 0)
-                {                    
-                    v.SetJavascript_CallOnLoad("/a01/RecPage?pid="+v.SelectedA01ID.ToString());
+                {
+                    v.SetJavascript_CallOnLoad("/a01/RecPage?pid=" + v.SelectedA01ID.ToString());
                     return View(v);
                 }
 
@@ -100,7 +106,7 @@ namespace UI.Controllers
             v.RecA01 = Factory.a01EventBL.Load(v.a01id);
             if (v.SelectedA01ID > 0)
             {
-                v.RecA01Selected= Factory.a01EventBL.Load(v.SelectedA01ID);
+                v.RecA01Selected = Factory.a01EventBL.Load(v.SelectedA01ID);
             }
             v.lisA24 = Factory.a01EventBL.GetList_a24(v.a01id);
 
@@ -108,12 +114,12 @@ namespace UI.Controllers
 
         public IActionResult AddAttachment(int pid)
         {
-            var v = new a01AddAttachment() { a01id = pid,UploadGuid=BO.BAS.GetGuid() };
+            var v = new a01AddAttachment() { a01id = pid, UploadGuid = BO.BAS.GetGuid() };
             if (v.a01id == 0)
             {
                 return this.StopPageSubform("pid is missing");
             }
-            
+
             RefreshStateAddAttachment(v);
             if (v.RecA01.isclosed)
             {
@@ -130,10 +136,10 @@ namespace UI.Controllers
             {
                 if (Factory.o27AttachmentBL.GetTempFiles(v.UploadGuid).Count() == 0)
                 {
-                    this.AddMessage("Chybí nahrát alespoň jedna příloha.");return View(v);
+                    this.AddMessage("Chybí nahrát alespoň jedna příloha."); return View(v);
                 }
-                bool b=Factory.o27AttachmentBL.SaveChangesAndUpload(v.UploadGuid, 101, v.RecA01.pid);
-                
+                bool b = Factory.o27AttachmentBL.SaveChangesAndUpload(v.UploadGuid, 101, v.RecA01.pid);
+
                 if (b)
                 {
 
@@ -152,41 +158,65 @@ namespace UI.Controllers
         {
             v.RecA01 = Factory.a01EventBL.Load(v.a01id);
 
-            
+
         }
 
         public IActionResult TabSouvisejici(int pid)
         {
-            var v = new a01TabSouvisejici() { pid = pid, myQueryGrid = new BO.myQuery("a01") };
+            var v = new a01TabSouvisejici() { pid = pid };
             if (v.pid == 0)
             {
                 return this.StopPageSubform("pid is missing");
             }
-            v.myQueryGrid.a01id = pid;
             v.IsGridView = Factory.CBL.LoadUserParamBool("TabSouvisejici-IsGridView", false);
+            v.gridinput = GetGridInput("TabSouvisejici",v.pid);
             v.RecA01 = Factory.a01EventBL.Load(v.pid);
-            if (v.IsGridView == false)
+            if (!v.IsGridView)
             {
                 v.lisA24 = Factory.a01EventBL.GetList_a24(v.pid);
             }
-            
+
             return View(v);
         }
         public IActionResult TabForms(int pid)
         {
-            var v = new a01TabForms() { pid = pid,myQueryGrid=new BO.myQuery("a11") };
+            var v = new a01TabForms() { pid = pid };
             if (v.pid == 0)
             {
                 return this.StopPageSubform("pid is missing");
             }
-            v.myQueryGrid.a01id = pid;
+
             v.IsGridView = Factory.CBL.LoadUserParamBool("TabForms-IsGridView", false);
             v.RecA01 = Factory.a01EventBL.Load(v.pid);
             v.RecA10 = Factory.a10EventTypeBL.Load(v.RecA01.a10ID);
-            
-            v.lisA11 = Factory.a11EventFormBL.GetList(v.myQueryGrid);
+
+            v.gridinput = GetGridInput("TabForms",v.pid);
+
+            if (!v.IsGridView)
+            {
+                v.lisA11 = Factory.a11EventFormBL.GetList(v.gridinput.query);
+            }
+
             return View(v);
         }
+
+        private TheGridInput GetGridInput(string pagename, int a01id)
+        {
+            var gi = new TheGridInput() { controllername = "a01", master_entity = "a01Event" };
+            if (pagename.ToLower().Contains("tabforms"))
+            {
+                gi.entity = "a11EventForm";
+                gi.query = new BO.myQuery("a11") { a01id = a01id };
+            }
+            if (pagename.ToLower().Contains("tabsouvisejici"))
+            {
+                gi.entity = "a01Event";
+                gi.query = new BO.myQuery("a01") { a01id = a01id };
+            }            
+            gi.viewstate = a01id.ToString();
+            return gi;
+        }
+        
         public IActionResult TabUcastnici(int pid)
         {
             var v = new a01TabUcastnici() { pid = pid };
@@ -292,7 +322,7 @@ namespace UI.Controllers
             v.TagNames = tg.TagNames;
             v.TagHtml = tg.TagHtml;
 
-            v.Toolbar = new MyToolbarViewModel(v.Rec) { AllowArchive = false, AllowClone = false,AllowDelete=Factory.CurrentUser.TestPermission(BO.j05PermValuEnum.AdminGlobal) };
+            v.Toolbar = new MyToolbarViewModel(v.Rec) { AllowArchive = false, AllowClone = false, AllowDelete = Factory.CurrentUser.TestPermission(BO.j05PermValuEnum.AdminGlobal) };
             return View(v);
         }
         [HttpPost]
@@ -346,7 +376,7 @@ namespace UI.Controllers
         //Stránka akce úrazu
         public IActionResult RecPageInjury(int pid)
         {
-            var v = new a01RecPageInjury() { pid = pid,Rec=new BO.a01Event() };
+            var v = new a01RecPageInjury() { pid = pid, Rec = new BO.a01Event() };
             v.Rec = Factory.a01EventBL.Load(v.pid);
             if (v.Rec == null)
             {
@@ -397,7 +427,7 @@ namespace UI.Controllers
                     {
                         Factory.CBL.SetUserParam("a01-RecPage-pid", pid.ToString());
                     }
-                    
+
                     v.RecLastEvent = Factory.b05Workflow_HistoryBL.LoadLast(v.pid);
                     v.RecIssuer = Factory.j02PersonBL.Load(v.Rec.j02ID_Issuer);
 
@@ -430,7 +460,7 @@ namespace UI.Controllers
             if (v.Rec.a01ParentID == 0)
             {
                 v.NavTabs.Add(AddTab("Historie událostí", "viewHistorie", "/a01/TabHistory?pid=" + v.pid.ToString()));
-            }            
+            }
             if (v.RecA10.a10IsUse_A41)
             {
                 strBadge = null;
@@ -438,25 +468,25 @@ namespace UI.Controllers
                 {
                     strBadge = c.a41_count.ToString();
                 }
-                v.NavTabs.Add(AddTab("Účastníci akce", "viewUcastnici", "/a01/TabUcastnici?pid=" + v.pid.ToString(),true, strBadge));
+                v.NavTabs.Add(AddTab("Účastníci akce", "viewUcastnici", "/a01/TabUcastnici?pid=" + v.pid.ToString(), true, strBadge));
             }
-            if (v.RecA10.a10IsUse_Period && v.Rec.a01ParentID==0)
+            if (v.RecA10.a10IsUse_Period && v.Rec.a01ParentID == 0)
             {
                 v.NavTabs.Add(AddTab("Časový plán", "viewCapacity", "/a35/TabCapacity?pid=" + v.pid.ToString()));
             }
 
             strBadge = null;
-            if (c.a11count_nonpoll>0 || c.a11count_poll > 0)
+            if (c.a11count_nonpoll > 0 || c.a11count_poll > 0)
             {
                 strBadge = c.a11count_nonpoll.ToString() + "+" + c.a11count_poll.ToString();
-            }            
-            v.NavTabs.Add(AddTab("Formuláře", "viewFormulare", "/a01/TabForms?pid=" + v.pid.ToString(),true, strBadge));
+            }
+            v.NavTabs.Add(AddTab("Formuláře", "viewFormulare", "/a01/TabForms?pid=" + v.pid.ToString(), true, strBadge));
             strBadge = null;
-            if (c.h04_actual>0 || c.h04_closed > 0)
+            if (c.h04_actual > 0 || c.h04_closed > 0)
             {
                 strBadge = c.h04_actual.ToString() + " + " + c.h04_closed.ToString();
             }
-            v.NavTabs.Add(AddTab("Úkoly/Lhůty", "h04ToDo", "/TheGrid/SlaveView?prefix=h04",true,strBadge));
+            v.NavTabs.Add(AddTab("Úkoly/Lhůty", "h04ToDo", "/TheGrid/SlaveView?prefix=h04", true, strBadge));
             if (v.Rec.a01ParentID == 0)
             {
                 strBadge = null;
@@ -464,15 +494,15 @@ namespace UI.Controllers
                 {
                     strBadge = c.o27_count.ToString();
                 }
-                v.NavTabs.Add(AddTab("Přílohy", "viewAttachments", "/a01/TabAttachments?pid=" + v.pid.ToString(),true,strBadge));
+                v.NavTabs.Add(AddTab("Přílohy", "viewAttachments", "/a01/TabAttachments?pid=" + v.pid.ToString(), true, strBadge));
             }
 
             strBadge = null;
-            if (c.a01_souvisejici>0 || c.a01_podrizene > 0)
+            if (c.a01_souvisejici > 0 || c.a01_podrizene > 0)
             {
                 strBadge = c.a01_podrizene.ToString() + " + " + c.a01_souvisejici.ToString();
             }
-            v.NavTabs.Add(AddTab("Související akce", "a01Event", "/a01/TabSouvisejici?pid="+v.pid.ToString(),true,strBadge));
+            v.NavTabs.Add(AddTab("Související akce", "a01Event", "/a01/TabSouvisejici?pid=" + v.pid.ToString(), true, strBadge));
 
             string strDefTab = Factory.CBL.LoadUserParam("recpage-tab-a01");
             var deftab = v.NavTabs[0];
@@ -488,6 +518,40 @@ namespace UI.Controllers
             deftab.CssClass += " active";
             v.DefaultNavTabUrl = deftab.Url;
         }
+
+
+        //-----------Začátek GRID událostí-------------
+        public TheGridOutput HandleTheGridFilter(TheGridUIContext tgi, List<BO.StringPair> pathpars, List<BO.TheGridColumnFilter> filter) //TheGrid povinná metoda: sloupcový filtr
+        {
+            var a01id = Convert.ToInt32(tgi.viewstate[0]);
+            var c = new UI.TheGridSupport(GetGridInput(tgi.pathname,a01id), Factory, _colsProvider);
+
+            return c.Event_HandleTheGridFilter(tgi, filter);
+
+        }
+        public TheGridOutput HandleTheGridOper(TheGridUIContext tgi, List<BO.StringPair> pathpars)    //TheGrid povinná metoda: změna třídění, pageindex, změna stránky
+        {
+            var a01id = Convert.ToInt32(tgi.viewstate[0]);
+            var c = new UI.TheGridSupport(GetGridInput(tgi.pathname,a01id), Factory, _colsProvider);
+
+            return c.Event_HandleTheGridOper(tgi);
+
+        }
+        public string HandleTheGridMenu(TheGridUIContext tgi, List<BO.StringPair> pathpars)  //TheGrid povinná metoda: zobrazení grid menu
+        {
+            var a01id = Convert.ToInt32(tgi.viewstate[0]);
+            var c = new UI.TheGridSupport(GetGridInput(tgi.pathname,a01id), Factory, _colsProvider);
+
+            return c.Event_HandleTheGridMenu(tgi.j72id);
+        }
+        public TheGridExportedFile HandleTheGridExport(string format, string pids, TheGridUIContext tgi, List<BO.StringPair> pathpars)  //TheGrid povinná metoda pro export dat
+        {
+            var a01id = Convert.ToInt32(tgi.viewstate[0]);
+            var c = new UI.TheGridSupport(GetGridInput(tgi.pathname,a01id), Factory, _colsProvider);
+
+            return c.Event_HandleTheGridExport(format, tgi.j72id, pids);
+        }
+        //-----------Konec GRID událostí-------------
 
 
     }
