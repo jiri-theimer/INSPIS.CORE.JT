@@ -16,8 +16,18 @@ namespace UI.Controllers
             var c = Factory.EProvider.ByPrefix(prefix);
             var v = new GridMultiSelect() { entity = c.TableName,prefix=prefix,entityTitle=c.AliasPlural };
 
+            v.gridinput = GetGridInput(v.entity);
             return View(v);
         }
+
+        private TheGridInput GetGridInput(string entity)
+        {
+            var gi = new TheGridInput() { entity = entity, controllername = "TheGrid",ondblclick=null,oncmclick=null };            
+            gi.query = new BO.myQuery(entity.Substring(0, 3));
+            gi.j72id = Factory.CBL.LoadUserParamInt("GridMultiSelect-j72id-"+entity.Substring(0,3));
+            return gi;
+        }
+
         public IActionResult RecordValidity(string strD1,string strD2)
         {
             

@@ -103,7 +103,7 @@
             }
         });
         $(document).on("keydown", function (e) {
-            if (e.keyCode == 27 && _modal.style.display == "block") {
+            if (e.keyCode == 27 && _modal !=null && _modal.style.display == "block") {
                 _window_in_modal_close();
 
             }

@@ -22,5 +22,7 @@ namespace UI.Models
         public string go2pid_url_in_iframe { get; set; }
 
         public string dblclick { get; set; } = "tg_dblclick";
+
+        public TheGridInput gridinput { get; set; }
     }
 }

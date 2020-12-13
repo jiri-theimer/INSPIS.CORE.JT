@@ -14,10 +14,13 @@ namespace UI.Controllers
 {
     public class StatController : BaseController
     {
+        private readonly BL.TheColumnsProvider _colsProvider;
+
         private readonly BL.ThePeriodProvider _pp;
-        public StatController(BL.ThePeriodProvider pp)
+        public StatController(BL.ThePeriodProvider pp, BL.TheColumnsProvider cp)
         {
             _pp = pp;
+            _colsProvider = cp;
         }
 
         private string GetTempFilePath()
@@ -44,13 +47,20 @@ namespace UI.Controllers
                 v.CheckedIDs = System.IO.File.ReadAllText(GetTempFilePath());
             }
 
-
-
-
             RefreshStateIndex(v);
             inhale_tree1(v);
+            
 
             return ViewTup(v, BO.j05PermValuEnum.Menu_Analyze);
+        }
+
+        private TheGridInput GetGridInput(string fixedcolumns,string gridguid)
+        {
+            var gi = new TheGridInput() { entity = "p86TempStat", controllername = "Stat", ondblclick = null, oncmclick = null, fixedcolumns = fixedcolumns };
+            gi.viewstate = gridguid;
+            gi.query = new BO.myQuery("p86");
+            
+            return gi;
         }
 
         [HttpPost]
@@ -180,6 +190,8 @@ namespace UI.Controllers
 
             return View(v);
         }
+
+        
 
         private void Export2Grid(StatViewModel v)
         {
@@ -358,7 +370,7 @@ namespace UI.Controllers
 
             SaveAddFilter2Temp(v);
 
-
+            v.gridinput = GetGridInput(v.GridColumns, v.GridGuid);
         }
 
         private string GetAddFilterSqlWhere(StatViewModel v)
@@ -490,5 +502,39 @@ namespace UI.Controllers
 
 
         }
+
+
+        //-----------Začátek GRID událostí-------------
+        public TheGridOutput HandleTheGridFilter(TheGridUIContext tgi, List<BO.StringPair> pathpars, List<BO.TheGridColumnFilter> filter) //TheGrid povinná metoda: sloupcový filtr
+        {
+            var gridguid = tgi.viewstate[0];
+            var c = new UI.TheGridSupport(GetGridInput(tgi.fixedcolumns, gridguid), Factory, _colsProvider);
+
+            return c.Event_HandleTheGridFilter(tgi, filter);
+
+        }
+        public TheGridOutput HandleTheGridOper(TheGridUIContext tgi, List<BO.StringPair> pathpars)    //TheGrid povinná metoda: změna třídění, pageindex, změna stránky
+        {
+            var gridguid = tgi.viewstate[0];
+            var c = new UI.TheGridSupport(GetGridInput(tgi.fixedcolumns, gridguid), Factory, _colsProvider);
+
+            return c.Event_HandleTheGridOper(tgi);
+
+        }
+        public string HandleTheGridMenu(TheGridUIContext tgi, List<BO.StringPair> pathpars)  //TheGrid povinná metoda: zobrazení grid menu
+        {
+            var gridguid = tgi.viewstate[0];
+            var c = new UI.TheGridSupport(GetGridInput(tgi.fixedcolumns, gridguid), Factory, _colsProvider);
+
+            return c.Event_HandleTheGridMenu(tgi.j72id);
+        }
+        public TheGridExportedFile HandleTheGridExport(string format, string pids, TheGridUIContext tgi, List<BO.StringPair> pathpars)  //TheGrid povinná metoda pro export dat
+        {
+            var gridguid = tgi.viewstate[0];
+            var c = new UI.TheGridSupport(GetGridInput(tgi.fixedcolumns, gridguid), Factory, _colsProvider);
+
+            return c.Event_HandleTheGridExport(format, tgi.j72id, pids);
+        }
+        //-----------Konec GRID událostí-------------
     }
 }

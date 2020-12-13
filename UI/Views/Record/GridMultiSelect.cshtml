@@ -18,7 +18,7 @@
 
 </div>
 
-<vc:the-grid entity="@Model.entity" j72id="0" go2pid="@Model.go2pid" master_entity="" master_pid="0" contextmenuflag="0" ondblclick="" master_flag="@Model.master_flag" masterviewflag="3" addfilterid="" fixedcolumns=""></vc:the-grid>
+<vc:the-grid input="@Model.gridinput"></vc:the-grid>
 
 
 <script type="text/javascript">
@@ -34,7 +34,7 @@
             _notify_message("@_f.tra("Musíte vybrat minimálně jeden záznam.")");
             return;
         }
-        
+
         var prefix = "@Model.prefix";
         var hiddenID = "hid" + prefix.toUpperCase() + "IDs";
         var val = window.parent.document.getElementById(hiddenID).value;
@@ -60,6 +60,14 @@
 
         _window_close();
     }
+
+
+    function change_grid(j72id) {
+            $.post("/Common/SetUserParam", { key: "GridMultiSelect-j72id-@(Model.prefix)",value:j72id  }, function (data) {
+                location.replace(location.href);
+
+            });
+        }
 
 </script>
 
