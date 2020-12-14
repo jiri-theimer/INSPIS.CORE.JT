@@ -87,11 +87,11 @@ namespace UI.Controllers
                     v.Rec.x40Recipient = Factory.a03InstitutionBL.Load(v.Rec.x40DataPID).a03Email;
                     break;
                 case 101:
-                    var emails1 = Factory.j02PersonBL.GetList(new BO.myQuery("j02") { a01id = v.Rec.x40DataPID }).Select(p=>p.j02Email);
+                    var emails1 = Factory.j02PersonBL.GetList(new BO.myQueryJ02() { a01id = v.Rec.x40DataPID }).Select(p=>p.j02Email);
                     v.Rec.x40Recipient = string.Join(";", emails1);
                     break;
                 case 604:
-                    var emails2 = Factory.j02PersonBL.GetList(new BO.myQuery("j02") { h04id = v.Rec.x40DataPID }).Select(p => p.j02Email);
+                    var emails2 = Factory.j02PersonBL.GetList(new BO.myQueryJ02() { h04id = v.Rec.x40DataPID }).Select(p => p.j02Email);
                     v.Rec.x40Recipient = string.Join(";", emails2);
                     break;
             }

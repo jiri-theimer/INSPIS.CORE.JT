@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 
 namespace BO
@@ -60,8 +61,12 @@ namespace BO
         public string explicit_selectsql { get; set; }
         public string explicit_sqlwhere { get; set; }
         public BO.RunningUser CurrentUser;
-        public List<BO.TheGridColumnFilter> TheGridFilter { get; set; }
+        public List<BO.TheGridColumnFilter> TheGridFilter { get; set; }     //sloupcový filtr
+        public IEnumerable<BO.j73TheGridQuery> lisJ73 { get; set; }         //uložený filtr z návrháře sloupců
         public bool MyRecordsDisponible { get; set; }
+        public bool? IsRecordValid { get; set; }
+        public List<int> o51ids { get; set; }
+
         public string param1 { get; set; }
         public DateTime? global_d1;
         public DateTime? global_d2;
@@ -95,9 +100,29 @@ namespace BO
             {
                 AQ(_pkfield + " IN (" + String.Join(",", this.pids) + ")", "", null);
             }
+            if (this.IsRecordValid != null)
+            {
+                if (this.IsRecordValid==true)
+                {
+                    AQ("a." + _prefix + "ValidUntil>GETDATE()", "", null);
+
+                }
+                if (this.IsRecordValid==false)
+                {
+                    AQ("GETDATE() NOT BETWEEN a." + _prefix + "ValidFrom AND a." + _prefix + "ValidUntil", "", null);
+                }
+            }
+            if (this.o51ids != null && this.o51ids.Count > 0)
+            {
+                AQ("a." + _prefix + "ID IN (select o52RecordPid FROM o52TagBinding WHERE o51ID IN (" + string.Join(",", this.o51ids) + "))", null, null);
+            }
             if (this.explicit_sqlwhere != null)
             {
                 AQ(this.explicit_sqlwhere, "", null);
+            }
+            if (this.lisJ73 != null)
+            {
+                ParseJ73Query();
             }
             if (this.TheGridFilter != null)
             {
@@ -125,35 +150,7 @@ namespace BO
             _lis.Add(new QRow() { StringWhere = strWhere, ParName = strParName, ParValue = ParValue, AndOrZleva = strAndOrZleva, BracketLeft = strBracketLeft, BracketRight = strBracketRight, Par2Name = strPar2Name, Par2Value = Par2Value });
         }
 
-        private static object get_param_value(string colType, string colValue)
-        {
-            if (String.IsNullOrEmpty(colValue) == true)
-            {
-                return null;
-            }
-            if (colType == "num")
-            {
-                return BO.BAS.InDouble(colValue);
-            }
-            if (colType == "date")
-            {
-                return Convert.ToDateTime(colValue);
-            }
-            if (colType == "bool")
-            {
-                if (colValue == "1")
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-
-            }
-
-            return colValue;
-        }
+        
 
 
 
@@ -249,31 +246,174 @@ namespace BO
             }
 
 
-            string leva_zavorka(int i, int intEndIndex)
-            {
-                if (intEndIndex > 0 && i == 0)
-                {
-                    return "(";
-                }
-                else
-                {
-                    return "";
-                }
-            }
-            string prava_zavorka(int i, int intEndIndex)
-            {
-                if (intEndIndex > 0 && i == intEndIndex)
-                {
-                    return ")";
-                }
-                else
-                {
-                    return "";
-                }
-            }
-
-
 
         }
+
+        private string leva_zavorka(int i, int intEndIndex)
+        {
+            if (intEndIndex > 0 && i == 0)
+            {
+                return "(";
+            }
+            else
+            {
+                return "";
+            }
+        }
+        private string prava_zavorka(int i, int intEndIndex)
+        {
+            if (intEndIndex > 0 && i == intEndIndex)
+            {
+                return ")";
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+
+        private void ParseJ73Query()    //zpracování vnitřní filtrovací podmínky z návrháře sloupců
+        {
+            int x = 0; string ss = ""; string strField = ""; string strAndOrZleva = "";
+            if (this.lisJ73.Count() > 0)
+            {
+                this.lisJ73.First().j73BracketLeft += "(";
+                this.lisJ73.Last().j73BracketRight += ")";
+            }
+            foreach (var c in this.lisJ73)
+            {
+                x += 1;
+                ss = x.ToString();
+                strField = c.j73Column;
+                if (c.FieldSqlSyntax != null)
+                {
+                    strField = c.FieldSqlSyntax;
+                }
+                strAndOrZleva = c.j73Op;
+
+                switch (c.j73Operator)
+                {
+                    case "ISNULL":
+                        AQ( strField + " IS NULL", "", null, strAndOrZleva, c.j73BracketLeft, c.j73BracketRight);
+                        break;
+                    case "NOT-ISNULL":
+                        AQ( strField + " IS NOT NULL", "", null, strAndOrZleva, c.j73BracketLeft, c.j73BracketRight);
+                        break;
+                    case "GREATERZERO":
+                        AQ( "ISNULL(" + strField + ",0)>0", "", null, strAndOrZleva, c.j73BracketLeft, c.j73BracketRight);
+                        break;
+                    case "ISNULLORZERO":
+                        AQ( "ISNULL(" + strField + ",0)=0", "", null, strAndOrZleva, c.j73BracketLeft, c.j73BracketRight);
+                        break;
+                    case "CONTAINS":                        
+                        AQ( strField + " LIKE '%" + BO.BAS.GSS(c.j73Value) + "+%'", null, null, strAndOrZleva, c.j73BracketLeft, c.j73BracketRight);
+
+                        break;
+                    case "STARTS":                        
+                        AQ( strField + " LIKE '" + BO.BAS.GSS(c.j73Value) + "+%'", null, null, strAndOrZleva, c.j73BracketLeft, c.j73BracketRight);
+                        
+                        break;
+                    case "INTERVAL":
+                        if (c.FieldType == "date")
+                        {
+                            if (c.j73DatePeriodFlag > 0)
+                            {
+                                var cPeriods = new BO.CLS.ThePeriodProviderSupport();
+                                var lisPeriods = cPeriods.GetPallete();                                
+                                c.j73Date1 = lisPeriods.Where(p => p.pid == c.j73DatePeriodFlag).First().d1;
+                                c.j73Date2 = Convert.ToDateTime(lisPeriods.Where(p => p.pid == c.j73DatePeriodFlag).First().d2).AddDays(1).AddMinutes(-1);
+                            }
+                            if (c.j73Date1 != null && c.j73Date2 != null)
+                            {
+                                
+                                AQ( c.WrapFilter(strField + " BETWEEN " + BO.BAS.GD(c.j73Date1) + " AND " + BO.BAS.GD(c.j73Date2)), null, null, strAndOrZleva, c.j73BracketLeft, c.j73BracketRight);
+                            }
+                            else
+                            {
+                                if (c.j73Date1 != null)
+                                {                                    
+                                    AQ( c.WrapFilter(strField + ">=" + BO.BAS.GD(c.j73Date1)), null, null, strAndOrZleva, c.j73BracketLeft, c.j73BracketRight);
+                                }
+                                if (c.j73Date2 != null)
+                                {                                    
+                                    AQ( c.WrapFilter(strField + "<=" + BO.BAS.GD(c.j73Date2)), null, null, strAndOrZleva, c.j73BracketLeft, c.j73BracketRight);
+                                }
+                            }
+
+                        }
+                        if (c.FieldType == "number")
+                        {
+                            
+                            AQ( c.WrapFilter(strField + " BETWEEN " + BO.BAS.GN(c.j73Num1) + " AND " + BO.BAS.GN(c.j73Num2)), null, null, strAndOrZleva, c.j73BracketLeft, c.j73BracketRight);
+                        }
+                        break;
+                    case "EQUAL":
+                    case "NOT-EQUAL":
+                        string strOper = "=";
+                        if (c.j73Operator == "NOT-EQUAL")
+                        {
+                            strOper = "<>";
+                        }
+                        if (c.FieldType == "bool" || c.FieldType == "bool1")
+                        {
+                            AQ( c.WrapFilter(strField + " " + strOper + " " + c.j73Value), "", null, strAndOrZleva, c.j73BracketLeft, c.j73BracketRight);
+                        }
+                        if (c.FieldType == "string")
+                        {                            
+                            AQ( strField + " " + strOper + " '" + BO.BAS.GSS(c.j73Value) + "'", null, null, strAndOrZleva, c.j73BracketLeft, c.j73BracketRight);
+                        }
+                        if (c.FieldType == "combo")
+                        {
+                            
+                            AQ( c.WrapFilter(strField + " " + strOper + " " + c.j73ComboValue.ToString()), null, null, strAndOrZleva, c.j73BracketLeft, c.j73BracketRight);
+
+                        }
+                        if (c.FieldType == "multi")
+                        {
+                            strOper = "IN";
+                            if (c.j73Operator == "NOT-EQUAL")
+                            {
+                                strOper = "NOT IN";
+                            }
+                            AQ( c.WrapFilter(strField + " " + strOper + " (" + c.j73Value + ")"), "", null, strAndOrZleva, c.j73BracketLeft, c.j73BracketRight);
+                        }
+                        break;
+                }
+
+            }
+        }
+
+
+        private object get_param_value(string colType, string colValue)
+        {
+            if (String.IsNullOrEmpty(colValue) == true)
+            {
+                return null;
+            }
+            if (colType == "num")
+            {
+                return BO.BAS.InDouble(colValue);
+            }
+            if (colType == "date")
+            {
+                return Convert.ToDateTime(colValue);
+            }
+            if (colType == "bool")
+            {
+                if (colValue == "1")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+
+            return colValue;
+        }
+
     }
 }

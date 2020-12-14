@@ -96,7 +96,7 @@ namespace UI
                 recB65.b65MessageBody += System.Environment.NewLine +System.Environment.NewLine+"------------------------"+System.Environment.NewLine + _app.UserUrl + "/h04/RecPage?pid=" + rec.pid.ToString();
                 
                 var c = new BO.x40MailQueue() {x29ID = 604,x40DataPID=rec.pid, x40IsAutoNotification=true,x40Subject=recB65.b65MessageSubject,x40Body=recB65.b65MessageBody };
-                var mq = new BO.myQuery("j02") { h04id = rec.pid, IsRecordValid = true };
+                var mq = new BO.myQueryJ02() { h04id = rec.pid, IsRecordValid = true };
                 c.x40Recipient = string.Join(",", f.j02PersonBL.GetList(mq).Select(p => p.j02Email));
 
                 f.MailBL.SendMessage(c, false);

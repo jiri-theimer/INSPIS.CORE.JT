@@ -14,6 +14,7 @@ namespace BO
         public int j11id { get; set; }
         public int h04id { get; set; }
         
+
         public myQueryJ02()
         {
             this.Prefix = "j02";

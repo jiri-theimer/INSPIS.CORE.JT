@@ -37,62 +37,32 @@ namespace UI.Controllers
             return View(v);
         }
 
-        private BO.myQuery GetGridQuery()
+        private TheGridInput GetGridInput()
         {
-            var mq = new BO.myQuery("a01");
+            var gi = new TheGridInput() { entity = "j02Person" };
+            gi.query = new BO.myQuery("j02");
             //mq.a10id = 35;
-            return mq;
+            return gi;
         }
 
         public IActionResult Grid()
         {
             var v = new UI.Models.Pokus();
-            v.myQueryGrid = GetGridQuery();
-            v.ExtendPagerHtml = "<button type='button' class='btn btn-secondary btn-sm mx-4 nonmobile' onclick='tg_switchflag(\"a01\",1)'>Zapnout spodní panel</button>";
+            v.gridinput = GetGridInput();
 
+
+            var mq = new BO.myQueryJ02();
+            
+            //mq.j04id = 34;
+            mq.SearchString = "theimer";
+            var lis = Factory.j02PersonBL.GetList(mq);
+
+            this.AddMessage(lis.Count().ToString());
+            
             return View(v);
 
         }
-        //public TheGridOutput HandleTheGridFilter(TheGridUIContext tgi, List<BO.TheGridColumnFilter> filter) //TheGrid povinná metoda
-        //{            
-        //    var c = new UI.TheGridSupport(Factory, _colsProvider);
-          
-        //    c.extendpagerhtml= "HandleTheGridFilter<button type='button' class='btn btn-secondary btn-sm mx-4 nonmobile' onclick='tg_switchflag(\"a01\",1)'>Zapnout spodní panel</button>";
-          
-        //    return c.Event_HandleTheGridFilter(tgi, filter, GetGridQuery());
-        //}
-        //public TheGridOutput HandleTheGridOper(TheGridUIContext tgi)    //TheGrid povinná metoda
-        //{            
-        //    var c = new UI.TheGridSupport(Factory, _colsProvider);
-            
-        //    c.extendpagerhtml = tgi.pathname+"<button type='button' class='btn btn-secondary btn-sm mx-4 nonmobile' onclick='tg_switchflag(\"a01\",1)'>Zapnout spodní panel</button>";
-
-        //    return c.Event_HandleTheGridOper(tgi, GetGridQuery());
-
-        //}
-        //public string HandleTheGridMenu(int j72id)  //TheGrid povinná metoda
-        //{
-            
-        //    var c = new UI.TheGridSupport(Factory, _colsProvider);
-        //    return c.Event_HandleTheGridMenu(j72id);
-        //}
-        //public FileResult HandleTheGridExport(string format, int j72id, string pids)  //TheGrid povinná metoda
-        //{
-            
-        //    var c = new UI.TheGridSupport(Factory, _colsProvider);
-        //    //var mq = GetGridQuery();
-        //    //var fullpath=c.Event_HandleTheGridExport(format, j72id, pids, mq);
-        //    //if (format == "csv")
-        //    //{
-        //    //    return File(System.IO.File.ReadAllBytes(fullpath), "application/CSV", "export_" + mq.Prefix + ".csv");
-        //    //}
-        //    //if (format == "xlsx")
-        //    //{
-        //    //    return File(System.IO.File.ReadAllBytes(fullpath), "application/vnd.ms-excel", "export_" + mq.Prefix + ".xlsx");
-        //    //}
-        //    return null;
-        //}
-
+        
 
         public IActionResult PokusWord()
         {

@@ -21,9 +21,9 @@ namespace UI.Controllers
                 {
                     return RecNotFound(v);
                 }
-                var mq = new BO.myQuery("j02Person");                
-                mq.j11id =v.rec_pid;
-                v.j02IDs = string.Join(",", Factory.j02PersonBL.GetList(mq).Select(p => p.pid));
+                
+                
+                v.j02IDs = string.Join(",", Factory.j02PersonBL.GetList(new BO.myQueryJ02() { j11id = v.rec_pid }).Select(p => p.pid));
             }
             v.Toolbar = new MyToolbarViewModel(v.Rec);
             if (isclone)
@@ -64,9 +64,7 @@ namespace UI.Controllers
         {
             if (a05id == 0) { return null; };
 
-            var mq = new BO.myQuery("j02Person");
-            mq.IsRecordValid = true;
-            mq.a05id = a05id;
+            var mq = new BO.myQueryJ02() { a05id = a05id,IsRecordValid=true };           
             return Factory.j02PersonBL.GetList(mq).Select(p => p.pid).ToList();
         }
     }

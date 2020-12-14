@@ -654,7 +654,7 @@ namespace UI
                 if (cExport.ToCSV(dt, filepath, this.gridinput.query))
                 {
                     //return File(System.IO.File.ReadAllBytes(filepath), "application/CSV", strFileClientName);
-                    return new TheGridExportedFile() { contenttype = "application/CSV", downloadfilename = strFileClientName, fullpath = filepath,tempfilename= strTempFileName + "." + format };
+                    return new TheGridExportedFile() { contenttype = "application/CSV", downloadfilename = strFileClientName, tempfilename= strTempFileName + "." + format };
 
 
                 }
@@ -665,7 +665,7 @@ namespace UI
                 {
 
                     //return File(System.IO.File.ReadAllBytes(filepath), "application/vnd.ms-excel", strFileClientName);
-                    return new TheGridExportedFile() { contenttype = "application/vnd.ms-excel", downloadfilename = strFileClientName, fullpath = filepath,tempfilename= strTempFileName + "." + format };
+                    return new TheGridExportedFile() { contenttype = "application/vnd.ms-excel", downloadfilename = strFileClientName, tempfilename= strTempFileName + "." + format };
                 }
             }
 

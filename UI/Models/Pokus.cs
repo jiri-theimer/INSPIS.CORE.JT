@@ -21,7 +21,7 @@ namespace UI.Models
         public int a10ID { get; set; }
         public int a08ID { get; set; }
 
-        public BO.myQuery myQueryGrid { get; set; }
+        public TheGridInput gridinput { get; set; }
         public string ExtendPagerHtml { get; set; }
     }
 }

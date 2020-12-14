@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BO
 {
-    public class myQuery000:baseQuery
+    public class myQuery0:baseQuery
     {
         public int x31id { get; set; }
         public int a10id { get; set; }
@@ -16,7 +16,8 @@ namespace BO
         public int x29id { get; set; }
         public int x55id { get; set; }
         public int a11id { get; set; }
-        public myQuery000(string prefix)
+        public int h04id { get; set; }
+        public myQuery0(string prefix)
         {
             this.Prefix = prefix;
         }
@@ -26,6 +27,10 @@ namespace BO
             if (this.h11id > 0)
             {
                 if (this.Prefix == "j04") AQ("a.j04ID IN (select j04ID FROM h12NoticeBoard_Permission WHERE h11ID=@h11id)", "h11id", this.h11id);
+            }
+            if (this.h04id > 0)
+            {
+                if (this.Prefix == "j11") AQ("a.j11ID IN (select j11ID FROM h06ToDoReceiver WHERE h04ID=@h04id AND j11ID IS NOT NULL)", "h04id", this.h04id);
             }
             if (this.f29id > 0)
             {

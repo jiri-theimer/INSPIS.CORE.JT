@@ -8,10 +8,12 @@ namespace BL
     {
         public BO.j02Person Load(int pid);
         public BO.j02Person LoadByEmail(string strEmail, int pid_exclude);
-        public IEnumerable<BO.j02Person> GetList(BO.myQuery mq);
+        public IEnumerable<BO.j02Person> GetList(BO.myQueryJ02 mq);
         public int Save(BO.j02Person rec);
         public bool ValidateBeforeSave(BO.j02Person rec);
         public BO.j02RecordSummary LoadSummary(int pid, string pagesource);
+
+        
 
     }
     class j02PersonBL : BaseBL,Ij02PersonBL
@@ -43,13 +45,16 @@ namespace BL
             return _db.Load<BO.j02Person>(GetSQL1(" WHERE a.j02Email LIKE @email AND a.j02ID<>@pid_exclude"), new { email = strEmail, pid_exclude = pid_exclude });
         }
 
-        public IEnumerable<BO.j02Person>GetList(BO.myQuery mq)
-        {            
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq,_mother.CurrentUser);
+        public IEnumerable<BO.j02Person>GetList(BO.myQueryJ02 mq)
+        {
+            //DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq,_mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.j02Person>(fq.FinalSql,fq.Parameters);
         }
 
-        
+       
+
+
         public int Save(BO.j02Person rec)
         {
             if (ValidateBeforeSave(rec) == false)

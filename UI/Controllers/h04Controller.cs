@@ -36,12 +36,12 @@ namespace UI.Controllers
                 }
                 RefreshState(v);
 
-                var mq = new BO.myQuery("j02");
-                mq.h04id = v.rec_pid;
+                var mq = new BO.myQueryJ02() { h04id = v.rec_pid };
+                
                 v.j02IDs = string.Join(",", Factory.j02PersonBL.GetList(mq).Select(p => p.j02ID));
-                mq = new BO.myQuery("j11");
-                mq.h04id = v.rec_pid;
-                v.j11IDs = string.Join(",", Factory.j11TeamBL.GetList(mq).Select(p => p.j11ID));
+                
+                
+                v.j11IDs = string.Join(",", Factory.j11TeamBL.GetList(new BO.myQuery("j11") { h04id = v.rec_pid }).Select(p => p.j11ID));
 
             }
             if (v.rec_pid == 0)

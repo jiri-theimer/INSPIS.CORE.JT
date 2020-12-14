@@ -591,10 +591,10 @@ namespace BL
                 switch (recJ04.j04RelationFlag)
                 {
                     case j04RelationFlagEnum.NoRelation:
-                        lis = _mother.j02PersonBL.GetList(new BO.myQuery("j02") { j04id = recJ04.pid,IsRecordValid=true }).ToList();
+                        lis = _mother.j02PersonBL.GetList(new BO.myQueryJ02() { j04id = recJ04.pid,IsRecordValid=true }).ToList();
                         break;
                     case j04RelationFlagEnum.A05:
-                        lis = _mother.j02PersonBL.GetList(new BO.myQuery("j02") {a05id=rec.a05ID, j04id = recJ04.pid, IsRecordValid = true }).ToList();
+                        lis = _mother.j02PersonBL.GetList(new BO.myQueryJ02() {a05id=rec.a05ID, j04id = recJ04.pid, IsRecordValid = true }).ToList();
                         break;
                     case j04RelationFlagEnum.A03:
                         var lisA39 = _mother.a39InstitutionPersonBL.GetList(new BO.myQuery("a39") { a03id = rec.a03ID, j04id = recJ04.pid }).ToList();
@@ -614,7 +614,7 @@ namespace BL
             }
             if (intJ11ID > 0)
             {
-                var lis = _mother.j02PersonBL.GetList(new BO.myQuery("j02") { IsRecordValid = true, j11id = intJ11ID });
+                var lis = _mother.j02PersonBL.GetList(new BO.myQueryJ02() { IsRecordValid = true, j11id = intJ11ID });
                 foreach (var c in lis)
                 {
                     if (!ret.Exists(p => p.j02ID == c.pid))

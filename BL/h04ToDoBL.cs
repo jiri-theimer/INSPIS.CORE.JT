@@ -187,9 +187,7 @@ namespace BL
             }
             strBody += Constants.vbCrLf + "----------------------" + Constants.vbCrLf + _mother.App.UserUrl + "/h04/RecPage?pid=" + rec.pid.ToString();
 
-            var mq = new BO.myQuery("j02");
-            mq.h04id = pid;
-            mq.IsRecordValid = true;
+            var mq = new BO.myQueryJ02() { h04id = pid, IsRecordValid = true };           
             var strTo = string.Join(",", _mother.j02PersonBL.GetList(mq).Select(p => p.j02Email));
 
             var ret = _mother.MailBL.SendMessage(0, strTo, null, strSubject, strBody, false, 604, pid);

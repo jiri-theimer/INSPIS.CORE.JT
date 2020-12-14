@@ -49,23 +49,23 @@ namespace UI.Controllers
                 v.lisDays.Add(d);
             }
 
-            var mq = new BO.myQuery("j02");
-            mq.IsRecordValid = true;
+            var mqJ02 = new BO.myQueryJ02();
+            mqJ02.IsRecordValid = true;
             if (v.a05ID > 0)
             {
-                mq.a05id = v.a05ID;
+                mqJ02.a05id = v.a05ID;
             }
             else
             {
-                mq.param1 = "a02Inspector";
+                mqJ02.param1 = "a02Inspector";
             }
             if (!string.IsNullOrEmpty(v.o51IDs))
             {
-                mq.o51ids = BO.BAS.ConvertString2ListInt(v.o51IDs);
+                mqJ02.o51ids = BO.BAS.ConvertString2ListInt(v.o51IDs);
             }
-            
-            mq.explicit_orderby = "a.j02LastName";
-            v.lisJ02 = Factory.j02PersonBL.GetList(mq);
+
+            mqJ02.explicit_orderby = "a.j02LastName";
+            v.lisJ02 = Factory.j02PersonBL.GetList(mqJ02);
             if (v.PersonQueryFlag == 1)
             {
                 v.lisJ02 = v.lisJ02.Where(p => p.j02IsInvitedPerson == true);   //filtr: pouze přizvané osoby
@@ -74,7 +74,7 @@ namespace UI.Controllers
             {
                 v.lisJ02 = v.lisJ02.Where(p => p.j02IsInvitedPerson == false);   //filtr: pouze inspektoři
             }
-            mq = new BO.myQuery("a35");
+            var mq = new BO.myQuery("a35");
             mq.global_d1 = d1;
             mq.global_d2 = d2;
             mq.a05id = v.a05ID;
