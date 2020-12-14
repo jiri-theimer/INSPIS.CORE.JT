@@ -162,7 +162,7 @@ namespace UI
                     if (recB06.b06IsAutoRun_Missing_Form && lisB05.Where(p=>p.b06ID==recB06.pid).Count()==0)
                     {
                         //testovat, zda spustit krok, pokud v akci nejsou vyplněné povinné formuláře && v historii ještě nebyl automatický krok spuštěn
-                        var mqx = new BO.myQuery("a11") { a01id = recA01.pid };
+                        var mqx = new BO.myQueryA11() { a01id = recA01.pid };
                         var lisA11 = f.a11EventFormBL.GetList(mqx);
                         foreach(var recA11 in lisA11)
                         {

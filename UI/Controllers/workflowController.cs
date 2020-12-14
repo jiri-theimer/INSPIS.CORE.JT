@@ -109,14 +109,11 @@ namespace UI.Controllers
             v.RecA01 = Factory.a01EventBL.Load(v.pid);
             v.PermA01 = Factory.a01EventBL.InhalePermission(v.RecA01);
 
-            var mq = new BO.myQuery("a41");
-            mq.a01id = v.pid;
-            mq.MyRecordsDisponible = true;
-            mq.CurrentUser = Factory.CurrentUser;
-            v.lisA41 = Factory.a41PersonToEventBL.GetList(mq);
+            
+            v.lisA41 = Factory.a41PersonToEventBL.GetList(new BO.myQueryA41() { a01id = v.pid, j02id=Factory.CurrentUser.j02ID, CurrentUser = Factory.CurrentUser });
             RefreshStateTemp(v);
 
-            mq = new BO.myQuery("b06");
+            var mq = new BO.myQuery("b06");
             mq.b02id = v.RecA01.b02ID;
             if (mq.b02id == 0) mq.b02id = -1;   //akce nemá nahozený workflow stav!!
             var lisB06 = Factory.b06WorkflowStepBL.GetList(mq).OrderBy(p => p.b06Order).Where(p => p.b06IsManualStep == true);

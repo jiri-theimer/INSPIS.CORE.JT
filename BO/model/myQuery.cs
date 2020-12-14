@@ -5,12 +5,12 @@ using System.Text;
 
 namespace BO
 {
-    public enum BooleanQueryMode
-    {
-        NoQuery = 0,
-        FalseQuery = 2,
-        TrueQuery = 1
-    }
+    //public enum BooleanQueryMode
+    //{
+    //    NoQuery = 0,
+    //    FalseQuery = 2,
+    //    TrueQuery = 1
+    //}
     public class myQuery
     {
         private string _prefix;
@@ -123,8 +123,8 @@ namespace BO
         public int h11id { get; set; }
         public int a10id { get; set; }
         public int a11id { get; set; }
-        public BO.BooleanQueryMode a11ispoll { get; set; }
-        public BO.BooleanQueryMode a11issimulation { get; set; }
+        public bool? a11ispoll { get; set; }
+        public bool? a11issimulation { get; set; }
         public int a08id { get; set; }
         public int o13id { get; set; }
         public int x31id { get; set; }
@@ -136,7 +136,7 @@ namespace BO
         public List<int> o51ids { get; set; }
         public string param1;
 
-        public BO.BooleanQueryMode HiddenQuestions { get; set; }
+        public bool? HiddenQuestions { get; set; }
         public string SearchString;
         public string SearchImplementation { get; set; }    //HD nebo null
         public int TopRecordsOnly;
@@ -169,7 +169,7 @@ namespace BO
                     this.a01id = master_pid;
                     if (master_flag == "poll")
                     {
-                        this.a11ispoll = BO.BooleanQueryMode.TrueQuery;   //pouze anketní formuláře
+                        this.a11ispoll = true;   //pouze anketní formuláře
                     }
                     break;
                 case "a03":

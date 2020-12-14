@@ -9,7 +9,7 @@ namespace BL
         public BO.a11EventForm Load(int pid);
         public BO.a11EventForm LoadPoll(string signature, string pin, int a11id_exclude = 0);
         public BO.a11EventForm LoadPoll(int a01id, string pin, int a11id_exclude = 0);
-        public IEnumerable<BO.a11EventForm> GetList(BO.myQuery mq);
+        public IEnumerable<BO.a11EventForm> GetList(BO.myQueryA11 mq);
         public int Save(BO.a11EventForm rec);
         public void LockUnLockPolls(int a01id, bool bolLock);
         public void LockUnLockForm(int a11id, bool bolLock);
@@ -74,9 +74,9 @@ namespace BL
                 
         }
 
-        public IEnumerable<BO.a11EventForm> GetList(BO.myQuery mq)
+        public IEnumerable<BO.a11EventForm> GetList(BO.myQueryA11 mq)
         {
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.a11EventForm>(fq.FinalSql, fq.Parameters);
         }
 
@@ -119,7 +119,7 @@ namespace BL
                 if (string.IsNullOrEmpty(c.a11AccessToken.Trim())){
                     this.AddMessage("Musíte definovat anketní PIN."); return false;
                 }
-                if (GetList(new BO.myQuery("a11") { a01id = c.a01ID }).Where(p => p.a11IsPoll == true && p.pid != c.pid).Any(p => p.a11AccessToken == c.a11AccessToken)){
+                if (GetList(new BO.myQueryA11() { a01id = c.a01ID }).Where(p => p.a11IsPoll == true && p.pid != c.pid).Any(p => p.a11AccessToken == c.a11AccessToken)){
                     this.AddMessage("Anketní PIN v rámci akce nesmí být duplicitní."); return false;
                 }
                 

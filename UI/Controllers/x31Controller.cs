@@ -193,9 +193,9 @@ namespace UI.Controllers
                 v.x32IDs = string.Join(",", lis.Select(p => p.pid));
                 v.x32Names = string.Join(",", lis.Select(p => p.x32Name));
 
-                mq = new BO.myQuery("j04UserRole") { x31id = v.rec_pid,explicit_orderby="j04Name" };                
-                v.j04IDs = string.Join(",", Factory.j04UserRoleBL.GetList(mq).Select(p => p.pid));
-                v.j04Names = string.Join(",", Factory.j04UserRoleBL.GetList(mq).Select(p => p.j04Name));
+                var mqJ04 = new BO.myQueryJ04() { x31id = v.rec_pid,explicit_orderby="j04Name" };                
+                v.j04IDs = string.Join(",", Factory.j04UserRoleBL.GetList(mqJ04).Select(p => p.pid));
+                v.j04Names = string.Join(",", Factory.j04UserRoleBL.GetList(mqJ04).Select(p => p.j04Name));
 
                 mq = new BO.myQuery("a10EventType") { explicit_orderby = "a10Name", x31id = v.rec_pid };                
                 v.a10IDs = string.Join(",", Factory.a10EventTypeBL.GetList(mq).Select(p => p.pid));

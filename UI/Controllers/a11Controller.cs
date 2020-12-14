@@ -44,7 +44,7 @@ namespace UI.Controllers
             }
             if (oper == "cleardata")
             {
-                var lisA11 = Factory.a11EventFormBL.GetList(new BO.myQuery("a11") { f06id = v.f06ID, a11issimulation = BO.BooleanQueryMode.TrueQuery });
+                var lisA11 = Factory.a11EventFormBL.GetList(new BO.myQueryA11() { f06id = v.f06ID, a11issimulation = true });
                 if (lisA11.Count() > 0)
                 {
                     foreach (var c in lisA11)
@@ -63,7 +63,7 @@ namespace UI.Controllers
                     this.AddMessage("Chybí vyplnit typ, téma akce nebo instituci.");
                     return View(v);
                 }
-                var mq = new BO.myQuery("a11") { f06id = v.f06ID, a11issimulation = BO.BooleanQueryMode.TrueQuery };
+                var mq = new BO.myQueryA11() { f06id = v.f06ID, a11issimulation = true };
                 var lisA11 = Factory.a11EventFormBL.GetList(mq);
                 if (lisA11.Count() == 0)
                 {
@@ -141,7 +141,7 @@ namespace UI.Controllers
         public IActionResult ValidateForms(int pid, int a01id)
         {
             var v = new a11ValidateForms() { pid = pid, a01ID = a01id };
-            var mq = new BO.myQuery("a11");
+            var mq = new BO.myQueryA11();
             if (v.pid > 0)
             {
                 var recA11 = Factory.a11EventFormBL.Load(pid);
@@ -367,8 +367,7 @@ namespace UI.Controllers
             {
                 v.lisA11 = new List<BO.a11EventForm>();
             }
-            var mq = new BO.myQuery("a11");
-            mq.a01id = v.a01ID;
+            var mq = new BO.myQueryA11() { a01id = v.a01ID };
             v.lisA11Saved = Factory.a11EventFormBL.GetList(mq);
 
         }
@@ -505,7 +504,7 @@ namespace UI.Controllers
         private List<string> GeneratePins(Models.a11AppendPollViewModel v)  //vygeneruje sadu anketních PINů
         {
             var pins = new List<string>();
-            var lisTestDuplPins = Factory.a11EventFormBL.GetList(new BO.myQuery("a11") { a01id = v.a01ID }).Where(p => p.a11IsPoll == true);
+            var lisTestDuplPins = Factory.a11EventFormBL.GetList(new BO.myQueryA11() { a01id = v.a01ID }).Where(p => p.a11IsPoll == true);
 
             for (int i = 1; i <= v.SelectedKolikrat; i++)
             {
@@ -542,7 +541,7 @@ namespace UI.Controllers
             v.RecA01 = Factory.a01EventBL.Load(v.a01ID);
 
 
-            var mq = new BO.myQuery("a11");
+            var mq = new BO.myQueryA11();
             mq.a01id = v.a01ID;
 
             v.lisA11Saved = Factory.a11EventFormBL.GetList(mq).Where(p => p.a11IsPoll == true);

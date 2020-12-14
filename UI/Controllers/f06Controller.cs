@@ -60,12 +60,11 @@ namespace UI.Controllers
                     c.TempGuid = BO.BAS.GetGuid();
                 }
 
-                var mq = new BO.myQuery("j04UserRole");
-                mq.f06id = v.rec_pid;
-                var lis = Factory.j04UserRoleBL.GetList(mq);
+                
+                var lis = Factory.j04UserRoleBL.GetList(new BO.myQueryJ04() { f06id = v.rec_pid });
                 v.j04IDs = string.Join(",", lis.Select(p => p.pid));
                 v.j04Names = string.Join(",", lis.Select(p => p.j04Name));
-                mq = new BO.myQuery("x31Report");
+                var mq = new BO.myQuery("x31Report");
                 mq.f06id = v.rec_pid;
                 v.x31IDs = string.Join(",", Factory.x31ReportBL.GetList(mq).Select(p => p.pid));
                 v.x31Names = string.Join(",", Factory.x31ReportBL.GetList(mq).Select(p => p.x31Name));

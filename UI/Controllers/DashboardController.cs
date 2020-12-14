@@ -103,7 +103,7 @@ namespace UI.Controllers
                 return this.StopPage(false, "Nelze načíst profil instituce.");
             }
 
-            var lisA03 = Factory.a03InstitutionBL.GetList(new BO.myQuery("a03") { IsRecordValid = true, j02id = Factory.CurrentUser.j02ID });
+            var lisA03 = Factory.a03InstitutionBL.GetList(new BO.myQueryA03() { IsRecordValid = true, j02id = Factory.CurrentUser.j02ID });
             if (!lisA03.Any(p => p.a03ID == v.a03ID))
             {
                 return this.StopPage(false, "Nemáte oprávnění spravovat účty této školy.");
@@ -213,8 +213,8 @@ namespace UI.Controllers
             var mq = new BO.myQuery("h11") { IsRecordValid = true, MyRecordsDisponible = true };
             v.lisH11 = Factory.h11NoticeBoardBL.GetList(mq);
 
-            mq = new BO.myQuery("a03") { IsRecordValid = true, j02id = Factory.CurrentUser.j02ID };
-            v.lisA03 = Factory.a03InstitutionBL.GetList(mq);
+            
+            v.lisA03 = Factory.a03InstitutionBL.GetList(new BO.myQueryA03() { IsRecordValid = true, j02id = Factory.CurrentUser.j02ID });
             if (v.lisA03.Count() == 0)
             {
                 return this.StopPage(false, "Váš osobní profil nemá vazbu na instituci (školu).");

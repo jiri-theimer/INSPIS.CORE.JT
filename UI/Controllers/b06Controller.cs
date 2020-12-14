@@ -31,11 +31,11 @@ namespace UI.Controllers
                 v.o13IDs = string.Join(",", Factory.o13AttachmentTypeBL.GetList(mq).Select(p => p.pid));
                 v.o13Names = string.Join(",", Factory.o13AttachmentTypeBL.GetList(mq).Select(p => p.o13Name));
 
-                mq = new BO.myQuery("j04");
-                mq.b06id = v.rec_pid;
-                mq.param1 = "b12";
-                v.b12_j04IDs = string.Join(",", Factory.j04UserRoleBL.GetList(mq).Select(p => p.pid));
-                v.b12_j04Names = string.Join(",", Factory.j04UserRoleBL.GetList(mq).Select(p => p.j04Name));
+                var mqJ04 = new BO.myQueryJ04();
+                mqJ04.b06id = v.rec_pid;
+                mqJ04.param1 = "b12";
+                v.b12_j04IDs = string.Join(",", Factory.j04UserRoleBL.GetList(mqJ04).Select(p => p.pid));
+                v.b12_j04Names = string.Join(",", Factory.j04UserRoleBL.GetList(mqJ04).Select(p => p.j04Name));
 
                 v.lisB13 = Factory.b06WorkflowStepBL.GetListB13(v.rec_pid).ToList();
                 foreach (var c in v.lisB13)

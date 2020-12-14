@@ -22,8 +22,8 @@ namespace UI.Controllers
                 {
                     return RecNotFound(v);
                 }
-                var mq = new BO.myQuery("a03Institution");
-                mq.a29id = v.rec_pid;
+                var mq = new BO.myQueryA03() { a29id = v.rec_pid };
+                
                 v.a03IDs = string.Join(",", Factory.a03InstitutionBL.GetList(mq).Select(p => p.pid));
             }
             v.Toolbar = new MyToolbarViewModel(v.Rec);

@@ -373,7 +373,7 @@ namespace UI.Controllers
 
         public string RemoveClosed(string a03ids)
         {
-            var mq = new BO.myQuery("a03");
+            var mq = new BO.myQueryA03();
             mq.IsRecordValid = true;
             mq.SetPids(a03ids);
             a03ids = string.Join(",", Factory.a03InstitutionBL.GetList(mq).Select(p => p.pid));

@@ -42,8 +42,7 @@ namespace UI.Controllers
                 }
                 v.HtmlContent = Factory.h11NoticeBoardBL.LoadHtmlContent(v.rec_pid);
 
-                var mq = new BO.myQuery("j04UserRole");
-                mq.h11id = v.rec_pid;
+                var mq = new BO.myQueryJ04() { h11id = v.rec_pid };                
                 v.j04IDs = string.Join(",", Factory.j04UserRoleBL.GetList(mq).Select(p => p.pid));
                 v.j04Names = string.Join(",", Factory.j04UserRoleBL.GetList(mq).Select(p => p.j04Name));
             }

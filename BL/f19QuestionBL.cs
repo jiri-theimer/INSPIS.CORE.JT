@@ -8,7 +8,7 @@ namespace BL
     public interface If19QuestionBL: BaseInterface
     {
         public BO.f19Question Load(int pid);
-        public IEnumerable<BO.f19Question> GetList(BO.myQuery mq);
+        public IEnumerable<BO.f19Question> GetList(BO.myQueryF19 mq);
         public int Save(BO.f19Question rec, List<int> f21ids);
         public IEnumerable<BO.f27LinkUrl> GetList_AllF27();
 
@@ -37,10 +37,10 @@ namespace BL
             return _db.Load<BO.f19Question>(GetSQL1(" WHERE a.f19ID=@pid"), new { pid = pid });
         }
 
-        public IEnumerable<BO.f19Question> GetList(BO.myQuery mq)
+        public IEnumerable<BO.f19Question> GetList(BO.myQueryF19 mq)
         {
             if (mq.explicit_orderby == null) { mq.explicit_orderby = "a.f19Ordinal"; };
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.f19Question>(fq.FinalSql, fq.Parameters);
         }
 

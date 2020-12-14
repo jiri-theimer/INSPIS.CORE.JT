@@ -204,22 +204,22 @@ namespace UI.Controllers
 
         }
 
-        public List<int> GetPidsOfQuery(string entity, string master_prefix,int master_pid)
-        {
-            var mq = new BO.myQuery(entity);            
-            mq.InhaleMasterEntityQuery(master_prefix, master_pid, null);
-            mq.IsRecordValid = true;
+        //public List<int> GetPidsOfQuery(string entity, string master_prefix,int master_pid)
+        //{
+        //    var mq = new BO.myQuery(entity);            
+        //    mq.InhaleMasterEntityQuery(master_prefix, master_pid, null);
+        //    mq.IsRecordValid = true;
 
-            switch (entity.Substring(0,3))
-            {
-                case "a03":
-                    return Factory.a03InstitutionBL.GetList(mq).Select(p => p.pid).ToList();
+        //    switch (entity.Substring(0,3))
+        //    {
+        //        case "a03":
+        //            return Factory.a03InstitutionBL.GetList(mq).Select(p => p.pid).ToList();
                 
-                default:
-                    return null;
+        //        default:
+        //            return null;
                     
-            }
-        }
+        //    }
+        //}
 
     }
 

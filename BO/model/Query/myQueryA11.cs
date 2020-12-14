@@ -7,6 +7,7 @@ namespace BO
     public class myQueryA11 : baseQuery
     {        
         public int a01id { get; set; }
+        public int a01parentid { get; set; }
         public int a03id { get; set; }
         public int f06id { get; set; }
         public bool? a11ispoll {get;set;}
@@ -21,6 +22,11 @@ namespace BO
             {
                 
                 this.AQ("a.a01ID=@a01id", "a01id", this.a01id);
+            }
+            if (this.a01parentid > 0)
+            {
+
+                this.AQ("a.a01ID IN (select a01ID FROM a01Event WHERE a01ParentID=@a01parentid)", "a01parentid", this.a01parentid);
             }
             if (this.f06id > 0)
             {

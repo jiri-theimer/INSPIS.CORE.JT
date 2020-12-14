@@ -261,10 +261,10 @@ namespace UI.Controllers
             }
             v.RecA03 = Factory.a03InstitutionBL.Load(v.Rec.a03ID);
 
-            var mq = new BO.myQuery("j04") { IsRecordValid = true };
-            v.lisJ04 = Factory.j04UserRoleBL.GetList(mq);
+           
+            v.lisJ04 = Factory.j04UserRoleBL.GetList(new BO.myQueryJ04() { IsRecordValid = true });
 
-            mq = new BO.myQuery("j03") { j02id = v.Rec.j02ID };
+            var mq = new BO.myQuery("j03") { j02id = v.Rec.j02ID };
             foreach (var c in Factory.j03UserBL.GetList(mq))
             {
 
@@ -408,8 +408,8 @@ namespace UI.Controllers
         {
             v.RecA03 = Factory.a03InstitutionBL.Load(v.a03ID);
             if (v.RecJ02 == null) v.RecJ02 = new BO.j02Person();
-            var mq = new BO.myQuery("j04") { IsRecordValid = true };
-            v.lisJ04 = Factory.j04UserRoleBL.GetList(mq).Where(p => p.j04IsAllowInSchoolAdmin == true);
+            
+            v.lisJ04 = Factory.j04UserRoleBL.GetList(new BO.myQueryJ04() { IsRecordValid = true }).Where(p => p.j04IsAllowInSchoolAdmin == true);
             if (v.SearchJ03ID > 0)
             {
                 v.SearchRecJ03 = Factory.j03UserBL.Load(v.SearchJ03ID);

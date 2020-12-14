@@ -9,7 +9,7 @@ namespace BL
     public interface If06FormBL:BaseInterface
     {
         public BO.f06Form Load(int pid);
-        public IEnumerable<BO.f06Form> GetList(BO.myQuery mq);
+        public IEnumerable<BO.f06Form> GetList(BO.myQueryF06 mq);
         public IEnumerable<BO.a13AttachmentToForm> GetListA13(int f06id);
         public IEnumerable<BO.f07Form_UserRole_EncryptedPermission> GetListF07(int f06id);
         public int Save(BO.f06Form rec, List<int> j04ids, List<int> x31ids, List<BO.a13AttachmentToForm> lisA13);
@@ -37,10 +37,10 @@ namespace BL
             return _db.Load<BO.f06Form>(GetSQL1(" WHERE a.f06ID=@pid"), new { pid = pid });
         }
 
-        public IEnumerable<BO.f06Form> GetList(BO.myQuery mq)
+        public IEnumerable<BO.f06Form> GetList(BO.myQueryF06 mq)
         {
             if (mq.explicit_orderby == null) { mq.explicit_orderby = "a.f06Ordinal"; };
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.f06Form>(fq.FinalSql, fq.Parameters);
         }
         public IEnumerable<BO.a13AttachmentToForm> GetListA13(int f06id)
@@ -182,18 +182,16 @@ namespace BL
         public BO.Result CloneF06(BO.f06Form recOrig, string destname,string destexportcode)
         {
             int intOrigF06ID = recOrig.pid;
-            var mq = new BO.myQuery("j04UserRole");
-            mq.f06id = intOrigF06ID;
-            var lisJ04 = _mother.j04UserRoleBL.GetList(mq);
-            mq=new BO.myQuery("x31");
+           
+            var lisJ04 = _mother.j04UserRoleBL.GetList(new BO.myQueryJ04() { f06id = intOrigF06ID });
+            var mq=new BO.myQuery("x31");
             mq.f06id = intOrigF06ID;
             var lisX31 = _mother.x31ReportBL.GetList(mq);
             mq = new BO.myQuery("f18");
             mq.f06id = intOrigF06ID;
             var lisF18 = _mother.f18FormSegmentBL.GetList(mq);
-            mq = new BO.myQuery("f19");
-            mq.f06id = intOrigF06ID;
-            var lisF19 = _mother.f19QuestionBL.GetList(mq);
+            
+            var lisF19 = _mother.f19QuestionBL.GetList(new BO.myQueryF19() { f06id = intOrigF06ID });
             var pids = new List<CP>();
 
 

@@ -68,10 +68,9 @@ namespace UI.Controllers
 
         private void RefreshState(f21Record v)
         {
-            var mq = new BO.myQuery("f19Question");
-            mq.f21id = v.rec_pid;
-            v.lisF19 = Factory.f19QuestionBL.GetList(mq);
-            mq = new BO.myQuery("f22ReplySet");
+            
+            v.lisF19 = Factory.f19QuestionBL.GetList(new BO.myQueryF19() { f21id = v.rec_pid });
+            var mq = new BO.myQuery("f22ReplySet");
             mq.f21id = v.rec_pid;
             v.lisF22 = Factory.f22ReplySetBL.GetList(mq);
         }

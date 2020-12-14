@@ -88,7 +88,7 @@ namespace UI.Controllers
             if (v.a01ID > 0)
             {
                 v.RecA01 = Factory.a01EventBL.Load(v.a01ID);
-                var mq = new BO.myQuery("a11");
+                var mq = new BO.myQueryA11();
                 mq.a01id = v.a01ID;
                 v.lisA11 = Factory.a11EventFormBL.GetList(mq).Where(p => p.a11IsPoll == false);
             }

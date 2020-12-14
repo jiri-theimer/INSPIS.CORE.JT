@@ -74,7 +74,7 @@ namespace BL
             
             if (recB06.b06IsFormAutoLock)
             {   //spuštění kroku uzamyká otevřené formuláře v akci
-                var lisA11 = _mother.a11EventFormBL.GetList(new BO.myQuery("a11") { a01id = rec.pid });
+                var lisA11 = _mother.a11EventFormBL.GetList(new BO.myQueryA11() { a01id = rec.pid });
                 foreach(var recA11 in lisA11)
                 {
                     _mother.a11EventFormBL.LockUnLockForm(recA11.pid, true);
@@ -207,8 +207,8 @@ namespace BL
                 {
                     return; //v rámci simulace fomuláře raději dále v akci nic automatického nedělat
                 }
-                mq = new BO.myQuery("a41") { a01id = rec.pid };
-                var lisA41 = _mother.a41PersonToEventBL.GetList(mq);
+                
+                var lisA41 = _mother.a41PersonToEventBL.GetList(new BO.myQueryA41() { a01id = rec.pid });
 
                 var recA10 = _mother.a10EventTypeBL.Load(rec.a10ID);
                 if (recA10.a45ID_Creator > 0)   //automaticky založit vlastníka nebo zadavatele (role 3 nebo 5) - záleží na typu akce
@@ -237,12 +237,12 @@ namespace BL
             var lisA11_TestForms = new List<BO.a11EventForm>();
             if (recB06.b06IsFormValidationRequired)
             {
-                var mq = new BO.myQuery("a11");
+                var mq = new BO.myQueryA11();
                 mq.a01id = rec.pid;
                 var lisA11 = _mother.a11EventFormBL.GetList(mq).Where(p => p.a11IsLocked == false).ToList();
                 if (rec.a01ChildsCount > 0) //akce má podřízené potomky
                 {
-                    mq = new BO.myQuery("a11");
+                    mq = new BO.myQueryA11();
                     mq.a01parentid = rec.pid;
                     var lisChilds = _mother.a11EventFormBL.GetList(mq).ToList();
                     lisA11.InsertRange(0, lisChilds);
@@ -254,13 +254,13 @@ namespace BL
             {
                 foreach (var cB13 in lisB13)
                 {
-                    var mq = new BO.myQuery("a11");
+                    var mq = new BO.myQueryA11();
                     mq.a01id = rec.pid;
                     mq.f06id = cB13.f06ID;
                     var lisA11 = _mother.a11EventFormBL.GetList(mq).ToList();
                     if (rec.a01ChildsCount > 0) //akce má podřízené potomky
                     {
-                        mq = new BO.myQuery("a11");
+                        mq = new BO.myQueryA11();
                         mq.a01parentid = rec.pid;
                         mq.f06id = cB13.f06ID;
                         var lisChilds = _mother.a11EventFormBL.GetList(mq).ToList();
@@ -388,7 +388,7 @@ namespace BL
             //posílá notifikační zprávy v rámci workflow kroku
             var lisB11 = _mother.b06WorkflowStepBL.GetListB11(recB06.pid);
             if (lisB11.Count() == 0) return; //nejsou definovány notifikační pravidla k workflow kroku
-            var lisA41 = _mother.a41PersonToEventBL.GetList(new BO.myQuery("a41") { a01id = rec.pid });
+            var lisA41 = _mother.a41PersonToEventBL.GetList(new BO.myQueryA41() { a01id = rec.pid });
             foreach(var c in lisB11)
             {
                 var persons = GetAllPersonsOfEventRole(rec, c.a45ID, c.j04ID, c.j11ID, lisA41);
@@ -400,7 +400,7 @@ namespace BL
             //posílá notifikační zprávy v rámci workflow stavu
             var lisB07 = _mother.b02WorkflowStatusBL.GetListB07(intB02ID);
             if (lisB07.Count() == 0) return;    //nejsou definovány notifikační pravidla k workflow kroku
-            var lisA41 = _mother.a41PersonToEventBL.GetList(new BO.myQuery("a41") { a01id = rec.pid });
+            var lisA41 = _mother.a41PersonToEventBL.GetList(new BO.myQueryA41() { a01id = rec.pid });
             foreach(var c in lisB07)
             {
                 var persons = GetAllPersonsOfEventRole(rec, c.a45ID, c.j04ID, c.j11ID, lisA41);
@@ -657,7 +657,7 @@ namespace BL
         private List<BO.h06ToDoReceiver> CompleteTodoReceivers(BO.a01Event rec, BO.b06WorkflowStep recB06)
         {//složit tým řešitelů nového úkolu
             var ret = new List<BO.h06ToDoReceiver>();
-            var lisA41 = _mother.a41PersonToEventBL.GetList(new BO.myQuery("a41") { a01id = rec.pid });
+            var lisA41 = _mother.a41PersonToEventBL.GetList(new BO.myQueryA41() { a01id = rec.pid });
             switch (recB06.b06ToDo_ReceiverFlag)
             {
                 case 1: //vedoucí+členové

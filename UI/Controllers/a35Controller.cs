@@ -98,8 +98,8 @@ namespace UI.Controllers
 
             if (v.a01ID > 0)
             {
-                mq = new BO.myQuery("a41") { a01id=v.a01ID };
-                v.lisA41 = Factory.a41PersonToEventBL.GetList(mq);
+                
+                v.lisA41 = Factory.a41PersonToEventBL.GetList(new BO.myQueryA41() { a01id = v.a01ID });
              }
 
 
@@ -197,12 +197,11 @@ namespace UI.Controllers
         {
             v.RecA01 = Factory.a01EventBL.Load(v.pid);
             v.PermA01 = Factory.a01EventBL.InhalePermission(v.RecA01);
-            var mq = new BO.myQuery("a41");
-            mq.a01id = v.pid;
-            v.lisA41 = Factory.a41PersonToEventBL.GetList(mq).OrderBy(p => p.PersonDesc).Where(p => p.a45ID != BO.EventRoleENUM.Vlastnik);
+            
+            v.lisA41 = Factory.a41PersonToEventBL.GetList(new BO.myQueryA41() { a01id = v.pid }).OrderBy(p => p.PersonDesc).Where(p => p.a45ID != BO.EventRoleENUM.Vlastnik);
             if (v.lisA35 == null)
             {
-                mq = new BO.myQuery("a35");
+                var mq = new BO.myQuery("a35");
                 mq.a01id = v.pid;
                 v.lisA35 = Factory.a35PersonEventPlanBL.GetList(mq);
             }
@@ -288,9 +287,8 @@ namespace UI.Controllers
             mq = new BO.myQuery("a38");
             mq.a01id = v.pid;
             v.lisA38 = Factory.a38NonPersonEventPlanBL.GetList(mq);
-            mq = new BO.myQuery("a41");
-            mq.a01id = v.pid;
-            v.lisA41 = Factory.a41PersonToEventBL.GetList(mq).OrderBy(p => p.PersonDesc).Where(p => p.a45ID != BO.EventRoleENUM.Vlastnik);
+            
+            v.lisA41 = Factory.a41PersonToEventBL.GetList(new BO.myQueryA41() { a01id = v.pid }).OrderBy(p => p.PersonDesc).Where(p => p.a45ID != BO.EventRoleENUM.Vlastnik);
             v.lisJ26 = Factory.j26HolidayBL.GetList(new BO.myQuery("j26")).Where(p => p.j26Date >= v.RecA01.a01DateFrom && p.j26Date <= v.RecA01.a01DateUntil);
 
             mq = new BO.myQuery("h04");
@@ -307,8 +305,8 @@ namespace UI.Controllers
         {
             var recA01 = Factory.a01EventBL.Load(a01id);
             var recJ02 = Factory.j02PersonBL.Load(j02id);
-            var mq = new BO.myQuery("a41") { a01id = a01id,j02id=j02id };
-            if (Factory.a41PersonToEventBL.GetList(mq).Count() > 0)
+            
+            if (Factory.a41PersonToEventBL.GetList(new BO.myQueryA41() { a01id = a01id, j02id = j02id }).Count() > 0)
             {
                 return new BO.Result(true, Factory.tra("Zvolená osoba již je členem této akce."));
             }

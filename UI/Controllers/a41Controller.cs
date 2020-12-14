@@ -177,8 +177,7 @@ namespace UI.Controllers
             {
                 v.lisA41 = new List<BO.a41PersonToEvent>();
             }
-            var mq = new BO.myQuery("a41");
-            mq.a01id = v.a01ID;
+            var mq = new BO.myQueryA41() { a01id = v.a01ID };            
             v.lisA41Saved = Factory.a41PersonToEventBL.GetList(mq);
 
         }

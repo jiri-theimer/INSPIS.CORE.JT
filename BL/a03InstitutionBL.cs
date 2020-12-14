@@ -8,7 +8,7 @@ namespace BL
         public BO.a03Institution LoadByRedizo(string redizo, int pid_exclude);
         public BO.a03Institution LoadByFounderCode(string foundercode, int pid_exclude);
         public BO.a03RecordSummary LoadSummary(int pid);
-        public IEnumerable<BO.a03Institution> GetList(BO.myQuery mq);
+        public IEnumerable<BO.a03Institution> GetList(BO.myQueryA03 mq);
         public int Save(BO.a03Institution rec);
         public bool ValidateBeforeSave(ref BO.a03Institution c);
     }
@@ -46,9 +46,9 @@ namespace BL
         }
         
 
-        public IEnumerable<BO.a03Institution> GetList(BO.myQuery mq)
+        public IEnumerable<BO.a03Institution> GetList(BO.myQueryA03 mq)
         {
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.a03Institution>(fq.FinalSql,fq.Parameters);
         }
                 

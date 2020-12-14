@@ -289,7 +289,7 @@ namespace UI.Controllers
             var lisA05 = Factory.a05RegionBL.GetList(new BO.myQuery("a05"));
             var lisA28 = Factory.a28SchoolTypeBL.GetList(new BO.myQuery("a28"));
             var lisA09=Factory.a09FounderTypeBL.GetList(new BO.myQuery("a09"));
-            var lisA03 = Factory.a03InstitutionBL.GetList(new BO.myQuery("a03"));
+            var lisA03 = Factory.a03InstitutionBL.GetList(new BO.myQueryA03());
             var errs = new List<string>();
             var recs = new List<BO.a03Institution>();
             int intRedIzoIndex = -1;

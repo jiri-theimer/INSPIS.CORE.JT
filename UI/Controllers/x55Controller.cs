@@ -37,7 +37,7 @@ namespace UI.Controllers
                     return RecNotFound(v);
                 }
                 v.HtmlHelp = v.Rec.x55Help;
-                var mq = new BO.myQuery("j04") { x55id = v.rec_pid, explicit_orderby = "j04Name" };
+                var mq = new BO.myQueryJ04() { x55id = v.rec_pid, explicit_orderby = "j04Name" };
                 v.j04IDs = string.Join(",", Factory.j04UserRoleBL.GetList(mq).Select(p => p.pid));
                 v.j04Names = string.Join(",", Factory.j04UserRoleBL.GetList(mq).Select(p => p.j04Name));
             }

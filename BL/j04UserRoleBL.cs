@@ -8,7 +8,7 @@ namespace BL
     public interface Ij04UserRoleBL
     {
         public BO.j04UserRole Load(int pid);
-        public IEnumerable<BO.j04UserRole> GetList(BO.myQuery mq);
+        public IEnumerable<BO.j04UserRole> GetList(BO.myQueryJ04 mq);
         public int Save(BO.j04UserRole rec, List<int> j05ids, List<BO.j08UserRole_EventType> lisJ08);
         public bool IsA01Create(int j04id); //vrací, zda role může zakládat nějaký typ akce
         public IEnumerable<BO.j05Permission> GetListJ05(int j04id);
@@ -33,9 +33,9 @@ namespace BL
         {
             return _db.Load<BO.j04UserRole>(GetSQL1(" WHERE a.j04ID=@pid"), new { pid = pid });            
         }
-        public IEnumerable<BO.j04UserRole> GetList(BO.myQuery mq)
+        public IEnumerable<BO.j04UserRole> GetList(BO.myQueryJ04 mq)
         {
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.j04UserRole>(fq.FinalSql, fq.Parameters);
         }
 

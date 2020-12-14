@@ -30,9 +30,8 @@ namespace UI.Controllers
                 if (v.Rec.j72IsSystem == false && v.Rec.j03ID == Factory.CurrentUser.pid)
                 {
                     v.HasOwnerPermissions = true;
-                    var mq = new BO.myQuery("j04UserRole");
-                    mq.j72id = j72id;
-                    var lis = Factory.j04UserRoleBL.GetList(mq);
+                   
+                    var lis = Factory.j04UserRoleBL.GetList(new BO.myQueryJ04() { j72id = j72id });
                     v.j04IDs = string.Join(",", lis.Select(p => p.pid));
                     v.j04Names = string.Join(",", lis.Select(p => p.j04Name));
                 }

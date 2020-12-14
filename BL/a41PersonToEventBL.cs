@@ -9,7 +9,7 @@ namespace BL
     {
         public BO.a41PersonToEvent Load(int pid);
         public BO.a41PersonToEvent LoadByJ02ID(int j02id,int a01id,int intExcludePid);
-        public IEnumerable<BO.a41PersonToEvent> GetList(BO.myQuery mq);
+        public IEnumerable<BO.a41PersonToEvent> GetList(BO.myQueryA41 mq);
         public int Save(BO.a41PersonToEvent rec, bool bolAppend2WorkflowHistory, BO.b06WorkflowStep recB06 = null);
         public void UpdateChildEvents(BO.a01Event recParent);
         public bool ValidateBeforeSave(BO.a41PersonToEvent c);
@@ -43,10 +43,10 @@ namespace BL
             return _db.Load<BO.a41PersonToEvent>(GetSQL1(" WHERE a.j02ID=@j02id AND a.a01ID=@a01id AND a.a41ID<>@excludepid"), new {j02id=j02id,a01id=a01id, excludepid = intExcludePid });
         }
 
-        public IEnumerable<BO.a41PersonToEvent> GetList(BO.myQuery mq)
+        public IEnumerable<BO.a41PersonToEvent> GetList(BO.myQueryA41 mq)
         {
             if (mq.explicit_orderby == null) mq.explicit_orderby = "a.a41ID DESC";
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.a41PersonToEvent>(fq.FinalSql, fq.Parameters);
         }
 

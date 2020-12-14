@@ -80,14 +80,14 @@ namespace UI.Controllers
                 v.Rec.pid = 0;
                 v.a03ID = v.Rec.a03ID;
                 v.Institution = v.Rec.a03Name;
-                var mq = new BO.myQuery("a11") { a01id = clonebypid };
-                v.lisA11 = Factory.a11EventFormBL.GetList(mq).ToList();
+                
+                v.lisA11 = Factory.a11EventFormBL.GetList(new BO.myQueryA11() { a01id = clonebypid }).ToList();
                 foreach(var c in v.lisA11)
                 {                   
                     c.TempGuid = BO.BAS.GetGuid();
                 }
-                mq= new BO.myQuery("a41") { a01id = clonebypid };
-                v.lisA41 = Factory.a41PersonToEventBL.GetList(mq).ToList();
+                
+                v.lisA41 = Factory.a41PersonToEventBL.GetList(new BO.myQueryA41() { a01id = clonebypid }).ToList();
                 foreach (var c in v.lisA41)
                 {
                     c.TempGuid = BO.BAS.GetGuid();
@@ -234,8 +234,8 @@ namespace UI.Controllers
                 {
                     this.AddMessage("V nastavení globálních parametrů chybí definice klíče [a08ID_Injury].");return View(v);
                 }
-                var mq = new BO.myQuery("f06") { a08id = c.a08ID,IsRecordValid=true };
-                var lisF06 = Factory.f06FormBL.GetList(mq);
+                
+                var lisF06 = Factory.f06FormBL.GetList(new BO.myQueryF06() { a08id = c.a08ID, IsRecordValid = true });
                 if (lisF06.Count() == 0)
                 {
                     this.AddMessage("Pro téma akce není k dispozici ani jeden platný formulář."); return View(v);
@@ -322,7 +322,7 @@ namespace UI.Controllers
         }
         private void RefreshInstitution(Models.a01CreateViewModel v)
         {
-            var mq = new BO.myQuery("a03Institution") { IsRecordValid = true, j02id = v.j02ID };
+            var mq = new BO.myQueryA03() { IsRecordValid = true, j02id = v.j02ID };
             var lis = Factory.a03InstitutionBL.GetList(mq);
             if (lis.Count() > 0)
             {

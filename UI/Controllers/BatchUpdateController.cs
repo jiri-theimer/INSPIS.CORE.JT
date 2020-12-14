@@ -195,7 +195,7 @@ namespace UI.Controllers
 
         private void RefreshStateA03(BatchUpdateA03 v)
         {
-            var mq = new BO.myQuery("a03") { pids = BO.BAS.ConvertString2ListInt(v.pids) };
+            var mq = new BO.myQueryA03 { pids = BO.BAS.ConvertString2ListInt(v.pids) };
             v.lisA03 = Factory.a03InstitutionBL.GetList(mq);            
 
 

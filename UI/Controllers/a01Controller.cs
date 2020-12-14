@@ -194,7 +194,7 @@ namespace UI.Controllers
 
             if (!v.IsGridView)
             {
-                v.lisA11 = Factory.a11EventFormBL.GetList(v.gridinput.query).OrderBy(p => p.a11IsPoll);
+                v.lisA11 = Factory.a11EventFormBL.GetList(new BO.myQueryA11() { a01id = v.pid }).OrderBy(p => p.a11IsPoll);
             }
 
             return View(v);
@@ -225,8 +225,7 @@ namespace UI.Controllers
                 return this.StopPageSubform("pid is missing");
             }
             v.RecA01 = Factory.a01EventBL.Load(v.pid);
-            var mq = new BO.myQuery("a41");
-            mq.a01id = v.pid;
+            var mq = new BO.myQueryA41() { a01id = v.pid };            
             v.lisA41 = Factory.a41PersonToEventBL.GetList(mq);
             return View(v);
         }
@@ -389,7 +388,7 @@ namespace UI.Controllers
             var tg = Factory.o51TagBL.GetTagging("a01", v.pid);
             v.Rec.TagHtml = tg.TagHtml;
             v.TagHtml = v.Rec.TagHtml;
-            var mq = new BO.myQuery("a11");
+            var mq = new BO.myQueryA11();
             mq.a01id = v.pid;
             v.lisA11 = Factory.a11EventFormBL.GetList(mq);
 

@@ -222,9 +222,8 @@ namespace UI.Controllers
             v.lisA38 = cp.lisA38;
             mq = new BO.myQuery("j25") { IsRecordValid = true };
             v.lisJ25 = Factory.j25NonPersonPlanReasonBL.GetList(mq);
-
-            mq = new BO.myQuery("a41") { a01id = v.a01ID };          
-            cp.lisA41 = Factory.a41PersonToEventBL.GetList(mq).OrderBy(p => p.PersonDesc).Where(p => p.a45ID != BO.EventRoleENUM.Vlastnik);
+            
+            cp.lisA41 = Factory.a41PersonToEventBL.GetList(new BO.myQueryA41() { a01id = v.a01ID }).OrderBy(p => p.PersonDesc).Where(p => p.a45ID != BO.EventRoleENUM.Vlastnik);
             cp.lisJ26 = Factory.j26HolidayBL.GetList(new BO.myQuery("j26")).Where(p => p.j26Date >= v.RecA01.a01DateFrom && p.j26Date <= v.RecA01.a01DateUntil);
             mq = new BO.myQuery("h04") { a01id = v.a01ID };
             cp.lisH04 = Factory.h04ToDoBL.GetListCapacity(mq);
@@ -251,10 +250,8 @@ namespace UI.Controllers
             mq.a01id = v.pid;
             cp.lisA38 = Factory.a38NonPersonEventPlanBL.GetList(mq);
             v.lisA38 = cp.lisA38;    //.Where(p => p.j23ID == v.SelectedJ23ID);
-          
-            mq = new BO.myQuery("a41");
-            mq.a01id = v.pid;
-            cp.lisA41 = Factory.a41PersonToEventBL.GetList(mq).OrderBy(p => p.PersonDesc).Where(p => p.a45ID != BO.EventRoleENUM.Vlastnik);
+                      
+            cp.lisA41 = Factory.a41PersonToEventBL.GetList(new BO.myQueryA41() { a01id = v.pid }).OrderBy(p => p.PersonDesc).Where(p => p.a45ID != BO.EventRoleENUM.Vlastnik);
             cp.lisJ26 = Factory.j26HolidayBL.GetList(new BO.myQuery("j26")).Where(p => p.j26Date >= v.RecA01.a01DateFrom && p.j26Date <= v.RecA01.a01DateUntil);
             mq = new BO.myQuery("h04");
             mq.a01id = v.pid;
