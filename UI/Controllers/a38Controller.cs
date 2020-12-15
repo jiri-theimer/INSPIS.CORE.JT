@@ -214,19 +214,19 @@ namespace UI.Controllers
             }
 
             var cp = new a01TabCapacity() { pid = v.a01ID, CurMonth = v.CurMonth, CurYear = v.CurYear, RecA01 = v.RecA01 };
-            var mq = new BO.myQuery("a35") { a01id = v.a01ID };            
-            cp.lisA35 = Factory.a35PersonEventPlanBL.GetList(mq);
+                      
+            cp.lisA35 = Factory.a35PersonEventPlanBL.GetList(new BO.myQueryA35() { a01id = v.a01ID });
             v.lisA35 = cp.lisA35.Where(p => p.j02ID == v.SelectedJ02ID);            
-            mq = new BO.myQuery("a38") { a01id = v.a01ID };                                  
-            cp.lisA38 = Factory.a38NonPersonEventPlanBL.GetList(mq);
+            
+            cp.lisA38 = Factory.a38NonPersonEventPlanBL.GetList(new BO.myQueryA38() { a01id =v.a01ID });
             v.lisA38 = cp.lisA38;
-            mq = new BO.myQuery("j25") { IsRecordValid = true };
+            var mq = new BO.myQuery("j25") { IsRecordValid = true };
             v.lisJ25 = Factory.j25NonPersonPlanReasonBL.GetList(mq);
             
             cp.lisA41 = Factory.a41PersonToEventBL.GetList(new BO.myQueryA41() { a01id = v.a01ID }).OrderBy(p => p.PersonDesc).Where(p => p.a45ID != BO.EventRoleENUM.Vlastnik);
             cp.lisJ26 = Factory.j26HolidayBL.GetList(new BO.myQuery("j26")).Where(p => p.j26Date >= v.RecA01.a01DateFrom && p.j26Date <= v.RecA01.a01DateUntil);
-            mq = new BO.myQuery("h04") { a01id = v.a01ID };
-            cp.lisH04 = Factory.h04ToDoBL.GetListCapacity(mq);
+            
+            cp.lisH04 = Factory.h04ToDoBL.GetListCapacity(new BO.myQueryH04() { a01id = v.a01ID });
             InhaleCapacityTimeline(cp);
 
             v.CapacityView = cp;
@@ -242,20 +242,17 @@ namespace UI.Controllers
             }
 
             var cp = new a01TabCapacity() { pid = v.pid, CurMonth = v.CurMonth, CurYear = v.CurYear, RecA01 = v.RecA01 };
-            var mq = new BO.myQuery("a35");
-            mq.a01id = v.pid;
-            cp.lisA35 = Factory.a35PersonEventPlanBL.GetList(mq);
+           
+            cp.lisA35 = Factory.a35PersonEventPlanBL.GetList(new BO.myQueryA35() { a01id = v.pid });
             v.lisA35 = cp.lisA35.Where(p => p.j02ID == v.SelectedJ02ID);
-            mq = new BO.myQuery("a38");
-            mq.a01id = v.pid;
-            cp.lisA38 = Factory.a38NonPersonEventPlanBL.GetList(mq);
+            
+            cp.lisA38 = Factory.a38NonPersonEventPlanBL.GetList(new BO.myQueryA38() { a01id = v.pid });
             v.lisA38 = cp.lisA38;    //.Where(p => p.j23ID == v.SelectedJ23ID);
                       
             cp.lisA41 = Factory.a41PersonToEventBL.GetList(new BO.myQueryA41() { a01id = v.pid }).OrderBy(p => p.PersonDesc).Where(p => p.a45ID != BO.EventRoleENUM.Vlastnik);
             cp.lisJ26 = Factory.j26HolidayBL.GetList(new BO.myQuery("j26")).Where(p => p.j26Date >= v.RecA01.a01DateFrom && p.j26Date <= v.RecA01.a01DateUntil);
-            mq = new BO.myQuery("h04");
-            mq.a01id = v.pid;
-            cp.lisH04 = Factory.h04ToDoBL.GetListCapacity(mq);
+            
+            cp.lisH04 = Factory.h04ToDoBL.GetListCapacity(new BO.myQueryH04() { a01id = v.pid });
 
             InhaleCapacityTimeline(cp);
 
@@ -364,11 +361,11 @@ namespace UI.Controllers
             mq.explicit_orderby = "a.j23Name,a.j23Code";
             v.lisJ23 = Factory.j23NonPersonBL.GetList(mq);
 
-            mq = new BO.myQuery("a38");
-            mq.global_d1 = d1;
-            mq.global_d2 = d2;
-            mq.a05id = v.a05ID;
-            v.lisTimeLine = Factory.a38NonPersonEventPlanBL.GetListTimeLine(mq);
+            var mqA38 = new BO.myQueryA38();
+            mqA38.global_d1 = d1;
+            mqA38.global_d2 = d2;
+            mqA38.a05id = v.a05ID;
+            v.lisTimeLine = Factory.a38NonPersonEventPlanBL.GetListTimeLine(mqA38);
             v.lisJ26 = Factory.j26HolidayBL.GetList(new BO.myQuery("j26")).Where(p=>p.j26Date>=d1 && p.j26Date<=d2);
 
             return View(v);

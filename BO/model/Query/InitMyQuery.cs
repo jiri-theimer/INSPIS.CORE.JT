@@ -19,9 +19,7 @@ namespace BO
                 case "j02":
                     return load_j02(master_prefix, master_pid);
                 case "a11":
-                    return load_a11(master_prefix, master_pid);
-                case "a41":
-                    return load_a41(master_prefix, master_pid);
+                    return load_a11(master_prefix, master_pid);                
                 case "h04":
                     return load_h04(master_prefix, master_pid);
                 case "a42":
@@ -34,8 +32,11 @@ namespace BO
                     return load_f19(master_prefix, master_pid);
                 case "j04":
                     return load_j04(master_prefix, master_pid);
-                case "o27":
-                    return load_o27(master_prefix, master_pid);
+                case "a41":
+                case "o27":                    
+                case "a38":
+                case "a35":
+                    return null;    //nelze přes InitMyQuery zakládat vše!!
                 default:
                     return load_0(prefix, master_prefix, master_pid);
             }
@@ -203,26 +204,8 @@ namespace BO
 
             return mq;
         }
-        private BO.myQueryO27 load_o27(string master_prefix, int master_pid)
-        {
-            var mq = new BO.myQueryO27();
-            if (master_pid > 0)
-            {
-                BO.Reflexe.SetPropertyValue(mq, master_prefix + "id", master_pid);
-            }
-
-            return mq;
-        }
-        private BO.myQueryA41 load_a41(string master_prefix, int master_pid)
-        {
-            var mq = new BO.myQueryA41();
-            if (master_pid > 0)
-            {
-                BO.Reflexe.SetPropertyValue(mq, master_prefix + "id", master_pid);
-            }
-
-            return mq;
-        }
+        
+        
 
         private string validate_prefix(string s = null)
         {

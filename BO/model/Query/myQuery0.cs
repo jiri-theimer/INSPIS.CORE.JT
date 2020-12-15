@@ -18,7 +18,7 @@ namespace BO
         public int a11id { get; set; }
         public int h04id { get; set; }
         public int a03id { get; set; }
-        public int a01id { get; set; }
+        
         public int j02id { get; set; }
         public myQuery0(string prefix)
         {
@@ -28,19 +28,7 @@ namespace BO
        
 
         public override List<QRow> GetRows()
-        {
-            if (this.global_d1 != null)
-            {
-                if (this.Prefix == "a35")
-                {
-                    AQ("a.a35PlanDate BETWEEN @gd1 AND @gd2", "gd1", this.global_d1, "AND", null, null, "gd2", this.global_d2);
-                }
-                if (this.Prefix == "a38")
-                {
-                    AQ("a.a38PlanDate BETWEEN @gd1 AND @gd2", "gd1", this.global_d1, "AND", null, null, "gd2", this.global_d2);
-                }
-            }
-            
+        {                       
 
             if (this.b06id > 0)
             {                
@@ -56,10 +44,7 @@ namespace BO
             {
                 if (this.Prefix == "j90" || this.Prefix == "j92") AQ("a.j03ID IN (select j03ID FROM j03User WHERE j02ID=@j02id)", "j02id", this.j02id);
             }
-            if (this.a01id > 0)
-            {
-                if (this.Prefix == "a35" || this.Prefix == "a38") AQ( "a.a01ID=@a01id", "a01id", this.a01id);
-            }
+            
             if (this.a03id > 0)
             {
                 if (this.Prefix == "a37" || this.Prefix == "a39") AQ("a.a03ID=@a03id", "a03id", this.a03id);

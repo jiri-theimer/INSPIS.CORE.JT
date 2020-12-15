@@ -8,9 +8,9 @@ namespace BL
     public interface Ia35PersonEventPlanBL
     {
         public BO.a35PersonEventPlan Load(int pid);
-        public IEnumerable<BO.a35PersonEventPlan> GetList(BO.myQuery mq);
+        public IEnumerable<BO.a35PersonEventPlan> GetList(BO.myQueryA35 mq);
         public int Save(BO.a35PersonEventPlan rec);
-        public IEnumerable<BO.a35TimeLine> GetListTimeLine(BO.myQuery mq);
+        public IEnumerable<BO.a35TimeLine> GetListTimeLine(BO.myQueryA35 mq);
 
 
     }
@@ -38,17 +38,17 @@ namespace BL
             return _db.Load<BO.a35PersonEventPlan>(GetSQL1(" WHERE a.a35ID=@pid"), new { pid = pid });
         }
 
-        public IEnumerable<BO.a35PersonEventPlan> GetList(BO.myQuery mq)
+        public IEnumerable<BO.a35PersonEventPlan> GetList(BO.myQueryA35 mq)
         {            
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.a35PersonEventPlan>(fq.FinalSql, fq.Parameters);
         }
-        public IEnumerable<BO.a35TimeLine> GetListTimeLine(BO.myQuery mq)
+        public IEnumerable<BO.a35TimeLine> GetListTimeLine(BO.myQueryA35 mq)
         {
             sb("SELECT a.j02ID,a.a01ID,a.a35PlanDate,COUNT(*) as Krat");
             sb(" FROM a35PersonEventPlan a INNER JOIN j02Person j02 ON a.j02ID=j02.j02ID");            
 
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(sbret(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql(sbret(), mq, _mother.CurrentUser);
             
             var lis = _db.GetList<BO.a35TimeLine>(fq.FinalSql+ " GROUP BY a.j02ID,a.a01ID,a.a35PlanDate", fq.Parameters);
             

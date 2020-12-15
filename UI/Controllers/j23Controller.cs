@@ -21,7 +21,7 @@ namespace UI.Controllers
                 v.TagHtml = tg.TagHtml;
 
             }
-            var mq = new BO.myQuery("a38");
+            var mq = new BO.myQueryA38();
             mq.j23id = v.pid;
             mq.global_d1 = new DateTime(y, m, 1);
             mq.global_d2 = Convert.ToDateTime(mq.global_d1).AddMonths(1).AddDays(-1);

@@ -25,11 +25,11 @@ namespace UI.Controllers
             }
             v.TagHtml = Factory.o51TagBL.GetTagging("j02", v.pid).TagHtml;
 
-            var mq = new BO.myQuery("a35");
-            mq.j02id = v.pid;
-            mq.global_d1 = new DateTime(y, m, 1);
-            mq.global_d2 = Convert.ToDateTime(mq.global_d1).AddMonths(1).AddDays(-1);
-            v.lisA35 = Factory.a35PersonEventPlanBL.GetList(mq);
+            var mqA35 = new BO.myQueryA35();
+            mqA35.j02id = v.pid;
+            mqA35.global_d1 = new DateTime(y, m, 1);
+            mqA35.global_d2 = Convert.ToDateTime(mqA35.global_d1).AddMonths(1).AddDays(-1);
+            v.lisA35 = Factory.a35PersonEventPlanBL.GetList(mqA35);
             if (v.lisA35.Count() > 0)
             {
                 var mqA01 = new BO.myQueryA01();

@@ -11,6 +11,7 @@ namespace BO
         public int j02id { get; set; }
         public int j02id_member { get; set; }
         public int j02id_issuer { get; set; }
+        public int a05id { get; set; }
         public myQueryH04()
         {
             this.Prefix = "h04";
@@ -44,6 +45,10 @@ namespace BO
             if (this.j02id_issuer > 0)
             {
                 AQ("a.j02ID_Owner=@j02id_issuer", "j02id_issuer", this.j02id_issuer);   //je zakladatelem úkolu
+            }
+            if (this.a05id > 0)
+            {
+                AQ("a.h04ID IN (SELECT xc.h04ID FROM a02Inspector xa INNER JOIN a04Inspectorate xb ON xa.a04ID=xb.a04ID INNER JOIN h06ToDoReceiver xc ON xa.j02ID=xc.j02ID WHERE xb.a05ID=@a05id)", "a05id", this.a05id);
             }
 
             return this.InhaleRows();

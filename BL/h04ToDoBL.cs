@@ -10,8 +10,8 @@ namespace BL
     public interface Ih04ToDoBL
     {
         public BO.h04ToDo Load(int pid);
-        public IEnumerable<BO.h04ToDo> GetList(BO.myQuery mq);
-        public IEnumerable<BO.h04TodoCapacity> GetListCapacity(BO.myQuery mq);
+        public IEnumerable<BO.h04ToDo> GetList(BO.myQueryH04 mq);
+        public IEnumerable<BO.h04TodoCapacity> GetListCapacity(BO.myQueryH04 mq);
         public int Save(BO.h04ToDo rec, List<int> j02ids_resitel, List<int> j11ids_resitel);
         public IEnumerable<BO.h04ToDo> GetList_ReminderWaiting();
         public BO.Result NotifyByMail(int pid);
@@ -38,28 +38,28 @@ namespace BL
             return _db.Load<BO.h04ToDo>(GetSQL1(" WHERE a.h04ID=@pid"), new { pid = pid });
         }
 
-        public IEnumerable<BO.h04ToDo> GetList(BO.myQuery mq)
+        public IEnumerable<BO.h04ToDo> GetList(BO.myQueryH04 mq)
         {
             if (mq.explicit_orderby == null) mq.explicit_orderby = "a.h04ID DESC";
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.h04ToDo>(fq.FinalSql, fq.Parameters);
         }
         public IEnumerable<BO.h04ToDo> GetList_ReminderWaiting()
         {
-            var mq = new BO.myQuery("h04");
+            var mq = new BO.myQueryH04();
             var strW = " WHERE a.h04IsClosed=0 AND DATEDIFF(minute,GETDATE(),a.h04ReminderDate) BETWEEN -500 AND 6";
             strW += " AND a.h04ID NOT IN (SELECT x40DataPID FROM x40MailQueue WHERE x29ID=604 AND x40IsAutoNotification=1)";            
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(strW), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql(GetSQL1(strW), mq, _mother.CurrentUser);
             return _db.GetList<BO.h04ToDo>(fq.FinalSql, fq.Parameters);
         }
-        public IEnumerable<BO.h04TodoCapacity> GetListCapacity(BO.myQuery mq)
+        public IEnumerable<BO.h04TodoCapacity> GetListCapacity(BO.myQueryH04 mq)
         {
             sb("SELECT a.*,h07.h07Name,h07.h07IsDefault,h07.h07IsToDo,h07.h07IsCapacityPlan,h05.h05Name,h06.j02ID,a01.a01Signature,");            
             sb(_db.GetSQL1_Ocas("h04"));
             sb(" FROM h04ToDo a INNER JOIN h07ToDoType h07 ON a.h07ID=h07.h07ID INNER JOIN a01Event a01 ON a.a01ID=a01.a01ID INNER JOIN j02Person j02 ON a.j02ID_Owner=j02.j02ID LEFT OUTER JOIN h05ToDoStatus h05 ON a.h05ID=h05.h05ID");
             sb(" INNER JOIN h06ToDoReceiver h06 ON a.h04ID=h06.h04ID");
 
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(sbret(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql(sbret(), mq, _mother.CurrentUser);
             return _db.GetList<BO.h04TodoCapacity>(fq.FinalSql, fq.Parameters);
         }
 

@@ -8,9 +8,9 @@ namespace BL
     public interface Ia38NonPersonEventPlanBL
     {
         public BO.a38NonPersonEventPlan Load(int pid);
-        public IEnumerable<BO.a38NonPersonEventPlan> GetList(BO.myQuery mq);
-        public IEnumerable<BO.a38TimeLine> GetListTimeLine(BO.myQuery mq);
-        public IEnumerable<BO.a38TimeLinePerson> GetListPersonTimeLine(BO.myQuery mq);
+        public IEnumerable<BO.a38NonPersonEventPlan> GetList(BO.myQueryA38 mq);
+        public IEnumerable<BO.a38TimeLine> GetListTimeLine(BO.myQueryA38 mq);
+        public IEnumerable<BO.a38TimeLinePerson> GetListPersonTimeLine(BO.myQueryA38 mq);
         public int Save(BO.a38NonPersonEventPlan rec);
         public bool ValidateBeforeSave(BO.a38NonPersonEventPlan rec);
     }
@@ -39,29 +39,29 @@ namespace BL
             return _db.Load<BO.a38NonPersonEventPlan>(GetSQL1(" WHERE a.a38ID=@pid"), new { pid = pid });
         }
 
-        public IEnumerable<BO.a38NonPersonEventPlan> GetList(BO.myQuery mq)
+        public IEnumerable<BO.a38NonPersonEventPlan> GetList(BO.myQueryA38 mq)
         {
             
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.a38NonPersonEventPlan>(fq.FinalSql, fq.Parameters);
         }
-        public IEnumerable<BO.a38TimeLinePerson> GetListPersonTimeLine(BO.myQuery mq)
+        public IEnumerable<BO.a38TimeLinePerson> GetListPersonTimeLine(BO.myQueryA38 mq)
         {
             sb("SELECT a.j02ID,a.a38PlanDate,COUNT(*) as Krat");
             sb(" FROM a38NonPersonEventPlan a INNER JOIN j02Person j02 ON a.j02ID=j02.j02ID");
 
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(sbret(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql(sbret(), mq, _mother.CurrentUser);
 
             var lis = _db.GetList<BO.a38TimeLinePerson>(fq.FinalSql + " GROUP BY a.j02ID,a.a38PlanDate", fq.Parameters);
 
             return lis;
         }
-        public IEnumerable<BO.a38TimeLine> GetListTimeLine(BO.myQuery mq)
+        public IEnumerable<BO.a38TimeLine> GetListTimeLine(BO.myQueryA38 mq)
         {
             sb("SELECT a.j23ID,a.a01ID,a.a38PlanDate,COUNT(*) as Krat");
             sb(" FROM a38NonPersonEventPlan a INNER JOIN j23NonPerson j23 ON a.j23ID=j23.j23ID");
 
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(sbret(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql(sbret(), mq, _mother.CurrentUser);
 
             var lis = _db.GetList<BO.a38TimeLine>(fq.FinalSql + " GROUP BY a.j23ID,a.a01ID,a.a38PlanDate", fq.Parameters);
 
@@ -100,8 +100,8 @@ namespace BL
             {
                 this.AddMessage("Na vstupu chybí ID osoby nebo ID akce."); return false;
             }
-            var mq = new BO.myQuery("a38") { a01id = rec.a01ID, j23id = rec.j23ID };
-            var lisA38 = GetList(mq);
+            
+            var lisA38 = GetList(new BO.myQueryA38() { a01id = rec.a01ID, j23id = rec.j23ID });
             if (lisA38.Where(p=>p.j02ID==rec.j02ID && p.a38PlanDate==rec.a38PlanDate).Count() > 0)
             {
                 string strPerson = _mother.j02PersonBL.Load(rec.j02ID).FullNameAsc;
