@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 using System.Text;
 
 namespace BO
@@ -18,25 +19,32 @@ namespace BO
                 case "a03":
                     return load_a03(master_prefix, master_pid, master_flag);
                 case "j02":
-                    return load_j02(master_prefix, master_pid);
-                case "a11":
-                    return load_a11(master_prefix, master_pid);                
+                    return handle_master(new BO.myQueryJ02(), master_prefix, master_pid);
+                case "a11":                    
+                    return handle_master(new BO.myQueryA11(), master_prefix, master_pid);
                 case "h04":
                     return load_h04(master_prefix, master_pid);
-                case "a42":
-                    return load_a42(master_prefix, master_pid);
+                
                 case "f06":
-                    return load_f06(master_prefix, master_pid);
+                    return handle_master(new BO.myQueryF06(), master_prefix, master_pid);
                 case "f21":
-                    return load_f21(master_prefix, master_pid);
+                    return handle_master(new BO.myQueryF21(), master_prefix, master_pid);
                 case "f19":
-                    return load_f19(master_prefix, master_pid);
+                    return handle_master(new BO.myQueryF19(), master_prefix, master_pid);
+                case "a41":
+                    return handle_master(new BO.myQueryA41(), master_prefix, master_pid);
+                case "a42":
+                    return handle_master(new BO.myQueryA42(), master_prefix, master_pid);
+                case "a35":
+                    return handle_master(new BO.myQueryA35(), master_prefix, master_pid);
+                case "a38":
+                    return handle_master(new BO.myQueryA38(), master_prefix, master_pid);
                 case "j04":
-                    return load_j04(master_prefix, master_pid);
+                    return handle_master(new BO.myQueryJ04(), master_prefix, master_pid);
                 case "x40":
                     return handle_master(new BO.myQueryX40(), master_prefix, master_pid);
                 default:
-                    return load_0(prefix, master_prefix, master_pid);
+                    return handle_master(new BO.myQuery0(prefix.Substring(0, 3)), master_prefix, master_pid);
             }
         }
 
@@ -49,16 +57,7 @@ namespace BO
             return mq;
         }
 
-        private BO.myQuery0 load_0(string prefix,string master_prefix, int master_pid)
-        {
-            var mq = new BO.myQuery0(prefix);
-            if (master_pid > 0)
-            {
-                BO.Reflexe.SetPropertyValue(mq, master_prefix + "id", master_pid);
-            }
-
-            return mq;
-        }
+        
 
         public BO.myQueryA01 LoadA01(string master_prefix = null, int master_pid = 0, string master_flag = null)
         {
@@ -107,28 +106,8 @@ namespace BO
             
             return mq;
         }
-        private BO.myQueryJ02 load_j02(string master_prefix, int master_pid)
-        {
-            var mq = new BO.myQueryJ02();
-            if (master_pid > 0)
-            {
-                BO.Reflexe.SetPropertyValue(mq, master_prefix + "id", master_pid);
-            }
-
-
-            return mq;
-        }
-        private BO.myQueryA11 load_a11(string master_prefix, int master_pid)
-        {
-            var mq = new BO.myQueryA11();
-            if (master_pid > 0)
-            {
-                BO.Reflexe.SetPropertyValue(mq, master_prefix + "id", master_pid);
-            }
-            
-            return mq;
-        }
-
+        
+       
         private BO.myQueryH04 load_h04(string master_prefix, int master_pid)
         {
             var mq = new BO.myQueryH04();
@@ -140,59 +119,6 @@ namespace BO
             return mq;
         }
 
-        private BO.myQueryA42 load_a42(string master_prefix, int master_pid)
-        {
-            var mq = new BO.myQueryA42();
-            if (master_pid > 0)
-            {
-                BO.Reflexe.SetPropertyValue(mq, master_prefix + "id", master_pid);
-            }
-
-            return mq;
-        }
-
-        private BO.myQueryF06 load_f06(string master_prefix, int master_pid)
-        {
-            var mq = new BO.myQueryF06();
-            if (master_pid > 0)
-            {
-                BO.Reflexe.SetPropertyValue(mq, master_prefix + "id", master_pid);
-            }
-            
-            return mq;
-        }
-
-        private BO.myQueryF21 load_f21(string master_prefix, int master_pid)
-        {
-            var mq = new BO.myQueryF21();
-            if (master_pid > 0)
-            {
-                BO.Reflexe.SetPropertyValue(mq, master_prefix + "id", master_pid);
-            }
-
-            return mq;
-        }
-        private BO.myQueryF19 load_f19(string master_prefix, int master_pid)
-        {
-            var mq = new BO.myQueryF19();
-            if (master_pid > 0)
-            {
-                BO.Reflexe.SetPropertyValue(mq, master_prefix + "id", master_pid);
-            }
-
-            return mq;
-        }
-        private BO.myQueryJ04 load_j04(string master_prefix, int master_pid)
-        {
-            var mq = new BO.myQueryJ04();
-            if (master_pid > 0)
-            {
-                BO.Reflexe.SetPropertyValue(mq, master_prefix + "id", master_pid);
-            }
-
-            return mq;
-        }
-        
         
 
         private string validate_prefix(string s = null)
