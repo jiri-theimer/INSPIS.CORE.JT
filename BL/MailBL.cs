@@ -22,7 +22,7 @@ namespace BL
         public BO.x40MailQueue LoadMessageByPid(int x40id);
         public BO.x40MailQueue LoadMessageByGuid(string guid);
         public bool SaveMailJob2Temp(string strJobGuid, BO.x40MailQueue recX40, string strUploadGuid, List<BO.x43MailQueue_Recipient> lisX43);
-        public IEnumerable<BO.x40MailQueue> GetList(BO.myQuery mq);
+        public IEnumerable<BO.x40MailQueue> GetList(BO.myQueryX40 mq);
         public int SaveX40(MailMessage m, BO.x40MailQueue rec);
         public void StopPendingMessagesInBatch(string batchguid);
         public void RestartMessagesInBatch(string batchguid);
@@ -459,9 +459,9 @@ namespace BL
             return true;
         }
 
-        public IEnumerable<BO.x40MailQueue> GetList(BO.myQuery mq)
+        public IEnumerable<BO.x40MailQueue> GetList(BO.myQueryX40 mq)
         {
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql("SELECT a.*,"+ _db.GetSQL1_Ocas("x40",false,false,true)+" FROM x40MailQueue a", mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql("SELECT a.*,"+ _db.GetSQL1_Ocas("x40",false,false,true)+" FROM x40MailQueue a", mq, _mother.CurrentUser);
             return _db.GetList<BO.x40MailQueue>(fq.FinalSql, fq.Parameters);
         }
 

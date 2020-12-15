@@ -11,7 +11,6 @@ namespace BO
         public int b01id { get; set; }
         public int f06id { get; set; }
         public int b06id { get; set; }
-        public int h11id { get; set; }
         public int f29id { get; set; }
         public int x29id { get; set; }
         
@@ -20,6 +19,7 @@ namespace BO
         public int a03id { get; set; }
         public int a05id { get; set; }
         public int j02id { get; set; }
+        public int o53id { get; set; }
         public myQuery0(string prefix)
         {
             this.Prefix = prefix.Substring(0,3);
@@ -28,7 +28,11 @@ namespace BO
        
 
         public override List<QRow> GetRows()
-        {     
+        {
+            if (this.o53id > 0)
+            {
+                if (this.Prefix == "o51") AQ( "a.o53ID=@o53id", "o53id", this.o53id);
+            }
             if (this.a05id > 0)
             {
                 if (this.Prefix=="j23") AQ("a.a05ID=@a05id", "a05id", this.a05id);
@@ -56,10 +60,7 @@ namespace BO
                 if (this.Prefix == "k01") AQ("a03_k02.a03ID=@a03id", "a03id", this.a03id);
                 if (this.Prefix == "a29") AQ("a.a29ID IN (select a29ID FROM a43InstitutionToList WHERE a03ID=@a03id)", "a03id", this.a03id);                                
             }
-            if (this.h11id > 0)
-            {
-                if (this.Prefix == "j04") AQ("a.j04ID IN (select j04ID FROM h12NoticeBoard_Permission WHERE h11ID=@h11id)", "h11id", this.h11id);
-            }
+            
             if (this.h04id > 0)
             {
                 if (this.Prefix == "j11") AQ("a.j11ID IN (select j11ID FROM h06ToDoReceiver WHERE h04ID=@h04id AND j11ID IS NOT NULL)", "h04id", this.h04id);
@@ -68,10 +69,7 @@ namespace BO
             {
                 if (this.Prefix == "a17") AQ("a.a17ID IN (select a17ID FROM f41PortalQuestionTab_a17Binding WHERE f29ID=@f29id)", "f29id", this.f29id);
             }
-            if (this.h11id > 0)
-            {
-                if (this.Prefix == "j04") AQ("a.j04ID IN (select j04ID FROM h12NoticeBoard_Permission WHERE h11ID=@h11id)", "h11id", this.h11id);
-            }
+            
             if (this.x31id > 0)
             {
                 if (this.Prefix == "x32") AQ("a.x32ID IN (select x32ID FROM x34Report_Category WHERE x31ID=@x31id)", "x31id", this.x31id);
@@ -98,14 +96,8 @@ namespace BO
             {
                 AQ("a.h05ID IN (1,2)", "", null);    //filtr stavů pro nově zakládaný úkol
             }
-            if (this.Prefix == "j04" && this.param1 == "j04IsAllowInSchoolAdmin")
-            {
-                AQ("a.j04IsAllowInSchoolAdmin=1", "", null);    //filtr školních rolí podle j04IsAllowInSchoolAdmin=1
-            }
-            if (this.Prefix == "j04" && this.param1 == "institution")
-            {
-                AQ("(a.j04IsAllowInSchoolAdmin=1 OR a.j04RelationFlag=2)", "", null);    //filtr školních rolí podle j04IsAllowInSchoolAdmin=1
-            }
+            
+           
             if (this.Prefix == "x24" && this.param1 == "textbox")
             {
                 AQ("a.x24ID IN (1,2,3,4,5)", "", null);    //filtr v datovém typu otázky pro TEXTBOX
@@ -117,11 +109,9 @@ namespace BO
                 if (this.Prefix == "f32") AQ("a.a11ID=@a11id", "a11id", this.a11id);
             }
             if (this.f06id > 0)
-            {
-                if (this.Prefix == "j04") AQ("a.j04ID IN (select j04ID FROM f07Form_UserRole_EncryptedPermission WHERE f06ID=@f06id)", "f06id", this.f06id);
+            {               
                 if (this.Prefix == "x31") AQ("a.x31ID IN (select x31ID FROM f08Form_Report WHERE f06ID=@f06id)", "f06id", this.f06id);
-                if (this.Prefix == "f18" || this.Prefix == "a11") AQ("a.f06ID=@f06id", "f06id", this.f06id);
-                if (this.Prefix == "f19") AQ("a.f18ID IN (SELECT f18ID FROM f18FormSegment WHERE f06ID=@f06id)", "f06id", this.f06id);
+                if (this.Prefix == "f18" || this.Prefix == "a11") AQ("a.f06ID=@f06id", "f06id", this.f06id);                
                 if (this.Prefix == "f32") AQ("a11.f06ID=@f06id", "f06id", this.f06id);
                 if (this.Prefix == "xx1") AQ("f18.f06ID=@f06id", "f06id", this.f06id); //f21ReplyUnitJoinedF19: GetListJoinedF19
                 if (this.Prefix == "f31") AQ("a11.f06ID=@f06id", "f06id", this.f06id);                

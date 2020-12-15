@@ -184,9 +184,8 @@ namespace UI
         }
         private void Handle_MailQueue(BL.Factory f)
         {
-            var mq = new BO.myQuery("x40");
-           
-            var lisX40 = f.MailBL.GetList(mq).Where(p => p.x40BatchGuid != null && p.x40Status == BO.x40StateFlag.InQueque && (p.x40BatchGuid.Substring(0,4)=="REAL" || p.x40BatchGuid.Substring(0, 4) == "TEST")).Take(20);
+            
+            var lisX40 = f.MailBL.GetList(new BO.myQueryX40()).Where(p => p.x40BatchGuid != null && p.x40Status == BO.x40StateFlag.InQueque && (p.x40BatchGuid.Substring(0,4)=="REAL" || p.x40BatchGuid.Substring(0, 4) == "TEST")).Take(20);
             if (lisX40.Count() > 0)
             {
                 foreach (var recX40 in lisX40)
@@ -212,7 +211,7 @@ namespace UI
             {
                 var recA42 = lisA42.First();
                 //INEZ dávka s poštovními zprávy ve frontě
-                var mq = new BO.myQuery("x40") { explicit_orderby = "a.x40ID DESC", explicit_sqlwhere = "a.x40BatchGuid='" + BO.BAS.GSS(recA42.a42JobGuid)+"'" };
+                var mq = new BO.myQueryX40() { explicit_orderby = "a.x40ID DESC", explicit_sqlwhere = "a.x40BatchGuid='" + BO.BAS.GSS(recA42.a42JobGuid)+"'" };
                 var lisX40 = f.MailBL.GetList(mq).Where(p => p.x40Status == BO.x40StateFlag.InQueque).Take(20); //odeslat maximálně 20 zpráv
                 if (lisX40.Count() > 0)
                 {

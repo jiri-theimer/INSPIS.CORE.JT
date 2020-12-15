@@ -10,9 +10,10 @@ namespace BO
         public BO.baseQuery Load(string prefix, string master_prefix=null, int master_pid=0,string master_flag=null)
         {                        
             master_prefix = validate_prefix(master_prefix);
+            var ret = new BO.myQuery0(prefix.Substring(0, 3));
             switch (prefix.Substring(0, 3))
             {
-                case "a01":
+                case "a01":                    
                     return load_a01(master_prefix, master_pid);
                 case "a03":
                     return load_a03(master_prefix, master_pid, master_flag);
@@ -32,14 +33,20 @@ namespace BO
                     return load_f19(master_prefix, master_pid);
                 case "j04":
                     return load_j04(master_prefix, master_pid);
-                case "a41":
-                case "o27":                    
-                case "a38":
-                case "a35":
-                    return null;    //nelze přes InitMyQuery zakládat vše!!
+                case "x40":
+                    return handle_master(new BO.myQueryX40(), master_prefix, master_pid);
                 default:
                     return load_0(prefix, master_prefix, master_pid);
             }
+        }
+
+        private BO.baseQuery handle_master(BO.baseQuery mq, string master_prefix, int master_pid)
+        {
+            if (master_pid > 0)
+            {
+                BO.Reflexe.SetPropertyValue(mq, master_prefix + "id", master_pid);
+            }
+            return mq;
         }
 
         private BO.myQuery0 load_0(string prefix,string master_prefix, int master_pid)
@@ -71,26 +78,7 @@ namespace BO
             {
                 BO.Reflexe.SetPropertyValue(mq, master_prefix + "id", master_pid);
             }
-            //switch (master_prefix)
-            //{
-            //    case "a10":
-            //        mq.a10id = master_pid; break;
-            //    case "a03":
-            //        mq.a03id = master_pid; break;
-            //    case "a08":
-            //        mq.a08id = master_pid; break;
-            //    case "a42":
-            //        mq.a42id = master_pid; break;
-            //    case "b02":
-            //        mq.b02id = master_pid; break;
-            //    case "j02":
-            //        mq.j02id = master_pid; break;
-                 
-            //    default:
-            //        break;
-            //}
-
-
+           
             return mq;
         }
 

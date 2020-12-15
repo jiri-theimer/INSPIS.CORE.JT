@@ -70,7 +70,7 @@ namespace UI.Controllers
                 Factory.p85TempboxBL.Save(recTemp);
 
                 var cMerge = new BO.CLS.MergeContent();
-                var lisX40 = Factory.MailBL.GetList(new BO.myQuery("x40") { a42id = v.Rec.pid }).Where(p=>p.x40BatchGuid==v.Rec.a42JobGuid);
+                var lisX40 = Factory.MailBL.GetList(new BO.myQueryX40() { a42id = v.Rec.pid }).Where(p=>p.x40BatchGuid==v.Rec.a42JobGuid);
                 int x = 0;
                 foreach (var cTemp in v.lisP85.Where(p=>p.p85Prefix=="x43"))     //p85OtherKey4: a03ID, p85OtherKey2: j02ID
                 {
@@ -263,7 +263,7 @@ namespace UI.Controllers
                 {
                     v.TagHtml = Factory.o51TagBL.GetTagging("a42", v.pid).TagHtml;
                     v.lisA01 = Factory.a01EventBL.GetList(new BO.myQueryA01() { a42id = pid });
-                    v.lisX40= Factory.MailBL.GetList(new BO.myQuery("x40") { a42id = pid });
+                    v.lisX40= Factory.MailBL.GetList(new BO.myQueryX40() { a42id = pid });
                 }
             }
 

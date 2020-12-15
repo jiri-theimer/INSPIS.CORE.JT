@@ -49,7 +49,7 @@ namespace UI.Controllers
                     break;
             }
 
-            var mq = new BO.myQuery("x40") { explicit_orderby = "a.x40MailID", explicit_sqlwhere = "a.x40BatchGuid='" + BO.BAS.GSS(v.BatchGuid) + "'" };
+            var mq = new BO.myQueryX40() { explicit_orderby = "a.x40MailID", explicit_sqlwhere = "a.x40BatchGuid='" + BO.BAS.GSS(v.BatchGuid) + "'" };
             v.lisX40 = Factory.MailBL.GetList(mq);
             v.TotalCountX40 = v.lisX40.Count();
             if (v.QueryByStatusID > 0)
