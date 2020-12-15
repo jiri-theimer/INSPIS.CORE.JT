@@ -297,8 +297,13 @@ namespace UI.Controllers
                             mqH04.j02id_member = Factory.CurrentUser.j02ID; break;                       
                     }
 
-                    v.FilterH07ID = Factory.CBL.LoadUserParam(get_param_key("grid-filter-h07id", masterentity));
-                    v.FilterH07Name = Factory.CBL.LoadUserParam(get_param_key("grid-filter-h07name", masterentity));
+                    mqH04.h07id = Factory.CBL.LoadUserParamInt(get_param_key("grid-filter-h07id", masterentity));
+                    if (mqH04.h07id > 0)
+                    {
+                        v.FilterH07ID = mqH04.h07id.ToString();
+                        v.FilterH07Name = Factory.CBL.LoadUserParam(get_param_key("grid-filter-h07name", masterentity));
+                    }
+                    
 
                     v.gridinput.query = mqH04;
                     break;

@@ -149,7 +149,7 @@
             _window_open("/f06/Record?pid=0",1,"Nový formulář");
         });
         $("#cmdGrid").click(function () {
-            reload();
+            location.replace("/Admin/Forms?prefix=f06&go2pid=@Model.f06ID");
         });
 
 

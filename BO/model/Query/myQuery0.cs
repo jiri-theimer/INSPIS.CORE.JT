@@ -14,7 +14,7 @@ namespace BO
         public int h11id { get; set; }
         public int f29id { get; set; }
         public int x29id { get; set; }
-        public int x55id { get; set; }
+        
         public int a11id { get; set; }
         public int h04id { get; set; }
         public int a03id { get; set; }
@@ -29,6 +29,16 @@ namespace BO
 
         public override List<QRow> GetRows()
         {
+            if (this.b06id > 0)
+            {                
+                if (this.Prefix == "o13") AQ("a.o13ID IN (select o13ID FROM b14WorkflowRequiredAttachmentTypeToStep WHERE b06ID=@b06id)", "b06id", this.b06id);
+                if (this.Prefix == "a45" && this.param1 == "b12") AQ("a.a45ID IN (select a45ID FROM b12WorkflowReceiverToHistory WHERE a45ID IS NOT NULL AND b06ID=@b06id)", "b06id", this.b06id);
+            }
+            if (this.b01id > 0)
+            {
+                if (this.Prefix == "b06") AQ( "a.b02ID IN (select b02ID FROM b02WorkflowStatus WHERE b01ID=@b01id)", "b01id", this.b01id);
+                if (this.Prefix == "b02") AQ( "a.b01ID=@b01id", "b01id", this.b01id);
+            }
             if (this.j02id > 0)
             {
                 if (this.Prefix == "j90" || this.Prefix == "j92") AQ("a.j03ID IN (select j03ID FROM j03User WHERE j02ID=@j02id)", "j02id", this.j02id);
@@ -67,10 +77,7 @@ namespace BO
                 if (this.Prefix == "a10") AQ("a.a10ID IN (select a10ID FROM a23EventType_Report WHERE x31ID=@x31id)", "x31id", this.x31id);
                 if (this.Prefix == "a08") AQ("a.a08ID IN (select a08ID FROM a27EventTheme_Report WHERE x31ID=@x31id)", "x31id", this.x31id);
             }
-            if (this.x55id > 0)
-            {
-                if (this.Prefix == "j04") AQ("a.j04ID IN (select j04ID FROM x57WidgetRestriction WHERE x55ID=@x55id)", "x55id", this.x55id);
-            }
+            
             if (this.Prefix == "x29")
             {
                 if (this.param1 == "x29IsAttachment") { AQ("a.x29IsAttachment=1", "", null); };    //filtr entit x29IsAttachment=1
