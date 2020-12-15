@@ -234,7 +234,7 @@
                             </div>
                             <div class="form-row" style="@(Model.lisB11[i].CssTempDisplay)">
                                 <div class="col-sm-2 col-md-2">
-                                    Šablona zprávy:
+                                    @_f.tra("Šablona zprávy"):
                                 </div>
                                 <div class="col-sm-6 col-md-6">
                                     <mycombo entity="b65WorkflowMessage" asp-for="lisB11[i].b65ID" selectedtext="lisB11[i].b65Name" placeholder="@_f.tra("Vybrat šablonu poštovní zprávy")..." view-flag="2"></mycombo>

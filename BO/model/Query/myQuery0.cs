@@ -108,10 +108,7 @@ namespace BO
             {
                 AQ("a.x24ID IN (1,2,3,4,5)", "", null);    //filtr v datovém typu otázky pro TEXTBOX
             }
-            if (this.Prefix == "x31" && this.param1 == "x31Is4SingleRecord=1")
-            {
-                AQ("a.x31Is4SingleRecord=1", "", null);    //pouze kontextové sestavy
-            }
+            
 
             if (this.a11id > 0)
             {
@@ -128,6 +125,38 @@ namespace BO
                 if (this.Prefix == "f31") AQ("a11.f06ID=@f06id", "f06id", this.f06id);                
             }
 
+
+            if (this.Prefix == "a45" && this.param1 == "a45IsManual1")
+            {
+                AQ( "a.a45IsManual=1", "", null);
+            }
+            if (this.Prefix == "b65" && this.param1 != null)
+            {
+                AQ( "a.x29ID=@x29id", "x29id", BO.BAS.InInt(this.param1));
+            }
+            if (this.Prefix == "b02" && this.param1 != null)
+            {
+                AQ( "a.b02Entity=@prefix", "prefix", this.param1);    //filtr seznamu stavů podle druhu entity
+            }
+            if (this.Prefix == "h05" && this.param1 == "createtodo")
+            {
+                AQ("a.h05ID IN (1,2)", "", null);    //filtr stavů pro nově zakládaný úkol
+            }
+           
+           
+            if (this.Prefix == "x24" && this.param1 == "textbox")
+            {
+                AQ("a.x24ID IN (1,2,3,4,5)", "", null);    //filtr v datovém typu otázky pro TEXTBOX
+            }
+            if (this.Prefix == "x31" && this.param1 == "x31Is4SingleRecord=1")
+            {
+                AQ("a.x31Is4SingleRecord=1", "", null);    //pouze kontextové sestavy
+            }
+            if (this.Prefix == "x29")
+            {
+                if (this.param1 == "x29IsAttachment") { AQ("a.x29IsAttachment=1", "", null); };    //filtr entit x29IsAttachment=1
+                if (this.param1 == "x29IsReport") { AQ("a.x29IsReport=1", "", null); };    //filtr entit x29IsReport=1
+            }
 
             return this.InhaleRows();
 

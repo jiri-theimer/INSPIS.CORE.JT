@@ -82,11 +82,15 @@ namespace BO
             set
             {
                 _searchstring = value;
-                _searchstring = _searchstring.ToLower().Trim();
-                _searchstring = _searchstring.Replace("--", "").Replace("drop", "").Replace("delete", "").Replace("truncate", "").Replace(";", " or ").Replace(",", " or ").Replace("  ", " ");
-                _searchstring = _searchstring.Replace(" or ", "#or#").Replace(" and ", "#and#");
-                _searchstring = _searchstring.Replace(" ", " and ");
-                _searchstring = _searchstring.Replace("#or#", " or ").Replace("#and#", " and ");
+                if (!string.IsNullOrEmpty(_searchstring))
+                {
+                    _searchstring = _searchstring.ToLower().Trim();
+                    _searchstring = _searchstring.Replace("--", "").Replace("drop", "").Replace("delete", "").Replace("truncate", "").Replace(";", " or ").Replace(",", " or ").Replace("  ", " ");
+                    _searchstring = _searchstring.Replace(" or ", "#or#").Replace(" and ", "#and#");
+                    _searchstring = _searchstring.Replace(" ", " and ");
+                    _searchstring = _searchstring.Replace("#or#", " or ").Replace("#and#", " and ");
+                }
+                
             }
         }
 
