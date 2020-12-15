@@ -29,6 +29,19 @@ namespace BO
 
         public override List<QRow> GetRows()
         {
+            if (this.global_d1 != null)
+            {
+                if (this.Prefix == "a35")
+                {
+                    AQ("a.a35PlanDate BETWEEN @gd1 AND @gd2", "gd1", this.global_d1, "AND", null, null, "gd2", this.global_d2);
+                }
+                if (this.Prefix == "a38")
+                {
+                    AQ("a.a38PlanDate BETWEEN @gd1 AND @gd2", "gd1", this.global_d1, "AND", null, null, "gd2", this.global_d2);
+                }
+            }
+            
+
             if (this.b06id > 0)
             {                
                 if (this.Prefix == "o13") AQ("a.o13ID IN (select o13ID FROM b14WorkflowRequiredAttachmentTypeToStep WHERE b06ID=@b06id)", "b06id", this.b06id);

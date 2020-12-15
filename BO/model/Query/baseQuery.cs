@@ -70,7 +70,25 @@ namespace BO
 
         public string param1 { get; set; }
         public DateTime? global_d1;
-        public DateTime? global_d2;
+        private DateTime? _global_d2;
+        public DateTime? global_d2
+        {
+            get
+            {
+                return _global_d2;
+            }
+            set
+            {
+                if (value != null)
+                {
+                    _global_d2 = BO.BAS.ConvertDateTo235959(Convert.ToDateTime(value));     //převést datum-do na čas 23:59:59
+                }
+                else
+                {
+                    _global_d2 = value;
+                }
+            }
+        }
 
         protected string _searchstring;
         public string SearchString
@@ -101,6 +119,7 @@ namespace BO
         }
         protected List<QRow> InhaleRows()
         {
+           
             if (this.pids != null && this.pids.Any())
             {
                 AQ(_pkfield + " IN (" + String.Join(",", this.pids) + ")", "", null);
@@ -151,6 +170,10 @@ namespace BO
             if (String.IsNullOrEmpty(strParName) == false && _lis.Where(p => p.ParName == strParName).Count() > 0)
             {
                 return; //parametr strParName již byl dříve přidán
+            }
+            if (strWhere.Contains( " OR ",StringComparison.OrdinalIgnoreCase))
+            {
+                strWhere = "(" + strWhere + ")";    //v podmínce je operátor OR
             }
             _lis.Add(new QRow() { StringWhere = strWhere, ParName = strParName, ParValue = ParValue, AndOrZleva = strAndOrZleva, BracketLeft = strBracketLeft, BracketRight = strBracketRight, Par2Name = strPar2Name, Par2Value = Par2Value });
         }

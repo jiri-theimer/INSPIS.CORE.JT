@@ -18,9 +18,12 @@ namespace BO
 
         public override List<QRow> GetRows()
         {
+            if (this.global_d1 != null)
+            {
+                AQ("a.h04Deadline BETWEEN @gd1 AND @gd2 OR a.h04CapacityPlanFrom BETWEEN @gd1 AND @gd2 OR a.h04CapacityPlanUntil BETWEEN @gd1 AND @gd2", "gd1", this.global_d1, "AND", null, null, "gd2", this.global_d2);
+            }
             if (this.h07id > 0)
             {
-
                 this.AQ("a.h07ID=@h07id", "h07id", this.h07id);
             }
             if (this.a01id > 0)
