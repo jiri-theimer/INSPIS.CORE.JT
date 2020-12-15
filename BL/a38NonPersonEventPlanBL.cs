@@ -42,7 +42,7 @@ namespace BL
         public IEnumerable<BO.a38NonPersonEventPlan> GetList(BO.myQueryA38 mq)
         {
             
-            DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.a38NonPersonEventPlan>(fq.FinalSql, fq.Parameters);
         }
         public IEnumerable<BO.a38TimeLinePerson> GetListPersonTimeLine(BO.myQueryA38 mq)
@@ -50,7 +50,7 @@ namespace BL
             sb("SELECT a.j02ID,a.a38PlanDate,COUNT(*) as Krat");
             sb(" FROM a38NonPersonEventPlan a INNER JOIN j02Person j02 ON a.j02ID=j02.j02ID");
 
-            DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql(sbret(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(sbret(), mq, _mother.CurrentUser);
 
             var lis = _db.GetList<BO.a38TimeLinePerson>(fq.FinalSql + " GROUP BY a.j02ID,a.a38PlanDate", fq.Parameters);
 
@@ -61,7 +61,7 @@ namespace BL
             sb("SELECT a.j23ID,a.a01ID,a.a38PlanDate,COUNT(*) as Krat");
             sb(" FROM a38NonPersonEventPlan a INNER JOIN j23NonPerson j23 ON a.j23ID=j23.j23ID");
 
-            DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql(sbret(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(sbret(), mq, _mother.CurrentUser);
 
             var lis = _db.GetList<BO.a38TimeLine>(fq.FinalSql + " GROUP BY a.j23ID,a.a01ID,a.a38PlanDate", fq.Parameters);
 

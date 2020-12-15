@@ -48,7 +48,7 @@ namespace BL
 
         public IEnumerable<BO.a03Institution> GetList(BO.myQueryA03 mq)
         {
-            DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.a03Institution>(fq.FinalSql,fq.Parameters);
         }
                 

@@ -51,7 +51,7 @@ namespace BL
         public IEnumerable<BO.a42Qes> GetList(BO.myQueryA42 mq)
         {
             if (mq.explicit_orderby == null) { mq.explicit_orderby = "a.a42ID DESC"; };
-            DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.a42Qes>(fq.FinalSql, fq.Parameters);
         }
 

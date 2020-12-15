@@ -46,7 +46,7 @@ namespace BL
         public IEnumerable<BO.a41PersonToEvent> GetList(BO.myQueryA41 mq)
         {
             if (mq.explicit_orderby == null) mq.explicit_orderby = "a.a41ID DESC";
-            DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.a41PersonToEvent>(fq.FinalSql, fq.Parameters);
         }
 

@@ -837,41 +837,7 @@ namespace UI.Controllers
            
         }
 
-        //private void RenderPodrizeneAkce(int intParentA01ID,string strMenuParentID,BO.a01Event recCurrentA01)
-        //{
-        //    string strName = "";
-        //    if (recCurrentA01.a01ParentID > 0)
-        //    {
-        //        strName = recCurrentA01.a01Signature + "<img src='/Images/mother.png'/>";
-        //        var strURL = Factory.a01EventBL.GetPageUrl(recCurrentA01, intParentA01ID);
-        //        if (intParentA01ID != recCurrentA01.pid)
-        //        {
-        //            var cA01 = Factory.a01EventBL.Load(intParentA01ID);
-        //            strName = cA01.a01Signature + "<img src='/Images/mother.png'/>";
-        //            strURL = Factory.a01EventBL.GetPageUrl(cA01);
-        //        }
-        //        else
-        //        {
-        //            strName += " ✓";
-        //        }
 
-        //        AMI_NOTRA(strName, "javascript:_location_replace_top('" + strURL + "')", "Nadrizena");
-        //        DIV(null, "Nadrizena");
-        //    }
-
-        //    var mq = new BO.myQuery("a01");
-        //    mq.a01parentid = intParentA01ID;
-        //    var lisChilds = Factory.a01EventBL.GetList(mq);
-        //    foreach (var c in lisChilds)
-        //    {
-        //        strName = c.a10Name + ": " + c.a01Signature + "<img src='/Images/child.png'/>";
-        //        if (c.pid == recCurrentA01.pid)
-        //        {
-        //            strName += " ✓";
-        //        }
-        //        AMI(strName, "javascript:_location_replace_top('"+Factory.a01EventBL.GetPageUrl(c)+"')", strMenuParentID);
-        //    }
-        //}
 
         private void AMI(string strName,string strUrl, string strParentID = null,string strID=null, string strTarget = null)
         {            

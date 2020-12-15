@@ -237,6 +237,10 @@ td.td_nowrap {
     color: brown;
 }
 
+#tabgrid1 tr.trsimulation td {
+    color: gold;
+}
+
 
 #tabgrid1 tr.trgroup {
     background-color: #F5F5DC;

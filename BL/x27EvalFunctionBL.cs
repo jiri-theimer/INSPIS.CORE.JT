@@ -35,7 +35,7 @@ namespace BL
         public IEnumerable<BO.x27EvalFunction> GetList(BO.myQuery mq)
         {            
             if (mq.explicit_orderby == null) { mq.explicit_orderby = "a.x27Ordinal"; };
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.x27EvalFunction>(fq.FinalSql, fq.Parameters);
         }
 

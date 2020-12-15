@@ -46,10 +46,8 @@ namespace UI
             //seznam vsech otazek
             
             var otazky = _Factory.f19QuestionBL.GetList(new BO.myQueryF19() { f06id = cA11.f06ID });
-            //seznam vsech jiz vyplnenych odpovedi ve formulari
-            mq = new BO.myQuery("f32");
-            mq.a11id = a11id;
-            var vyplneneOdpovedi = _Factory.f32FilledValueBL.GetList(mq);
+            //seznam vsech jiz vyplnenych odpovedi ve formulari                       
+            var vyplneneOdpovedi = _Factory.f32FilledValueBL.GetList(new BO.myQueryF32() { a11id = a11id });
 
             //projit vsechny povinne otazky
             foreach (var otazka in otazky.Where(p => p.f19IsRequired == true || string.IsNullOrEmpty(p.f19RequiredExpression) == false))

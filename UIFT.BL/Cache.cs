@@ -80,17 +80,17 @@ namespace UIFT.Repository
         /// </summary>
         public IEnumerable<BO.f19Question> f19QuestionBLGetList(int f06id, int f18id = 0)
         {
-            BO.myQuery query = null;
+            BO.myQueryF19 query = null;
             if (f18id > 0)
             {
-                query = new BO.myQuery("f19")
+                query = new BO.myQueryF19
                 {
                     f18id = f18id
                 };
             }
             else if (f06id > 0)
             {
-                query = new BO.myQuery("f19")
+                query = new BO.myQueryF19
                 {
                     f06id = f06id
                 };
@@ -103,24 +103,24 @@ namespace UIFT.Repository
         #region f21
         public IEnumerable<BO.f21ReplyUnitJoinedF19> f21ReplyUnitBLGetListJoinedF19(int f06id, int f18id = 0, int f19id = 0)
         {
-            BO.myQuery query = null;
+            BO.myQueryXX1 query = null;
             if (f18id > 0)
             {
-                query = new BO.myQuery("f21")
+                query = new BO.myQueryXX1
                 {
                     f18id = f18id
                 };
             }
             else if (f19id > 0)
             {
-                query = new BO.myQuery("f21")
+                query = new BO.myQueryXX1
                 {
                     f19id = f19id
                 };
             }
             else
             {
-                query = new BO.myQuery("f21")
+                query = new BO.myQueryXX1
                 {
                     f06id = f06id
                 };
@@ -181,7 +181,7 @@ namespace UIFT.Repository
 
         public IEnumerable<BO.f31FilledQuestionPublishing> f31FilledQuestionPublishingBLGetList(int a11id, int f18id)
         {
-            IEnumerable<BO.f31FilledQuestionPublishing> publikovane = factory.f31FilledQuestionPublishingBL.GetList(new BO.myQuery("f31")
+            IEnumerable<BO.f31FilledQuestionPublishing> publikovane = factory.f31FilledQuestionPublishingBL.GetList(new BO.myQueryF31
             {
                 a11id = a11id,
                 f18id = f18id
@@ -193,7 +193,7 @@ namespace UIFT.Repository
         #region f32
         public IEnumerable<BO.f32FilledValue> f32FilledValueBLGetList(int a11id, int f18id = 0)
         {
-            BO.myQuery query = new BO.myQuery("f32")
+            BO.myQueryF32 query = new BO.myQueryF32
             {
                 a11id = a11id
             };
@@ -209,14 +209,14 @@ namespace UIFT.Repository
         #region o27
         public List<BO.o27Attachment> o27AttachmentBLGetList(IdFields idField, int id)
         {
-            BO.myQuery q = null;
+            BO.myQueryO27 q = null;
             switch (idField)
             {
                 case IdFields.f18id:
-                    q = new BO.myQuery("o27") { f18id = id };
+                    q = new BO.myQueryO27 { f18id = id };
                     break;
                 case IdFields.f06id:
-                    q = new BO.myQuery("o27") { f06id = id };
+                    q = new BO.myQueryO27 { f06id = id };
                     break;
             }
 

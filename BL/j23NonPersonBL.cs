@@ -35,7 +35,7 @@ namespace BL
 
         public IEnumerable<BO.j23NonPerson> GetList(BO.myQuery mq)
         {
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.j23NonPerson>(fq.FinalSql, fq.Parameters);
         }
 

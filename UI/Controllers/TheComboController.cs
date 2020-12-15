@@ -419,7 +419,7 @@ namespace UI.Controllers
         public string GetMySelectHtmlOptions(string entity,string textfield,string orderfield)
         {
             var sb = new System.Text.StringBuilder();
-            var mq = new BO.myQuery0(entity) { IsRecordValid = true };
+            var mq = new BO.myQuery(entity) { IsRecordValid = true };
             textfield = System.Web.HttpUtility.UrlDecode(textfield).Replace("##", "'");
             mq.explicit_selectsql =textfield + " AS combotext";
             if (!string.IsNullOrEmpty(orderfield))

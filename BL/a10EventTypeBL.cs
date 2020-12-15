@@ -36,7 +36,7 @@ namespace BL
 
         public IEnumerable<BO.a10EventType> GetList(BO.myQuery mq)
         {
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.a10EventType>(fq.FinalSql, fq.Parameters);
         }
         public IEnumerable<BO.a20EventType_UserRole_PersonalPage> GetListA20(int a10id)

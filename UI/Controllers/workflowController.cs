@@ -114,6 +114,7 @@ namespace UI.Controllers
             RefreshStateTemp(v);
 
             var mq = new BO.myQuery("b06");
+           
             mq.b02id = v.RecA01.b02ID;
             if (mq.b02id == 0) mq.b02id = -1;   //akce nemá nahozený workflow stav!!
             var lisB06 = Factory.b06WorkflowStepBL.GetList(mq).OrderBy(p => p.b06Order).Where(p => p.b06IsManualStep == true);

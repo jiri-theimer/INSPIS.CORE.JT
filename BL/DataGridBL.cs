@@ -161,7 +161,7 @@ namespace BL
             //parametrický dotaz s WHERE klauzulí
 
             //DL.FinalSqlCommand q = DL.basQuery.ParseFinalSql(sb.ToString(),mq,_mother.CurrentUser, true);    //závěrečné vygenerování WHERE a ORDERBY klauzule
-            DL.FinalSqlCommand q = DL.basQuerySupport.GetFinalSql(sb.ToString(), mq, _mother.CurrentUser, true);    //závěrečné vygenerování WHERE a ORDERBY klauzule
+            DL.FinalSqlCommand q = DL.basQuery.GetFinalSql(sb.ToString(), mq, _mother.CurrentUser, true);    //závěrečné vygenerování WHERE a ORDERBY klauzule
 
             if (bolGetTotalsRow == false && mq.OFFSET_PageSize > 0)
             {

@@ -9,7 +9,7 @@ namespace BL
     {
         public BO.f32FilledValue Load(int pid);
         public BO.f32FilledValue Load(int a11id, int f19id, int f21id = 0);
-        public IEnumerable<BO.f32FilledValue> GetList(BO.myQuery mq);
+        public IEnumerable<BO.f32FilledValue> GetList(BO.myQueryF32 mq);
         public int Save(BO.f32FilledValue rec, bool bolDeleteCurrentAnswers);
         public bool Save(IEnumerable<BO.f32FilledValue> lisF32, bool bolDeleteCurrentAnswers);
         public bool SaveHiddenQuestionsInForm(int a11id, List<int> f19ids);
@@ -63,7 +63,7 @@ namespace BL
             return c;
         }
 
-        public IEnumerable<BO.f32FilledValue> GetList(BO.myQuery mq)
+        public IEnumerable<BO.f32FilledValue> GetList(BO.myQueryF32 mq)
         {
             sb("SELECT a.*,f19.f23ID,a.f32Value as Value,f21.f21Name,f19.x24ID,f31.f31IsPublished,");
             sb(_db.GetSQL1_Ocas("f32", false, false, true));
@@ -73,7 +73,7 @@ namespace BL
             {
                 sb(" INNER JOIN f18FormSegment f18 ON f19.f18ID=f18.f18ID");
             }
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(sbret(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(sbret(), mq, _mother.CurrentUser);
             var lis= _db.GetList<BO.f32FilledValue>(fq.FinalSql, fq.Parameters);
             if (lis.Where(p => p.f33ID > 0).Count() > 0)    //ve výstupu jsou i ntext odpovědi - kvůli db výkonu řešíme samostatným SQL dotazem
             {

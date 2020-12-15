@@ -161,6 +161,7 @@ namespace BL
             AF("a01Event", "a01IsAllFormsClosed", "Formuláře uzavřeny", 0, null, "bool",false,true);
             AF("a01Event", "a01Name", "Název");
             AF("a01Event", "a01Description", "Popis");
+            AF("a01Event", "a01IsTemporary", "Simulační", 0, null, "bool");
             AF("a01Event", "SLA", "SLA (hod.)", 0, "case when a01DurationSLA<3600 then 0 else a01DurationSLA / 60 / 60 end", "num");
             AppendTimestamp("a01Event");
 

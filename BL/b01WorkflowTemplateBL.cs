@@ -36,7 +36,7 @@ namespace BL
         public IEnumerable<BO.b01WorkflowTemplate> GetList(BO.myQuery mq)
         {
             if (mq.explicit_orderby == null) { mq.explicit_orderby = "a.b01Name"; };
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.b01WorkflowTemplate>(fq.FinalSql, fq.Parameters);
         }
 

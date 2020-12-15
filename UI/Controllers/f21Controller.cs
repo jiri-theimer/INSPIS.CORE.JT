@@ -70,7 +70,7 @@ namespace UI.Controllers
         {
             
             v.lisF19 = Factory.f19QuestionBL.GetList(new BO.myQueryF19() { f21id = v.rec_pid });
-            var mq = new BO.myQuery("f22ReplySet");
+            var mq = new BO.myQuery("f22");
             mq.f21id = v.rec_pid;
             v.lisF22 = Factory.f22ReplySetBL.GetList(mq);
         }

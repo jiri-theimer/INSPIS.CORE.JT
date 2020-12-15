@@ -37,7 +37,7 @@ namespace BL
         public IEnumerable<BO.o53TagGroup> GetList(BO.myQuery mq)
         {
             mq.explicit_orderby = "a.o53Ordinary,a.o53Name";
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser) ;
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser) ;
             return _db.GetList<BO.o53TagGroup>(fq.FinalSql, fq.Parameters);
 
         }

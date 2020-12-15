@@ -37,7 +37,7 @@ namespace BL
         public IEnumerable<BO.f25ChessBoard> GetList(BO.myQuery mq)
         {
             
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.f25ChessBoard>(fq.FinalSql, fq.Parameters);
         }
 

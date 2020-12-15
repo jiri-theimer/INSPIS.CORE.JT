@@ -270,6 +270,10 @@ namespace UI
                 {
                     strRowClass += " trbin";
                 }
+                if (mq.Prefix == "a01" && Convert.ToBoolean(dbRow["issimulation"]))
+                {
+                    strRowClass += " trsimulation";
+                }
                 if (mq.Prefix == "a03" && Convert.ToBoolean(dbRow["istestrecord"]))
                 {
                     strRowClass += " trtestrecord";

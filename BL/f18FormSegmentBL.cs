@@ -38,7 +38,7 @@ namespace BL
         public IEnumerable<BO.f18FormSegment> GetList(BO.myQuery mq)
         {
             if (mq.explicit_orderby == null) { mq.explicit_orderby = "a.f18TreeIndex"; };
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.f18FormSegment>(fq.FinalSql, fq.Parameters);
         }
 

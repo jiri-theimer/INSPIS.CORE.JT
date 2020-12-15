@@ -4,23 +4,29 @@ using System.Text;
 
 namespace BO
 {
-    public class myQuery0:baseQuery
+    public class myQuery:baseQuery
     {
         public int x31id { get; set; }
         public int a10id { get; set; }
         public int b01id { get; set; }
         public int f06id { get; set; }
+        public List<int> f06ids { get; set; }
         public int b06id { get; set; }
         public int f29id { get; set; }
         public int x29id { get; set; }
-        
-        public int a11id { get; set; }
+       
         public int h04id { get; set; }
         public int a03id { get; set; }
         public int a05id { get; set; }
         public int j02id { get; set; }
         public int o53id { get; set; }
-        public myQuery0(string prefix)
+        public int b02id { get; set; }
+        public int f18id { get; set; }
+        public int f21id { get; set; }
+        public int a01id { get; set; }
+        public int j04id { get; set; }
+        
+        public myQuery(string prefix)
         {
             this.Prefix = prefix.Substring(0,3);
         }
@@ -29,6 +35,26 @@ namespace BO
 
         public override List<QRow> GetRows()
         {
+            if (this.j04id > 0)
+            {
+                if (this.Prefix=="a39") AQ("(a.j04ID_Explicit=@j04id OR j03.j04ID=@j04id)", "j04id", this.j04id);
+            }
+            if (this.a01id > 0)
+            {
+                if (this.Prefix == "b05") AQ("a.a01ID=@a01id", "a01id", this.a01id);
+            }
+            if (this.f21id > 0)
+            {                
+                if (this.Prefix == "f22") AQ("a.f22ID IN (SELECT f22ID FROM f43ReplyUnitToSet WHERE f21ID=@f21id)", "f21id", this.f21id);
+            }
+            if (this.f18id > 0)
+            {
+                if (this.Prefix == "f26" || this.Prefix == "f25") AQ("a.f18ID=@f18id", "f18id", this.f18id);
+            }
+            if (this.b02id > 0)
+            {
+                if (this.Prefix=="b06") AQ("a.b02ID=@b02id", "b02id", this.b02id);
+            }
             if (this.o53id > 0)
             {
                 if (this.Prefix == "o51") AQ( "a.o53ID=@o53id", "o53id", this.o53id);
@@ -51,6 +77,7 @@ namespace BO
             if (this.j02id > 0)
             {
                 if (this.Prefix == "j90" || this.Prefix == "j92") AQ("a.j03ID IN (select j03ID FROM j03User WHERE j02ID=@j02id)", "j02id", this.j02id);
+                if (this.Prefix == "a39" || this.Prefix == "j03") AQ("a.j02ID=@j02id", "j02id", this.j02id);
             }
             
             if (this.a03id > 0)
@@ -104,17 +131,17 @@ namespace BO
             }
             
 
-            if (this.a11id > 0)
-            {
-                if (this.Prefix == "f32") AQ("a.a11ID=@a11id", "a11id", this.a11id);
-            }
+            
             if (this.f06id > 0)
             {               
                 if (this.Prefix == "x31") AQ("a.x31ID IN (select x31ID FROM f08Form_Report WHERE f06ID=@f06id)", "f06id", this.f06id);
                 if (this.Prefix == "f18" || this.Prefix == "a11") AQ("a.f06ID=@f06id", "f06id", this.f06id);                
-                if (this.Prefix == "f32") AQ("a11.f06ID=@f06id", "f06id", this.f06id);
-                if (this.Prefix == "xx1") AQ("f18.f06ID=@f06id", "f06id", this.f06id); //f21ReplyUnitJoinedF19: GetListJoinedF19
-                if (this.Prefix == "f31") AQ("a11.f06ID=@f06id", "f06id", this.f06id);                
+                
+                          
+            }
+            if (this.f06ids != null && this.f06ids.Count > 0)
+            {                
+                if (this.Prefix == "f18") AQ("a.f06ID IN (" + string.Join(",", this.f06ids) + ")", "", null);
             }
 
 
@@ -148,6 +175,12 @@ namespace BO
             {
                 if (this.param1 == "x29IsAttachment") { AQ("a.x29IsAttachment=1", "", null); };    //filtr entit x29IsAttachment=1
                 if (this.param1 == "x29IsReport") { AQ("a.x29IsReport=1", "", null); };    //filtr entit x29IsReport=1
+            }
+
+            if (this.MyRecordsDisponible && this.Prefix == "h11")
+            {
+                AQ("(a.h11IsPublic=1 OR a.h11ID IN (SELECT h11ID FROM h12NoticeBoard_Permission WHERE j04ID=@j04id_me)) AND GETDATE() BETWEEN a.h11ValidFrom AND a.h11ValidUntil", "j04id_me", this.CurrentUser.j04ID);
+
             }
 
             return this.InhaleRows();

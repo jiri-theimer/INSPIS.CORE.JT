@@ -40,7 +40,7 @@ namespace BL
 
         public IEnumerable<BO.a35PersonEventPlan> GetList(BO.myQueryA35 mq)
         {            
-            DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.a35PersonEventPlan>(fq.FinalSql, fq.Parameters);
         }
         public IEnumerable<BO.a35TimeLine> GetListTimeLine(BO.myQueryA35 mq)
@@ -48,7 +48,7 @@ namespace BL
             sb("SELECT a.j02ID,a.a01ID,a.a35PlanDate,COUNT(*) as Krat");
             sb(" FROM a35PersonEventPlan a INNER JOIN j02Person j02 ON a.j02ID=j02.j02ID");            
 
-            DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql(sbret(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(sbret(), mq, _mother.CurrentUser);
             
             var lis = _db.GetList<BO.a35TimeLine>(fq.FinalSql+ " GROUP BY a.j02ID,a.a01ID,a.a35PlanDate", fq.Parameters);
             

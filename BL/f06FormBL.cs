@@ -40,7 +40,7 @@ namespace BL
         public IEnumerable<BO.f06Form> GetList(BO.myQueryF06 mq)
         {
             if (mq.explicit_orderby == null) { mq.explicit_orderby = "a.f06Ordinal"; };
-            DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.f06Form>(fq.FinalSql, fq.Parameters);
         }
         public IEnumerable<BO.a13AttachmentToForm> GetListA13(int f06id)

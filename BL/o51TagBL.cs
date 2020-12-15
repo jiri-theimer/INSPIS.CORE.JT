@@ -39,7 +39,7 @@ namespace BL
         public IEnumerable<BO.o51Tag> GetList(BO.myQuery mq)
         {
             mq.explicit_orderby = "o51_o53.o53Ordinary,o51_o53.o53Name,a.o51Ordinary,a.o51Name";
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.o51Tag>(fq.FinalSql, fq.Parameters);
 
         }

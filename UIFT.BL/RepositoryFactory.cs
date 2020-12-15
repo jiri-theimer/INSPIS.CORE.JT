@@ -7,7 +7,7 @@ namespace UIFT.Repository
         private readonly BL.Factory Factory;
         private readonly AppConfiguration Configuration;
         private Repository _repository;
-        private int _a11id;
+        private int _a11id = 0;
 
         public RepositoryFactory(BL.Factory factory, AppConfiguration configuration)
         {

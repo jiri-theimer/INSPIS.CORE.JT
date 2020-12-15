@@ -37,7 +37,7 @@ namespace BL
         public IEnumerable<BO.a70SIS> GetList(BO.myQuery mq)
         {
             if (mq.explicit_orderby == null) { mq.explicit_orderby = "a.a70Name"; };
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.a70SIS>(fq.FinalSql, fq.Parameters);
         }
 

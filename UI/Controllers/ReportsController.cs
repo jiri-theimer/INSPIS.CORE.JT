@@ -75,7 +75,7 @@ namespace UI.Controllers
                     var mq = new BO.InitMyQuery().Load(recJ72.j72Entity);
                     mq.lisJ73= f.j72TheGridTemplateBL.GetList_j73(intJ72ID, recJ72.j72Entity.Substring(0, 3));
                     
-                    DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql("", mq, cu);
+                    DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql("", mq, cu);
                     //File.WriteAllText("c:\\temp\\hovado.txt", fq.SqlWhere);
                     string strFilterAlias = recJ72.j72Name;
                     if (recJ72.j72HashJ73Query)

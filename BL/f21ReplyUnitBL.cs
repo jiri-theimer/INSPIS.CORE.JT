@@ -8,7 +8,7 @@ namespace BL
     {
         public BO.f21ReplyUnit Load(int pid);
         public IEnumerable<BO.f21ReplyUnit> GetList(BO.myQueryF21 mq);
-        public IEnumerable<BO.f21ReplyUnitJoinedF19> GetListJoinedF19(BO.myQuery mq);
+        public IEnumerable<BO.f21ReplyUnitJoinedF19> GetListJoinedF19(BO.myQueryXX1 mq);
         public int Save(BO.f21ReplyUnit rec);
 
 
@@ -38,10 +38,10 @@ namespace BL
         public IEnumerable<BO.f21ReplyUnit> GetList(BO.myQueryF21 mq)
         {
 
-            DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.f21ReplyUnit>(fq.FinalSql, fq.Parameters);
         }
-        public IEnumerable<BO.f21ReplyUnitJoinedF19> GetListJoinedF19(BO.myQuery mq)
+        public IEnumerable<BO.f21ReplyUnitJoinedF19> GetListJoinedF19(BO.myQueryXX1 mq)
         {
             sb("SELECT a.*,f20.f19ID,f19.f18ID,f19.f19Name,f19.f23ID,f19.f19StatID,f19.f19IsMultiselect,f18.f18Name,f26.f26Name,f18.f06ID,f06.f06Name,");
             sb(_db.GetSQL1_Ocas("f21"));
@@ -50,8 +50,8 @@ namespace BL
             sb(" INNER JOIN f06Form f06 ON f18.f06ID=f06.f06ID");
             sb(" LEFT OUTER JOIN f26BatteryBoard f26 ON f19.f26ID=f26.f26ID");
 
-            mq.Entity = "xx1";
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(sbret(), mq, _mother.CurrentUser);
+           
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(sbret(), mq, _mother.CurrentUser);
             
             return _db.GetList<BO.f21ReplyUnitJoinedF19>(fq.FinalSql, fq.Parameters);
         }

@@ -58,7 +58,7 @@ namespace BL
             {
                 mq.explicit_orderby = null;
             }
-            DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             if (tempguid != null)
             {
                 fq.Parameters.Add("guid", tempguid);

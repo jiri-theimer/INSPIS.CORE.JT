@@ -402,14 +402,14 @@ namespace UIFT.Repository
                 if (fullDetail)
                 {
                     // seznam priloh k otazkam v sekci
-                    IEnumerable<BO.o27Attachment> otPrilohy = this.BL.o27AttachmentBL.GetList(new BO.myQuery("o27")
+                    IEnumerable<BO.o27Attachment> otPrilohy = this.BL.o27AttachmentBL.GetList(new BO.myQueryO27
                     {
-                        a11id = this.a11id,
+                        //a11id = this.a11id,
                         f19id = f19id
                     }, "");
 
                     // seznam vsech jiz vyplnenych odpovedi v sekci
-                    IEnumerable<BO.f32FilledValue> vyplneneOdpovedi = this.BL.f32FilledValueBL.GetList(new BO.myQuery("f32")
+                    IEnumerable<BO.f32FilledValue> vyplneneOdpovedi = this.BL.f32FilledValueBL.GetList(new BO.myQueryF32
                     {
                         a11id = this.a11id,
                         f19id = f19id

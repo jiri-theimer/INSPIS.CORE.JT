@@ -37,7 +37,7 @@ namespace BL
         public IEnumerable<BO.a28SchoolType> GetList(BO.myQuery mq)
         {
             if (mq.explicit_orderby == null) { mq.explicit_orderby = "a.a28Ordinary,a.a28Name"; };
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.a28SchoolType>(fq.FinalSql, fq.Parameters);
         }
 

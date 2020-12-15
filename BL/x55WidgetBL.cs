@@ -43,7 +43,7 @@ namespace BL
 
         public IEnumerable<BO.x55Widget> GetList(BO.myQuery mq)
         {
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.x55Widget>(fq.FinalSql, fq.Parameters);
         }
 

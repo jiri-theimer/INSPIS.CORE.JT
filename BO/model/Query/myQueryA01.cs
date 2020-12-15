@@ -32,8 +32,9 @@ namespace BO
         {
             if (this.global_d1 != null)
             {
-                AQ("a.a01DateFrom>=@gd1", "gd1", this.global_d1);
-                AQ("a.a01DateUntil<=@gd2", "gd2", this.global_d2);
+                //AQ("a.a01DateFrom>=@gd1", "gd1", this.global_d1);
+                //AQ("a.a01DateUntil<=@gd2", "gd2", this.global_d2);
+                AQ("a.a01DateFrom >= @gd1 AND (a.a01DateUntil <= @gd2 OR a.a01DateUntil=CONVERT(DATETIME,'01.01.3000',104))", "gd1", this.global_d1,"AND",null,null,"gd2",this.global_d2);
             }
             if (this.MyRecordsDisponible && this.CurrentUser != null)
             {

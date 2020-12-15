@@ -40,7 +40,7 @@ namespace BL
         public IEnumerable<BO.f19Question> GetList(BO.myQueryF19 mq)
         {
             if (mq.explicit_orderby == null) { mq.explicit_orderby = "a.f19Ordinal"; };
-            DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.f19Question>(fq.FinalSql, fq.Parameters);
         }
 

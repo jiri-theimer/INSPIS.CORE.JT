@@ -191,10 +191,10 @@ namespace UI.Controllers
                 v.Rec.f18Name = v.RecF18.f18Name;
             }
             v.RecF06 = Factory.f06FormBL.Load(v.RecF18.f06ID);
-            var mq = new BO.myQuery("f25ChessBoard");
+            var mq = new BO.myQuery("f25");
             mq.f18id = v.f18ID;
             v.lisF25 = Factory.f25ChessBoardBL.GetList(mq);
-            mq = new BO.myQuery("f26BatteryBoard");
+            mq = new BO.myQuery("f26");
             mq.f18id = v.f18ID;
             v.lisF26 = Factory.f26BatteryBoardBL.GetList(mq);
         }

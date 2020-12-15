@@ -7,7 +7,7 @@ namespace BL
     public interface If31FilledQuestionPublishingBL
     {
         public BO.f31FilledQuestionPublishing Load(int pid);
-        public IEnumerable<BO.f31FilledQuestionPublishing> GetList(BO.myQuery mq);
+        public IEnumerable<BO.f31FilledQuestionPublishing> GetList(BO.myQueryF31 mq);
         public int Save(BO.f31FilledQuestionPublishing rec);
 
     }
@@ -32,7 +32,7 @@ namespace BL
             return _db.Load<BO.f31FilledQuestionPublishing>(GetSQL1(" WHERE a.f31ID=@pid"), new { pid = pid });
         }
 
-        public IEnumerable<BO.f31FilledQuestionPublishing> GetList(BO.myQuery mq)
+        public IEnumerable<BO.f31FilledQuestionPublishing> GetList(BO.myQueryF31 mq)
         {
             sb("SELECT a.*,");
             sb(_db.GetSQL1_Ocas("f31", false, false, true));
@@ -42,7 +42,7 @@ namespace BL
                 sb(" INNER JOIN f19Question f19 ON a.f19ID=f19.f19ID");
             }
            
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(sbret(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(sbret(), mq, _mother.CurrentUser);
             return _db.GetList<BO.f31FilledQuestionPublishing>(fq.FinalSql, fq.Parameters);
         }
 

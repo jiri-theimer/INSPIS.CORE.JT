@@ -35,7 +35,7 @@ namespace BL
         public IEnumerable<BO.f29PortalQuestionTab> GetList(BO.myQuery mq)
         {
             if (mq.explicit_orderby == null) { mq.explicit_orderby = "a.f29Ordinal"; };
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.f29PortalQuestionTab>(fq.FinalSql, fq.Parameters);
         }
 

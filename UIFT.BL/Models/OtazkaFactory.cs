@@ -138,7 +138,7 @@ namespace UIFT.Models
 
                 foreach (BO.f32FilledValue odpoved in otazkaDerived.VyplneneOdpovedi)
                 {
-                    IEnumerable<BO.o27Attachment> attList = repository.BL.o27AttachmentBL.GetList(new BO.myQuery("o27")
+                    IEnumerable<BO.o27Attachment> attList = repository.BL.o27AttachmentBL.GetList(new BO.myQueryO27
                     {
                         x29id = 432,
                         f32id = odpoved.pid

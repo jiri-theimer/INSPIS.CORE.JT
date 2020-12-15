@@ -53,7 +53,7 @@ namespace BL
         public IEnumerable<BO.b05Workflow_History> GetList(BO.myQuery mq)
         {
             if (mq.explicit_orderby == null) mq.explicit_orderby = "a.b05ID DESC";
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.b05Workflow_History>(fq.FinalSql, fq.Parameters);
         }
 

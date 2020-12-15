@@ -188,7 +188,7 @@
         If cA01 Is Nothing Then Return ""
         Dim intA03ID As Integer = cA01.a03ID
 
-        Dim mq As New BO.myQuery("a11")
+        Dim mq As New BO.myQueryA11
         mq.f06id = CInt(f06id)
         If bolCurrentEvent Then
             mq.a01id = cA11.a01ID   'hledá se pouze v aktuální akci
@@ -232,10 +232,10 @@
             _Factory.a11EventFormBL.ChangeDB(strDB)
             _Factory.f21ReplyUnitBL.ChangeDB(strDB)
         End If
-        Dim mq As New BO.myQuery("f32")
+        Dim mq As New BO.myQueryF32()
         mq.f19id = f19id
         mq.a11id = _a11ID
-        mq.HiddenQuestions = BO.BooleanQueryMode.FalseQuery
+        mq.HiddenQuestions = False
         Dim lis As IEnumerable(Of BO.f32FilledValue) = _Factory.f32FilledValueBL.GetList(mq), s As New List(Of String)
         lis = lis.OrderBy(Function(f32 As BO.f32FilledValue) f32.f21Name)
         lis = lis.OrderBy(Function(f32 As BO.f32FilledValue) _Factory.f21ReplyUnitBL.Load(f32.f21ID).f21Ordinal)
@@ -265,10 +265,10 @@
             _Factory.a11EventFormBL.ChangeDB(strDB)
             _Factory.f21ReplyUnitBL.ChangeDB(strDB)
         End If
-        Dim mq As New BO.myQuery("f32")
+        Dim mq As New BO.myQueryF32()
         mq.f19id = f19id
         mq.a11id = _a11ID
-        mq.HiddenQuestions = BO.BooleanQueryMode.FalseQuery
+        mq.HiddenQuestions = False
         Dim lis As IEnumerable(Of BO.f32FilledValue) = _Factory.f32FilledValueBL.GetList(mq), s As New List(Of String)
         lis = lis.OrderBy(Function(f32 As BO.f32FilledValue) f32.f21Name)
         lis = lis.OrderBy(Function(f32 As BO.f32FilledValue) _Factory.f21ReplyUnitBL.Load(f32.f21ID).f21Ordinal)
@@ -472,10 +472,10 @@
             _Factory.f32FilledValueBL.ChangeDB(strDB)
             _Factory.f21ReplyUnitBL.ChangeDB(strDB)
         End If
-        Dim mq As New BO.myQuery("f32")
+        Dim mq As New BO.myQueryF32()
         mq.f19id = f19id
         mq.a11id = _a11ID
-        mq.HiddenQuestions = BO.BooleanQueryMode.FalseQuery
+        mq.HiddenQuestions = False
         Dim f32lis As IEnumerable(Of BO.f32FilledValue) = _Factory.f32FilledValueBL.GetList(mq)
         Dim s As New List(Of String)
         f32lis = f32lis.OrderBy(Function(f32 As BO.f32FilledValue) f32.f21Name)

@@ -76,7 +76,7 @@ namespace BL
 
         public IEnumerable<BO.a11EventForm> GetList(BO.myQueryA11 mq)
         {
-            DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.a11EventForm>(fq.FinalSql, fq.Parameters);
         }
 

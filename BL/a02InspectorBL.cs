@@ -37,7 +37,7 @@ namespace BL
 
         public IEnumerable<BO.a02Inspector> GetList(BO.myQuery mq)
         {
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.a02Inspector>(fq.FinalSql, fq.Parameters);
         }
 

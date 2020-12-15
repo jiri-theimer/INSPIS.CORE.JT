@@ -58,7 +58,7 @@ namespace UI.Controllers
         {
             var gi = new TheGridInput() { entity = "p86TempStat", controllername = "Stat", ondblclick = null, oncmclick = null, fixedcolumns = fixedcolumns };
             gi.viewstate = gridguid;
-            gi.query = new BO.myQuery0("p86");
+            gi.query = new BO.myQuery("p86");
 
             Factory.CBL.ClearUserParamsCache(); //docílit toho, aby se guid načetl na 100% z databáze
             var strGUID = Factory.CBL.LoadUserParam("Stat-GridGuid");
@@ -139,17 +139,13 @@ namespace UI.Controllers
                 {
                     this.AddMessage("Musíte zaškrtnout minimálně jednu otázku."); return View(v);
                 }
-                var mq = new BO.myQuery("f19");
-                mq.f06ids = f06ids;
+                
                 string strF19IDs = ParseCheckedF19IDs(v.CheckedIDs);
                 System.IO.File.WriteAllText(GetTempFilePath(), v.CheckedIDs);
-                //mq.SetPids(strF19IDs);
-                //var lisF19 = Factory.f19QuestionBL.GetList(mq);
-                //var lisCols = Factory.StatBL.GetList_StatColumns(lisF19.Select(p=>p.f19ID).ToList());
-
+                
                 bool bolTestEncryptedValues = !Factory.CurrentUser.TestPermission(BO.j05PermValuEnum.Read_Encrypted_FormValues);
 
-                mq = new BO.myQuery("a01");
+                var mq = new BO.myQueryA01();
 
                 var lis = new List<string>();
                 if (v.PeriodFilter.d1 != null)
@@ -158,7 +154,7 @@ namespace UI.Controllers
                 }
                 if (v.PeriodFilter.d2 != null)
                 {
-                    lis.Add("a.a01DateUntil<=" + BO.BAS.GD(v.PeriodFilter.d2));
+                    lis.Add("(a.a01DateUntil<=" + BO.BAS.GD(v.PeriodFilter.d2)+ " OR a.a01DateUntil=convert(datetime,'01.01.3000',104))");
                 }
 
                 int intJ72ID = BO.BAS.InInt(v.SelectedJ72ID);
@@ -166,7 +162,7 @@ namespace UI.Controllers
                 {
                     var recJ72 = Factory.j72TheGridTemplateBL.Load(intJ72ID);
                     mq.lisJ73 = Factory.j72TheGridTemplateBL.GetList_j73(intJ72ID, "a01");
-                    DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql("", mq, Factory.CurrentUser);
+                    DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql("", mq, Factory.CurrentUser);
                     if (!string.IsNullOrEmpty(fq.SqlWhere))
                     {
                         lis.Add("(" + fq.SqlWhere + ")");
@@ -177,7 +173,7 @@ namespace UI.Controllers
                 {
                     mq.explicit_sqlwhere = string.Join(" AND ", lis);
                 }
-
+                System.IO.File.WriteAllText("c:\\temp\\hovadostat.txt", mq.explicit_sqlwhere);
                 v.guid = BO.BAS.GetGuid();
 
 
@@ -258,7 +254,7 @@ namespace UI.Controllers
 
             if (cExcel.ToXLSX(dt, Factory.App.TempFolder + "\\" + v.guid + ".xlsx", cols))
             {
-                var mq = new BO.myQuery("xx1");
+                var mq = new BO.myQueryXX1();
 
                 string strCheckedF19IDs = ParseCheckedF19IDs(v.CheckedIDs);
                 mq.f19ids = BO.BAS.ConvertString2ListInt(strCheckedF19IDs);

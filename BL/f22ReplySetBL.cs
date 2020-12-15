@@ -37,7 +37,7 @@ namespace BL
         public IEnumerable<BO.f22ReplySet> GetList(BO.myQuery mq)
         {
 
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.f22ReplySet>(fq.FinalSql, fq.Parameters);
         }
 

@@ -11,40 +11,49 @@ namespace BO
         public BO.baseQuery Load(string prefix, string master_prefix=null, int master_pid=0,string master_flag=null)
         {                        
             master_prefix = validate_prefix(master_prefix);
-            var ret = new BO.myQuery0(prefix.Substring(0, 3));
+            var ret = new BO.myQuery(prefix.Substring(0, 3));
             switch (prefix.Substring(0, 3))
             {
                 case "a01":                    
-                    return load_a01(master_prefix, master_pid);
+                    return load_a01(master_prefix, master_pid); //Kvůli TheGridControlleru musí zůstat h04 takto
+                case "h04":
+                    return load_h04(master_prefix, master_pid); //Kvůli TheGridControlleru musí zůstat h04 takto
                 case "a03":
-                    return load_a03(master_prefix, master_pid, master_flag);
-                case "j02":
-                    return handle_master(new BO.myQueryJ02(), master_prefix, master_pid);
+                    return load_a03(master_prefix, master_pid, master_flag);    //Kvůli master_flag
+
+                
                 case "a11":                    
                     return handle_master(new BO.myQueryA11(), master_prefix, master_pid);
-                case "h04":
-                    return load_h04(master_prefix, master_pid);
-                
+                case "a35":
+                    return handle_master(new BO.myQueryA35(), master_prefix, master_pid);
+                case "a38":
+                    return handle_master(new BO.myQueryA38(), master_prefix, master_pid);
+                case "a41":
+                    return handle_master(new BO.myQueryA41(), master_prefix, master_pid);
+                case "a42":
+                    return handle_master(new BO.myQueryA42(), master_prefix, master_pid);
                 case "f06":
                     return handle_master(new BO.myQueryF06(), master_prefix, master_pid);
                 case "f21":
                     return handle_master(new BO.myQueryF21(), master_prefix, master_pid);
                 case "f19":
                     return handle_master(new BO.myQueryF19(), master_prefix, master_pid);
-                case "a41":
-                    return handle_master(new BO.myQueryA41(), master_prefix, master_pid);
-                case "a42":
-                    return handle_master(new BO.myQueryA42(), master_prefix, master_pid);
-                case "a35":
-                    return handle_master(new BO.myQueryA35(), master_prefix, master_pid);
-                case "a38":
-                    return handle_master(new BO.myQueryA38(), master_prefix, master_pid);
+                case "f32":
+                    return handle_master(new BO.myQueryF32(), master_prefix, master_pid);
+                case "f31":
+                    return handle_master(new BO.myQueryF31(), master_prefix, master_pid);
+                case "j02":
+                    return handle_master(new BO.myQueryJ02(), master_prefix, master_pid);
                 case "j04":
                     return handle_master(new BO.myQueryJ04(), master_prefix, master_pid);
+                case "o27":
+                    return handle_master(new BO.myQueryO27(), master_prefix, master_pid);
                 case "x40":
                     return handle_master(new BO.myQueryX40(), master_prefix, master_pid);
+                case "xx1":
+                    return handle_master(new BO.myQueryXX1(), master_prefix, master_pid);
                 default:
-                    return handle_master(new BO.myQuery0(prefix.Substring(0, 3)), master_prefix, master_pid);
+                    return handle_master(new BO.myQuery(prefix.Substring(0, 3)), master_prefix, master_pid);
             }
         }
 

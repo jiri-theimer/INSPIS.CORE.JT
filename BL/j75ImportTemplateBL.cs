@@ -37,7 +37,7 @@ namespace BL
         public IEnumerable<BO.j75ImportTemplate> GetList(BO.myQuery mq)
         {
             if (mq.explicit_orderby == null) { mq.explicit_orderby = "a.j75Name"; };
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.j75ImportTemplate>(fq.FinalSql, fq.Parameters);
         }
 

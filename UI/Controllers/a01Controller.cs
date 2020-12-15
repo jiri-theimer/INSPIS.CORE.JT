@@ -417,6 +417,10 @@ namespace UI.Controllers
                 }
                 else
                 {
+                    if (v.Rec.a01IsTemporary)
+                    {
+                        this.AddMessage("Toto je akce pro simulaci formuláře. Běheme hodiny systém akci automaticky smaže.","info");
+                    }
                     v.RecA10 = Factory.a10EventTypeBL.Load(v.Rec.a10ID);
                     if (v.RecA10.a10ViewUrl_Page != null)
                     {
