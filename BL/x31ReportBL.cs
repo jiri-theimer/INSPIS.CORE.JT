@@ -179,9 +179,7 @@ namespace BL
 
         public BO.o27Attachment LoadReportDoc(int x31id)
         {
-            var mq = new BO.myQuery("o27");
-            mq.recpid = x31id;
-            mq.x29id = 931;
+            var mq = new BO.myQueryO27() { recpid = x31id, x29id = 931 };            
             var lisO27 = _mother.o27AttachmentBL.GetList(mq, null);
 
             if (lisO27.Count() > 0)

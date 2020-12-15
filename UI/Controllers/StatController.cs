@@ -58,7 +58,7 @@ namespace UI.Controllers
         {
             var gi = new TheGridInput() { entity = "p86TempStat", controllername = "Stat", ondblclick = null, oncmclick = null, fixedcolumns = fixedcolumns };
             gi.viewstate = gridguid;
-            gi.query = new BO.myQuery("p86");
+            gi.query = new BO.myQuery0("p86");
 
             Factory.CBL.ClearUserParamsCache(); //docílit toho, aby se guid načetl na 100% z databáze
             var strGUID = Factory.CBL.LoadUserParam("Stat-GridGuid");

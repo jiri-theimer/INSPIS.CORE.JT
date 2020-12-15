@@ -17,13 +17,33 @@ namespace BO
         public int x55id { get; set; }
         public int a11id { get; set; }
         public int h04id { get; set; }
+        public int a03id { get; set; }
+        public int a01id { get; set; }
+        public int j02id { get; set; }
         public myQuery0(string prefix)
         {
-            this.Prefix = prefix;
+            this.Prefix = prefix.Substring(0,3);
         }
+
+       
 
         public override List<QRow> GetRows()
         {
+            if (this.j02id > 0)
+            {
+                if (this.Prefix == "j90" || this.Prefix == "j92") AQ("a.j03ID IN (select j03ID FROM j03User WHERE j02ID=@j02id)", "j02id", this.j02id);
+            }
+            if (this.a01id > 0)
+            {
+                if (this.Prefix == "a35" || this.Prefix == "a38") AQ( "a.a01ID=@a01id", "a01id", this.a01id);
+            }
+            if (this.a03id > 0)
+            {
+                if (this.Prefix == "a37" || this.Prefix == "a39") AQ("a.a03ID=@a03id", "a03id", this.a03id);
+                if (this.Prefix == "a19") AQ("a.a37ID IN (select a37ID FROM a37InstitutionDepartment WHERE a03ID=@a03id)", "a03id", this.a03id);
+                if (this.Prefix == "k01") AQ("a03_k02.a03ID=@a03id", "a03id", this.a03id);
+                if (this.Prefix == "a29") AQ("a.a29ID IN (select a29ID FROM a43InstitutionToList WHERE a03ID=@a03id)", "a03id", this.a03id);                                
+            }
             if (this.h11id > 0)
             {
                 if (this.Prefix == "j04") AQ("a.j04ID IN (select j04ID FROM h12NoticeBoard_Permission WHERE h11ID=@h11id)", "h11id", this.h11id);

@@ -163,7 +163,7 @@ namespace UI
         }
 
 
-        private TheGridOutput render_thegrid_html(BO.TheGridState gridState, BO.myQuery mq) //vrací kompletní html gridu: header+body+footer+message
+        private TheGridOutput render_thegrid_html(BO.TheGridState gridState, BO.baseQuery mq) //vrací kompletní html gridu: header+body+footer+message
         {
             var ret = new TheGridOutput();
             _grid = new TheGridViewModel();
@@ -244,7 +244,7 @@ namespace UI
             return ret;
         }
 
-        private void Render_DATAROWS(System.Data.DataTable dt, BO.myQuery mq)
+        private void Render_DATAROWS(System.Data.DataTable dt, BO.baseQuery mq)
         {
             int intRows = dt.Rows.Count;
             int intStartIndex = 0;

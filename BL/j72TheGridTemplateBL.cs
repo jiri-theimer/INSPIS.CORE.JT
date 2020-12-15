@@ -15,7 +15,7 @@ namespace BL
         public int SaveState(BO.TheGridState rec, int j03id);
         public IEnumerable<BO.j72TheGridTemplate> GetList(string strEntity, int intJ03ID, string strMasterEntity);
         public IEnumerable<BO.j73TheGridQuery> GetList_j73(int j72id,string prefix);
-        public string getFiltrAlias(string prefix, BO.myQuery mq);
+        public string getFiltrAlias(string prefix, BO.baseQuery mq);
 
     }
 
@@ -300,7 +300,7 @@ namespace BL
             return lis;
         }
 
-        public string getFiltrAlias(string prefix, BO.myQuery mq)
+        public string getFiltrAlias(string prefix, BO.baseQuery mq)
         {
             if (mq.lisJ73.Count() == 0) return "";
             var lisFields = new BL.TheQueryFieldProvider(prefix).getPallete();
@@ -371,8 +371,11 @@ namespace BL
                 }
                 if (c.j73DatePeriodFlag > 0)
                 {
-                    var d1 = mq.lisPeriods.Where(p => p.pid == c.j73DatePeriodFlag).First().d1;
-                    var d2 = Convert.ToDateTime(mq.lisPeriods.Where(p => p.pid == c.j73DatePeriodFlag).First().d2).AddDays(1).AddMinutes(-1);
+                    var cPeriods = new BO.CLS.ThePeriodProviderSupport();
+                    var lisPeriods = cPeriods.GetPallete();
+
+                    var d1 = lisPeriods.Where(p => p.pid == c.j73DatePeriodFlag).First().d1;
+                    var d2 = Convert.ToDateTime(lisPeriods.Where(p => p.pid == c.j73DatePeriodFlag).First().d2).AddDays(1).AddMinutes(-1);
                     ss += ": " + BO.BAS.ObjectDate2String(d1, "dd.MM.yyyy") + " - " + BO.BAS.ObjectDate2String(d2, "dd.MM.yyyy");
                 }
 

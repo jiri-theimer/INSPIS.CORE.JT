@@ -12,6 +12,7 @@ namespace BO
         public int a01parentid { get; set; }
         public bool? a01IsTemporary;
         public bool? a01IsClosed;
+        public int b02id { get; set; }
         public int a01id { get; set; }
         public int a42id { get; set; }
         public int j02id { get; set; }
@@ -40,6 +41,10 @@ namespace BO
                 {
                     AQ(GetDisponibleA01Where(), null, null);
                 }
+            }
+            if (this.b02id > 0)
+            {
+                AQ("a.b02ID=@b02id", "b02id", this.b02id);
             }
             if (this.a03id > 0)
             {

@@ -87,7 +87,7 @@ namespace UI.Controllers
         private TheGridInput GetSchoolA01GridInput(int a03id,int a10id,string fixedcolumns)
         {
             var gi = new TheGridInput() {entity="a01Event", controllername = "Dashboard" };
-            gi.query = new BO.myQuery("a01") { a03id = a03id,a10id=a10id };
+            gi.query = new BO.myQueryA01() { a03id = a03id,a10id=a10id };
             gi.fixedcolumns = fixedcolumns;
             gi.ondblclick = "a01_doubleclick";
             gi.viewstate = a03id.ToString() + "|" + a10id.ToString();

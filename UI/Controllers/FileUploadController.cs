@@ -31,7 +31,7 @@ namespace UI.Controllers
             }
             if (v.RecPid > 0)
             {
-                var mq = new BO.myQuery("o27Attachment") { x29id = v.x29ID,recpid=v.RecPid };
+                var mq = new BO.myQueryO27() { x29id = v.x29ID,recpid=v.RecPid };
                 v.lisO27 = Factory.o27AttachmentBL.GetList(mq,v.Guid);
                 
             }
@@ -165,8 +165,8 @@ namespace UI.Controllers
             v.lisTempFiles = Factory.o27AttachmentBL.GetTempFiles(v.Guid);
             if (v.RecPid > 0)
             {
-                mq = new BO.myQuery("o27Attachment") { x29id = v.x29ID,recpid=v.RecPid };
-                v.lisO27 = Factory.o27AttachmentBL.GetList(mq,v.Guid);
+                
+                v.lisO27 = Factory.o27AttachmentBL.GetList(new BO.myQueryO27() { x29id = v.x29ID, recpid = v.RecPid }, v.Guid);
             }
         }
 

@@ -331,7 +331,7 @@ namespace BL
                 var lisA14 = _mother.a08ThemeBL.GetListA14(rec.a08ID).Where(p => p.a14IsRequired == true);
                 foreach(var c in lisA14)
                 {
-                    var lisO27 = _mother.o27AttachmentBL.GetList(new BO.myQuery("o27") { a01id = rec.pid, o13id = c.o13ID },null);
+                    var lisO27 = _mother.o27AttachmentBL.GetList(new BO.myQueryO27() { a01id = rec.pid, o13id = c.o13ID },null);
                     if (lisO27.Count() == 0)
                     {
                         this.AddMessage(string.Format("Povinný typ dokumentu [{0}] není přiložen v akci.", _mother.o13AttachmentTypeBL.Load(c.o13ID).o13Name));
@@ -344,7 +344,7 @@ namespace BL
             {
                 foreach (int intO13ID in _mother.b06WorkflowStepBL.GetNeededO13IDs(recB06.pid))
                 {
-                    var lisO27 = _mother.o27AttachmentBL.GetList(new BO.myQuery("o27") { a01id = rec.pid, o13id = intO13ID }, null);
+                    var lisO27 = _mother.o27AttachmentBL.GetList(new BO.myQueryO27() { a01id = rec.pid, o13id = intO13ID }, null);
                     if (lisO27.Count() == 0)
                     {
                         this.AddMessage(string.Format("Tento krok vyžaduje v akci přiložený dokument typu [{0}].", _mother.o13AttachmentTypeBL.Load(intO13ID).o13Name));
@@ -434,7 +434,7 @@ namespace BL
             if (rec.a01ChildsCount > 0 && rec.a01ParentID == 0)
             {
                 //spuštění SQL příkazů podřízených dětí vůči matce
-                var mq = new BO.myQuery("a01");
+                var mq = new BO.myQueryA01();
                 mq.a01parentid = rec.pid;
                 if (prikaz.a10ID_TargetUpdate > 0)
                 {
@@ -474,7 +474,7 @@ namespace BL
                         if (rec.a01ChildsCount > 0 && rec.a01ParentID == 0)
                         {
                             //spuštění SQL příkazů podřízených dětí vůči matce
-                            var mq = new BO.myQuery("a01");
+                            var mq = new BO.myQueryA01();
                             if (prikaz.a10ID_TargetUpdate > 0)
                             {
                                 mq.a10id = prikaz.a10ID_TargetUpdate;

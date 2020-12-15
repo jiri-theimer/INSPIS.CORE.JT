@@ -206,12 +206,12 @@ namespace UI.Controllers
             if (pagename.ToLower().Contains("tabforms"))
             {
                 gi.entity = "a11EventForm";
-                gi.query = new BO.myQuery("a11") { a01id = a01id };
+                gi.query = new BO.myQueryA11() { a01id = a01id };
             }
             if (pagename.ToLower().Contains("tabsouvisejici"))
             {
                 gi.entity = "a01Event";
-                gi.query = new BO.myQuery("a01") { a01id = a01id };
+                gi.query = new BO.myQueryA01() { a01id = a01id };
             }            
             gi.viewstate = a01id.ToString();
             return gi;
@@ -238,7 +238,7 @@ namespace UI.Controllers
             }
             v.RecA01 = Factory.a01EventBL.Load(v.pid);
             v.PermA01 = Factory.a01EventBL.InhalePermission(v.RecA01);
-            var mq = new BO.myQuery("o27");
+            var mq = new BO.myQueryO27();
             mq.a01id = v.pid;
             mq.IsRecordValid = true;
             v.lisO27 = Factory.o27AttachmentBL.GetList(mq, null).OrderByDescending(p => p.pid);

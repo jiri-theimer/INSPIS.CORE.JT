@@ -53,6 +53,7 @@ namespace BO
             this.pids = BO.BAS.ConvertString2ListInt(strPids);
 
         }
+        public int TopRecordsOnly { get; set; }
         public int OFFSET_PageSize { get; set; }
         public int OFFSET_PageNum { get; set; }
 
@@ -414,6 +415,9 @@ namespace BO
 
             return colValue;
         }
+
+
+        
 
     }
 }

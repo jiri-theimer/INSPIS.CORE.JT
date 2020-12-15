@@ -11,7 +11,7 @@ namespace BL
         public BO.a42Qes Load(int pid);
         public BO.a42Qes LoadByName(string strA42Name, int intExcludePID);
         public BO.a42Qes LoadByGuid(string strGUID, int intExcludePID);
-        public IEnumerable<BO.a42Qes> GetList(BO.myQuery mq);
+        public IEnumerable<BO.a42Qes> GetList(BO.myQueryA42 mq);
         public int Save(BO.a42Qes rec);
         public int PrepareTempData(BO.a42Qes rec, BO.a01Event recA01Template, List<BO.a12ThemeForm> lisA12, List<int> a03ids, BO.x40MailQueue recX40, List<BO.a12ThemeForm> lisA12Poll);
         public void UpdateJobState(int a42id, BO.a42JobState stateflag);
@@ -48,10 +48,10 @@ namespace BL
             return _db.Load<BO.a42Qes>(GetSQL1(" WHERE a.a42JobGuid LIKE @guid AND a.a42ID<>@excludepid"), new { guid = strGUID, excludepid = intExcludePID });
         }
 
-        public IEnumerable<BO.a42Qes> GetList(BO.myQuery mq)
+        public IEnumerable<BO.a42Qes> GetList(BO.myQueryA42 mq)
         {
             if (mq.explicit_orderby == null) { mq.explicit_orderby = "a.a42ID DESC"; };
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.a42Qes>(fq.FinalSql, fq.Parameters);
         }
 

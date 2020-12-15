@@ -43,7 +43,7 @@
     function refresh_a12_table() {
         var url = "@Url.Action("GetWorkTable", "Common")";
 
-        $.post(url, { entity: "f06Form", master_entity:"a08Theme",master_pid:"@Model.pid" }, function (data) {
+        $.post(url, { entity: "f06Form", whereid:"wi1",whereid_pid1:"@Model.pid",master_entity:"a08Theme" }, function (data) {
             $("#divA12").html(data);
 
         });

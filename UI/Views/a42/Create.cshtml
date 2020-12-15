@@ -319,7 +319,7 @@
             _notify_message("@_f.tra("Musíte vybrat seznam.")");
             return;
         }
-        $.post("/Common/GetPidsOfQuery", { entity: "a03Institution", master_prefix: "a29", master_pid: a29id }, function (data) {
+        $.post("/Common/GetPidsOfQuery", { entity: "a03Institution", master_entity: "a29", master_pid: a29id }, function (data) {
             if (data != null) {
                 append_a03ids(data,true);
             }
@@ -330,7 +330,7 @@
             _notify_message("Musíte vybrat INEZ.");
             return;
         }
-        $.post("/Common/GetPidsOfQuery", { entity: "a03Institution", master_prefix: "a42", master_pid: a42id }, function (data) {
+        $.post("/Common/GetPidsOfQuery", { entity: "a03Institution", master_entity: "a42", master_pid: a42id }, function (data) {
             if (data != null) {
                 append_a03ids(data,true);
             }

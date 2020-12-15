@@ -109,8 +109,8 @@ namespace UI
             foreach (var recB06 in lisB06)
             {
                 //LogInfo("Test workflow kroku (b06ValidateAutoMoveSQL): " + recB06.b06Name);
-                mq = new BO.myQuery("a01") { b02id = recB06.b02ID,a01IsClosed=false };
-                var lisA01 = f.a01EventBL.GetList(mq).Where(p => p.a01ParentID == 0);
+                
+                var lisA01 = f.a01EventBL.GetList(new BO.myQueryA01() { b02id = recB06.b02ID, a01IsClosed = false }).Where(p => p.a01ParentID == 0);
                 foreach(var recA01 in lisA01)
                 {
                     LogInfo("Test akce pro automaticky spouštěný krok (b06ValidateAutoMoveSQL): " + recA01.a01Signature);
@@ -132,8 +132,8 @@ namespace UI
             foreach (var recB06 in lisB06)
             {
                 LogInfo("Test workflow kroku (b06IsAutoRun_Missing_Form/b06IsAutoRun_Missing_Attachment): " + recB06.b06Name);
-                mq = new BO.myQuery("a01") { b02id = recB06.b02ID,a01IsClosed=false };
-                var lisA01 = f.a01EventBL.GetList(mq);
+                
+                var lisA01 = f.a01EventBL.GetList(new BO.myQueryA01() { b02id = recB06.b02ID, a01IsClosed = false });
                 foreach (var recA01 in lisA01)
                 {
                     LogInfo("Test akce pro automaticky spouštěný krok (b06IsAutoRun_Missing_Form/b06IsAutoRun_Missing_Attachment): " + recA01.a01Signature);
@@ -148,7 +148,7 @@ namespace UI
                             var lisA14 = f.a08ThemeBL.GetListA14(recA01.a08ID).Where(p => p.a14IsRequired == true);
                             foreach(var recA14 in lisA14)
                             {
-                                var mqx = new BO.myQuery("o27") { a01id = recA01.pid, o13id = recA14.o13ID };
+                                var mqx = new BO.myQueryO27() { a01id = recA01.pid, o13id = recA14.o13ID };
                                 if (f.o27AttachmentBL.GetList(mqx, null).Count() == 0)
                                 {
                                     //dokument neexistuje -> krok spustit
@@ -206,13 +206,13 @@ namespace UI
 
         private void Handle_MailQueue_INEZ(BL.Factory f)
         {
-            var mq = new BO.myQuery("a42");
-            var lisA42= f.a42QesBL.GetList(mq).Where(p => p.a42JobGuid != null && (p.a42JobState == BO.a42JobState.PreparedX40 || p.a42JobState == BO.a42JobState.MailQueue));
+            
+            var lisA42= f.a42QesBL.GetList(new BO.myQueryA42()).Where(p => p.a42JobGuid != null && (p.a42JobState == BO.a42JobState.PreparedX40 || p.a42JobState == BO.a42JobState.MailQueue));
             if (lisA42.Count()>0)
             {
                 var recA42 = lisA42.First();
                 //INEZ dávka s poštovními zprávy ve frontě
-                mq = new BO.myQuery("x40") { explicit_orderby = "a.x40ID DESC", explicit_sqlwhere = "a.x40BatchGuid='" + BO.BAS.GSS(recA42.a42JobGuid)+"'" };
+                var mq = new BO.myQuery("x40") { explicit_orderby = "a.x40ID DESC", explicit_sqlwhere = "a.x40BatchGuid='" + BO.BAS.GSS(recA42.a42JobGuid)+"'" };
                 var lisX40 = f.MailBL.GetList(mq).Where(p => p.x40Status == BO.x40StateFlag.InQueque).Take(20); //odeslat maximálně 20 zpráv
                 if (lisX40.Count() > 0)
                 {

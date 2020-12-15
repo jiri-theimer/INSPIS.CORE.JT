@@ -11,7 +11,7 @@ namespace BL
         public BO.o27Attachment Load(int pid);
         public BO.o27Attachment LoadByGuid(string guid);
         
-        public IEnumerable<BO.o27Attachment> GetList(BO.myQuery mq, string tempguid);
+        public IEnumerable<BO.o27Attachment> GetList(BO.myQueryO27 mq, string tempguid);
         public IEnumerable<BO.o27Attachment> GetList_f19Inf18(int f18id);
         public BO.o27Attachment InhaleFileByInfox(string strInfoxFullPath);
         public List<BO.o27Attachment> GetTempFiles( string strTempGUID);
@@ -51,14 +51,14 @@ namespace BL
         }
 
 
-        public IEnumerable<BO.o27Attachment> GetList(BO.myQuery mq,string tempguid)
+        public IEnumerable<BO.o27Attachment> GetList(BO.myQueryO27 mq,string tempguid)
         {
             if (mq.explicit_orderby == null) { mq.explicit_orderby = "a.o27ID DESC"; };
             if (tempguid != null)
             {
                 mq.explicit_orderby = null;
             }
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             if (tempguid != null)
             {
                 fq.Parameters.Add("guid", tempguid);
@@ -175,12 +175,10 @@ namespace BL
             using (var sc = new System.Transactions.TransactionScope()) //podléhá jedné transakci
             {
                 var recs4upload = new List<BO.o27Attachment>();
-                var mq = new BO.myQuery("o27");
-                mq.recpid = recpid;
-                mq.x29id = x29id;
-                var lisO27Saved = GetList(mq,null);
+                
+                var lisO27Saved = GetList(new BO.myQueryO27() { recpid = recpid, x29id = x29id }, null);
 
-                mq = new BO.myQuery("o13");
+                var mq = new BO.myQuery("o13");
                 var lisO13 = _mother.o13AttachmentTypeBL.GetList(mq).Where(p => p.x29ID == x29id);
                 if (lisO13.Count() == 0)
                 {

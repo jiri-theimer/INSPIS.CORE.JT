@@ -11,8 +11,8 @@ namespace DL
             strSQL = strSQL.Replace("#pid#", strPidValue, StringComparison.OrdinalIgnoreCase);
             strSQL = strSQL.Replace("[%pid%]", strPidValue, StringComparison.OrdinalIgnoreCase);
             strSQL = strSQL.Replace("@pid", strPidValue, StringComparison.OrdinalIgnoreCase);
-            par1 = OcistitSQL(par1);
-            par2 = OcistitSQL(par2);
+            par1 = BO.BAS.OcistitSQL(par1);
+            par2 = BO.BAS.OcistitSQL(par2);
             strSQL = strSQL.Replace("#par1#", par1, StringComparison.OrdinalIgnoreCase);
             strSQL = strSQL.Replace("@par1", par1, StringComparison.OrdinalIgnoreCase);
             strSQL = strSQL.Replace("#par2#", par1, StringComparison.OrdinalIgnoreCase);
@@ -21,21 +21,8 @@ namespace DL
 
             strSQL = strSQL.Replace("delete ", "", StringComparison.OrdinalIgnoreCase);
 
-            return OcistitSQL(strSQL);
+            return BO.BAS.OcistitSQL(strSQL);
         }
-        public static string OcistitSQL(string strSQL)
-        {
-            if (strSQL == null) return null;
-
-            strSQL = strSQL.Replace("/*", "");
-            strSQL = strSQL.Replace("*/", "");
-            strSQL = strSQL.Replace("--", "");
-            strSQL = strSQL.Replace("drop ", "",StringComparison.OrdinalIgnoreCase);
-            strSQL = strSQL.Replace("truncate ", "", StringComparison.OrdinalIgnoreCase);
-            strSQL = strSQL.Replace("delete ", "", StringComparison.OrdinalIgnoreCase);
-            
-            return strSQL;
-
-        }
+        
     }
 }

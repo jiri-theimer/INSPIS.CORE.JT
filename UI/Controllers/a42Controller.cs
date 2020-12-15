@@ -40,7 +40,7 @@ namespace UI.Controllers
             }
             v.lisP85 = Factory.p85TempboxBL.GetList(v.Rec.a42JobGuid);
             v.lisTempFiles = Factory.o27AttachmentBL.GetTempFiles(v.Rec.a42UploadGuid);
-            v.lisA01 = Factory.a01EventBL.GetList(new BO.myQuery("a01") { a42id = v.Rec.pid });
+            v.lisA01 = Factory.a01EventBL.GetList(new BO.myQueryA01() { a42id = v.Rec.pid });
             v.MessageSubject = v.lisP85.Where(p => p.p85Prefix == "x40").First().p85FreeText01;
             v.MessageBody = v.lisP85.Where(p => p.p85Prefix == "x40").First().p85Message;
 
@@ -52,7 +52,7 @@ namespace UI.Controllers
             v.Rec = Factory.a42QesBL.Load(v.a42ID);
             v.lisP85 = Factory.p85TempboxBL.GetList(v.Rec.a42JobGuid);
             v.lisTempFiles = Factory.o27AttachmentBL.GetTempFiles(v.Rec.a42UploadGuid);
-            v.lisA01 = Factory.a01EventBL.GetList(new BO.myQuery("a01") { a42id = v.Rec.pid });
+            v.lisA01 = Factory.a01EventBL.GetList(new BO.myQueryA01() { a42id = v.Rec.pid });
 
             if (ModelState.IsValid)
             {
@@ -262,7 +262,7 @@ namespace UI.Controllers
                 if (v.Rec != null)
                 {
                     v.TagHtml = Factory.o51TagBL.GetTagging("a42", v.pid).TagHtml;
-                    v.lisA01 = Factory.a01EventBL.GetList(new BO.myQuery("a01") { a42id = pid });
+                    v.lisA01 = Factory.a01EventBL.GetList(new BO.myQueryA01() { a42id = pid });
                     v.lisX40= Factory.MailBL.GetList(new BO.myQuery("x40") { a42id = pid });
                 }
             }

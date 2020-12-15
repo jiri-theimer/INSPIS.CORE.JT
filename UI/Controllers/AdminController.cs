@@ -278,8 +278,8 @@ namespace UI.Controllers
         private TheGridInput GetGridInput(string entity,string prefix)
         {
             var gi = new TheGridInput();
-            gi.entity = entity;            
-            gi.query = new BO.myQuery(prefix);
+            gi.entity = entity;
+            gi.query = new BO.InitMyQuery().Load(prefix);
            
             return gi;
         }

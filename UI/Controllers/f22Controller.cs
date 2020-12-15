@@ -22,8 +22,7 @@ namespace UI.Controllers
                 {
                     return RecNotFound(v);
                 }
-                var mq = new BO.myQuery("f21ReplyUnit");
-                mq.f22id = v.rec_pid;
+                var mq = new BO.myQueryF21() { f22id = v.rec_pid };                
                 v.f21IDs = string.Join(",", Factory.f21ReplyUnitBL.GetList(mq).Select(p => p.pid));
             }
             v.Toolbar = new MyToolbarViewModel(v.Rec);

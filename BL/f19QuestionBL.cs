@@ -109,9 +109,8 @@ namespace BL
                 var recF21 = new BO.f21ReplyUnit();
                 if (rec.pid > 0)
                 {
-                    var mq = new BO.myQuery("f21");
-                    mq.f19id = rec.pid;
-                    var lisF21 = _mother.f21ReplyUnitBL.GetList(mq);
+                    
+                    var lisF21 = _mother.f21ReplyUnitBL.GetList(new BO.myQueryF21() { f19id = rec.pid });
                     if (lisF21.Count() > 0)
                     {
                         recF21 = lisF21.First();

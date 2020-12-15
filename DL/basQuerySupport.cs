@@ -15,7 +15,7 @@ namespace DL
             }
             var ret = new DL.FinalSqlCommand();
             var lis = mq.GetRows();
-            if (lis.Count > 0)
+            if (lis !=null && lis.Count > 0)
             {
                 ret.Parameters = new Dapper.DynamicParameters();
                 if (bolPrepareParam4DT) ret.Parameters4DT = new List<DL.Param4DT>();

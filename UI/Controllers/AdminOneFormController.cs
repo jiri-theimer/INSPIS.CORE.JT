@@ -94,7 +94,7 @@ namespace UI.Controllers
         private TheGridInput GetGridInput(int f06id)
         {
             var gi = new TheGridInput() { entity = "f19Question",controllername="AdminOneForm" };
-            gi.query = new BO.myQuery("f19") { f06id = f06id };
+            gi.query = new BO.myQueryF19() { f06id = f06id };
             gi.viewstate = f06id.ToString();
             return gi;
         }

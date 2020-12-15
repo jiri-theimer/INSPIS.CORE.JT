@@ -23,7 +23,7 @@ namespace UI.Controllers
         private TheGridInput GetGridInput(string entity)
         {
             var gi = new TheGridInput() { entity = entity, controllername = "TheGrid",ondblclick=null,oncmclick=null };            
-            gi.query = new BO.myQuery(entity.Substring(0, 3));
+            gi.query = new BO.InitMyQuery().Load(entity.Substring(0, 3));
             gi.j72id = Factory.CBL.LoadUserParamInt("GridMultiSelect-j72id-"+entity.Substring(0,3));
             return gi;
         }

@@ -23,9 +23,8 @@ namespace UI.Controllers
                 {
                     return RecNotFound(v);
                 }                
-                var mq = new BO.myQuery("f21ReplyUnit");
-                mq.f19id = v.rec_pid;
-                var lisF21 = Factory.f21ReplyUnitBL.GetList(mq);                
+                
+                var lisF21 = Factory.f21ReplyUnitBL.GetList(new BO.myQueryF21() { f19id = v.rec_pid });                
                 if (v.Rec.ReplyControl == BO.ReplyKeyEnum.DropdownList || v.Rec.ReplyControl == BO.ReplyKeyEnum.RadiobuttonList || v.Rec.ReplyControl == BO.ReplyKeyEnum.Listbox || (v.Rec.ReplyControl == BO.ReplyKeyEnum.Checkbox && v.Rec.f19IsMultiselect))
                 {
                     v.f21IDs = string.Join(",", lisF21.Select(p => p.pid));

@@ -94,7 +94,7 @@ namespace UI.Controllers
 
         private void RefreshStateA01(BatchUpdateA01 v)
         {
-            var mq = new BO.myQuery("a01") { pids = BO.BAS.ConvertString2ListInt(v.pids) };
+            var mq = new BO.myQueryA01() { pids = BO.BAS.ConvertString2ListInt(v.pids) };
             v.lisA01 = Factory.a01EventBL.GetList(mq);
             if (v.lisA01.Select(p => p.b01ID).Distinct().Count() == 1)
             {

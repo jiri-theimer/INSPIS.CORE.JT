@@ -40,7 +40,7 @@ namespace UI.Controllers
         private TheGridInput GetGridInput()
         {
             var gi = new TheGridInput() { entity = "j02Person" };
-            gi.query = new BO.myQuery("j02");
+            gi.query = new BO.myQueryJ02();
             //mq.a10id = 35;
             return gi;
         }

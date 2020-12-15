@@ -78,7 +78,7 @@ namespace UI
 
             }
         }
-        public bool ToXLSX(System.Data.DataTable dt, string strFilePath, BO.myQuery mq)
+        public bool ToXLSX(System.Data.DataTable dt, string strFilePath, BO.baseQuery mq)
         {
             using (var workbook = new XLWorkbook())
             {
@@ -183,7 +183,7 @@ namespace UI
 
             return true;
         }
-        public bool ToCSV(System.Data.DataTable dt, string strFilePath, BO.myQuery mq)
+        public bool ToCSV(System.Data.DataTable dt, string strFilePath, BO.baseQuery mq)
         {
             System.IO.StreamWriter sw = new System.IO.StreamWriter(strFilePath, false, System.Text.Encoding.UTF8);
             //headers  

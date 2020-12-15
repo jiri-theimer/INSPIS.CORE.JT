@@ -11,7 +11,7 @@ namespace UI.Models
         public int j72id { get; set; }
         public int go2pid { get; set; }
         public string master_entity { get; set; }
-        public BO.myQuery query { get; set; }
+        public BO.baseQuery query { get; set; }
         public string oncmclick { get; set; } = "tg_cm(event)";
         public string ondblclick { get; set; } = "tg_dblclick";
         public string controllername { get; set; } = "TheGrid";

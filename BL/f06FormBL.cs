@@ -241,9 +241,8 @@ namespace BL
                 recF19.f18ID = FindNP(pids, "f18", recF19.f18ID);
                 recF19.f26ID = FindNP(pids, "f26", recF19.f26ID);
                 recF19.f25ID = FindNP(pids, "f25", recF19.f25ID);                
-                mq = new BO.myQuery("f21");
-                mq.f19id = recF19.pid;
-                var lisF21 = _mother.f21ReplyUnitBL.GetList(mq);
+               
+                var lisF21 = _mother.f21ReplyUnitBL.GetList(new BO.myQueryF21() { f19id = recF19.pid });
                 recF19.pid = 0; recF19.f19ID = 0;
 
                 if (recF19.ReplyControl == BO.ReplyKeyEnum.TextBox && lisF21.Count() > 0)

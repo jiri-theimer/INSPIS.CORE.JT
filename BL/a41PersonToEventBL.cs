@@ -94,8 +94,8 @@ namespace BL
             if (recParent.a01ChildsCount > 0 && recParent.a01ParentID == 0)
             {   
                 _db.RunSql("DELETE FROM a41PersonToEvent WHERE a01ID IN (SELECT a01ID FROM a01Event WHERE a01ParentID=@pid)", new { pid = recParent.pid });
-                var mq = new BO.myQuery("a01");
-                mq.a01parentid = recParent.pid;
+                var mq = new BO.myQueryA01() { a01parentid = recParent.pid };
+               
                 foreach(var c in _mother.a01EventBL.GetList(mq))
                 {
                     sbinit();

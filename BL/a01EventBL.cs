@@ -8,7 +8,7 @@ namespace BL
     public interface Ia01EventBL:BaseInterface
     {
         public BO.a01Event Load(int pid);
-        public IEnumerable<BO.a01Event> GetList(BO.myQuery mq);
+        public IEnumerable<BO.a01Event> GetList(BO.myQueryA01 mq);
         public int Create(BO.a01Event rec, bool bolAutoInitWorkflow, List<BO.a11EventForm> lisA11, List<BO.a41PersonToEvent> lisA41, List<BO.a35PersonEventPlan> lisA35, List<int> a37ids);
         public int SaveA01Record(BO.a01Event rec, BO.a10EventType recA10);
         public BO.a01EventPermission InhalePermission(BO.a01Event rec);
@@ -70,9 +70,9 @@ namespace BL
             return _db.Load<BO.a01RecordSummary>("EXEC dbo._core_a01_summary @j03id,@pid,null", new { j03id=_mother.CurrentUser.pid,pid = pid });
         }
 
-        public IEnumerable<BO.a01Event> GetList(BO.myQuery mq)
+        public IEnumerable<BO.a01Event> GetList(BO.myQueryA01 mq)
         {
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.a01Event>(fq.FinalSql, fq.Parameters);
         }
         public IEnumerable<BO.a24EventRelation> GetList_a24(int pid)
@@ -387,7 +387,7 @@ namespace BL
 
             if (c.pid == 0 && recA10.a10OneSchoolInstanceLimit > 0 && c.a03ID > 0)  //typ akce má limit maximálního počtu instancí akcí u jedné instituce
             {
-                var mq = new BO.myQuery("a01");
+                var mq = new BO.myQueryA01();
                 mq.a03id = c.a03ID;mq.a10id = c.a10ID;
                 var lisExist = GetList(mq);
                 if (lisExist.Count() >= recA10.a10OneSchoolInstanceLimit)

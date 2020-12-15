@@ -800,7 +800,7 @@ namespace BL
         }
 
         
-        public List<BO.TheGridColumn> getDefaultPallete(bool bolComboColumns, BO.myQuery mq)
+        public List<BO.TheGridColumn> getDefaultPallete(bool bolComboColumns, BO.baseQuery mq)
         {
             int intDefaultFlag1 = 1; int intDefaultFlag2 = 2;
             if (bolComboColumns == true)

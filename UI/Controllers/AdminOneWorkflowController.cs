@@ -93,7 +93,7 @@ namespace UI.Controllers
         private TheGridInput GetGridInput(int b01id)
         {
             var gi = new TheGridInput() { entity = "b02WorkflowStatus",controllername="AdminOneWorkflow" };
-            gi.query= new BO.myQuery("b02") { b01id = b01id };
+            gi.query= new BO.myQuery0("b02") { b01id = b01id };
             gi.viewstate = b01id.ToString();
             return gi;
         }

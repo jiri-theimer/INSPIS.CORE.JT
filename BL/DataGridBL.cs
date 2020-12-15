@@ -9,7 +9,7 @@ namespace BL
 {
     public interface IDataGridBL
     {
-        public DataTable GetList(BO.myQuery mq, bool bolGetTotalsRow = false);
+        public DataTable GetList(BO.baseQuery mq, bool bolGetTotalsRow = false);
         public DataTable GetList4MailMerge(string prefix, int pid);
         public DataTable GetList4MailMerge(int pid, string individual_sql_source);
         public DataTable GetListFromPureSql(string sql);
@@ -88,10 +88,10 @@ namespace BL
       
         public DataTable GetListFromPureSql(string sql)
         {
-            sql = DL.BAS.OcistitSQL(sql);            
+            sql = BO.BAS.OcistitSQL(sql);            
             return _db.GetDataTable(sql);
         }
-        public DataTable GetList(BO.myQuery mq,bool bolGetTotalsRow=false)
+        public DataTable GetList(BO.baseQuery mq,bool bolGetTotalsRow=false)
         {            
             var sb = new System.Text.StringBuilder();
             sb.Append("SELECT ");
@@ -160,7 +160,8 @@ namespace BL
 
             //parametrický dotaz s WHERE klauzulí
 
-            DL.FinalSqlCommand q = DL.basQuery.ParseFinalSql(sb.ToString(),mq,_mother.CurrentUser, true);    //závěrečné vygenerování WHERE a ORDERBY klauzule
+            //DL.FinalSqlCommand q = DL.basQuery.ParseFinalSql(sb.ToString(),mq,_mother.CurrentUser, true);    //závěrečné vygenerování WHERE a ORDERBY klauzule
+            DL.FinalSqlCommand q = DL.basQuerySupport.GetFinalSql(sb.ToString(), mq, _mother.CurrentUser, true);    //závěrečné vygenerování WHERE a ORDERBY klauzule
 
             if (bolGetTotalsRow == false && mq.OFFSET_PageSize > 0)
             {

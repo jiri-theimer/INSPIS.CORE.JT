@@ -28,10 +28,10 @@ namespace UI.Controllers
             v.lisA38 = Factory.a38NonPersonEventPlanBL.GetList(mq).OrderBy(p => p.a38PlanDate);
             if (v.lisA38.Count() > 0)
             {
-                mq = new BO.myQuery("a01");
-                mq.pids = v.lisA38.Select(p => p.a01ID).Distinct().ToList();
-                mq.explicit_orderby = "a.a01DateFrom";
-                v.lisA01 = Factory.a01EventBL.GetList(mq);
+                var mqA01 = new BO.myQueryA01();
+                mqA01.pids = v.lisA38.Select(p => p.a01ID).Distinct().ToList();
+                mqA01.explicit_orderby = "a.a01DateFrom";
+                v.lisA01 = Factory.a01EventBL.GetList(mqA01);
             }
             return View(v);
         }

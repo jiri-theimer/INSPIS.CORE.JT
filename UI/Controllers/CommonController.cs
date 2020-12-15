@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
@@ -61,13 +62,13 @@ namespace UI.Controllers
 
 
        
-        public string GetWorkTable(string entity, string tableid, string param1, string pids,string delete_function,string edit_function,string queryfield,string queryvalue,string master_entity, int master_pid, bool selectable)
-        {                
-            var mq = new BO.myQuery(entity);
+        public string GetWorkTable(string entity, string tableid, string master_entity,int master_pid, string pids,string delete_function,string edit_function, bool selectable)
+        {
+            var mq = new BO.InitMyQuery().Load(entity, master_entity, master_pid);
             mq.SetPids(pids);
 
-            var grid = Factory.j72TheGridTemplateBL.LoadState(entity, Factory.CurrentUser.pid, master_entity);
-
+            var grid = Factory.j72TheGridTemplateBL.LoadState(entity, Factory.CurrentUser.pid,master_entity);
+            
             if (grid == null)
             {
                 mq.explicit_columns = _colsProvider.getDefaultPallete(false, mq);
@@ -82,13 +83,7 @@ namespace UI.Controllers
                 }
 
             }
-            mq.InhaleMasterEntityQuery(master_entity, master_pid,null);
-
-            if (string.IsNullOrEmpty(queryfield) == false)
-            {
-                BO.Reflexe.SetPropertyValue(mq, queryfield, queryvalue);
-            }
-
+           
             
             var dt = Factory.gridBL.GetList(mq);
             var intRows = dt.Rows.Count;
@@ -204,22 +199,23 @@ namespace UI.Controllers
 
         }
 
-        //public List<int> GetPidsOfQuery(string entity, string master_prefix,int master_pid)
-        //{
-        //    var mq = new BO.myQuery(entity);            
-        //    mq.InhaleMasterEntityQuery(master_prefix, master_pid, null);
-        //    mq.IsRecordValid = true;
+        public List<int> GetPidsOfQuery(string entity, string master_entity,int master_pid)
+        {
+            
+            var mq = new BO.InitMyQuery().Load(entity,master_entity,master_pid);
+            
+            mq.IsRecordValid = true;
+            //mq.InhaleMasterEntityQuery(master_prefix, master_pid, null);
 
-        //    switch (entity.Substring(0,3))
-        //    {
-        //        case "a03":
-        //            return Factory.a03InstitutionBL.GetList(mq).Select(p => p.pid).ToList();
-                
-        //        default:
-        //            return null;
-                    
-        //    }
-        //}
+            var ret = new List<int>();
+            var dt=Factory.gridBL.GetList(mq);
+            foreach(DataRow dbRow in dt.Rows)
+            {
+                ret.Add(Convert.ToInt32(dbRow["pid"]));
+            }
+
+            return ret;
+        }
 
     }
 

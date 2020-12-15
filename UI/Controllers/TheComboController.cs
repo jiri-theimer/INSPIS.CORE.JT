@@ -29,7 +29,7 @@ namespace UI.Controllers
 
         public string GetHtml4TheCombo(string entity, string tableid, string param1, string pids, string filterflag, string searchstring, string masterprefix, int masterpid) //Vrací HTML zdroj tabulky pro MyCombo
         {
-            var mq = new BO.myQuery(entity);
+            var mq = new BO.InitMyQuery().Load(entity,masterprefix,masterpid);
             mq.SetPids(pids);
             if (string.IsNullOrEmpty(param1) == false)
             {
@@ -64,7 +64,7 @@ namespace UI.Controllers
                     }
                     break;
                 case "a01":
-                    mq.a01IsTemporary = false;  //vyloučit temp akce
+                    //mq.a01IsTemporary = false;  //vyloučit temp akce
                     break;
                 
 
@@ -73,9 +73,7 @@ namespace UI.Controllers
 
             mq.explicit_orderby = ce.SqlOrderByCombo;
 
-
-            mq.InhaleMasterEntityQuery(masterprefix, masterpid, null);
-
+            
 
             var dt = Factory.gridBL.GetList(mq);
             var intRows = dt.Rows.Count;
@@ -128,20 +126,20 @@ namespace UI.Controllers
                 if (mq.Prefix == "a03" && bolZrizovatel == false)
                 {
                     //po výběru hodnoty z comba bude název a nikoliv pouze hodnota prvního sloupce
-                    s.Append(string.Format(" data-t='{0} - {1}'", dt.Rows[i]["a__" + mq.Entity + "__" + mq.Prefix + "REDIZO"], dt.Rows[i]["a__" + mq.Entity + "__" + mq.Prefix + "Name"]));
+                    s.Append(string.Format(" data-t='{0} - {1}'", dt.Rows[i]["a__" + ce.TableName + "__" + mq.Prefix + "REDIZO"], dt.Rows[i]["a__" + ce.TableName + "__" + mq.Prefix + "Name"]));
                     //s.Append(string.Format(" data-t='{0} - {1}'", dt.Rows[i]["a__" + mq.Entity + "__" + mq.Prefix + "REDIZO"], dt.Rows[i]["a__" + mq.Entity + "__" + mq.Prefix + "Name"]));
                 }
                 if (mq.Prefix == "a18")
                 {
-                    s.Append(string.Format(" data-t='{0} - {1}'", dt.Rows[i]["a__" + mq.Entity + "__" + mq.Prefix + "Code"], dt.Rows[i]["a__" + mq.Entity + "__" + mq.Prefix + "Name"]));
+                    s.Append(string.Format(" data-t='{0} - {1}'", dt.Rows[i]["a__" + ce.TableName + "__" + mq.Prefix + "Code"], dt.Rows[i]["a__" + ce.TableName + "__" + mq.Prefix + "Name"]));
                 }
                 if (mq.Prefix == "a37")
                 {
-                    s.Append(string.Format(" data-t='{0} - {1}'", dt.Rows[i]["a__" + mq.Entity + "__" + mq.Prefix + "IZO"], dt.Rows[i]["a__" + mq.Entity + "__" + mq.Prefix + "Name"]));
+                    s.Append(string.Format(" data-t='{0} - {1}'", dt.Rows[i]["a__" + ce.TableName + "__" + mq.Prefix + "IZO"], dt.Rows[i]["a__" + ce.TableName + "__" + mq.Prefix + "Name"]));
                 }
                 if (mq.Prefix == "j23")
                 {
-                    s.Append(string.Format(" data-t='{0} ({1})'", dt.Rows[i]["a__" + mq.Entity + "__" + mq.Prefix + "Name"], dt.Rows[i]["a__" + mq.Entity + "__" + mq.Prefix + "Code"]));
+                    s.Append(string.Format(" data-t='{0} ({1})'", dt.Rows[i]["a__" + ce.TableName + "__" + mq.Prefix + "Name"], dt.Rows[i]["a__" + ce.TableName + "__" + mq.Prefix + "Code"]));
                 }
 
                 s.Append(">");
@@ -169,8 +167,8 @@ namespace UI.Controllers
 
         //zdroj checkboxů pro taghelper mycombochecklist:
         public string GetHtml4Checkboxlist(string controlid, string entity, string selectedvalues, string masterprefix, int masterpid, string param1) //Vrací HTML seznam checkboxů pro taghelper: mycombochecklist
-        {
-            var mq = new BO.myQuery(entity);
+        {            
+            var mq = new BO.InitMyQuery().Load(entity,masterprefix,masterpid);
             if (string.IsNullOrEmpty(param1) == false)
             {
                 mq.param1 = param1;
@@ -184,8 +182,7 @@ namespace UI.Controllers
             }
             mq.explicit_orderby = ce.SqlOrderByCombo;
 
-            mq.InhaleMasterEntityQuery(masterprefix, masterpid, null);
-
+           
             List<int> selpids = null;
             if (String.IsNullOrEmpty(selectedvalues) == false)
             {
@@ -306,16 +303,18 @@ namespace UI.Controllers
             return sb.ToString();
         }
 
+        
         public string GetHtml4Search(string entity, string searchstring) //Vrací HTML zdroj tabulky pro MySearch
         {
             var setting = LoadMySearchSetting();
-            var mq = new BO.myQuery(entity);
-            mq.SearchImplementation = Factory.App.Implementation;
+            var mq = new BO.InitMyQuery().Load(entity);
+            //mq.SearchImplementation = Factory.App.Implementation;
             //mq.IsRecordValid = true;    //v combo nabídce pouze časově platné záznamy
 
+            
             mq.SearchString = searchstring; //filtrování na straně serveru
             mq.TopRecordsOnly = setting.TopRecs; //maximálně prvních 50 záznamů, které vyhovují podmínce
-            mq.a01IsTemporary = false;  //vyloučit temp akce
+            //mq.a01IsTemporary = false;  //vyloučit temp akce
             mq.MyRecordsDisponible = true;
             mq.CurrentUser = Factory.CurrentUser;
 
@@ -420,7 +419,7 @@ namespace UI.Controllers
         public string GetMySelectHtmlOptions(string entity,string textfield,string orderfield)
         {
             var sb = new System.Text.StringBuilder();
-            var mq = new BO.myQuery(entity) { IsRecordValid = true };
+            var mq = new BO.myQuery0(entity) { IsRecordValid = true };
             textfield = System.Web.HttpUtility.UrlDecode(textfield).Replace("##", "'");
             mq.explicit_selectsql =textfield + " AS combotext";
             if (!string.IsNullOrEmpty(orderfield))

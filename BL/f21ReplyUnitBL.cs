@@ -7,7 +7,7 @@ namespace BL
     public interface If21ReplyUnitBL: BaseInterface
     {
         public BO.f21ReplyUnit Load(int pid);
-        public IEnumerable<BO.f21ReplyUnit> GetList(BO.myQuery mq);
+        public IEnumerable<BO.f21ReplyUnit> GetList(BO.myQueryF21 mq);
         public IEnumerable<BO.f21ReplyUnitJoinedF19> GetListJoinedF19(BO.myQuery mq);
         public int Save(BO.f21ReplyUnit rec);
 
@@ -35,10 +35,10 @@ namespace BL
             return _db.Load<BO.f21ReplyUnit>(GetSQL1(" WHERE a.f21ID=@pid"), new { pid = pid });
         }
 
-        public IEnumerable<BO.f21ReplyUnit> GetList(BO.myQuery mq)
+        public IEnumerable<BO.f21ReplyUnit> GetList(BO.myQueryF21 mq)
         {
 
-            DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql(GetSQL1(), mq, _mother.CurrentUser);
+            DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.f21ReplyUnit>(fq.FinalSql, fq.Parameters);
         }
         public IEnumerable<BO.f21ReplyUnitJoinedF19> GetListJoinedF19(BO.myQuery mq)

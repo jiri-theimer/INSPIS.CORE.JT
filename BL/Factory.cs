@@ -140,6 +140,7 @@ namespace BL
                 return false;
             }
         }
+        
 
         public string tra(string strExpression)   //lokalizace do ostatních jazyků
         {

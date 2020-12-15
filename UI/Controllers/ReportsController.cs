@@ -72,10 +72,10 @@ namespace UI.Controllers
                 if (intJ72ID > 0)
                 {
                     var recJ72 = f.j72TheGridTemplateBL.Load(intJ72ID);                    
-                    var mq = new BO.myQuery(recJ72.j72Entity);
+                    var mq = new BO.InitMyQuery().Load(recJ72.j72Entity);
                     mq.lisJ73= f.j72TheGridTemplateBL.GetList_j73(intJ72ID, recJ72.j72Entity.Substring(0, 3));
                     
-                    DL.FinalSqlCommand fq = DL.basQuery.ParseFinalSql("", mq, cu);
+                    DL.FinalSqlCommand fq = DL.basQuerySupport.GetFinalSql("", mq, cu);
                     //File.WriteAllText("c:\\temp\\hovado.txt", fq.SqlWhere);
                     string strFilterAlias = recJ72.j72Name;
                     if (recJ72.j72HashJ73Query)
