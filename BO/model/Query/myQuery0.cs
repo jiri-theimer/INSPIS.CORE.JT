@@ -18,7 +18,7 @@ namespace BO
         public int a11id { get; set; }
         public int h04id { get; set; }
         public int a03id { get; set; }
-        
+        public int a05id { get; set; }
         public int j02id { get; set; }
         public myQuery0(string prefix)
         {
@@ -28,7 +28,11 @@ namespace BO
        
 
         public override List<QRow> GetRows()
-        {                       
+        {     
+            if (this.a05id > 0)
+            {
+                if (this.Prefix=="j23") AQ("a.a05ID=@a05id", "a05id", this.a05id);
+            }
 
             if (this.b06id > 0)
             {                
