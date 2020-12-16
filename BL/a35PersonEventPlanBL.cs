@@ -11,7 +11,7 @@ namespace BL
         public IEnumerable<BO.a35PersonEventPlan> GetList(BO.myQueryA35 mq);
         public int Save(BO.a35PersonEventPlan rec);
         public IEnumerable<BO.a35TimeLine> GetListTimeLine(BO.myQueryA35 mq);
-
+        public IEnumerable<BO.a35TimeLinePersonal> GetListTimeLinePersonal(BO.myQueryA35 mq);
 
     }
     class a35PersonEventPlanBL : BaseBL, Ia35PersonEventPlanBL
@@ -52,6 +52,22 @@ namespace BL
             
             var lis = _db.GetList<BO.a35TimeLine>(fq.FinalSql+ " GROUP BY a.j02ID,a.a01ID,a.a35PlanDate", fq.Parameters);
             
+            return lis;
+        }
+        public IEnumerable<BO.a35TimeLinePersonal> GetListTimeLinePersonal(BO.myQueryA35 mq)
+        {
+            sb("SELECT a.a01ID,min(a01.a03ID) as a03ID,a.a35PlanDate,COUNT(*) as Krat");
+            sb(",min(a01Signature) as a01Signature,min(a03Name) as a03Name,min(a03REDIZO) as a03REDIZO,min(a01DateFrom) as a01DateFrom,min(a01DateUntil) as a01DateUntil");
+            sb(",min(a10Name) as a10Name,min(b02Name) as b02Name");
+            sb(" FROM a35PersonEventPlan a INNER JOIN a01Event a01 ON a.a01ID=a01.a01ID");
+            sb(" INNER JOIN b02WorkflowStatus b02 ON a01.b02ID=b02.b02ID");
+            sb(" INNER JOIN a10EventType a10 ON a01.a10ID=a10.a10ID");
+            sb(" LEFT OUTER JOIN a03Institution a03 ON a01.a03ID=a03.a03ID");
+
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(sbret(), mq, _mother.CurrentUser);
+
+            var lis = _db.GetList<BO.a35TimeLinePersonal>(fq.FinalSql + " GROUP BY a.a01ID,a.a35PlanDate", fq.Parameters);
+
             return lis;
         }
 

@@ -1,0 +1,261 @@
+﻿@model UI.Models.j02PersonalTimeline
+@inject BL.Factory _f
+
+@{
+    ViewData["Title"] = "Osobní plán";
+    Layout = "~/Views/Shared/_LayoutSubform.cshtml";
+    if (Model.Rec == null) return;
+
+    string strClass = "work-day";
+    int x = 0;
+}
+
+@addTagHelper *, UI
+<link rel="stylesheet" href="~/css/tabcapacity.css" />
+
+<style type="text/css">
+    .selcell1 {
+        background-color: #448CCB;
+        color: white;
+    }
+
+    .selcell2 {
+        background-color: #DC3545 !important;
+    }
+
+    #container1 td {
+        -webkit-user-select: none; /* Safari */
+        -ms-user-select: none; /* IE 10+ and Edge */
+        user-select: none; /* Standard syntax */
+    }
+
+    .nowork {
+        background-color: #FFF0F7;
+    }
+
+    .obsazeno {
+        background-color: lightsteelblue;
+    }
+</style>
+
+
+<div class="bg-light">
+    <table>
+        <tr>
+            <td>
+                <select asp-for="@Model.CurYear" class="form-control" onchange="goyear(this)">
+                    @foreach (var y in Model.lisYears)
+                    {
+                        <option value="@y">@y</option>
+                    }
+                </select>
+            </td>
+            <td>
+
+                <select asp-for="@Model.CurMonth" class="form-control" onchange="gomonth(this)">
+                    <option value="1">@_f.tra("Leden")</option>
+                    <option value="2">@_f.tra("Únor")</option>
+                    <option value="3">@_f.tra("Březen")</option>
+                    <option value="4">@_f.tra("Duben")</option>
+                    <option value="5">@_f.tra("Květen")</option>
+                    <option value="6">@_f.tra("Červen")</option>
+                    <option value="7">@_f.tra("Červenec")</option>
+                    <option value="8">@_f.tra("Srpen")</option>
+                    <option value="9">@_f.tra("Září")</option>
+                    <option value="10">@_f.tra("Říjen")</option>
+                    <option value="11">@_f.tra("Listopad")</option>
+                    <option value="12">@_f.tra("Prosinec")</option>
+                </select>
+
+            </td>
+            <td style="margin-left:35px;">
+                <button type="button" class="btn btn-secondary btn-sm" title="@_f.tra("Předchozí měsíc")" onclick="goprev()">←</button>
+            </td>
+            <td>
+                <strong class="val-readonly" style="text-align:center;">@(Model.CurMonth.ToString()+" - "+Model.CurYear.ToString())</strong>
+            </td>
+            <td>
+                <button type="button" class="btn btn-secondary btn-sm" title="@_f.tra("Následující měsíc")" onclick="gonext()">→</button>
+            </td>
+
+
+            <td>
+                <button type="button" id="cmdClose" onclick="_window_close()" class="btn btn-light" style="margin-left:100px;">@_f.tra("Zavřít")</button>
+            </td>
+            <td>
+                <button type="button" onclick="_helppage()" class="btn btn-light">? @_f.tra("Nápověda")</button>
+            </td>
+        </tr>
+
+
+
+    </table>
+</div>
+
+<table class="tableCapacity" cellpadding="0" cellspacing="0" style="overflow-x:auto;width:@(Model.lisDays.Count()*20+600)px;">
+
+    <tr>
+        <td style="width:20px;">
+
+        </td>
+        <td style="width:200px;">
+            @_f.tra("Akce")
+        </td>
+       
+        <td style="width:240px;">
+            @_f.tra("Škola")
+        </td>
+        <td style="width:100px;">
+            @_f.tra("Stav")
+        </td>
+        <td class="timeline_dny">@_f.tra("Dní")</td>
+
+        @foreach (DateTime d in Model.lisDays)
+        {
+            strClass = "work-day";
+            if (d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday)
+            {
+                strClass = "nonwork-day";
+            }
+            if (Model.lisJ26.Where(p => p.j26Date == d).Count() > 0)
+            {
+                strClass = "holiday";
+            }
+
+            <td class="@strClass">
+                @d.Day
+                <br />
+                @_f.tra(BO.BAS.DayOfWeekString(d)).Substring(0, 2)
+            </td>
+        }
+
+    </tr>
+
+    @foreach (var rec in Model.lisTimeLine.GroupBy(p => p.a01ID))
+    {
+        <tr>
+            <td>
+                <a class="cm h4" onclick="_cm(event, 'a01',@rec.First().a01ID)">☰</a>
+            </td>
+            <td>
+                @(rec.First().a01Signature+" ("+ BO.BAS.OM2(rec.First().a10Name,18)+")")
+            </td>
+            
+            <td>
+                @BO.BAS.OM2(rec.First().a03Name, 40)
+            </td>
+            <td>
+                @rec.First().b02Name
+            </td>
+            <td style="text-align:right;">
+                @rec.Count()
+            </td>
+
+            @foreach (DateTime d in Model.lisDays)
+            {
+                strClass = "";
+                x = Model.lisTimeLine.Where(p => p.a01ID == rec.First().a01ID && p.a35PlanDate == d).Count();
+                if (d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    strClass = "nonwork-day";
+                }
+                <td class="@strClass">
+                    @if (x > 0)
+                    {
+                        <div class="a35cell">
+                            @if (x > 1)
+                            {
+                                <span style="background-color:pink;padding-left:2px;padding-right:2px;">@x</span>
+                            }
+                        </div>
+                    }
+
+
+                    @{
+                        strClass = "";
+                        if (x > 0) strClass = "a35cell";
+                    }
+
+                    @foreach (var c in Model.lisH04.Where(p => p.a01ID == rec.First().a01ID && (p.h04CapacityPlanFrom >= d && p.h04CapacityPlanFrom < d.AddDays(1) || p.h04CapacityPlanUntil >= d && p.h04CapacityPlanUntil < d.AddDays(1))))
+                    {
+
+                        if (c.h07IsToDo && c.h04Deadline != null && c.h04Deadline >= d && c.h04Deadline < d.AddDays(1))
+                        {
+                            <div class="@strClass" title="@(c.h07Name+": "+c.h04Name+", "+c.a01Signature)">
+                                <img src="~/images/todo.png" />
+                            </div>
+                        }
+                        if (c.h04CapacityPlanFrom != null && c.h04CapacityPlanFrom >= d && c.h04CapacityPlanFrom < d.AddDays(1))
+                        {
+                            <div class="@strClass" title="@(c.h07Name+": "+c.h04Name+", "+c.a01Signature))">
+                                <img src="~/images/todo_start.png" />
+                            </div>
+                        }
+                        else
+                        {
+                            if (c.h04CapacityPlanUntil != null && c.h04CapacityPlanUntil >= d && c.h04CapacityPlanUntil < d.AddDays(1))
+                            {
+                                <div class="@strClass" title="@(c.h07Name+": "+c.h04Name+", "+c.a01Signature))">
+                                    <img src="~/images/todo_end.png" />
+                                </div>
+                            }
+                        }
+
+
+                    }
+
+
+                </td>
+            }
+
+        </tr>
+    }
+
+</table>
+
+
+
+@section Scripts{
+    <script type="text/javascript">
+
+
+    $(document).ready(function () {
+
+        $("#CurYear").val("@Model.CurYear");
+        $("#CurMonth").val("@Model.CurMonth");
+
+        if (window !== top) {
+            $("#cmdClose").css("display", "none");
+        }
+
+
+
+
+    });
+
+
+    function goyear(ctl) {
+        var year = ctl.value;
+        reload("/j02/TabPersonalTimeline?go2month=@Model.CurMonth&go2year=" + year);
+    }
+    function gomonth(ctl) {
+        var month = ctl.value;
+        reload("/j02/TabPersonalTimeline?go2month="+month+"&go2year=@Model.CurYear");
+    }
+    function gonext() {
+        reload("/j02/TabPersonalTimeline?go2month=@Model.NextMonth&go2year=@Model.NextYear");
+    }
+    function goprev() {
+        reload("/j02/TabPersonalTimeline?go2month=@Model.PrevMonth&go2year=@Model.PrevYear");
+    }
+
+
+
+        function reload(url) {
+            location.replace(url+"&pid=@Model.pid");
+        }
+
+
+
+    </script>
+}

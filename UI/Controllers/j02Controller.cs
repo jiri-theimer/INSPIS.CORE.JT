@@ -11,6 +11,48 @@ namespace UI.Controllers
 {
     public class j02Controller : BaseController
     {
+        public IActionResult TabPersonalTimeline(int pid, int go2month, int go2year)
+        {
+            if (pid == 0)
+            {
+                pid = Factory.CurrentUser.j02ID;
+            }
+            if(go2month == 0 || go2year == 0)
+            {
+                go2month = Factory.CBL.LoadUserParamInt("TimeLine-Month", DateTime.Now.Month);
+                go2year = Factory.CBL.LoadUserParamInt("TimeLine-Year", DateTime.Now.Year);
+            }
+            else
+            {
+                Factory.CBL.SetUserParam("TimeLine-Month", go2month.ToString());
+                Factory.CBL.SetUserParam("TimeLine-Year", go2year.ToString());
+            }
+
+            var v = new j02PersonalTimeline() { pid = pid, CurMonth = go2month, CurYear = go2year };
+            v.Rec = Factory.j02PersonBL.Load(v.pid);
+
+            v.lisYears = new List<int>();
+            for (int i = DateTime.Now.Year - 2; i <= DateTime.Now.Year + 2; i++)
+            {
+                v.lisYears.Add(i);
+            }
+            v.d1 = new DateTime(v.CurYear, v.CurMonth, 1);
+            v.d2 = v.d1.AddMonths(1).AddDays(-1);
+            v.NextMonth = v.d1.AddMonths(1).Month; v.NextYear = v.d1.AddMonths(1).Year; v.PrevMonth = v.d1.AddMonths(-1).Month; v.PrevYear = v.d1.AddMonths(-1).Year;
+            v.lisDays = new List<DateTime>();
+            for (var d = v.d1; d <= v.d2; d = d.AddDays(1))
+            {
+                v.lisDays.Add(d);
+            }
+            v.lisJ26 = Factory.j26HolidayBL.GetList(new BO.myQuery("j26")).Where(p => p.j26Date >= v.d1 && p.j26Date <= v.d2);
+
+            var mq = new BO.myQueryA35() { j02id = v.pid, global_d1 = v.d1, global_d2 = v.d2 };
+            v.lisTimeLine = Factory.a35PersonEventPlanBL.GetListTimeLinePersonal(mq);
+
+            v.lisH04 = Factory.h04ToDoBL.GetListCapacity(new BO.myQueryH04() { global_d1 = v.d1, global_d2 = v.d2, j02id=v.pid });
+
+            return View(v);
+        }
         public IActionResult InfoCapacity(int pid,int m,int y)
         {
             var v = new j02InfoCapacity() { pid = pid };
@@ -139,6 +181,7 @@ namespace UI.Controllers
         {
             var c = Factory.j02PersonBL.LoadSummary(v.pid,"recpage");
             v.NavTabs.Add(AddTab(Factory.tra("Akce"), "a01", "/TheGrid/SlaveView?prefix=a01", false, null));
+            v.NavTabs.Add(AddTab(Factory.tra("Časový plán"), "gantt", "/j02/TabPersonalTimeline?pid=" + v.pid.ToString()));
 
             string strBadge = null;
             //if (c.a01_count_involved > 0) strBadge = c.a01_count_involved.ToString();
