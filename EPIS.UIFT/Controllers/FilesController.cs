@@ -126,7 +126,8 @@ namespace UIFT.Controllers
                         //string fileName = guid + "_" + fi.Name;
 
                         // ziskat cestu pro ulozeni souboru do tempu
-                        string fullPath = this.UiRepository.BL.GlobalParams.LoadParam("TempFolder");
+                        //string fullPath = this.UiRepository.BL.GlobalParams.LoadParam("TempFolder");
+                        string fullPath = UiRepository.BL.App.TempFolder;
                         if (!fullPath.EndsWith("\\"))
                             fullPath += "\\";
                         fullPath += guid + fi.Extension;
