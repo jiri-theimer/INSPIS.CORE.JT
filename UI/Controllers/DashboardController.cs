@@ -155,8 +155,8 @@ namespace UI.Controllers
         private void RefreshNavTabsInspector(DashboardInspector v)
         {
             var c = Factory.j02PersonBL.LoadSummary(v.pid,"dashboard");
-            v.NavTabs.Add(AddTab(Factory.tra("Dashboard"), "dashboard", "/Dashboard/Widgets?skin=inspector&pid=" + Factory.CurrentUser.j02ID));
-            v.NavTabs.Add(AddTab(Factory.tra("Časový plán"), "gantt", "/j02/TabPersonalTimeline?pid="+Factory.CurrentUser.j02ID.ToString()));
+            v.NavTabs.Add(AddTab("Dashboard", "dashboard", "/Dashboard/Widgets?skin=inspector&pid=" + Factory.CurrentUser.j02ID));
+            v.NavTabs.Add(AddTab("Časový plán", "gantt", "/a35/TabPersonalTimeline?pid="+Factory.CurrentUser.j02ID.ToString()));
            
             //if (c.a01_count_involved > 0) strBadge = c.a01_count_involved.ToString();
             //v.NavTabs.Add(AddTab(Factory.tra("Akce"), "a01", "/TheGrid/SlaveView?prefix=a01", false, strBadge));

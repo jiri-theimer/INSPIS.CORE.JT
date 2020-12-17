@@ -9,6 +9,7 @@ namespace BO
         public int j02id { get; set; }
         public int a01id { get; set; }
         public int a05id { get; set; }
+        public bool ZahrnoutCeleObdobiAkce { get; set; }    //true: pokud se mají zobrazit i akce, do kterých osoba nemá uložené a35 záznamy
         public myQueryA35()
         {
             this.Prefix = "a35";
@@ -18,7 +19,15 @@ namespace BO
         {
             if (this.global_d1 != null)
             {
-                AQ("a.a35PlanDate BETWEEN @gd1 AND @gd2", "gd1", this.global_d1, "AND", null, null, "gd2", this.global_d2);
+                if (ZahrnoutCeleObdobiAkce)
+                {
+                    AQ("(a.a35PlanDate BETWEEN @gd1 AND @gd2 OR a01.a01DateUntil BETWEEN @gd1 AND @gd2 OR a01.a01DateFrom BETWEEN @gd1 AND @gd2)", "gd1", this.global_d1, "AND", null, null, "gd2", this.global_d2);
+                }
+                else
+                {
+                    AQ("a.a35PlanDate BETWEEN @gd1 AND @gd2", "gd1", this.global_d1, "AND", null, null, "gd2", this.global_d2);
+                }
+                
             }
             if (this.a01id > 0)
             {

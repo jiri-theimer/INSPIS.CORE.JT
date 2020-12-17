@@ -96,12 +96,11 @@
 
     <tr>
         <td style="width:20px;">
-
         </td>
         <td style="width:200px;">
             @_f.tra("Akce")
         </td>
-       
+
         <td style="width:240px;">
             @_f.tra("Škola")
         </td>
@@ -139,10 +138,10 @@
             </td>
             <td>
                 <a target="_top" href="@_f.a01EventBL.GetPageUrl(rec.First().a10ViewUrl_Page,rec.First().a01ID)" title="@(BO.BAS.ObjectDate2String(rec.First().a01DateFrom)+" - "+BO.BAS.ObjectDate2String(rec.First().a01DateUntil))">@(rec.First().a01Signature)</a>
-               
+
                 <span>@BO.BAS.OM2(rec.First().a10Name, 18)</span>
             </td>
-            
+
             <td>
                 @BO.BAS.OM2(rec.First().a03Name, 40)
             </td>
@@ -157,15 +156,11 @@
             {
                 strClass = "";
                 x = Model.lisTimeLine.Where(p => p.a01ID == rec.First().a01ID && p.a35PlanDate == d).Count();
-                if (d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday)
+                if (x == 0 && (d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday))
                 {
                     strClass = "nonwork-day";
                 }
-                if (d >= rec.First().a01DateFrom && d<=rec.First().a01DateUntil)
-                {
-                    strClass = "plan-day";
-                    
-                }
+
 
                 <td class="@strClass">
                     @if (x > 0)
@@ -177,13 +172,38 @@
                             }
                         </div>
                     }
+                    else
+                    {
+                        if (d >= rec.First().a01DateFrom && d <= rec.First().a01DateUntil)
+                        {
+                            <div class="a01cell">
+
+                            </div>
+
+                        }
+
+                    }
+
+                    @foreach (var c in Model.lisA38.Where(p => p.a01ID == rec.First().a01ID && p.a38PlanDate == d))
+                    {
+                        if (c.a38IsDriver)
+                        {
+                            strClass = "a38celldriver";
+                        }
+                        else
+                        {
+                            strClass = "a38cell";
+                        }
+
+                        <div class="@strClass" title="@(c.j23Name+BO.BAS.IIFS(c.j23Code !=null," ("+c.j23Code+")","")+BO.BAS.IIFS(c.a38IsDriver," [řidič]","")+" Místo: "+c.a38Location)"></div>
+                    }
 
 
                     @{
                         strClass = "";
                         if (x > 0) strClass = "a35cell";
 
-                        
+
                     }
 
 
@@ -247,17 +267,17 @@
 
     function goyear(ctl) {
         var year = ctl.value;
-        reload("/j02/TabPersonalTimeline?go2month=@Model.CurMonth&go2year=" + year);
+        reload("/a35/TabPersonalTimeline?go2month=@Model.CurMonth&go2year=" + year);
     }
     function gomonth(ctl) {
         var month = ctl.value;
-        reload("/j02/TabPersonalTimeline?go2month="+month+"&go2year=@Model.CurYear");
+        reload("/a35/TabPersonalTimeline?go2month="+month+"&go2year=@Model.CurYear");
     }
     function gonext() {
-        reload("/j02/TabPersonalTimeline?go2month=@Model.NextMonth&go2year=@Model.NextYear");
+        reload("/a35/TabPersonalTimeline?go2month=@Model.NextMonth&go2year=@Model.NextYear");
     }
     function goprev() {
-        reload("/j02/TabPersonalTimeline?go2month=@Model.PrevMonth&go2year=@Model.PrevYear");
+        reload("/a35/TabPersonalTimeline?go2month=@Model.PrevMonth&go2year=@Model.PrevYear");
     }
 
 

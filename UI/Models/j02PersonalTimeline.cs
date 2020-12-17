@@ -21,6 +21,7 @@ namespace UI.Models
         public List<int> lisYears { get; set; }
         public IEnumerable<BO.j26Holiday> lisJ26 { get; set; }
         public IEnumerable<BO.a35TimeLinePersonal> lisTimeLine{ get;set;}
+        public IEnumerable<BO.a38NonPersonEventPlan> lisA38 { get; set; }
         public IEnumerable<BO.h04TodoCapacity> lisH04 { get; set; }
 
     }
