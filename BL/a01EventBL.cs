@@ -16,6 +16,7 @@ namespace BL
         public IEnumerable<BO.a24EventRelation> GetList_a24(int pid);
         public int SaveA24Record(BO.a24EventRelation rec);
         public string GetPageUrl(BO.a01Event rec, int pid4url=0);
+        public string GetPageUrl(string a10ViewUrl_Page, int pid4url);
         public int BatchUpdate(BO.a01Event rec);
     }
     class a01EventBL : BaseBL, Ia01EventBL
@@ -35,6 +36,25 @@ namespace BL
             }
             if (pid4url == 0) pid4url = rec.pid;
 
+            if (s.Contains("?"))
+            {
+                s += "&pid=" + pid4url.ToString();
+            }
+            else
+            {
+                s += "?pid=" + pid4url.ToString();
+            }
+            return s;
+
+        }
+        public string GetPageUrl(string a10ViewUrl_Page, int pid4url)
+        {
+            string s = "/a01/RecPage";
+            if (a10ViewUrl_Page != null)
+            {
+                s = a10ViewUrl_Page;
+            }
+            
             if (s.Contains("?"))
             {
                 s += "&pid=" + pid4url.ToString();

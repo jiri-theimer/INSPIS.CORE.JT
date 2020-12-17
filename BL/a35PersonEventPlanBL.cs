@@ -58,7 +58,7 @@ namespace BL
         {
             sb("SELECT a.a01ID,min(a01.a03ID) as a03ID,a.a35PlanDate,COUNT(*) as Krat");
             sb(",min(a01Signature) as a01Signature,min(a03Name) as a03Name,min(a03REDIZO) as a03REDIZO,min(a01DateFrom) as a01DateFrom,min(a01DateUntil) as a01DateUntil");
-            sb(",min(a10Name) as a10Name,min(b02Name) as b02Name");
+            sb(",min(a10Name) as a10Name,min(b02Name) as b02Name,min(a10ViewUrl_Page) as a10ViewUrl_Page");
             sb(" FROM a35PersonEventPlan a INNER JOIN a01Event a01 ON a.a01ID=a01.a01ID");
             sb(" INNER JOIN b02WorkflowStatus b02 ON a01.b02ID=b02.b02ID");
             sb(" INNER JOIN a10EventType a10 ON a01.a10ID=a10.a10ID");

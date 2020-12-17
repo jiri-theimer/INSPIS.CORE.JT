@@ -18,7 +18,7 @@ namespace BO
         public string a01Signature{get;set;}
         public string a10Name { get; set; }
         public string b02Name { get; set; }
-
+        public string a10ViewUrl_Page { get; set; }
 
 
     }
