@@ -161,6 +161,12 @@
                 {
                     strClass = "nonwork-day";
                 }
+                if (d >= rec.First().a01DateFrom && d<=rec.First().a01DateUntil)
+                {
+                    strClass = "plan-day";
+                    
+                }
+
                 <td class="@strClass">
                     @if (x > 0)
                     {
@@ -176,7 +182,10 @@
                     @{
                         strClass = "";
                         if (x > 0) strClass = "a35cell";
+
+                        
                     }
+
 
                     @foreach (var c in Model.lisH04.Where(p => p.a01ID == rec.First().a01ID && (p.h04CapacityPlanFrom >= d && p.h04CapacityPlanFrom < d.AddDays(1) || p.h04CapacityPlanUntil >= d && p.h04CapacityPlanUntil < d.AddDays(1))))
                     {
