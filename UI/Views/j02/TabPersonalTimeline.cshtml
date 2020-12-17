@@ -138,7 +138,7 @@
                 <a class="cm h4" onclick="_cm(event, 'a01',@rec.First().a01ID)">☰</a>
             </td>
             <td>
-                <a target="_top" href="@_f.a01EventBL.GetPageUrl(rec.First().a10ViewUrl_Page,rec.First().a01ID)">@(rec.First().a01Signature)</a>
+                <a target="_top" href="@_f.a01EventBL.GetPageUrl(rec.First().a10ViewUrl_Page,rec.First().a01ID)" title="@(BO.BAS.ObjectDate2String(rec.First().a01DateFrom)+" - "+BO.BAS.ObjectDate2String(rec.First().a01DateUntil))">@(rec.First().a01Signature)</a>
                
                 <span>@BO.BAS.OM2(rec.First().a10Name, 18)</span>
             </td>
