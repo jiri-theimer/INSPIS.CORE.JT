@@ -27,7 +27,7 @@
             @Model.RecA01.a03Name
         </div>
 
-        <div class="form-row">
+        <div class="row">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Příjemce (e-mail adresa)"):</label>
             <div class="col-sm-3 col-md-3">
                 <input type="text" class="form-control" asp-for="@Model.EmailAddress" value="@Model.EmailAddress" />
@@ -36,20 +36,20 @@
                 <mydropdown asp-for="@Model.SelectedEmail" datasource="@Model.lisEmails" textfield="Value" valuefield="Key" isfirstemptyrow="true" firstemptyrowtext="@_f.tra("Příjemce notifikační zprávy")" event_after_changevalue="email_change()"></mydropdown>
             </div>
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Vybrat formulář"):</label>
             <div class="col-sm-11 col-md-10">
                 <mycombo entity="f06Form" asp-for="@Model.SelectedF06ID" selectedtext="@Model.SelectedForm" placeholder="@_f.tra("Vybrat formulář")..." masterprefix="a08" masterpid="@Model.RecA01.a08ID" param1="poll"></mycombo>
             </div>
 
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Činnost (součást) školy"):</label>
             <div class="col-sm-11 col-md-10">
                 <mycombo entity="a37InstitutionDepartment" asp-for="@Model.SelectedA37ID" selectedtext="@Model.SelectedA37Name" view-flag="2" masterprefix="a03" masterpid="@Model.RecA01.a03ID"></mycombo>
             </div>
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Přístupový PIN"):</label>
             <div class="col-sm-1 col-md-1">
                 <input type="text" class="form-control" asp-for="@Model.AccessToken" />
@@ -59,7 +59,7 @@
                 <input type="text" asp-for="@Model.a11Description" class="form-control" placeholder="@_f.tra("Poznámka")" />
             </div>
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Šablona notifikační zprávy"):</label>
             <div class="col-sm-11 col-md-10">
                 <mycombo entity="b65WorkflowMessage" asp-for="@Model.SelectedB65ID" selectedtext="@Model.SelectedB65Name" param1="111" event_after_changevalue="b65id_change"></mycombo>
@@ -67,14 +67,14 @@
 
         </div>
 
-        <div class="form-row my-2" style="border-top:dotted 1px gray;">
+        <div class="row my-2" style="border-top:dotted 1px gray;">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Předmět notifikační zprávy"):</label>
             <div class="col-sm-11 col-md-10">
                 <input type="text" class="form-control" asp-for="@Model.MessageSubject" />
             </div>
 
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Obsah notifikační zprávy"):</label>
             <div class="col-sm-11 col-md-10">
                 

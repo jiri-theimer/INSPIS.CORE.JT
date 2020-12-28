@@ -67,7 +67,9 @@ namespace UI.Controllers
                 var lisA11 = Factory.a11EventFormBL.GetList(mq);
                 if (lisA11.Count() == 0)
                 {
-                    var recA01 = new BO.a01Event() { a01IsTemporary = true, a10ID = v.a10ID, a08ID = v.a08ID, a03ID = v.a03ID, a01DateFrom = DateTime.Now, a01DateUntil = new DateTime(3000, 1, 1), j03ID_Creator = Factory.CurrentUser.pid, j02ID_Issuer = Factory.CurrentUser.j02ID };
+                    
+                    var recA01 = new BO.a01Event() { a01IsTemporary = true, a10ID = v.a10ID, a08ID = v.a08ID, a03ID = v.a03ID, a01DateFrom = DateTime.Now, a01DateUntil = DateTime.Today.AddDays(2), j03ID_Creator = Factory.CurrentUser.pid, j02ID_Issuer = Factory.CurrentUser.j02ID };
+
                     var recA11 = new BO.a11EventForm() { f06ID = v.f06ID, a11IsSimulation = true, a37ID = v.a37ID, a11Description = Factory.tra("Simulace chování formuláře.") };
                     var lis = new List<BO.a11EventForm>();
 
@@ -84,6 +86,8 @@ namespace UI.Controllers
                 else
                 {
                     var recA01 = Factory.a01EventBL.Load(lisA11.Last().a01ID);
+                    recA01.a01DateFrom = DateTime.Now;
+                    recA01.a01DateUntil = DateTime.Today.AddDays(2);
                     recA01.a10ID = v.a10ID;
                     recA01.a08ID = v.a01ID;
                     recA01.a03ID = v.a03ID;

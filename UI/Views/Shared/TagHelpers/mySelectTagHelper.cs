@@ -56,7 +56,7 @@ namespace UI.Views.Shared.TagHelpers
             {
                 this.OrderField = System.Web.HttpUtility.UrlEncode(this.OrderField.Replace("'", "##"));
             }
-            string strClass = "form-control";
+            string strClass = "form-select";
             if (bolSelected && CssClass_Selected !=null) strClass += " "+this.CssClass_Selected;
 
             sb.AppendLine(string.Format("<select class='{5}' id='{0}' name='{1}' onfocus=\"myselect_focus(event,this,'{2}','{3}','{4}')\"", strControlID, this.For.Name, this.Entity,this.TextField,this.OrderField,strClass));

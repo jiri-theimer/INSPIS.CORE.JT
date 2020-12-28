@@ -12,7 +12,7 @@
 <input type="hidden" asp-for="@Model.Rec.a42JobGuid" />
     <div class="modal_record_container">
 
-        <div class="form-row">
+        <div class="row">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
             <div class="col-sm-11 col-md-10">
                 <input class="form-control" asp-for="Rec.a42Name" />
@@ -20,23 +20,23 @@
             </div>
 
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Poštovní účet"):</label>
             <div class="col-sm-11 col-md-10">
                 <mycombo entity="j40MailAccount" asp-for="Rec.j40ID" selectedtext="Rec.j40SmtpEmail" view-flag="2"></mycombo>
             </div>
         </div>
-        <div class="form-row">
+        <div class="row">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Režim"):</label>
             <div class="col-sm-5 col-md-5">
-                <select asp-for="@Model.Rec.a42TestFlag" class="form-control">
+                <select asp-for="@Model.Rec.a42TestFlag" class="form-select">
                     <option value="0"></option>
                     <option value="1">@_f.tra("Testování: Neodesílat poštovní zprávy")</option>
                 </select>
             </div>
 
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Plánované období od"):</label>
             <div class="col-sm-2 col-md-2">
                 <mydate asp-for="Rec.a42DateFrom" include-time="false"></mydate>
@@ -51,21 +51,21 @@
 
         <mystitky entity="a42Qes" asp-for="@Model.TagPids" tagnames="@Model.TagNames" taghtml="@Model.TagHtml"></mystitky>
 
-        <div class="form-row my-2">
+        <div class="row my-2">
             <textarea asp-for="Rec.a42Description" class="form-control" style="height:150px;" placeholder="@_f.tra("Podrobný popis")"></textarea>
             <span asp-validation-for="Rec.a42Description" class="text-danger"></span>
         </div>
 
         @if (Model.Rec.a42JobState == BO.a42JobState.MailQueue || Model.Rec.a42JobState == BO.a42JobState.PreparedX40)
         {
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <button type="button" id="cmdStopMailing" class="btn btn-warning">@_f.tra("Zastavit odesílání poštovních zpráv")</button>
             </div>
             <hr />
         }
         @if (Model.Rec.a42JobState == BO.a42JobState.MailQueueStopped)
         {
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <button type="button" id="cmdStartMailing" class="btn btn-primary">@_f.tra("Obnovit odesílání poštovních zpráv")</button>
             </div>
         }
@@ -76,7 +76,7 @@
                 @_f.tra("Změnit plánované období")
             </div>
             <div class="card-body">
-                <div class="form-row">
+                <div class="row">
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Plánované období od"):</label>
                     <div class="col-sm-2 col-md-2">
                         <mydate asp-for="@Model.ChangeDateFrom" include-time="false"></mydate>
@@ -95,7 +95,7 @@
         @if (_f.IsUserAdmin())
         {
             <hr />
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <button type="button" id="cmdDeleteComplete" class="btn btn-danger">@_f.tra("Odstranit dávku včetně akcí")</button>
             </div>
         }

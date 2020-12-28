@@ -13,7 +13,7 @@
 
 
     <div class="row py-1 bg-light m-0">
-        <div id="layout_sidebar_contextmenu">
+        <div id="layout_sidebar_contextmenu" class="col-auto">
             @if (Model.pid > 0)
             {
                 <a id="layout_sidebar_contextmenu_link" class="cm h4 mx-1" title="Menu" onclick="_cm(event, 'a01',@Model.Rec.pid);">☰@Model.Rec.a01Signature</a>
@@ -33,8 +33,8 @@
         </div>
         @if (Model.pid > 0)
         {
-            <div class="pl-0 pr-0">
-                <ul class="nav nav-tabs nonmobile nontablet" style="border:none;">
+            <div class="px-0 col-auto">
+                <ul class="nav nav-tabs nonmobile nontablet">
                     <li class="nav-item onetab">
                         <a class="nav-link active" data-toggle="tab">@Model.Rec.a10Name</a>
                     </li>
@@ -42,12 +42,12 @@
 
 
             </div>
-            <div class="nonmobile">
-                <a class="btn btn-light" href="/a01/RecPage?pid=@Model.pid" title="@_f.tra("Občerstvit")"><img src="~/images/refresh.png" /></a>
+            <div class="nonmobile col-auto">
+                <a class="btn btn-light" href="/a01/RecPage?pid=@Model.pid" title="@_f.tra("Občerstvit")"><span class="k-icon k-i-reload"></span></a>
             </div>
         }
 
-        <div class="col-sm-8 col-md-8 pl-0">
+        <div class="col-auto">
             <mysearch asp-for="@Model.SearchBox" entity="a01Event" placeholder="@_f.tra("Fulltext hledání")..."></mysearch>
         </div>
 
@@ -64,7 +64,7 @@
 <div id="layout_main">
     <div class="modal_record_container">
 
-        <div class="form-row">
+        <div class="row">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("ID akce"):</label>
             <div class="col-sm-4 col-md-3">
 
@@ -82,7 +82,7 @@
 
             </div>
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@(_f.tra("Aktuální stav")):</label>
             <div class="col-sm-4 col-md-3">
 
@@ -108,7 +108,7 @@
             }
 
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Téma akce"):</label>
             <div class="col-sm-5 col-md-4">
 
@@ -128,7 +128,7 @@
 
 
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@(Model.Rec.a06Name+":")</label>
 
             @if (Model.Rec.a03ID > 0)
@@ -150,7 +150,7 @@
                 </div>
             }
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             @if (Model.Rec.a01CaseCode != null && Model.Rec.a01ParentID == 0)
             {
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Spis"):</label>
@@ -184,7 +184,7 @@
                         @tab.Name
                         @if (tab.Badge != null)
                         {
-                            <span class="badge badge-primary">@tab.Badge</span>
+                            <span class="badge bg-primary">@tab.Badge</span>
                         }
                     </a>
                 </li>

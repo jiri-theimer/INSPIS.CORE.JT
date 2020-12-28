@@ -49,21 +49,24 @@ namespace BO
             Messages4Notify.Add(new BO.StringPair() { Key = strTemplate, Value = strMessage }); ;
         }
 
-        public string getFontStyle()
+       
+        public string getFontSizeCss()
         {
+
             switch (this.j03FontStyleFlag)
             {
                 case 1:
-                    return "font: 0.6875rem/1.0 var(--font-family-sans-serif)";
+                    return "fontsize1.css";     //malé písmo               
                 case 2:
-                    return "font: 0.75rem/1.0 var(--font-family-sans-serif)";
+                    return "fontsize2.css";       //výchozí písmo                
                 case 3:
-                    return "font: 0.85rem/1.0 var(--font-family-sans-serif)";
+                    return "fontsize3.css";        //větší písmo       
                 case 4:
-                    return "font: 1rem/1.2 var(--font-family-sans-serif);";
+                    return "fontsize4.css";         //největší písmo
                 default:
-                    return "font: 0.75rem/1.0 var(--font-family-sans-serif)";
+                    return "fontsize2.css";         //výchozí písmo
             }
+           
         }
 
         public bool TestPermission(BO.j05PermValuEnum oneperm, string strRoleValue=null)

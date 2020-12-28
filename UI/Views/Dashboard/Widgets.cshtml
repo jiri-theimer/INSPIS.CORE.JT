@@ -62,57 +62,57 @@
 
         </div>
     }
-    <div class="dropdown col-auto">
+<div class="dropdown col-auto">
 
-        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownSnippetLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span>@_f.tra("Vložit widget na plochu")</span>
-        </a>
+    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="cmdInsertWidget" data-bs-toggle="dropdown" aria-expanded="false">
+        <span>@_f.tra("Vložit widget na plochu")</span>
+    </a>
 
-        <div class="dropdown-menu" aria-labelledby="dropdownSnippetLink">
-            <ul id="rp1_menu" style="list-style:none;columns:3;width:1000px;">
+    <div class="dropdown-menu" aria-labelledby="cmdInsertWidget">
+        <ul id="rp1_menu" style="list-style:none;columns:3;width:1000px;">
 
-                @foreach (var c in Model.lisAllWidgets)
-                {
-                    <li class="nav-item p-2">
-                        @if (Model.lisUserWidgets.Where(p => p.pid == c.pid).Count() > 0)
-                        {
-                            <span style="color:silver;">@c.x55Name</span>
-                        }
-                        else
-                        {
-                            <a href="javascript:handle_insert_snippet(@c.pid)">@c.x55Name</a>
-                        }
-
-
-                    </li>
-                }
-
-
-
-            </ul>
-
-            @if (Model.IsSubform)
+            @foreach (var c in Model.lisAllWidgets)
             {
-                <hr />
-                <div style="padding:8px;">
-                    @if (Model.lisUserWidgets.Count() > 0)
+                <li class="nav-item p-2">
+                    @if (Model.lisUserWidgets.Where(p => p.pid == c.pid).Count() > 0)
                     {
-                        <button type="button" onclick="clear_to_factory_confirm()" class="btn btn-sm btn-light">@_f.tra("Nahodit plochu do výchozího (továrního) nastavení")</button>
+                        <span style="color:silver;">@c.x55Name</span>
                     }
                     else
                     {
-                        <button type="button" onclick="clear_to_factory_silent()" class="btn btn-sm btn-light">@_f.tra("Nahodit plochu do výchozího (továrního) nastavení")</button>
+                        <a href="javascript:handle_insert_snippet(@c.pid)">@c.x55Name</a>
                     }
 
-                </div>
+
+                </li>
             }
 
 
 
-        </div>
+        </ul>
+
+        @if (Model.IsSubform)
+        {
+            <hr />
+            <div style="padding:8px;">
+                @if (Model.lisUserWidgets.Count() > 0)
+                {
+                    <button type="button" onclick="clear_to_factory_confirm()" class="btn btn-sm btn-light">@_f.tra("Nahodit plochu do výchozího (továrního) nastavení")</button>
+                }
+                else
+                {
+                    <button type="button" onclick="clear_to_factory_silent()" class="btn btn-sm btn-light">@_f.tra("Nahodit plochu do výchozího (továrního) nastavení")</button>
+                }
+
+            </div>
+        }
+
+
+
     </div>
+</div>
     <div class="col-auto">
-        <select asp-for="@Model.ColumnsPerPage" class="form-control" onchange="handle_pocet_sloupcu(this)" title="@_f.tra("Počet sloupců na ploše")">
+        <select asp-for="@Model.ColumnsPerPage" class="form-select" onchange="handle_pocet_sloupcu(this)" title="@_f.tra("Počet sloupců na ploše")">
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -123,7 +123,7 @@
 
 
 
-<div id="@(BO.BAS.IIFS(Model.IsSubform,"container_subform","container_index"))" class="form-row">
+<div id="@(BO.BAS.IIFS(Model.IsSubform,"container_subform","container_index"))" class="row">
     <div class="column @Model.BoxColCss" id="col1">
         @foreach (var c in Model.DockStructure.Col1)
         {
@@ -133,10 +133,10 @@
                     <img src="@c.HeaderImage" />
                     <span class="ml-1">@(c.x55Name)</span>
 
-                    <a class="float-right btn btn-sm btn-light py-0 px-1" title="@_f.tra("Zavřít")" href="javascript:handle_after_close_snippet(@c.pid)">x</a>
+                    <a class="btn btn-sm btn-light py-0 px-1 float-end" title="@_f.tra("Zavřít")" href="javascript:handle_after_close_snippet(@c.pid)">x</a>
                     @if (c.x55Help != null)
                     {
-                        <a class="float-right btn btn-sm btn-light py-0 px-1 mx-3" title="@_f.tra("Widget nápověda")" href="javascript:widget_help(@c.pid)">?</a>
+                        <a class="float-end btn btn-sm btn-light py-0 px-1 mx-3" title="@_f.tra("Widget nápověda")" href="javascript:widget_help(@c.pid)">?</a>
                     }
                 </div>
                 <div class="portlet-content" @Html.Raw(c.CssContentDiv)>
@@ -158,10 +158,10 @@
                         <img src="@c.HeaderImage" />
                         <span class="ml-1">@(c.x55Name)</span>
 
-                        <a class="float-right btn btn-sm btn-light py-0 px-1" title="@_f.tra("Zavřít")" href="javascript:handle_after_close_snippet(@c.pid)">x</a>
+                        <a class="btn btn-sm btn-light py-0 px-1 float-end" title="@_f.tra("Zavřít")" href="javascript:handle_after_close_snippet(@c.pid)">x</a>
                         @if (c.x55Help != null)
                         {
-                            <a class="float-right btn btn-sm btn-light py-0 px-1 mx-3" title="@_f.tra("Widget nápověda")" href="javascript:widget_help(@c.pid)">?</a>
+                            <a class="float-end btn btn-sm btn-light py-0 px-1 mx-3" title="@_f.tra("Widget nápověda")" href="javascript:widget_help(@c.pid)">?</a>
                         }
                     </div>
                     <div class="portlet-content" @Html.Raw(c.CssContentDiv)>
@@ -183,10 +183,10 @@
                         <img src="@c.HeaderImage" />
                         <span class="ml-1">@(c.x55Name)</span>
 
-                        <a class="float-right btn btn-sm btn-light py-0 px-1" title="@_f.tra("Zavřít")" href="javascript:handle_after_close_snippet(@c.pid)">x</a>
+                        <a class="btn btn-sm btn-light py-0 px-1 float-end" title="@_f.tra("Zavřít")" href="javascript:handle_after_close_snippet(@c.pid)">x</a>
                         @if (c.x55Help != null)
                         {
-                            <a class="float-right btn btn-sm btn-light py-0 px-1 mx-3" title="@_f.tra("Widget nápověda")" href="javascript:widget_help(@c.pid)">?</a>
+                            <a class="float-end btn btn-sm btn-light py-0 px-1 mx-3" title="@_f.tra("Widget nápověda")" href="javascript:widget_help(@c.pid)">?</a>
                         }
                     </div>
                     <div class="portlet-content" @Html.Raw(c.CssContentDiv)>

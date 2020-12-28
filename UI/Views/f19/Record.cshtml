@@ -40,13 +40,13 @@
             <div class="alert alert-primary" role="alert">
                 @Model.RecF06.f06Name
             </div>
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Segment formuláře"):</label>
                 <div class="col-sm-11 col-md-10">
                     <mycombo entity="f18FormSegment" asp-for="Rec.f18ID" selectedtext="Rec.f18Name" masterprefix="f06" masterpid="@Model.f06ID" view-flag="2" event_after_changevalue="handle_f18id_change"></mycombo>
                 </div>
             </div>
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typ odpovědi"):</label>
                 <div class="col-sm-4 col-md-3">
                     <mycombo entity="f23ReplyType" asp-for="Rec.f23ID" selectedtext="Rec.f23Name" view-flag="2" event_after_changevalue="handle_f23id_change"></mycombo>
@@ -69,7 +69,7 @@
             </div>
             @if (Model.Rec.ReplyControl == BO.ReplyKeyEnum.TextBox)
             {
-                <div class="form-row my-2">
+                <div class="row my-2">
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Datový typ"):</label>
                     <div class="col-sm-4 col-md-3">
                         <mycombo entity="x24DataType" asp-for="Rec.x24ID" selectedtext="Rec.x24Name" view-flag="2" param1="textbox" event_after_changevalue="handle_x24id_change"></mycombo>
@@ -78,7 +78,7 @@
             }
             @if (Model.lisF26.Count() > 0)
             {
-                <div class="form-row my-2">
+                <div class="row my-2">
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Zařadit do baterie"):</label>
                     <div class="col-sm-11 col-md-10">
                         <mycombo entity="f26BatteryBoard" asp-for="Rec.f26ID" selectedtext="Rec.f26Name" view-flag="2" masterprefix="f18" masterpid="@Model.Rec.f18ID"></mycombo>
@@ -87,7 +87,7 @@
             }
             @if (Model.lisF25.Count() > 0)
             {
-                <div class="form-row my-2">
+                <div class="row my-2">
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Zařadit do šachovnice"):</label>
                     <div class="col-sm-5 col-md-4">
                         <mycombo entity="f25ChessBoard" asp-for="Rec.f25ID" selectedtext="Rec.f25Name" view-flag="2" masterprefix="f18" masterpid="@Model.Rec.f18ID" event_after_changevalue="handle_f25id_change"></mycombo>
@@ -106,21 +106,21 @@
                 </div>
             }
 
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název otázky"):</label>
                 <div class="col-sm-11 col-md-10">
                     <textarea asp-for="Rec.f19Name" class="form-control" style="min-height:40px;"></textarea>
                     <span asp-validation-for="Rec.f19Name" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Rozšířený text"):</label>
                 <div class="col-sm-11 col-md-10">
                     <textarea asp-for="Rec.f19SupportingText" class="form-control" style="min-height:40px;"></textarea>
                     <span asp-validation-for="Rec.f19SupportingText" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Uživatelský kód"):</label>
                 <div class="col-sm-4 col-md-3">
                     <input class="form-control" asp-for="Rec.f19Ident" />
@@ -134,7 +134,7 @@
                     <input class="form-control" asp-for="Rec.f19StatID" />
                 </div>
             </div>
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <div class="col-sm-4 col-md-4">
                     <input type="checkbox" asp-for="Rec.f19IsEncrypted" />
                     <label class="col-form-label" for="Rec_f19IsEncrypted">@_f.tra("Odpověď otázky podléhá šifrování")</label>
@@ -143,7 +143,7 @@
             </div>
             @if (_f.App.Implementation == "Default")
             {
-                <div class="form-row my-2">
+                <div class="row my-2">
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Entitní pole k aktualizaci"):</label>
                     <div class="col-sm-5 col-md-4">
                         <select asp-for="Rec.f19EntityField" class="form-control">
@@ -172,7 +172,7 @@
                 </div>
             }
 
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Klastr otázky"):</label>
                 <div class="col-sm-11 col-md-10">
                     <mycombo entity="f44QuestionCluster" asp-for="Rec.f44ID" selectedtext="Rec.f44Name" view-flag="2"></mycombo>
@@ -184,7 +184,7 @@
 
             @if (Model.Rec.ReplyControl != BO.ReplyKeyEnum.Button && Model.Rec.ReplyControl != BO.ReplyKeyEnum.FileUpload && Model.Rec.f19IsDefaultValueHTML == false)
             {
-                <div class="form-row my-2">
+                <div class="row my-2">
                     <label class="col-sm-1 col-md-2 col-form-label"><a href="javascript:popup_evalfunct('Rec_f19DefaultValue')">@_f.tra("Výchozí hodnota"):</a></label>
                     <div class="col-sm-11 col-md-10">
                         <textarea asp-for="Rec.f19DefaultValue" class="form-control evalarea" style="min-height:40px;"></textarea>
@@ -196,7 +196,7 @@
 
             @if (Model.Rec.ReplyControl == BO.ReplyKeyEnum.TextBox && Model.Rec.ReplyType == BO.x24DataTypeEnum.tString)
             {
-                <div class="form-row my-2">
+                <div class="row my-2">
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Regulární výraz"):</label>
                     <div class="col-sm-11 col-md-10">
                         <input class="form-control" asp-for="Rec.f19Regex" />
@@ -206,7 +206,7 @@
             }
             @if (Model.Rec.ReplyControl == BO.ReplyKeyEnum.TextBox)
             {
-                <div class="form-row my-2">
+                <div class="row my-2">
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("STAT ID odpovědi"):</label>
                     <div class="col-sm-4 col-md-3">
                         <input class="form-control" asp-for="Rec.TextBox_ExportValue" />
@@ -216,7 +216,7 @@
             }
             @if (Model.Rec.ReplyControl == BO.ReplyKeyEnum.TextBox && Model.Rec.x24ID > 0 && Model.Rec.ReplyType != BO.x24DataTypeEnum.tString)
             {
-                <div class="form-row my-2">
+                <div class="row my-2">
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Minimální hodnota"):</label>
                     <div class="col-sm-4 col-md-3">
                         <input class="form-control" asp-for="Rec.TextBox_MinValue" />
@@ -230,7 +230,7 @@
             }
             @if (Model.Rec.ReplyControl == BO.ReplyKeyEnum.Button)
             {
-                <div class="form-row my-2">
+                <div class="row my-2">
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("URL tlačítka"):</label>
                     <div class="col-sm-11 col-md-10">
 
@@ -241,7 +241,7 @@
             }
             @if (Model.Rec.ReplyControl == BO.ReplyKeyEnum.FileUpload)
             {
-                <div class="form-row my-2">
+                <div class="row my-2">
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Povolené souborové přípony"):</label>
                     <div class="col-sm-11 col-md-10">
 
@@ -249,7 +249,7 @@
                     </div>
 
                 </div>
-                <div class="form-row my-2">
+                <div class="row my-2">
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Maximální počet příloh"):</label>
                     <div class="col-sm-1 col-md-1">
 
@@ -281,21 +281,21 @@
         <div class="tab-pane" id="tab4">
             <!-- Tab4 -->
             <p></p>
-            <div class="form-row">
+            <div class="row">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Nápověda"):</label>
                 <div class="col-sm-11 col-md-10">
                     <textarea asp-for="Rec.f19Hint" class="form-control" placeholder="@_f.tra("Text nápovědy")" style="min-height:40px;"></textarea>
                     <span asp-validation-for="Rec.f19Hint" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label"><a href="javascript:popup_evalfunct('Rec_f19ReadonlyExpression')">@_f.tra("READONLY podmínka"):</a></label>
                 <div class="col-sm-11 col-md-10">
                     <textarea asp-for="Rec.f19ReadonlyExpression" class="form-control evalarea" style="min-height:40px;"></textarea>
                     <span asp-validation-for="Rec.f19ReadonlyExpression" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label"><a href="javascript:popup_evalfunct('Rec_f19SkipExpression')">@_f.tra("SKIP (HIDE) podmínka"):</a></label>
                 <div class="col-sm-11 col-md-10">
                     <textarea asp-for="Rec.f19SkipExpression" class="form-control evalarea" style="min-height:40px;"></textarea>
@@ -304,7 +304,7 @@
             </div>
             @if (Model.Rec.ReplyControl != BO.ReplyKeyEnum.Button)
             {
-                <div class="form-row my-2">
+                <div class="row my-2">
                     <label class="col-sm-1 col-md-2 col-form-label"><a href="javascript:popup_evalfunct('Rec_f19RequiredExpression')">@_f.tra("REQUIRED podmínka"):</a></label>
                     <div class="col-sm-11 col-md-10">
                         <textarea asp-for="Rec.f19RequiredExpression" class="form-control evalarea" style="min-height:40px;"></textarea>
@@ -313,14 +313,14 @@
                 </div>
             }
 
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label"><a href="javascript:popup_evalfunct('Rec_f19CancelValidateExpression')">@_f.tra("CANCEL-VALIDATE podmínka"):</a></label>
                 <div class="col-sm-11 col-md-10">
                     <textarea asp-for="Rec.f19CancelValidateExpression" class="form-control evalarea" style="min-height:40px;"></textarea>
                     <span asp-validation-for="Rec.f19CancelValidateExpression" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Vlastní chybové hlášení"):</label>
                 <div class="col-sm-11 col-md-10">
                     <textarea asp-for="Rec.f19CancelValidateExpression_Message" class="form-control" style="min-height:40px;"></textarea>
@@ -329,7 +329,7 @@
             </div>
             @if (_f.App.Implementation == "Default")
             {
-                <div class="form-row my-2">
+                <div class="row my-2">
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Vztah otázky k portálu"):</label>
                     <div class="col-sm-5 col-md-4">
                         <select asp-for="Rec.f19PortalPublishFlag" class="form-control">

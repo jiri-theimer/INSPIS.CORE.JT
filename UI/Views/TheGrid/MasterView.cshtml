@@ -28,7 +28,7 @@
                 <myselect entity="a08Theme" asp-for="@Model.FilterA08ID" firstemptyrowtext="--@_f.tra("Téma akce")--" firstemptyrowvalue="0" textfield="a08Name+isnull(' ('+a08Ident+')','')" selectedvalue="@Model.FilterA08ID" selectedtext="@Model.FilterA08Name" event_after_changevalue="a08id_onchange" orderfield="a08Name" cssclass_selected="filtered"></myselect>
             </td>
             <td>
-                <select class="form-control" asp-for="@Model.FilterMyInvolvement" onchange="myinvolvement_change(this)">
+                <select class="form-select" asp-for="@Model.FilterMyInvolvement" onchange="myinvolvement_change(this)">
                     <option value="">@("-- "+_f.tra("Mé zapojení do akce")+" --")</option>
                     <option value="involved">@_f.tra("Jsem zapojen do akce")</option>
                     <option value="leader">@_f.tra("Jsem vedoucím týmu")</option>

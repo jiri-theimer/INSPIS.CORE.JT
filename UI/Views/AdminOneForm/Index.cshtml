@@ -18,7 +18,7 @@
 {
     @section header_content{
 
-        <link href="/kendo/styles/kendo.common.min.css" rel="stylesheet" type="text/css" />
+        
         <link href="/kendo/styles/kendo.default.min.css" rel="stylesheet" type="text/css" />
         <link href="/kendo/styles/kendo.default.mobile.min.css" rel="stylesheet" type="text/css" />
     }
@@ -44,11 +44,11 @@
 }
 
 <div class="row py-1 bg-light m-0">
-    <div id="layout_sidebar_contextmenu">
+    <div id="layout_sidebar_contextmenu" class="col-auto">
         <a id="layout_sidebar_contextmenu_link" class="cm h4 mx-0" onclick="_cm(event, 'f06Form',@Model.f06ID);">☰@_f.tra("Návrhář formuláře")</a>
         <h4 id="layout_sidebar_contextmenu_onlytext">@_f.tra("Návrhář formuláře")</h4>
     </div>
-    <div class="pl-0">
+    <div class="p-0 col-auto">
         <ul class="nav nav-tabs">
             <li class="nav-item onetab">
                 <a class="nav-link active" data-toggle="tab">@Model.RecF06.f06Name</a>
@@ -56,13 +56,13 @@
         </ul>
 
     </div>
-    <div class="nonmobile ml-2">
-        <a class="btn btn-light" href="javascript:reload()" title="@_f.tra("Občerstvit")"><img src="~/images/refresh.png" /></a>
+    <div class="nonmobile col-auto">
+        <a class="btn btn-light" href="javascript:reload()" title="@_f.tra("Občerstvit")"><span class="k-icon k-i-reload"></span></a>
     </div>
-    <div class="ml-2">
+    <div class="col-auto">
         @if (Model.view == "tree")
         {
-            <a class="btn btn-info" href="/AdminOneForm/Index?f06id=@Model.f06ID&view=grid">@_f.tra("Přepnout na Grid")</a>
+            <a class="btn btn-outline-info" href="/AdminOneForm/Index?f06id=@Model.f06ID&view=grid">@_f.tra("Přepnout na Grid")</a>
         }
         else
         {
@@ -70,12 +70,12 @@
         }
 
     </div>
-    <div class="ml-2">
-        <a class="btn btn-success" target="_blank" href="/a11/Simulation?f06id=@Model.f06ID">@_f.tra("Simulace")</a>
-        <button id="cmdNew" type="button" class="btn btn-primary">@_f.tra("Nový formulář")</button>
-        <button id="cmdGrid" type="button" class="btn btn-secondary">@_f.tra("Grid formulářů")</button>
+    <div class="col-auto">
+        <a class="btn btn-outline-success" target="_blank" href="/a11/Simulation?f06id=@Model.f06ID">@_f.tra("Simulace")</a>
+        <button id="cmdNew" type="button" class="btn btn-outline-primary">@_f.tra("Nový formulář")</button>
+        <button id="cmdGrid" type="button" class="btn btn-outline-secondary">@_f.tra("Grid formulářů")</button>
     </div>
-    <div class="ml-2">
+    <div class="col-auto">
         <button id="cmdToggleSetting" type="button" class="btn btn-light dropdown-toggle">
             @_f.tra("Nastavení")
         </button>

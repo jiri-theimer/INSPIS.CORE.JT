@@ -39,39 +39,39 @@
 }
 
 <div class="row py-1 bg-light m-0">
-    <div id="layout_sidebar_contextmenu">
+    <div id="layout_sidebar_contextmenu" class="col-auto">
         <a id="layout_sidebar_contextmenu_link" class="cm h4 mx-0" onclick="_cm(event, 'Forms',0,'@Model.prefix');">☰@_f.tra("Formuláře")</a>
         <h4 id="layout_sidebar_contextmenu_onlytext">@_f.tra("Formuláře")</h4>
     </div>
-    <div class="pl-0">
-        <ul class="nav nav-tabs" style="border:none;">
+    <div class="p-0 col-auto">
+        <ul class="nav nav-tabs">
             <li class="nav-item onetab">
-                <a class="nav-link active" data-toggle="tab">@Model.entityTitle</a>
+                <a class="nav-link active">@Model.entityTitle</a>
             </li>
         </ul>
     </div>
-    <div class="nonmobile nontablet ml-2">
-        <a class="btn btn-light" href="/Admin/Ciselniky?prefix=@Model.prefix" title="@_f.tra("Občerstvit")"><img src="~/images/refresh.png" /></a>
+    <div class="nonmobile nontablet col-auto">
+        <a class="btn btn-light" href="/Admin/Ciselniky?prefix=@Model.prefix" title="@_f.tra("Občerstvit")"><span class="k-icon k-i-reload"></span></a>
     </div>
 
     @if (Model.prefix != null)
     {
-        <div class="ml-2">
+        <div class="col-auto">
             <button id="cmdNew" type="button" class="btn btn-primary">@_f.tra("Nový záznam")</button>
         </div>
     }
 
 
-    <div class="ml-2">
+    <div class="col-auto">
         @if (Model.prefix == "f12")
         {
             @if (Model.view == "tree")
             {
-                <a class="btn btn-info" href="/Admin/Forms?prefix=@Model.prefix&view=grid">@_f.tra("Přepnout na Grid")</a>
+                <a class="btn btn-outline-info" href="/Admin/Forms?prefix=@Model.prefix&view=grid">@_f.tra("Přepnout na Grid")</a>
             }
             else
             {
-                <a class="btn btn-info" href="/Admin/Forms?prefix=@Model.prefix&view=tree">@_f.tra("Přepnout na Strom")</a>
+                <a class="btn btn-outline-info" href="/Admin/Forms?prefix=@Model.prefix&view=tree">@_f.tra("Přepnout na Strom")</a>
             }
         }
     </div>

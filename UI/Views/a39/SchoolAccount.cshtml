@@ -26,7 +26,7 @@
 
     <div class="modal_record_container">
 
-        <div class="form-row">
+        <div class="row">
             <div class="col-sm-2 col-md-2">
                 <myautocomplete asp-for="RecJ02.j02TitleBeforeName" o15flag="1" placeholder="@_f.tra("Titul")"></myautocomplete>
 
@@ -45,13 +45,13 @@
 
         </div>
 
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Aplikační role"):</label>
             <div class="col-sm-11 col-md-10">
                 <mydropdown asp-for="@Model.SelectedJ04ID" datasource="@Model.lisJ04" valuefield="pid" textfield="j04Name"></mydropdown>
             </div>
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("E-mail adresa"):</label>
             <div class="col-sm-4 col-md-4">
                 <input class="form-control" type="email" asp-for="RecJ02.j02Email" />
@@ -61,7 +61,7 @@
         </div>
 
 
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Mobil"):</label>
             <div class="col-sm-4 col-md-3">
                 <input class="form-control" type="tel" asp-for="RecJ02.j02Mobile" />
@@ -73,14 +73,14 @@
 
             </div>
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <div class="col-sm-8 col-md-8">
                 <input type="checkbox" asp-for="Rec.a39IsAllowInspisWS" />
                 <label class="col-form-label" for="Rec_a39IsAllowInspisWS">@_f.tra("Oprávnění k integračním službám se školním IS")</label>
 
             </div>
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <textarea asp-for="Rec.a39Description" class="form-control" placeholder="@_f.tra("Poznámka k roli")"></textarea>
 
         </div>

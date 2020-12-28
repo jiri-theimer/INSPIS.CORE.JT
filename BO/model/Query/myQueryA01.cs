@@ -40,7 +40,7 @@ namespace BO
             {
                 if (!(this.CurrentUser.j04IsAllowedAllEventTypes && this.CurrentUser.j04RelationFlag == BO.j04RelationFlagEnum.NoRelation))
                 {
-                    AQ(GetDisponibleA01Where(), null, null);
+                    AQ(GetDisponibleWhere(), null, null);
                 }
             }
             if (this.b02id > 0)
@@ -132,7 +132,7 @@ namespace BO
 
 
 
-        private string GetDisponibleA01Where()
+        private string GetDisponibleWhere()
         {
             //výběr uživateli dostupných akcí podle aplikační role a účasti v akcích
             string sw = "(";

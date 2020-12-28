@@ -36,7 +36,7 @@
             <div class="alert alert-primary" role="alert">
                 @Model.RecB01.b01Name
             </div>
-            <div class="form-row">
+            <div class="row">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název stavu"):</label>
                 <div class="col-sm-9 col-md-8">
                     <input class="form-control" asp-for="Rec.b02Name" />
@@ -46,7 +46,7 @@
                     ID: <span>@(Model.Rec.pid)</span>
                 </div>
             </div>
-            <div class="form-row my-2">
+            <div class="row my-2">
 
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kód stavu"):</label>
                 <div class="col-sm-1 col-md-1">
@@ -56,23 +56,23 @@
             </div>
 
 
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <div class="col-sm-4 col-md-4">
                     <input type="checkbox" asp-for="Rec.b02IsDefaultStatus" />
                     <label class="col-form-label" for="Rec_b02IsDefaultStatus">@_f.tra("Výchozí (startovací) stav v rámci workflow šablony")</label>
                 </div>
             </div>
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <div class="col-sm-4 col-md-4">
                     <input type="checkbox" asp-for="Rec.b02IsCommentForbidden" />
                     <label class="col-form-label" for="Rec_b02IsCommentForbidden">@_f.tra("Ve stavu je zákaz psaní bez-krokového komentáře")</label>
                 </div>
             </div>
-            <div class="form-row my-2">
+            <div class="row my-2">
 
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Synchronizace stavu"):</label>
                 <div class="col-sm-4 col-md-4">
-                    <select asp-for="@Model.Rec.b02AutoUpdateScopeFlag" class="form-control">
+                    <select asp-for="@Model.Rec.b02AutoUpdateScopeFlag" class="form-select">
                         <option value="None">@_f.tra("Nic")</option>
                         <option value="Slaves">@_f.tra("Stav nahazovat u podřízených akcí")</option>
                         <option value="Parent">@_f.tra("Stav nahazovat u nadřízené akce")</option>
@@ -84,7 +84,7 @@
             
 
 
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Barva"):</label>
                 <div class="col-sm-1 col-md-1">
                     <input type="color" asp-for="Rec.b02Color" />
@@ -96,13 +96,13 @@
             </div>
 
 
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <div class="col-sm-4 col-md-4">
                     <input type="checkbox" asp-for="Rec.b02IsHoldStatus" />
                     <label class="col-form-label" for="Rec_b02IsHoldStatus">@_f.tra("Záchytný stav")</label>
                 </div>
             </div>
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <div class="col-sm-4 col-md-4">
                     <input type="checkbox" asp-for="Rec.b02IsSeparateTab" />
                     <label class="col-form-label" for="Rec_b02IsSeparateTab">@_f.tra("Samostatná záložka v osobní stránce řešitele")</label>
@@ -110,7 +110,7 @@
 
             </div>
 
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Index pořadí"):</label>
                 <div class="col-sm-1 col-md-1">
                     <mynumber asp-for="Rec.b02Order" decimal-digits="0"></mynumber>
@@ -127,7 +127,7 @@
                 {
                     <tr>
                         <td>
-                            <div class="form-row" style="@(Model.lisB07[i].CssTempDisplay)">
+                            <div class="row" style="@(Model.lisB07[i].CssTempDisplay)">
                                 <input type="hidden" asp-for="lisB07[i].IsTempDeleted" value="@Model.lisB07[i].IsTempDeleted" />
                                 <input type="hidden" asp-for="lisB07[i].TempGuid" value="@Model.lisB07[i].TempGuid" />
                                 <div class="col-sm-2 col-md-2">
@@ -148,7 +148,7 @@
                                 </div>
 
                             </div>
-                            <div class="form-row" style="@(Model.lisB07[i].CssTempDisplay)">
+                            <div class="row" style="@(Model.lisB07[i].CssTempDisplay)">
                                 <div class="col-sm-2 col-md-2">
                                     @_f.tra("Šablona zprávy"):
                                 </div>
@@ -208,7 +208,7 @@
                 {
                     <tr style="@(Model.lisB10[i].CssTempDisplay)">
                         <td style="width:300px;">
-                            <select class="form-control" asp-for="lisB10[i].b10TargetScopeFlag">
+                            <select class="form-select" asp-for="lisB10[i].b10TargetScopeFlag">
                                 <option value="ThisAndSlaves">@_f.tra("Aktuální + podřízené akce")</option>
                                 <option value="ThisOnly">@_f.tra("Pouze aktuální akce")</option>
                                 <option value="SlavesOnly">@_f.tra("Pouze podřízené akce")</option>
@@ -248,11 +248,11 @@
         <div class="tab-pane" id="tab5">
             <!-- Tab5 -->
             <p></p>
-            <div class="form-row">
+            <div class="row">
 
                 <textarea asp-for="Rec.b02Message4UIFT" class="form-control" placeholder="@_f.tra("Hláška pro UIFT po úspěšné kontrole vyplnění formuláře")" style="min-height:100px;"></textarea>
             </div>
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <div class="col-sm-4 col-md-4">
                     <input type="checkbox" asp-for="Rec.b02IsDurationSLA" />
                     <label class="col-form-label" for="Rec_b02IsDurationSLA">@_f.tra("Započítávat do SLA doby trvání")</label>
@@ -260,14 +260,14 @@
             </div>
 
 
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label">TOTAL TIMEOUT:</label>
                 <div class="col-sm-1 col-md-1">
                     <mynumber asp-for="Rec.b02TimeOut_Total" decimal-digits="0"></mynumber>
                 </div>
 
             </div>
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label">SLA TIMEOUT:</label>
                 <div class="col-sm-1 col-md-1">
                     <mynumber asp-for="Rec.b02TimeOut_SLA" decimal-digits="0"></mynumber>

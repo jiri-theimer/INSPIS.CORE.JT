@@ -11,7 +11,7 @@
 
 @foreach (var c in Model.Where(p => p.a11IsPoll == false))
 {
-    <div class="form-row my-2">
+    <div class="row my-2">
         <div class="col-auto" style="width:20px;">
 
             @if (c.isclosed)
@@ -39,7 +39,7 @@
     <h6>Anketní formuláře:</h6>
     @foreach (var c in Model.Where(p => p.a11IsPoll == true))
     {
-        <div class="form-row my-2">
+        <div class="row my-2">
             <div class="col-sm-1 col-md-1">
 
                 @if (c.isclosed)

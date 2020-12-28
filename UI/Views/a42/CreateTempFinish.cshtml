@@ -28,20 +28,20 @@
 
     <div class="modal_record_container">
 
-        <div class="form-row">
+        <div class="row">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("INEZ název"):</label>
             <div class="col-sm-6 col-md-5">
                 <span class="val-readonly">@Model.Rec.a42Name</span>
             </div>
 
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
             <div class="col-sm-6 col-md-5">
                 <span class="val-readonly">@Model.Rec.a08Name</span>
             </div>
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Formuláře"):</label>
             <div class="col-sm-6 col-md-5">
                 @foreach (var c in Model.lisP85.Where(p => p.p85Prefix == "a12"))
@@ -60,7 +60,7 @@
             </div>
 
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Časový plán"):</label>
             <div class="col-sm-3 col-md-2">
                 <span class="val-readonly">@(BO.BAS.ObjectDate2String(Model.Rec.a42DateFrom))</span>
@@ -69,20 +69,20 @@
                 <span class="val-readonly">@(BO.BAS.ObjectDate2String(Model.Rec.a42DateUntil))</span>
             </div>
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Počet škol (akcí)"):</label>
             <div class="col-sm-6 col-md-5">
                 <span class="val-readonly">@Model.a03Count</span>
             </div>
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Z toho školy bez e-mail adresy"):</label>
             <div class="col-sm-6 col-md-5">
                 <span class="val-readonly">@Model.a03CountNoEmail</span>
             </div>
         </div>
 
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Předmět zprávy"):</label>
             <div class="col-sm-11 col-md-10">
                 <input class="form-control" asp-for="@Model.MessageSubject" />

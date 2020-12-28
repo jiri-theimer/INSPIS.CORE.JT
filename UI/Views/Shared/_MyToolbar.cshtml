@@ -9,103 +9,95 @@
 }
 
 
-<nav class="navbar navbar-expand navbar-toggleable navbar-light border-bottom box-shadow mb-3 px-2 @Model.BG" id="nav1" style="margin-bottom:10px;">
-    <div class="navbar-brand" style="margin: 0px;">
+<nav class="navbar navbar-expand-lg navbar-light @Model.BG" id="nav1">
+    <div class="container-fluid p-0">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown" style="border-bottom:solid 1px silver;border-top:solid 1px silver;">
+            <ul class="navbar-nav m-0">
+                <li class="nav-item m-2">
+                    <button type="submit" id="cmdSaveMyToolbar" action="@Model.ControllorName" class="btn btn-success"><span class="k-icon k-i-save" style="margin-right:6px;"></span>@_f.tra("Uložit změny")</button>
 
-    </div>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+                </li>
+                @if (Model.IsApply)
+                {
+                    <li class="nav-item m-2">
+                        <button type="submit" id="cmdApply" action="@Model.ControllorName" asp-route-applyonly="true" class="btn btn-success">@_f.tra("Uložit a zůstat")</button>
 
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    </li>
+                }
+                @if (Model.IsDelete)
+                {
+                    <li class="nav-item m-2">
+                        <button type="button" class="btn btn-danger ml-2" onclick="toolbar_try_delete()"><span class="k-icon k-i-cancel-outline" style="margin-right:6px;"></span>@_f.tra("Odstranit")</button>
 
+                    </li>
+                }
+                @if (Model.IsRefresh)
+                {
+                    <li class="nav-item my-2">
+                        <a asp-action="@Model.ControllorName" onclick="before_clicked(event)" class="btn btn-light" title="@_f.tra("Občerstvit")" asp-route-pid="@Model.RecordPID"><span class="k-icon k-i-reload"></span></a>
 
-        <div>
+                    </li>
+                }
+                @if (Model.IsClone)
+                {
+                    <li class="nav-item my-2 mx-1">
+                        <a asp-action="@Model.ControllorName" onclick="before_clicked(event)" class="btn btn-light" asp-route-pid="@Model.RecordPID" asp-route-isclone="true"><span class="k-icon k-i-copy" style="margin-right:6px;"></span>@_f.tra("Kopírovat")</a>
+                    </li>
+                }
+                @if (Model.IsToArchive)
+                {
+                    <li class="nav-item my-2">
+                        <button type="button" onclick="toolbar_handle_archive(1)" class="btn btn-light"><span class="k-icon k-i-delete" style="margin-right:6px;"></span>@_f.tra("Přesunout do archivu")</button>
+                    </li>
+                }
+                @if (Model.IsFromArchive)
+                {
+                    <li class="nav-item my-2">
+                        <button type="button" onclick="toolbar_handle_archive(2)" class="btn btn-warning">@_f.tra("Obnovit z archivu")</button>
+                    </li>
+                }
 
+                @if (Model.IsClose)
+                {
+                    <li class="nav-item my-2 mx-1">
+                        <button type="button" onclick="_window_close()" class="btn btn-light"><span class="k-icon k-i-close" style="margin-right:6px;"></span>@_f.tra("Zavřít")</button>
+                    </li>
+                }
+                <li class="nav-item my-2">
+                    <button type="button" onclick="_helppage()" class="btn btn-light"><b>? </b>@_f.tra("Nápověda")</button>
+                </li>
+                <li class="nav-item">
+                    <div>
+                        <span id="toolbar_message" class="text-info" style="float:right;">
+                            @if (Model.Message != null)
+                            {
+                                @_f.tra(Model.Message)
+                            }
+                        </span>
+                    </div>
 
-            <div class="btn-group">
-                <button type="submit" id="cmdSaveMyToolbar" action="@Model.ControllorName" class="btn btn-success my-0">@_f.tra("Uložit změny")</button>
-
-            </div>
-            @if (Model.IsApply)
-            {
-                <div class="btn-group">
-                    <button type="submit" id="cmdApply" action="@Model.ControllorName" asp-route-applyonly="true" class="btn btn-success">@_f.tra("Uložit a zůstat")</button>
-
-                </div>
-            }
-
-
-            @if (Model.IsDelete)
-            {
-                <div class="btn-group ml-2">
-                    <button type="button" class="btn btn-danger" onclick="toolbar_try_delete()">@_f.tra("Odstranit")</button>
-
-                </div>
-            }
-            @if (Model.IsRefresh)
-            {
-                <div class="btn-group">
-                    <a asp-action="@Model.ControllorName" onclick="before_clicked(event)" class="btn btn-light" title="@_f.tra("Občerstvit")" asp-route-pid="@Model.RecordPID"><img src="~/images/refresh.png" /></a>
-
-                </div>
-            }
-            @if (Model.IsClone)
-            {
-                <div class="btn-group ml-2">
-                    <a asp-action="@Model.ControllorName" onclick="before_clicked(event)" class="btn btn-light" asp-route-pid="@Model.RecordPID" asp-route-isclone="true">@_f.tra("Kopírovat")</a>
-                </div>
-            }
-            @if (Model.IsToArchive)
-            {
-                <div class="btn-group ml-2">
-                    <button type="button" onclick="toolbar_handle_archive(1)" class="btn btn-light">@_f.tra("Přesunout do archivu")</button>
-                </div>
-            }
-            @if (Model.IsFromArchive)
-            {
-                <div class="btn-group ml-2">
-                    <button type="button" onclick="toolbar_handle_archive(2)" class="btn btn-warning">@_f.tra("Obnovit z archivu")</button>
-                </div>
-            }
-
-            @if (Model.IsClose)
-            {
-                <div class="btn-group">
-                    <button type="button" onclick="_window_close()" class="btn btn-light">@_f.tra("Zavřít")</button>
-                </div>
-            }
-            <div class="btn-group">
-                <button type="button" onclick="_helppage()" class="btn btn-light"><b>? </b>@_f.tra("Nápověda")</button>
-            </div>
-
-            <div class="btn-group">
-                <span id="toolbar_message" class="badge-info">
-                    @if (Model.Message != null)
-                    {
-                        @_f.tra(Model.Message)
-                    }
-                </span>
-
-            </div>
-
+                    <span id="toolbar_changeinfo" class="text-danger" style="float:right;"></span>
+                </li>
+            </ul>
         </div>
     </div>
-    <code id="toolbar_changeinfo" style="float:right;"></code>
 </nav>
 
 
-<input type="hidden" id="hidRecordPID" asp-for="@Model.RecordPID" />
-<input type="hidden" id="hidRecordIsClosed" asp-for="@Model.RecordIsClosed" />
-<input type="hidden" id="hidRecordEntity" asp-for="@Model.RecordEntity" />
-<input type="hidden" id="hidAllowArchive" asp-for="@Model.AllowArchive" />
-<input type="hidden" id="hidAllowClone" asp-for="@Model.AllowClone" />
-<input type="hidden" id="hidExplicitD1" asp-for="@Model.ExplicitValidFrom" />
-<input type="hidden" id="hidExplicitD2" asp-for="@Model.ExplicitValidUntil" />
+    <input type="hidden" id="hidRecordPID" asp-for="@Model.RecordPID" />
+    <input type="hidden" id="hidRecordIsClosed" asp-for="@Model.RecordIsClosed" />
+    <input type="hidden" id="hidRecordEntity" asp-for="@Model.RecordEntity" />
+    <input type="hidden" id="hidAllowArchive" asp-for="@Model.AllowArchive" />
+    <input type="hidden" id="hidAllowClone" asp-for="@Model.AllowClone" />
+    <input type="hidden" id="hidExplicitD1" asp-for="@Model.ExplicitValidFrom" />
+    <input type="hidden" id="hidExplicitD2" asp-for="@Model.ExplicitValidUntil" />
 
 
 
-<script type="text/javascript">
+    <script type="text/javascript">
     $(document).ready(function () {
         $("input, textarea").change(function () {
             _toolbar_warn2save_changes("@_f.tra("Změny potvrďte tlačítkem [Uložit změny].")");
@@ -129,11 +121,9 @@
 
 
     function toolbar_try_delete() {
-        $.showConfirm({
-            title: "@_f.tra("Potvrďte")...", body: "@_f.tra("Opravdu chcete nenávratně odstranit tento záznam?")", textTrue: "@_f.tra("ANO")", textFalse: "@_f.tra("NE")",
-            onSubmit: function (result) {
-                if (result) {
-                    var url = '@Url.Action("DeleteRecord", "Common")';
+        if (confirm("@_f.tra("Opravdu chcete nenávratně odstranit tento záznam?")")) {
+
+            var url = '@Url.Action("DeleteRecord", "Common")';
 
                     $.post(url, { entity:"@Model.RecordEntity", pid: @Model.RecordPID }, function (data) {
 
@@ -145,16 +135,8 @@
                         }
 
                     });
+        }
 
-
-                } else {
-                    //nechce odstranit
-                }
-            },
-            onDispose: function () {
-                //nic
-            }
-        })
     }
 
     function toolbar_handle_archive(flag) {
@@ -184,4 +166,4 @@
     }
 
 
-</script>
+    </script>

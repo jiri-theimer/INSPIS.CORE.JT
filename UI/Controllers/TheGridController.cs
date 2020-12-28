@@ -83,6 +83,10 @@ namespace UI.Controllers
 
         public IActionResult FlatView(string prefix, int go2pid)    //pouze grid bez subform
         {
+            if (!TestGridPermissions(prefix))
+            {
+                return this.StopPage(false, "Nemáte oprávnění pro tento GRID přehled.");
+            }
             FsmViewModel v = LoadFsmViewModel(prefix, go2pid,"flatview",null,0,null);
             
             v.gridinput.j72id = Factory.CBL.LoadUserParamInt("flatview-j72id-" + prefix);
@@ -94,6 +98,10 @@ namespace UI.Controllers
 
         public IActionResult MasterView(string prefix,int go2pid)    //grid horní + spodní panel, není zde filtrovací pruh s fixním filtrem
         {
+            if (!TestGridPermissions(prefix))
+            {
+                return this.StopPage(false, "Nemáte oprávnění pro tento GRID přehled.");
+            }
             FsmViewModel v = LoadFsmViewModel(prefix, go2pid,"masterview",null,0,null);
                       
             v.gridinput.j72id = Factory.CBL.LoadUserParamInt("masterview-j72id-" + prefix);
@@ -222,9 +230,24 @@ namespace UI.Controllers
             }
         }
 
-        
 
+        private bool TestGridPermissions(string prefix)
+        {
 
+            switch (prefix)
+            {
+                case "a01":
+                    return Factory.CurrentUser.TestPermission(BO.j05PermValuEnum.A01Grid);
+                case "a03":
+                    return Factory.CurrentUser.TestPermission(BO.j05PermValuEnum.Menu_A03);
+                case "h04":
+                    return Factory.CurrentUser.TestPermission(BO.j05PermValuEnum.Menu_H04);
+                case "a42":
+                    return Factory.CurrentUser.TestPermission(BO.j05PermValuEnum.Menu_RS);
+                default:
+                    return true;
+            }
+        }
         private FsmViewModel LoadFsmViewModel(string prefix,int go2pid,string pagename,string masterentity,int master_pid,string master_flag)
         {
             var v = new FsmViewModel() { prefix = prefix,master_pid=master_pid,master_flag=master_flag };
@@ -235,7 +258,6 @@ namespace UI.Controllers
 
             v.gridinput = new TheGridInput() {entity=v.entity, go2pid = go2pid, master_entity = masterentity };
             
-
 
             if (v.entity == "")
             {
@@ -314,6 +336,10 @@ namespace UI.Controllers
                     break;
             }
 
+            if (!Factory.CurrentUser.TestPermission(BO.j05PermValuEnum.AdminGlobal))
+            {
+                v.gridinput.query.MyRecordsDisponible = true;
+            }
             
            
 
@@ -349,43 +375,44 @@ namespace UI.Controllers
 
         }
 
-        private BO.baseQuery InhaleQueryA01(FsmViewModel v,string pagename, string masterentity)
-        {            
-            var mq = new BO.myQueryA01();
-            
-            mq.a10id = Factory.CBL.LoadUserParamInt(get_param_key("grid-filter-a10id", masterentity));
-            if (mq.a10id > 0)
-            {
-                v.FilterA10ID = mq.a10id.ToString();
-                v.FilterA10Name = Factory.CBL.LoadUserParam(get_param_key("grid-filter-a10name", masterentity));
-            }
-            if (pagename != "slaveview")    //v podformuláři akcí se nefiltruje podle tématu
-            {
-                mq.a08id = Factory.CBL.LoadUserParamInt(get_param_key("grid-filter-a08id", masterentity));
-                if (mq.a08id > 0)
-                {
-                    v.FilterA08ID = mq.a08id.ToString();
-                    v.FilterA08Name = Factory.CBL.LoadUserParam(get_param_key("grid-filter-a08name", masterentity));
-                }
+        //private BO.baseQuery InhaleQueryA01(FsmViewModel v,string pagename, string masterentity)
+        //{            
+        //    var mq = new BO.myQueryA01();
+        //    mq.MyRecordsDisponible = true;
 
-            }
-            v.FilterMyInvolvement = Factory.CBL.LoadUserParam(get_param_key("grid-filter-myinvolvement-a01", masterentity));
-            switch (v.FilterMyInvolvement)
-            {
-                case "issuer":
-                    mq.j02id_issuer = Factory.CurrentUser.j02ID; break;
-                case "leader":
-                    mq.j02id_leader = Factory.CurrentUser.j02ID; break;
-                case "member":
-                    mq.j02id_member = Factory.CurrentUser.j02ID; break;
-                case "involved":
-                    mq.j02id_involved = Factory.CurrentUser.j02ID; break;
-                case "invited":
-                    mq.j02id_invited = Factory.CurrentUser.j02ID; break;
-            }
+        //    mq.a10id = Factory.CBL.LoadUserParamInt(get_param_key("grid-filter-a10id", masterentity));
+        //    if (mq.a10id > 0)
+        //    {
+        //        v.FilterA10ID = mq.a10id.ToString();
+        //        v.FilterA10Name = Factory.CBL.LoadUserParam(get_param_key("grid-filter-a10name", masterentity));
+        //    }
+        //    if (pagename != "slaveview")    //v podformuláři akcí se nefiltruje podle tématu
+        //    {
+        //        mq.a08id = Factory.CBL.LoadUserParamInt(get_param_key("grid-filter-a08id", masterentity));
+        //        if (mq.a08id > 0)
+        //        {
+        //            v.FilterA08ID = mq.a08id.ToString();
+        //            v.FilterA08Name = Factory.CBL.LoadUserParam(get_param_key("grid-filter-a08name", masterentity));
+        //        }
 
-            return mq;
-        }
+        //    }
+        //    v.FilterMyInvolvement = Factory.CBL.LoadUserParam(get_param_key("grid-filter-myinvolvement-a01", masterentity));
+        //    switch (v.FilterMyInvolvement)
+        //    {
+        //        case "issuer":
+        //            mq.j02id_issuer = Factory.CurrentUser.j02ID; break;
+        //        case "leader":
+        //            mq.j02id_leader = Factory.CurrentUser.j02ID; break;
+        //        case "member":
+        //            mq.j02id_member = Factory.CurrentUser.j02ID; break;
+        //        case "involved":
+        //            mq.j02id_involved = Factory.CurrentUser.j02ID; break;
+        //        case "invited":
+        //            mq.j02id_invited = Factory.CurrentUser.j02ID; break;
+        //    }
+
+        //    return mq;
+        //}
         
         
 

@@ -12,7 +12,7 @@
 
 
 <div class="modal_record_container">
-    <div class="form-row">
+    <div class="row">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
         <div class="col-sm-9 col-md-8">
             <input class="form-control" asp-for="Rec.f29Name" />
@@ -23,7 +23,7 @@
             <mynumber asp-for="Rec.f29Ordinal" decimal-digits="0"></mynumber>
         </div>
     </div>
-    <div class="form-row my-2">
+    <div class="row my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Dostupné typy činností"):</label>
         <div class="col-sm-11 col-md-10">
             <mycombochecklist asp-for="@Model.a17IDs" entity="a17DepartmentType" selectedtext="@Model.a17Names" placeholder="@_f.tra("Vybrat typy činností")..."></mycombochecklist>
@@ -32,7 +32,7 @@
 
     </div>
 
-    <div class="form-row my-2">
+    <div class="row my-2">
         <textarea asp-for="Rec.f29Description" class="form-control" placeholder="@_f.tra("Podrobný popis")"></textarea>
         <span asp-validation-for="Rec.f29Description" class="text-danger"></span>
     </div>

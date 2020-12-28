@@ -2,7 +2,7 @@
 @inject BL.Factory _f
 
 @{
-    ViewData["Title"] = "Info";
+    Model.PageTitle = "Info";
     Layout = "~/Views/Shared/_LayoutSubform.cshtml";
     if (Model.Rec == null) return;
 }
@@ -10,7 +10,7 @@
 @addTagHelper *, UI
 
     <div class="modal_record_container">
-        <div class="form-row">
+        <div class="row">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Jméno"):</label>
             <div class="col-sm-7 col-md-6">
                 <myval value="@Model.Rec.FullNameAsc"></myval>
@@ -37,7 +37,7 @@
 
         @if (Model.RecJ03 != null)
         {
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Uživatelský účet"):</label>
                 <div class="col-sm-7 col-md-6">
                     <myval value="@Model.RecJ03.j03Login"></myval>
@@ -52,7 +52,7 @@
 
         @if (Model.RecA04 != null)
         {
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Inspektorát"):</label>
                 <div class="col-sm-7 col-md-6">
                     <myval value="@Model.RecA04.Name"></myval>
@@ -69,7 +69,7 @@
             <div class="py-2">
                 @foreach (var c in Model.LisA39)
                 {
-                <div class="form-row">
+                <div class="row">
                     @if (c.j04ID_Explicit > 0)
                     {
                         <label class="col-sm-1 col-md-2 col-form-label">@(c.a06Name+" ("+c.SchoolRoleName+")"):</label>
@@ -112,7 +112,7 @@
         }
 
 
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kontakt"):</label>
             <div class="col-sm-6 col-md-6">
                 <myval datatype="link" linkurl="mailto:@Model.Rec.j02Email" value="@Model.Rec.j02Email"></myval>

@@ -59,10 +59,10 @@ namespace UI.Controllers
             Factory.j03UserBL.Save(c);
             return new BO.Result(false);
         }
-        public BO.Result SaveCurrentUserFontStyle(int fontstyleflag)
+        public BO.Result SaveCurrentUserFontSize(int fontsize)
         {
             var c = Factory.j03UserBL.Load(Factory.CurrentUser.pid);
-            c.j03FontStyleFlag = fontstyleflag;
+            c.j03FontStyleFlag = fontsize;
             Factory.j03UserBL.Save(c);
             return new BO.Result(false);
         }

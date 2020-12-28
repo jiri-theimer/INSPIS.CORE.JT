@@ -9,7 +9,7 @@
 @addTagHelper *, UI
 
 <div id="divHeader" class="row py-1 bg-light m-0 mb-4">
-    <div class="col-auto pl-0 pr-0">
+    <div class="col-auto">
         <ul class="nav nav-tabs nonmobile nontablet" style="border:none;">
             <li class="nav-item onetab">
                 <a class="nav-link active" data-toggle="tab">@Model.Rec.FullNameAsc</a>
@@ -18,13 +18,13 @@
 
 
     </div>
-    <div class="nonmobile nontablet">
-        <a class="btn btn-light" href="/Dashboard/Inspector" title="@_f.tra("Občerstvit")"><img src="~/images/refresh.png" /></a>
+    <div class="nonmobile nontablet col-auto">
+        <a class="btn btn-light" href="/Dashboard/Inspector" title="@_f.tra("Občerstvit")"><span class="k-icon k-i-reload"></span></a>
     </div>
-    <div class="col-sm-5 col-md-5 pl-0">
+    <div class="col-auto">
         <mysearch asp-for="@Model.SearchBoxA01" entity="a01Event" placeholder="@_f.tra("Fulltext: Akce")..."></mysearch>
     </div>
-    <div class="col-sm-5 col-md-5 pl-0">
+    <div class="col-auto">
         <mysearch asp-for="@Model.SearchBoxA03" entity="a03Institution" placeholder="@_f.tra("Fulltext: Instituce")..."></mysearch>
     </div>
 </div>
@@ -39,7 +39,7 @@
                     @tab.Name
                     @if (tab.Badge != null)
                     {
-                        <span class="badge badge-primary">@tab.Badge</span>
+                        <span class="badge bg-primary">@tab.Badge</span>
                     }
                 </a>
             </li>

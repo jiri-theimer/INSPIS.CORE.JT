@@ -10,20 +10,20 @@
 @addTagHelper *, UI
 
 <div class="modal_record_container">
-    <div class="form-row">
+    <div class="row">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název systému"):</label>
         <div class="col-sm-11 col-md-10">
             <input class="form-control" asp-for="Rec.a70Name" />
             <span asp-validation-for="Rec.a70Name" class="text-danger"></span>
         </div>
     </div>
-    <div class="form-row my-2">
+    <div class="row my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Zkratka systému"):</label>
         <div class="col-sm-3 col-md-2">
             <input class="form-control" asp-for="Rec.a70Code" />
         </div>
     </div>
-    <div class="form-row my-2" id="divLogin">
+    <div class="row my-2" id="divLogin">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Login web služby"):</label>
         <div class="col-sm-3 col-md-2">
             <input class="form-control" asp-for="Rec.a70WsLogin" />
@@ -50,7 +50,7 @@
 
 
 
-    <div class="form-row my-2">
+    <div class="row my-2">
         <textarea asp-for="Rec.a70Description" class="form-control" placeholder="@_f.tra("Podrobný popis")"></textarea>
         <span asp-validation-for="Rec.a70Description" class="text-danger"></span>
     </div>

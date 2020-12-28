@@ -12,7 +12,7 @@
 <input type="hidden" asp-for="@Model.UploadGuid" />
 
 <div class="modal_record_container">
-    <div class="form-row">
+    <div class="row">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
         <div class="col-sm-9 col-md-8">
             <input class="form-control" asp-for="Rec.x31Name" />
@@ -22,7 +22,7 @@
 
 
     </div>
-    <div class="form-row my-2">
+    <div class="row my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Formát"):</label>
         <div class="col-sm-3 col-md-3">
             <select id="x31ReportFormat" asp-for="Rec.x31ReportFormat" class="form-control">
@@ -33,7 +33,7 @@
             </select>
         </div>
     </div>
-    <div class="form-row my-2">
+    <div class="row my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kód sestavy"):</label>
         <div class="col-sm-5 col-md-4">
             <input class="form-control" asp-for="Rec.x31PID" />
@@ -45,7 +45,7 @@
 
         </div>
     </div>
-    <div class="form-row my-2">
+    <div class="row my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Přístupová práva k sestavě"):</label>
         <div class="col-sm-11 col-md-10">
             <mycombochecklist asp-for="@Model.j04IDs" entity="j04UserRole" selectedtext="@Model.j04Names" placeholder="@_f.tra("Vybrat aplikační role")..."></mycombochecklist>
@@ -53,7 +53,7 @@
 
 
     </div>
-    <div class="form-row my-2">
+    <div class="row my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Zařazení do kategorií"):</label>
         <div class="col-sm-11 col-md-10">
             <mycombochecklist asp-for="@Model.x32IDs" entity="x32ReportType" selectedtext="@Model.x32Names" placeholder="@_f.tra("Vybrat kategorie")..."></mycombochecklist>
@@ -61,26 +61,26 @@
 
 
     </div>
-    <div class="form-row my-2">
+    <div class="row my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Entita"):</label>
         <div class="col-sm-5 col-md-4">
             <mycombo entity="x29Entity" asp-for="Rec.x29ID" selectedtext="Rec.x29Name" view-flag="2" param1="x29IsReport" event_after_changevalue="handle_change_x29id"></mycombo>
         </div>
     </div>
-    <div class="form-row my-2">
+    <div class="row my-2">
         <textarea asp-for="Rec.x31Translate" class="form-control" placeholder="@_f.tra("Jazykový překlad")"></textarea>
         
     </div>
 
     @if (Model.Rec.x31Is4SingleRecord && Model.Rec.x29ID == 101)
     {
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typy akcí"):</label>
             <div class="col-sm-11 col-md-10">
                 <mycombochecklist asp-for="@Model.a10IDs" entity="a10EventType" selectedtext="@Model.a10Names"></mycombochecklist>
             </div>
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Témata akcí"):</label>
             <div class="col-sm-11 col-md-10">
                 <mycombochecklist asp-for="@Model.a08IDs" entity="a08Theme" selectedtext="@Model.a08Names"></mycombochecklist>
@@ -99,7 +99,7 @@
 
     @if (Model.RecO27 != null)
     {
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Soubor report šablony"):</label>
             <div class="col-sm-10 col-md-10">
                 <a target="_blank" href="/FileUpload/FileDownloadInline?downloadguid=@Model.RecO27.o27DownloadGUID">@Model.RecO27.o27OriginalFileName</a>
@@ -112,12 +112,12 @@
     <iframe id="fraUpload" src="/FileUpload/SingleUpload?guid=@Model.UploadGuid" height="350" scrolling="no"></iframe>
 
 
-    <div class="form-row my-2">
+    <div class="row my-2">
         <textarea asp-for="Rec.x31DocSqlSource" class="form-control" placeholder="@_f.tra("Na míru DOCX SQL zdroj sestavy")"></textarea>
 
     </div>
 
-    <div class="form-row my-2">
+    <div class="row my-2">
         <textarea asp-for="Rec.x31Description" class="form-control" placeholder="@_f.tra("Podrobný popis")"></textarea>
         <span asp-validation-for="Rec.x31Description" class="text-danger"></span>
     </div>

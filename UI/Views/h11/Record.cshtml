@@ -32,7 +32,7 @@
 
 
 <div class="modal_record_container">
-    <div class="form-row">
+    <div class="row">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název článku"):</label>
         <div class="col-sm-11 col-md-10">
             <input class="form-control" asp-for="Rec.h11Name" />
@@ -43,7 +43,7 @@
 
     </div>
 
-    <div class="form-row my-2">
+    <div class="row my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Omezit přístup k článku rolím"):</label>
         <div class="col-sm-11 col-md-10">
             <mycombochecklist asp-for="@Model.j04IDs" entity="j04UserRole" selectedtext="@Model.j04Names" placeholder="@_f.tra("Vybrat aplikační role")..."></mycombochecklist>

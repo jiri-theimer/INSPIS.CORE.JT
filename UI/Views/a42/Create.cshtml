@@ -29,15 +29,15 @@
 
     <div class="tabs_container_record">
         <!-- Tab panes -->
-        <ul class="nav nav-tabs">
-            <li class="nav-item onetab">
-                <a id="link_tab1" class="nav-link" data-toggle="tab" href="#tab1">@_f.tra("Krok č.1: Nový INEZ")</a>
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item onetab" role="presentation">
+                <a id="link_tab1" class="nav-link" data-bs-toggle="tab" role="tab" href="#tab1">@_f.tra("Krok č.1: Nový INEZ")</a>
             </li>
-            <li class="nav-item onetab">
-                <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2">@_f.tra("Krok č.2: Cílové instituce")</a>
+            <li class="nav-item onetab" role="presentation">
+                <a id="link_tab2" class="nav-link" data-bs-toggle="tab" role="tab" href="#tab2">@_f.tra("Krok č.2: Cílové instituce")</a>
             </li>
-            <li class="nav-item onetab">
-                <a id="link_tab3" class="nav-link" data-toggle="tab" href="#tab3">@_f.tra("Krok č.3: E-mail zpráva")</a>
+            <li class="nav-item onetab" role="presentation">
+                <a id="link_tab3" class="nav-link" data-bs-toggle="tab" role="tab" href="#tab3">@_f.tra("Krok č.3: E-mail zpráva")</a>
             </li>
 
         </ul>
@@ -46,10 +46,10 @@
     <div>
         <div class="tab-content">
 
-            <div class="tab-pane" id="tab1" style="max-width:1000px;padding-left:20px;">
+            <div class="tab-pane" id="tab1" role="tabpanel" style="max-width:1000px;padding-left:20px;">
                 <!-- Tab1 -->
                 <p></p>
-                <div class="form-row">
+                <div class="row">
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
                     <div class="col-sm-11 col-md-10">
                         <input class="form-control" asp-for="Rec.a42Name" />
@@ -57,23 +57,23 @@
                     </div>
 
                 </div>
-                <div class="form-row my-2">
+                <div class="row my-2">
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Poštovní účet"):</label>
                     <div class="col-sm-11 col-md-10">
                         <mycombo entity="j40MailAccount" asp-for="Rec.j40ID" selectedtext="Rec.j40SmtpEmail" view-flag="2"></mycombo>
                     </div>
                 </div>
-                <div class="form-row">
+                <div class="row">
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Režim"):</label>
                     <div class="col-sm-5 col-md-5">
-                        <select asp-for="@Model.Rec.a42TestFlag" class="form-control">
+                        <select asp-for="@Model.Rec.a42TestFlag" class="form-select">
                             <option value="0"></option>
                             <option value="1">@_f.tra("Testování: Neodesílat poštovní zprávy")</option>
                         </select>
                     </div>
 
                 </div>
-                <div class="form-row my-2">
+                <div class="row my-2">
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Plánované období od"):</label>
                     <div class="col-sm-2 col-md-2">
                         <mydate asp-for="@Model.a42DateFrom" include-time="false"></mydate>
@@ -86,7 +86,7 @@
 
                 </div>
 
-                <div class="form-row my-2">
+                <div class="row my-2">
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Téma akce"):</label>
                     <div class="col-sm-11 col-md-10">
                         <mycombo entity="a08Theme" asp-for="@Model.a08ID" selectedtext="@Model.a08Name" placeholder="@_f.tra("Vybrat téma")..." event_after_changevalue="handle_a08id_change"></mycombo>
@@ -96,17 +96,23 @@
                 </div>
                 @if (Model.lisLeftA12 != null)
                 {
-                    <div class="form-row my-2">
-                        <div class="col-6">
-                            <mydropdown asp-for="@Model.LeftA12ID" datasource="@Model.lisLeftA12" textfield="f06Name" valuefield="pid" ismultiple="true" cssfield="CssClass"></mydropdown>
-                        </div>
-                        <div class="col-1">
-                            <button title="Přidat" type="button" id="cmdAddF06" class="btn btn-primary py-0 button_field_append" style="font-size:150%;" onclick="f06_add()">→</button>
-                            <button type="button" id="cmdRemoveF06" class="btn btn-primary py-0" style="font-size:150%;margin-top:10px;" onclick="f06_remove()">←</button>
-                        </div>
-                        <div class="col-5">
-                            <mydropdown asp-for="@Model.RightA12ID" datasource="@Model.lisRightA12" textfield="f06Name" valuefield="pid" ismultiple="true" cssfield="CssClass"></mydropdown>
-                        </div>
+                    <div class="my-2">
+                        <table width="100%">
+                            <tr>
+                                <td style="width:46%;">
+                                    <mydropdown asp-for="@Model.LeftA12ID" datasource="@Model.lisLeftA12" textfield="f06Name" valuefield="pid" ismultiple="true" cssfield="CssClass"></mydropdown>
+                                </td>
+                                <td style="text-align:center;">
+                                    <button title="Přidat" type="button" id="cmdAddF06" class="btn btn-sm btn-outline-secondary" onclick="f06_add()"><span class="k-icon k-i-arrow-60-right"></span></button>
+                                    <br />
+                                    <button type="button" id="cmdRemoveF06" class="btn btn-sm btn-outline-secondary" onclick="f06_remove()"><span class="k-icon k-i-arrow-60-left"></span></button>
+                                </td>
+                                <td style="width:46%;">
+                                    <mydropdown asp-for="@Model.RightA12ID" datasource="@Model.lisRightA12" textfield="f06Name" valuefield="pid" ismultiple="true" cssfield="CssClass"></mydropdown>
+                                </td>
+                            </tr>
+                        </table>
+                        
                     </div>
                 }
 
@@ -139,13 +145,13 @@
 
 
 
-                <div class="form-row my-2">
+                <div class="row my-2">
                     <textarea asp-for="Rec.a42Description" class="form-control" style="height:150px;" placeholder="@_f.tra("Podrobný popis")"></textarea>
                     <span asp-validation-for="Rec.a42Description" class="text-danger"></span>
                 </div>
 
             </div>
-            <div class="tab-pane" id="tab2">
+            <div class="tab-pane" id="tab2" role="tabpanel">
                 <!-- Tab2 -->
 
                 <div style="padding:20px;max-width:1000px;">
@@ -163,7 +169,7 @@
 
 
             </div>
-            <div class="tab-pane" id="tab3">
+            <div class="tab-pane" id="tab3" role="tabpanel">
                 <!-- Tab3 -->
                 <mycombo entity="b65WorkflowMessage" asp-for="@Model.FilterB65ID" selectedtext="@Model.FilterB65Name" placeholder="@_f.tra("Šablona e-mail zprávy")..." event_after_changevalue="handle_b65id_change"></mycombo>
 
@@ -175,7 +181,7 @@
                 <label for="opg3">@_f.tra("Odesílat na ředitelský i školní e-mail současně")</label><br>
 
                 <div style="max-width:1000px;padding:20px;">
-                    <div class="form-row">
+                    <div class="row">
                         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Předmět zprávy"):</label>
                         <div class="col-sm-11 col-md-10">
                             <input class="form-control" asp-for="@Model.MessageSubject" />
@@ -232,7 +238,7 @@
         $("#tab@(Model.ActiveTabIndex)").attr("class", "tab-pane active");
             $("#link_tab@(Model.ActiveTabIndex)").attr("class", "nav-link active");
 
-            $('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
+        $('a[data-bs-toggle="tab"]').on("shown.bs.tab", function (e) {
                 // v e.target.id je id kliknutá záložka
                 var tabindex = e.target.id.substring(e.target.id.length - 1, e.target.id.length);
                 $("#ActiveTabIndex").val(tabindex);

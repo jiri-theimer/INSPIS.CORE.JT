@@ -35,18 +35,22 @@ namespace UI.Views.Shared.TagHelpers
             var strControlID = this.For.Name.Replace(".", "_").Replace("[", "_").Replace("]", "_");
 
             sb(string.Format("<div id='divDropdownContainer{0}' class='dropdown input-group' style='border-radius:3px;width:100%;'>", strControlID));
-            
-            sb(string.Format("<input type='text' id='{0}' name='{1}' class='form-control' placeholder='{2}'/>", strControlID, this.For.Name, this.PlaceHolder));            
-            sb(string.Format("<button type='button' id='cmdCombo{0}' class='btn btn-light dropdown-toggle cmdDropdown' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'></button>", strControlID));
+
+            sb(string.Format("<button type='button' id='cmdCombo{0}' class='btn dropdown-toggle form-control' data-bs-toggle='dropdown' aria-expanded='false' style='border: solid 1px #C8C8C8; border-radius: 3px;width:100%;text-align:left;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;'><span class='k-icon k-i-zoom'></span>{1}</button>", strControlID, this.PlaceHolder));
 
 
-            sb(string.Format("<div id='divDropdown{0}' class='dropdown-menu' aria-labelledby='cmdCombo{0}' style='width:100%;background-color:aliceblue;' tabindex='-1'>", strControlID));
-            sb(string.Format("<div id='divData{0}' style='height:220px;overflow:auto;width:100%;min-width:200px;'>", strControlID));
-            sb("</div>");           
-            sb("</div>");
+
+            sb(string.Format("<div id='divDropdown{0}' class='dropdown-menu' aria-labelledby='cmdCombo{0}' style='width:100%;' tabindex='-1'>", strControlID));
+
             sb("");
-            sb("");
+            sb(string.Format("<input type='text' id='{0}' name='{1}' class='form-control' placeholder='⌨'/>", strControlID, this.For.Name));
+
+           
+            sb(string.Format("<div id='divData{0}' style='height:220px;overflow:auto;width:100%;min-width:200px;background-color:#E6F0FF;'>", strControlID));
             sb("</div>");
+
+            sb("</div>");   //dropdown-menu
+            sb("</div>");   //dropdownContainer
 
 
             sb("<script type='text/javascript'>");

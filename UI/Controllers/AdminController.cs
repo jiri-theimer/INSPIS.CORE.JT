@@ -80,7 +80,7 @@ namespace UI.Controllers
             }
             inhale_entity(ref v, v.prefix);
             
-            v.gridinput = GetGridInput(v.entity,v.prefix);
+            v.gridinput = GetGridInput(v.entity,v.prefix,go2pid=v.go2pid);
             if (v.prefix == "o13" || v.prefix == "x32")
             {
                 if (string.IsNullOrEmpty(v.view) == true)
@@ -118,7 +118,7 @@ namespace UI.Controllers
                 }
             }
             inhale_entity(ref v, v.prefix);
-            v.gridinput = GetGridInput(v.entity,v.prefix);
+            v.gridinput = GetGridInput(v.entity,v.prefix,v.go2pid);
             return View(v);
         }
         public IActionResult Forms(string prefix, int go2pid, string view)
@@ -136,7 +136,7 @@ namespace UI.Controllers
                 }
             }
             inhale_entity(ref v, v.prefix);
-            v.gridinput = GetGridInput(v.entity,v.prefix);
+            v.gridinput = GetGridInput(v.entity,v.prefix,v.go2pid);
             if (v.prefix == "f12")
             {
                 if (string.IsNullOrEmpty(v.view) == true)
@@ -159,7 +159,7 @@ namespace UI.Controllers
         {
             var v = new AdminPage() { prefix = prefix, go2pid = go2pid };
             inhale_entity(ref v, prefix);
-            v.gridinput = GetGridInput(v.entity,v.prefix);
+            v.gridinput = GetGridInput(v.entity,v.prefix,v.go2pid);
             return View(v);
         }
 
@@ -275,12 +275,12 @@ namespace UI.Controllers
             return new BO.Result(false, "Soubor byl vygenerován (do TEMPu)");
         }
 
-        private TheGridInput GetGridInput(string entity,string prefix)
+        private TheGridInput GetGridInput(string entity,string prefix,int go2pid)
         {
             var gi = new TheGridInput();
             gi.entity = entity;
             gi.query = new BO.InitMyQuery().Load(prefix);
-           
+            gi.go2pid = go2pid;
             return gi;
         }
 

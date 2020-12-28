@@ -43,7 +43,7 @@
     <table>
         <tr>
             <td>
-                <select asp-for="@Model.CurYear" class="form-control" onchange="goyear(this)">
+                <select asp-for="@Model.CurYear" class="form-select" onchange="goyear(this)">
                     @foreach (var y in Model.lisYears)
                     {
                         <option value="@y">@y</option>
@@ -52,7 +52,7 @@
             </td>
             <td>
 
-                <select asp-for="@Model.CurMonth" class="form-control" onchange="gomonth(this)">
+                <select asp-for="@Model.CurMonth" class="form-select" onchange="gomonth(this)">
                     <option value="1">@_f.tra("Leden")</option>
                     <option value="2">@_f.tra("Únor")</option>
                     <option value="3">@_f.tra("Březen")</option>
@@ -69,13 +69,14 @@
 
             </td>
             <td style="margin-left:35px;">
-                <button type="button" class="btn btn-secondary btn-sm" title="@_f.tra("Předchozí měsíc")" onclick="goprev()">←</button>
-            </td>
-            <td>
-                <strong class="val-readonly" style="text-align:center;">@(Model.CurMonth.ToString()+" - "+Model.CurYear.ToString())</strong>
-            </td>
-            <td>
-                <button type="button" class="btn btn-secondary btn-sm" title="@_f.tra("Následující měsíc")" onclick="gonext()">→</button>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" title="@_f.tra("Předchozí měsíc")" onclick="goprev()"><span class="k-icon k-i-arrow-60-left"></span></button>
+
+                    <strong class="val-readonly" style="text-align:center;">@(Model.CurMonth.ToString()+" - "+Model.CurYear.ToString())</strong>
+
+                    <button type="button" class="btn btn-outline-secondary btn-sm" title="@_f.tra("Následující měsíc")" onclick="gonext()"><span class="k-icon k-i-arrow-60-right"></span></button>
+                </div>
+                
             </td>
 
 

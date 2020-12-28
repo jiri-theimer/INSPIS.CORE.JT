@@ -10,33 +10,33 @@
 @addTagHelper *, UI
 
     <div class="modal_record_container">
-        <div class="form-row">
+        <div class="row">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
             <div class="col-sm-11 col-md-10">
                 <input class="form-control" asp-for="Rec.o13Name" />
                 <span asp-validation-for="Rec.o13Name" class="text-danger"></span>
             </div>
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Nadřízený typ"):</label>
             <div class="col-sm-11 col-md-10">
                 <mycombo entity="o13AttachmentType" asp-for="Rec.o13ParentID" selectedtext="Rec.ParentName"></mycombo>
             </div>
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Entita"):</label>
             <div class="col-sm-11 col-md-10">
                 <mycombo entity="x29Entity" asp-for="Rec.x29ID" selectedtext="Rec.x29Name" view-flag="2" param1="x29IsAttachment"></mycombo>
             </div>
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Maska archivní složky"):</label>
             <div class="col-sm-11 col-md-10">
                 <input class="form-control" asp-for="Rec.o13DefaultArchiveFolder" />
 
             </div>
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <div class="col-sm-3 col-md-3">
                 <input type="checkbox" asp-for="Rec.o13IsObjection" />
                 <label class="col-form-label" for="Rec_o13IsObjection">@_f.tra("Jedná se o námitku")</label>
@@ -45,7 +45,7 @@
         </div>
         @if (_f.App.Implementation == "Default")
         {
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <div class="col-sm-3 col-md-3">
                     <input type="checkbox" asp-for="Rec.o13IsPortalDoc" />
                     <label class="col-form-label" for="Rec_o13IsPortalDoc">@_f.tra("Dokument je publikovatelný na PORTÁL")</label>
@@ -55,7 +55,7 @@
         }
 
 
-        <div class="form-row my-2">
+        <div class="row my-2">
             <textarea asp-for="Rec.o13Description" class="form-control" placeholder="@_f.tra("Podrobný popis")"></textarea>
             <span asp-validation-for="Rec.o13Description" class="text-danger"></span>
         </div>

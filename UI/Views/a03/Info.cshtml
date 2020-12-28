@@ -2,7 +2,7 @@
 @inject BL.Factory _f
 
 @{
-    ViewData["Title"] = "Info";
+    Model.PageTitle = "Info";
     Layout = "~/Views/Shared/_LayoutSubform.cshtml";
     if (Model.Rec == null) return;
 }
@@ -10,7 +10,7 @@
 @addTagHelper *, UI
 
 <div class="modal_record_container">
-    <div class="form-row">
+    <div class="row">
         <label class="col-sm-1 col-md-2 col-form-label">
             @_f.tra("Název"):
             @if (Model.Rec.a03ParentFlag == BO.a03ParentFlagEnum.Master)
@@ -41,7 +41,7 @@
             }
         </div>
     </div>
-    <div class="form-row my-2">
+    <div class="row my-2">
         @if (Model.Rec.a06ID == 2)
         {
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kód zřizovatele"):</label>
@@ -111,7 +111,7 @@
     </div>
     @if (Model.RecSupervisory != null)
     {
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Dohledový orgán"):</label>
             <div class="col-sm-5 col-md-4">
                 <myval datatype="link" value="@Model.RecSupervisory.a03Name" linkurl="/a03/RecPage?pid=@Model.RecSupervisory.pid" linktarget="_top"></myval>
@@ -122,7 +122,7 @@
     }
     @if (Model.RecParent != null)
     {
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Nadřízená škola"):</label>
             <div class="col-sm-5 col-md-4">
                 <myval datatype="link" value="@Model.RecParent.a03Name" linkurl="/a03/RecPage?pid=@Model.RecParent.pid" linktarget="_top"></myval>
@@ -132,7 +132,7 @@
 
     }
 
-    <div class="form-row" style="margin-top:10px;">
+    <div class="row" style="margin-top:10px;">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kraj"):</label>
         <div class="col-sm-5 col-md-4">
 
@@ -156,7 +156,7 @@
     </div>
     @if (Model.RecFounder != null)
     {
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Zřizovatel"):</label>
             <div class="col-sm-8 col-md-7">
                 <myval datatype="link" value="@Model.RecFounder.a03Name" linkurl="/a03/RecPage?pid=@Model.RecFounder.pid" linktarget="_top"></myval>
@@ -172,7 +172,7 @@
 
     @if (Model.Rec.a03Email != null || Model.Rec.a03Web != null)
     {
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kontakt"):</label>
             <div class="col-sm-5 col-md-4">
                 <myval datatype="link" value="@Model.Rec.a03Email" linkurl="mailto:@Model.Rec.a03Email"></myval>

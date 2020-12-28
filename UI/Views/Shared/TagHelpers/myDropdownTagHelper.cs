@@ -68,7 +68,7 @@ namespace UI.Views.Shared.TagHelpers
 
             var strControlID = this.For.Name.Replace(".", "_").Replace("[", "_").Replace("]", "_");
             
-            sb.AppendLine(string.Format("<select class='form-control' id='{0}' name='{1}'",strControlID, this.For.Name));
+            sb.AppendLine(string.Format("<select class='form-select' id='{0}' name='{1}'",strControlID, this.For.Name));
             if (this.IsMultiple)
             {
                 sb.Append(" multiple");

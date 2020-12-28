@@ -19,13 +19,13 @@
 </div>
 
 <form id="form1" asp-controller="Record" asp-action="RecordValidity" method="POST">
-    <div class="form-row">
+    <div class="row">
         <label class="col-sm-2 col-md-2 col-form-label">@_f.tra("Platnost od"):</label>
         <div class="col-sm-4 col-md-4">
             <mydate asp-for="@Model.d1" include-time="true"></mydate>
         </div>
     </div>
-    <div class="form-row my-2">
+    <div class="row my-2">
         <label class="col-sm-2 col-md-2 col-form-label">@_f.tra("Platnost do"):</label>
         <div class="col-sm-4 col-md-4">
             <mydate asp-for="@Model.d2" include-time="true"></mydate>

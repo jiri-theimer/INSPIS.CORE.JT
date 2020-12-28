@@ -12,7 +12,7 @@
 
     <div class="modal_record_container">
 
-        <div class="form-row">
+        <div class="row">
             <div class="col-sm-2 col-md-2">
                 <myautocomplete asp-for="Rec.j02TitleBeforeName" o15flag="1" placeholder="@_f.tra("Titul")"></myautocomplete>
 
@@ -32,7 +32,7 @@
 
         </div>
 
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Personální číslo"):</label>
             <div class="col-sm-4 col-md-3">
                 <input class="form-control" asp-for="Rec.j02PID" />
@@ -45,7 +45,7 @@
             </div>
         </div>
 
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Mobil"):</label>
             <div class="col-sm-4 col-md-3">
                 <input class="form-control" type="tel" asp-for="Rec.j02Mobile" />
@@ -57,7 +57,7 @@
                 <span asp-validation-for="Rec.j02Phone" class="text-danger"></span>
             </div>
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Adresa bydliště"):</label>
             <div class="col-sm-11 col-md-10">
                 <input class="form-control" type="tel" asp-for="Rec.j02Address" />
@@ -66,7 +66,7 @@
 
         </div>
 
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Pracovní funkce"):</label>
             <div class="col-sm-3 col-md-3">
                 <myautocomplete asp-for="Rec.j02Position" o15flag="3" placeholder="@_f.tra("Pracovní funkce")"></myautocomplete>
@@ -74,7 +74,7 @@
             </div>
 
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Zaměstnavatel"):</label>
             <div class="col-sm-11 col-md-10">
                 <mycombo entity="a03Institution" asp-for="@Model.a03ID_Employer" selectedtext="@Model.EmployerName" filter-flag="1"></mycombo>
@@ -82,7 +82,7 @@
             </div>
 
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <div class="col-sm-3 col-md-3">
                 <input type="checkbox" asp-for="Rec.j02IsInvitedPerson" />
                 <label class="col-form-label" for="Rec_j02IsInvitedPerson">@_f.tra("Může být přizvanou osobou v akci")</label>

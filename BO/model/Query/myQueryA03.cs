@@ -6,7 +6,7 @@ namespace BO
 {
     public class myQueryA03:baseQuery
     {
-        public int a01id { get; set; }
+        
         public int j02id { get; set; }
         public int a03id_founder { get; set; }
         public int a03id_supervisory { get; set; }
@@ -21,11 +21,11 @@ namespace BO
 
         public override List<QRow> GetRows()
         {
-            if (this.a01id > 0)
+            if (this.MyRecordsDisponible && this.CurrentUser != null)
             {
-
-                this.AQ("a.a01ID=@a01id", "a01id", this.a01id);
+                AQ(GetDisponibleWhere(), null, null);
             }
+
             if (this.j02id > 0)
             {
 
@@ -75,6 +75,38 @@ namespace BO
 
             return this.InhaleRows();
 
+        }
+
+        private string GetDisponibleWhere()
+        {
+            //výběr uživateli dostupných institucí
+            string sw = "";            
+           
+            switch (this.CurrentUser.j04RelationFlag)
+            {
+                case BO.j04RelationFlagEnum.A03:    //omezení akcí pouze na svázané instituce
+                    sw = "a.a03ID IN (SELECT a03ID FROM a39InstitutionPerson WHERE j02ID=" + this.CurrentUser.j02ID.ToString() + ")";
+                    
+                    break;
+                case BO.j04RelationFlagEnum.A05:    //omezení  pouze na kraj instituce
+                    sw = "(";
+                    sw += "a.a05ID=" + this.CurrentUser.a05ID.ToString();
+                   
+                    
+                    //navíc přístup ke všem akcím škol, kde má daný inspektor minimálně jednu otevřenou akci (a01IsClosed=0)
+                    sw += " OR a.a03ID IN (SELECT qb.a03ID FROM a41PersonToEvent qa INNER JOIN a01Event qb ON qa.a01ID=qb.a01ID WHERE qb.a01IsClosed=0 AND qa.j02ID=" + this.CurrentUser.j02ID.ToString() + ")";
+
+                    sw += ")";
+
+                    break;
+                case BO.j04RelationFlagEnum.NoRelation: //role bez vazby na region nebo školu - potenciálně neomezený přístup k institucím
+                   
+                    break;
+
+            }
+           
+            //System.IO.File.WriteAllText("\\hovado.txt", sw);
+            return sw;
         }
     }
 }

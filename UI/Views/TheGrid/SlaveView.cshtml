@@ -23,7 +23,7 @@
             </td>
 
             <td>
-                <select class="form-control" asp-for="@Model.FilterMyInvolvement" onchange="myinvolvement_change(this)">
+                <select class="form-select" asp-for="@Model.FilterMyInvolvement" onchange="myinvolvement_change(this)">
                     <option value="">@("-- "+_f.tra("Mé zapojení do akce")+" --")</option>
                     <option value="involved">@_f.tra("Jsem zapojen do akce")</option>
                     <option value="leader">@_f.tra("Jsem vedoucím týmu")</option>
@@ -44,7 +44,7 @@
     <table>
         <tr>
             <td>
-                <select class="form-control" asp-for="@Model.FilterMyInvolvement" onchange="myinvolvement_change(this)">
+                <select class="form-select" asp-for="@Model.FilterMyInvolvement" onchange="myinvolvement_change(this)">
                     <option value="">@("-- "+_f.tra("Mé zapojení do úkolu")+" --")</option>
                     <option value="member">@_f.tra("Jsem řešitelem úkolu")</option>
                     <option value="issuer">@_f.tra("Jsem zakladatel úkolu")</option>

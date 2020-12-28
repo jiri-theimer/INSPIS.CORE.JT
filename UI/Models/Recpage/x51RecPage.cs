@@ -15,8 +15,7 @@ namespace UI.Models.Recpage
         public string TagHtml { get; set; }
 
         public string Source { get; set; }
-        public string PageTitle { get; set; }
-
+        
         public IEnumerable<BO.x51HelpCore> lisNear { get; set; }
         public int NearListFlag{ get; set; }
     }

@@ -3,16 +3,16 @@
 
 @addTagHelper *, UI
 <!DOCTYPE html>
-<html lang="cs" style="@_f.CurrentUser.getFontStyle()">
+<html lang="cs">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - @_f.App.AppName</title>
+    <title>@(Model.PageTitle) | @(_f.App.AppName)</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link href="~/lib/datepicker/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
     <link href="~/lib/qtip/jquery.qtip.css" rel="stylesheet" type="text/css" />
-    <link href="~/lib/qtip/jquery.qtip.css" rel="stylesheet" type="text/css" />
-
+    <link rel="stylesheet" href="/kendo/styles/kendo.common.min.css" type="text/css" />
+    <link rel="stylesheet" href="~/css/@_f.CurrentUser.getFontSizeCss()" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="@_f.App.CssCustomSkin" />
     @if (_f.CurrentUser.j03GridSelectionModeFlag == 1)
@@ -23,6 +23,8 @@
     {
         <link rel="stylesheet" href="~/css/thegrid.css" />
     }
+
+
     @if (IsSectionDefined("header_content"))
     {
         @RenderSection("header_content")
@@ -52,8 +54,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script src="~/lib/modal_bootstrap/bootstrap-show-modal.js"></script>
-
+    
     <script src="~/lib/splitter/jquery-resizable.js"></script>
     <script src="~/lib/datepicker/bootstrap-datepicker.min.js"></script>
     @switch (_f.CurrentUser.j03LangIndex)
@@ -85,15 +86,17 @@
             </div>
         }
 
-        <nav id="mainmenu1" class="navbar navbar-expand-lg navbar-dark py-1 px-0">
-            <div class="navbar-nav">
+
+
+        <nav id="mainmenu1" class="navbar navbar-expand-lg navbar-dark bg-dark py-0 px-0">
+            <div id="mainmenu1_container" class="container-fluid px-0">
                 @if (_f.CurrentUser.j03HomePageUrl == null)
                 {
-                    <a id="cmdHome" class="nav-link text-white" href="/Dashboard/Widgets" tabindex="-1">@_f.App.AppName</a>
+                    <a id="cmdHome" class="navbar-brand" href="/Dashboard/Widgets" tabindex="-1">@_f.App.AppName</a>
                 }
                 else
                 {
-                    <a id="cmdHome" class="nav-link text-white" href="@_f.CurrentUser.getHomePageUrl()" tabindex="-1">
+                    <a id="cmdHome" class="navbar-brand mx-0" href="@_f.CurrentUser.getHomePageUrl()" tabindex="-1">
                         @_f.App.AppName
                         @if (_f.CurrentUser.j04ViewUrl_Page == null || _f.CurrentUser.j03HomePageUrl.ToLower() != _f.CurrentUser.j04ViewUrl_Page.ToLower())
                         {
@@ -102,118 +105,105 @@
 
                     </a>
                 }
-
-            </div>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
 
-            <div class="navbar-collapse collapse d-sm-inline-flex">
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        @if (_f.CurrentUser.HasAdminMenu())
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="cmdAdmin" role="button" data-bs-toggle="dropdown" aria-expanded="false" tabindex="-1">@_f.tra("Administrace").ToUpper()</a>
+                                <ul id="ulAdmin" class="dropdown-menu" aria-labelledby="cmdAdmin"><li>Loading....</li></ul>
+                            </li>
+
+                        }
+                        @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.Menu_Events))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="cmdA01" role="button" data-bs-toggle="dropdown" aria-expanded="false" tabindex="-1">@_f.tra(_f.App.Terminology_Akce).ToUpper()</a>
+                                <ul id="ulA01" class="dropdown-menu" aria-labelledby="cmdA01"><li>Loading....</li></ul>
+                            </li>
 
 
-                @if (_f.CurrentUser.HasAdminMenu())
-                {
-                    <div class="navbar-nav">
-                        <div class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="javascript:void(0)" onclick="menu_open_by_prefix('Admin')" id="cmdAdmin" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tabindex="-1">@_f.tra("Administrace").ToUpper()</a>
+                        }
+                        @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.Menu_A03))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="cmdA03" role="button" data-bs-toggle="dropdown" aria-expanded="false" tabindex="-1">@_f.tra("Instituce").ToUpper()</a>
+                                <ul id="ulA03" class="dropdown-menu" aria-labelledby="cmdA03"><li>Loading....</li></ul>
+                            </li>
+                        }
 
-                            <div class="dropdown-menu dropdown_menu_container" id="divMenuAdmin" aria-labelledby="cmdAdmin">Loading...</div>
+                        @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.Menu_H04))
+                        {
+                            <li class="nav-item">
+                                <a id="cmdH04" class="nav-link text-white" href="/TheGrid/FlatView?prefix=h04" tabindex="-1">@_f.tra("Úkoly").ToUpper()</a>
 
-                        </div>
-                    </div>
-                }
-                @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.Menu_Events))
-                {
-                    <div class="navbar-nav">
-                        <div class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="javascript:void(0)" onclick="menu_open_by_prefix('A01')" id="cmdA01" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tabindex="-1">@_f.tra(_f.App.Terminology_Akce).ToUpper()</a>
+                            </li>
 
-                            <div class="dropdown-menu dropdown_menu_container" id="divMenuA01" aria-labelledby="cmdA01">Loading...</div>
-                        </div>
-                    </div>
-                }
-                @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.Menu_A03))
-                {
-                    <div class="navbar-nav">
-                        <div class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="javascript:void(0)" onclick="menu_open_by_prefix('A03')" id="cmdA03" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tabindex="-1">@_f.tra("Instituce").ToUpper()</a>
 
-                            <div class="dropdown-menu dropdown_menu_container" id="divMenuA03" aria-labelledby="cmdA03">Loading...</div>
-                        </div>
-                    </div>
-                }
-                @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.Menu_H04))
-                {
-                    <div class="navbar-nav">
-                        <a id="cmdH04" class="nav-link text-white" href="/TheGrid/FlatView?prefix=h04" tabindex="-1">@_f.tra("Úkoly").ToUpper()</a>
+                        }
 
-                    </div>
+                        @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.AdminGlobal_Ciselniky))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="cmdJ02" role="button" data-bs-toggle="dropdown" aria-expanded="false" tabindex="-1">@_f.tra("Lidé").ToUpper()</a>
+                                <ul id="ulJ02" class="dropdown-menu" aria-labelledby="cmdJ02"><li>Loading....</li></ul>
+                            </li>
 
-                }
 
-                @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.AdminGlobal_Ciselniky))
-                {
-                    <div class="navbar-nav">
-                        <div class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="javascript:void(0)" onclick="menu_open_by_prefix('J02')" id="cmdJ02" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tabindex="-1">@_f.tra("Lidé").ToUpper()</a>
+                        }
 
-                            <div class="dropdown-menu dropdown_menu_container" id="divMenuJ02" aria-labelledby="cmdJ02">Loading...</div>
-                        </div>
-                    </div>
-                }
+                        @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.Menu_Reports))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="cmdX31" role="button" data-bs-toggle="dropdown" aria-expanded="false" tabindex="-1">@_f.tra("Sestavy").ToUpper()</a>
+                                <ul id="ulX31" class="dropdown-menu" aria-labelledby="cmdX31"><li>Loading....</li></ul>
+                            </li>
 
-                @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.Menu_Reports))
-                {
-                    <div class="navbar-nav">
-                        <div class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="javascript:void(0)" onclick="menu_open_by_prefix('X31')" id="cmdX31" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tabindex="-1">@_f.tra("Sestavy").ToUpper()</a>
 
-                            <div class="dropdown-menu dropdown_menu_container" id="divMenuX31" aria-labelledby="cmdX31">Loading...</div>
-                        </div>
-                    </div>
 
-                }
-                <div id="mainmenu1_div_logo_switch" class="navbar-nav">
-                    @if (_f.CurrentUser.j03IsMainLogoVisible)
-                    {
-                        <a href="javascript:save_mainmenu_logo_visibility('0')"><img src="/images/switch_off_24.png" title="@_f.tra("Vypnout horní pruh")" /></a>
-                    }
-                    else
-                    {
-                        <a href="javascript:save_mainmenu_logo_visibility('1')"><img src="/images/switch_on_24.png" title="@_f.tra("Zapnout horní pruh")" /></a>
-                    }
+                        }
 
-                </div>
-                <div class="navbar-nav">
-                    <div class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="javascript:void(0)" id="cmdLangIndex" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tabindex="-1">@_f.CurrentUser.LangName</a>
+                    </ul>
 
-                        <div class="dropdown-menu dropdown_menu_container" id="divLangIndexMenu" aria-labelledby="cmdLangIndex">Loading...</div>
-
-                    </div>
-                </div>
-                <div class="navbar-nav">
-                    <div class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="javascript:void(0)" id="cmdFontStyleFlag" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tabindex="-1">A</a>
-
-                        <div class="dropdown-menu dropdown_menu_container" id="divFontStyleMenu" aria-labelledby="cmdFontStyleFlag">Loading...</div>
-
-                    </div>
-                </div>
-                <div class="navbar-nav">
-                    <div class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="javascript:void(0)" id="cmdCurrentUser" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" tabindex="-1">@_f.CurrentUser.j03Login.ToUpper()</a>
-
-                        <div class="dropdown-menu dropdown_menu_container" id="divCurrentUserMenu" aria-labelledby="cmdCurrentUser">Loading...</div>
-
-                    </div>
-                </div>
-                <div class="navbar-nav">
-                    <a id="cmdHelp" class="nav-link text-white" title="@_f.tra("Nápověda")" href="javascript:_helppage_layout()" tabindex="-1">?</a>
-
+                    <ul class="navbar-nav" style="margin-left:auto;">
+                        <li class="nav-item" id="mainmenu1_div_logo_switch">
+                            @if (_f.CurrentUser.j03IsMainLogoVisible)
+                            {
+                                <a href="javascript:save_mainmenu_logo_visibility('0')"><img src="/images/switch_off_24.png" title="@_f.tra("Vypnout horní pruh")" /></a>
+                            }
+                            else
+                            {
+                                <a href="javascript:save_mainmenu_logo_visibility('1')"><img src="/images/switch_on_24.png" title="@_f.tra("Zapnout horní pruh")" /></a>
+                            }
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="cmdLangIndex" role="button" data-bs-toggle="dropdown" aria-expanded="false" tabindex="-1">@_f.CurrentUser.LangName</a>
+                            <ul id="ulLangIndex" class="dropdown-menu" aria-labelledby="cmdLangIndex"><li>Loading....</li></ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="cmdFontSize" role="button" data-bs-toggle="dropdown" aria-expanded="false" tabindex="-1"><span style="font-size:70%;">A</span>A</a>
+                            <ul id="ulFontSize" class="dropdown-menu" aria-labelledby="cmdFontSize"><li>Loading....</li></ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="cmdMyProfile" role="button" data-bs-toggle="dropdown" aria-expanded="false" tabindex="-1">@_f.CurrentUser.j03Login.ToUpper()</a>
+                            <ul id="ulMyProfile" class="dropdown-menu" aria-labelledby="cmdMyProfile"><li>Loading....</li></ul>
+                        </li>
+                        <li class="nav-item">
+                            <a id="cmdHelp" class="nav-link text-white" title="@_f.tra("Nápověda")" href="javascript:_helppage_layout()" tabindex="-1">?</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
+
+
+
+
+
         </nav>
     </header>
 
@@ -227,10 +217,22 @@
     <div id="myModalContainer" style="display:none;">
         <div id="myModalContent">
             <div id="myModalContentContainerHeader" ondblclick="_window_toggle()">
-                <button class="btn btn-secondary btn-sm float-left" onclick="_window_close()" style="margin-left:3px;margin-right:3px;">&times;</button>
-                <span id="myModalContentHeader"></span>
-                <button class="btn btn-secondary btn-sm float-right" onclick="_window_close()" style="margin-right:3px;">&times;</button>
-                <button class="btn btn-secondary btn-sm float-right" onclick="_window_toggle()" style="margin-right:3px;">&#9600;</button>
+                <table style="width:100%;" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td style="width:20px;">
+                            <a href="javascript:_window_close()" style="margin-left:3px;margin-right:3px;"><span class="k-icon k-i-close" style="color:navy;"></span></a>
+                        </td>
+                        <td>
+                            <span id="myModalContentHeader"></span>
+                        </td>
+                        <td style="width:30px;">
+                            <a href="javascript:_window_toggle()"><span id="spanToggle" class="k-icon k-i-window-maximize" style="color:navy;"></span></a>
+                        </td>
+                        <td style="width:30px;">
+                            <a href="javascript:_window_close()"><span class="k-icon k-i-close" style="color:navy;"></span></a>
+                        </td>
+                    </tr>
+                </table>
             </div>
             <div id="myModalFrame" style="padding: 0px; margin:0px 0px 0px 10px; overflow: auto; -webkit-overflow-scrolling: touch;">
                 <iframe id="fraModalContent" name="fraModalContent" frameborder="0"></iframe>
@@ -313,6 +315,22 @@
             }
         });
 
+            register_menu("cmdLangIndex", "ulLangIndex", "CurrentUserLangIndex");
+            register_menu("cmdFontSize", "ulFontSize", "CurrentUserFontSize");
+            register_menu("cmdMyProfile", "ulMyProfile", "CurrentUserMyProfile");
+            if (document.getElementById("cmdAdmin")) {
+                register_menu("cmdAdmin", "ulAdmin", "AdminMenu");
+            }
+            if (document.getElementById("cmdA01")) {
+                register_menu("cmdA01", "ulA01", "A01Menu");
+            }
+            if (document.getElementById("cmdA03")) {
+                register_menu("cmdA03", "ulA03", "A03Menu");
+            }
+            if (document.getElementById("cmdJ02")) {
+                register_menu("cmdJ02", "ulJ02", "J02Menu");
+            }
+
 
             @if (_f.CurrentUser.j03PingTimestamp == null || _f.CurrentUser.j03PingTimestamp.Value.AddSeconds(120) < DateTime.Now)
             {
@@ -321,31 +339,7 @@
                 </text>
             }
 
-            $("#cmdLangIndex").click(function () {
-                $.post("/Menu/CurrentUserLangIndex", function (data) {
-                    handle_render_menu_branch("divLangIndexMenu", data);
-                })
-                    .fail(function (response) {
-                        handle_render_menu_error(response);
 
-                });
-            });
-            $("#cmdFontStyleFlag").click(function () {
-                $.post("/Menu/CurrentUserFontMenu", function (data) {
-                    handle_render_menu_branch("divFontStyleMenu", data);
-                })
-                    .fail(function (response) {
-                        handle_render_menu_error(response);
-                });
-            });
-            $("#cmdCurrentUser").click(function () {
-                $.post("/Menu/CurrentUserMenu", function (data) {
-                    handle_render_menu_branch("divCurrentUserMenu", data);
-                })
-                    .fail(function (response) {
-                        handle_render_menu_error(response);
-                });
-            });
 
 
 
@@ -353,19 +347,38 @@
 
 
 
-    });
+        });
 
 
-    function menu_open_by_prefix(prefix) {
-            $.post("/Menu/" + prefix + "Menu?userdevice=" + _device.type, function (data) {
-                handle_render_menu_branch("divMenu" + prefix, data);
-                $("#cmd" + prefix).attr("onclick", "");
+        function register_menu(cmd_id,ul_id,method) {
+            var myDropdown = document.getElementById(cmd_id);
+            myDropdown.addEventListener("show.bs.dropdown", function () {
+                render_menu(cmd_id,ul_id, method);
+            })
+        }
+
+        function render_menu(cmd_id,ul_id, method) {
+            if ($("#" + cmd_id).attr("nacteno") == "1") {
+                return;
+            }
+
+            $.post("/Menu/" + method + "?userdevice=" + _device.type, function (data) {
+                $("#" + ul_id).html(data);
+                $("#" + cmd_id).attr("nacteno", "1");
             })
                 .fail(function (response) {
-                    handle_render_menu_error(response);
-            });
 
-    }
+                    if (!response.responseText || 0 === response.responseText.length) {
+                        alert("@_f.tra("Z důvodu neaktivity pravděpodobně vypršel čas přihlášení v systému. Musíte se znovu přihlásit.")");
+                        location.replace("/Login/UserLogin");
+                    }
+
+                });
+
+        }
+
+
+
 
 
 
@@ -397,13 +410,14 @@
     }
 
 
-    function save_fontstyle_menu(intFontStyleFlag2Save)
+    function save_fontsize_menu(fontsize2save)
     {
-            $.post("/Home/SaveCurrentUserFontStyle", { fontstyleflag: intFontStyleFlag2Save }, function (data) {
+        $.post("/Home/SaveCurrentUserFontSize", { fontsize: fontsize2save }, function (data) {
                 location.replace(window.location.href);
             });
 
         }
+
         function save_langindex_menu(intLangIndex2Save) {
             $.post("/Home/SaveCurrentUserLangIndex", { langindex: intLangIndex2Save }, function (data) {
                 location.replace(window.location.href);
@@ -448,6 +462,7 @@
             if (typeof layout === "undefined") layout = null;
             _modal_current_layout = layout;
             if (typeof flag === "undefined") flag = 1;
+            
             if (url.toLowerCase().indexOf("/j11/record") > -1 || url.toLowerCase().indexOf("/a29/record") > -1 || url.toLowerCase().indexOf("/a10/record") > -1 || url.toLowerCase().indexOf("/x51/record") > -1) {
                 flag = 2;   //automaticky maximalizovat okno
             }
@@ -475,6 +490,7 @@
                 if (_device.innerHeight < h) h = _device.innerHeight;
                 x = (_device.innerWidth - w) / 2;
                 y = (_device.innerHeight - h) / 2;
+                $("#spanToggle").attr("class", "k-icon k-i-window-maximize");
             }
             if (flag === 2) {   //okno na fullsreen 100%
                 $("#myModalFrame").css("padding", "0");
@@ -482,6 +498,7 @@
                 h = _device.innerHeight;
                 x = 0;
                 y = 0;
+                $("#spanToggle").attr("class", "k-icon k-i-window-restore");
             }
 
             $(okno).css("width", w);

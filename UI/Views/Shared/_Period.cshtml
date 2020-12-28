@@ -18,22 +18,22 @@
 
 @addTagHelper *, UI
 
-<div class="form-row">
+<div class="input-group">
 
-    <div class="col-sm-5 col-md-4" style="min-width:170px;">
+    <div style="min-width:170px;">
         <mydropdown asp-for="@Model.PeriodValue" datasource="@_lisPeriods" valuefield="pid" textfield="Header" isfirstemptyrow="false"></mydropdown>
 
     </div>
-    <div id="div_d1helper" class="col-sm-2 col-md-2">
+    <div id="div_d1helper" >
         <mydate asp-for="@Model.d1"></mydate>
     </div>
-    <div id="div_d2helper" class="col-sm-2 col-md-2">
+    <div id="div_d2helper" >
         <mydate asp-for="@Model.d2"></mydate>
     </div>
     @if (Model.IsShowButtonRefresh)
     {
-        <div id="div_cmdRefreshPeriod" class="col-sm-1 col-md-1">
-            <button type="button" id="cmdRefreshPeriod" class="btn btn-light" title="@_f.tra("Občerstvit")"><img src="~/images/refresh.png" /></button>
+        <div id="div_cmdRefreshPeriod" style="margin-left:2px;">
+            <button type="button" id="cmdRefreshPeriod" class="btn btn-light" title="@_f.tra("Občerstvit")"><span class="k-icon k-i-reload"></span></button>
         </div>
     }
 

@@ -33,7 +33,7 @@
 
 
     <div class="modal_record_container">
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Uživatelské jméno"):</label>
             <div class="col-sm-4 col-md-3">
                 <input class="form-control" type="tel" asp-for="@Model.SearchLogin" />
@@ -51,20 +51,20 @@
                 <strong style="color:blue;">@Model.SearchRecJ03.j03Login</strong>
             </div>
         }
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Aplikační role"):</label>
             <div class="col-sm-11 col-md-10">
                 <mydropdown asp-for="@Model.SelectedJ04ID" datasource="@Model.lisJ04" valuefield="pid" textfield="j04Name"></mydropdown>
             </div>
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <div class="col-sm-8 col-md-8">
                 <input type="checkbox" asp-for="@Model.a39IsAllowInspisWS" />
                 <label class="col-form-label" for="a39IsAllowInspisWS">@_f.tra("Oprávnění k integračním službám se školním IS")</label>
 
             </div>
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <textarea asp-for="@Model.a39Description" class="form-control" placeholder="@_f.tra("Poznámka k roli")"></textarea>
 
         </div>

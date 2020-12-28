@@ -24,14 +24,14 @@
     <input type="hidden" asp-for="@Model.a03ID" />
 
     <div class="modal_record_container">
-        <div class="form-row">
+        <div class="row">
             <label class="col-sm-3 col-md-3 col-form-label">@_f.tra("Instituce"):</label>
             <div class="col-sm-9 col-md-9">
                 <myval value="@Model.RecA03.NamePlusRedizo" hoverpid="@Model.a03ID" hoverprefix="a03"></myval>
             </div>
 
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-3 col-md-3 col-form-label">@_f.tra("Vyberte činnost školy, kde nastal úraz"):</label>
             <div class="col-sm-9 col-md-9">
                 <mycombo entity="a37InstitutionDepartment" asp-for="@Model.a37ID" selectedtext="@Model.a37Name" filter-flag="1" masterprefix="a03" masterpid="@Model.a03ID"></mycombo>

@@ -10,14 +10,14 @@
 @addTagHelper *, UI
 
     <div class="modal_record_container">
-        <div class="form-row">
+        <div class="row">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
             <div class="col-sm-8 col-md-7">
                 <span class="val-readonly">@(Model.Rec.a42Name)</span>
             </div>
 
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Téma"):</label>
             <div class="col-sm-8 col-md-7">
 
@@ -26,7 +26,7 @@
 
         </div>
 
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Období"):</label>
             <div class="col-sm-2 col-md-2">
 
@@ -39,7 +39,7 @@
 
 
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Počet akcí"):</label>
             <div class="col-sm-2 col-md-2">
 
@@ -49,7 +49,7 @@
         </div>
         @if (Model.lisA01.Where(p => p.a01IsTemporary == true).Count() > 0 && Model.Rec.a42TempRowsA01 > Model.lisA01.Where(p => p.a01IsTemporary == true).Count())
         {
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Počet TEMP akcí"):</label>
                 <div class="col-sm-2 col-md-2">
 
@@ -60,7 +60,7 @@
                 </div>
             </div>
         }
-    <div class="form-row my-2">
+    <div class="row my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Počet poštovních zpráv"):</label>
         <div class="col-sm-2 col-md-2">
 

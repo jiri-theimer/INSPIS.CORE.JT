@@ -57,50 +57,55 @@ namespace UI.Views.Shared.TagHelpers
             var strControlID = this.For.Name.Replace(".", "_").Replace("[", "_").Replace("]", "_");
 
 
-            sb(string.Format("<div id='divDropdownContainer{0}' class='dropdown input-group' style='border:solid 1px #C8C8C8;border-radius:3px;width:100%;'>", strControlID));
+            sb(string.Format("<div id='divDropdownContainer{0}' class='dropdown'>", strControlID));
 
 
             string strTitle = "";
             if (this.SelectedText.Model != null)
             {
-                strTitle=Convert.ToString(this.SelectedText.Model).Replace(",", "★");
+                strTitle = Convert.ToString(this.SelectedText.Model).Replace(",", "★");
             }
 
-            sb(string.Format("<input type='text' id='value_alias_{0}' name='{1}' class='form-control bg-light' value='{2}' title='{4}' style='cursor:pointer' readonly='readonly' placeholder='{3}'/>", strControlID, this.SelectedText.Name, this.SelectedText.Model,this.PlaceHolder, strTitle));
+
 
             //sb("<div class='input-group-append'>");
-            sb(string.Format("<button type='button' id='cmdCombo{0}' class='btn btn-light dropdown-toggle' style='border-radius:0px;' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'></button>", strControlID));
+            sb(string.Format("<button type='button' id='cmdCombo{0}' class='btn dropdown-toggle form-control' data-bs-toggle='dropdown' aria-expanded='false' style='border: solid 1px #C8C8C8; border-radius: 3px;width:100%;text-align:left;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;'>", strControlID));
+            if (this.PlaceHolder != null)
+            {
+                sb(this.PlaceHolder);
+            }
+            sb("</button>");
 
             sb(string.Format("<div id='divDropdown{0}' class='dropdown-menu' aria-labelledby='cmdCombo{0}' style='width:100%;' tabindex='-1'>", strControlID));
-            sb(string.Format("<div id='divData{0}' style='height:{1};overflow:auto;width:100%;min-width:200px;'>", strControlID,this.dropdown_height));
+            sb(string.Format("<div id='divData{0}' style='height:{1};overflow:auto;width:100%;min-width:200px;'>", strControlID, this.dropdown_height));
             sb("</div>");
-            //sb("</div>");
+            sb("</div>");
 
-            sb("</div>");
-            
-            sb("");            
+            sb("");
             sb("");
 
 
             sb("</div>");
+
+            sb(string.Format("<input type='hidden' id='value_alias_{0}' name='{1}' value='{2}'/>", strControlID, this.SelectedText.Name, this.SelectedText.Model));
 
 
             sb("<script type='text/javascript'>");
             sb("");
             _sb.Append(string.Format("var c{0}=", strControlID));
             _sb.Append("{");
-            _sb.Append(string.Format("controlid: '{0}',posturl: '/TheCombo/GetHtml4Checkboxlist',entity:'{1}',masterprefix:'{2}',masterpid:{3},selectedvalues:'{4}',param1:'{5}',on_after_change:'{6}'", strControlID, this.Entity,this.masterprefix,this.masterpid,strSelectedValues,this.Param1,this.Event_After_ChangeValue));
+            _sb.Append(string.Format("controlid: '{0}',posturl: '/TheCombo/GetHtml4Checkboxlist',entity:'{1}',masterprefix:'{2}',masterpid:{3},selectedvalues:'{4}',param1:'{5}',on_after_change:'{6}',placeholder:'{7}'", strControlID, this.Entity, this.masterprefix, this.masterpid, strSelectedValues, this.Param1, this.Event_After_ChangeValue, this.PlaceHolder));
             _sb.Append("};");
 
             sb("");
             sb(string.Format("mycombochecklist_init(c{0});", strControlID));
 
-            
+
             sb("");
             sb("</script>");
 
 
-            sb(string.Format("<input type='hidden' id='{0}' name='{1}' value=\"{2}\" />",strControlID, this.For.Name, strSelectedValues));
+            sb(string.Format("<input type='hidden' id='{0}' name='{1}' value=\"{2}\" />", strControlID, this.For.Name, strSelectedValues));
 
 
 

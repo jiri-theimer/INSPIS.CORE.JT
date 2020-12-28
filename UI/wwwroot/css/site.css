@@ -3,6 +3,41 @@ body {
     margin: 0px;
 }
 
+.btn-light:hover {
+    background-color: #DCDCDC;
+}
+
+
+
+#mainmenu1_container li.nav-item {
+    padding-top:2px;
+    padding-bottom:2px;
+}
+
+#mainmenu1_container a.nav-link {
+    color: #FFFFFF;
+    padding:6px;
+}
+
+    #mainmenu1_container a.nav-link:hover {
+        background-color: royalblue;
+        color:white !important;
+    }
+
+#mainmenu1_container .dropdown-menu{
+    min-width:220px;
+}
+
+#mainmenu1_container .dropdown-item:hover {
+    background-color: #DCDCDC;
+}
+
+#mainmenu1_container .active {
+    background-color: white;
+    border-radius: 3px;
+    color: #1e2de0 !important;
+    
+}
 
 .modal_record_container {
     max-width: 1050px;
@@ -21,6 +56,20 @@ body {
         margin-top: 20px;
         margin-left: 20px;
         margin-right: 6px;
+    }
+
+    #ulMyProfile { /*odkaz Můj profil v hlavním menu, aby se jeho nabídka zobrazila úplně vpravo*/
+        margin-left: -220px;
+        width: 300px;
+    }
+
+    #ulFontSize { /*odkaz Můj profil v hlavním menu, aby se jeho nabídka zobrazila úplně vpravo*/
+        margin-left: -100px;
+        
+    }
+    #ulLangIndex { /*odkaz Můj profil v hlavním menu, aby se jeho nabídka zobrazila úplně vpravo*/
+        margin-left: -70px;
+        
     }
 }
 
@@ -127,6 +176,8 @@ input:checked + label {
 /*link pro hamburger menu*/
 a.cm {
     cursor: pointer;
+    text-decoration:none;
+    color:black;
 }
 
     a.cm:hover {
@@ -762,79 +813,7 @@ hr.hr-mini { /*používá se v kontextovém menu*/
 
 
 
-#mainmenu1 div.dropdown_menu_container {
-    background-color: white /* aliceblue */;
-    padding: 6px;
-    min-width: 200px;
-}
 
-#mainmenu1 div.dropdown_menu_container a.nav-link:hover{
-    background-color: #ECECEC;
-    color: black !important;
-    
-}
-
-						   
-    /* change the brand and text color */
-    #mainmenu1 .navbar-text .navbar-brand {
-        color: white;
-    }
-
-    #mainmenu1 .navbar-nav:nth-last-child(5) {
-        margin-left: auto;
-    }
-
-    /* change the link color */
-
-#mainmenu1 .navbar-nav .nav-link {
-    color: #FFFFFF;
-    padding: 6px;
-}
-    /* change the color of active or hovered links */
-
-    #mainmenu1 .nav-item:hover .nav-link {
-        color: #FFFFFF;
-    }
-
-#mainmenu1 .active {
-    background-color: white;
-    border-radius: 3px;
-    color: #1e2de0 !important;
-}
-
-    #mainmenu1 .nav-link:hover {
-        background-color: royalblue;
-        color: white !important;
-        height: 100%;
-    }
-
-    #mainmenu1 .dropdown-item {
-        padding: 0px 0px 0px 0px;
-        color: #505050;
-    }
-
-
-        #mainmenu1 .dropdown-item .nav-link {
-            padding: 3px 20px 3px 10px;
-        }
-
-            #mainmenu1 .dropdown-item .nav-link:hover {
-                background-color: #2D89EF;
-            }
-
-        #mainmenu1 .dropdown-item.active {
-            padding-top: 3px;
-            padding-bottom: 3px;
-            background-color: gray;
-        }
-
-
-
-    #mainmenu1 .dropdown-divider {
-        margin-top: 2px;
-        margin-bottom: 0px;
-        border-color: #D3D3D3;
-    }
 
 
 .val-readonly {
@@ -855,6 +834,8 @@ hr.hr-mini { /*používá se v kontextovém menu*/
 }
 
 
+
+
 .val-readonly-wrap {
     display: block;
     width: 100%;
@@ -868,6 +849,14 @@ hr.hr-mini { /*používá se v kontextovém menu*/
     border: 1px solid #E5E5E5; /*původní barva byla: #ced4da*/
     border-radius: 0.25rem;
 }
+
+    .val-readonly-wrap a {
+        text-decoration: none;
+    }
+
+    .val-readonly-wrap a:hover {
+        text-decoration: underline;
+    }
 
 
 #subform_div_commands { /*2 záhlaví stránky v rámci záložek */

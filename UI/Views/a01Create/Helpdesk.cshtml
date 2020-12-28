@@ -28,7 +28,7 @@
             
         </div>
 
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">Zadavatel:</label>
             <div class="col-sm-11 col-md-10">
                 <mycombo entity="j02Person" asp-for="@Model.j02ID" selectedtext="@Model.Person" filter-flag="1" event_after_changevalue="j02_change"></mycombo>
@@ -36,7 +36,7 @@
         </div>
         @if (Model.IsComboA03)
         {
-            <div class="form-row my-2" style="margin-top:10px;">
+            <div class="row my-2" style="margin-top:10px;">
                 <label class="col-sm-1 col-md-2 col-form-label">Instituce zadavatele:</label>
                 <div class="col-sm-11 col-md-10">
                     <mycombo entity="a03Institution" asp-for="@Model.a03ID" selectedtext="@Model.Institution" filter-flag="1" masterprefix="j02" masterpid="@Model.j02ID" event_after_changevalue="a03_change"></mycombo>
@@ -45,7 +45,7 @@
         }
         else
         {
-            <div class="form-row my-2" style="margin-top:10px;">
+            <div class="row my-2" style="margin-top:10px;">
                 <label class="col-sm-1 col-md-2 col-form-label">Instituce zadavatele:</label>
                 <div class="col-sm-11 col-md-10">
                     <input type="text" asp-for="Rec.a01InstitutionPlainText" class="form-control" placeholder="V systému nemáte zavedenou vazbu k instituci, musíte ji zde specifikovat ručně..." />
@@ -54,13 +54,13 @@
 
         }
 
-        <div class="form-row my-2" style="margin-top:10px;">
+        <div class="row my-2" style="margin-top:10px;">
             <label class="col-sm-1 col-md-2 col-form-label">Téma požadavku:</label>
             <div class="col-sm-11 col-md-10">
                 <mycombo entity="a08Theme" asp-for="Rec.a08ID" selectedtext="Rec.a08Name" masterprefix="a10" masterpid="@Model.a10ID" event_after_changevalue="a08_change"></mycombo>
             </div>
         </div>
-        <div class="form-row my-4">
+        <div class="row my-4">
             <textarea asp-for="Rec.a01Description" class="form-control" placeholder="Podrobný popis problému"></textarea>
             <span asp-validation-for="Rec.a01Description" class="text-danger"></span>
         </div>

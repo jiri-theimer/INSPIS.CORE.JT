@@ -284,7 +284,7 @@ namespace UI.Controllers
             sb.Append("<br>");
             sb.Append("<span class='text-danger'>"+Factory.tra("Fulltext hledání funguje na principu shody celých slov!")+"</span>");
             sb.Append("<br><span class='text-success'>"+Factory.tra("Mezera mezi slovy je operátor 'and', můžete psát mezi slovy i přímo 'or'.")+"</span>");
-            sb.Append("<br><span class='text-info'>"+Factory.tra("Narozdíl od GRID filtrování, kde se pracuje s částečnou shodou (LIKE).")+"</span>");
+            sb.Append("<br><span class='text-danger'>"+Factory.tra("Narozdíl od GRID filtrování, kde se pracuje s částečnou shodou (LIKE).")+"</span>");
             sb.Append("<hr>");
             sb.Append("<label>"+Factory.tra("Zobrazovat maximálně")+" </label><select id='mysearch_toprecs'>");
             sb.Append(basUI.render_select_option("20", "20", setting.TopRecs.ToString()));
@@ -401,17 +401,17 @@ namespace UI.Controllers
             return s.ToString();
         }
 
-        public string GetAutoCompleteHtmlItems(int o15flag, string tableid) //Vrací HTML zdroj tabulky pro MyAutoComplete
+        public string GetAutoCompleteHtmlItems(int o15flag, string tableid) //Vrací options pro datalist v rámci autocomplete pole
         {
-            var lis = Factory.FBL.GetListAutoComplete(o15flag);
+            var mq = new BO.myQuery("o15");
+            var lis = Factory.o15AutoCompleteBL.GetList(mq).Where(p => (int)p.o15Flag == o15flag);
             var s = new System.Text.StringBuilder();
 
-            s.Append(string.Format("<table id='{0}' class='table table-sm table-hover'>", tableid));
+            s.Append("<option></option>");
             foreach (var item in lis)
             {
-                s.Append(string.Format("<tr class='txz'><td>{0}</td></tr>", item.Value));
+                s.Append(string.Format("<option value='{0}'></option>", item.o15Value));
             }
-            s.Append("</table>");
 
             return s.ToString();
         }

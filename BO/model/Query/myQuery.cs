@@ -104,6 +104,10 @@ namespace BO
                 if (this.Prefix == "a10") AQ("a.a10ID IN (select a10ID FROM a23EventType_Report WHERE x31ID=@x31id)", "x31id", this.x31id);
                 if (this.Prefix == "a08") AQ("a.a08ID IN (select a08ID FROM a27EventTheme_Report WHERE x31ID=@x31id)", "x31id", this.x31id);
             }
+            if (this.a10id > 0)
+            {
+                if (this.Prefix == "a08") AQ("a.a08ID IN (select a08ID FROM a26EventTypeThemeScope WHERE a10ID=@a10id)", "a10id", this.a10id);
+            }
             
             if (this.Prefix == "x29")
             {

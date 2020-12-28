@@ -29,38 +29,38 @@
 
     <div class="modal_record_container">
 
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Právní forma"):</label>
             <div class="col-sm-11 col-md-10">
                 <mycombo entity="a21InstitutionLegalType" asp-for="@Model.SelectedA21ID" selectedtext="@Model.SelectedA21Name" view-flag="2"></mycombo>
             </div>
         </div>
 
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kraj"):</label>
             <div class="col-sm-11 col-md-10">
                 <mycombo entity="a05Region" asp-for="@Model.SelectedA05ID" selectedtext="@Model.SelectedA05Name" view-flag="2"></mycombo>
             </div>
         </div>
 
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typ školy"):</label>
             <div class="col-sm-11 col-md-10">
                 <mycombo entity="a28SchoolType" asp-for="@Model.SelectedA28ID" selectedtext="@Model.SelectedA28Name" view-flag="2"></mycombo>
             </div>
         </div>
 
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Dohledový orgán"):</label>
             <div class="col-sm-11 col-md-10">
                 <mycombo entity="a03Institution" asp-for="@Model.SelectedSupervisoryID" selectedtext="@Model.SelectedSupervisory" view-flag="2"  masterprefix="a06" masterpid="3"></mycombo>
             </div>
         </div>
 
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Stupeň nadřízenosti"):</label>
             <div class="col-sm-11 col-md-10">
-                <select asp-for="@Model.SelectedParentFlag" class="form-control">
+                <select asp-for="@Model.SelectedParentFlag" class="form-select">
                     <option value="-1">@_f.tra("Neměnit")</option>
                     <option value="0">@_f.tra("Standard")</option>
                     <option value="1">@_f.tra("Nadřízená škola")</option>

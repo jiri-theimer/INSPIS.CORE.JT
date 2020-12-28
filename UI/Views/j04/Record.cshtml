@@ -43,7 +43,7 @@
     <div class="tab-content">
         <div class="tab-pane" id="tab1">
 
-            <div class="form-row">
+            <div class="row">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
                 <div class="col-sm-9 col-md-8">
                     <input class="form-control" asp-for="Rec.j04Name" />
@@ -53,7 +53,7 @@
                     ID: <span>@(Model.Rec.pid)</span>
                 </div>
             </div>
-            <div class="form-row my-2">
+            <div class="row my-2">
 
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("URL CORE stránky"):</label>
                 <div class="col-sm-9 col-md-8">
@@ -61,7 +61,7 @@
 
                 </div>
             </div>
-            <div class="form-row my-2">
+            <div class="row my-2">
 
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("URL ASPX stránky"):</label>
                 <div class="col-sm-9 col-md-8">
@@ -69,7 +69,7 @@
 
                 </div>
             </div>
-            <div class="form-row my-2">
+            <div class="row my-2">
 
 
                 <div class="col-sm-10 col-md-10">
@@ -82,7 +82,7 @@
                 </div>
             </div>
 
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <div class="col-sm-4 col-md-4">
                     <input type="checkbox" asp-for="Rec.j04IsAllowInSchoolAdmin" />
                     <label class="col-form-label" for="Rec_j04IsAllowInSchoolAdmin">@_f.tra("Role dostupná ve správě školních účtů")</label>
@@ -90,7 +90,7 @@
             </div>
             @if (_f.App.Implementation == "Default")
             {
-                <div class="form-row my-2">
+                <div class="row my-2">
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Vztah role k portálu"):</label>
                     <div class="col-sm-9 col-md-8">
                         <select asp-for="@Model.Rec.j04PortalFaceFlag" class="form-control">
@@ -106,7 +106,7 @@
 
 
 
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <div class="col-sm-4 col-md-4">
                     <input type="checkbox" asp-for="Rec.j04IsAllowedAllEventTypes" onchange="dopostback()" />
                     <label class="col-form-label" for="Rec_j04IsAllowedAllEventTypes">@_f.tra("Možnost zakládat i číst všechny typy akcí")</label>
@@ -126,7 +126,7 @@
                             {
                                 <tr>
                                     <td>
-                                        <div class="form-row" style="@(Model.lisJ08[i].CssTempDisplay)">
+                                        <div class="row" style="@(Model.lisJ08[i].CssTempDisplay)">
                                             <input type="hidden" asp-for="lisJ08[i].IsTempDeleted" value="@Model.lisJ08[i].IsTempDeleted" />
                                             <input type="hidden" asp-for="lisJ08[i].TempGuid" value="@Model.lisJ08[i].TempGuid" />
 
@@ -175,7 +175,7 @@
         <div class="tab-pane" id="tab6">
             <!-- Tab6 -->
             <p></p>
-            <div class="form-row">
+            <div class="row">
 
                 <label class="col-sm-2 col-md-3 col-form-label">@_f.tra("Výchozí paleta widgetů pro inspektora"):</label>
                 <div class="col-sm-10 col-md-9">
@@ -183,7 +183,7 @@
 
                 </div>
             </div>
-            <div class="form-row my-2">
+            <div class="row my-2">
 
                 <label class="col-sm-2 col-md-3 col-form-label">@_f.tra("Výchozí paleta widgetů pro školu"):</label>
                 <div class="col-sm-10 col-md-9">

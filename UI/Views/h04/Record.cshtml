@@ -14,20 +14,20 @@
 <input type="hidden" id="hidJ11IDs" asp-for="@Model.j11IDs" />
 
 <div class="modal_record_container">
-    <div class="form-row">
+    <div class="row">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
         <div class="col-sm-11 col-md-10">
             <input class="form-control" asp-for="Rec.h04Name" />
-            <span asp-validation-for="Rec.h04Name" class="text-danger"></span>
+            
         </div>
     </div>
-    <div class="form-row my-2">
+    <div class="row my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typ"):</label>
         <div class="col-sm-11 col-md-10">
             <mycombo entity="h07ToDoType" asp-for="@Model.SelectedH07ID" selectedtext="@Model.SelectedH07Name" view-flag="2" event_after_changevalue="handle_h07id_change"></mycombo>
         </div>
     </div>
-    <div class="form-row my-2">
+    <div class="row my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Termín"):</label>
         <div class="col-sm-3 col-md-3">
             <mydate asp-for="@Model.Rec.h04Deadline" include-time="true"></mydate>
@@ -41,7 +41,7 @@
     </div>
     @if (Model.SelectedH07ID > 0 && Model.RecH07.h07IsCapacityPlan)
     {
-        <div class="form-row my-2">
+        <div class="row my-2">
             <div class="col-sm-4 col-md-4">
                 <input type="checkbox" asp-for="@Model.IsDefineCapacityPlan" />
                 <label class="col-form-label" for="IsDefineCapacityPlan">@_f.tra("Definovat kapacitní plán pro příjemce")</label>
@@ -49,7 +49,7 @@
         </div>
         @if (Model.IsDefineCapacityPlan)
         {
-            <div id="divCapacity" class="form-row my-2">
+            <div id="divCapacity" class="row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Plán od"):</label>
                 <div class="col-sm-3 col-md-3">
                     <mydate asp-for="@Model.Rec.h04CapacityPlanFrom" include-time="true"></mydate>
@@ -67,7 +67,7 @@
 
     @if (Model.SelectedH07ID > 0 && Model.RecH07.h07IsToDo)
     {
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Stav úkolu"):</label>
             <div class="col-sm-11 col-md-10">
                 @if (Model.rec_pid == 0)
@@ -84,9 +84,9 @@
     }
 
 
-    <div class="form-row my-2">
+    <div class="my-2">
         <textarea asp-for="Rec.h04Description" class="form-control" placeholder="@_f.tra("Podrobný popis zadání")"></textarea>
-        <span asp-validation-for="Rec.h04Description" class="text-danger"></span>
+        
     </div>
 
 
@@ -108,14 +108,14 @@
     <div class="card-body">
 
 
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Přidat řešitele (jméno)"):</label>
             <div class="col-sm-11 col-md-10">
                 <mycombo entity="j02Person" asp-for="@Model.SelectedJ02ID" selectedtext="@Model.SelectedPerson" filter-flag="1" placeholder="@_f.tra("Vybrat osobní profil")..." event_after_changevalue="handle_j02id_append"></mycombo>
             </div>
 
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Přidat řešitele (tým)"):</label>
             <div class="col-sm-11 col-md-10">
                 <mycombo entity="j11Team" asp-for="@Model.SelectedJ11ID" selectedtext="@Model.SelectedTeam" filter-flag="1" placeholder="@_f.tra("Vybrat tým")..." event_after_changevalue="handle_j11id_append"></mycombo>
@@ -128,7 +128,7 @@
     </div>
 </div>
 
-<div class="form-row my-2">
+<div class="row my-2">
     <div class="col-sm-4 col-md-4">
         <input type="checkbox" asp-for="@Model.IsNotifyAfterSave" />
         <label class="col-form-label" for="IsNotifyAfterSave">@_f.tra("Po uložení odeslat příjemcům notifikační zprávu")</label>

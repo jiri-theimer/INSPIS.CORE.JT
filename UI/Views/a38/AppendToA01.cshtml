@@ -16,18 +16,18 @@
 
 <div class="tabs_container_record">
     <!-- Tab panes -->
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item onetab">
-            <a id="link_tab1" class="nav-link" data-toggle="tab" href="#tab1">@_f.tra("Nová rezervace")</a>
+            <a id="link_tab1" class="nav-link" data-bs-toggle="tab" role="tab" href="#tab1">@_f.tra("Nová rezervace")</a>
         </li>
         <li class="nav-item onetab">
-            <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2">@_f.tra("Odstranit uložené rezervace")</a>
+            <a id="link_tab2" class="nav-link" data-bs-toggle="tab" role="tab" href="#tab2">@_f.tra("Odstranit uložené rezervace")</a>
         </li>
     </ul>
 </div>
 
 <div class="tab-content">
-    <div class="tab-pane" id="tab1">
+    <div class="tab-pane" id="tab1" role="tabpanel">
         <div class="bg-light" style="padding:10px;">
             <button id="cmdSave" type="submit" class="btn btn-success">@_f.tra("Uložit změny")</button>
             <button type="button" id="cmdClose" onclick="_window_close()" class="btn btn-light">@_f.tra("Zavřít")</button>
@@ -46,7 +46,7 @@
             <div class="card" style="max-width:1200px;">
                 <div class="card-header">@_f.tra("Nová rezervace")</div>
                 <div class="card-body">
-                    <div class="form-row">
+                    <div class="row">
                         <div class="col-sm-10 col-md-10">
                             <mycombo entity="j23NonPerson" asp-for="@Model.SelectedJ23ID" selectedtext="@Model.SelectedJ23Name" view-flag="2" masterprefix="a05" masterpid="@Model.a05ID" event_after_changevalue="change_j23id" placeholder="@_f.tra("Nepersonální zdroj")"></mycombo>
                         </div>
@@ -55,7 +55,7 @@
                         </div>
 
                     </div>
-                    <div class="form-row my-2">
+                    <div class="row my-2">
                         <div class="col-sm-10 col-md-10">
                             <mycombo entity="j02Person" asp-for="@Model.SelectedJ02ID" selectedtext="@Model.SelectedPerson" view-flag="2" event_after_changevalue="change_j02id" placeholder="@_f.tra("Jméno")" masterprefix="a01" masterpid="@Model.pid" param1="without_teams_and_owner"></mycombo>
                         </div>
@@ -136,7 +136,7 @@
 
         <iframe id="fraA38" style="height:250px;" src="/a38/TimeLine?a05id=@(Model.a05ID)"></iframe>
     </div>
-    <div class="tab-pane" id="tab2">
+    <div class="tab-pane" id="tab2" role="tabpanel">
         <table class="table table-hover">
             @foreach (var c in Model.lisA38.OrderBy(p => p.a38PlanDate).ThenBy(p => p.PersonDesc))
             {

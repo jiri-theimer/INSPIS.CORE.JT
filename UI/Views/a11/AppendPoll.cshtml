@@ -37,7 +37,7 @@
                 <button type="button" class="btn btn-success" onclick="handle_f06id_append()">@_f.tra("Uložit do akce")</button>
             </div>
             <div class="card-body">
-                <div class="form-row my-2">
+                <div class="row my-2">
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Vybrat anketní formulář"):</label>
                     <div class="col-sm-9 col-md-8">
                         <mycombo entity="f06Form" asp-for="@Model.SelectedF06ID" selectedtext="@Model.SelectedForm" placeholder="@_f.tra("Vybrat formulář")..." masterprefix="a08" masterpid="@Model.RecA01.a08ID" param1="poll"></mycombo>
@@ -47,7 +47,7 @@
                         <mynumber asp-for="@Model.SelectedKolikrat" decimal-digits="0"></mynumber>
                     </div>
                 </div>
-                <div class="form-row my-2">
+                <div class="row my-2">
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Činnost (součást) školy"):</label>
                     <div class="col-sm-8 col-md-7">
                         <mycombo entity="a37InstitutionDepartment" asp-for="@Model.SelectedA37ID" selectedtext="@Model.SelectedA37Name" view-flag="2" masterprefix="a03" masterpid="@Model.RecA01.a03ID"></mycombo>
@@ -57,7 +57,7 @@
                         <mynumber asp-for="@Model.AccessTokenMinValue" decimal-digits="0"></mynumber>
                     </div>
                 </div>
-                <div class="form-row my-2">
+                <div class="row my-2">
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Učitel školy"):</label>
                     <div class="col-sm-6 col-md-5">
                         <mycombo entity="k01Teacher" asp-for="@Model.SelectedK01ID" selectedtext="@Model.SelectedK01fullname_desc" view-flag="2" masterprefix="a03" masterpid="@Model.RecA01.a03ID"></mycombo>
@@ -68,7 +68,7 @@
                     </div>
                 </div>
 
-                <div class="form-row my-2">
+                <div class="row my-2">
                     <input type="text" asp-for="@Model.a11Description" class="form-control" placeholder="@_f.tra("Poznámka")" />
                 </div>
 

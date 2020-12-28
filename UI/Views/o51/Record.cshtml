@@ -14,7 +14,7 @@
 
 <div class="modal_record_container">
 
-    <div class="form-row">
+    <div class="row">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název položky"):</label>
         <div class="col-sm-11 col-md-10">
             <input class="form-control" asp-for="Rec.o51Name" />
@@ -27,14 +27,14 @@
 
 
 
-    <div class="form-row" style="margin-top:10px;">
+    <div class="row" style="margin-top:10px;">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kategorie (skupina)"):</label>
         <div class="col-sm-11 col-md-10">
             <mycombo entity="o53TagGroup" asp-for="Rec.o53ID" selectedtext="Rec.o53Name" view-flag="2"></mycombo>
         </div>
     </div>
 
-    <div class="form-row">
+    <div class="row">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Pořadí v rámci kategorie"):</label>
         <div class="col-sm-11 col-md-10">
             <mynumber asp-for="Rec.o51Ordinary" decimal-digits="0"></mynumber>
@@ -42,7 +42,7 @@
     </div>
 
 
-    <div class="form-row">
+    <div class="row">
         <input asp-for="@Model.Rec.o51IsColor" />
         <label for="Rec_o51IsColor">@_f.tra("Položka má vlastní barvu?")</label>
     </div>
@@ -66,7 +66,7 @@
     </table>
 
 
-    <div class="form-row" style="display:none;">
+    <div class="row" style="display:none;">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kód"):</label>
         <div class="col-sm-4 col-md-4">
             <input class="form-control" asp-for="Rec.o51Code" />

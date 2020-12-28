@@ -1,22 +1,19 @@
 ﻿@model BaseViewModel
 @inject BL.Factory _f
 
-@{
-
-
-}
 
 <!DOCTYPE html>
 
-<html lang="cs" style="@_f.CurrentUser.getFontStyle()">
+<html lang="cs">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
+    <title>@Model.PageTitle</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link href="~/lib/datepicker/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
     <link href="~/lib/qtip/jquery.qtip.css" rel="stylesheet" type="text/css" />
-
+    <link rel="stylesheet" href="/kendo/styles/kendo.common.min.css" type="text/css" />
+    <link rel="stylesheet" href="~/css/@_f.CurrentUser.getFontSizeCss()" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="@_f.App.CssCustomSkin" />
     @if (_f.CurrentUser.j03GridSelectionModeFlag == 1)
@@ -28,12 +25,15 @@
         <link rel="stylesheet" href="~/css/thegrid.css" />
     }
 
+    @if (IsSectionDefined("header_content"))
+    {
+        @RenderSection("header_content")
+    }
 </head>
 <body>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/lib/modal_bootstrap/bootstrap-show-modal.js"></script>
-
+    
     <script src="~/lib/datepicker/bootstrap-datepicker.min.js"></script>
     @switch (_f.CurrentUser.j03LangIndex)
     {

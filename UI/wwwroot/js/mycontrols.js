@@ -156,152 +156,43 @@ function datepicker_set_value(ctlClientID, datValue) {
 
 /*_MyAutoComplete*/
 function myautocomplete_init(c) {
-    var _tableid = c.controlid + "tab1";
-    var _combo_currentFocus = -1;
+    var _listid = c.controlid + "_list";
 
+    $("#" + c.controlid).on("mouseover", function () {
+        if ($("#" + _listid).prop("filled") === true || $("#" + _listid).prop("filling") === true) return;    //datalist už bylo dříve načten
 
-    $("#" + c.controlid).click(function () {
-        $("#cmdCombo" + c.controlid).dropdown("toggle");        //click na textbox se má chovat stejně jako click na tlačítko cmdCombo        
-        $("#" + c.controlid).focus();
+        $("#" + _listid).prop("filling", true); //momentálně běží plnění
+
+        handle_load_options();
+
     });
-
     $("#" + c.controlid).on("focus", function () {
-        document.getElementById(c.controlid).select();
-    });
+       
 
-    $("#" + c.controlid).on("keyup", function () {
-        var value = $(this).val().toLowerCase();
-        $("#" + _tableid + " tr").filter(function () {
-            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-        });
-    });
+        if ($("#" + _listid).prop("filled") === true) return;    //datalist už bylo dříve načten
 
-    $("#" + c.controlid).on("keydown", function (e) {
-        if (e.keyCode === 27) {  //ESC
-            $("#divDropdown" + c.controlid).dropdown("hide");
-            return;
-        }
-        var rows_count = $("#" + _tableid).find("tr").length;
+        handle_load_options();
 
-        if ($("#divDropdown" + c.controlid).css("display") === "none") {
-            $("#cmdCombo" + c.controlid).dropdown("toggle");
-            //$("#divDropdown" + c.controlid).dropdown("show");
-
-            document.getElementById(c.controlid).focus();
-        }
-        if (e.keyCode === 13) {//ENTER            
-            var row = $("#" + _tableid).find(".selrow");
-            if (row.length > 0) {
-                autocomplete_was_selected(row[0]);
-            }
-        }
-
-        var destrowindex;
-        if (e.keyCode === 40) {  //down
-
-            if (rows_count - 1 <= _combo_currentFocus) {
-                _combo_currentFocus = 0
-
-            } else {
-                _combo_currentFocus++;
-
-            }
-            destrowindex = get_first_visible_rowindex(_combo_currentFocus, "down");
-            if (destrowindex === -1) destrowindex = get_first_visible_rowindex(0, "down");
-            _combo_currentFocus = destrowindex;
-            if (destrowindex === -1) return;
-
-            update_selected_row();
-        }
-        if (e.keyCode === 38) {  //up            
-            _combo_currentFocus--;
-            destrowindex = get_first_visible_rowindex(_combo_currentFocus, "up");
-            if (destrowindex === -1) destrowindex = get_first_visible_rowindex(0, "down");
-            _combo_currentFocus = destrowindex;
-            if (destrowindex === -1) _combo_currentFocus = 0;
-
-            update_selected_row();
-        }
-
-
+        
 
     });
 
-    $("#divDropdownContainer" + c.controlid).on("show.bs.dropdown", function () {
-        $("#divDropdown" + c.controlid).css("margin-left", 25 + $("#divDropdown" + c.controlid).width() * -1);      //šírka dropdown oblasti má být zleva 100% jako celý usercontrol
 
-        if ($("#" + c.controlid).prop("filled") === true) return;    //combo už bylo dříve otevřeno
+    function handle_load_options() {
+        var strCurPlaceHolder = $("#" + c.controlid).attr("placeholder");
+        $("#" + c.controlid).attr("placeholder", "Loading...");
+        $.post(c.posturl, { o15flag: c.o15flag }, function (data) {
 
+            $("#" + _listid).html(data);
 
-        $.post(c.posturl, { o15flag: c.o15flag, tableid: _tableid }, function (data) {
+            $("#" + _listid).prop("filled", true);
 
-            $("#divData" + c.controlid).html(data);
-
-            $("#" + c.controlid).prop("filled", true);
-
-            $("#" + _tableid).css("width", $("#divDropdown" + c.controlid).width());
+            $("#" + c.controlid).attr("placeholder", strCurPlaceHolder);
 
 
-            $("#" + _tableid + " .txz").on("click", function () {
-                s = $(this).find("td:first").text();
-
-                $("#" + c.controlid).val(s);
-                $("#" + c.controlid).select();
-                _toolbar_warn2save_changes();
-            });
+            
 
         });
-
-
-    })
-
-
-    function get_first_visible_rowindex(fromindex, direction) {
-        var rows_count = $("#" + _tableid).find("tr").length;
-        var row;
-        if (direction === "down") {
-            for (i = fromindex; i < rows_count; i++) {
-                row = $("#" + _tableid).find("tr").eq(i);
-                if ($(row).css("display") !== "none") {
-                    return i;
-                }
-            }
-        }
-        if (direction === "up") {
-            for (i = fromindex; i >= 0; i--) {
-                row = $("#" + _tableid).find("tr").eq(i);
-                if ($(row).css("display") !== "none") {
-                    return i;
-                }
-            }
-        }
-
-        return -1;
-    }
-    function update_selected_row() {
-        $("#" + _tableid).find("tr").removeClass("selrow");
-        if (_combo_currentFocus > -1) {
-            var row = $("#" + _tableid).find("tr").eq(_combo_currentFocus);
-            if (row.length === 0) {
-                return;
-            }
-            $(row).addClass("selrow");
-
-
-            var element = row[0];
-            element.scrollIntoView({ block: "end", inline: "nearest" });
-
-        }
-
-    }
-
-    function autocomplete_was_selected(row) {
-        var t = $(row).attr("data-t");
-        if (t === undefined) {
-            t = $(row).find("td:first").text();
-        }
-
-        $("#" + c.controlid).val(t);
     }
 
 }
@@ -321,15 +212,19 @@ function mycombochecklist_init(c) {
         e.stopPropagation();                                    //click na dropdown oblast nemá zavírat dropdown div
     });
 
-    $("#value_alias_" + c.controlid).click(function () {
-        $("#cmdCombo" + c.controlid).dropdown("toggle");        //click na textbox se má chovat stejně jako click na tlačítko cmdCombo
-    });
+
     if ($("#value_alias_" + c.controlid).val() !== "") {
-        $("#value_alias_" + c.controlid).css("font-weight", "bold");
-        $("#value_alias_" + c.controlid).css("color", "navy");
+
+        var deftext = $("#value_alias_" + c.controlid).val();
+        deftext = deftext.replace(/,/g, "★");
+        $("#cmdCombo" + c.controlid).text(deftext);
+        $("#cmdCombo" + c.controlid).attr("title", deftext);
+
     }
 
-    $("#divDropdownContainer" + c.controlid).on("show.bs.dropdown", function (e) {
+    var myDropdown = document.getElementById("divDropdownContainer" + c.controlid);
+
+    myDropdown.addEventListener("show.bs.dropdown", function () {
 
         $("#divDropdown" + c.controlid).css("margin-left", 25 + $("#divDropdown" + c.controlid).width() * -1);      //šírka dropdown oblasti má být zleva 100% jako celý usercontrol
 
@@ -364,18 +259,19 @@ function mycombochecklist_init(c) {
 
                 $("#" + c.controlid).val(s);
 
-                if (s !== "") {
-                    $("#value_alias_" + c.controlid).css("font-weight", "bold");
-                    $("#value_alias_" + c.controlid).css("color", "navy");
+                if (s === "") {
+                    $("#cmdCombo" + c.controlid).text(c.placeholder);
+                    $("#cmdCombo" + c.controlid).attr("title", "");
+                    $("#value_alias_" + c.controlid).val("");
                 } else {
-                    $("#value_alias_" + c.controlid).css("font-weight", "");
-                    $("#value_alias_" + c.controlid).css("color", "");
+                    s = lbls.join(",");
+                    s = s.replace(/,/g, "★");
+                    $("#value_alias_" + c.controlid).val(s);
+                    $("#cmdCombo" + c.controlid).text(s);
+                    $("#cmdCombo" + c.controlid).attr("title", s);
                 }
 
-                s = lbls.join(",");
-                $("#value_alias_" + c.controlid).val(s);
-                $("#value_alias_" + c.controlid).attr("title", s.replace(",", "★"));
-                
+
 
                 if (c.on_after_change !== "") {
                     eval(c.on_after_change + "('" + vals.join(",") + "')");
@@ -396,8 +292,11 @@ function mycombochecklist_init(c) {
                 var s = vals.join(",");
                 $("#" + c.controlid).val(s);
                 s = lbls.join(",");
+                s = s.replace(/,/g, "★");
                 $("#value_alias_" + c.controlid).val(s);
-                $("#value_alias_" + c.controlid).attr("title", s.replace(",", "★"));
+                $("#cmdCombo" + c.controlid).text(s);
+                $("#cmdCombo" + c.controlid).attr("title", s);
+
 
                 if (c.on_after_change !== "") {
                     eval(c.on_after_change + "('" + vals.join(",") + "')");
@@ -411,7 +310,9 @@ function mycombochecklist_init(c) {
                 });
                 $("#" + c.controlid).val("");
                 $("#value_alias_" + c.controlid).val("");
-                $("#value_alias_" + c.controlid).attr("title", "");
+                $("#cmdCombo" + c.controlid).text(c.placeholder);
+                $("#cmdCombo" + c.controlid).attr("title", "");
+
 
                 if (c.on_after_change !== "") {
                     eval(c.on_after_change + "('')");
@@ -438,26 +339,42 @@ function mysearch_init(c) {
     $("#divDropdown" + c.controlid).on("click.bs.dropdown", function (e) {
         e.stopPropagation();                                    //click na dropdown oblast nemá zavírat dropdown div
     });
-    $("#" + c.controlid).click(function () {
-        $("#cmdCombo" + c.controlid).dropdown("toggle");        //click na textbox se má chovat stejně jako click na tlačítko cmdCombo
-        $("#" + c.controlid).focus();
-    });
+   
 
-    $("#divDropdownContainer" + c.controlid).on("show.bs.dropdown", function (e) {
+    var myDropdown = document.getElementById("divDropdownContainer" + c.controlid);
 
-        $("#divDropdown" + c.controlid).css("margin-left", 25 + $("#divDropdown" + c.controlid).width() * -1);      //šírka dropdown oblasti má být zleva 100% jako celý usercontrol
+    myDropdown.addEventListener("show.bs.dropdown", function () {
 
-        
-        
-
+        var dd = document.getElementById("divDropdown" + c.controlid);
+        var x = $("#divDropdownContainer" + c.controlid).offset().left;        
+        if ($(dd).width() < 300) {
+            $(dd).css("width", _device.innerWidth - x - 10);            
+            if (_device.innerWidth < 500) {                
+                $(dd).css("width","600px");
+            }
+        }
         var expr = $("#" + c.controlid).val();
         if (expr !== "") {
-
+            setTimeout(function () {
+                //focus až po 300ms
+                $("#" + c.controlid).focus();
+                $("#" + c.controlid).select();                
+            }, 200);
             return;
         }
+
+        $("#divData" + c.controlid).html("Loading...");
+
         $.post(c.posturl + "Setting", { controlid: c.controlid, entity: c.entity }, function (data) {
 
             $("#divData" + c.controlid).html(data);
+
+            setTimeout(function () {
+                //focus až po 300ms
+                $("#" + c.controlid).focus();
+                $("#" + c.controlid).select();
+
+            }, 200);
 
         });
 

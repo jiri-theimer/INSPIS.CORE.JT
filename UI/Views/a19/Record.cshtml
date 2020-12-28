@@ -16,14 +16,14 @@
     <div class="alert alert-primary" role="alert">
         @Model.RecA03.NamePlusRedizo
     </div>
-    <div class="form-row my-2">
+    <div class="row my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Činnost školy"):</label>
         <div class="col-sm-11 col-md-10">
             <mycombo entity="a37InstitutionDepartment" asp-for="Rec.a37ID" selectedtext="Rec.a37IzoPlusName" masterprefix="a03" masterpid="@Model.a03ID"></mycombo>
         </div>
 
     </div>
-    <div class="form-row my-2">
+    <div class="row my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Obor"):</label>
         <div class="col-sm-11 col-md-10">
             <mycombo entity="a18DepartmentDomain" asp-for="Rec.a18ID" selectedtext="Rec.a18CodePlusName"></mycombo>
@@ -31,21 +31,21 @@
 
     </div>
     <hr />
-    <div class="form-row my-2">
+    <div class="row my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Délka vzdělávání"):</label>
         <div class="col-sm-11 col-md-10">
             <mynumber asp-for="Rec.a19StudyDuration" decimal-digits="0"></mynumber>
         </div>
 
     </div>
-    <div class="form-row my-2">
+    <div class="row my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Forma vzdělávání"):</label>
         <div class="col-sm-11 col-md-10">
             <mynumber asp-for="Rec.a19StudyPlatform" decimal-digits="0"></mynumber>
         </div>
 
     </div>
-    <div class="form-row my-2">
+    <div class="row my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kapacita vzdělávání"):</label>
         <div class="col-sm-11 col-md-10">
             <mynumber asp-for="Rec.a19StudyCapacity" decimal-digits="0"></mynumber>
@@ -53,14 +53,14 @@
 
     </div>
 
-    <div class="form-row my-2">
+    <div class="row my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Jazyk"):</label>
         <div class="col-sm-11 col-md-10">
             <mynumber asp-for="Rec.a19StudyLanguage" decimal-digits="0"></mynumber>
         </div>
 
     </div>
-    <div class="form-row my-2">
+    <div class="row my-2">
         <div class="col-sm-3 col-md-3">
             <input type="checkbox" asp-for="Rec.a19IsShallEnd" />
             <label class="col-form-label" for="Rec_a19IsShallEnd">@_f.tra("Dobíhající obor")</label>

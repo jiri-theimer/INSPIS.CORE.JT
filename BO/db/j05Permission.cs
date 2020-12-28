@@ -53,12 +53,12 @@ namespace BO
         CMSAdmin = 28,             //PORTAL - CMS administrátor
         PortalAdmin = 27,          //PORTAL - administrátor portálu
 
-        SendMail = 29,
+        SendMail = 29,          //můj profil + odeslat zprávu
         EditContactMedia_A03 = 30,
         Menu_Portal = 33,
         Menu_Helpdesk = 34,
         Menu_Epis = 35,
-        Menu_RS = 36,
+        Menu_RS = 36,           //menu INEZ
         Menu_Archive = 37,     //možnost se přepnout do archívu
         LinkToArchive_A03 = 38,           //odkaz na menu //Archív// v detailu instituce
         Menu_iSET = 39,

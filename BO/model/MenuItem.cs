@@ -7,7 +7,7 @@ namespace BO
     public class MenuItem
     {
         public string Name { get; set; }
-        
+        public string Icon { get; set; }
         public bool IsDivider { get; set; }
         public bool IsHeader { get; set; }
         public bool IsActive { get; set; }

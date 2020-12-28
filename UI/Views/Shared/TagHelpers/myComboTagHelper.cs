@@ -15,7 +15,7 @@ namespace UI.Views.Shared.TagHelpers
         private const string ForAttributeName = "asp-for";
 
         [HtmlAttributeName(ForAttributeName)]
-        public ModelExpression For { get; set; }        
+        public ModelExpression For { get; set; }
 
         [HtmlAttributeName("selectedtext")]
         public ModelExpression SelectedText { get; set; }
@@ -42,7 +42,7 @@ namespace UI.Views.Shared.TagHelpers
         public string FilterFlag { get; set; }
 
         private int _SelectedValue { get; set; }
-        
+
 
         private System.Text.StringBuilder _sb;
         public override void Process(TagHelperContext context, TagHelperOutput output)
@@ -54,11 +54,11 @@ namespace UI.Views.Shared.TagHelpers
             if (this.For.Model != null)
             {
                 _SelectedValue = Convert.ToInt32(this.For.Model);
-                
+
             }
             else
             {
-                _SelectedValue = 0;                
+                _SelectedValue = 0;
             }
             if (string.IsNullOrEmpty(this.FilterFlag) == true)
             {
@@ -68,27 +68,38 @@ namespace UI.Views.Shared.TagHelpers
             var strControlID = this.For.Name.Replace(".", "_").Replace("[", "_").Replace("]", "_");
 
 
-            sb(string.Format("<div id='divDropdownContainer{0}' class='dropdown input-group' style='border:solid 1px #C8C8C8;border-radius:3px;width:100%;'>", strControlID));
-            
-            
-            sb(string.Format("<div class='input-group-prepend' id='divSearch{0}'>", strControlID));
-            sb(string.Format("<input id='searchbox{0}' autocomplete='off' type='text' class='form-control' placeholder='...' title='Najít' style='border:none;width:80px;'>", strControlID));
-            sb("</div>");            
-            sb("");
+            sb(string.Format("<div id='divDropdownContainer{0}' class='dropdown'>", strControlID));
 
-            sb(string.Format("<button type='button' id='cmdCombo{0}' class='btn btn-outline-light dropdown-toggle form-control' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' tabindex='-1' style='text-align:left;border:none;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;color:gray;'>{1}</button>",strControlID,this.PlaceHolder));
-            
-            sb(string.Format("<button type='button' id='cmdClear{0}' class='btn btn-secondary close' aria-label='Close' tabindex='-1' title='Vyčistit' style='width:30px;border:none;display:none;'>",strControlID));
-            sb("<span aria-hidden='true'>&times;</span>");
+            sb(string.Format("<button type='button' id='cmdCombo{0}' class='btn dropdown-toggle form-control' data-bs-toggle='dropdown' aria-expanded='false' style='border: solid 1px #C8C8C8; border-radius: 3px;width:100%;text-align:left;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;'>{1}</button>", strControlID, this.PlaceHolder));
+
+            sb(string.Format("<button type='button' id='cmdClear{0}' class='btn btn btn-outline-secondary' tabindex='-1' title='Vyčistit' style='position:absolute;top:0;right:0;border: solid 1px #C8C8C8; border-radius: 3px;'>", strControlID));
+            sb("&times;");
             sb("</button>");
 
-            sb(string.Format("<div id='divDropdown{0}' class='dropdown-menu' aria-labelledby='cmdCombo' style='width:100%;margin-left:-80px;' tabindex='-1'>", strControlID));
-            sb(string.Format("<div id='divData{0}' style='height:220px;overflow:auto;background-color:#E6F0FF;z-index:500;width:100%;min-width:200px;'>", strControlID));
-            sb("</div>");
-            sb("</div>");
+
+
+            sb(string.Format("<div class='dropdown-menu' aria-labelledby='cmdCombo{0}' style='width:100%;' tabindex='-1'>", strControlID));
+
+
+            sb(string.Format("<input id='searchbox{0}' autocomplete='off' type='text' class='form-control' placeholder='Najít...'>", strControlID));
+
             sb("");
 
+
+            sb(string.Format("<div id='divData{0}' style='height:220px;overflow:auto;background-color:#E6F0FF;z-index:500;'>", strControlID));
             sb("</div>");
+
+
+            sb("</div>");   //dropdown-menu
+            sb("</div>");   //dropdown
+
+
+
+
+
+            sb("");
+
+
 
             sb(string.Format("<input type='hidden' value='{0}' data-id='text_{1}' name='{2}'/>", this.SelectedText.Model, strControlID, this.SelectedText.Name));
 
@@ -100,11 +111,11 @@ namespace UI.Views.Shared.TagHelpers
             sb("<script type='text/javascript'>");
             _sb.Append(string.Format("var c{0}=", strControlID));
             _sb.Append("{");
-            _sb.Append(string.Format("controlid: '{0}',posturl: '/TheCombo/GetHtml4TheCombo',entity:'{1}',param1: '{2}',defvalue: '{3}',deftext: '{4}',on_after_change: '{5}',viewflag: '{6}',filterflag: '{7}',placeholder: '{8}',masterprefix:'{9}',masterpid:{10}",strControlID,this.Entity,this.Param1,_SelectedValue.ToString(),this.SelectedText.Model,this.Event_After_ChangeValue,this.ViewFlag,this.FilterFlag,this.PlaceHolder,this.masterprefix,this.masterpid));
+            _sb.Append(string.Format("controlid: '{0}',posturl: '/TheCombo/GetHtml4TheCombo',entity:'{1}',param1: '{2}',defvalue: '{3}',deftext: '{4}',on_after_change: '{5}',viewflag: '{6}',filterflag: '{7}',placeholder: '{8}',masterprefix:'{9}',masterpid:{10}", strControlID, this.Entity, this.Param1, _SelectedValue.ToString(), this.SelectedText.Model, this.Event_After_ChangeValue, this.ViewFlag, this.FilterFlag, this.PlaceHolder, this.masterprefix, this.masterpid));
             _sb.Append("};");
             sb("");
             sb("");
-            sb(string.Format("mycombo_init(c{0})",strControlID));
+            sb(string.Format("mycombo_init(c{0})", strControlID));
 
             sb("</script>");
 

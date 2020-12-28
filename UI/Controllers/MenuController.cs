@@ -46,36 +46,41 @@ namespace UI.Controllers
             DIV();
             AMI("Odhlásit se", "/Home/logout");
 
-            return FlushResult_NAVLINKs();
+            return FlushResult_UL(true);
         }
-        public string CurrentUserMenu()
+        public string CurrentUserMyProfile()
         {                
-            AMI("Aktuální stránku uložit jako domovskou", "javascript:_save_as_home_page()");
+            AMI("Aktuální stránku uložit jako domovskou", "javascript:_save_as_home_page()",null,null,null, "k-i-heart-outline");
             if (Factory.CurrentUser.j03HomePageUrl !=null)
             {
                 if (Factory.CurrentUser.j04ViewUrl_Page == null || Factory.CurrentUser.j03HomePageUrl.ToLower() != Factory.CurrentUser.j04ViewUrl_Page.ToLower())
                 {
-                    AMI("Vyčistit odkaz na domovskou stránku", "javascript:_clear_home_page()");                    
+                    AMI("Vyčistit odkaz na domovskou stránku", "javascript:_clear_home_page()",null,null,null, "k-i-heart-outline k-flip-v");                    
                 }                    
             }
             if (Factory.CurrentUser.j03HomePageUrl != null)
             {
-                AMI("Tovární HOME stránka", "/Dashboard/Widgets");
+                AMI("Tovární HOME stránka", "/Dashboard/Widgets",null,null,null, "k-i-star-outline");
             }
             DIV();
-            AMI("Můj profil", "/Home/MyProfile");
-            AMI("Odeslat zprávu", "javascript:_sendmail()");
-            AMI("Změnit přístupové heslo", "/Home/ChangePassword");
+            if (Factory.CurrentUser.TestPermission(BO.j05PermValuEnum.SendMail))
+            {
+                AMI("Můj profil", "/Home/MyProfile",null,null,null, "k-i-user");
+                AMI("Odeslat zprávu", "javascript:_sendmail()",null,null,null, "k-i-email");
+            }
+            
+            AMI("Změnit přístupové heslo", "/Home/ChangePassword",null,null,null, "k-i-password");
             DIV();
             AMI("Vyplnit anketní formulář", Factory.App.UiftUrl,null,null,"_blank");
             DIV();
-            AMI("Nápověda", "javascript: _window_open('/x51/Index')");
+            AMI("Nápověda", "javascript: _window_open('/x51/Index')",null,null,null, "k-i-question");
             //AMI("O aplikaci", "/Home/About");
             DIV();
-            AMI("Odhlásit se", "/Home/logout");
+            AMI("Odhlásit se", "/Home/logout",null,null,null, "k-i-logout");
 
-           
-            return FlushResult_NAVLINKs();
+
+
+            return FlushResult_UL(true);
         }
         public string CurrentUserLangIndex()
         {
@@ -91,9 +96,9 @@ namespace UI.Controllers
                 }
                 
             }
-            return FlushResult_NAVLINKs();            
+            return FlushResult_UL(false);            
         }
-        public string CurrentUserFontMenu()
+        public string CurrentUserFontSize()
         {
             
             for (int i = 1; i <= 4; i++)
@@ -103,11 +108,11 @@ namespace UI.Controllers
                 if (i == 3) s = Factory.tra("Větší");
                 if (i == 4) s = Factory.tra("Velké");
                 if (Factory.CurrentUser.j03FontStyleFlag == i) s += "&#10004;";
-                AMI_NOTRA(s, string.Format("javascript: save_fontstyle_menu({0})",i));
+                AMI_NOTRA(s, string.Format("javascript: save_fontsize_menu({0})", i));
                 
             }
           
-            return FlushResult_NAVLINKs();
+            return FlushResult_UL(false);
         }
         public string AdminMenu()
         {
@@ -140,7 +145,7 @@ namespace UI.Controllers
             //    AMI("Nástěnka", "/Admin/NoticeBoard");
             //}
 
-            return FlushResult_NAVLINKs();
+            return FlushResult_UL(false);
         }
         public string AdminWorkflow(string prefix)
         {
@@ -149,7 +154,7 @@ namespace UI.Controllers
 
             handle_selected_item(prefix);
 
-            return FlushResult_UL();
+            return FlushResult_UL(true);
         }
         public string AdminForms(string prefix)
         {            
@@ -167,7 +172,7 @@ namespace UI.Controllers
 
             handle_selected_item(prefix);
 
-            return FlushResult_UL();
+            return FlushResult_UL(false);
         }
         public string AdminUsers(string prefix)
         {
@@ -201,7 +206,7 @@ namespace UI.Controllers
 
             handle_selected_item(prefix);
 
-            return FlushResult_UL();
+            return FlushResult_UL(false);
         }
         public string AdminCiselniky(string prefix)
         {                        
@@ -270,7 +275,7 @@ namespace UI.Controllers
 
             handle_selected_item(prefix);
 
-            return FlushResult_UL();
+            return FlushResult_UL(false);
         }
         private string url_ciselniky(string prefix)
         {
@@ -334,7 +339,7 @@ namespace UI.Controllers
                 
             }            
 
-            return FlushResult_NAVLINKs();
+            return FlushResult_UL(false);
         }
         public string A03Menu(string userdevice)
         {
@@ -353,7 +358,7 @@ namespace UI.Controllers
                 AMI("Grid 1", "/TheGrid/FlatView?prefix=a03");
             }           
             
-            return FlushResult_NAVLINKs();
+            return FlushResult_UL(false);
         }
         public string J02Menu(string userdevice)
         {
@@ -370,7 +375,7 @@ namespace UI.Controllers
             //DIV();
             //AMI("Učitelé", "/TheGrid/FlatView?prefix=k01");
 
-            return FlushResult_NAVLINKs();
+            return FlushResult_UL(false);
         }
         public string H04Menu()
         {
@@ -379,7 +384,7 @@ namespace UI.Controllers
             AMI("Stránka", "/h04/ThePage");            
             AMI("Grid 1", "/TheGrid/FlatView?prefix=h04");
 
-            return FlushResult_NAVLINKs();
+            return FlushResult_UL(false);
         }
         public string X31Menu()
         {
@@ -392,7 +397,7 @@ namespace UI.Controllers
                 AMI("Statistiky", "/Stat/Index");
             }
 
-            return FlushResult_NAVLINKs();
+            return FlushResult_UL(false);
         }
         public string ContextMenu(string entity,int pid, string flag)
         {            
@@ -807,7 +812,7 @@ namespace UI.Controllers
             //}
           
 
-            return FlushResult_UL();
+            return FlushResult_UL(false);
         }
         private void RenderAkceSeVztahem(string strMenuParentID, BO.a01Event recCurrentA01,IEnumerable<BO.a24EventRelation> lisA24)
         {
@@ -839,9 +844,9 @@ namespace UI.Controllers
 
 
 
-        private void AMI(string strName,string strUrl, string strParentID = null,string strID=null, string strTarget = null)
+        private void AMI(string strName,string strUrl, string strParentID = null,string strID=null, string strTarget = null, string icon = null)
         {            
-            _lis.Add(new BO.MenuItem() { Name = Factory.tra(strName), Url = strUrl,Target=strTarget,ID=strID,ParentID=strParentID });
+            _lis.Add(new BO.MenuItem() { Name = Factory.tra(strName), Url = strUrl,Target=strTarget,ID=strID,ParentID=strParentID,Icon=icon });
         }
         private void AMI_NOTRA(string strName, string strUrl, string strParentID = null, string strID = null, string strTarget = null)
         {           
@@ -860,14 +865,13 @@ namespace UI.Controllers
             _lis.Add(new BO.MenuItem() { IsHeader = true, Name = BO.BAS.OM2(strName, 100)+":" });
         }
 
-        private string FlushResult_UL()
+        private string FlushResult_UL(bool bolSupportIcons)
         {
             var sb = new System.Text.StringBuilder();
-
-            sb.AppendLine("<ul style='border:0px;'>");
-            foreach(var c in _lis.Where(p=>p.ParentID==null))
-            {                
-                if (c.IsDivider==true)
+            
+            foreach (var c in _lis.Where(p => p.ParentID == null))
+            {
+                if (c.IsDivider == true)
                 {
                     if (c.Name == null)
                     {
@@ -877,7 +881,7 @@ namespace UI.Controllers
                     {
                         sb.Append("<div class='hr-text'>" + c.Name + "</div>");
                     }
-                    
+
                 }
                 else
                 {
@@ -888,6 +892,16 @@ namespace UI.Controllers
                     else
                     {
                         string strStyle = "";
+                        string strImg = "<span style='margin-left:10px;'></span>";
+                        if (bolSupportIcons)
+                        {
+                            strImg = "<span class='k-icon' style='width:30px;'></span>";
+                            if (c.Icon != null)
+                            {
+                                strImg = string.Format("<span class='k-icon {0}' style='width:30px;'></span>", c.Icon);
+                            }
+                        }
+                        
                         if (c.IsActive == true)
                         {
                             strStyle = " style='background-color: #ADD8E6;' id='menu_active_item'";
@@ -904,11 +918,11 @@ namespace UI.Controllers
                             sb.Append(string.Format("<li{0}><a>{1}</a>", strStyle, c.Name));
                         }
                         else
-                        {                            
+                        {
                             if (c.Target != null) c.Target = " target='" + c.Target + "'";
-                            sb.Append(string.Format("<li{0}><a href=\"{1}\"{2}>{3}</a>", strStyle, c.Url, c.Target, c.Name));
-                                                       
-                            
+                            sb.Append(string.Format("<li{0}><a class='dropdown-item px-0' href=\"{1}\"{2}>{3}{4}</a>", strStyle, c.Url, c.Target, strImg, c.Name));
+
+
                         }
                         if (bolHasChilds)
                         {
@@ -923,7 +937,7 @@ namespace UI.Controllers
                                 else
                                 {
                                     if (cc.Target != null) cc.Target = " target='" + cc.Target + "'";
-                                    sb.Append(string.Format("<li><a href=\"{0}\"{1}>{2}</a></li>", cc.Url, cc.Target, cc.Name));
+                                    sb.Append(string.Format("<li><a class='dropdown-item' href=\"{0}\"{1}>{2}</a></li>", cc.Url, cc.Target, cc.Name));
                                 }
 
                             }
@@ -932,42 +946,40 @@ namespace UI.Controllers
 
                         sb.Append("</li>");
                     }
-                    
-                }                                
 
-            }
-
-            sb.AppendLine("</ul>");
-
-            return sb.ToString();
-        }
-        private string FlushResult_NAVLINKs()
-        {
-            var sb = new System.Text.StringBuilder();
-
-            foreach (var c in _lis)
-            {
-                if (c.Name == null)
-                {
-                    sb.Append("<hr>");  //divider
-                }
-                else
-                {
-                    if (c.Url == null)
-                    {
-                        sb.Append(string.Format("<span>{0}</span>", c.Name));
-                    }
-                    else
-                    {
-                        if (c.Target != null) c.Target = " target='" + c.Target + "'";
-                        sb.Append(string.Format("<a class='nav-link' style='color:black;' href=\"{0}\"{1}>{2}</a>", c.Url, c.Target, c.Name));
-                    }
                 }
 
             }
 
-
             return sb.ToString();
         }
+        //private string FlushResult_NAVLINKs()
+        //{
+        //    var sb = new System.Text.StringBuilder();
+
+        //    foreach (var c in _lis)
+        //    {
+        //        if (c.Name == null)
+        //        {
+        //            sb.Append("<hr>");  //divider
+        //        }
+        //        else
+        //        {
+        //            if (c.Url == null)
+        //            {
+        //                sb.Append(string.Format("<span>{0}</span>", c.Name));
+        //            }
+        //            else
+        //            {
+        //                if (c.Target != null) c.Target = " target='" + c.Target + "'";
+        //                sb.Append(string.Format("<a class='nav-link' style='color:black;' href=\"{0}\"{1}>{2}</a>", c.Url, c.Target, c.Name));
+        //            }
+        //        }
+
+        //    }
+
+
+        //    return sb.ToString();
+        //}
     }
 }

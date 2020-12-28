@@ -9,7 +9,7 @@
 @addTagHelper *, UI
 
     <div class="modal_record_container">
-        <div class="form-row">
+        <div class="row">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Stav"):</label>
             <div class="col-sm-9 col-md-8">
                 <myval value="@Model.Rec.b02Name"></myval>
@@ -22,7 +22,7 @@
             }
             
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Workflow šablona"):</label>
             <div class="col-sm-9 col-md-8">
                 <myval value="@Model.Rec.b01Name"></myval>
@@ -34,13 +34,13 @@
                 </div>
             }
         </div>
-        <div class="form-row">
+        <div class="row">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kód"):</label>
             <div class="col-sm-4 col-md-4">
                 <myval value="@Model.Rec.b02Ident"></myval>
             </div>
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <div class="col-sm-12 col-md-12" style="background-color:@(Model.Rec.b02Color);">
                 @_f.tra("Barva")
 

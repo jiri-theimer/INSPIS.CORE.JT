@@ -7,6 +7,20 @@ namespace UI.Models
 {
     public class BaseViewModel
     {
+        private string _pagetitle;
+        public string PageTitle
+        {
+            get
+            {
+                return _pagetitle;
+            }
+            set
+            {
+                _pagetitle = value;
+            }
+        }
+        
+
         public string Javascript_CallOnLoad { get; set; }
         
        

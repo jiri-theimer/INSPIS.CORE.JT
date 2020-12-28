@@ -52,11 +52,9 @@ namespace UI.Views.Shared.TagHelpers
             {
                 sb.Append(string.Format("<input type='time' class='form-control' placeholder='hh:mm' value='{0}' id='{1}' onchange='datepicker_time_change(this)' for-id='{2}' title='Přesný čas'/>", _TimeValue, strControlID+"_Time",strControlID));
             }
+                        
+            sb.Append(string.Format("<button id='{0}cmd' type='button' class='btn btn-outline-secondary px-1 py-0' tabindex='-1' onclick='datepicker_button_click({1})'><span class='k-icon k-i-calendar' style='color:#1E2DE0;'></span></button>", strControlID,"\""+strControlID+"helper"+"\""));
             
-
-            sb.Append("<div class='input-group-append'>");
-            sb.Append(string.Format("<button id='{0}cmd' type='button' class='btn btn-outline-secondary px-1 py-0' tabindex='-1' style='font-size:14px;' onclick='datepicker_button_click({1})'>&#128197;</button>", strControlID,"\""+strControlID+"helper"+"\""));
-            sb.Append("</div>");
             sb.AppendLine("</div>");
             if (includetime == true)
             {

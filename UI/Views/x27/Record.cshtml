@@ -15,14 +15,14 @@
 
 <div class="modal_record_container">
 
-    <div class="form-row">
+    <div class="row">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Funkce"):</label>
         <div class="col-sm-11 col-md-10">
             <input class="form-control" asp-for="Rec.x27Name" />
             <span asp-validation-for="Rec.x27Name" class="text-danger"></span>
         </div>
     </div>
-    <div class="form-row my-2">
+    <div class="row my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Návratová hodnota"):</label>
         <div class="col-sm-3 col-md-3">
             <select asp-for="Rec.x27Returns" class="form-control">
@@ -35,7 +35,7 @@
 
     </div>
 
-    <div class="form-row my-2">
+    <div class="row my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Parametry"):</label>
         <div class="col-sm-11 col-md-10">
             <textarea asp-for="Rec.x27Parameters" class="form-control" placeholder="@_f.tra("Parametry")"></textarea>
@@ -44,7 +44,7 @@
 
 
     </div>
-    <div class="form-row my-2">
+    <div class="row my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Index pořadí"):</label>
         <div class="col-sm-1 col-md-1">
             <mynumber asp-for="Rec.x27Ordinal" decimal-digits="0"></mynumber>
@@ -52,7 +52,7 @@
 
     </div>
 
-    <div class="form-row my-2">
+    <div class="row my-2">
         <textarea asp-for="Rec.x27Description" class="form-control" placeholder="@_f.tra("Podrobný popis")"></textarea>
         <span asp-validation-for="Rec.x27Description" class="text-danger"></span>
     </div>

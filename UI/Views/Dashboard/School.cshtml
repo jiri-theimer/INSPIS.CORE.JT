@@ -9,7 +9,7 @@
 @addTagHelper *, UI
 
 <div id="divHeader" class="row py-1 bg-light m-0 mb-4">
-    <div class="col-auto pl-0 pr-0">
+    <div class="col-auto">
         <ul class="nav nav-tabs nonmobile nontablet" style="border:none;">
             <li class="nav-item onetab">
                 <a class="nav-link active" data-toggle="tab">@(Model.Rec.FullNameAsc)</a>
@@ -18,10 +18,10 @@
 
 
     </div>
-    <div class="nonmobile nontablet">
-        <a class="btn btn-light" href="/Dashboard/School" title="@_f.tra("Občerstvit")"><img src="~/images/refresh.png" /></a>
+    <div class="nonmobile nontablet col-auto">
+        <a class="btn btn-light" href="/Dashboard/School" title="@_f.tra("Občerstvit")"><span class="k-icon k-i-reload"></span></a>
     </div>
-    <div class="col-auto pl-0">
+    <div class="col-auto">
         <mydropdown asp-for="@Model.a03ID" datasource="@Model.lisA03" textfield="NamePlusRedizo" valuefield="pid" event_after_changevalue="change_a03id"></mydropdown>
     </div>
     <div class="col-auto">
@@ -41,7 +41,7 @@
                 @tab.Name
                 @if (tab.Badge != null)
                     {
-                <span class="badge badge-primary">@tab.Badge</span>
+                <span class="badge bg-primary">@tab.Badge</span>
                     }
             </a>
         </li>

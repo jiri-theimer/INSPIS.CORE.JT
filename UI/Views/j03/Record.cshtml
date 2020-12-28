@@ -16,7 +16,7 @@
 <input type="hidden" asp-for="@Model.Rec.j03AdminRoleValue" />
 <div class="modal_record_container">
 
-    <div class="form-row">
+    <div class="row">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Uživatelské jméno (Login)"):</label>
         <div class="col-sm-5 col-md-4">
             @if (Model.rec_pid > 0 && Model.IsChangeLogin == false)
@@ -44,7 +44,7 @@
             }
         </div>
     </div>
-    <div class="form-row my-2">
+    <div class="row my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Aplikační role"):</label>
         <div class="col-sm-5 col-md-4">
             <mycombo entity="j04UserRole" asp-for="Rec.j04ID" selectedtext="Rec.j04Name" view-flag="2"></mycombo>
@@ -62,10 +62,10 @@
             }
         </div>
     </div>
-    <div class="form-row my-2">
+    <div class="row my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Jazyk"):</label>
         <div class="col-sm-5 col-md-4">
-            <select asp-for="Rec.j03LangIndex" class="form-control">
+            <select asp-for="Rec.j03LangIndex" class="form-select">
                 <option value="0">Česky</option>
                 
                 <option value="2">Українська</option>
@@ -77,14 +77,14 @@
     @if (Model.IsDefinePassword)
     {
         <div id="divNewPwd" style="margin-top:10px;">
-            <div class="form-row">
+            <div class="row">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Přístupové heslo"):</label>
                 <div class="col-sm-6 col-md-5">
                     <input class="form-control" style="background-color:lightgoldenrodyellow;" autocomplete="off" asp-for="@Model.NewPassword" />
                     <span asp-validation-for="@Model.NewPassword" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-row">
+            <div class="row">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Ověření hesla"):</label>
                 <div class="col-sm-6 col-md-5">
                     <input class="form-control" style="background-color:lightgoldenrodyellow;" autocomplete="off" asp-for="@Model.VerifyPassword" />
@@ -118,7 +118,7 @@
         @if (Model.user_profile_oper == "create")
         {
             <div id="divPersonalProfileCreate" class="card-body">
-                <div class="form-row">
+                <div class="row">
                     <div class="col-sm-2 col-md-2">
                         <myautocomplete asp-for="RecJ02.j02TitleBeforeName" o15flag="1" placeholder="@_f.tra("Titul")"></myautocomplete>
 
@@ -137,7 +137,7 @@
                     </div>
 
                 </div>
-                <div class="form-row my-2">
+                <div class="row my-2">
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Osobní kód"):</label>
                     <div class="col-sm-4 col-md-3">
                         <input class="form-control" asp-for="RecJ02.j02PID" />
@@ -150,7 +150,7 @@
                     </div>
                 </div>
 
-                <div class="form-row my-2">
+                <div class="row my-2">
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Mobilní telefon"):</label>
                     <div class="col-sm-4 col-md-3">
                         <input class="form-control" type="tel" asp-for="RecJ02.j02Mobile" />
@@ -170,7 +170,7 @@
         <div class="dropdown">
             @if (Model.user_profile_oper == "create" || Model.user_profile_oper == "bind")
             {
-                <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                     @_f.tra("Uložit změny a odeslat zprávu")
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -191,7 +191,7 @@
 
     <div id="divOther" style="display:none;padding:20px;">
        
-        <div class="form-row">
+        <div class="row">
             <div class="col">
                 <input type="checkbox" asp-for="Rec.j03IsDebugLog" />
                 <label class="col-form-label" for="Rec_j03IsDebugLog">@_f.tra("DEBUG loggging (for IT)")</label>

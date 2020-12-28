@@ -8,7 +8,7 @@
 
 
     <div class="modal_record_container">
-        <div class="form-row">
+        <div class="row">
             <div class="col-sm-3 col-md-2">
                 <myval value="@Model.Rec.j04Name"></myval>
 
@@ -25,7 +25,7 @@
                 </div>
             }
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <div class="col-sm-4 col-md-4">
                 <input type="checkbox" asp-for="Rec.j04IsAllowInSchoolAdmin" />
                 <label class="col-form-label" for="Rec_j04IsAllowInSchoolAdmin">@_f.tra("Role dostupná ve správě školních účtů")</label>
@@ -34,7 +34,7 @@
             {
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Vztah role k portálu"):</label>
                 <div class="col-sm-4 col-md-4">
-                    <select asp-for="@Model.Rec.j04PortalFaceFlag" class="form-control" disabled="disabled">
+                    <select asp-for="@Model.Rec.j04PortalFaceFlag" class="form-select" disabled="disabled">
                         <option value="CSI">ČŠI uživatel</option>
                         <option value="School">@_f.tra("Škola")</option>
                         <option value="Founder">@_f.tra("Zřizovatel školy")</option>
@@ -45,7 +45,7 @@
             }
 
         </div>
-        <div class="form-row my-2">
+        <div class="row my-2">
             <div class="col-sm-4 col-md-4">
                 <input type="checkbox" asp-for="Rec.j04IsAllowedAllEventTypes" />
                 <label class="col-form-label" for="Rec_j04IsAllowedAllEventTypes">@_f.tra("Možnost zakládat i číst všechny typy akcí")</label>

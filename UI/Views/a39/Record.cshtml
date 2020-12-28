@@ -17,17 +17,17 @@
     <div class="alert alert-primary" role="alert">
         @Model.RecA03.NamePlusRedizo
     </div>
-    <div class="form-row">
+    <div class="row">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Vztah"):</label>
         <div class="col-sm-10 col-md-10">
-            <select asp-for="@Model.Rec.a39RelationFlag" class="form-control">
+            <select asp-for="@Model.Rec.a39RelationFlag" class="form-select">
                 <option value="Contact">@_f.tra("Kontaktní osoba")</option>
                 <option value="Employee">@_f.tra("Zaměstnanec")</option>
             </select>
         </div>
     </div>
 
-    <div class="form-row my-2">
+    <div class="row my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Osobní profil"):</label>
         <div class="col-sm-11 col-md-10">
             <mycombo entity="j02Person" asp-for="Rec.j02ID" selectedtext="@Model.Person" filter-flag="1"></mycombo>
@@ -35,7 +35,7 @@
 
     </div>
 
-    <div class="form-row my-2">
+    <div class="row my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Role"):</label>
         <div class="col-sm-11 col-md-10">
             <mycombo entity="j04UserRole" asp-for="Rec.j04ID_Explicit" selectedtext="@Model.RoleName" param1="institution"></mycombo>
@@ -44,7 +44,7 @@
     </div>
     @if (_f.App.Implementation == "Default")
     {
-        <div class="form-row my-2">
+        <div class="row my-2">
             <div class="col-sm-8 col-md-8">
                 <input type="checkbox" asp-for="Rec.a39IsAllowInspisWS" />
                 <label class="col-form-label" for="Rec_a39IsAllowInspisWS">@_f.tra("Oprávnění k integračním službám se školním IS")</label>
@@ -54,7 +54,7 @@
     }
 
 
-    <div class="form-row">
+    <div class="my-2">
         <textarea asp-for="Rec.a39Description" class="form-control" placeholder="@_f.tra("Poznámka")"></textarea>
         <span asp-validation-for="Rec.a39Description" class="text-danger"></span>
     </div>

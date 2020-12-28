@@ -33,7 +33,7 @@
                 <button type="button" class="btn btn-sm btn-primary" onclick="handle_f06id_append()">@_f.tra("Přidat k uložení")</button>
             </div>
             <div class="card-body">
-                <div class="form-row my-2">
+                <div class="row my-2">
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Vybrat formulář"):</label>
                     <div class="col-sm-9 col-md-8">
                         <mycombo entity="f06Form" asp-for="@Model.SelectedF06ID" selectedtext="@Model.SelectedForm" placeholder="@_f.tra("Vybrat formulář")..." masterprefix="a08" masterpid="@Model.RecA01.a08ID"></mycombo>
@@ -43,19 +43,19 @@
                         <mynumber asp-for="@Model.SelectedKolikrat" decimal-digits="0"></mynumber>
                     </div>
                 </div>
-                <div class="form-row">
+                <div class="row">
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Činnost (součást) školy"):</label>
                     <div class="col-sm-11 col-md-10">
                         <mycombo entity="a37InstitutionDepartment" asp-for="@Model.SelectedA37ID" selectedtext="@Model.SelectedA37Name" view-flag="2" masterprefix="a03" masterpid="@Model.RecA01.a03ID"></mycombo>
                     </div>
                 </div>
-                <div class="form-row my-2">
+                <div class="row my-2">
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Skupina formulářů v akci"):</label>
                     <div class="col-sm-11 col-md-10">
                         <mycombo entity="a25EventFormGroup" asp-for="@Model.SelectedA25ID" selectedtext="@Model.SelectedA25Name" view-flag="2" masterprefix="a01" masterpid="@Model.RecA01.pid"></mycombo>
                     </div>
                 </div>
-                <div class="form-row my-2">
+                <div class="row my-2">
                     <textarea asp-for="@Model.a11Description" class="form-control" placeholder="@_f.tra("Poznámka")"></textarea>
                     <span asp-validation-for="@Model.a11Description" class="text-danger"></span>
                 </div>

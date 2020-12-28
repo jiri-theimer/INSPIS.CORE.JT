@@ -171,6 +171,7 @@ namespace BL
                 if (lisA11.Where(p => p.a11IsSimulation == true).Count() > 0)
                 {
                     bolSimulation = true;
+                    lisA35 = null;
                 }
             }
             if (lisA41 != null)
@@ -378,6 +379,10 @@ namespace BL
                 if (c.a01DateFrom > c.a01DateUntil)
                 {
                     this.AddMessage("[Datum do] musí být větší než [Datum od]."); return false;
+                }
+                if ((Convert.ToDateTime(c.a01DateUntil) - Convert.ToDateTime(c.a01DateFrom)).Days > 100)
+                {
+                    this.AddMessage("Časový plán akce může být maximálně 100 dní."); return false;
                 }
             }
             else

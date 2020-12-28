@@ -271,7 +271,7 @@
 
                             </td>
                             <td style="width:130px;">
-                                <select asp-for="@Model.lisJ73[i].j73Operator" class="form-control" onchange="handle_queryoperator_change(this)">
+                                <select asp-for="@Model.lisJ73[i].j73Operator" class="form-select" onchange="handle_queryoperator_change(this)">
                                     @if (Model.lisJ73[i].FieldType == "number")
                                     {
                                         <option value="INTERVAL">@_f.tra("Je interval")</option>
@@ -330,7 +330,7 @@
                                     }
                                     @if (Model.lisJ73[i].FieldType == "number")
                                     {
-                                        <div class="form-row">
+                                        <div class="row">
                                             <div class="col-auto">
                                                 <mynumber asp-for="@Model.lisJ73[i].j73Num1"></mynumber>
                                             </div>
@@ -343,7 +343,7 @@
                                     }
                                     @if (Model.lisJ73[i].FieldType == "date")
                                     {
-                                        <div class="form-row">
+                                        <div class="row">
                                             <div class="col-auto" title="@_f.tra("Pojmenované období")">
                                                 <mydropdown asp-for="@Model.lisJ73[i].j73DatePeriodFlag" datasource="@Model.lisPeriods" valuefield="pid" textfield="Header" isfirstemptyrow="false"></mydropdown>
 
@@ -363,7 +363,7 @@
                                     }
                                     @if (Model.lisJ73[i].FieldType == "bool")
                                     {
-                                        <select asp-for="@Model.lisJ73[i].j73Value" class="form-control">
+                                        <select asp-for="@Model.lisJ73[i].j73Value" class="form-select">
                                             <option value="1">@_f.tra("ANO")</option>
                                             <option value="0">@_f.tra("NE")</option>
                                         </select>
@@ -371,7 +371,7 @@
                                     }
                                     @if (Model.lisJ73[i].FieldType == "bool1")
                                     {
-                                        <select asp-for="@Model.lisJ73[i].j73Value" class="form-control">
+                                        <select asp-for="@Model.lisJ73[i].j73Value" class="form-select">
                                             <option value="1">@_f.tra("ANO")</option>
 
                                         </select>

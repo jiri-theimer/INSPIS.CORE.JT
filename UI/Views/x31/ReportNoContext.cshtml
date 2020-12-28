@@ -9,7 +9,7 @@
 
 <!DOCTYPE html>
 
-<html lang="cs" style="@_f.CurrentUser.getFontStyle()">
+<html lang="cs">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -18,6 +18,7 @@
     <link href="~/lib/datepicker/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
     <link href="~/lib/qtip/jquery.qtip.css" rel="stylesheet" type="text/css" />
 
+    <link rel="stylesheet" href="~/css/@_f.CurrentUser.getFontSizeCss()" />
     <link rel="stylesheet" href="~/css/site.css" />
 
     <link href="/kendo/styles/kendo.common.min.css" rel="stylesheet" type="text/css" />
@@ -26,8 +27,7 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/lib/modal_bootstrap/bootstrap-show-modal.js"></script>
-
+   
     <script src="~/lib/datepicker/bootstrap-datepicker.min.js"></script>
     <script src="~/lib/datepicker/bootstrap-datepicker.cs.min.js"></script>
     <script src="~/lib/qtip/jquery.qtip.min.js"></script>
@@ -105,7 +105,7 @@
 
             <input type="hidden" asp-for="@Model.IsPeriodFilter" />
 
-            <div class="form-row">
+            <div class="row">
                 <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Tisková sestava"):</label>
                 <div class="col-sm-9 col-md-9">
 
@@ -128,7 +128,7 @@
             </div>
             @if (Model.lisJ72 != null)
             {
-                <div class="form-row">
+                <div class="row">
                     <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Pojmenovaný GRID filtr"):</label>
                     <div class="col-sm-5 col-md-5">
                         <mydropdown asp-for="@Model.SelectedJ72ID" datasource="@Model.lisJ72" textfield="j72Name" valuefield="pid" firstemptyrowvalue="0" isfirstemptyrow="true" event_after_changevalue="j72id_change"></mydropdown>

@@ -11,7 +11,7 @@
 
 
 <div class="modal_record_container">
-    <div class="form-row">
+    <div class="row">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
         <div class="col-sm-9 col-md-8">
             <input class="form-control" asp-for="Rec.f21Name" />
@@ -21,7 +21,7 @@
             ID: <span>@(Model.Rec.pid)</span>
         </div>
     </div>
-    <div class="form-row my-2">
+    <div class="row my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("STAT ID"):</label>
         <div class="col-sm-5 col-md-4">
             <input class="form-control" asp-for="Rec.f21ExportValue" />
@@ -32,21 +32,21 @@
         </div>
 
     </div>
-    <div class="form-row my-2">
+    <div class="row my-2">
         <div class="col-sm-4 col-md-4">
             <input type="checkbox" asp-for="Rec.f21IsCommentAllowed" />
             <label class="col-form-label" for="Rec_f21IsCommentAllowed">@_f.tra("Povolit komentování odpovědi")</label>
         </div>
 
     </div>
-    <div class="form-row my-2">
+    <div class="row my-2">
         <div class="col-sm-4 col-md-4">
             <input type="checkbox" asp-for="Rec.f21IsNegation" />
             <label class="col-form-label" for="Rec_f21IsNegation">@_f.tra("Negovat ostatní jednotky odpovědi [CHECKBOXLIST]")</label>
         </div>
     </div>
 
-    <div class="form-row my-2">
+    <div class="row my-2">
         <textarea asp-for="Rec.f21Description" class="form-control" placeholder="@_f.tra("Podrobný popis")"></textarea>
         <span asp-validation-for="Rec.f21Description" class="text-danger"></span>
     </div>

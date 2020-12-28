@@ -32,7 +32,7 @@
 <div class="modal_record_container">
     <div class="tab-content">
         <div class="tab-pane" id="tab1">
-            <div class="form-row">
+            <div class="row">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název formuláře"):</label>
                 <div class="col-sm-9 col-md-8">
                     <input class="form-control" asp-for="Rec.f06Name" />
@@ -42,7 +42,7 @@
                     ID: <span>@(Model.Rec.pid)</span>
                 </div>
             </div>
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typ formuláře"):</label>
                 <div class="col-sm-9 col-md-8">
                     <mycombo entity="f12FormType" asp-for="Rec.f12ID" selectedtext="@Model.SelectedF12Name" view-flag="2"></mycombo>
@@ -53,7 +53,7 @@
 
                 </div>
             </div>
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Uzamykání"):</label>
                 <div class="col-sm-5 col-md-4">
                     <select asp-for="Rec.f06UserLockFlag" class="form-control">
@@ -73,20 +73,20 @@
                 </div>
             </div>
             <hr />
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Oprávnění k šifrovaným otázkám"):</label>
                 <div class="col-sm-11 col-md-10">
                     <mycombochecklist asp-for="@Model.j04IDs" entity="j04UserRole" selectedtext="@Model.j04Names" placeholder="@_f.tra("Vybrat role")..."></mycombochecklist>
                 </div>
             </div>
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Svázané tiskové sestavy"):</label>
                 <div class="col-sm-11 col-md-10">
                     <mycombochecklist asp-for="@Model.x31IDs" entity="x31Report" selectedtext="@Model.x31Names" placeholder="@_f.tra("Vybrat sestavy")..."></mycombochecklist>
                 </div>
             </div>
             <hr />
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <div class="col-sm-4 col-md-4">
                     <input type="checkbox" asp-for="Rec.f06IsA37Required" />
                     <label class="col-form-label" for="Rec_f06IsA37Required">@_f.tra("Povinná vazba na IZO školy")</label>
@@ -106,32 +106,32 @@
 
 
             </div>
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <div class="col-auto">
                     <input type="checkbox" asp-for="Rec.f06IsA01ClosedStrict" />
                     <label class="col-form-label" for="Rec_f06IsA01ClosedStrict">@_f.tra("Formulář nelze vyplňovat, pokud je uzavřena jeho akce")</label>
                 </div>                                
 
             </div>
-            <div class="form-row">
+            <div class="row">
                 <div class="col-auto">
                     <input type="checkbox" asp-for="Rec.f06IsA01PeriodStrict" />
                     <label class="col-form-label" for="Rec_f06IsA01PeriodStrict">@_f.tra("Formulář lze vyplňovat pouze v plánovaném období akce")</label>
                 </div>
             </div>
-            <div class="form-row">
+            <div class="row">
                 <div class="col-auto">
                     <input type="checkbox" asp-for="Rec.f06IsReportDialog" />
                     <label class="col-form-label" for="Rec_f06IsReportDialog">@_f.tra("U vyplňování formuláře nabízet funkci [Tisková sestava]")</label>
                 </div>
             </div>
-            <div class="form-row">
+            <div class="row">
                 <div class="col-auto">
                     <input type="checkbox" asp-for="Rec.f06IsExportToDoc" />
                     <label class="col-form-label" for="Rec_f06IsExportToDoc">@_f.tra("Povolit funkci [Exportovat do MS Word]")</label>
                 </div>
             </div>
-            <div class="form-row">
+            <div class="row">
                 <div class="col-auto">
                     <input type="checkbox" asp-for="Rec.f06IsWorkflowDialog" />
                     <label class="col-form-label" for="Rec_f06IsWorkflowDialog">@_f.tra("U vyplňování formuláře nabízet funkci [Posunout/doplnit]")</label>
@@ -139,7 +139,7 @@
                 
             </div>
             <hr />
-            <div class="form-row">
+            <div class="row">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Razor šablona"):</label>
                 <div class="col-sm-7 col-md-6">
                     <input class="form-control" asp-for="Rec.f06RazorTemplate" />
@@ -150,7 +150,7 @@
                     <label class="col-form-label" for="Rec_f06IsTemplate">@_f.tra("Vzorový formulář pro šablony otázek")</label>
                 </div>
             </div>
-            <div class="form-row my-2">
+            <div class="row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Index pořadí"):</label>
                 <div class="col-sm-1 col-md-1">
                     <mynumber asp-for="Rec.f06Ordinal" decimal-digits="0"></mynumber>

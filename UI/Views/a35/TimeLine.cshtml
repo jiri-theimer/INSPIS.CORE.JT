@@ -20,7 +20,7 @@
     <table style="min-width:1000px;">
         <tr>
             <td>
-                <select asp-for="@Model.CurYear" class="form-control" onchange="goyear(this)">
+                <select asp-for="@Model.CurYear" class="form-select" onchange="goyear(this)">
                     @foreach (var y in Model.lisYears)
                     {
                         <option value="@y">@y</option>
@@ -29,7 +29,7 @@
             </td>
             <td>
 
-                <select asp-for="@Model.CurMonth" class="form-control" onchange="gomonth(this)">
+                <select asp-for="@Model.CurMonth" class="form-select" onchange="gomonth(this)">
                     <option value="1">@_f.tra("Leden")</option>
                     <option value="2">@_f.tra("Únor")</option>
                     <option value="3">@_f.tra("Březen")</option>
@@ -46,20 +46,21 @@
 
             </td>
             <td>
-                <button type="button" class="btn btn-secondary btn-sm" title="@_f.tra("Předchozí měsíc")" onclick="goprev()">←</button>
-            </td>
-            <td>
-                <strong class="val-readonly" style="text-align:center;">@(Model.CurMonth.ToString()+" - "+Model.CurYear.ToString())</strong>
-            </td>
-            <td>
-                <button type="button" class="btn btn-secondary btn-sm" title="@_f.tra("Následující měsíc")" onclick="gonext()">→</button>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" title="@_f.tra("Předchozí měsíc")" onclick="goprev()"><span class="k-icon k-i-arrow-60-left"></span></button>
+
+                    <strong class="val-readonly" style="text-align:center;">@(Model.CurMonth.ToString()+" - "+Model.CurYear.ToString())</strong>
+
+                    <button type="button" class="btn btn-outline-secondary btn-sm" title="@_f.tra("Následující měsíc")" onclick="gonext()"><span class="k-icon k-i-arrow-60-right"></span></button>
+                </div>
+                
             </td>
 
             <td style="min-width:200px;">
                 <mycombo entity="a05Region" asp-for="@Model.a05ID" selectedtext="@Model.a05Name" view-flag="2" event_after_changevalue="change_a05id" placeholder="@_f.tra("Kraj")"></mycombo>
             </td>
             <td>
-                <select class="form-control" asp-for="@Model.PersonQueryFlag" onchange="change_personqueryflag(this)">
+                <select class="form-select" asp-for="@Model.PersonQueryFlag" onchange="change_personqueryflag(this)">
                     <option value="0"></option>
                     <option value="1">@_f.tra("Pouze přizvané osoby")</option>
                     <option value="2">@_f.tra("Kromě přizvaných osob")</option>
@@ -70,7 +71,7 @@
 
             </td>
             <td>
-                <select class="form-control" asp-for="@Model.A38QueryFlag" onchange="change_a38queryflag(this)">
+                <select class="form-select" asp-for="@Model.A38QueryFlag" onchange="change_a38queryflag(this)">
                     <option value="0"></option>
                     <option value="1">@_f.tra("Vč. rezervací NZ")</option>
                 </select>

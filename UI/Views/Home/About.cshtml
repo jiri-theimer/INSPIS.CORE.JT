@@ -2,7 +2,7 @@
 @inject BL.Factory _f
 
 @{
-    ViewData["Title"] = _f.tra("O aplikaci");
+    
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -13,7 +13,7 @@
 
 
 
-    <div class="form-row">
+    <div class="row">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
         <div class="col-sm-11 col-md-10">
             
@@ -23,7 +23,7 @@
 
     </div>
 
-    <div class="form-row my-2">
+    <div class="row my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Verze"):</label>
         <div class="col-sm-11 col-md-10">
             
@@ -35,7 +35,7 @@
 
 
 
-    <div class="form-row my-2">
+    <div class="row my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Vývoj"):</label>
         <div class="col-sm-11 col-md-10">
             
@@ -45,7 +45,7 @@
 
     </div>
 
-    <div class="form-row" style="margin-top:20px;">
+    <div class="row" style="margin-top:20px;">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Technická podpora"):</label>
         <div class="col-sm-11 col-md-10">
             @if (_f.CurrentUser.j03LiveChatTimestamp == null)

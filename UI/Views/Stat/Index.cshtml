@@ -44,7 +44,7 @@
     <input type="hidden" asp-for="@Model.GuidAddFilter" />
 
     <div class="bg-light" style="padding:10px;">
-        <div class="form-row" style="max-width:1000px;">
+        <div class="row" style="max-width:1000px;">
             <div class="col-sm-6 col-md-6">
                 <button id="cmdRunGrid" class="btn btn-success">@_f.tra("Vygenerovat výsledek do GRIDu")</button>
                 <button id="cmdRunExcel" class="btn btn-info">@_f.tra("Vygenerovat výsledek do XLS")</button>
@@ -136,7 +136,7 @@
             </div>
             @if (Model.lisJ72 != null)
             {
-                <div class="form-row my-4" style="max-width:1000px;">
+                <div class="row my-4" style="max-width:1000px;">
 
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Pojmenovaný GRID filtr"):</label>
                     <div class="col-sm-7 col-md-7">
@@ -146,7 +146,7 @@
 
                 </div>
             }
-            <div class="form-row-my-4">
+            <div class="row-my-4">
                 <div class="col-sm-2 col-md-2">
                     <button id="cmdRefreshAddQuery" type="button" class="btn btn-light" onclick="handle_submit('/Stat/Index?oper=postback')">@_f.tra("Obnovit formulářový filtr")</button>
                 </div>

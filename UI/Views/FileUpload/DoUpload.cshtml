@@ -16,19 +16,19 @@
 
     <div class="row">
 
-        <div class="col-5">
+        <div class="col-6">
             <form method="post" id="frmUpload" enctype="multipart/form-data" asp-controller="FileUpload" asp-action="DoUpload">
                 <input type="hidden" asp-for="@Model.x29ID" />
                 <input type="hidden" asp-for="@Model.Guid" />
                 <input type="hidden" asp-for="@Model.RecPid" />
 
-                <div class="form-row">
+                <div class="row">
                     <label class="col-sm-2 col-md-3 col-form-label col-form-label-sm">@_f.tra("Typ přílohy"):</label>
                     <div class="col-sm-10 col-md-9">
                         <mydropdown asp-for="@Model.o13ID" datasource="@Model.lisO13" textfield="TreeItem" valuefield="pid"></mydropdown>
                     </div>
                 </div>
-                <div class="form-row my-2">
+                <div class="row my-2">
                     <label class="col-sm-2 col-md-3 col-form-label col-form-label-sm">@_f.tra("Popis/název přílohy"):</label>
                     <div class="col-sm-10 col-md-9">
                         <input class="form-control form-control-sm" asp-for="@Model.o27Label" />
@@ -37,7 +37,7 @@
                 </div>
                 @if (Model.IsUsePressMark == true)
                 {
-                    <div class="form-row my-2">
+                    <div class="row my-2">
                         <label class="col-sm-2 col-md-3 col-form-label col-form-label-sm">@_f.tra("Číslo jednací"):</label>
                         <div class="col-sm-10 col-md-9">
                             <input class="form-control form-control-sm" asp-for="@Model.o27PressMark" />
@@ -57,7 +57,7 @@
 
             </form>
         </div>
-        <div class="col-7">
+        <div class="col-6">
             @if (Model.lisTempFiles.Count() > 0)
             {
                 <div class="card">

@@ -19,7 +19,7 @@
 
     <div class="modal_record_container">
 
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typ akce"):</label>
             <div class="col-sm-11 col-md-10">
                 <span class="val-readonly">@Model.RecA01.a10Name</span>
@@ -27,7 +27,7 @@
             </div>
         </div>
 
-        <div class="form-row my-2">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Přidat jméno"):</label>
             <div class="col-sm-11 col-md-10">
                 <mycombo entity="j02Person" asp-for="@Model.SelectedJ02ID" selectedtext="@Model.SelectedPerson" filter-flag="1" placeholder="@_f.tra("Vybrat osobu")..." event_after_changevalue="handle_j02id_append"></mycombo>

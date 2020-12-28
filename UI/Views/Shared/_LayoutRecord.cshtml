@@ -1,14 +1,9 @@
 ﻿@model BaseRecordViewModel
 @inject BL.Factory _f
 
-@{
-
-
-}
-
 <!DOCTYPE html>
 
-<html lang="cs" style="@_f.CurrentUser.getFontStyle()">
+<html lang="cs">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -16,7 +11,8 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link href="~/lib/datepicker/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
     <link href="~/lib/qtip/jquery.qtip.css" rel="stylesheet" type="text/css" />
-
+    <link rel="stylesheet" href="/kendo/styles/kendo.common.min.css" type="text/css" />
+    <link rel="stylesheet" href="~/css/@_f.CurrentUser.getFontSizeCss()" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="@_f.App.CssCustomSkin" />
     @if (_f.CurrentUser.j03GridSelectionModeFlag == 1)
@@ -27,6 +23,8 @@
     {
         <link rel="stylesheet" href="~/css/thegrid.css" />
     }
+
+
     @if (IsSectionDefined("header_content"))
     {
         @RenderSection("header_content")
@@ -35,8 +33,7 @@
 <body>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/lib/modal_bootstrap/bootstrap-show-modal.js"></script>
-
+    
     <script src="~/lib/datepicker/bootstrap-datepicker.min.js"></script>
     @switch (_f.CurrentUser.j03LangIndex)
     {
@@ -101,7 +98,7 @@
 
 
 
-    <script type="text/javascript">
+<script type="text/javascript">
         var _modal;
 
     $(document).ready(function ()
@@ -110,8 +107,9 @@
             $("#tab@(Model.ActiveTabIndex)").attr("class", "tab-pane active");
             $("#link_tab@(Model.ActiveTabIndex)").attr("class", "nav-link active");
 
-            $('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
+            $('a[data-bs-toggle="tab"]').on("shown.bs.tab", function (e) {
                 // v e.target.id je id kliknutá záložka
+
                 var tabindex = e.target.id.substring(e.target.id.length - 1, e.target.id.length);
                 $("#ActiveTabIndex").val(tabindex);
                 _resize_textareas();
@@ -212,7 +210,7 @@
                 s += "<span>" + header + "</span><span id='iframe_is_loading'>Loading...</span>";
                 s += "<button class='btn btn-success btn-sm float-right' onclick='_window_in_modal_close()' style='margin-right:3px;'>&times;</button>";
                 s += "</div>";
-                s += "<div id='myModalFrame' style='padding: 0px; margin:0px 0px 0px 10px; overflow: auto; -webkit-overflow-scrolling: touch;'>";                
+                s += "<div id='myModalFrame' style='padding: 0px; margin:0px 0px 0px 10px; overflow: auto; -webkit-overflow-scrolling: touch;'>";
                 s += "<iframe id='fraModalContent' name='fraModalContent' frameborder='0' onload='iframe_loaded()'></iframe>";
                 s += "</div>";
                 s += "</div>";
@@ -255,7 +253,7 @@
 
 
 
-    </script>
+</script>
 
     @RenderSection("Scripts", required: false)
 

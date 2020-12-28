@@ -13,7 +13,7 @@
 
 
 <div class="modal_record_container">
-    <div class="form-row">
+    <div class="row">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typ účtu"):</label>
         <div class="col-sm-11 col-md-10">
             <select asp-for="Rec.j40UsageFlag" class="form-control">
@@ -23,7 +23,7 @@
         </div>
     </div>
 
-    <div class="form-row" style="margin-top:10px;">
+    <div class="row" style="margin-top:10px;">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Smtp server"):</label>
         <div class="col-sm-8 col-md-7">
             <input class="form-control" asp-for="Rec.j40SmtpHost" />
@@ -35,14 +35,14 @@
         </div>
     </div>
 
-    <div class="form-row" style="margin-top:10px;">
+    <div class="row" style="margin-top:10px;">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Jméno odesílatele"):</label>
         <div class="col-sm-11 col-md-10">
             <input class="form-control" asp-for="Rec.j40SmtpName" />
             <span asp-validation-for="Rec.j40SmtpName" class="text-danger"></span>
         </div>
     </div>
-    <div class="form-row" style="margin-top:10px;">
+    <div class="row" style="margin-top:10px;">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("E-mail odesílatele"):</label>
         <div class="col-sm-11 col-md-10">
             <input class="form-control" asp-for="Rec.j40SmtpEmail" />
@@ -50,24 +50,24 @@
         </div>
     </div>
 
-    <div class="form-row" style="margin-top:10px;">
+    <div class="row" style="margin-top:10px;">
         <input asp-for="@Model.Rec.j40SmtpUsePersonalReply" />
         <label for="Rec_j40SmtpUsePersonalReply">@_f.tra("Jako REPLY uvádět adresu a jméno z osobního profilu uživatele")</label>
     </div>
 
-    <div class="form-row" style="margin-top:10px;">
+    <div class="row" style="margin-top:10px;">
         <input asp-for="@Model.Rec.j40SmtpUseDefaultCredentials" />
         <label for="Rec_j40SmtpUseDefaultCredentials">@_f.tra("Smtp účet nevyžaduje autentifikaci")</label>
     </div>
     <div id="credentials">
-        <div class="form-row" style="margin-top:10px;">
+        <div class="row" style="margin-top:10px;">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Smtp login"):</label>
             <div class="col-sm-11 col-md-10">
                 <input class="form-control" asp-for="Rec.j40SmtpLogin" autocomplete="off" />
                 <span asp-validation-for="Rec.j40SmtpLogin" class="text-danger"></span>
             </div>
         </div>
-        <div class="form-row" style="margin-top:10px;">
+        <div class="row" style="margin-top:10px;">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Smtp heslo"):</label>
             <div class="col-sm-11 col-md-10">
                 <input class="form-control" type="text" asp-for="Rec.j40SmtpPassword" autocomplete="off" placeholder="@_f.tra("Heslo zadávejte pouze pokud ho měníte nebo pro nový účet.")" />
@@ -75,7 +75,7 @@
             </div>
         </div>
     </div>
-    <div class="form-row" style="margin-top:10px;">
+    <div class="row" style="margin-top:10px;">
         <input asp-for="@Model.Rec.j40SmtpEnableSsl" />
         <label for="Rec_j40SmtpEnableSsl">@_f.tra("Podpora SSL")</label>
     </div>
@@ -85,7 +85,7 @@
 
 
     <hr />
-    <div class="form-row">
+    <div class="row">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Vlastník účtu"):</label>
         <div class="col-sm-11 col-md-10">
             <mycombo entity="j02Person" asp-for="Rec.j02ID" selectedtext="Rec.Person" filter-flag="1"></mycombo>
