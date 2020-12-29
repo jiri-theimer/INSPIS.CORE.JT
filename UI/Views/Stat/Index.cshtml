@@ -47,7 +47,7 @@
         <div class="row" style="max-width:1000px;">
             <div class="col-sm-6 col-md-6">
                 <button id="cmdRunGrid" class="btn btn-success">@_f.tra("Vygenerovat výsledek do GRIDu")</button>
-                <button id="cmdRunExcel" class="btn btn-info">@_f.tra("Vygenerovat výsledek do XLS")</button>
+                <button id="cmdRunExcel" class="btn btn-outline-secondary">@_f.tra("Vygenerovat výsledek do XLS")</button>
 
             </div>
             <div class="col-sm-3 col-md-3">
@@ -82,22 +82,22 @@
 
     <div class="tabs_container_record">
         <!-- Tab panes -->
-        <ul class="nav nav-tabs">
+        <ul class="nav nav-tabs" role="tablist">
             <li class="nav-item onetab">
-                <a id="link_tab1" class="nav-link" data-toggle="tab" href="#tab1">@_f.tra("Formuláře a otázky")</a>
+                <a id="link_tab1" class="nav-link" data-bs-toggle="tab" role="tab" href="#tab1">@_f.tra("Formuláře a otázky")</a>
             </li>
             <li class="nav-item onetab">
-                <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2">@_f.tra("Filtrování dat")</a>
+                <a id="link_tab2" class="nav-link" data-bs-toggle="tab" role="tab" href="#tab2">@_f.tra("Filtrování dat")</a>
             </li>
             <li class="nav-item onetab">
-                <a id="link_tab3" class="nav-link" data-toggle="tab" href="#tab3">@_f.tra("Výsledek")</a>
+                <a id="link_tab3" class="nav-link" data-bs-toggle="tab" role="tab" href="#tab3">@_f.tra("Výsledek")</a>
             </li>
 
         </ul>
     </div>
 
     <div class="tab-content">
-        <div class="tab-pane" id="tab1">
+        <div class="tab-pane" id="tab1" role="tabpanel">
             <div style="padding:10px;">
                 <button type="button" class="btn btn-primary" onclick="multiselect()">@_f.tra("Přidat formulář")</button>
 
@@ -125,12 +125,12 @@
             <div id="divTreeviewContainer" style="overflow:auto;">
                 <kendotree clientid="tree1" tree-datasource="@Model.treeNodes"></kendotree>
 
-                
+
             </div>
 
 
         </div>
-        <div class="tab-pane" id="tab2">
+        <div class="tab-pane" id="tab2" role="tabpanel">
             <div style="max-width:1000px;">
                 @Html.EditorFor(m => m.PeriodFilter, "~/Views/Shared/_Period.cshtml")
             </div>
@@ -191,7 +191,7 @@
             </table>
 
         </div>
-        <div class="tab-pane" id="tab3">
+        <div class="tab-pane" id="tab3" role="tabpanel">
 
 
             @if (Model.XlsExportTempFileName != null)
