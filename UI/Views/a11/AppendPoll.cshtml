@@ -9,10 +9,10 @@
 
 <h4>@_f.tra("Přidat anketní formuláře do akce") @(": "+Model.RecA01.a01Signature)</h4>
 <div class="bg-light" style="padding:10px;">
-    <button id="cmdLock" type="button" class="btn btn-light" onclick="report()">@_f.tra("Tisková sestava")</button>
-    <button id="cmdLock" type="button" class="btn btn-secondary" onclick="lock()">@_f.tra("Uzamknout všechny ankety v akci")</button>
-    <button id="cmdUnlock" type="button" class="btn btn-secondary" onclick="unlock()">@_f.tra("Odemknout všechny ankety v akci")</button>
-    <button id="cmdUnlock" type="button" class="btn btn-danger" onclick="deletepolls()">@_f.tra("Odstranit zaškrtlé ankety")</button>
+    <button id="cmdLock" type="button" class="btn btn-outline-secondary" onclick="report()"><span class="k-icon k-i-print"></span>@_f.tra("Tisková sestava")</button>
+    <button id="cmdLock" type="button" class="btn btn-outline-secondary" onclick="lock()"><span class="k-icon k-i-lock"></span>@_f.tra("Uzamknout všechny ankety v akci")</button>
+    <button id="cmdUnlock" type="button" class="btn btn-outline-secondary" onclick="unlock()"><span class="k-icon k-i-unlock"></span>@_f.tra("Odemknout všechny ankety v akci")</button>
+    <button id="cmdUnlock" type="button" class="btn btn-danger" onclick="deletepolls()"><span class="k-icon k-i-delete"></span>@_f.tra("Odstranit zaškrtlé ankety")</button>
     <button id="cmdClose" type="button" onclick="_window_close()" class="btn btn-light">@_f.tra("Zavřít")</button>
     <button type="button" onclick="_helppage()" class="btn btn-light"><b>? </b>@_f.tra("Nápověda")</button>
 </div>
