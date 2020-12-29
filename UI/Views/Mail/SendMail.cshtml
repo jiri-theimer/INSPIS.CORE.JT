@@ -50,7 +50,7 @@
             <div class="tab-pane" id="tab1" role="tabpanel">
                 <!-- Tab1 -->
                 <p></p>
-                <div class="row">
+                <div>
                     <input type="checkbox" id="chkIsTest" asp-for="@Model.IsTest" />
                     <label for="chkIsTest">@_f.tra("Testovací zpráva")</label>
                 </div>
@@ -86,12 +86,12 @@
 
                 </div>
 
-                <div class="row" style="margin-top:10px;">
+                <div class="my-2" style="margin-top:10px;">
                     <input class="form-control" asp-for="Rec.x40Subject" id="txtSubject" placeholder="@_f.tra("Předmět zprávy")" />
                 </div>
 
 
-                <div class="row" style="margin-top:10px;">
+                <div class="my-2" style="margin-top:10px;">
                     <textarea asp-for="Rec.x40Body" id="txtBody" class="form-control" placeholder="@_f.tra("Text zprávy")" style="height:200px;"></textarea>
 
                 </div>
