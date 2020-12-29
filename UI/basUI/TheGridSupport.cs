@@ -596,11 +596,11 @@ namespace UI
                 sb.AppendLine("<tr>");
                 if (c.j72HashJ73Query)
                 {
-                    sb.Append("<td><img src='/Images/query.png'/></td>");
+                    sb.Append("<td><span class='k-icon k-i-filter'></span></td>");
                 }
                 else
                 {
-                    sb.Append("<td><img src='/Images/griddesigner.png'/></td>");
+                    sb.Append("<td><span class='k-icon k-i-table'></span></td>");
                 }
                 if (c.j72IsSystem)
                 {

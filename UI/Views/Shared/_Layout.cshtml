@@ -315,20 +315,23 @@
             }
         });
 
-            register_menu("cmdLangIndex", "ulLangIndex", "CurrentUserLangIndex");
-            register_menu("cmdFontSize", "ulFontSize", "CurrentUserFontSize");
-            register_menu("cmdMyProfile", "ulMyProfile", "CurrentUserMyProfile");
+            register_menu("cmdLangIndex", "ulLangIndex", "/Menu/CurrentUserLangIndex");
+            register_menu("cmdFontSize", "ulFontSize", "/Menu/CurrentUserFontSize");
+            register_menu("cmdMyProfile", "ulMyProfile", "/Menu/CurrentUserMyProfile");
             if (document.getElementById("cmdAdmin")) {
-                register_menu("cmdAdmin", "ulAdmin", "AdminMenu");
+                register_menu("cmdAdmin", "ulAdmin", "/Menu/AdminMenu");
             }
             if (document.getElementById("cmdA01")) {
-                register_menu("cmdA01", "ulA01", "A01Menu");
+                register_menu("cmdA01", "ulA01", "/Menu/A01Menu");
             }
             if (document.getElementById("cmdA03")) {
-                register_menu("cmdA03", "ulA03", "A03Menu");
+                register_menu("cmdA03", "ulA03", "/Menu/A03Menu");
             }
             if (document.getElementById("cmdJ02")) {
-                register_menu("cmdJ02", "ulJ02", "J02Menu");
+                register_menu("cmdJ02", "ulJ02", "/Menu/J02Menu");
+            }
+            if (document.getElementById("cmdX31")) {
+                register_menu("cmdX31", "ulX31", "/Menu/X31Menu");
             }
 
 
@@ -362,7 +365,7 @@
                 return;
             }
 
-            $.post("/Menu/" + method + "?userdevice=" + _device.type, function (data) {
+            $.post(method + "?userdevice=" + _device.type, function (data) {
                 $("#" + ul_id).html(data);
                 $("#" + cmd_id).attr("nacteno", "1");
             })

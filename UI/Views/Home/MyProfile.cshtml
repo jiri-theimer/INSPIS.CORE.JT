@@ -14,12 +14,12 @@
 
 <div class="tabs_container_record">
     <!-- Tab panes -->
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item onetab">
-            <a id="link_tab1" class="nav-link active" data-toggle="tab" href="#tab1">@Model.CurrentUser.FullName</a>
+            <a id="link_tab1" class="nav-link active" data-bs-toggle="tab" role="tab" href="#tab1">@Model.CurrentUser.FullName</a>
         </li>
         <li class="nav-item onetab">
-            <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2">Browser</a>
+            <a id="link_tab2" class="nav-link" data-bs-toggle="tab" role="tab" href="#tab2">Browser</a>
         </li>
 
     </ul>
@@ -27,7 +27,7 @@
 
 <div class="modal_record_container">
     <div class="tab-content">
-        <div class="tab-pane active" id="tab1">
+        <div class="tab-pane active" id="tab1" role="tabpanel">
             <form id="form1" asp-controller="Home" asp-action="MyProfile" method="POST">
                 <div>
                     <button type="submit" class="btn btn-success">@_f.tra("Uložit změny")</button>
@@ -56,8 +56,8 @@
                     </div>
 
                 </div>
-                <div class="row my-2">
-                    <input asp-for="@Model.IsGridClipboard" />
+                <div class="my-2">
+                    <input type="checkbox" asp-for="@Model.IsGridClipboard" />
                     <label for="IsGridClipboard">@_f.tra("Podporovat clipboard v textech Grid přehledu (schránka Ctrl+C & Ctrl+V)?")</label>
                 </div>
 
@@ -145,7 +145,7 @@
             </form>
         </div>
 
-        <div class="tab-pane" id="tab2">
+        <div class="tab-pane" id="tab2" role="tabpanel">
             <table>
                 <tr>
                     <td>

@@ -43,7 +43,7 @@ namespace UI.Views.Shared.TagHelpers
             sb(string.Format("<div id='divDropdown{0}' class='dropdown-menu' aria-labelledby='cmdCombo{0}' style='width:100%;' tabindex='-1'>", strControlID));
 
             sb("");
-            sb(string.Format("<input type='text' id='{0}' name='{1}' class='form-control' placeholder='⌨'/>", strControlID, this.For.Name));
+            sb(string.Format("<input type='text' id='{0}' name='{1}' class='form-control' placeholder='[abc]'/>", strControlID, this.For.Name));
 
            
             sb(string.Format("<div id='divData{0}' style='height:220px;overflow:auto;width:100%;min-width:200px;background-color:#E6F0FF;'>", strControlID));
