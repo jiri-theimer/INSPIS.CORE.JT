@@ -11,18 +11,18 @@
 
 <div class="tabs_container_record">
     <!-- Tab panes -->
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item onetab">
-            <a id="link_tab1" class="nav-link" data-toggle="tab" href="#tab1">@_f.tra("Vlastnosti")</a>
+            <a id="link_tab1" class="nav-link" data-bs-toggle="tab" role="tab" href="#tab1">@_f.tra("Vlastnosti")</a>
         </li>
         <li class="nav-item onetab">
-            <a id="link_tab2" class="nav-link" data-toggle="tab" href="#tab2">@_f.tra("Definiční obor odpovědi")</a>
+            <a id="link_tab2" class="nav-link" data-bs-toggle="tab" role="tab" href="#tab2">@_f.tra("Definiční obor odpovědi")</a>
         </li>
         <li class="nav-item onetab">
-            <a id="link_tab3" class="nav-link" data-toggle="tab" href="#tab3">@_f.tra("Přílohy k otázce")</a>
+            <a id="link_tab3" class="nav-link" data-bs-toggle="tab" role="tab" href="#tab3">@_f.tra("Přílohy k otázce")</a>
         </li>
         <li class="nav-item onetab">
-            <a id="link_tab4" class="nav-link" data-toggle="tab" href="#tab4">@_f.tra("Ostatní")</a>
+            <a id="link_tab4" class="nav-link" data-bs-toggle="tab" role="tab" href="#tab4">@_f.tra("Ostatní")</a>
         </li>
     </ul>
 </div>
@@ -35,7 +35,7 @@
 
 
     <div class="tab-content">
-        <div class="tab-pane" id="tab1">
+        <div class="tab-pane" id="tab1" role="tabpanel">
             <!-- Tab1 -->
             <div class="alert alert-primary" role="alert">
                 @Model.RecF06.f06Name
@@ -179,7 +179,7 @@
                 </div>
             </div>
         </div>
-        <div class="tab-pane" id="tab2" style="height:500px;">
+        <div class="tab-pane" id="tab2" role="tabpanel" style="height:500px;">
             <!-- Tab2 -->
 
             @if (Model.Rec.ReplyControl != BO.ReplyKeyEnum.Button && Model.Rec.ReplyControl != BO.ReplyKeyEnum.FileUpload && Model.Rec.f19IsDefaultValueHTML == false)
@@ -271,14 +271,14 @@
             <div id="divF21" style="margin-top:20px;margin-bottom:20px;"></div>
 
         </div>
-        <div class="tab-pane" id="tab3" style="height:500px;">
+        <div class="tab-pane" id="tab3" role="tabpanel" style="height:500px;">
             <!-- Tab3 -->
             <iframe id="fraUpload" src="/FileUpload/Index?prefix=f19&recpid=@(Model.rec_pid)&guid=@Model.UploadGuid" height="450" scrolling="no"></iframe>
 
 
 
         </div>
-        <div class="tab-pane" id="tab4">
+        <div class="tab-pane" id="tab4" role="tabpanel">
             <!-- Tab4 -->
             <p></p>
             <div class="row">
