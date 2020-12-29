@@ -46,7 +46,7 @@ namespace UI.Controllers
             DIV();
             AMI("Odhlásit se", "/Home/logout");
 
-            return FlushResult_UL(true);
+            return FlushResult_UL(true,false);
         }
         public string CurrentUserMyProfile()
         {                
@@ -80,7 +80,7 @@ namespace UI.Controllers
 
 
 
-            return FlushResult_UL(true);
+            return FlushResult_UL(true,false);
         }
         public string CurrentUserLangIndex()
         {
@@ -96,7 +96,7 @@ namespace UI.Controllers
                 }
                 
             }
-            return FlushResult_UL(false);            
+            return FlushResult_UL(false,false);            
         }
         public string CurrentUserFontSize()
         {
@@ -112,7 +112,7 @@ namespace UI.Controllers
                 
             }
           
-            return FlushResult_UL(false);
+            return FlushResult_UL(false,false);
         }
         public string AdminMenu()
         {
@@ -145,7 +145,7 @@ namespace UI.Controllers
             //    AMI("Nástěnka", "/Admin/NoticeBoard");
             //}
 
-            return FlushResult_UL(false);
+            return FlushResult_UL(false,false);
         }
         public string AdminWorkflow(string prefix)
         {
@@ -154,7 +154,7 @@ namespace UI.Controllers
 
             handle_selected_item(prefix);
 
-            return FlushResult_UL(true);
+            return FlushResult_UL(true,true);
         }
         public string AdminForms(string prefix)
         {            
@@ -172,7 +172,7 @@ namespace UI.Controllers
 
             handle_selected_item(prefix);
 
-            return FlushResult_UL(false);
+            return FlushResult_UL(false,true);
         }
         public string AdminUsers(string prefix)
         {
@@ -206,7 +206,7 @@ namespace UI.Controllers
 
             handle_selected_item(prefix);
 
-            return FlushResult_UL(false);
+            return FlushResult_UL(false,true);
         }
         public string AdminCiselniky(string prefix)
         {                        
@@ -275,7 +275,7 @@ namespace UI.Controllers
 
             handle_selected_item(prefix);
 
-            return FlushResult_UL(false);
+            return FlushResult_UL(false,true);
         }
         private string url_ciselniky(string prefix)
         {
@@ -339,7 +339,7 @@ namespace UI.Controllers
                 
             }            
 
-            return FlushResult_UL(false);
+            return FlushResult_UL(false,false);
         }
         public string A03Menu(string userdevice)
         {
@@ -358,7 +358,7 @@ namespace UI.Controllers
                 AMI("Grid 1", "/TheGrid/FlatView?prefix=a03");
             }           
             
-            return FlushResult_UL(false);
+            return FlushResult_UL(false,false);
         }
         public string J02Menu(string userdevice)
         {
@@ -375,7 +375,7 @@ namespace UI.Controllers
             //DIV();
             //AMI("Učitelé", "/TheGrid/FlatView?prefix=k01");
 
-            return FlushResult_UL(false);
+            return FlushResult_UL(false,false);
         }
         public string H04Menu()
         {
@@ -384,7 +384,7 @@ namespace UI.Controllers
             AMI("Stránka", "/h04/ThePage");            
             AMI("Grid 1", "/TheGrid/FlatView?prefix=h04");
 
-            return FlushResult_UL(false);
+            return FlushResult_UL(false,false);
         }
         public string X31Menu()
         {
@@ -397,7 +397,7 @@ namespace UI.Controllers
                 AMI("Statistiky", "/Stat/Index");
             }
 
-            return FlushResult_UL(false);
+            return FlushResult_UL(false,false);
         }
         public string ContextMenu(string entity,int pid, string flag)
         {            
@@ -812,7 +812,7 @@ namespace UI.Controllers
             //}
           
 
-            return FlushResult_UL(false);
+            return FlushResult_UL(false,true);
         }
         private void RenderAkceSeVztahem(string strMenuParentID, BO.a01Event recCurrentA01,IEnumerable<BO.a24EventRelation> lisA24)
         {
@@ -865,10 +865,14 @@ namespace UI.Controllers
             _lis.Add(new BO.MenuItem() { IsHeader = true, Name = BO.BAS.OM2(strName, 100)+":" });
         }
 
-        private string FlushResult_UL(bool bolSupportIcons)
+        private string FlushResult_UL(bool bolSupportIcons,bool bolRenderUlContainer)
         {
             var sb = new System.Text.StringBuilder();
             
+            if (bolRenderUlContainer)
+            {
+                sb.AppendLine("<ul style='border:0px;'>");
+            }
             foreach (var c in _lis.Where(p => p.ParentID == null))
             {
                 if (c.IsDivider == true)
@@ -910,7 +914,7 @@ namespace UI.Controllers
                         if (c.ID != null && _lis.Where(p => p.ParentID == c.ID).Count() > 0)
                         {
                             bolHasChilds = true;
-                            c.Name += "<span style='float:right;'> ▶</span>";
+                            c.Name += "<span class='k-icon k-i-arrow-60-right' style='float:right;'></span>";
                         }
 
                         if (c.Url == null)
@@ -951,6 +955,10 @@ namespace UI.Controllers
 
             }
 
+            if (bolRenderUlContainer)
+            {
+                sb.Append("</ul>");
+            }
             return sb.ToString();
         }
         //private string FlushResult_NAVLINKs()
