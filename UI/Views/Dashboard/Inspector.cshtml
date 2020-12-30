@@ -2,7 +2,7 @@
 @inject BL.Factory _f
 
 @{
-    ViewData["Title"] = _f.tra("Osobní stránka inspektora") + ": " + Model.Rec.FullNameAsc;
+    Model.PageTitle = _f.tra("Osobní stránka inspektora") + ": " + Model.Rec.FullNameAsc;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 

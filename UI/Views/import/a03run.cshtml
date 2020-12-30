@@ -2,11 +2,11 @@
 @inject BL.Factory _f
 
 @{
-    ViewData["Title"] = _f.tra("Dokončit import");
+    Model.PageTitle = _f.tra("Dokončit import");
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-    <h4>@ViewData["Title"]</h4>
+    <h4>@Model.PageTitle</h4>
 
 
 <form id="form1" asp-controller="import" asp-action="a03run" method="POST">

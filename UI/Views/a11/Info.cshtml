@@ -2,7 +2,7 @@
 @inject BL.Factory _f
 
 @{
-    ViewData["Title"] = _f.tra("Formulář v akci");
+    Model.PageTitle = _f.tra("Formulář v akci");
     Layout = "~/Views/Shared/_LayoutSubform.cshtml";
 
 }
@@ -10,7 +10,7 @@
 @addTagHelper *, UI
 
 <div class="modal_record_container">
-    <h4>@ViewData["Title"]: @Model.RecA01.a01Signature</h4>
+    <h4>@Model.PageTitle: @Model.RecA01.a01Signature</h4>
     <div class="row">
         <div class="col-sm-10 col-md-10">
             <myval datatype="html" value="@Model.Rec.FullNameHtml"></myval>

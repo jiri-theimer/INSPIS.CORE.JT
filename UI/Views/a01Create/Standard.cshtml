@@ -4,7 +4,7 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     if (Model.Rec == null) return;
-    ViewData["Title"] = _f.tra("Založit novou akci");
+    Model.PageTitle = _f.tra("Založit novou akci");
 }
 
 

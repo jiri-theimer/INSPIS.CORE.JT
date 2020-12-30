@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     if (Model.Rec == null) return;
 
-    ViewData["Title"] = Model.Rec.a01Signature;
+    Model.PageTitle = Model.Rec.a01Signature;
 }
 
 @addTagHelper *, UI
@@ -58,7 +58,7 @@
 
     </div>
 
-<div id="layout_sidebar" class="cm_recpage"></div>
+<div id="layout_sidebar" class="cm_recpage">Loading...</div>
 
 
 <div id="layout_main">

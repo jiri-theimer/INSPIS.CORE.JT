@@ -6,7 +6,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     if (Model.a42ID == 0) return;
 
-    ViewData["Title"] = _f.tra("Připravit poštovní zprávy pro INEZ dávku");
+    Model.PageTitle = _f.tra("Připravit poštovní zprávy pro INEZ dávku");
 }
 
 @addTagHelper *, UI

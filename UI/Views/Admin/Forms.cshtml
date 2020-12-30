@@ -2,7 +2,7 @@
 @inject BL.Factory _f
 
 @{
-    ViewData["Title"] = _f.tra("Uživatelé");
+    Model.PageTitle = _f.tra("Uživatelé");
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -12,9 +12,7 @@
 
 @if (Model.view == "tree")
 {
-    @section header_content{
-
-        <link href="/kendo/styles/kendo.common.min.css" rel="stylesheet" type="text/css" />
+    @section header_content{        
         <link href="/kendo/styles/kendo.default.min.css" rel="stylesheet" type="text/css" />
         <link href="/kendo/styles/kendo.default.mobile.min.css" rel="stylesheet" type="text/css" />
     }
@@ -82,7 +80,7 @@
 
 </div>
 
-<div id="layout_sidebar" class="cm_recpage" style="overflow-y:auto;"></div>
+<div id="layout_sidebar" class="cm_recpage" style="overflow-y:auto;">Loading...</div>
 
 
 

@@ -1,14 +1,14 @@
 ﻿@model a11SimulationViewModel
 @inject BL.Factory _f
 @{
-    ViewData["Title"] = _f.tra("Simulace formuláře");
+    Model.PageTitle = _f.tra("Simulace formuláře");
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @addTagHelper *, UI
 
 
-<h4>@ViewData["Title"]</h4>
+<h4>@Model.PageTitle</h4>
 <div class="bg-light" style="padding:10px;">
     
     <button id="cmdRun" type="button" class="btn btn-primary">@_f.tra("Spustit simulaci")</button>

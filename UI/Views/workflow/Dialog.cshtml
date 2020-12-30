@@ -3,7 +3,7 @@
 @inject BL.Factory _f
 
 @{
-    ViewData["Title"] = _f.tra("Posunout | Doplnit");
+    Model.PageTitle = _f.tra("Posunout | Doplnit");
     Layout = "~/Views/Shared/_LayoutModal.cshtml";
     
     if (Model.RecA01 == null)
@@ -17,7 +17,7 @@
 @addTagHelper *, UI
 
 <h4>
-    @ViewData["Title"]: @(Model.RecA01.a01Signature)
+    @Model.PageTitle: @(Model.RecA01.a01Signature)
     @if (Model.RecA01.b02ID > 0)
     {
         <span>, @_f.tra("aktuální stav"):</span>

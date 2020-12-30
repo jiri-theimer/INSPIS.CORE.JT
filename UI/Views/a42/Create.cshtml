@@ -6,7 +6,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     if (Model.Rec == null) return;
 
-    ViewData["Title"] = "Nový INEZ";
+    Model.PageTitle = "Nový INEZ";
 }
 
 @addTagHelper *, UI

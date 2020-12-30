@@ -4,7 +4,7 @@
 
 
 @{
-    ViewData["Title"] = _f.tra("GRID: Návrhář");
+    Model.PageTitle = _f.tra("GRID: Návrhář");
     Layout = "~/Views/Shared/_LayoutModal.cshtml";
     string _header = _ep.ByTable(Model.Rec.j72Entity).AliasPlural;
     if (_f.CurrentUser.j03LangIndex == 1)

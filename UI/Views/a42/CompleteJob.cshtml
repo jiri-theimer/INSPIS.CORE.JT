@@ -6,7 +6,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     if (Model.a42ID == 0) return;
 
-    ViewData["Title"] = _f.tra("Generování akcí pro INEZ dávku");
+    Model.PageTitle = _f.tra("Generování akcí pro INEZ dávku");
 }
 
 @addTagHelper *, UI

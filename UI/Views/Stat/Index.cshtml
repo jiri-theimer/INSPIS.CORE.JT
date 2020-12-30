@@ -6,14 +6,13 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
 
-    ViewData["Title"] = _f.tra("Statistiky akcí");
+    Model.PageTitle = _f.tra("Statistiky akcí");
 }
 
 @addTagHelper *, UI
 
 @section header_content
-{
-    <link href="/kendo/styles/kendo.common.min.css" rel="stylesheet" type="text/css" />
+{    
     <link href="/kendo/styles/kendo.default.min.css" rel="stylesheet" type="text/css" />
     <link href="/kendo/styles/kendo.default.mobile.min.css" rel="stylesheet" type="text/css" />
 }
@@ -28,7 +27,7 @@
 </style>
 
 
-<h4 class="px-2">@ViewData["Title"]</h4>
+<h4 class="px-2">@Model.PageTitle</h4>
 
 
 <form id="form1" asp-controller="Stat" asp-action="Index" method="POST">
