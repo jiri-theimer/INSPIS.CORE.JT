@@ -29,8 +29,8 @@
         <input type="hidden" asp-for="@Model.ActiveTabIndex" />
         @if (Model.CloneByPid > 0)
         {
-            <div class="row">
-                <select asp-for="@Model.a46ID" class="form-control" onchange="refresh()">
+            <div>
+                <select asp-for="@Model.a46ID" class="form-select" onchange="refresh()">
                     <option value="0">@(_f.tra("Vztah ke zdrojové akci")+": "+Model.RecCloneByPid.a01Signature)</option>
                     <option value="1">@(_f.tra("Závisí na")+": "+Model.RecCloneByPid.a01Signature)</option>
                     <option value="2">@(_f.tra("Je duplikátem")+": "+Model.RecCloneByPid.a01Signature)</option>
