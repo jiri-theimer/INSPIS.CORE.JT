@@ -15,6 +15,8 @@ namespace UI.Models
         public List<BO.EntityRelation> Relations;
         public List<BO.TheGridColumn> AllColumns;
 
+        public List<UI.Models.kendoTreeItem> treeNodes { get; set; }
+
         public List<BO.j73TheGridQuery> lisJ73 { get; set; }
 
         public List<BO.TheQueryField> lisQueryFields { get; set; }

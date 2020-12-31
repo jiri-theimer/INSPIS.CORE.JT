@@ -39,6 +39,9 @@ namespace UI.Models
         public string cssclass { get; set; }
         public string textocas { get; set; }
 
+        public string customvalue1 { get; set; }
+        public string customvalue2 { get; set; }
+
         public List<kendoTreeItem> items { get; set; }
     }
 }

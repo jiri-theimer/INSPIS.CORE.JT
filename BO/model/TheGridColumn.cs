@@ -242,8 +242,25 @@ namespace BO
             }
         }
 
-        
+        public string getImage()
+        {
+            switch (this.FieldType)
+            {
+                case "num":
+                    return "type_number.png";
+                case "num0":
+                    return "type_number.png";
+                case "date":
+                    return "type_date.png";
+                case "datetime":
+                    return "type_datetime.png";
+                case "bool":
+                    return "type_checkbox.png";
+                default:
+                    return "type_text.png";
+            }
+        }
 
-       
+
     }
 }

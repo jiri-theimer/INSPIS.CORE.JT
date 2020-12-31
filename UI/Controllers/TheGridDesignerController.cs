@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using UI.Models;
 
 namespace UI.Controllers
 {
@@ -47,6 +48,7 @@ namespace UI.Controllers
             }
 
         }
+
         
         [HttpPost]
         public IActionResult Index(Models.TheGridDesignerViewModel v, bool restore2factory, string oper, string guid, string j72name)    //uložení grid sloupců
@@ -169,6 +171,58 @@ namespace UI.Controllers
 
         }
 
+        private void inhale_tree(UI.Models.TheGridDesignerViewModel v)
+        {
+            
+            v.treeNodes = new List<kendoTreeItem>();
+
+            foreach (var rel in v.Relations)
+            {
+                var grp = new kendoTreeItem() { id = "group__" + rel.RelName + "__" + rel.TableName, text = rel.AliasSingular, expanded = false };
+
+                switch (Factory.CurrentUser.j03LangIndex)
+                {
+                    case 1:
+                        grp.text = rel.Translate1;break;
+                    case 2:
+                        grp.text = rel.Translate2;break;
+                    default:
+                        grp.text = rel.AliasSingular;break;
+                }
+                if (v.treeNodes.Count() == 0)
+                {
+                    grp.expanded = true;
+                }
+                grp.customvalue2 = "/images/folder.png";
+                grp.items = new List<kendoTreeItem>();
+
+                foreach (var col in v.AllColumns.Where(p => p.Entity == rel.TableName))
+                {
+                    var cc = new kendoTreeItem() { id = col.UniqueName, text = col.Header };
+                    cc.customvalue1 = rel.RelName + "__" + col.Entity;
+
+                    switch (Factory.CurrentUser.j03LangIndex)
+                    {
+                        case 1:
+                            cc.text = col.TranslateLang1; break;
+                        case 2:
+                            cc.text = col.TranslateLang2; break;
+                        default:
+                            grp.text = col.Header; break;
+                    }
+                    //cc.imageUrl = "/images/" + col.getImage();
+                    cc.customvalue2 = "/images/" + col.getImage();
+                    grp.items.Add(cc);
+                }
+
+                v.treeNodes.Add(grp);
+            }
+
+
+                
+        }
+
+
 
         private void Index_RefreshState(Models.TheGridDesignerViewModel v)
         {
@@ -207,6 +261,8 @@ namespace UI.Controllers
                     c.MasterPid = cc.MasterPid;
                 }
             }
+
+            inhale_tree(v);
         }
     }
 }
