@@ -41,10 +41,9 @@
         visibility: visible;
     }
 
-    
+
 
     .field_selected {
-        
         background-color: khaki;
         border-radius: 3px;
     }
@@ -54,10 +53,8 @@
     .k-treeview .k-in.k-state-selected {
         border-color: transparent;
         background-color: transparent;
-        color:black;
-        
+        color: black;
     }
-    
 </style>
 
 <script src="/kendo/js/kendo.core.min.js"></script>
@@ -102,7 +99,7 @@
 <form id="form1" asp-controller="TheGridDesigner" asp-action="Index" method="POST">
 
 
-    <input type="hidden" asp-for="Rec.j72Columns" class="form-control" />
+    <input type="hidden" asp-for="Rec.j72Columns" />
     <input type="hidden" asp-for="Rec.pid" />
     <input type="hidden" asp-for="Rec.j72Entity" />
     <input type="hidden" asp-for="Rec.j72MasterEntity" />
@@ -342,7 +339,6 @@
     var _sels = [];
 
     $(document).ready(function () {
-        refresh_state();
 
         $("#tree1").kendoTreeView(
             {
@@ -350,6 +346,8 @@
                 template: "<div class='tree_item'><img src='#:item.customvalue2#'/><span class='tree_item'> #: item.text # </span><button type='button' class='btn btn-sm btn-primary button_field_append' data-entity='#: item.customvalue1 #' data-field='#: item.id #' data-alias='#: item.text #'><span class='k-icon k-icon k-i-arrow-60-right'></span></button></div>"
             }
         );
+
+        recovery_state();   //musí být spuštěno po naplnění stromu
 
         $(".button_field_append").click(function (e) {
             handle_append_field(this, true);
@@ -454,7 +452,25 @@
             $("#cmdDown").prop("disabled", true);
         }
 
-        
+
+    }
+
+    function recovery_state() {
+        var fields = $("#Rec_j72Columns").val();
+        if (fields == "") return;
+        var arr = fields.split(",");
+        for (i = 0; i < arr.length; i++) {
+            var field = arr[i];
+
+            var cmd = $("button[data-field=" + field + "]").first();
+            //$(cmd).parent().addClass("field_selected");
+
+            handle_append_field(cmd, false);
+        }
+        if ($("#list1").length > 0) {
+            $("#list1").prop("selectedIndex", "0");
+        }
+
     }
 
 
@@ -471,6 +487,24 @@
         if (s.length > 0) {
             form1.action = "/TheGridDesigner/Index?oper=rename&j72name=" + s;
             form1.submit();
+        }
+    }
+
+    function delete_record() {
+        if (confirm("@_f.tra("Opravdu chcete nenávratně odstranit tuto GRID šablonu?")")) {
+            form1.action = "/TheGridDesigner/Index?oper=delete";
+            form1.submit();
+        }
+
+    }
+
+    function restore2factory() {
+        if (confirm("@_f.tra("Tovární stav = Výchozí sada sloupců, vyčištění sloupců, filtru a souhrnů.<hr>Mám pokračovat?")")) {
+
+            var url = "@Url.Action("Index","TheGridDesigner", new { restore2factory = true})";
+            form1.action = url;
+            form1.submit();
+
         }
     }
 
