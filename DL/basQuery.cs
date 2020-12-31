@@ -31,12 +31,16 @@ namespace DL
                 }
 
 
-                ret.SqlWhere = String.Join(" ", lis.Select(p => p.AndOrZleva + " " + p.BracketLeft + p.StringWhere + p.BracketRight)).Trim();    //složit závěrčnou podmínku
+                ret.SqlWhere = String.Join(" ", lis.Select(p => p.AndOrZleva + " " + p.BracketLeft + p.StringWhere + p.BracketRight)).Trim();    //složit závěrčnou podmínku                
                 //System.IO.File.WriteAllText("c:\\temp\\hovado"+mq.Prefix+".txt", ret.SqlWhere);
             }
 
             if (!string.IsNullOrEmpty(ret.SqlWhere))
             {
+                if (ret.SqlWhere.Substring(0, 3).Trim().ToUpper() == "AND")
+                {
+                    ret.SqlWhere = BO.BAS.RightString(ret.SqlWhere.Trim(), ret.SqlWhere.Length - 3);
+                }
                 strPrimarySql += " WHERE " + ret.SqlWhere;
             }
             if (!string.IsNullOrEmpty(mq.explicit_orderby))
