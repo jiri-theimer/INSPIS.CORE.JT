@@ -41,11 +41,17 @@
         visibility: visible;
     }
 
-
-
     .field_selected {
         background-color: khaki;
         border-radius: 3px;
+    }
+
+    .list1_item{
+        cursor:pointer;
+    }
+
+    .timestamp {
+        color: palevioletred;
     }
 
     .k-treeview .k-in.k-state-hover,
@@ -84,7 +90,7 @@
     {
         <button type="button" id="cmdDelete" onclick="delete_record()" class="btn btn-danger">@_f.tra("Odstranit")</button>
     }
-    <button type="button" id="cmdSaveAs" onclick="saveas()" class="btn btn-primary">@_f.tra("Uložit jako")...</button>
+    <button type="button" id="cmdSaveAs" onclick="saveas()" class="btn btn-outline-success">@_f.tra("Uložit jako")...</button>
     @if (Model.Rec.j72IsSystem == false && Model.HasOwnerPermissions == true)
     {
         <button type="button" id="cmdRename" onclick="rename()" class="btn btn-primary">@_f.tra("Přejmenovat")...</button>
@@ -126,9 +132,8 @@
             <td>
                 <h5>@_f.tra("Vybrané sloupce")</h5>
 
-                <div>
-                    <select id="list1" multiple="multiple" style="height:330px;min-width:200px;">
-                    </select>
+                <div class="list-group" id="list1" style="min-width:200px;min-height:100px;">
+                    
                 </div>
 
 
@@ -152,7 +157,7 @@
             </div>
             <div class="card-body">
                 <button type="button" class="btn btn-primary" onclick="handle_j73_append()">@_f.tra("Přidat řádek")</button>
-                <button type="button" class="btn btn-warning" onclick="handle_j73_clear()" style="margin-left:100px;">@_f.tra("Vyčistit")</button>
+                <button type="button" class="btn btn-outline-danger" onclick="handle_j73_clear()" style="margin-left:100px;">@_f.tra("Vyčistit")</button>
                 <table class="table table-hover" style="table-layout: fixed;min-width:1200px;">
                     @for (var i = 0; i < Model.lisJ73.Count; i++)
                     {
@@ -343,37 +348,52 @@
         $("#tree1").kendoTreeView(
             {
                 dataSource: dstree1,
-                template: "<div class='tree_item'><img src='#:item.customvalue2#'/><span class='tree_item'> #: item.text # </span><button type='button' class='btn btn-sm btn-primary button_field_append' data-entity='#: item.customvalue1 #' data-field='#: item.id #' data-alias='#: item.text #'><span class='k-icon k-icon k-i-arrow-60-right'></span></button></div>"
+                template: "<div class='#: item.customvalue3 #'><img src='#:item.customvalue2#'/><span class='tree_item'> #: item.text # </span><button type='button' class='btn btn-sm btn-primary button_field_append' data-entity='#: item.customvalue1 #' data-field='#: item.id #' data-alias='#: item.text #'><span class='k-icon k-icon k-i-arrow-60-right'></span></button></div>"
             }
         );
-
+        
         recovery_state();   //musí být spuštěno po naplnění stromu
+        refresh_state();
+
+        $("#list1 .list-group-item").removeClass("active");
+
+        if ($("#list1 .list-group-item").length > 0) {
+            $("#list1 .list-group-item").first().addClass("active");
+        }
+        
 
         $(".button_field_append").click(function (e) {
             handle_append_field(this, true);
         });
 
         $("#cmdUp").click(function () {
-            $("#list1 option:selected").each(function () {
-                var newPos = $('#list1 option').index(this) - 1;
+            $("#list1 .active").each(function () {
+                var newPos = $("#list1 .list-group-item").index(this) - 1;
+
                 if (newPos > -1) {
-                    $("#list1 option").eq(newPos).before("<option value='" + $(this).val() + "' selected='selected'>" + $(this).text() + "</option>");
+                    $("#list1 .list-group-item").eq(newPos).before("<a data-field='" + $(this).attr("data-field") +"' class='list1_item list-group-item list-group-item-action active'>" + $(this).text() + "</a>");
                     $(this).remove();
+
+                    refresh_state();
                 }
+
+
             });
-            refresh_state();
+            
         });
 
         $("#cmdDown").click(function () {
-            var countOptions = $('#list1 option').length;
-            $('#list1 option:selected').each(function () {
-                var newPos = $('#list1 option').index(this) + 1;
+            var countOptions = $("#list1 .list-group-item").length;
+            $("#list1 .active").each(function () {
+                var newPos = $("#list1 .list-group-item").index(this) + 1;
                 if (newPos < countOptions) {
-                    $('#list1 option').eq(newPos).after("<option value='" + $(this).val() + "' selected='selected'>" + $(this).text() + "</option>");
+                    $("#list1 .list-group-item").eq(newPos).after("<a data-field='" + $(this).attr("data-field") +"' class='list1_item list-group-item list-group-item-action active'>" + $(this).text() + "</a>");
                     $(this).remove();
+
+                    refresh_state();
                 }
             });
-            refresh_state();
+            
         });
 
         $("#list1").dblclick(function () {
@@ -381,9 +401,8 @@
         });
 
         $("#cmdRemove").click(function () {
-            $("#list1 option:selected").each(function () {
-                var field = $(this).val();
-
+            $("#list1 .active").each(function () {
+                var field = $(this).attr("data-field");
 
                 var cmd = $("button[data-field=" + field + "]");
                 //$(cmd).css("visibility", "visible");
@@ -392,9 +411,13 @@
                 $(this).remove();
 
             });
-            if ($("#list1").length > 0) {
-                $("#list1").prop("selectedIndex", "0");
+
+            $("#list1 .list-group-item").removeClass("active");
+
+            if ($("#list1 .list-group-item").length > 0) {
+                $("#list1 .list-group-item").first().addClass("active");
             }
+
             refresh_state();
         });
 
@@ -403,13 +426,8 @@
 
 
     function handle_append_field(cmd, bolUpdateState) {
-        var field = $(cmd).attr("data-field");
-
-        var rel_plus_entity = $(cmd).attr("data-entity");
-
+        var field = $(cmd).attr("data-field");       
         var alias = $(cmd).attr("data-alias");
-
-
 
 
         if (_sels.includes(field)) {
@@ -417,16 +435,14 @@
             return;
         }
 
-        //$(cmd).css("visibility", "hidden");
-        //$(cmd).parent().prop("disabled", true);
-        //$(cmd).parent().css("color", "red");
-
+       
         $(cmd).parent().addClass("field_selected");
         $(cmd).prop("disabled", true);
 
-        $("#list1").append("<option selected value='" + field + "'>" + alias + "</option>");
-        $("#list1").val(field);
+        $("#list1 .list-group-item").removeClass("active");
 
+        $("#list1").append("<a class='list1_item list-group-item list-group-item-action active' data-field='" + field + "'>" + alias + "</a>");
+        
         if (bolUpdateState == true) {
             refresh_state();
         }
@@ -437,12 +453,12 @@
 
     function refresh_state() {
         _sels = [];
-        $("#list1 option").each(function () {
-            _sels.push(this.value);
+        $("#list1 .list-group-item").each(function () {
+            _sels.push($(this).attr("data-field"));
         });
         $("#Rec_j72Columns").val(_sels.join(","));
 
-        if (document.getElementById("list1").length > 0) {
+        if ($("#list1 .list-group-item").length>0) {
             $("#cmdRemove").prop("disabled", false);
             $("#cmdUp").prop("disabled", false);
             $("#cmdDown").prop("disabled", false);
@@ -451,6 +467,11 @@
             $("#cmdUp").prop("disabled", true);
             $("#cmdDown").prop("disabled", true);
         }
+
+        $("#list1 .list-group-item").click(function () {
+            $("#list1 .list-group-item").removeClass("active");
+            $(this).addClass("active");
+        });
 
 
     }
@@ -463,13 +484,13 @@
             var field = arr[i];
 
             var cmd = $("button[data-field=" + field + "]").first();
-            //$(cmd).parent().addClass("field_selected");
-
+            
             handle_append_field(cmd, false);
         }
-        if ($("#list1").length > 0) {
-            $("#list1").prop("selectedIndex", "0");
-        }
+
+        
+
+        
 
     }
 
@@ -499,7 +520,7 @@
     }
 
     function restore2factory() {
-        if (confirm("@_f.tra("Tovární stav = Výchozí sada sloupců, vyčištění sloupců, filtru a souhrnů.<hr>Mám pokračovat?")")) {
+        if (confirm("@_f.tra("Tovární stav = Výchozí sada sloupců, vyčištění sloupců, filtru a souhrnů. Mám pokračovat?")")) {
 
             var url = "@Url.Action("Index","TheGridDesigner", new { restore2factory = true})";
             form1.action = url;
@@ -508,6 +529,39 @@
         }
     }
 
+    function savechanges() {
+        var fields = $("#Rec_j72Columns").val();
+        if (fields == "") {
+            _notify_message("@_f.tra("Grid musí obsahovat minimálně jeden sloupec.")");
+            return;
+        }
+        form1.submit();
+    }
+
+
+
+    function handle_j73_append() {
+        form1.action = "/TheGridDesigner/Index?oper=add_j73";
+        form1.submit();
+    }
+    function handle_delete_j73(guid) {
+        form1.action = "/TheGridDesigner/Index?oper=delete_j73&guid=" + guid;
+        form1.submit();
+
+    }
+    function handle_queryfield_change(cbx) {
+        var guid = $(cbx).attr("data-value");
+        form1.action = "/TheGridDesigner/Index?oper=changefield&guid=" + guid;
+        form1.submit();
+    }
+    function handle_queryoperator_change(cbx) {
+        form1.action = "/TheGridDesigner/Index?oper=postback";
+        form1.submit();
+    }
+    function handle_j73_clear() {
+        form1.action = "/TheGridDesigner/Index?oper=clear_j73";
+        form1.submit();
+    }
 </script>
 
 

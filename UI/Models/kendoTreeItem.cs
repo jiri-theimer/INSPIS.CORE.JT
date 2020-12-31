@@ -41,6 +41,7 @@ namespace UI.Models
 
         public string customvalue1 { get; set; }
         public string customvalue2 { get; set; }
+        public string customvalue3 { get; set; }
 
         public List<kendoTreeItem> items { get; set; }
     }

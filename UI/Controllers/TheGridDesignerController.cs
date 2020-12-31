@@ -189,16 +189,18 @@ namespace UI.Controllers
                     default:
                         grp.text = rel.AliasSingular;break;
                 }
-                if (v.treeNodes.Count() == 0)
+               
+                if (v.Relations.Count()==1 && v.treeNodes.Count() == 0)
                 {
                     grp.expanded = true;
                 }
                 grp.customvalue2 = "/images/folder.png";
+                grp.customvalue3 = "tree_group";
                 grp.items = new List<kendoTreeItem>();
 
                 foreach (var col in v.AllColumns.Where(p => p.Entity == rel.TableName))
                 {
-                    var cc = new kendoTreeItem() { id = col.UniqueName, text = col.Header };
+                    var cc = new kendoTreeItem() { id = rel.RelName + "__" + col.Entity + "__" + col.Field, text = col.Header };
                     cc.customvalue1 = rel.RelName + "__" + col.Entity;
 
                     switch (Factory.CurrentUser.j03LangIndex)
@@ -208,10 +210,12 @@ namespace UI.Controllers
                         case 2:
                             cc.text = col.TranslateLang2; break;
                         default:
-                            grp.text = col.Header; break;
+                            cc.text = col.Header; break;
                     }
                     //cc.imageUrl = "/images/" + col.getImage();
                     cc.customvalue2 = "/images/" + col.getImage();
+                    cc.customvalue3 = "tree_item";
+                    if (col.IsTimestamp) cc.customvalue3 += " timestamp";
                     grp.items.Add(cc);
                 }
 
