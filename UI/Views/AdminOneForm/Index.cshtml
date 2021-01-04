@@ -43,19 +43,15 @@
     </style>
 }
 
-<div class="row py-1 bg-light m-0">
+<div class="row nowrap pt-1 bg-light m-0">
     <div id="layout_sidebar_contextmenu" class="col-auto">
         <a id="layout_sidebar_contextmenu_link" class="cm h4 mx-0" onclick="_cm(event, 'f06Form',@Model.f06ID);">☰@_f.tra("Návrhář formuláře")</a>
         <h4 id="layout_sidebar_contextmenu_onlytext">@_f.tra("Návrhář formuláře")</h4>
     </div>
-    <div class="p-0 col-auto">
-        <ul class="nav nav-tabs">
-            <li class="nav-item onetab">
-                <a class="nav-link active" data-toggle="tab">@Model.RecF06.f06Name</a>
-            </li>
-        </ul>
-
+    <div class="col-auto nonmobile tabovergrid">
+        @Model.RecF06.f06Name
     </div>
+   
     <div class="nonmobile col-auto">
         <a class="btn btn-light" href="javascript:reload()" title="@_f.tra("Občerstvit")"><span class="k-icon k-i-reload"></span></a>
     </div>

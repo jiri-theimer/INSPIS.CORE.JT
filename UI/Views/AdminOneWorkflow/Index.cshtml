@@ -38,18 +38,15 @@
 }
 
 
-<div class="row pb-0 py-1 bg-light m-0">
+<div class="row nowrap pt-1 bg-light m-0">
     <div id="layout_sidebar_contextmenu" class="col-auto">
         <a id="layout_sidebar_contextmenu_link" class="cm h4 mx-0" onclick="_cm(event, 'b01WorkflowTemplate',@Model.b01ID);">☰@_f.tra("Návrhář workflow")</a>
         <h4 id="layout_sidebar_contextmenu_onlytext">@_f.tra("Návrhář workflow")</h4>
     </div>
-    <div class="col-auto p-0">
-        <ul class="nav nav-tabs">
-            <li class="nav-item onetab">
-                <a class="nav-link active" data-toggle="tab">@Model.RecB01.b01Name</a>
-            </li>
-        </ul>
+    <div class="col-auto nonmobile tabovergrid">
+        @Model.RecB01.b01Name
     </div>
+    
     <div class="nonmobile col-auto">
         <a class="btn btn-light" href="/AdminOneWorkflow/Index?b01id=@Model.b01ID" title="@_f.tra("Občerstvit")"><span class="k-icon k-i-reload"></span></a>
     </div>

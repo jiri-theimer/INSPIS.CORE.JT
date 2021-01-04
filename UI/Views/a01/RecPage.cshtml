@@ -12,51 +12,46 @@
 
 
 
-    <div class="row py-1 bg-light m-0">
-        <div id="layout_sidebar_contextmenu" class="col-auto">
-            @if (Model.pid > 0)
-            {
-                <a id="layout_sidebar_contextmenu_link" class="cm h4 mx-1" title="Menu" onclick="_cm(event, 'a01',@Model.Rec.pid);">☰@Model.Rec.a01Signature</a>
-                <h4 id="layout_sidebar_contextmenu_onlytext">
-                    @if (Model.Rec.a01ChildsCount > 0)
-                    {
-                        <img src="~/images/mother.png" title="@_f.tra("Nadřízená akce")" />
-                    }
-                    @if (Model.Rec.a01ParentID > 0)
-                    {
-                        <img src="~/images/child.png" title="@_f.tra("Podřízená akce")" />
-                    }
-                    @Model.Rec.a01Signature
-                </h4>
-            }
-
-        </div>
+<div class="row nowrap pt-1 bg-light m-0">
+    <div id="layout_sidebar_contextmenu" class="col-auto">
         @if (Model.pid > 0)
         {
-            <div class="px-0 col-auto">
-                <ul class="nav nav-tabs nonmobile nontablet">
-                    <li class="nav-item onetab">
-                        <a class="nav-link active" data-toggle="tab">@Model.Rec.a10Name</a>
-                    </li>
-                </ul>
-
-
-            </div>
-            <div class="nonmobile col-auto">
-                <a class="btn btn-light" href="/a01/RecPage?pid=@Model.pid" title="@_f.tra("Občerstvit")"><span class="k-icon k-i-reload"></span></a>
-            </div>
+            <a id="layout_sidebar_contextmenu_link" class="cm h4 mx-1" title="Menu" onclick="_cm(event, 'a01',@Model.Rec.pid);">☰@Model.Rec.a01Signature</a>
+            <h4 id="layout_sidebar_contextmenu_onlytext">
+                @if (Model.Rec.a01ChildsCount > 0)
+                {
+                    <img src="~/images/mother.png" title="@_f.tra("Nadřízená akce")" />
+                }
+                @if (Model.Rec.a01ParentID > 0)
+                {
+                    <img src="~/images/child.png" title="@_f.tra("Podřízená akce")" />
+                }
+                @Model.Rec.a01Signature
+            </h4>
         }
 
-        <div class="col-auto">
-            <mysearch asp-for="@Model.SearchBox" entity="a01Event" placeholder="@_f.tra("Fulltext hledání")..."></mysearch>
+    </div>
+    @if (Model.pid > 0)
+    {
+        <div class="col-auto nonmobile tabovergrid">
+            @Model.Rec.a10Name
         </div>
 
+        <div class="nonmobile col-auto">
+            <a class="btn btn-light" href="/a01/RecPage?pid=@Model.pid" title="@_f.tra("Občerstvit")"><span class="k-icon k-i-reload"></span></a>
+        </div>
+    }
 
-
-
-
-
+    <div class="col-auto">
+        <mysearch asp-for="@Model.SearchBox" entity="a01Event" placeholder="@_f.tra("Fulltext hledání")..."></mysearch>
     </div>
+
+
+
+
+
+
+</div>
 
 <div id="layout_sidebar" class="cm_recpage">Loading...</div>
 
@@ -114,7 +109,7 @@
 
                 <myval value="@Model.Rec.a08Name" hoverprefix="a08" hoverpid="@Model.Rec.a08ID"></myval>
             </div>
-            
+
             <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Založeno"):</label>
             <div class="col-sm-3 col-md-2">
                 @if (Model.RecIssuer != null)
@@ -203,7 +198,7 @@
         {
         <text>
         $.post("/Menu/ContextMenu", { entity: "a01Event",flag: "recpage", pid:@Model.pid }, function (data) {
-            
+
             $("#layout_sidebar").html(data);
 
         });
@@ -219,7 +214,7 @@
 
         var offset = $("#divTabContent").offset();
         var h_vertical = _device.innerHeight - offset.top;
-        h_vertical = parseInt(h_vertical);        
+        h_vertical = parseInt(h_vertical);
 
         if (_device.type === "Phone") {
             h_vertical = 400;

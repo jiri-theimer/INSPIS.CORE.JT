@@ -36,17 +36,13 @@
     </style>
 }
 
-<div class="row py-1 bg-light m-0">
+<div class="row nowrap pt-1 bg-light m-0">
     <div id="layout_sidebar_contextmenu" class="col-auto">
         <a id="layout_sidebar_contextmenu_link" class="cm h4 mx-0" onclick="_cm(event, 'Forms',0,'@Model.prefix');">☰@_f.tra("Formuláře")</a>
         <h4 id="layout_sidebar_contextmenu_onlytext">@_f.tra("Formuláře")</h4>
     </div>
-    <div class="p-0 col-auto">
-        <ul class="nav nav-tabs">
-            <li class="nav-item onetab">
-                <a class="nav-link active">@Model.entityTitle</a>
-            </li>
-        </ul>
+    <div class="col-auto nonmobile tabovergrid">
+        @Model.entityTitle
     </div>
     <div class="nonmobile nontablet col-auto">
         <a class="btn btn-light" href="/Admin/Ciselniky?prefix=@Model.prefix" title="@_f.tra("Občerstvit")"><span class="k-icon k-i-reload"></span></a>

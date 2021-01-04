@@ -12,7 +12,7 @@
 @addTagHelper *, UI
 
 
-<div class="row py-1 bg-light m-0">
+<div class="row nowrap pt-1 bg-light m-0">
     <div id="layout_sidebar_contextmenu" class="col-auto">
         @if (Model.pid > 0)
         {
@@ -34,15 +34,10 @@
     </div>
     @if (Model.pid > 0)
     {
-        <div class="col-auto px-0">
-            <ul class="nav nav-tabs nonmobile nontablet">
-                <li class="nav-item onetab">
-                    <a class="nav-link active" data-toggle="tab">@Model.Rec.a06Name</a>
-                </li>
-            </ul>
-
-
+        <div class="col-auto nonmobile tabovergrid">
+            @Model.Rec.a06Name
         </div>
+
         <div class="nonmobile col-auto">
             <a class="btn btn-light" href="/a03/RecPage?pid=@Model.pid" title="@_f.tra("Občerstvit")"><span class="k-icon k-i-reload"></span></a>
         </div>
