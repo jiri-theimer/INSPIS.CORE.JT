@@ -167,7 +167,7 @@
 
             @if (Model.Rec.b06IsManualStep)
             {
-                <p>Vyberte, kdo může spustit tento krok:</p>
+                <p>@_f.tra("Vyberte, kdo může spustit tento krok"):</p>
                 <div style="width:100%;">
                     <mycombochecklist asp-for="@Model.b08_a45IDs" entity="a45EventRole" selectedtext="@Model.b08_a45Names" placeholder="@_f.tra("Vybrat roli v akci")..." event_after_changevalue="b08_change_a45ids"></mycombochecklist>
 
@@ -215,7 +215,7 @@
                                 <input type="hidden" asp-for="lisB11[i].IsTempDeleted" value="@Model.lisB11[i].IsTempDeleted" />
                                 <input type="hidden" asp-for="lisB11[i].TempGuid" value="@Model.lisB11[i].TempGuid" />
                                 <div class="col-sm-2 col-md-2">
-                                    Příjemce zprávy:
+                                    @_f.tra("Příjemce zprávy"):
                                 </div>
                                 <div class="col-sm-2 col-md-2">
                                     <mycombo entity="a45EventRole" asp-for="lisB11[i].a45ID" selectedtext="lisB11[i].a45Name" placeholder="@_f.tra("Vybrat roli v akci")..." view-flag="2"></mycombo>
@@ -495,7 +495,7 @@
 
             </div>
             <div>
-                <input type="text" class="form-control" asp-for="Rec.b06ValidateBeforeErrorMessage" placeholder="Uživatelská hláška v případě nesplnění validačního dotazu" />
+                <input type="text" class="form-control" asp-for="Rec.b06ValidateBeforeErrorMessage" placeholder="@_f.tra("Uživatelská hláška v případě nesplnění validačního dotazu")" />
             </div>
             <div style="margin-top:20px;">
                 @_f.tra("Automatický posun | Krok bude automaticky proveden po splnění následujícího SQL dotazu"):
