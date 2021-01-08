@@ -441,42 +441,53 @@ namespace UI.Controllers
                     }                    
                     
                     var lisA24 = Factory.a01EventBL.GetList_a24(pid);
-                    if (lisA24.Where(p => p.a46ID == 4 && p.a01ID_Right==pid).Count() > 0)
+                    if (lisA24.Where(p => (p.a46ID == 4 || p.a46ID==5) && p.a01ID_Right==pid).Count() > 0)
                     {
-                        AMI_NOTRA(Factory.tra("Podřízené akce") + " (" + lisA24.Where(p => p.a46ID == 4 && p.a01ID_Right == pid).Count().ToString() + ")<img src='/Images/child.png'/>", null, null, "Podrizena");
+                        AMI_NOTRA(Factory.tra("Podřízené akce") + " (" + lisA24.Where(p => (p.a46ID == 4 || p.a46ID==5) && p.a01ID_Right == pid).Count().ToString() + "):", null, null, "Podrizena");
                         //RenderPodrizeneAkce(recA01.pid, "Nadrizena", recA01);
-                        RenderAkceSeVztahem("Podrizena", recA01, lisA24.Where(p => p.a46ID == 4));
+                        RenderAkceSeVztahem("Podrizena", recA01, lisA24.Where(p => p.a46ID == 4 || p.a46ID==5));
                     }
                     
                     if (lisA24.Where(p => p.a46ID == 3).Count() > 0)
                     {
-                        AMI_NOTRA(Factory.tra("Souvisí s") + " (" + lisA24.Where(p => p.a46ID == 3).Count().ToString() + ")<img src='/Images/souvisejici.png'/>", null, null, "Souvisi");
+                        AMI_NOTRA(Factory.tra("Souvisí s") + " (" + lisA24.Where(p => p.a46ID == 3).Count().ToString() + "):", null, null, "Souvisi");
                         RenderAkceSeVztahem("Souvisi", recA01, lisA24.Where(p => p.a46ID == 3));
                     }
                     if (lisA24.Where(p => p.a46ID == 1).Count() > 0)
                     {
-                        AMI_NOTRA(Factory.tra("Závisí na") + " (" + lisA24.Where(p => p.a46ID == 1).Count().ToString() + ")<img src='/Images/zavisla.png'/>", null, null, "Zavisi");
+                        AMI_NOTRA(Factory.tra("Závisí na") + " (" + lisA24.Where(p => p.a46ID == 1).Count().ToString() + "):", null, null, "Zavisi");
                         RenderAkceSeVztahem("Zavisi", recA01, lisA24.Where(p => p.a46ID == 1));
                     }
                     if (lisA24.Where(p => p.a46ID == 2).Count() > 0)
                     {
-                        AMI_NOTRA(Factory.tra("Je duplikátem") + " (" + lisA24.Where(p => p.a46ID == 2).Count().ToString() + ")<img src='/Images/duplikat.png'/>", null, null, "Duplikat");
+                        AMI_NOTRA(Factory.tra("Je duplikátem") + " (" + lisA24.Where(p => p.a46ID == 2).Count().ToString() + "):", null, null, "Duplikat");
                         RenderAkceSeVztahem("Duplikat", recA01, lisA24.Where(p => p.a46ID == 2));
                     }
+
                     if (recA01.a01ParentID > 0)
                     {
-                        AMI_NOTRA(Factory.tra("Nadřízená")+ "<img src='/Images/mother.png'/>"+Factory.a01EventBL.Load(recA01.a01ParentID).a01Signature, Factory.a01EventBL.GetPageUrl(recA01,recA01.a01ParentID),null,"Nadrizena","_top");
-                        RenderAkceSeVztahem("Nadrizena", recA01, lisA24.Where(p => p.a46ID == 4 && p.a01ID_Left !=pid));
+                        AMI_NOTRA(Factory.tra("Nadřízená")+ ": "+Factory.a01EventBL.Load(recA01.a01ParentID).a01Signature, Factory.a01EventBL.GetPageUrl(recA01,recA01.a01ParentID),null,"Nadrizena","_top");
+                        RenderAkceSeVztahem("Nadrizena", recA01, lisA24.Where(p => (p.a46ID == 4 || p.a46ID==5) && p.a01ID_Left !=pid));
                         //RenderPodrizeneAkce(recA01.a01ParentID, "Nadrizena",recA01);                        
+                    }
+                    
+                    //Posunout/Doplnit je k dispozici pouze pro nadřízené akce nebo akce v monarchii
+                    if (recA01.a01ParentID == 0)
+                    {
+                        AMI("Posunout/Doplnit", string.Format("javascript: _window_open('/workflow/Dialog?pid={0}')", pid));
                     }
                     else
                     {
-                        AMI("Posunout/Doplnit", string.Format("javascript: _window_open('/workflow/Dialog?pid={0}')", pid));
-                        if (!recA01.isclosed)
+                        if (recA01.a01ParentID > 0 && Factory.a01EventBL.GetList_a24(recA01.pid).Where(p => p.a46ID == 5).Count() > 0)
                         {
-                            AMI("Nahrát přílohu", string.Format("javascript:_window_open('/a01/AddAttachment?pid={0}')", pid));
+                            //akce je v monarchiii
+                            AMI("Posunout/Doplnit", string.Format("javascript: _window_open('/workflow/Dialog?pid={0}')", pid));
                         }
-                        
+                    }
+                    
+                    if (!recA01.isclosed)
+                    {
+                        AMI("Nahrát přílohu", string.Format("javascript:_window_open('/a01/AddAttachment?pid={0}')", pid));
                     }
 
 
@@ -823,6 +834,7 @@ namespace UI.Controllers
                 switch (c.a46ID)
                 {
                     case 4:
+                    case 5:
                         strName += "<img src='/Images/child.png'/>";
                         break;
                     case 3:

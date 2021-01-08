@@ -36,7 +36,7 @@
         <div class="col-sm-11 col-md-10">
             <span class="form-control bg-light">
                 @Model.Rec.MessageTime
-                <code style="margin-left:40px;">@Model.Rec.StateAlias</code>
+                <code style="margin-left:40px;">@_f.tra(Model.Rec.StateAlias)</code>
 
             </span>
 
@@ -45,52 +45,52 @@
     </div>
     @if (Model.Rec.x40ErrorMessage != null)
     {
-        <div class="row" style="margin-top:10px;">
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Chyba"):</label>
             <div class="col-sm-11 col-md-10">
-                <span class="form-control bg-light text-danger">@Model.Rec.x40ErrorMessage</span>
-
+                
+                <myval value="@Model.Rec.x40ErrorMessage" ></myval>
             </div>
 
         </div>
     }
 
-    <div class="row" style="margin-top:10px;">
+    <div class="row my-2" >
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Odesílatel"):</label>
         <div class="col-sm-11 col-md-10">
+
             <span class="form-control bg-light">@Html.Raw(Model.Rec.x40SenderName + " <" + Model.Rec.x40SenderAddress + ">")</span>
         </div>
     </div>
 
-    <div class="row" style="margin-top:10px;">
+    <div class="row my-2" >
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Komu (To)"):</label>
         <div class="col-sm-11 col-md-10">
-            <span class="form-control bg-light">@Model.Rec.x40Recipient</span>
-
+            
+            <myval value="@Model.Rec.x40Recipient"></myval>
         </div>
 
     </div>
-    <div class="row" style="margin-top:10px;">
+    <div class="row my-2" >
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kopie (Cc)"):</label>
-        <div class="col-sm-11 col-md-10">
-            <span class="form-control bg-light">@Model.Rec.x40Cc</span>
-
+        <div class="col-sm-11 col-md-10">            
+            <myval value="@Model.Rec.x40Cc"></myval>
         </div>
 
     </div>
-    <div class="row" style="margin-top:10px;">
+    <div class="row my-2" >
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Skrytá kopie (Bcc)"):</label>
         <div class="col-sm-11 col-md-10">
-            <span class="form-control bg-light">@Model.Rec.x40Bcc</span>
-
+            
+            <myval value="@Model.Rec.x40Bcc"></myval>
         </div>
 
     </div>
-    <div class="row" style="margin-top:10px;">
+    <div class="row my-2" >
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Předmět zprávy"):</label>
         <div class="col-sm-11 col-md-10">
-            <span class="form-control bg-light">@Model.Rec.x40Subject</span>
-
+            
+            <myval value="@Model.Rec.x40Subject"></myval>
         </div>
 
     </div>
@@ -98,7 +98,7 @@
 
     @if (Model.MimeMessage != null && Model.MimeAttachments.Count() > 0)
     {
-        <div class="row" style="margin-top:10px;">
+        <div class="row my-2" >
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Přílohy"):</label>
             <div class="col-sm-11 col-md-10">
                 @foreach (var item in Model.MimeAttachments)
@@ -116,7 +116,7 @@
             </div>
 
         </div>
-        <div class="row" style="margin-top:10px;">
+        <div class="row my-2" >
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Velikost zprávy"):</label>
             <div class="col-sm-11 col-md-10">
                 @(BO.BAS.FormatFileSize(Model.Rec.x40EmlFileSize))
@@ -133,7 +133,7 @@
 
 
 
-    <div class="row" style="margin-top:10px;">
+    <div class="my-2">
         <textarea asp-for="Rec.x40Body" class="form-control" placeholder="@_f.tra("Text zprávy")" style="height:200px;"></textarea>
 
     </div>

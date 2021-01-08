@@ -200,7 +200,8 @@ function myautocomplete_init(c) {
 
 function mystitky_multiselect(event, entity) {
     var o51ids = $("#TagPids").val();
-    _zoom(event, null, null, 250, "★Zatřídit do kategorií...", "/o51/MultiSelect?entity=" + entity + "&o51ids=" + o51ids);
+    
+    _zoom(event, null, null, 250, $(event.target).text(), "/o51/MultiSelect?entity=" + entity + "&o51ids=" + o51ids);
 
 }
 

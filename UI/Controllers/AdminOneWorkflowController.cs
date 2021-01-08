@@ -167,6 +167,16 @@ namespace UI.Controllers
                         cB06.Text += " -> " + recB06.TargetStatus;
                         cB06.ImgUrl = "/images/bullet1.gif";
                     }
+                    if (!recB06.b06IsManualStep)
+                    {
+                        //ručně spouštěný krok
+                        cB06.CssClass += " non-manualstep";
+                    }
+                    if (cB06.CssClass != null)
+                    {
+                        cB06.CssClass = cB06.CssClass.Trim();
+                    }
+                    
                     v.treeNodes.Add(cB06);
                     c.TreeIndexTo = x;
                 }

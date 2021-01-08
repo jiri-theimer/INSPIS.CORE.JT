@@ -28,19 +28,7 @@ namespace BL
 
         public string UiftUrl { get; set; } //url pro spouštění UIFT
         public string RobotUser { get; set; }   //pod jakým uživatelským loginem běží robot na pozadí
-
-        public string Terminology_Akce
-        {
-            get
-            {
-                if (this.Implementation == "HD")
-                {
-                    return "Požadavky";
-                }
-                return "Akce";
-            }
-        }
-
+       
         public bool PasswordRequireDigit { get; set; }
         public bool PasswordRequireLowercase { get; set; }
         public bool PasswordRequireUppercase { get; set; }

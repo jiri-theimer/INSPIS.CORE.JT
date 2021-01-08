@@ -142,9 +142,9 @@ namespace UI.Controllers
                 case "j02":
                     tabs.Add(AddTab("Info", "viewInfo", "/j02/Info?pid=" + AppendPid2Url(v.gridinput.go2pid)));
                     tabs.Add(AddTab("Časový plán", "gantt", "/a35/TabPersonalTimeline?pid=" + AppendPid2Url(v.gridinput.go2pid)));
-
-                    tabs.Add(AddTab(string.Format(Factory.tra("{0}: je zakladatelem"), Factory.App.Terminology_Akce), "a01Event", "SlaveView?prefix=a01",false));
-                    tabs.Add(AddTab(string.Format(Factory.tra("{0}: je účastníkem"), Factory.App.Terminology_Akce), "a01Event", "SlaveView?prefix=a01", false));
+                    var s = Factory.tra("Akce");
+                    tabs.Add(AddTab(string.Format(Factory.tra("{0}: je zakladatelem"), s), "a01Event", "SlaveView?prefix=a01",false));
+                    tabs.Add(AddTab(string.Format(Factory.tra("{0}: je účastníkem"), s), "a01Event", "SlaveView?prefix=a01", false));
                     tabs.Add(AddTab("Instituce", "a03Institution", "SlaveView?prefix=a03"));
                     tabs.Add(AddTab("Úkoly/Lhůty", "h04ToDo", "SlaveView?prefix=h04"));
                     tabs.Add(AddTab("Outbox", "x40MailQueue", "SlaveView?prefix=x40"));

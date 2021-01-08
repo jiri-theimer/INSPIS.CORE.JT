@@ -72,7 +72,7 @@ namespace UI.Views.Shared.TagHelpers
 
             sb(string.Format("<button type='button' id='cmdCombo{0}' class='btn dropdown-toggle form-control' data-bs-toggle='dropdown' aria-expanded='false' style='border: solid 1px #C8C8C8; border-radius: 3px;width:100%;text-align:left;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;'>{1}</button>", strControlID, this.PlaceHolder));
 
-            sb(string.Format("<button type='button' id='cmdClear{0}' class='btn btn btn-outline-secondary' tabindex='-1' title='Vyčistit' style='position:absolute;top:0;right:0;border: solid 1px #C8C8C8; border-radius: 3px;'>", strControlID));
+            sb(string.Format("<button type='button' id='cmdClear{0}' class='btn btn btn-outline-secondary' tabindex='-1' style='position:absolute;top:0;right:0;border: solid 1px #C8C8C8; border-radius: 3px;'>", strControlID));
             sb("&times;");
             sb("</button>");
 
@@ -80,8 +80,8 @@ namespace UI.Views.Shared.TagHelpers
 
             sb(string.Format("<div class='dropdown-menu' aria-labelledby='cmdCombo{0}' style='width:100%;' tabindex='-1'>", strControlID));
 
-
-            sb(string.Format("<input id='searchbox{0}' autocomplete='off' type='text' class='form-control' placeholder='Najít...'>", strControlID));
+          
+            sb(string.Format("<input id='searchbox{0}' autocomplete='off' type='text' class='form-control' placeholder='🔍...'>", strControlID));
 
             sb("");
 

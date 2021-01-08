@@ -19,6 +19,8 @@ var _tg_current_pid;
 var _tg_is_enable_clipboard = true;
 var _tg_fixedcolumns;
 var _tg_viewstate;
+var _tg_langindex = 0;
+var _tg_musite_vybrat_zaznam = "Musíte vybrat minimálně jeden záznam.";
 
 const event_thegridbound = new Event("thegrid_rebound");
 //const event_thegridrowselect = new CustomEvent("thegrid_rowselect", { detail: { pid: 0 } });
@@ -36,6 +38,11 @@ function tg_init(c) {
     _tg_ondblclick = c.ondblclick;
     _tg_fixedcolumns = c.fixedcolumns;
     _tg_viewstate = c.viewstate;
+    _tg_langindex = c.langindex;
+
+    if (c.langindex === 2) {
+        _tg_musite_vybrat_zaznam = "Ви повинні вибрати принаймні один запис.";
+    }
 
     $("#container_grid").scroll(function () {
         $("#container_vScroll").width($("#container_grid").width() + $("#container_grid").scrollLeft());
@@ -493,7 +500,13 @@ function tg_filter_ok() {
     $("#cmdDestroyShowOnlyPID").css("display", "none");
 
     if ($("input[name='chlfilter']:checked").length === 0) {
-        _notify_message("Musíte zaškrtnout jeden z filtrovacích operátorů.", "warning");
+        switch (_tg_langindex) {
+            case 2:
+                _notify_message("Ви повинні перевірити одного з операторів фільтра.", "warning"); break;
+            default:
+                _notify_message("Musíte zaškrtnout jeden z filtrovacích operátorů.", "warning"); break;
+        }
+        
         return;
     }
     var c1 = document.getElementById("qryval1");
@@ -512,16 +525,26 @@ function tg_filter_ok() {
     }
     if (coltypename === "string") {
         fv = c1.value;
-        if (fv === "" && (operator === "3" || operator === "4" || operator === "5" || operator === "6" || operator === "7")) {
-            _notify_message("Musíte vyplnit filtrovací výraz.", "warning");
+        if (fv === "" && (operator === "3" || operator === "4" || operator === "5" || operator === "6" || operator === "7")) {            
+            switch (_tg_langindex) {
+                case 2:
+                    _notify_message("Ви повинні заповнити вираз фільтра.", "warning"); break;
+                default:
+                    _notify_message("Musíte vyplnit filtrovací výraz.", "warning"); break;
+            }
             c1.focus();
             return;
         }
         if (operator === "0" || operator === "1" || operator === "2") fv = "";
     }
     if (coltypename === "number" || coltypename === "date") {
-        if (operator === "4" && (c1.value === "" || c2.value === "")) {
-            _notify_message("Musíte vyplnit hodnoty od - do.", "error");
+        if (operator === "4" && (c1.value === "" || c2.value === "")) {            
+            switch (_tg_langindex) {
+                case 2:
+                    _notify_message("Ви повинні заповнити значення від - до.", "warning"); break;
+                default:
+                    _notify_message("Musíte vyplnit hodnoty od - do.", "warning"); break;
+            }
             c1.focus();
             return;
         }
@@ -912,7 +935,7 @@ function tg_export(format, scope) {
     if (scope === "selected") {
         pids = $("#tg_selected_pids").val();
         if (pids === "") {
-            _notify_message("Musíte vybrat minimálně jeden záznam.");
+            _notify_message(_tg_musite_vybrat_zaznam);
             return;
         }        
     }
@@ -930,17 +953,18 @@ function tg_tagging() {
     var url = "/o51/Batch?j72id=" + _j72id;
     var pids = $("#tg_selected_pids").val();
     if (pids === "") {
-        _notify_message("Musíte vybrat minimálně jeden záznam.");
+        _notify_message(_tg_musite_vybrat_zaznam);        
+        
         return;
     }
     url = url + "&pids=" + pids;
-    _window_open(url, 2, "Zatřídit do kategorií");
+    _window_open(url, 2);
 
 }
 function tg_batchupdate(prefix) {
     var pids = $("#tg_selected_pids").val();
     if (pids === "") {
-        _notify_message("Musíte vybrat minimálně jeden záznam.");
+        _notify_message(_tg_musite_vybrat_zaznam);
         return;
     }
     var url = "/BatchUpdate/" + prefix + "?pids=" + pids;

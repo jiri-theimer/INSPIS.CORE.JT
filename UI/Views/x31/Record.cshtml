@@ -25,7 +25,7 @@
     <div class="row my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Formát"):</label>
         <div class="col-sm-3 col-md-3">
-            <select id="x31ReportFormat" asp-for="Rec.x31ReportFormat" class="form-control">
+            <select id="x31ReportFormat" asp-for="Rec.x31ReportFormat" class="form-select">
                 <option value="Telerik">TELERIK</option>
                 <option value="DOC">DOCX</option>
                 <option value="XLS">XLSX</option>
@@ -64,10 +64,20 @@
     <div class="row my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Entita"):</label>
         <div class="col-sm-5 col-md-4">
-            <mycombo entity="x29Entity" asp-for="Rec.x29ID" selectedtext="Rec.x29Name" view-flag="2" param1="x29IsReport" event_after_changevalue="handle_change_x29id"></mycombo>
+            
+            <select class="form-select" asp-for="Rec.x29ID" onchange="handle_change_x29id()">
+                <option value="0">------</option>
+                <option value="101">@_f.tra("Akce")</option>
+                <option value="103">@_f.tra("Instituce")</option>
+                <option value="502">@_f.tra("Osoba")</option>
+                <option value="406">@_f.tra("Formulář")</option>
+                <option value="111">@_f.tra("Formulář v akci")</option>
+                <option value="201">@_f.tra("Workflow šablona")</option>
+
+            </select>
         </div>
     </div>
-    <div class="row my-2">
+    <div class="my-2">
         <textarea asp-for="Rec.x31Translate" class="form-control" placeholder="@_f.tra("Jazykový překlad")"></textarea>
         
     </div>
@@ -112,12 +122,12 @@
     <iframe id="fraUpload" src="/FileUpload/SingleUpload?guid=@Model.UploadGuid" height="350" scrolling="no"></iframe>
 
 
-    <div class="row my-2">
+    <div class="my-2">
         <textarea asp-for="Rec.x31DocSqlSource" class="form-control" placeholder="@_f.tra("Na míru DOCX SQL zdroj sestavy")"></textarea>
 
     </div>
 
-    <div class="row my-2">
+    <div class="my-2">
         <textarea asp-for="Rec.x31Description" class="form-control" placeholder="@_f.tra("Podrobný popis")"></textarea>
         <span asp-validation-for="Rec.x31Description" class="text-danger"></span>
     </div>
@@ -135,7 +145,7 @@
     });
 
 
-    function handle_change_x29id(x29id) {
+    function handle_change_x29id() {
         handle_postback();
     }
     function handle_postback() {

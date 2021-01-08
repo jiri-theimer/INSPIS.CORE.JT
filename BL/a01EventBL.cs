@@ -129,7 +129,7 @@ namespace BL
             
             int intPID = _db.SaveRecord("a24EventRelation", p.getDynamicDapperPars(), rec);
 
-            if (rec.a46ID == 4)
+            if (rec.a46ID == 4 || rec.a46ID == 5)
             {
                 //a01ID_Left je podřízená vůči a01ID_Right
                 _db.RunSql("UPDATE a01Event set a01ParentID=@right WHERE a01ID=@left", new { left = rec.a01ID_Left, right = rec.a01ID_Right });

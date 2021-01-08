@@ -271,7 +271,7 @@ namespace UI.Controllers
             sb.Append("<hr>");
             if (entity.Substring(0, 3) == "a01")
             {
-                sb.Append(Factory.tra("U hledání akcí systém pracuje s poli:")+"<b>"+"[Signatura], [Kód spisu], [Jméno vedoucího akce], [Jméno člena akce], [Název školy], [REDIZO]"+"</b>.");
+                sb.Append(Factory.tra("U hledání akcí systém pracuje s poli:")+"<b>"+Factory.tra("[Signatura], [Kód spisu], [Jméno vedoucího akce], [Jméno člena akce], [Název školy], [REDIZO]")+"</b>.");
             }
             if (entity.Substring(0, 3) == "a03")
             {

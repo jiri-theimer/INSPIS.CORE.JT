@@ -92,7 +92,7 @@
             <div id="mainmenu1_container" class="container-fluid px-0">
                 @if (_f.CurrentUser.j03HomePageUrl == null)
                 {
-                    <a id="cmdHome" class="navbar-brand" href="/Dashboard/Widgets" tabindex="-1">@_f.App.AppName</a>
+                    <a id="cmdHome" class="navbar-brand mx-0" href="/Dashboard/Widgets" tabindex="-1">@_f.App.AppName</a>
                 }
                 else
                 {
@@ -102,6 +102,7 @@
                         {
                             <span>☆</span>
                         }
+                        
 
                     </a>
                 }
@@ -123,7 +124,7 @@
                         @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.Menu_Events))
                         {
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="cmdA01" role="button" data-bs-toggle="dropdown" aria-expanded="false" tabindex="-1">@_f.tra(_f.App.Terminology_Akce).ToUpper()</a>
+                                <a class="nav-link dropdown-toggle" id="cmdA01" role="button" data-bs-toggle="dropdown" aria-expanded="false" tabindex="-1">@_f.tra("Akce").ToUpper()</a>
                                 <ul id="ulA01" class="dropdown-menu" aria-labelledby="cmdA01"><li>Loading....</li></ul>
                             </li>
 

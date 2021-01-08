@@ -205,7 +205,7 @@ namespace UI.Controllers
             var c = Factory.a03InstitutionBL.LoadSummary(v.pid);
             string strBadge = null;            
             if (c.a01_count > 0 ) strBadge = c.a01_count.ToString();
-            v.NavTabs.Add(AddTab(Factory.App.Terminology_Akce, "a01Event", "/TheGrid/SlaveView?prefix=a01", false,strBadge));
+            v.NavTabs.Add(AddTab("Akce", "a01Event", "/TheGrid/SlaveView?prefix=a01", true,strBadge));
             strBadge = null;
             if (c.a39_count > 0) strBadge = c.a39_count.ToString();
             v.NavTabs.Add(AddTab("Kontaktní osoby", "j02Person", "/TheGrid/SlaveView?prefix=a39",true, strBadge));

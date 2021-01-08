@@ -22,6 +22,7 @@ function _edit(controller, pid, header) {
 
         case "j90":
         case "j92":
+        case "b05":
         case "p44":
             _notify_message("Pro tento záznam neexistuje stránka detailu.<hr>Для цього запису немає сторінки деталей.", "info");
             return;

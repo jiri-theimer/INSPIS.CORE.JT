@@ -15,7 +15,10 @@ namespace UI.Controllers
         {
             var c = Factory.EProvider.ByPrefix(prefix);
             var v = new GridMultiSelect() { entity = c.TableName,prefix=prefix,entityTitle=c.AliasPlural };
-
+            if (Factory.CurrentUser.j03LangIndex == 2)
+            {
+                v.entityTitle = c.TranslateLang2;
+            }
             v.gridinput = GetGridInput(v.entity);
             return View(v);
         }

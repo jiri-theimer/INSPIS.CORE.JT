@@ -117,17 +117,23 @@ namespace UI.Controllers
            
             mq.b02id = v.RecA01.b02ID;
             if (mq.b02id == 0) mq.b02id = -1;   //akce nemá nahozený workflow stav!!
-            var lisB06 = Factory.b06WorkflowStepBL.GetList(mq).OrderBy(p => p.b06Order).Where(p => p.b06IsManualStep == true);
-
+            
             v.lisB06 = new List<BO.b06WorkflowStep>();
-            foreach (var c in lisB06)
+
+            if (v.RecA01.a01ParentID == 0)
             {
-                if (IsStepAvailable4Me(c, v))
+                //nabídku spustitelných kroků řešit pouze pro nadřízené akce!
+                var lisB06 = Factory.b06WorkflowStepBL.GetList(mq).OrderBy(p => p.b06Order).Where(p => p.b06IsManualStep == true);
+                foreach (var c in lisB06)
                 {
-                    if (c.b02ID_Target > 0) c.b06Name += " -> " + c.TargetStatus;
-                    v.lisB06.Add(c);
+                    if (IsStepAvailable4Me(c, v))
+                    {
+                        if (c.b02ID_Target > 0) c.b06Name += " -> " + c.TargetStatus;
+                        v.lisB06.Add(c);
+                    }
                 }
             }
+            
             bool bolIsCommentForbidden = false;
             if (v.RecA01.b02ID > 0)
             {
@@ -156,7 +162,7 @@ namespace UI.Controllers
             var mq = new BO.myQuery("a39");
             mq.a03id = v.RecA01.a03ID;
             var lisA39 = Factory.a39InstitutionPersonBL.GetList(mq).Where(p => p.j02ID == Factory.CurrentUser.j02ID);
-
+          
             foreach (var c in lisB08)
             {
                 switch (c.a45ID)

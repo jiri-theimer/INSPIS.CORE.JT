@@ -460,7 +460,12 @@ namespace UI.Controllers
             var c = Factory.a01EventBL.LoadSummary(v.pid);
             string strBadge = null;
             //v.NavTabs.Add(new NavTab() { Name = "Historie událostí", Entity = "b05Workflow_History", Url = "/TheGrid/SlaveView?prefix=b05" });
-            if (v.Rec.a01ParentID == 0)
+            var bolIAPodrizene = false;
+            if (v.Rec.a01ParentID>0 && Factory.a01EventBL.GetList_a24(v.Rec.pid).Where(p => p.a46ID == 5).Count() > 0)
+            {
+                bolIAPodrizene = true;
+            }
+            if (v.Rec.a01ParentID == 0 || bolIAPodrizene)
             {
                 v.NavTabs.Add(AddTab("Historie událostí", "viewHistorie", "/a01/TabHistory?pid=" + v.pid.ToString()));
             }
@@ -473,7 +478,7 @@ namespace UI.Controllers
                 }
                 v.NavTabs.Add(AddTab("Účastníci akce", "viewUcastnici", "/a01/TabUcastnici?pid=" + v.pid.ToString(), true, strBadge));
             }
-            if (v.RecA10.a10IsUse_Period && v.Rec.a01ParentID == 0)
+            if ((v.RecA10.a10IsUse_Period && v.Rec.a01ParentID == 0))
             {
                 v.NavTabs.Add(AddTab("Časový plán", "viewCapacity", "/a35/TabCapacity?pid=" + v.pid.ToString()));
             }

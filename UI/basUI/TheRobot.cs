@@ -109,9 +109,11 @@ namespace UI
             foreach (var recB06 in lisB06)
             {
                 //LogInfo("Test workflow kroku (b06ValidateAutoMoveSQL): " + recB06.b06Name);
-                
-                var lisA01 = f.a01EventBL.GetList(new BO.myQueryA01() { b02id = recB06.b02ID, a01IsClosed = false }).Where(p => p.a01ParentID == 0);
-                foreach(var recA01 in lisA01)
+
+                var lisA01 = f.a01EventBL.GetList(new BO.myQueryA01() { b02id = recB06.b02ID, a01IsClosed = false });
+                lisA01=lisA01.Where(p => p.a01ParentID == 0);   //vyloučit podřízené akce! - jejich příkazy jsou řešeny v rámci příkazů definovaných pro nadřízené akce
+
+                foreach (var recA01 in lisA01)
                 {
                     LogInfo("Test akce pro automaticky spouštěný krok (b06ValidateAutoMoveSQL): " + recA01.a01Signature);
 

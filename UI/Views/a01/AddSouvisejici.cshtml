@@ -45,12 +45,13 @@
 
                 <select asp-for="@Model.SelectedA46ID" class="form-select">
                     <option value="4">@(Model.RecA01Selected.a01Signature+" "+ _f.tra("Je podřízena vůči")+" "+Model.RecA01.a01Signature)</option>
+                    <option value="5">@(Model.RecA01Selected.a01Signature+" "+ _f.tra("Je IA podřízená vůči")+" "+Model.RecA01.a01Signature)</option>
                     <option value="1">@(Model.RecA01Selected.a01Signature + " " + _f.tra("Závisí na")+" "+Model.RecA01.a01Signature)</option>
                     <option value="2">@(Model.RecA01Selected.a01Signature + " " + _f.tra("Je duplikátem")+" "+Model.RecA01.a01Signature)</option>
                     <option value="3">@(Model.RecA01Selected.a01Signature + " " + _f.tra("Souvisí s")+" "+Model.RecA01.a01Signature)</option>
                 </select>
             </div>
-            <div class="row my-2">
+            <div class="my-2">
                 <textarea asp-for="@Model.a24Description" class="form-control" placeholder="@_f.tra("Poznámka k vazbě")"></textarea>
 
             </div>

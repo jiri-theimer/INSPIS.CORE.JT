@@ -38,7 +38,15 @@
             @_f.tra("Vazba položek skupiny na entity")
         </div>
         <div class="card-body">
-            <mycheckboxlist asp-for="@Model.SelectedEntities" textfield="AliasPlural" valuefield="x29ID" datasource="@Model.ApplicableEntities"></mycheckboxlist>
+            @if (_f.CurrentUser.j03LangIndex == 2)
+            {
+                <mycheckboxlist asp-for="@Model.SelectedEntities" textfield="TranslateLang2" valuefield="x29ID" datasource="@Model.ApplicableEntities"></mycheckboxlist>
+            }
+            else
+            {
+                <mycheckboxlist asp-for="@Model.SelectedEntities" textfield="AliasPlural" valuefield="x29ID" datasource="@Model.ApplicableEntities"></mycheckboxlist>
+            }
+
         </div>
     </div>
 
