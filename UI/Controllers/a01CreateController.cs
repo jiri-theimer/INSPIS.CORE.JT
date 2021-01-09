@@ -10,9 +10,10 @@ namespace UI.Controllers
 {
     public class a01CreateController : BaseController
     {
+        
         public IActionResult Index(int a10id,int a03id)
         {
-            var v = new a01CreateViewModel() { a10ID = a10id, a03ID = a03id };            
+            var v = new a01CreateViewModel() { a10ID = a10id, a03ID = a03id };
             if (v.a10ID > 0)
             {
                 var c = Factory.a10EventTypeBL.Load(a10id);

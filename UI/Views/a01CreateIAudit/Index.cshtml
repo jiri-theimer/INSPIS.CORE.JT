@@ -1,0 +1,223 @@
+﻿@model a01CreateIAudit
+@inject BL.Factory _f
+
+@{
+    Model.PageTitle = _f.tra("Založit akce pro Institucionální audit");
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@addTagHelper *, UI
+
+<h4 class="px-2">@Model.PageTitle</h4>
+
+<div class="bg-light" style="padding:10px;">
+    <button id="cmdSave" class="btn btn-success">@_f.tra("Uložit změny")</button>
+    <a id="cmdCancel" href="/a01CreateIAudit" class="btn btn-light">@_f.tra("Zrušit")</a>
+
+
+</div>
+
+
+<form id="form1" asp-controller="a01CreateIAudit" asp-action="Index" method="POST" style="max-width:1200px;">
+    
+
+    <div class="card">
+        <div class="card-header">
+            <span class="k-icon k-i-folder"></span>
+            <strong>@_f.tra("Společné všem akcím")</strong>
+        </div>
+        <div class="card-body">
+            <div class="row" id="divA03">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Instituce"):</label>
+                <div class="col-sm-11 col-md-10">
+                    <mycombo entity="a03Institution" asp-for="@Model.a03ID" selectedtext="@Model.Institution" filter-flag="1" event_after_changevalue="a03_change"></mycombo>
+                </div>
+            </div>
+            <div class="row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Plánovaný začátek"):</label>
+                <div class="col-sm-2 col-md-2">
+                    <mydate asp-for="@Model.a01DateFrom"></mydate>
+                </div>
+                <div class="col-sm-1 col-md-1">
+                    <label>@_f.tra("Konec"):</label>
+
+                </div>
+                <div class="col-sm-2 col-md-2">
+                    <mydate asp-for="@Model.a01DateUntil"></mydate>
+                </div>
+            </div>
+
+            <div class="my-2">
+                @if (Model.MasterPrefixComboJ02 == "j02IsInvitedPerson")
+                {
+                    <mycombo entity="j02Person" asp-for="@Model.SelectedJ02ID" selectedtext="@Model.SelectedPerson" filter-flag="1" placeholder="@_f.tra("Přidat přizvanou osobu")..." event_after_changevalue="handle_j02id_append" param1="j02IsInvitedPerson"></mycombo>
+                }
+                else
+                {
+                    <mycombo entity="j02Person" asp-for="@Model.SelectedJ02ID" selectedtext="@Model.SelectedPerson" filter-flag="1" placeholder="@_f.tra("Přidat jméno")..." event_after_changevalue="handle_j02id_append" masterprefix="@Model.MasterPrefixComboJ02" masterpid="@Model.MasterPidComboJ02"></mycombo>
+                }
+
+
+            </div>
+            <input type="hidden" asp-for="@Model.MasterPidComboJ02" />
+            <select asp-for="@Model.MasterPrefixComboJ02" onchange="postback()">
+                <option value="a04">@_f.tra("Pouze můj inspektorát")</option>
+                <option value="a05">@_f.tra("Pouze můj kraj")</option>
+                <option value="">@_f.tra("Všechny kraje")</option>
+                <option value="j02IsInvitedPerson">@_f.tra("Přizvané osoby")</option>
+            </select>
+            <p></p>
+
+            @for (var i = 0; i < Model.lisA41.Count; i++)
+            {
+                <div class="row rowvalhover" style="@(Model.lisA41[i].CssTempDisplay)">
+                    <input type="hidden" asp-for="@Model.lisA41[i].a41ID" value="@Model.lisA41[i].a41ID" />
+                    <input type="hidden" asp-for="@Model.lisA41[i].IsTempDeleted" value="@Model.lisA41[i].IsTempDeleted" />
+                    <input type="hidden" asp-for="@Model.lisA41[i].j02ID" value="@Model.lisA41[i].j02ID" />
+                    <input type="hidden" asp-for="@Model.lisA41[i].PersonCombo" value="@Model.lisA41[i].PersonCombo" />
+
+
+                    <input type="hidden" asp-for="@Model.lisA41[i].a45IsManual" value="@Model.lisA41[i].a45IsManual" />
+
+                    <input type="hidden" asp-for="lisA41[i].TempGuid" value="@Model.lisA41[i].TempGuid" />
+                    <div class="col-sm-4 col-md-4">
+                        <myval value="@Model.lisA41[i].PersonCombo" hoverprefix="j02" hoverpid="@Model.lisA41[i].j02ID"></myval>
+
+
+                    </div>
+
+                    <div class="col-sm-4 col-md-4">
+                        @if (Model.lisA41[i].a45IsManual)
+                        {
+                            <mycombo entity="a45EventRole" asp-for="@Model.lisA41[i].a45ID" selectedtext="@Model.lisA41[i].a45Name" placeholder="@_f.tra("Vybrat roli v akci")..." view-flag="2" param1="a45IsManual1"></mycombo>
+                        }
+                        else
+                        {
+                            <span class="val-readonly">@Model.lisA41[i].a45Name</span>
+                            <input type="hidden" asp-for="@Model.lisA41[i].a45ID" value="@Model.lisA41[i].a45ID" />
+                            <input type="hidden" asp-for="@Model.lisA41[i].a45Name" value="@Model.lisA41[i].a45Name" />
+                        }
+
+                    </div>
+
+
+                    <div class="col-1">
+                        <button type="button" class="btn btn-danger" title="@_f.tra("Odstranit řádek")" onclick="handle_delete_j02('@(Model.lisA41[i].TempGuid)')">x</button>
+
+                    </div>
+
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="card mt-2">
+        <div class="card-header">
+            <span class="badge bg-info">0</span>
+            <span class="k-icon k-i-arrow-root"></span>
+            <strong>@_f.tra("Nadřízená akce")</strong>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Vztah k podřízeným"):</label>
+                <div class="col-sm-11 col-md-10">
+                    <select asp-for="@Model.a46ID" class="form-select">
+                        <option value="5">@_f.tra("Institucionální audit")</option>
+                        <option value="4">@_f.tra("Podřízené akce")</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row my-2">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typ akce"):</label>
+                <div class="col-sm-11 col-md-10">
+                    <mycombo entity="a10EventType" asp-for="@Model.a10ID_Master" selectedtext="@Model.a10Name_Master" event_after_changevalue="postback"></mycombo>
+                </div>
+            </div>
+            @if (Model.RecA10_Master.a10IsUse_Name)
+            {
+                <div class="row my-2">
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název akce"):</label>
+                    <div class="col-sm-3 col-md-3">
+                        <input class="form-control" asp-for="@Model.RecA01_Master.a01Name" />
+                    </div>
+                </div>
+            }
+            @if (Model.RecA10_Master.a10IsUse_A08)
+            {
+                <div class="row my-2">
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Téma akce"):</label>
+                    <div class="col-sm-11 col-md-10">
+                        <mycombo entity="a08Theme" asp-for="@Model.RecA01_Master.a08ID" selectedtext="@Model.RecA01_Master.a08Name" masterprefix="a10" masterpid="@Model.a10ID_Master" event_after_changevalue="a08_change"></mycombo>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+
+    <div class="card mt-2">
+        <div class="card-header">
+            <span class="badge bg-primary">1</span><span class="k-icon k-i-more-vertical"></span>
+            <strong>@_f.tra("První podřízená akce")</strong>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typ akce"):</label>
+                <div class="col-sm-11 col-md-10">
+                    <mycombo entity="a10EventType" asp-for="@Model.a10ID_Slave1" selectedtext="@Model.a10Name_Slave1" event_after_changevalue="postback"></mycombo>
+                </div>
+            </div>
+            @if (Model.RecA10_Slave1.a10IsUse_Name)
+            {
+                <div class="row my-2">
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název akce"):</label>
+                    <div class="col-sm-3 col-md-3">
+                        <input class="form-control" asp-for="@Model.RecA01_Slave1.a01Name" />
+                    </div>
+                </div>
+            }
+            @if (Model.RecA10_Slave1.a10IsUse_A08)
+            {
+                <div class="row my-2">
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Téma akce"):</label>
+                    <div class="col-sm-11 col-md-10">
+                        <mycombo entity="a08Theme" asp-for="@Model.RecA01_Slave1.a08ID" selectedtext="@Model.RecA01_Slave1.a08Name" masterprefix="a10" masterpid="@Model.a10ID_Slave1" event_after_changevalue="a08_change"></mycombo>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+</form>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+
+    });
+
+
+    function postback() {
+        form1.action = "/a01CreateIAudit/Index?oper=postback";
+        form1.submit();
+    }
+
+
+    function handle_j02id_append(j02id) {
+        if (j02id == "") {
+            _notify_message("@_f.tra("Musíte vybrat osobu.")");
+            return;
+        }
+        form1.action = "/a01Create/Standard?oper=j02_add";
+        form1.submit();
+
+    }
+    function handle_delete_j02(guid) {
+        form1.action = "/a01Create/Standard?oper=j02_delete&guid=" + guid;
+        form1.submit();
+
+    }
+
+</script>
