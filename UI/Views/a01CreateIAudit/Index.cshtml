@@ -197,7 +197,7 @@
                                 @if (Model.lisA11_Master.Where(p => p.IsTempDeleted == false).Count() > 0)
                                 {
                                     <strong>@_f.tra("Vybrané formuláře"):</strong>
-                                    <button type="button" class="btn btn-warning btn-sm" onclick="handle_f06_clear()" style="margin-left:50px;">@_f.tra("Vyčistit")</button>
+                                    <button type="button" class="btn btn-warning btn-sm" onclick="handle_f06_clear_master()" style="margin-left:50px;">@_f.tra("Vyčistit")</button>
                                 }
 
                                 @for (var i = 0; i < Model.lisA11_Master.Count; i++)
