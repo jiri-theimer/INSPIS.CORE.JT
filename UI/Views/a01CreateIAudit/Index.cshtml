@@ -27,7 +27,16 @@
             <strong>@_f.tra("Společné všem akcím")</strong>
         </div>
         <div class="card-body">
-            <div class="row" id="divA03">
+            <div class="row">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Vztah akcí"):</label>
+                <div class="col-sm-11 col-md-10">
+                    <select asp-for="@Model.a46ID" class="form-select">
+                        <option value="5">@_f.tra("Institucionální audit")</option>
+                        <option value="4">@_f.tra("Podřízené akce")</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row my-2" id="divA03">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Instituce"):</label>
                 <div class="col-sm-11 col-md-10">
                     <mycombo entity="a03Institution" asp-for="@Model.a03ID" selectedtext="@Model.Institution" filter-flag="1" event_after_changevalue="a03_change"></mycombo>
@@ -112,22 +121,13 @@
     </div>
 
     <div class="card mt-2">
-        <div class="card-header">
-            <span class="badge bg-info">0</span>
+        <div class="card-header bg-info">            
             <span class="k-icon k-i-arrow-root"></span>
             <strong>@_f.tra("Nadřízená akce")</strong>
         </div>
         <div class="card-body">
+
             <div class="row">
-                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Vztah k podřízeným"):</label>
-                <div class="col-sm-11 col-md-10">
-                    <select asp-for="@Model.a46ID" class="form-select">
-                        <option value="5">@_f.tra("Institucionální audit")</option>
-                        <option value="4">@_f.tra("Podřízené akce")</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typ akce"):</label>
                 <div class="col-sm-11 col-md-10">
                     <mycombo entity="a10EventType" asp-for="@Model.a10ID_Master" selectedtext="@Model.a10Name_Master" event_after_changevalue="postback"></mycombo>
@@ -147,16 +147,98 @@
                 <div class="row my-2">
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Téma akce"):</label>
                     <div class="col-sm-11 col-md-10">
-                        <mycombo entity="a08Theme" asp-for="@Model.RecA01_Master.a08ID" selectedtext="@Model.RecA01_Master.a08Name" masterprefix="a10" masterpid="@Model.a10ID_Master" event_after_changevalue="a08_change"></mycombo>
+                        <mycombo entity="a08Theme" asp-for="@Model.RecA01_Master.a08ID" selectedtext="@Model.RecA01_Master.a08Name" masterprefix="a10" masterpid="@Model.a10ID_Master" event_after_changevalue="a08_change_master"></mycombo>
                     </div>
                 </div>
+
+
+                @if (Model.RecA01_Master.a08ID > 0)
+                {
+                    
+                    <table>
+                        <tr style="vertical-align:top;">
+                            <td>
+                                <strong>@_f.tra("Dostupné formuláře k tématu"):</strong>
+                                <table>
+                                    @foreach (var c in Model.lisA12_Master)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @if (c.a12IsRequired)
+                                                {
+                                                    <myval datatype="html" value="@("<span style='color:red;'>"+c.f06Name+"</span>")"></myval>
+                                                }
+                                                else
+                                                {
+                                                    <myval value="@c.f06Name"></myval>
+                                                }
+                                            </td>
+                                            <td>
+                                                <div class="btn-group dropdown">
+                                                    <button type="button" class="btn-primary" onclick="f06_append_master(@c.f06ID,1)">→</button>
+                                                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownMenuButton@(c.pid)"></button>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton@(c.pid)">
+                                                        <a class="dropdown-item" href="javascript:f06_append_master(@c.f06ID,4)">4</a>
+
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+
+                                    }
+                                </table>
+
+
+                            </td>
+
+                            <td>
+
+                                @if (Model.lisA11_Master.Where(p => p.IsTempDeleted == false).Count() > 0)
+                                {
+                                    <strong>@_f.tra("Vybrané formuláře"):</strong>
+                                    <button type="button" class="btn btn-warning btn-sm" onclick="handle_f06_clear()" style="margin-left:50px;">@_f.tra("Vyčistit")</button>
+                                }
+
+                                @for (var i = 0; i < Model.lisA11_Master.Count; i++)
+                                {
+                                    <div class="row" style="@(Model.lisA11_Master[i].CssTempDisplay)">
+
+                                        <input type="hidden" asp-for="@Model.lisA11_Master[i].IsTempDeleted" value="@Model.lisA11_Master[i].IsTempDeleted" />
+                                        <input type="hidden" asp-for="@Model.lisA11_Master[i].f06ID" value="@Model.lisA11_Master[i].f06ID" />
+                                        <input type="hidden" asp-for="@Model.lisA11_Master[i].f06Name" value="@Model.lisA11_Master[i].f06Name" />
+                                        <input type="hidden" asp-for="lisA11_Master[i].TempGuid" value="@Model.lisA11_Master[i].TempGuid" />
+                                        <div class="col-sm-6 col-md-6">
+                                            <myval value="@Model.lisA11_Master[i].f06Name"></myval>
+
+                                        </div>
+                                        <div class="col-sm-4 col-md-4">
+                                            <input type="text" class="form-control" placeholder="Poznámka" asp-for="@Model.lisA11_Master[i].a11Description" value="@Model.lisA11_Master[i].a11Description" />
+                                        </div>
+
+                                        <div class="col-1">
+                                            <button type="button" class="btn btn-danger" tabindex="-1" title="Odstranit řádek" onclick="handle_delete_f06_master('@(Model.lisA11_Master[i].TempGuid)')">x</button>
+
+                                        </div>
+
+                                    </div>
+                                }
+
+
+                            </td>
+                        </tr>
+                    </table>
+                    
+                    
+                }
+
             }
         </div>
     </div>
 
 
     <div class="card mt-2">
-        <div class="card-header">
+        <div class="card-header bg-success">
             <span class="badge bg-primary">1</span><span class="k-icon k-i-more-vertical"></span>
             <strong>@_f.tra("První podřízená akce")</strong>
         </div>
@@ -181,7 +263,7 @@
                 <div class="row my-2">
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Téma akce"):</label>
                     <div class="col-sm-11 col-md-10">
-                        <mycombo entity="a08Theme" asp-for="@Model.RecA01_Slave1.a08ID" selectedtext="@Model.RecA01_Slave1.a08Name" masterprefix="a10" masterpid="@Model.a10ID_Slave1" event_after_changevalue="a08_change"></mycombo>
+                        <mycombo entity="a08Theme" asp-for="@Model.RecA01_Slave1.a08ID" selectedtext="@Model.RecA01_Slave1.a08Name" masterprefix="a10" masterpid="@Model.a10ID_Slave1" event_after_changevalue="a08_change_slave1"></mycombo>
                     </div>
                 </div>
             }
@@ -210,14 +292,41 @@
             _notify_message("@_f.tra("Musíte vybrat osobu.")");
             return;
         }
-        form1.action = "/a01Create/Standard?oper=j02_add";
+        form1.action = "/a01CreateIAudit/Index?oper=j02_add";
         form1.submit();
 
     }
     function handle_delete_j02(guid) {
-        form1.action = "/a01Create/Standard?oper=j02_delete&guid=" + guid;
+        form1.action = "/a01CreateIAudit/Index?oper=j02_delete&guid=" + guid;
         form1.submit();
 
     }
 
+    function a08_change_master(a08id) {
+        form1.action = "/a01CreateIAudit/Index?oper=a08_change_master";
+        form1.submit();
+    }
+    function a08_change_slave1(a08id) {
+        form1.action = "/a01CreateIAudit/Index?oper=a08_change_slave1";
+        form1.submit();
+    }
+    function a08_change_slave2(a08id) {
+        form1.action = "/a01CreateIAudit/Index?oper=a08_change_slave2";
+        form1.submit();
+    }
+
+    function handle_f06_clear_master() {
+        form1.action = "/a01CreateIAudit/Index?oper=f06_clear_master";
+        form1.submit();
+    }
+
+    function f06_append_master(f06id, krat) {
+        form1.action = "/a01CreateIAudit/Index?oper=f06_add_master&f06id=" + f06id + "&krat=" + krat;
+        form1.submit();
+    }
+    function handle_delete_f06_master(guid) {
+        form1.action = "/a01CreateIAudit/Index?oper=f06_delete_master&guid=" + guid;
+        form1.submit();
+
+    }
 </script>

@@ -23,11 +23,47 @@ namespace UI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(a01CreateIAudit v, string oper, string guid)
+        public IActionResult Index(a01CreateIAudit v, string oper, string guid,int f06id,int krat)
         {
             RefreshState(v);
             if (oper == "postback")
             {
+                return View(v);
+            }
+            if (oper == "a08_change_master")
+            {
+                v.lisA11_Master.Clear();
+                return View(v);
+            }
+            if (oper == "a08_change_slave1")
+            {
+                v.lisA11_Slave1.Clear();
+                return View(v);
+            }
+            if (oper == "a08_change_slave2")
+            {
+                v.lisA11_Slave2.Clear();
+                return View(v);
+            }
+            if (oper == "f06_add_master" && f06id > 0)
+            {
+                for (int i = 1; i <= krat; i++)
+                {
+                    var c = new BO.a11EventForm() { f06ID = f06id, TempGuid = BO.BAS.GetGuid() };
+                    c.f06Name = Factory.f06FormBL.Load(f06id).f06Name;
+                    v.lisA11_Master.Add(c);
+                }
+
+                return View(v);
+            }
+            if (oper == "f06_delete_master")
+            {
+                v.lisA11_Master.First(p => p.TempGuid == guid).IsTempDeleted = true;
+                return View(v);
+            }
+            if (oper == "f06_clear_master")
+            {
+                v.lisA11_Master.Clear();
                 return View(v);
             }
 
@@ -113,7 +149,32 @@ namespace UI.Controllers
             {
                 v.lisA41 = new List<BO.a41PersonToEvent>();
             }
+            if (v.lisA11_Master == null)
+            {
+                v.lisA11_Master = new List<BO.a11EventForm>();
+            }
+            if (v.lisA11_Slave1 == null)
+            {
+                v.lisA11_Slave1 = new List<BO.a11EventForm>();
+            }
+            if (v.lisA11_Slave2 == null)
+            {
+                v.lisA11_Slave2 = new List<BO.a11EventForm>();
+            }
 
+
+            if (v.RecA01_Master.a08ID > 0)
+            {
+                v.lisA12_Master = Factory.a08ThemeBL.GetListA12(v.RecA01_Master.a08ID);
+            }
+            if (v.RecA01_Slave1.a08ID > 0)
+            {
+                v.lisA12_Slave1 = Factory.a08ThemeBL.GetListA12(v.RecA01_Slave1.a08ID);
+            }
+            if (v.RecA01_Slave2.a08ID > 0)
+            {
+                v.lisA12_Slave2 = Factory.a08ThemeBL.GetListA12(v.RecA01_Slave2.a08ID);
+            }
         }
     }
 }
