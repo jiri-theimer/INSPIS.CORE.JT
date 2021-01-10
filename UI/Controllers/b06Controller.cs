@@ -52,6 +52,8 @@ namespace UI.Controllers
                 foreach (var c in v.lisB10)
                 {
                     c.TempGuid = BO.BAS.GetGuid();
+                    
+                    
                 }
                 var lisB08 = Factory.b06WorkflowStepBL.GetListB08(v.rec_pid);
                 v.b08_a45IDs = string.Join(",", lisB08.Where(p=>p.a45ID>0).Select(p => p.a45ID));

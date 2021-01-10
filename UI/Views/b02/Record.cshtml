@@ -221,7 +221,15 @@
                         <td>
                             <input type="hidden" asp-for="lisB10[i].IsTempDeleted" value="@Model.lisB10[i].IsTempDeleted" />
                             <input type="hidden" asp-for="lisB10[i].TempGuid" value="@Model.lisB10[i].TempGuid" />
-                            <mycombo entity="b09WorkflowCommandCatalog" asp-for="lisB10[i].b09ID" selectedtext="lisB10[i].b09Name" placeholder="Vybrat příkaz..." view-flag="2" event_after_changevalue="handle_b09id_change"></mycombo>
+                            @if (_f.CurrentUser.j03LangIndex == 2)
+                            {
+                                <mycombo entity="b09WorkflowCommandCatalog" asp-for="lisB10[i].b09ID" selectedtext="lisB10[i].b09Name_Lang2" placeholder="@_f.tra("Vybrat příkaz")..." view-flag="2" event_after_changevalue="handle_b09id_change"></mycombo>
+                            }
+                            else
+                            {
+                                <mycombo entity="b09WorkflowCommandCatalog" asp-for="lisB10[i].b09ID" selectedtext="lisB10[i].b09Name" placeholder="Vybrat příkaz..." view-flag="2" event_after_changevalue="handle_b09id_change"></mycombo>
+                            }
+
                             <div>
                                 @if (Model.lisB10[i].b09ParametersCount > 0)
                                 {

@@ -629,6 +629,7 @@ namespace BL
             
             //b09 = workflow příkaz
             AF("b09WorkflowCommandCatalog", "b09Name", "Workflow příkaz", 1, null, "string", false, true);
+            AF("b09WorkflowCommandCatalog", "b09Name_Lang2", "UA",1);
             AF("b09WorkflowCommandCatalog", "b09Hint", "?", 1);
 
             //j90 = access log uživatelů

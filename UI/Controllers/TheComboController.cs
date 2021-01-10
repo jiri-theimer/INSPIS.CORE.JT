@@ -63,6 +63,14 @@ namespace UI.Controllers
                         }
                     }
                     break;
+                case "b09":
+                    if (Factory.CurrentUser.j03LangIndex != 2)
+                    {
+                        cols.Remove(cols.Where(p => p.Field == "b09Name_Lang2").First());
+                    }
+                    break;
+
+                //    break;
                 case "a01":
                     //mq.a01IsTemporary = false;  //vyloučit temp akce
                     break;

@@ -36,6 +36,7 @@ namespace BO
         public string b10Parameter3 { get; set; }
 
         public string b09Name { get; set; } //combo
+        public string b09Name_Lang2 { get; set; }   //combo
         public string b09Ident { get; set; }    //combo
         public string b09SQL;
         public int b09ParametersCount { get; set; }
