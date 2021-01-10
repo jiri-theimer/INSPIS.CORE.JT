@@ -30,6 +30,24 @@ namespace UI.Controllers
             {
                 return View(v);
             }
+            if (oper== "a10_change_master")
+            {
+                v.RecA01_Master.a08ID = 0;v.RecA01_Master.a08Name = "";
+                v.lisA11_Master.Clear();                
+                return View(v);
+            }
+            if (oper == "a10_change_slave1")
+            {
+                v.RecA01_Slave1.a08ID = 0; v.RecA01_Slave1.a08Name = "";
+                v.lisA11_Slave1.Clear();
+                return View(v);
+            }
+            if (oper == "a10_change_slave2")
+            {
+                v.RecA01_Slave2.a08ID = 0; v.RecA01_Slave2.a08Name = "";
+                v.lisA11_Slave2.Clear();
+                return View(v);
+            }
             if (oper == "a08_change_master")
             {
                 v.lisA11_Master.Clear();
@@ -64,6 +82,51 @@ namespace UI.Controllers
             if (oper == "f06_clear_master")
             {
                 v.lisA11_Master.Clear();
+                return View(v);
+            }
+            //formulářové operace pro slave1:
+            if (oper == "f06_add_slave1" && f06id > 0)
+            {
+                for (int i = 1; i <= krat; i++)
+                {
+                    var c = new BO.a11EventForm() { f06ID = f06id, TempGuid = BO.BAS.GetGuid() };
+                    c.f06Name = Factory.f06FormBL.Load(f06id).f06Name;
+                    v.lisA11_Slave1.Add(c);
+                }
+
+                return View(v);
+            }
+            if (oper == "f06_delete_slave1")
+            {
+                v.lisA11_Slave1.First(p => p.TempGuid == guid).IsTempDeleted = true;
+                return View(v);
+            }
+            if (oper == "f06_clear_slave1")
+            {
+                v.lisA11_Slave1.Clear();
+                return View(v);
+            }
+
+            //formulářové operace pro slave2:
+            if (oper == "f06_add_slave2" && f06id > 0)
+            {
+                for (int i = 1; i <= krat; i++)
+                {
+                    var c = new BO.a11EventForm() { f06ID = f06id, TempGuid = BO.BAS.GetGuid() };
+                    c.f06Name = Factory.f06FormBL.Load(f06id).f06Name;
+                    v.lisA11_Slave2.Add(c);
+                }
+
+                return View(v);
+            }
+            if (oper == "f06_delete_slave2")
+            {
+                v.lisA11_Slave2.First(p => p.TempGuid == guid).IsTempDeleted = true;
+                return View(v);
+            }
+            if (oper == "f06_clear_slave2")
+            {
+                v.lisA11_Slave2.Clear();
                 return View(v);
             }
 
@@ -105,8 +168,36 @@ namespace UI.Controllers
 
             if (ModelState.IsValid)
             {
+                v.RecA01_Master.j02ID_Issuer = Factory.CurrentUser.j02ID;
+                v.RecA01_Slave1.a10ID = v.a10ID_Slave1; v.RecA01_Slave1.a03ID = v.a03ID; v.RecA01_Slave1.a01DateFrom = v.a01DateFrom; v.RecA01_Slave1.a01DateUntil = v.a01DateUntil;v.RecA01_Slave1.j02ID_Issuer = Factory.CurrentUser.j02ID;
+                v.RecA01_Slave2.a10ID = v.a10ID_Slave2; v.RecA01_Slave2.a03ID = v.a03ID; v.RecA01_Slave2.a01DateFrom = v.a01DateFrom; v.RecA01_Slave2.a01DateUntil = v.a01DateUntil; v.RecA01_Slave2.j02ID_Issuer = Factory.CurrentUser.j02ID;
 
+                if (!ValidateBeforeSave(v))
+                {
+                    return View(v);
+                }
+                
 
+                v.RecA01_Master.a10ID = v.a10ID_Master;v.RecA01_Master.a03ID = v.a03ID;v.RecA01_Master.a01DateFrom = v.a01DateFrom;v.RecA01_Master.a01DateUntil = v.a01DateUntil;                
+                v.RecA01_Master.pid = Factory.a01EventBL.Create(v.RecA01_Master, true, v.lisA11_Master.Where(p => p.IsTempDeleted == false).ToList(), v.lisA41.Where(p => p.IsTempDeleted == false).ToList(), null, null);
+                if (v.RecA01_Master.pid == 0)
+                {
+                    return View(v);
+                }
+                
+                v.RecA01_Slave1.pid = Factory.a01EventBL.Create(v.RecA01_Slave1, true, v.lisA11_Slave1.Where(p => p.IsTempDeleted == false).ToList(), v.lisA41.Where(p => p.IsTempDeleted == false).ToList(), null, null);
+                var recA24 = new BO.a24EventRelation() { a01ID_Right = v.RecA01_Master.pid, a01ID_Left = v.RecA01_Slave1.pid, a46ID = v.a46ID };
+                Factory.a01EventBL.SaveA24Record(recA24);
+
+                if (v.RecA10_Slave2.pid > 0)
+                {                    
+                    v.RecA01_Slave2.pid = Factory.a01EventBL.Create(v.RecA01_Slave2, true, v.lisA11_Slave2.Where(p => p.IsTempDeleted == false).ToList(), v.lisA41.Where(p => p.IsTempDeleted == false).ToList(), null, null);
+                    recA24 = new BO.a24EventRelation() { a01ID_Right = v.RecA01_Master.pid, a01ID_Left = v.RecA01_Slave2.pid, a46ID = v.a46ID };
+                    Factory.a01EventBL.SaveA24Record(recA24);
+
+                }
+
+                return RedirectToAction("RecPage", "a01", new { pid =v.RecA01_Master.pid });
             }
 
             this.Notify_RecNotSaved();
@@ -127,7 +218,7 @@ namespace UI.Controllers
             {
                 v.RecA10_Master = Factory.a10EventTypeBL.Load(v.a10ID_Master);
             }
-            this.AddMessage(v.RecA10_Master.a10Name);
+            
             if (v.a10ID_Slave1 == 0)
             {
                 v.RecA10_Slave1 = new BO.a10EventType();
@@ -176,5 +267,47 @@ namespace UI.Controllers
                 v.lisA12_Slave2 = Factory.a08ThemeBL.GetListA12(v.RecA01_Slave2.a08ID);
             }
         }
+
+        private bool ValidateBeforeSave(a01CreateIAudit v)
+        {    
+            if (v.a03ID == 0)
+            {
+                this.AddMessage("Chybí vyplnit instituci."); return false;
+            }
+            if (v.a01DateFrom == null || v.a01DateUntil==null || v.a01DateUntil<v.a01DateFrom)
+            {
+                this.AddMessage("Chybí vyplnit časový plán akce."); return false;
+            }
+            if (v.lisA41.Where(p => p.a45ID == BO.EventRoleENUM.Vedouci).Count() == 0)
+            {
+                this.AddMessage("Chybí definice vedoucího akce."); return false;
+            }
+            if (v.RecA10_Master.pid == 0 || v.RecA01_Master.a08ID==0)
+            {
+                this.AddMessage("Chybí vyplnit typ nebo téma nadřízené akce."); return false;
+            }
+            if (v.RecA10_Slave1.pid == 0 || v.RecA01_Slave1.a08ID == 0)
+            {
+                this.AddMessage("Chybí vyplnit typ nebo téma první podřízené akce."); return false;
+            }
+
+            
+            if (!Factory.a01EventBL.ValidateA11(v.RecA01_Slave1, v.lisA11_Slave1.Where(p => p.IsTempDeleted == false).ToList()))
+            {
+                return false;
+            }
+
+            if (v.RecA01_Slave2.a10ID > 0)
+            {
+                if (!Factory.a01EventBL.ValidateA11(v.RecA01_Slave2, v.lisA11_Slave2.Where(p => p.IsTempDeleted == false).ToList()))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        
     }
 }

@@ -2,7 +2,7 @@
 @inject BL.Factory _f
 
 @{
-    Model.PageTitle = _f.tra("Založit akce pro Institucionální audit");
+    Model.PageTitle = _f.tra("Založit nadřízenou a podřízené akce");
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -19,7 +19,7 @@
 
 
 <form id="form1" asp-controller="a01CreateIAudit" asp-action="Index" method="POST" style="max-width:1200px;">
-    
+
 
     <div class="card">
         <div class="card-header">
@@ -30,7 +30,7 @@
             <div class="row">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Vztah akcí"):</label>
                 <div class="col-sm-11 col-md-10">
-                    <select asp-for="@Model.a46ID" class="form-select">
+                    <select asp-for="@Model.a46ID" style="font-weight:bold;">
                         <option value="5">@_f.tra("Institucionální audit")</option>
                         <option value="4">@_f.tra("Podřízené akce")</option>
                     </select>
@@ -121,7 +121,7 @@
     </div>
 
     <div class="card mt-2">
-        <div class="card-header bg-info">            
+        <div class="card-header bg-info">
             <span class="k-icon k-i-arrow-root"></span>
             <strong>@_f.tra("Nadřízená akce")</strong>
         </div>
@@ -130,7 +130,7 @@
             <div class="row">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typ akce"):</label>
                 <div class="col-sm-11 col-md-10">
-                    <mycombo entity="a10EventType" asp-for="@Model.a10ID_Master" selectedtext="@Model.a10Name_Master" event_after_changevalue="postback"></mycombo>
+                    <mycombo entity="a10EventType" asp-for="@Model.a10ID_Master" selectedtext="@Model.a10Name_Master" event_after_changevalue="a10_change_master"></mycombo>
                 </div>
             </div>
             @if (Model.RecA10_Master.a10IsUse_Name)
@@ -154,7 +154,7 @@
 
                 @if (Model.RecA01_Master.a08ID > 0)
                 {
-                    
+
                     <table>
                         <tr style="vertical-align:top;">
                             <td>
@@ -228,8 +228,8 @@
                             </td>
                         </tr>
                     </table>
-                    
-                    
+
+
                 }
 
             }
@@ -246,7 +246,7 @@
             <div class="row">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typ akce"):</label>
                 <div class="col-sm-11 col-md-10">
-                    <mycombo entity="a10EventType" asp-for="@Model.a10ID_Slave1" selectedtext="@Model.a10Name_Slave1" event_after_changevalue="postback"></mycombo>
+                    <mycombo entity="a10EventType" asp-for="@Model.a10ID_Slave1" selectedtext="@Model.a10Name_Slave1" event_after_changevalue="a10_change_slave1"></mycombo>
                 </div>
             </div>
             @if (Model.RecA10_Slave1.a10IsUse_Name)
@@ -266,15 +266,218 @@
                         <mycombo entity="a08Theme" asp-for="@Model.RecA01_Slave1.a08ID" selectedtext="@Model.RecA01_Slave1.a08Name" masterprefix="a10" masterpid="@Model.a10ID_Slave1" event_after_changevalue="a08_change_slave1"></mycombo>
                     </div>
                 </div>
+
+                @if (Model.RecA01_Slave1.a08ID > 0)
+                {
+
+                    <table>
+                        <tr style="vertical-align:top;">
+                            <td>
+                                <strong>@_f.tra("Dostupné formuláře k tématu"):</strong>
+                                <table>
+                                    @foreach (var c in Model.lisA12_Slave1)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @if (c.a12IsRequired)
+                                                {
+                                                    <myval datatype="html" value="@("<span style='color:red;'>"+c.f06Name+"</span>")"></myval>
+                                                }
+                                                else
+                                                {
+                                                    <myval value="@c.f06Name"></myval>
+                                                }
+                                            </td>
+                                            <td>
+                                                <div class="btn-group dropdown">
+                                                    <button type="button" class="btn-primary" onclick="f06_append_slave1(@c.f06ID,1)">→</button>
+                                                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownMenuButton@(c.pid)"></button>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton@(c.pid)">
+                                                        <a class="dropdown-item" href="javascript:f06_append_slave1(@c.f06ID,4)">4</a>
+
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+
+                                    }
+                                </table>
+
+
+                            </td>
+
+                            <td>
+
+                                @if (Model.lisA11_Slave1.Where(p => p.IsTempDeleted == false).Count() > 0)
+                                {
+                                    <strong>@_f.tra("Vybrané formuláře"):</strong>
+                                    <button type="button" class="btn btn-warning btn-sm" onclick="handle_f06_clear_slave1()" style="margin-left:50px;">@_f.tra("Vyčistit")</button>
+                                }
+
+                                @for (var i = 0; i < Model.lisA11_Slave1.Count; i++)
+                                {
+                                    <div class="row" style="@(Model.lisA11_Slave1[i].CssTempDisplay)">
+
+                                        <input type="hidden" asp-for="@Model.lisA11_Slave1[i].IsTempDeleted" value="@Model.lisA11_Slave1[i].IsTempDeleted" />
+                                        <input type="hidden" asp-for="@Model.lisA11_Slave1[i].f06ID" value="@Model.lisA11_Slave1[i].f06ID" />
+                                        <input type="hidden" asp-for="@Model.lisA11_Slave1[i].f06Name" value="@Model.lisA11_Slave1[i].f06Name" />
+                                        <input type="hidden" asp-for="lisA11_Slave1[i].TempGuid" value="@Model.lisA11_Slave1[i].TempGuid" />
+                                        <div class="col-sm-6 col-md-6">
+                                            <myval value="@Model.lisA11_Slave1[i].f06Name"></myval>
+
+                                        </div>
+                                        <div class="col-sm-4 col-md-4">
+                                            <input type="text" class="form-control" placeholder="Poznámka" asp-for="@Model.lisA11_Slave1[i].a11Description" value="@Model.lisA11_Slave1[i].a11Description" />
+                                        </div>
+
+                                        <div class="col-1">
+                                            <button type="button" class="btn btn-danger" tabindex="-1" title="Odstranit řádek" onclick="handle_delete_f06_slave1('@(Model.lisA11_Slave1[i].TempGuid)')">x</button>
+
+                                        </div>
+
+                                    </div>
+                                }
+
+
+                            </td>
+                        </tr>
+                    </table>
+
+
+                }
             }
         </div>
     </div>
 
+
+
+    <div class="card mt-2">
+        <div class="card-header bg-secondary">
+            <span class="badge bg-primary">2</span><span class="k-icon k-i-more-vertical"></span>
+            <strong>@_f.tra("Druhá podřízená akce")</strong>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typ akce"):</label>
+                <div class="col-sm-11 col-md-10">
+                    <mycombo entity="a10EventType" asp-for="@Model.a10ID_Slave2" selectedtext="@Model.a10Name_Slave2" event_after_changevalue="a10_change_slave2"></mycombo>
+                </div>
+            </div>
+            @if (Model.RecA10_Slave2.a10IsUse_Name)
+            {
+                <div class="row my-2">
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název akce"):</label>
+                    <div class="col-sm-3 col-md-3">
+                        <input class="form-control" asp-for="@Model.RecA01_Slave2.a01Name" />
+                    </div>
+                </div>
+            }
+            @if (Model.RecA10_Slave2.a10IsUse_A08)
+            {
+                <div class="row my-2">
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Téma akce"):</label>
+                    <div class="col-sm-11 col-md-10">
+                        <mycombo entity="a08Theme" asp-for="@Model.RecA01_Slave2.a08ID" selectedtext="@Model.RecA01_Slave2.a08Name" masterprefix="a10" masterpid="@Model.a10ID_Slave2" event_after_changevalue="a08_change_slave2"></mycombo>
+                    </div>
+                </div>
+
+                @if (Model.RecA01_Slave2.a08ID > 0)
+                {
+
+                    <table>
+                        <tr style="vertical-align:top;">
+                            <td>
+                                <strong>@_f.tra("Dostupné formuláře k tématu"):</strong>
+                                <table>
+                                    @foreach (var c in Model.lisA12_Slave2)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @if (c.a12IsRequired)
+                                                {
+                                                    <myval datatype="html" value="@("<span style='color:red;'>"+c.f06Name+"</span>")"></myval>
+                                                }
+                                                else
+                                                {
+                                                    <myval value="@c.f06Name"></myval>
+                                                }
+                                            </td>
+                                            <td>
+                                                <div class="btn-group dropdown">
+                                                    <button type="button" class="btn-primary" onclick="f06_append_slave2(@c.f06ID,1)">→</button>
+                                                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownMenuButton@(c.pid)"></button>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton@(c.pid)">
+                                                        <a class="dropdown-item" href="javascript:f06_append_slave2(@c.f06ID,4)">4</a>
+
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+
+                                    }
+                                </table>
+
+
+                            </td>
+
+                            <td>
+
+                                @if (Model.lisA11_Slave2.Where(p => p.IsTempDeleted == false).Count() > 0)
+                                {
+                                    <strong>@_f.tra("Vybrané formuláře"):</strong>
+                                    <button type="button" class="btn btn-warning btn-sm" onclick="handle_f06_clear_slave2()" style="margin-left:50px;">@_f.tra("Vyčistit")</button>
+                                }
+
+                                @for (var i = 0; i < Model.lisA11_Slave2.Count; i++)
+                                {
+                                    <div class="row" style="@(Model.lisA11_Slave2[i].CssTempDisplay)">
+
+                                        <input type="hidden" asp-for="@Model.lisA11_Slave2[i].IsTempDeleted" value="@Model.lisA11_Slave2[i].IsTempDeleted" />
+                                        <input type="hidden" asp-for="@Model.lisA11_Slave2[i].f06ID" value="@Model.lisA11_Slave2[i].f06ID" />
+                                        <input type="hidden" asp-for="@Model.lisA11_Slave2[i].f06Name" value="@Model.lisA11_Slave2[i].f06Name" />
+                                        <input type="hidden" asp-for="lisA11_Slave2[i].TempGuid" value="@Model.lisA11_Slave2[i].TempGuid" />
+                                        <div class="col-sm-6 col-md-6">
+                                            <myval value="@Model.lisA11_Slave2[i].f06Name"></myval>
+
+                                        </div>
+                                        <div class="col-sm-4 col-md-4">
+                                            <input type="text" class="form-control" placeholder="Poznámka" asp-for="@Model.lisA11_Slave2[i].a11Description" value="@Model.lisA11_Slave2[i].a11Description" />
+                                        </div>
+
+                                        <div class="col-1">
+                                            <button type="button" class="btn btn-danger" tabindex="-1" title="Odstranit řádek" onclick="handle_delete_f06_slave2('@(Model.lisA11_Slave2[i].TempGuid)')">x</button>
+
+                                        </div>
+
+                                    </div>
+                                }
+
+
+                            </td>
+                        </tr>
+                    </table>
+
+
+                }
+            }
+        </div>
+    </div>
 </form>
 
 
 <script type="text/javascript">
     $(document).ready(function () {
+
+
+        $("#cmdSave").click(function () {
+            $(this).text("Processing...");
+            $(this).attr("disabled", true);
+            form1.submit();
+
+
+        });
 
 
 
@@ -286,6 +489,18 @@
         form1.submit();
     }
 
+    function a10_change_master() {
+        form1.action = "/a01CreateIAudit/Index?oper=a10_change_master";
+        form1.submit();
+    }
+    function a10_change_slave1() {
+        form1.action = "/a01CreateIAudit/Index?oper=a10_change_slave1";
+        form1.submit();
+    }
+    function a10_change_slave2() {
+        form1.action = "/a01CreateIAudit/Index?oper=a10_change_slave2";
+        form1.submit();
+    }
 
     function handle_j02id_append(j02id) {
         if (j02id == "") {
@@ -327,6 +542,33 @@
     function handle_delete_f06_master(guid) {
         form1.action = "/a01CreateIAudit/Index?oper=f06_delete_master&guid=" + guid;
         form1.submit();
+    }
 
+
+    function handle_f06_clear_slave1() {
+        form1.action = "/a01CreateIAudit/Index?oper=f06_clear_slave1";
+        form1.submit();
+    }
+    function f06_append_slave1(f06id, krat) {
+        form1.action = "/a01CreateIAudit/Index?oper=f06_add_slave1&f06id=" + f06id + "&krat=" + krat;
+        form1.submit();
+    }
+    function handle_delete_f06_slave1(guid) {
+        form1.action = "/a01CreateIAudit/Index?oper=f06_delete_slave1&guid=" + guid;
+        form1.submit();
+    }
+
+
+    function handle_f06_clear_slave2() {
+        form1.action = "/a01CreateIAudit/Index?oper=f06_clear_slave2";
+        form1.submit();
+    }
+    function f06_append_slave2(f06id, krat) {
+        form1.action = "/a01CreateIAudit/Index?oper=f06_add_slave2&f06id=" + f06id + "&krat=" + krat;
+        form1.submit();
+    }
+    function handle_delete_f06_slave2(guid) {
+        form1.action = "/a01CreateIAudit/Index?oper=f06_delete_slave2&guid=" + guid;
+        form1.submit();
     }
 </script>

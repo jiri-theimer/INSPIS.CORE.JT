@@ -11,8 +11,8 @@ namespace UI.Models
         public int a03ID { get; set; }
         public string Institution { get; set; }
 
-        public DateTime a01DateFrom { get; set; }
-        public DateTime a01DateUntil { get; set; }
+        public DateTime? a01DateFrom { get; set; }
+        public DateTime? a01DateUntil { get; set; }
 
         public List<BO.a41PersonToEvent> lisA41 { get; set; }
 

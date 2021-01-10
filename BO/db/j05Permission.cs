@@ -9,9 +9,18 @@ namespace BO
         [Key]
         public int j05ID { get; set; }
         public string j05Name { get; set; }
+        public string j05Name_Lang2 { get; set; }
         public int j05Value { get; set; }
         public int j05Order { get; set; }
         public j05PermFlagEnum j05PermFlag { get; set; }
+
+        public string NamePlusLang2
+        {
+            get
+            {
+                return this.j05Name_Lang2 + " (" + this.j05Name + ")";
+            }
+        }
     }
 
 

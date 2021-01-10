@@ -18,6 +18,9 @@ namespace BL
         public string GetPageUrl(BO.a01Event rec, int pid4url=0);
         public string GetPageUrl(string a10ViewUrl_Page, int pid4url);
         public int BatchUpdate(BO.a01Event rec);
+
+        public bool ValidateA41(BO.a01Event rec, List<BO.a41PersonToEvent> lisA41);
+        public bool ValidateA11(BO.a01Event rec, List<BO.a11EventForm> lisA11);
     }
     class a01EventBL : BaseBL, Ia01EventBL
     {
@@ -277,7 +280,7 @@ namespace BL
             _db.RunSp("_core_a01_after_save", ref pars);
         }
 
-        private bool ValidateA41(BO.a01Event rec, List<BO.a41PersonToEvent> lisA41)
+        public bool ValidateA41(BO.a01Event rec, List<BO.a41PersonToEvent> lisA41)
         {
             if (lisA41.Where(p => p.IsTempDeleted==false && p.a45ID == BO.EventRoleENUM.Vedouci).Count() == 0)
             {
@@ -324,7 +327,7 @@ namespace BL
             }
         }
 
-        private bool ValidateA11(BO.a01Event rec, List<BO.a11EventForm> lisA11)
+        public bool ValidateA11(BO.a01Event rec, List<BO.a11EventForm> lisA11)
         {
             foreach(var c in lisA11)
             {

@@ -167,8 +167,15 @@
         <div class="tab-pane" id="tab2" role="tabpanel">
             <!-- Tab2 -->
             <p></p>
+            @if (_f.CurrentUser.j03LangIndex == 2)
+            {
+                <mycheckboxlist asp-for="@Model.SelectedJ05IDs_EPIS1" textfield="NamePlusLang2" valuefield="j05ID" datasource="@Model.lisJ05_EPIS1"></mycheckboxlist>
+            }
+            else
+            {
+                <mycheckboxlist asp-for="@Model.SelectedJ05IDs_EPIS1" textfield="j05Name" valuefield="j05ID" datasource="@Model.lisJ05_EPIS1"></mycheckboxlist>
+            }
 
-            <mycheckboxlist asp-for="@Model.SelectedJ05IDs_EPIS1" textfield="j05Name" valuefield="j05ID" datasource="@Model.lisJ05_EPIS1"></mycheckboxlist>
 
 
         </div>
