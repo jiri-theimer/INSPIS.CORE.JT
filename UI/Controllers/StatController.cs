@@ -173,7 +173,7 @@ namespace UI.Controllers
                 {
                     mq.explicit_sqlwhere = string.Join(" AND ", lis);
                 }
-                System.IO.File.WriteAllText("c:\\temp\\hovadostat.txt", mq.explicit_sqlwhere);
+                //System.IO.File.WriteAllText("c:\\temp\\hovadostat.txt", mq.explicit_sqlwhere);
                 v.guid = BO.BAS.GetGuid();
 
 

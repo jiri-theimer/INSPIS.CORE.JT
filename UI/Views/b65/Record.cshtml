@@ -12,7 +12,17 @@
         <div class="row">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Entita"):</label>
             <div class="col-sm-5 col-md-4">
-                <mycombo entity="x29Entity" asp-for="Rec.x29ID" selectedtext="Rec.x29Name" view-flag="2" param1="x29IsReport"></mycombo>
+                
+                <select class="form-select" asp-for="Rec.x29ID">
+                    <option value="0">------</option>
+                    <option value="101">@_f.tra("Akce")</option>
+                    <option value="103">@_f.tra("Instituce")</option>
+                    <option value="502">@_f.tra("Osoba")</option>
+                    <option value="406">@_f.tra("Formulář")</option>
+                    <option value="111">@_f.tra("Formulář v akci")</option>
+                    <option value="201">@_f.tra("Workflow šablona")</option>
+                    <option value="604">@_f.tra("Úkol")</option>
+                </select>
             </div>
         </div>
 

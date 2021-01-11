@@ -26,7 +26,23 @@
         <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Entita"):</label>
             <div class="col-sm-11 col-md-10">
-                <mycombo entity="x29Entity" asp-for="Rec.x29ID" selectedtext="Rec.x29Name" view-flag="2" param1="x29IsAttachment"></mycombo>
+                
+                <select class="form-select" asp-for="Rec.x29ID">
+                    <option value="0">------</option>
+                    <option value="101">@_f.tra("Akce")</option>
+                    <option value="103">@_f.tra("Instituce")</option>
+                    <option value="502">@_f.tra("Osoba")</option>
+                    <option value="406">@_f.tra("Formulář")</option>
+                    <option value="418">@_f.tra("Segment formuláře")</option>
+                    <option value="419">@_f.tra("Otázka formuláře")</option>
+                    <option value="111">@_f.tra("Formulář v akci")</option>
+                    <option value="201">@_f.tra("Workflow šablona")</option>
+                    <option value="604">@_f.tra("Úkol")</option>
+                    <option value="142">@_f.tra("INEZ")</option>
+                    <option value="432">@_f.tra("Odpověď otázky")</option>
+                    <option value="931">@_f.tra("Report šablona")</option>                    
+                </select>
+
             </div>
         </div>
         <div class="row my-2">

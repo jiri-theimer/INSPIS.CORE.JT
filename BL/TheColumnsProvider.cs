@@ -325,9 +325,22 @@ namespace BL
 
             //j04=aplikační role
             AF("j04UserRole", "j04Name", "Aplikační role", 1,null,"string",false,true);
-            AF("j04UserRole", "RelationFlag", "Vztah", 1, "case a.j04RelationFlag when 1 then 'Bez omezení' when 2 then 'Instituce' when 3 then 'Inspektorát' end");
-            AF("j04UserRole", "PortalFaceFlag", "Portál", 0, "case a.j04PortalFaceFlag when 1 then 'ČŠI' when 2 then 'Škola' when 3 then 'Zřizovatel' when 4 then 'Veřejnost' end");
+            if (_app.Implementation == "UA")
+            {
+                AF("j04UserRole", "RelationFlag", "Vztah", 1, "case a.j04RelationFlag when 1 then N'Без обмежень/Bez omezení' when 2 then N'Школу/Instituce' when 3 then N'Інспекція/Inspektorát' end");
+                AF("j04UserRole", "PortalFaceFlag", "Portál", 0, "case a.j04PortalFaceFlag when 1 then 'ČŠI' when 2 then 'Школу/Škola' when 3 then 'Засновник/Zřizovatel' when 4 then 'Громадський/Veřejnost' end");
+                
+            }
+            else
+            {
+                AF("j04UserRole", "RelationFlag", "Vztah", 1, "case a.j04RelationFlag when 1 then 'Bez omezení' when 2 then 'Instituce' when 3 then 'Inspektorát' end");
+                AF("j04UserRole", "PortalFaceFlag", "Portál", 0, "case a.j04PortalFaceFlag when 1 then 'ČŠI' when 2 then 'Škola' when 3 then 'Zřizovatel' when 4 then 'Veřejnost' end");
+                
+            }
+
+
             AF("j04UserRole", "j04IsAllowedAllEventTypes", "Všechny typy akcí", 0, null, "bool");
+
             AF("j04UserRole", "j04Description", "Popis");
             AF("j04UserRole", "j04ViewUrl_Page", "URL výchozí stránky");
             AppendTimestamp("j04UserRole");
@@ -660,7 +673,16 @@ namespace BL
             
             AF("j40MailAccount", "j40SmtpEmail", "Adresa odesílatele", 1);
             AF("j40MailAccount", "j40SmtpPort", "Smtp Port", 2, null, "num0");
-            AF("j40MailAccount", "j40UsageFlag", "Typ účtu", 1, "case a.j40UsageFlag when 1 then 'Privátní Smtp účet' when 2 then 'Globální Smtp účet' when 3 then 'Osobní Imap účet' when 4 then 'Globální Imap účet' else null end");
+            if (_app.Implementation == "UA")
+            {
+                AF("j40MailAccount", "j40UsageFlag", "Typ účtu", 1, "case a.j40UsageFlag when 1 then N'Приватний рахунок/Privátní Smtp účet' when 2 then N'Глобальний рахунок/Globální Smtp účet' when 3 then 'Osobní Imap účet' when 4 then 'Globální Imap účet' else null end");
+
+            }
+            else
+            {
+                AF("j40MailAccount", "j40UsageFlag", "Typ účtu", 1, "case a.j40UsageFlag when 1 then 'Privátní Smtp účet' when 2 then 'Globální Smtp účet' when 3 then 'Osobní Imap účet' when 4 then 'Globální Imap účet' else null end");
+
+            }
 
 
             //x40 = OUTBOX            
@@ -670,9 +692,17 @@ namespace BL
             AF("x40MailQueue", "x40Recipient", "Komu", 1);
             AF("x40MailQueue", "x40CC", "Cc");
             AF("x40MailQueue", "x40BCC", "Bcc");
-            AF("x40MailQueue", "x40Status", "Stav", 1, "case a.x40Status when 1 then 'Čeká na odeslání' when 2 then 'Chyba' when 3 then 'Odesláno' when 4 then 'Zastaveno' when 5 then 'Čeká na schválení' end");
+            if (_app.Implementation == "UA")
+            {
+                AF("x40MailQueue", "x40Status", "Stav", 1, "case a.x40Status when 1 then N'Чекає відправлення/Čeká na odeslání' when 2 then N'Помилка/Chyba' when 3 then N'Надісланий/Odesláno' when 4 then N'Зупинився/Zastaveno' when 5 then N'В очікуванні схвалення/Čeká na schválení' end");
+            }
+            else
+            {
+                AF("x40MailQueue", "x40Status", "Stav", 1, "case a.x40Status when 1 then 'Čeká na odeslání' when 2 then 'Chyba' when 3 then 'Odesláno' when 4 then 'Zastaveno' when 5 then 'Čeká na schválení' end");
+            }
+            
             AF("x40MailQueue", "x40Subject", "Předmět zprávy", 1);
-            AF("x40MailQueue", "x40Body", "Text zprávy", 1, "convert(varchar(150),a.x40Body)+'...'");
+            AF("x40MailQueue", "x40Body", "Text zprávy", 1, "convert(nvarchar(150),a.x40Body)+'...'");
             AF("x40MailQueue", "x40Attachments", "Přílohy");
             AF("x40MailQueue", "x40EmlFileSize_KB", "Velikost (kB)", 0, "a.x40EmlFileSize/1024", "num0", true);
             AF("x40MailQueue", "x40EmlFileSize_MB", "Velikost (MB)", 0, "convert(float,a.x40EmlFileSize)/1048576", "num", true);
