@@ -646,6 +646,14 @@ function tg_get_qry_value(field, coltypename) {
 
 function tg_filter_operator_as_alias(operator) {
     operator = String(operator);
+    if (_tg_langindex === 2) {
+        if (operator === "1") return "пусто";
+        if (operator === "2") return "не є порожнім";
+        if (operator === "8") return "ТАК";
+        if (operator === "9") return "НІ";
+        if (operator === "10") return "&gt;0";
+        if (operator === "11") return "0 або порожній";
+    }
     if (operator === "1") return "Je prázdné";
     if (operator === "2") return "Není prázdné";
     if (operator === "8") return "ANO";
