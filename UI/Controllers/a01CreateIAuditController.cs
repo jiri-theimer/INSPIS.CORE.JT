@@ -10,9 +10,22 @@ namespace UI.Controllers
 {
     public class a01CreateIAuditController : BaseController
     {
-        public IActionResult Index(int a03id)      //založení 3 akce v rámci IA
+        public IActionResult Index(int a03id,int a10id_master,int a10id_slave1,int a10id_slave2)      //založení 3 akce v rámci IA
         {
-            var v = new a01CreateIAudit() { a03ID = a03id,a01DateFrom=DateTime.Today.AddDays(1),a01DateUntil=DateTime.Today.AddDays(5) };
+            var v = new a01CreateIAudit() { a03ID = a03id,a01DateFrom=DateTime.Today.AddDays(1),a01DateUntil=DateTime.Today.AddDays(5),a10ID_Master=a10id_master,a10ID_Slave1=a10id_slave1,a10ID_Slave2=a10id_slave2 };
+            if (v.a10ID_Master == 0)
+            {
+                v.a10ID_Master = Factory.CBL.LoadUserParamInt("CreateIAudit-a10ID_Master");                
+            }
+            if (v.a10ID_Slave1 == 0)
+            {
+                v.a10ID_Slave1 = Factory.CBL.LoadUserParamInt("CreateIAudit-a10ID_Slave1");
+            }
+            if (v.a10ID_Slave2== 0)
+            {
+                v.a10ID_Slave2 = Factory.CBL.LoadUserParamInt("CreateIAudit-a10ID_Slave2");
+            }
+
             if (a03id > 0)
             {
                 v.a03ID = a03id;
@@ -32,18 +45,21 @@ namespace UI.Controllers
             }
             if (oper== "a10_change_master")
             {
+                Factory.CBL.SetUserParam("CreateIAudit-a10ID_Master", v.a10ID_Master.ToString());
                 v.RecA01_Master.a08ID = 0;v.RecA01_Master.a08Name = "";
                 v.lisA11_Master.Clear();                
                 return View(v);
             }
             if (oper == "a10_change_slave1")
             {
+                Factory.CBL.SetUserParam("CreateIAudit-a10ID_Slave1", v.a10ID_Slave1.ToString());
                 v.RecA01_Slave1.a08ID = 0; v.RecA01_Slave1.a08Name = "";
                 v.lisA11_Slave1.Clear();
                 return View(v);
             }
             if (oper == "a10_change_slave2")
             {
+                Factory.CBL.SetUserParam("CreateIAudit-a10ID_Slave2", v.a10ID_Slave2.ToString());
                 v.RecA01_Slave2.a08ID = 0; v.RecA01_Slave2.a08Name = "";
                 v.lisA11_Slave2.Clear();
                 return View(v);
@@ -217,6 +233,7 @@ namespace UI.Controllers
             else
             {
                 v.RecA10_Master = Factory.a10EventTypeBL.Load(v.a10ID_Master);
+                v.a10Name_Master = v.RecA10_Master.a10Name;
             }
             
             if (v.a10ID_Slave1 == 0)
@@ -226,6 +243,7 @@ namespace UI.Controllers
             else
             {
                 v.RecA10_Slave1 = Factory.a10EventTypeBL.Load(v.a10ID_Slave1);
+                v.a10Name_Slave1 = v.RecA10_Slave1.a10Name;
             }
             if (v.a10ID_Slave2 == 0)
             {
@@ -234,6 +252,7 @@ namespace UI.Controllers
             else
             {
                 v.RecA10_Slave2 = Factory.a10EventTypeBL.Load(v.a10ID_Slave2);
+                v.a10Name_Slave2 = v.RecA10_Slave2.a10Name;
             }
 
             if (v.lisA41 == null)
