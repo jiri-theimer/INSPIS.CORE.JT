@@ -54,7 +54,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
-    
+
     <script src="~/lib/splitter/jquery-resizable.js"></script>
     <script src="~/lib/datepicker/bootstrap-datepicker.min.js"></script>
     @switch (_f.CurrentUser.j03LangIndex)
@@ -102,7 +102,7 @@
                         {
                             <span>☆</span>
                         }
-                        
+
 
                     </a>
                 }
@@ -167,6 +167,21 @@
 
 
 
+                        }
+                        @if (_f.CurrentUser.j03Login == "lamos")
+                        {
+                            if (_f.CurrentUser.j03LangIndex == 0)
+                            {
+                                <li class="nav-item">
+                                    <a class="btn btn-warning" href="javascript:save_langindex_menu(2)" tabindex="-1">🡢UA</a>
+                                </li>
+                            }
+                            if (_f.CurrentUser.j03LangIndex == 2)
+                            {
+                                <li class="nav-item">
+                                    <a class="btn btn-danger" href="javascript:save_langindex_menu(0)" tabindex="-1">🡢CZ</a>
+                                </li>
+                            }
                         }
 
                     </ul>
@@ -466,7 +481,7 @@
             if (typeof layout === "undefined") layout = null;
             _modal_current_layout = layout;
             if (typeof flag === "undefined") flag = 1;
-            
+
             if (url.toLowerCase().indexOf("/j11/record") > -1 || url.toLowerCase().indexOf("/a29/record") > -1 || url.toLowerCase().indexOf("/a10/record") > -1 || url.toLowerCase().indexOf("/x51/record") > -1) {
                 flag = 2;   //automaticky maximalizovat okno
             }

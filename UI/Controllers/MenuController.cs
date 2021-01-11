@@ -139,7 +139,7 @@ namespace UI.Controllers
             }
             
 
-            AMI("Import"+": "+Factory.tra("Instituce"), "/import/a03");
+            AMI("Import"+": "+Factory.tra("Instituce"), "/import/a03",null,null,"_blank");
             //if (TUP(BO.PermValueEnum.H11Admin))
             //{
             //    AMI("Nástěnka", "/Admin/NoticeBoard");

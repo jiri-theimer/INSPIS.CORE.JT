@@ -6,7 +6,7 @@
 
 
 
-    Model.PageTitle = "Import";
+    Model.PageTitle = _f.tra("Import záznamů institucí");
 
 
 
@@ -15,7 +15,7 @@
 
 @addTagHelper *,UI
 
-<h4>Datový import záznamů institucí</h4>
+<h4>@Model.PageTitle</h4>
 @if (string.IsNullOrEmpty(Model.FileNameOrig) == false)
 {
     <a href="/FileUpload/FileDownloadTempFile?tempfilename=@Model.FileName" target="_blank">@Model.FileNameOrig</a>
@@ -119,34 +119,34 @@
                     <select class="form-select" asp-for="@Model.MapCols[i].TargetField">
                         <option value="">@_f.tra("Namapovat sloupec")</option>
                         <option value="a03REDIZO">REDIZO</option>
-                        <option value="a03REDIZO_Parent">Nadřízené REDIZO</option>
-                        <option value="a03ParentFlag">Příznak nadřízenosti (0/1/2)</option>
-                        <option value="a03REDIZO_Supervisory">Dohledový subjekt (REDIZO)</option>
-                        <option value="a03Name_Supervisory">Dohledový subjekt (Název)</option>
-                        <option value="a03FounderCode">Kód zřizovatele</option>
-                        <option value="bind_a03FounderCode">Vazba na zřizovatele přes jeho kód</option>
-                        <option value="a03ICO">IČ</option>
-                        <option value="a03Name">Název</option>
-                        <option value="a03ShortName">Zkrácený název</option>
-                        <option value="a03City">Obec</option>
-                        <option value="a03Street">Ulice</option>
-                        <option value="a03PostCode">PSČ</option>
-                        <option value="a03Phone">Pevný Tel.</option>
-                        <option value="a03Mobile">Mobil</option>
-                        <option value="a03Fax">FAX</option>
+                        <option value="a03REDIZO_Parent">@_f.tra("Nadřízené REDIZO")</option>
+                        <option value="a03ParentFlag">@_f.tra("Příznak nadřízenosti (0/1/2)")</option>
+                        <option value="a03REDIZO_Supervisory">@_f.tra("Dohledový subjekt (REDIZO)")</option>
+                        <option value="a03Name_Supervisory">@_f.tra("Dohledový subjekt (Název)")</option>
+                        <option value="a03FounderCode">@_f.tra("Kód zřizovatele")</option>
+                        <option value="bind_a03FounderCode">@_f.tra("Vazba na zřizovatele přes jeho kód")</option>
+                        <option value="a03ICO">@_f.tra("IČ")</option>
+                        <option value="a03Name">@_f.tra("Název")</option>
+                        <option value="a03ShortName">@_f.tra("Zkrácený název")</option>
+                        <option value="a03City">@_f.tra("Obec")</option>
+                        <option value="a03Street">@_f.tra("Ulice")</option>
+                        <option value="a03PostCode">@_f.tra("PSČ")</option>
+                        <option value="a03Phone">@_f.tra("Pevný Tel.")</option>
+                        <option value="a03Mobile">@_f.tra("Mobil")</option>
+                        <option value="a03Fax">@_f.tra("FAX")</option>
                         <option value="a03Web">WWW</option>
-                        <option value="a03Email">E-mail</option>
-                        <option value="a21Code">Právní forma (kód)</option>
-                        <option value="a05RZCode">Kraj (RZ kód)</option>
-                        <option value="a05Name">Kraj (Název)</option>
-                        <option value="a09UIVCode">Typ zřizovatele (UIV kód)</option>
-                        <option value="a09Name">Typ zřizovatele (název)</option>
-                        <option value="a09ID">Typ zřizovatele (a09ID)</option>
-                        <option value="a28Code">Typ školy (kód)</option>
-                        <option value="a28Name">Typ školy (název)</option>
-                        <option value="a03ValidFrom">Platné od</option>
-                        <option value="a03ValidUntil">Platné do</option>
-                        <option value="a03DirectorFullName">Jméno ředitele</option>
+                        <option value="a03Email">@_f.tra("E-mail")</option>
+                        <option value="a21Code">@_f.tra("Právní forma (kód)")</option>
+                        <option value="a05RZCode">@_f.tra("Kraj (RZ kód)")</option>
+                        <option value="a05Name">@_f.tra("Kraj (Název)")</option>
+                        <option value="a09UIVCode">@_f.tra("Typ zřizovatele (UIV kód)")</option>
+                        <option value="a09Name">@_f.tra("Typ zřizovatele (název)")</option>
+                        <option value="a09ID">@_f.tra("Typ zřizovatele (a09ID)")</option>
+                        <option value="a28Code">@_f.tra("Typ školy (kód)")</option>
+                        <option value="a28Name">@_f.tra("Typ školy (název)")</option>
+                        <option value="a03ValidFrom">@_f.tra("Platné od")</option>
+                        <option value="a03ValidUntil">@_f.tra("Platné do")</option>
+                        <option value="a03DirectorFullName">@_f.tra("Jméno ředitele")</option>
                     </select>
                 </td>
             </tr>
