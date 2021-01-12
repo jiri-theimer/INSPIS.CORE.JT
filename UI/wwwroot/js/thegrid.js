@@ -609,7 +609,7 @@ function tg_filter_ok() {
 
     tg_filter_hide_popup();
     tg_filter_send2server();
-
+    
 }
 
 function tg_get_qry_value(field, coltypename) {
@@ -646,6 +646,7 @@ function tg_get_qry_value(field, coltypename) {
 
 function tg_filter_operator_as_alias(operator) {
     operator = String(operator);
+    
     if (_tg_langindex === 2) {
         if (operator === "1") return "пусто";
         if (operator === "2") return "не є порожнім";

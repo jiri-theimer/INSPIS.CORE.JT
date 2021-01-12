@@ -179,7 +179,7 @@ namespace UI
 
             if (!String.IsNullOrEmpty(gridState.j75Filter))
             {
-                mq.TheGridFilter = _colsProvider.ParseAdhocFilterFromString(gridState.j75Filter, mq.explicit_columns);
+                mq.TheGridFilter = _colsProvider.ParseAdhocFilterFromString(gridState.j75Filter, mq.explicit_columns,_Factory.CurrentUser.j03LangIndex);
             }
 
             if (gridState.j72HashJ73Query)
@@ -689,7 +689,7 @@ namespace UI
             }
             if (String.IsNullOrEmpty(gridState.j75Filter) == false)
             {
-                this.gridinput.query.TheGridFilter = _colsProvider.ParseAdhocFilterFromString(gridState.j75Filter, this.gridinput.query.explicit_columns);
+                this.gridinput.query.TheGridFilter = _colsProvider.ParseAdhocFilterFromString(gridState.j75Filter, this.gridinput.query.explicit_columns,_Factory.CurrentUser.j03LangIndex);
             }                                  
             if (gridState.j72HashJ73Query)
             {

@@ -1082,12 +1082,12 @@ namespace BL
 
         }
 
-        public List<BO.TheGridColumnFilter> ParseAdhocFilterFromString(string strJ72Filter, IEnumerable<BO.TheGridColumn> explicit_cols)
+        public List<BO.TheGridColumnFilter> ParseAdhocFilterFromString(string strJ72Filter, IEnumerable<BO.TheGridColumn> explicit_cols,int langindex)
         {
             var ret = new List<BO.TheGridColumnFilter>();
             if (String.IsNullOrEmpty(strJ72Filter) == true) return ret;
 
-
+           
             List<string> lis = BO.BAS.ConvertString2List(strJ72Filter, "$$$");
             foreach (var s in lis)
             {
@@ -1096,7 +1096,7 @@ namespace BL
                 {
                     var c = new BO.TheGridColumnFilter() { field = arr[0], oper = arr[1], value = arr[2] };
                     c.BoundColumn = explicit_cols.Where(p => p.UniqueName == arr[0]).First();
-                    ParseFilterValue(ref c);
+                    ParseFilterValue(ref c,langindex);
                     ret.Add(c);
                 }
 
@@ -1105,7 +1105,7 @@ namespace BL
             return ret;
         }
 
-        private void ParseFilterValue(ref BO.TheGridColumnFilter col)
+        private void ParseFilterValue(ref BO.TheGridColumnFilter col,int langindex)
         {
 
             {
@@ -1125,12 +1125,14 @@ namespace BL
                     case "1":
                         {
                             col.value_alias = "Je prázdné";
+                            if (langindex == 2) col.value_alias = "пусто";
                             break;
                         }
 
                     case "2":
                         {
                             col.value_alias = "Není prázdné";
+                            if (langindex == 2) col.value_alias = "не є порожнім";
                             break;
                         }
 
@@ -1162,24 +1164,28 @@ namespace BL
                     case "8":
                         {
                             col.value_alias = "ANO";
+                            if (langindex == 2) col.value_alias = "ТАК";
                             break;
                         }
 
                     case "9":
                         {
                             col.value_alias = "NE";
+                            if (langindex == 2) col.value_alias = "НІ";
                             break;
                         }
 
                     case "10": // je větší než nula
                         {
                             col.value_alias = "větší než 0";
+                            if (langindex == 2) col.value_alias = "&gt;0";
                             break;
                         }
 
                     case "11":
                         {
                             col.value_alias = "0 nebo prázdné";
+                            if (langindex == 2) col.value_alias = "0 або порожній";
                             break;
                         }
 

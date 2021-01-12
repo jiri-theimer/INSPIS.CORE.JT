@@ -73,7 +73,7 @@ namespace UI.Views.Shared.Components.TheGrid
             //ret.oncmclick = oncmclick;
             ret.GridState = gridState;
             ret.Columns = _colsProvider.ParseTheGridColumns(input.entity.Substring(0, 3), gridState.j72Columns, _f.CurrentUser.j03LangIndex);
-            ret.AdhocFilter = _colsProvider.ParseAdhocFilterFromString(gridState.j75Filter, ret.Columns);
+            ret.AdhocFilter = _colsProvider.ParseAdhocFilterFromString(gridState.j75Filter, ret.Columns,_f.CurrentUser.j03LangIndex);
             //ret.MasterEntity = master_entity;
             //ret.FixedColumns = fixedcolumns;
             //ret.viewstate = viewstate;
