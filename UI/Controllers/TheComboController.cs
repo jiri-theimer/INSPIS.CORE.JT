@@ -64,7 +64,12 @@ namespace UI.Controllers
                     }
                     break;
                 case "b09":
-                    if (Factory.CurrentUser.j03LangIndex != 2)
+                  
+                    if (Factory.CurrentUser.j03LangIndex == 2)
+                    {
+                        cols.Remove(cols.Where(p => p.Field == "b09Name").First());
+                    }
+                    else
                     {
                         cols.Remove(cols.Where(p => p.Field == "b09Name_Lang2").First());
                     }
@@ -101,7 +106,7 @@ namespace UI.Controllers
 
             }
 
-            s.Append(string.Format("<table id='{0}' class='table table-hover'>", tableid));
+            s.Append(string.Format("<table id='{0}' class='table table-thecombo'>", tableid));
 
             s.Append("<thead><tr>");
             foreach (var col in cols)

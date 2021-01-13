@@ -86,7 +86,7 @@ namespace UI.Views.Shared.TagHelpers
             sb("");
 
 
-            sb(string.Format("<div id='divData{0}' style='height:220px;overflow:auto;background-color:#E6F0FF;z-index:500;'>", strControlID));
+            sb(string.Format("<div id='divData{0}' style='height:220px;overflow:auto;z-index:500;'>", strControlID));
             sb("</div>");
 
 
