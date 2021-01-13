@@ -62,7 +62,7 @@ namespace UI
             {
                 options.TextEncoderSettings = new System.Text.Encodings.Web.TextEncoderSettings(System.Text.Unicode.UnicodeRanges.All);
             });
-
+            services.AddHttpClient();
             services.AddControllers();      //kvùli telerik reporting
             services.AddControllersWithViews();
             services.Configure<IISServerOptions>(options =>
