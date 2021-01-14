@@ -207,7 +207,8 @@ namespace BL
                 {
                     return; //v rámci simulace fomuláře raději dále v akci nic automatického nedělat
                 }
-                
+                rec = _mother.a01EventBL.Load(a01id);
+
                 var lisA41 = _mother.a41PersonToEventBL.GetList(new BO.myQueryA41() { a01id = rec.pid });
 
                 var recA10 = _mother.a10EventTypeBL.Load(rec.a10ID);
@@ -224,9 +225,11 @@ namespace BL
                     //existují automatičtí výchozí řešitelé statusu
                     var recA41 = new BO.a41PersonToEvent() { a01ID = rec.pid, a45ID = (BO.EventRoleENUM)cB03.a45ID, j11ID = cB03.j11ID};
                     _mother.a41PersonToEventBL.Save(recA41, true);
-                }
+                }                
                 
                 RunB09Commands_By_Status(rec, recDefB02.pid);  //spouštění pevných SQL příkazů, kterou jsou spojeny s výchozím stavem
+
+                TrySendNotificationsToStatus(rec, rec.b02ID, null); //odeslat úvodní e-mail notifikace (pokud jsou definovány)
             }
 
             
@@ -399,7 +402,7 @@ namespace BL
         {
             //posílá notifikační zprávy v rámci workflow stavu
             var lisB07 = _mother.b02WorkflowStatusBL.GetListB07(intB02ID);
-            if (lisB07.Count() == 0) return;    //nejsou definovány notifikační pravidla k workflow kroku
+            if (lisB07.Count() == 0) return;    //nejsou definovány notifikační pravidla k workflow stavu
             var lisA41 = _mother.a41PersonToEventBL.GetList(new BO.myQueryA41() { a01id = rec.pid });
             foreach(var c in lisB07)
             {

@@ -149,8 +149,7 @@ namespace UI.Controllers
                 request.Headers.TryAddWithoutValidation("X-Api-Key", "paklic1");
 
                 request.Content = new StringContent("{  \n   \"userId\": \"d046b326-3d6c-4dc3-852f-3999ac3f0632\"  \n }");
-
-
+               
                 request.Content.Headers.ContentType = new MediaTypeWithQualityHeaderValue("application/json");
 
 

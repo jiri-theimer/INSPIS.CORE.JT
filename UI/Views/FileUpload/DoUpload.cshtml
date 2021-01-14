@@ -16,7 +16,7 @@
 
     <div class="row">
 
-        <div class="col-6">
+        <div class="col-auto">
             <form method="post" id="frmUpload" enctype="multipart/form-data" asp-controller="FileUpload" asp-action="DoUpload">
                 <input type="hidden" asp-for="@Model.x29ID" />
                 <input type="hidden" asp-for="@Model.Guid" />
@@ -57,7 +57,7 @@
 
             </form>
         </div>
-        <div class="col-6">
+        <div class="col-auto">
             @if (Model.lisTempFiles.Count() > 0)
             {
                 <div class="card">
