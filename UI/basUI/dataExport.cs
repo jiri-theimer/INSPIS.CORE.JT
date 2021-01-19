@@ -12,6 +12,26 @@ namespace UI
 {
     public class dataExport
     {
+        public void StatZeroRow(string strFilePathExisting, IEnumerable<BO.f21ReplyUnitJoinedF19> lisColsHelp, BL.Factory f,int intFirstNonF19Cols)
+        {
+            using (var workbook = new XLWorkbook(strFilePathExisting))
+            {
+                var worksheet = workbook.Worksheets.First();
+                
+                int col = intFirstNonF19Cols+1;
+                for(int x = col; x <= intFirstNonF19Cols + lisColsHelp.Count(); x++)
+                {
+                    int tryf19id = BO.BAS.InInt(worksheet.Cell(2, x).Value.ToString());
+                    if (tryf19id > 0 && lisColsHelp.Where(p=>p.f19ID==tryf19id).Count()>0)
+                    {
+                        worksheet.Cell(1, x).Value = lisColsHelp.Where(p => p.f19ID == tryf19id).First().f19Name;
+                    }
+                }
+                
+
+                workbook.Save();
+            }
+        }
         public void StatVysvetlivky(string strFilePathExisting,IEnumerable<BO.f21ReplyUnitJoinedF19> lisColsHelp,BL.Factory f)
         {
             //strFilePathExisting: xls soubor, do které se přidá sešit Vysvětlivky
@@ -78,12 +98,12 @@ namespace UI
 
             }
         }
-        public bool ToXLSX(System.Data.DataTable dt, string strFilePath, BO.baseQuery mq)
+        public bool ToXLSX(System.Data.DataTable dt, string strFilePath, BO.baseQuery mq,int firstrow=1)
         {
             using (var workbook = new XLWorkbook())
             {
                 var worksheet = workbook.Worksheets.Add("Grid");
-                int row = 1;
+                int row = firstrow;
                 int col = 1;
 
                 foreach (var c in mq.explicit_columns)
@@ -120,13 +140,13 @@ namespace UI
 
             return true;
         }
-        public bool ToXLSX(System.Data.DataTable dt, string strFilePath, List<BO.StringPair> cols)
+        public bool ToXLSX(System.Data.DataTable dt, string strFilePath, List<BO.StringPair> cols, int firstrow = 1)
         {
             //key: název pole, value: záhlaví sloupce
             using (var workbook = new XLWorkbook())
             {
                 var worksheet = workbook.Worksheets.Add("Grid");
-                int row = 1;
+                int row = firstrow;
                 int col = 1;                
 
                 foreach (var c in cols)

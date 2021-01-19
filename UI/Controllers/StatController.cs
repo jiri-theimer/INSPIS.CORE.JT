@@ -177,7 +177,7 @@ namespace UI.Controllers
                 v.guid = BO.BAS.GetGuid();
 
 
-                bool b = Factory.StatBL.GenerateStatMatrix(v.guid, mq, v.lisCols, v.ValuesMode, false, v.IsBlankA11IDs, v.IsZeroRow, bolTestEncryptedValues);
+                bool b = Factory.StatBL.GenerateStatMatrix(v.guid, mq, v.lisCols, v.ValuesMode, false, v.IsBlankA11IDs, false, bolTestEncryptedValues);
 
                 if (oper == "excel")
                 {
@@ -228,6 +228,7 @@ namespace UI.Controllers
 
         private void Export2Excel(StatViewModel v)
         {
+            
             var dt = Factory.StatBL.GetList_StatMatrix(v.guid, GetAddFilterSqlWhere(v), v.lisCols, v.GroupByMode);
             var cExcel = new UI.dataExport();
             var cols = new List<BO.StringPair>();
@@ -245,14 +246,19 @@ namespace UI.Controllers
             cols.Add(new BO.StringPair() { Key = "a10Name", Value = Factory.tra("Typ akce") });
             cols.Add(new BO.StringPair() { Key = "a08Name", Value = Factory.tra("Téma akce") });
 
+            int intFirstNonF19Cols = cols.Count();  //používá se pro generování úvodního řádku IsZeroRow=true
 
             foreach (var col in v.lisCols)
             {
                 var c = new BO.StringPair() { Value = col.colName, Key = col.colField };
                 cols.Add(c);
             }
-
-            if (cExcel.ToXLSX(dt, Factory.App.TempFolder + "\\" + v.guid + ".xlsx", cols))
+            int firstrow = 1;
+            if (v.IsZeroRow)
+            {
+                firstrow = 2;   //První řádek bude obsahovat názvy otázek
+            }
+            if (cExcel.ToXLSX(dt, Factory.App.TempFolder + "\\" + v.guid + ".xlsx", cols,firstrow))
             {
                 var mq = new BO.myQueryXX1();
 
@@ -261,6 +267,13 @@ namespace UI.Controllers
                 mq.explicit_orderby = "f18Ordinal,f18Name,f19Ordinal,f19Name,f21Ordinal,f21Name";
                 var lisColsHelp = Factory.f21ReplyUnitBL.GetListJoinedF19(mq);
                 cExcel.StatVysvetlivky(Factory.App.TempFolder + "\\" + v.guid + ".xlsx", lisColsHelp, Factory);
+
+                if (v.IsZeroRow)
+                {
+                    cExcel.StatZeroRow(Factory.App.TempFolder + "\\" + v.guid + ".xlsx", lisColsHelp, Factory, intFirstNonF19Cols);
+                }
+
+
                 v.XlsExportTempFileName = v.guid + ".xlsx";
                 this.AddMessage("MS-EXCEL dokument vygenerován.", "info");
             }
