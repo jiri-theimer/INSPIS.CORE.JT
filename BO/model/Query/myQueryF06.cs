@@ -42,7 +42,7 @@ namespace BO
 
             if (_searchstring != null && _searchstring.Length > 2)
             {
-                AQ("(a.f06Name LIKE '%'+@expr+'%' OR a.f06Ident LIKE '%'+@expr+'%')", "expr", _searchstring);
+                AQ("(a.f06Name LIKE '%'+@expr+'%' OR a.f06Description LIKE '%'+@expr+'%')", "expr", _searchstring);
             }
 
             return this.InhaleRows();
