@@ -21,11 +21,48 @@ namespace UI
                 int col = intFirstNonF19Cols+1;
                 for(int x = col; x <= intFirstNonF19Cols + lisColsHelp.Count(); x++)
                 {
-                    int tryf19id = BO.BAS.InInt(worksheet.Cell(2, x).Value.ToString());
-                    if (tryf19id > 0 && lisColsHelp.Where(p=>p.f19ID==tryf19id).Count()>0)
+                    int tryf19id = 0;
+                    int tryf21id = 0;
+                    if (worksheet.Cell(2, x).Value.ToString().Contains("-"))
                     {
-                        worksheet.Cell(1, x).Value = lisColsHelp.Where(p => p.f19ID == tryf19id).First().f19Name;
+                        //hledání f19ID+f21ID
+                        var lis = BO.BAS.ConvertString2ListInt(worksheet.Cell(2, x).Value.ToString(), "-");
+                        tryf19id = lis[0];
+                        tryf21id = lis[1];
                     }
+                    else
+                    {
+                        //hledání pouze f19ID
+                        tryf19id = BO.BAS.InInt(worksheet.Cell(2, x).Value.ToString());
+                    }
+                    
+                    if (tryf21id > 0)
+                    {
+                        if (tryf19id > 0 && lisColsHelp.Where(p => p.f19ID == tryf19id && p.f21ID == tryf21id).Count() > 0)
+                        {
+                            var qry = lisColsHelp.Where(p => p.f19ID == tryf19id && p.f21ID == tryf21id);
+                            
+                            if (qry.First().f19IsMultiselect)
+                            {
+                                worksheet.Cell(1, x).Value = qry.First().f19Name+ " - " + qry.First().f21Name;
+                            }
+                            else
+                            {
+                                worksheet.Cell(1, x).Value = qry.First().f19Name;
+                            }
+                            
+                        }
+                    }
+                    else
+                    {
+                        if (tryf19id > 0 && lisColsHelp.Where(p => p.f19ID == tryf19id).Count() > 0)
+                        {
+                            worksheet.Cell(1, x).Value = lisColsHelp.Where(p => p.f19ID == tryf19id).First().f19Name;
+
+
+                        }
+                    }
+                    
                 }
                 
 

@@ -237,7 +237,10 @@ namespace BL
             sb(",CASE WHEN f26.f26Ordinal IS NULL THEN f19.f19Ordinal ELSE f26.f26Ordinal END,f21.f21IsCommentAllowed,0 as ThisColumnIsComment,f19.f19IsEncrypted,f18.f06ID");
             sb(" FROM f20ReplyUnitToQuestion a INNER JOIN f19Question f19 ON a.f19ID=f19.f19ID INNER JOIN f21ReplyUnit f21 ON a.f21ID=f21.f21ID INNER JOIN f18FormSegment f18 ON f19.f18ID=f18.f18ID");
             sb(" LEFT OUTER JOIN f26BatteryBoard f26 ON f19.f26ID=f26.f26ID");
-            sb(" WHERE a.f19ID IN (" + string.Join(",", f19ids) + ") AND f21.f21validfrom<=getdate() AND f21.f21validuntil>=getdate() AND f19.f23ID IN (3,5) AND f19.f19IsMultiselect=1");
+            //sb(" WHERE a.f19ID IN (" + string.Join(",", f19ids) + ") AND f21.f21validfrom<=getdate() AND f21.f21validuntil>=getdate() AND f19.f23ID IN (3,5) AND f19.f19IsMultiselect=1");
+            //oproti původnímu INSPISu vyhozena podmínka: AND f19.f19IsMultiselect=1, viz:
+            sb(" WHERE a.f19ID IN (" + string.Join(",", f19ids) + ") AND f21.f21validfrom<=getdate() AND f21.f21validuntil>=getdate() AND f19.f23ID IN (3,5)");
+
             sb(" UNION select f19.f19ID,0 as f21ID,f19.f19Name,NULL as f21Name,NULL as f21ExportValue,f19.x24ID");
             sb(",convert(varchar(10),f19.f19ID) as colName,f19.f23ID");
             sb(",f19.f19Ordinal,0 as f21Ordinal,f19.f26ID,f18.f18TreeIndex,f19.f19IsMultiselect,isnull(f26.f26Ordinal,99999),f18.f18TreeIndex,f18.f06ID");
