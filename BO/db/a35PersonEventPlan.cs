@@ -17,6 +17,7 @@ namespace BO
         public string j02TitleBeforeName;
         public string j02TitleAfterName;
         public int a01ParentID;
+        public string a01Signature;
 
         public string PersonAsc
         {

@@ -27,7 +27,7 @@ namespace BL
         {
             sb("SELECT a.*,");
             sb(_db.GetSQL1_Ocas("a35", false, false));
-            sb(",a01.a01ParentID");
+            sb(",a01.a01ParentID,a01.a01Signature");
             sb(",j02.j02FirstName,j02.j02LastName,j02.j02TitleBeforeName,j02.j02TitleAfterName");
             sb(" FROM a35PersonEventPlan a INNER JOIN j02Person j02 ON a.j02ID=j02.j02ID INNER JOIN a01Event a01 ON a.a01ID=a01.a01ID");            
             sb(strAppend);

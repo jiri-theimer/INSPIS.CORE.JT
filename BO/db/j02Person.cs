@@ -31,7 +31,7 @@ namespace BO
         public int j03ID { get; }
         public string j03Login { get; }
 
-        
+        public string j02Guid { get; set; }
         public string FullNameAsc { 
             get
             {

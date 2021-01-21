@@ -107,6 +107,7 @@ namespace BO
                     _searchstring = _searchstring.Replace(" or ", "#or#").Replace(" and ", "#and#");
                     _searchstring = _searchstring.Replace(" ", " and ");
                     _searchstring = _searchstring.Replace("#or#", " or ").Replace("#and#", " and ");
+                    _searchstring = _searchstring.Replace("\"", "");
                 }
                 
             }

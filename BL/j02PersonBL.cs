@@ -75,6 +75,7 @@ namespace BL
             p.AddBool("j02IsInvitedPerson", rec.j02IsInvitedPerson);
             p.AddString("j02Address", rec.j02Address);
             p.AddString("j02Position", rec.j02Position);
+            p.AddString("j02Guid", rec.j02Guid);
             p.AddString("j02FullText", BO.BAS.IIFS(string.IsNullOrEmpty(rec.j02TitleBeforeName),"",rec.j02TitleBeforeName + " ") + rec.j02FirstName + " " + rec.j02LastName + BO.BAS.IIFS(string.IsNullOrEmpty(rec.j02TitleAfterName),""," "+rec.j02TitleAfterName));
             return _db.SaveRecord("j02Person", p.getDynamicDapperPars(),rec);
         }

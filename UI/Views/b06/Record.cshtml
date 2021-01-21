@@ -84,12 +84,12 @@
                 {
                     <div class="card">
                         <div class="card-header">
-                            Nastavení nominace
+                            @_f.tra("Nastavení nominace")
                             <input type="checkbox" asp-for="Rec.b06IsNomineeRequired" />
                             <label class="col-form-label" for="Rec_b06IsNomineeRequired">@_f.tra("Nominace je povinná")</label>
                         </div>
                         <div class="card-body">
-                            Nominovaný obdrží v akci roli:
+                            @_f.tra("Nominovaný obdrží v akci roli"):
                             <br />
                             <mycombo entity="a45EventRole" asp-for="Rec.a45ID_NomineeTarget" selectedtext="@Model.a45Name_NomineeTarget" placeholder="@_f.tra("Vybrat roli")..." view-flag="2"></mycombo>
                         </div>

@@ -42,14 +42,14 @@
                 </div>
             </div>
         }
-        <div class="row my-2">
+        <div class="my-2">
             <input type="checkbox" asp-for="Rec.a11IsLocked" />
             <label for="Rec_a11IsLocked">@_f.tra("Uzamknuto")</label>
         </div>
 
-        <div class="row my-2">
+        <div class="my-2">
             <textarea asp-for="Rec.a11Description" class="form-control" placeholder="@_f.tra("Poznámka")"></textarea>
-            <span asp-validation-for="Rec.a11Description" class="text-danger"></span>
+            
         </div>
 
     </div>
