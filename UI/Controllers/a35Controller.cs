@@ -361,7 +361,30 @@ namespace UI.Controllers
             v.lisH04 = Factory.h04ToDoBL.GetListCapacity(new BO.myQueryH04() { global_d1 = v.d1, global_d2 = v.d2, j02id = v.pid });
             v.lisA38 = Factory.a38NonPersonEventPlanBL.GetList(new BO.myQueryA38() { global_d1 = v.d1, global_d2 = v.d2, j02id = v.pid });
 
+            
             return View(v);
+        }
+
+
+        public IActionResult ical(string guid)
+        {
+            
+            var cgen = new IcalSupport();
+            var recJ02 = Factory.j02PersonBL.LoadByGuid(guid);
+            if (recJ02 == null)
+            {
+                return Content("personal guid not found");
+            }
+
+            string strFileName = recJ02.j02Guid + ".ics";
+
+            
+            Response.Headers["Content-Type"] = "text/calendar";
+            Response.Headers["Content-Disposition"] = string.Format("attachment; filename={0}", strFileName);
+
+            //var fileContentResult = new FileContentResult(System.IO.File.ReadAllBytes(fullPath), "text/plain");
+
+            return Content(cgen.getPersonalCalendar(Factory, recJ02, null, null));
         }
     }
 }

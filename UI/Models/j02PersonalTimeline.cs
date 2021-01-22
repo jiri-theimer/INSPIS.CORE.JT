@@ -24,5 +24,7 @@ namespace UI.Models
         public IEnumerable<BO.a38NonPersonEventPlan> lisA38 { get; set; }
         public IEnumerable<BO.h04TodoCapacity> lisH04 { get; set; }
 
+        public string iCalUrl { get; set; } //ical url adresa kalendáře osoby
+
     }
 }

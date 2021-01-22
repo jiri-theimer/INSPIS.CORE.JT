@@ -8,6 +8,7 @@ namespace BL
     {
         public BO.j02Person Load(int pid);
         public BO.j02Person LoadByEmail(string strEmail, int pid_exclude);
+        public BO.j02Person LoadByGuid(string strGuid);
         public IEnumerable<BO.j02Person> GetList(BO.myQueryJ02 mq);
         public int Save(BO.j02Person rec);
         public bool ValidateBeforeSave(BO.j02Person rec);
@@ -43,6 +44,11 @@ namespace BL
         public BO.j02Person LoadByEmail(string strEmail, int pid_exclude)
         {
             return _db.Load<BO.j02Person>(GetSQL1(" WHERE a.j02Email LIKE @email AND a.j02ID<>@pid_exclude"), new { email = strEmail, pid_exclude = pid_exclude });
+        }
+        public BO.j02Person LoadByGuid(string strGuid)
+        {
+            strGuid = strGuid.Replace("--", "");
+            return _db.Load<BO.j02Person>(GetSQL1(" WHERE a.j02Guid = @guid"), new { guid = strGuid });
         }
 
         public IEnumerable<BO.j02Person>GetList(BO.myQueryJ02 mq)

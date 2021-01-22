@@ -84,6 +84,12 @@
                 <button type="button" id="cmdClose" onclick="_window_close()" class="btn btn-light" style="margin-left:100px;">@_f.tra("Zavřít")</button>
             </td>
             <td>
+                <button type="button" onclick="ical(this)" class="btn btn-light">iCalendar</button>
+            </td>
+            <td>
+                <span id="ical_url" class="form-control text-info" style="display:none;"></span>
+            </td>
+            <td>
                 <button type="button" onclick="_helppage()" class="btn btn-light">? @_f.tra("Nápověda")</button>
             </td>
         </tr>
@@ -283,11 +289,19 @@
 
 
 
-        function reload(url) {
+    function reload(url) {
             location.replace(url+"&pid=@Model.pid");
-        }
+    }
 
 
+
+    function ical(cmd) {
+        $("#ical_url").css("display", "block");
+        $("#ical_url").text(location.protocol + "//" + location.host + "/public/ical?guid=@Model.Rec.j02Guid");
+        $(cmd).text("iCalendar URL: ");
+        reload("/public/ical?guid=@Model.Rec.j02Guid");
+        
+    }
 
     </script>
 }
