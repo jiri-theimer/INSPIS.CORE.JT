@@ -557,7 +557,7 @@ namespace UI.Controllers
                     AMI("Odeslat zprávu", string.Format("javascript: _window_open('/Mail/SendMail?x29id=101&x40datapid={0}',2)", pid));
 
 
-                    AMI("Záznam akce", null, null, "Zaznam");
+                    AMI("Záznam", null, null, "Zaznam");
                     if (permA01.PermValue == a01EventPermissionENUM.ShareTeam_Leader || permA01.PermValue == a01EventPermissionENUM.ShareTeam_Owner || permA01.PermValue == a01EventPermissionENUM.FullAccess)
                     {
                         if (Factory.App.Implementation !="HD" && recA01.a01ParentID == 0 && recA10.a10ViewUrl_Insert==null)
