@@ -80,7 +80,15 @@ namespace UI.Controllers
                     var lisNominee = new List<BO.a41PersonToEvent>();
                     foreach (var cTemp in v.lisTemp.Where(p => p.p85Prefix == "j02" || p.p85Prefix == "j11"))
                     {
-                        var c = new BO.a41PersonToEvent() { a01ID = v.RecA01.pid,j02ID=cTemp.p85DataPID,j11ID=cTemp.p85DataPID, b06ID_NomineeSource=v.RecB06.pid, a41IsAllocateAllPeriod=true };
+                        var c = new BO.a41PersonToEvent() { a01ID = v.RecA01.pid, b06ID_NomineeSource=v.RecB06.pid, a41IsAllocateAllPeriod=true };
+                        if (cTemp.p85Prefix == "j02")
+                        {
+                            c.j02ID = cTemp.p85DataPID;
+                        }
+                        if (cTemp.p85Prefix == "j11")
+                        {
+                            c.j11ID = cTemp.p85DataPID;
+                        }
                         c.a45ID = (BO.EventRoleENUM)v.RecB06.a45ID_NomineeTarget;
                         lisNominee.Add(c);
                     }

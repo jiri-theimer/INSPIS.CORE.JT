@@ -454,6 +454,56 @@ namespace UI.Controllers
         }
 
 
+        //Stránka akce       
+        public IActionResult RecPageHelpdesk(int pid)
+        {
+            var v = new a01RecPage();
+            v.pid = pid;
+            v.NavTabs = new List<NavTab>();
+            if (v.pid == 0)
+            {
+                v.pid = Factory.CBL.LoadUserParamInt("a01-RecPage-pid");
+            }
+            if (v.pid > 0)
+            {
+                v.Rec = Factory.a01EventBL.Load(v.pid);
+                if (v.Rec == null)
+                {
+                    this.Notify_RecNotFound();
+                    v.pid = 0;
+                }
+                else
+                {
+
+                    
+                    v.RecA10 = Factory.a10EventTypeBL.Load(v.Rec.a10ID);
+                   
+                    if (pid > 0)
+                    {
+                        Factory.CBL.SetUserParam("a01-RecPage-pid", pid.ToString());
+                    }
+
+                    v.RecLastEvent = Factory.b05Workflow_HistoryBL.LoadLast(v.pid);
+                    v.RecIssuer = Factory.j02PersonBL.Load(v.Rec.j02ID_Issuer);
+
+                    RefreshNavTabs(v);
+                    var tg = Factory.o51TagBL.GetTagging("a01", v.pid);
+                    v.Rec.TagHtml = tg.TagHtml;
+                    v.TagHtml = v.Rec.TagHtml;
+                }
+            }
+
+
+            if (v.pid == 0)
+            {
+                v.Rec = new BO.a01Event();
+            }
+
+            return View(v);
+
+
+        }
+
 
 
         private void RefreshNavTabs(a01RecPage v)
@@ -477,7 +527,15 @@ namespace UI.Controllers
                 {
                     strBadge = c.a41_count.ToString();
                 }
-                v.NavTabs.Add(AddTab("Účastníci akce", "viewUcastnici", "/a01/TabUcastnici?pid=" + v.pid.ToString(), true, strBadge));
+                if (Factory.App.Implementation == "HD")
+                {
+                    v.NavTabs.Add(AddTab("Řešitelé požadavku", "viewUcastnici", "/a01/TabUcastnici?pid=" + v.pid.ToString(), true, strBadge));
+                }
+                else
+                {
+                    v.NavTabs.Add(AddTab("Účastníci akce", "viewUcastnici", "/a01/TabUcastnici?pid=" + v.pid.ToString(), true, strBadge));
+                }
+                
             }
             if ((v.RecA10.a10IsUse_Period && v.Rec.a01ParentID == 0))
             {
@@ -489,7 +547,11 @@ namespace UI.Controllers
             {
                 strBadge = c.a11count_nonpoll.ToString() + "+" + c.a11count_poll.ToString();
             }
-            v.NavTabs.Add(AddTab("Formuláře", "viewFormulare", "/a01/TabForms?pid=" + v.pid.ToString(), true, strBadge));
+            if (Factory.App.Implementation != "HD")
+            {
+                v.NavTabs.Add(AddTab("Formuláře", "viewFormulare", "/a01/TabForms?pid=" + v.pid.ToString(), true, strBadge));
+            }
+            
             strBadge = null;
             if (c.h04_actual > 0 || c.h04_closed > 0)
             {
@@ -511,7 +573,15 @@ namespace UI.Controllers
             {
                 strBadge = c.a01_podrizene.ToString() + " + " + c.a01_souvisejici.ToString();
             }
-            v.NavTabs.Add(AddTab("Související akce", "a01Event", "/a01/TabSouvisejici?pid=" + v.pid.ToString(), true, strBadge));
+            if (Factory.App.Implementation == "HD")
+            {
+                v.NavTabs.Add(AddTab("Související požadavky", "a01Event", "/a01/TabSouvisejici?pid=" + v.pid.ToString(), true, strBadge));
+            }
+            else
+            {
+                v.NavTabs.Add(AddTab("Související akce", "a01Event", "/a01/TabSouvisejici?pid=" + v.pid.ToString(), true, strBadge));
+            }
+                
 
             string strDefTab = Factory.CBL.LoadUserParam("recpage-tab-a01");
             var deftab = v.NavTabs[0];

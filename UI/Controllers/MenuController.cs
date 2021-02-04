@@ -494,7 +494,8 @@ namespace UI.Controllers
 
                     AMI("Tisková sestava", string.Format("javascript: _window_open('/x31/ReportContext?pid={0}&prefix=a01',2)", pid));
                   
-                    if (permA01.PermValue == a01EventPermissionENUM.ShareTeam_Leader || permA01.PermValue == a01EventPermissionENUM.ShareTeam_Owner || permA01.PermValue == a01EventPermissionENUM.FullAccess)
+                    
+                    if (Factory.App.Implementation != "HD" && (permA01.PermValue == a01EventPermissionENUM.ShareTeam_Leader || permA01.PermValue == a01EventPermissionENUM.ShareTeam_Owner || permA01.PermValue == a01EventPermissionENUM.FullAccess))
                     {
                         
                         if (recA10.a10IsUse_ReChangeForms || recA10.a10IsUse_Poll)
@@ -548,14 +549,18 @@ namespace UI.Controllers
 
                     DIV();
                     AMI("Nový úkol (lhůta)", string.Format("javascript: _window_open('/h04/Record?pid=0&a01id={0}')", pid));
-                    AMI("Zadat související akci", string.Format("javascript: _window_open('/a01/AddSouvisejici?pid={0}')", pid));
+                    if (Factory.App.Implementation != "HD")
+                    {
+                        AMI("Zadat související akci", string.Format("javascript: _window_open('/a01/AddSouvisejici?pid={0}')", pid));
+                    }
+                    
                     AMI("Odeslat zprávu", string.Format("javascript: _window_open('/Mail/SendMail?x29id=101&x40datapid={0}',2)", pid));
 
 
                     AMI("Záznam akce", null, null, "Zaznam");
                     if (permA01.PermValue == a01EventPermissionENUM.ShareTeam_Leader || permA01.PermValue == a01EventPermissionENUM.ShareTeam_Owner || permA01.PermValue == a01EventPermissionENUM.FullAccess)
                     {
-                        if (recA01.a01ParentID == 0 && recA10.a10ViewUrl_Insert==null)
+                        if (Factory.App.Implementation !="HD" && recA01.a01ParentID == 0 && recA10.a10ViewUrl_Insert==null)
                         {
                             AMI("Kopírovat akci", string.Format("/a01Create/Standard?clonebypid={0}", pid), "Zaznam",null,"_top");
                         }

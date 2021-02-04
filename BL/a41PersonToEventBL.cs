@@ -82,7 +82,7 @@ namespace BL
                 }
                 if (rec.j11ID > 0)
                 {
-                    recB05.b05Comment = _mother.j11TeamBL.Load(rec.j02ID).j11Name;
+                    recB05.b05Comment = _mother.j11TeamBL.Load(rec.j11ID).j11Name;
                 }
                 _mother.b05Workflow_HistoryBL.Save(recB05);
             }

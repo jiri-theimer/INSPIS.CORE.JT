@@ -32,21 +32,7 @@ namespace UI.Controllers
                         c.a10ViewUrl_Insert += "&a03id=" + v.a03ID.ToString();
                     }
                     return Redirect(c.a10ViewUrl_Insert);
-                    //switch (c.a10Aspx_Insert)
-                    //{
-                    //    case "a01_create_res.aspx":
-                    //    case "a42/create":
-                    //        return RedirectToAction("Create", "a42", new { a10id = a10id,a03id=a03id });
-                    //    case "a01_create_aus.aspx":
-                    //    case "a01create/aus":
-                    //        return RedirectToAction("Aus", new { a10id = a10id });
-                    //    case "a01create/helpdesk":
-                    //    case "a01_create_hd.aspx":
-                    //        return RedirectToAction("Helpdesk", new { a10id = a10id });
-                    //    default:
-                    //        return RedirectToAction("Standard", new { a10id = a10id });
-
-                    //}
+                   
                 }
                 else
                 {
@@ -265,62 +251,9 @@ namespace UI.Controllers
             v.RecA03 = Factory.a03InstitutionBL.Load(v.a03ID);
         }
 
-        public IActionResult Helpdesk(int a10id, int j02id)
-        {
-            if (a10id == 0)
-            {
-                return RedirectToAction("Index");
-            }
-            var v = new a01CreateViewModel() { j02ID = j02id };
+        
 
-            RefreshState(v);
-            RefreshInstitution(v);
-            v.a10ID = a10id;
-            
-            v.Rec = new BO.a01Event();
-            return View(v);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Helpdesk(Models.a01CreateViewModel v, string oper)
-        {
-            RefreshState(v);
-            if (oper == "j02_change")
-            {
-                v.a03ID = 0;
-                v.Institution = "";
-                RefreshInstitution(v);
-                return View(v);
-            }
-            RefreshInstitution(v);
-
-            if (ModelState.IsValid)
-            {
-                if (string.IsNullOrEmpty(v.Rec.a01Description) == true || v.Rec.a01Description.Length < 5)
-                {
-                    this.AddMessage("Popis požadavku je příliš stručný.");
-                    return View(v);
-                }
-
-                BO.a01Event c = new BO.a01Event();
-                c.a10ID = v.a10ID;
-                c.a03ID = v.a03ID;
-                c.j02ID_Issuer = v.j02ID;
-                c.a08ID = v.Rec.a08ID;
-                c.a01Description = v.Rec.a01Description;
-
-                c.pid = Factory.a01EventBL.Create(c, true, null, null, null, null);
-                if (c.pid > 0)
-                {
-                    return RedirectToAction("RecPage", "a01", new { pid = c.pid });
-
-                }
-            }
-
-            this.Notify_RecNotSaved();
-            return View(v);
-        }
+        
         private void RefreshInstitution(Models.a01CreateViewModel v)
         {
             var mq = new BO.myQueryA03() { IsRecordValid = true, j02id = v.j02ID };

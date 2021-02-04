@@ -113,12 +113,15 @@ namespace UI.Views.Shared.TagHelpers
                     foreach (var rec in this.TreeDataSource.Where(p => p.TreeLevel == intLevel))
                     {                        
                         var parentki = findki(rec.ParentPid.ToString() + "-" + (rec.TreeLevel - 1).ToString()); //najít podle unikátního id
-
-                        if (parentki.items == null)
+                        if (parentki != null)
                         {
-                            parentki.items = new List<kendoTreeItem>();
+                            if (parentki.items == null)
+                            {
+                                parentki.items = new List<kendoTreeItem>();
+                            }
+                            parentki.items.Add(createki(rec));
                         }
-                        parentki.items.Add(createki(rec));
+                        
 
 
 

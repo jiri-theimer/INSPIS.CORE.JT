@@ -1,0 +1,132 @@
+﻿@model a01CreateHelpdeskViewModel
+@inject BL.Factory _f
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    Model.PageTitle = @_f.tra("Nový HELPDESK požadavek");
+
+
+}
+
+@addTagHelper *, UI
+
+
+<h4>@Model.PageTitle</h4>
+
+
+<div class="bg-light" style="padding:10px;">
+    <button id="cmdSave" class="btn btn-success">@_f.tra("Uložit a odeslat")</button>
+    <a id="cmdCancel" class="btn btn-light" href="/a01CreateHelpdesk/Index">@_f.tra("Zrušit")</a>
+
+</div>
+
+<div class="modal_record_container">
+
+
+    <form id="form1" asp-controller="a01CreateHelpdesk" asp-action="Index" method="POST">
+        <div class="row my-2" style="margin-top:10px;">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typ požadavku"):</label>
+            <div class="col-sm-11 col-md-10">
+                <mycombo entity="a10EventType" asp-for="@Model.a10ID" selectedtext="@Model.a10Name" event_after_changevalue="a10id_change"></mycombo>
+            </div>
+        </div>
+
+
+        <div class="row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Zadavatel"):</label>
+            <div class="col-sm-11 col-md-10">
+                <mycombo entity="j02Person" asp-for="@Model.j02ID" selectedtext="@Model.Person" filter-flag="1" event_after_changevalue="j02_change"></mycombo>
+            </div>
+        </div>
+
+        @if (Model.IsComboA03)
+        {
+            <div class="row my-2" style="margin-top:10px;">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Instituce zadavatele"):</label>
+                <div class="col-sm-11 col-md-10">
+                    <mycombo entity="a03Institution" asp-for="@Model.a03ID" selectedtext="@Model.Institution" filter-flag="1" event_after_changevalue="a03_change"></mycombo>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="row my-2" style="margin-top:10px;">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Instituce zadavatele"):</label>
+                <div class="col-sm-11 col-md-10">
+                    <input type="text" asp-for="Rec.a01InstitutionPlainText" class="form-control" />
+                </div>
+            </div>
+
+        }
+        @if (Model.a10ID > 0)
+        {
+            <div class="row my-2" style="margin-top:10px;">
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Téma požadavku"):</label>
+                <div class="col-sm-11 col-md-10">
+                    <mycombo entity="a08Theme" asp-for="Rec.a08ID" selectedtext="Rec.a08Name" masterprefix="a10" masterpid="@Model.a10ID" event_after_changevalue="a08_change"></mycombo>
+                </div>
+            </div>
+        }
+
+        <div class="row my-4">
+            <textarea asp-for="Rec.a01Description" class="form-control" placeholder="@_f.tra("Podrobný popis problému")"></textarea>
+
+        </div>
+
+
+        <input type="hidden" asp-for="@Model.UploadGuid" />
+    </form>
+
+
+    <iframe id="fraUpload" src="/FileUpload/Index?prefix=a01&guid=@Model.UploadGuid" frameborder="0" height="220" scrolling="no"></iframe>
+
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function ()
+    {
+            _resize_textareas();
+
+    });
+
+    
+
+    function a10id_change(a10id) {
+        if (a10id == null || a10id == "") {
+            _notify_message("@_f.tra("Musíte vybrat typ požadavku.")");
+            return;
+        }
+        form1.action = "/a01CreateHelpdesk/Index?oper=a10_change";
+        form1.submit();
+
+
+
+    }
+
+    function a03_change(a03id) {
+        //nic
+    }
+    function a08_change(a08id) {
+        //nic
+    }
+
+    function j02_change(j02id) {
+
+        form1.action = "/a01CreateHelpdesk/Index?oper=j02_change";
+        form1.submit();
+    }
+
+
+
+    $("#cmdSave").click(function () {
+        $(this).text("Processing...");
+        $(this).attr("disabled", true);
+        form1.submit();
+
+
+    });
+
+
+</script>

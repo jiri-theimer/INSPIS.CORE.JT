@@ -1,0 +1,239 @@
+﻿@model UI.Models.Recpage.a01RecPage
+@inject BL.Factory _f
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (Model.Rec == null) return;
+
+    Model.PageTitle = Model.Rec.a01Signature;
+}
+
+@addTagHelper *, UI
+
+
+
+<div class="row nowrap pt-1 bg-light m-0">
+    <div id="layout_sidebar_contextmenu" class="col-auto">
+        @if (Model.pid > 0)
+        {
+            <a id="layout_sidebar_contextmenu_link" class="cm h4 mx-1" title="Menu" onclick="_cm(event, 'a01',@Model.Rec.pid);">☰@Model.Rec.a01Signature</a>
+            <h4 id="layout_sidebar_contextmenu_onlytext">
+                @if (Model.Rec.a01ChildsCount > 0)
+                {
+                    <img src="~/images/mother.png" title="@_f.tra("Nadřízený požadavek")" />
+                }
+                @if (Model.Rec.a01ParentID > 0)
+                {
+                    <img src="~/images/child.png" title="@_f.tra("Podřízený požadavek")" />
+                }
+                @Model.Rec.a01Signature
+            </h4>
+        }
+
+    </div>
+    @if (Model.pid > 0)
+    {
+        <div class="col-auto nonmobile tabovergrid">
+            @Model.Rec.a10Name
+        </div>
+
+        <div class="nonmobile col-auto">
+            <a class="btn btn-light" href="/a01/RecPage?pid=@Model.pid" title="@_f.tra("Občerstvit")"><span class="k-icon k-i-reload"></span></a>
+        </div>
+    }
+
+    
+
+
+
+
+
+</div>
+
+<div id="layout_sidebar" class="cm_recpage">Loading...</div>
+
+
+<div id="layout_main">
+    <div class="modal_record_container">
+
+        <div class="row">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("ID požadavku"):</label>
+            <div class="col-sm-4 col-md-3">
+
+                <myval value="@Model.Rec.a01Signature"></myval>
+            </div>
+            <div class="col-sm-1 col-md-1">
+
+                <myval value="@Model.Rec.a01SigID"></myval>
+            </div>
+
+            <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Typ požadavku"):</label>
+            <div class="col-sm-5 col-md-4">
+                <myval value="@Model.Rec.a10Name" hoverprefix="a10" hoverpid="@Model.Rec.a10ID"></myval>
+
+
+            </div>
+        </div>
+        <div class="row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@(_f.tra("Aktuální stav")):</label>
+            <div class="col-sm-4 col-md-3">
+
+                <myval value="@Model.Rec.b02Name" hoverprefix="b02" hoverpid="@Model.Rec.b02ID"></myval>
+
+            </div>
+            <div class="col-sm-1 col-md-1">
+                <myval datatype="html" value="@("<span style='background-color:"+Model.Rec.b02Color+";'>"+Model.Rec.b02Ident+"</span>")"></myval>
+
+            </div>
+
+            <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Naposledy"):</label>
+            @if (Model.RecLastEvent != null)
+            {
+                <div class="col-sm-3 col-md-2">
+                    <myval datatype="link" linkurl="/j02/RecPage?pid=@Model.RecLastEvent.j02ID" value="@Model.RecLastEvent.Person" hoverprefix="j02" hoverpid="@Model.RecLastEvent.j02ID"></myval>
+
+
+                </div>
+                <div class="col-sm-2 col-md-2">
+                    <myval datatype="datetime" value="@Model.RecLastEvent.DateInsert"></myval>
+                </div>
+            }
+
+        </div>
+        <div class="row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Téma požadavku"):</label>
+            <div class="col-sm-5 col-md-4">
+
+                <myval value="@Model.Rec.a08Name" hoverprefix="a08" hoverpid="@Model.Rec.a08ID"></myval>
+            </div>
+
+            <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Založeno"):</label>
+            <div class="col-sm-3 col-md-2">
+                @if (Model.RecIssuer != null)
+                {
+                    <myval datatype="link" linkurl="/j02/RecPage?pid=@Model.RecIssuer.pid" value="Model.RecIssuer.FullNameAsc" hoverprefix="j02" hoverpid="@Model.RecIssuer.pid"></myval>
+                }
+            </div>
+            <div class="col-sm-2 col-md-2">
+                <myval datatype="datetime" value="@Model.Rec.DateInsert"></myval>
+            </div>
+
+
+        </div>
+        <div class="row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@(Model.Rec.a06Name+":")</label>
+
+            @if (Model.Rec.a03ID > 0)
+            {
+                <div class="col-sm-9 col-md-8">
+                    <myval datatype="link" linkurl="/a03/RecPage?pid=@Model.Rec.a03ID" value="@Model.Rec.a03Name" tooltip="@Model.Rec.a03Name" hoverprefix="a03" hoverpid="@Model.Rec.a03ID"></myval>
+
+
+                </div>
+                <div class="col-sm-1 col-md-1">
+                    <myval tooltip="@_f.tra("REDIZO")" value="@Model.Rec.a03REDIZO"></myval>
+                </div>
+            }
+            else
+            {
+
+                <div class="col-sm-11 col-md-10">
+                    <myval value="@Model.Rec.a01InstitutionPlainText"></myval>
+                </div>
+            }
+        </div>
+        <div class="row my-2">
+            @if (Model.Rec.a01CaseCode != null && Model.Rec.a01ParentID == 0)
+            {
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Spis"):</label>
+                <div class="col-sm-5 col-md-4">
+                    <myval datatype="string" value="@Model.Rec.a01CaseCode"></myval>
+
+                </div>
+
+            }
+
+
+
+        </div>
+
+        @Html.Raw(Model.TagHtml)
+    </div>
+    @if (Model.Rec.a01Description != null)
+    {
+        <div style="border:dashed 1px silver;padding:6px;max-height:200px;overflow:auto;">
+
+            @Html.Raw(Model.Rec.a01Description.Replace("\r\n", "\n").Replace("\r", "\n").Replace("\n", "<br>"))
+        </div>
+    }
+
+    <div class="tabs_container">
+        <ul id="navtabs" class="nav nav-tabs">
+            @foreach (var tab in Model.NavTabs)
+            {
+                <li class="nav-item onetab">
+                    <a class="@tab.CssClass" id="tab@(tab.Entity)" href="@tab.Url" target="fra_subgrid" onclick="tabclick(this)">
+                        @tab.Name
+                        @if (tab.Badge != null)
+                        {
+                            <span class="badge bg-primary">@tab.Badge</span>
+                        }
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+    <div id="divTabContent">
+        <iframe id="fra_subgrid" name="fra_subgrid" src="@Model.DefaultNavTabUrl" frameborder="0" scrolling="yes" style="width:100%;" onload="$('#divTabContent').css('background','none');"></iframe>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        @if (Model.pid > 0)
+        {
+        <text>
+        $.post("/Menu/ContextMenu", { entity: "a01Event",flag: "recpage", pid:@Model.pid }, function (data) {
+
+            $("#layout_sidebar").html(data);
+
+        });
+        </text>
+        }
+        else
+        {
+        <text>
+        $("#layout_main").css("display", "none");
+        $("#layout_sidebar").html("");
+        </text>
+        }
+
+        var offset = $("#divTabContent").offset();
+        var h_vertical = _device.innerHeight - offset.top;
+        h_vertical = parseInt(h_vertical);
+
+        if (_device.type === "Phone") {
+            h_vertical = 400;
+        }
+        $("#divTabContent").css("height", h_vertical + "px");
+
+        _mainmenu_highlight_current("cmdA01");
+
+
+
+
+    });
+
+
+
+
+    function tabclick(tab) {    //uložit aktuální záložku do profilu uživatele
+        $("#navtabs .nav-link").removeClass("active");
+        $(tab).addClass("active");
+        $.post("/Common/SetUserParam", { key: "recpage-tab-a01", value: tab.id.replace("tab", "") }, function (data) {
+
+
+        });
+    }
+</script>
