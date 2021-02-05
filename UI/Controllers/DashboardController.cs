@@ -140,6 +140,48 @@ namespace UI.Controllers
 
             return View(v);
         }
+        public IActionResult Helpdesk()
+        {
+            var v = new DashboardHelpdesk() { pid = Factory.CurrentUser.j02ID, NavTabs = new List<NavTab>() };
+            v.Rec = Factory.j02PersonBL.Load(v.pid);
+
+            RefreshNavTabsHelpdesk(v);
+
+
+            return View(v);
+        }
+
+        private void RefreshNavTabsHelpdesk(DashboardHelpdesk v)
+        {
+            var c = Factory.j02PersonBL.LoadSummary(v.pid, "dashboard");
+            v.NavTabs.Add(AddTab("Dashboard", "dashboard", "/Dashboard/Widgets?skin=inspector&pid=" + Factory.CurrentUser.j02ID));
+            
+            //if (c.a01_count_involved > 0) strBadge = c.a01_count_involved.ToString();
+            
+            v.NavTabs.Add(AddTab(Factory.tra("Požadavky"), "a01", "/TheGrid/SlaveView?prefix=a01", false, null));
+           
+            v.NavTabs.Add(AddTab("Úkoly/Lhůty", "h04", "/TheGrid/SlaveView?prefix=h04", true, parse_badge(c.h04_count)));
+            v.NavTabs.Add(AddTab("Nástěnka", "h11", "/TheGrid/SlaveView?prefix=h11", true, parse_badge(c.h11_count)));
+
+            v.NavTabs.Add(AddTab("Inbox", "x40", "/TheGrid/SlaveView?prefix=x40"));
+
+
+
+            string strDefTab = Factory.CBL.LoadUserParam("dashboard-tab-inspector");
+            var deftab = v.NavTabs[0];
+
+            foreach (var tab in v.NavTabs)
+            {
+                tab.Url += "&master_entity=j02Person&master_pid=" + v.pid.ToString();
+                if (strDefTab != null && tab.Entity == strDefTab)
+                {
+                    deftab = tab;  //uživatelem naposledy vybraná záložka                    
+                }
+            }
+            deftab.CssClass += " active";
+            v.DefaultNavTabUrl = deftab.Url;
+        }
+
         public IActionResult Inspector()
         {           
             var v = new DashboardInspector() { pid = Factory.CurrentUser.j02ID, NavTabs = new List<NavTab>() }; 
