@@ -38,6 +38,7 @@ namespace BO
         public string j11IDs_Cache { get; set; }    //kvůli výkonu SQL - seznam j11ID týmů s účastní uživatele
         public string a10IDs { get; set; }      //výčet všech povolených typů akcí z tabulky j08
 
+        public string AppImplementation { get; set; }   //název implementace předaný z RunningApp
         public List<BO.StringPair> Messages4Notify { get; set; }
 
         private bool _WasInitTesting;

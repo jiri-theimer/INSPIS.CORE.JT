@@ -30,7 +30,7 @@ namespace UI.Views.Shared.Components.TheGrid
             //var mq = new BO.myQuery(entity);
             if (input.query == null)
             {
-                input.query = new BO.InitMyQuery().Load(input.entity);
+                input.query = new BO.InitMyQuery().Load(input.entity);                
             }
 
 

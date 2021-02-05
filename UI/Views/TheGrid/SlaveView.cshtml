@@ -14,7 +14,7 @@
 
 @addTagHelper *,UI
 
-@if (Model.prefix == "a01")
+@if (Model.prefix == "a01" && string.IsNullOrEmpty(Model.master_flag))
 {
     <table>
         <tr>

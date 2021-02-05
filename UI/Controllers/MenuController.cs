@@ -182,6 +182,7 @@ namespace UI.Controllers
             AMI("Osobní stránka", null, null, "Dashboard");
             AMI("Osobní stránka inspektora", "/Dashboard/Inspector", "Dashboard");
             AMI("Osobní stránka školy", "/Dashboard/School", "Dashboard");
+            AMI("Osobní stránka Helpdesk", "/Dashboard/Helpdesk", "Dashboard");
             AMI("Přihlásit se pod jinou identitou", "/Admin/LogAsUser");
 
             DIV_TRANS("Osobní profily");

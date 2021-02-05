@@ -140,9 +140,18 @@ namespace UI.Controllers
 
             return View(v);
         }
-        public IActionResult Helpdesk()
+        public IActionResult Helpdesk(int b01id=0)
         {
-            var v = new DashboardHelpdesk() { pid = Factory.CurrentUser.j02ID, NavTabs = new List<NavTab>() };
+            var v = new DashboardHelpdesk() { pid = Factory.CurrentUser.j02ID,b01ID=b01id, NavTabs = new List<NavTab>() };
+            v.lisB01 = Factory.b01WorkflowTemplateBL.GetList(new BO.myQuery("b01"));
+            if (v.b01ID == 0)
+            {
+                v.b01ID = Factory.CBL.LoadUserParamInt("dashboard-b01id-helpdesk");
+            }
+            if (v.b01ID == 0)
+            {
+                v.b01ID = v.lisB01.First().pid;
+            }
             v.Rec = Factory.j02PersonBL.Load(v.pid);
 
             RefreshNavTabsHelpdesk(v);
@@ -159,20 +168,30 @@ namespace UI.Controllers
             //if (c.a01_count_involved > 0) strBadge = c.a01_count_involved.ToString();
             
             v.NavTabs.Add(AddTab(Factory.tra("Požadavky"), "a01", "/TheGrid/SlaveView?prefix=a01", false, null));
-           
-            v.NavTabs.Add(AddTab("Úkoly/Lhůty", "h04", "/TheGrid/SlaveView?prefix=h04", true, parse_badge(c.h04_count)));
+
+            v.NavTabs.Add(AddTab(Factory.tra("Přímo mně přidělené"), "member", "/TheGrid/SlaveView?prefix=a01&master_flag=member", false, null));
+            var lisB02 = Factory.b02WorkflowStatusBL.GetList(new BO.myQuery("b02")).Where(p => p.b01ID == v.b01ID && p.b02IsSeparateTab==true);
+            foreach(var recB02 in lisB02)
+            {
+                v.NavTabs.Add(AddTab(recB02.b02Name, "b02-"+ recB02.pid.ToString(), "/TheGrid/SlaveView?prefix=a01&master_entity=b02&master_pid="+recB02.pid.ToString(),false, null));
+            }
+
             v.NavTabs.Add(AddTab("Nástěnka", "h11", "/TheGrid/SlaveView?prefix=h11", true, parse_badge(c.h11_count)));
 
             v.NavTabs.Add(AddTab("Inbox", "x40", "/TheGrid/SlaveView?prefix=x40"));
 
 
 
-            string strDefTab = Factory.CBL.LoadUserParam("dashboard-tab-inspector");
+            string strDefTab = Factory.CBL.LoadUserParam("dashboard-tab-helpdesk");
             var deftab = v.NavTabs[0];
 
             foreach (var tab in v.NavTabs)
             {
-                tab.Url += "&master_entity=j02Person&master_pid=" + v.pid.ToString();
+                if (!tab.Url.Contains("master_entity"))
+                {
+                    tab.Url += "&master_entity=j02Person&master_pid=" + v.pid.ToString();
+                }
+                
                 if (strDefTab != null && tab.Entity == strDefTab)
                 {
                     deftab = tab;  //uživatelem naposledy vybraná záložka                    

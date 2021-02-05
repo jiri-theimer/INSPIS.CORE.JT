@@ -173,6 +173,8 @@ namespace BL
             }
             
             return _db.GetDataTable(q.FinalSql, q.Parameters4DT);
+
+
             
         }
 

@@ -1,0 +1,105 @@
+﻿@model UI.Models.Dashboard.DashboardHelpdesk
+@inject BL.Factory _f
+
+@{
+    Model.PageTitle = _f.tra("Helpdesk") + ": " + Model.Rec.FullNameAsc;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@addTagHelper *, UI
+
+<div id="divHeader" class="row py-1 bg-light m-0 mb-4">
+    <div class="col-auto">
+        <ul class="nav nav-tabs nonmobile nontablet" style="border:none;">
+            <li class="nav-item onetab">
+                <a class="nav-link active" data-toggle="tab">@Model.Rec.FullNameAsc</a>
+            </li>
+        </ul>
+
+
+    </div>
+    <div class="nonmobile nontablet col-auto">
+        <a class="btn btn-light" href="/Dashboard/Helpdesk" title="@_f.tra("Občerstvit")"><span class="k-icon k-i-reload"></span></a>
+    </div>
+    <div class="col-auto">
+        <mysearch asp-for="@Model.SearchBoxA01" entity="a01Event" placeholder="@_f.tra("Fulltext: Akce")..."></mysearch>
+    </div>
+   <div class="col-auto">
+       <mydropdown asp-for="@Model.b01ID" textfield="b01Name" valuefield="pid" isfirstemptyrow="false" datasource="@Model.lisB01" event_after_changevalue="b01id_change"></mydropdown>
+   </div>
+</div>
+
+
+<div class="tabs_container">
+    <ul id="navtabs" class="nav nav-tabs">
+        @foreach (var tab in Model.NavTabs)
+        {
+            <li class="nav-item onetab">
+                <a class="@tab.CssClass" id="tab@(tab.Entity)" href="@tab.Url" target="fra_subgrid" onclick="tabclick(this)">
+                    @tab.Name
+                    @if (tab.Badge != null)
+                    {
+                        <span class="badge bg-primary">@tab.Badge</span>
+                    }
+                </a>
+            </li>
+        }
+    </ul>
+</div>
+
+<div id="divTabContent">
+    <iframe id="fra_subgrid" name="fra_subgrid" src="@Model.DefaultNavTabUrl" frameborder="0" scrolling="yes" style="width:100%;" onload="$('#divTabContent').css('background','none');"></iframe>
+</div>
+
+
+
+
+
+
+
+<script type="text/javascript">
+    $(document.body).css("overflow", "hidden");
+
+    $(document).ready(function () {
+
+        var offset = $("#divTabContent").offset();
+        var h_vertical = _device.innerHeight - offset.top;
+        h_vertical = parseInt(h_vertical);
+
+        if (_device.type === "Phone") {
+            h_vertical = 400;
+        }
+
+        $("#divTabContent").css("height", h_vertical + "px");
+
+        _mainmenu_highlight_current("cmdHome");
+
+    });
+
+
+    function reload() {
+        _showloading();
+        location.replace("/Dashboard/Helpdesk");
+    }
+
+
+    function tabclick(tab) {    //uložit aktuální záložku do profilu uživatele
+
+        $("#navtabs .nav-link").removeClass("active");
+        $(tab).addClass("active");
+        $.post("/Common/SetUserParam", { key: "dashboard-tab-helpdesk", value: tab.id.replace("tab", "") }, function (data) {
+
+
+        });
+    }
+
+
+    function b01id_change(cbx) {  //uložit aktuální workflow šablonu
+       
+        $.post("/Common/SetUserParam", { key: "dashboard-b01id-helpdesk", value: cbx.value }, function (data) {
+            location.replace("/Dashboard/Helpdesk?b01id="+cbx.value);
+
+        });
+    }
+
+</script>

@@ -6,7 +6,7 @@ using System.Text;
 namespace BO
 {
     public class myQueryA01 : baseQuery
-    {
+    {        
         public int a03id { get; set; }
 
         public int a01parentid { get; set; }
@@ -41,6 +41,7 @@ namespace BO
                 if (!(this.CurrentUser.j04IsAllowedAllEventTypes && this.CurrentUser.j04RelationFlag == BO.j04RelationFlagEnum.NoRelation))
                 {
                     AQ(GetDisponibleWhere(), null, null);
+                    
                 }
             }
             if (this.b02id > 0)
@@ -137,7 +138,14 @@ namespace BO
             //výběr uživateli dostupných akcí podle aplikační role a účasti v akcích
             string sw = "(";
             sw += "a.a01ID IN (SELECT a01ID FROM a41PersonToEvent WHERE j02ID = " + this.CurrentUser.j02ID.ToString() + ")";
-            //na týmy si nehrají: sw += " OR a.a01ID IN (SELECT xa.a01ID FROM a41PersonToEvent xa INNER JOIN j12Team_Person xb on xa.j11ID=xb.j11ID WHERE xa.j11ID IS NOT NULL AND (xb.j02ID=" + mq.CurrentUser.j02ID.ToString() + " OR xb.j04ID=" + mq.CurrentUser.j04ID.ToString() + "))";
+            if (this.CurrentUser.AppImplementation=="HD")
+            {
+                //na týmy si hraje pouze HELPDESK:
+                sw += " OR a.a01ID IN (SELECT xa.a01ID FROM a41PersonToEvent xa INNER JOIN j12Team_Person xb on xa.j11ID=xb.j11ID WHERE xa.j11ID IS NOT NULL AND (xb.j02ID=" + this.CurrentUser.j02ID.ToString() + " OR xb.j04ID=" + this.CurrentUser.j04ID.ToString() + "))";
+            }
+           
+            
+            
             switch (this.CurrentUser.j04RelationFlag)
             {
                 case BO.j04RelationFlagEnum.A03:    //omezení akcí pouze na svázané instituce

@@ -292,7 +292,10 @@ namespace UI.Controllers
                         }
 
                     }
+                    if (v.master_flag == "member")
+                    {
 
+                    }
                     v.FilterMyInvolvement = Factory.CBL.LoadUserParam(get_param_key("grid-filter-myinvolvement-a01", masterentity));
                     switch (v.FilterMyInvolvement)
                     {

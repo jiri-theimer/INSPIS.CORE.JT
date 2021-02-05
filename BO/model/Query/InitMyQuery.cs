@@ -15,9 +15,9 @@ namespace BO
             switch (prefix.Substring(0, 3))
             {
                 case "a01":                    
-                    return load_a01(master_prefix, master_pid); //Kvůli TheGridControlleru musí zůstat h04 takto
+                    return load_a01(master_prefix, master_pid, master_flag);
                 case "h04":
-                    return load_h04(master_prefix, master_pid); //Kvůli TheGridControlleru musí zůstat h04 takto
+                    return load_h04(master_prefix, master_pid);
                 case "a03":
                     return load_a03(master_prefix, master_pid, master_flag);    //Kvůli master_flag
 
@@ -71,7 +71,7 @@ namespace BO
         public BO.myQueryA01 LoadA01(string master_prefix = null, int master_pid = 0, string master_flag = null)
         {
             master_prefix = validate_prefix(master_prefix);
-            return load_a01(master_prefix, master_pid);
+            return load_a01(master_prefix, master_pid, master_flag);
         }
         public BO.myQueryH04 LoadH04(string master_prefix = null, int master_pid = 0, string master_flag = null)
         {
@@ -79,14 +79,26 @@ namespace BO
             return load_h04(master_prefix, master_pid);
         }
 
-        private BO.myQueryA01 load_a01(string master_prefix, int master_pid)
+        private BO.myQueryA01 load_a01(string master_prefix, int master_pid,string master_flag)
         {
             var mq = new BO.myQueryA01();
+            
             if (master_pid > 0)
-            {
-                BO.Reflexe.SetPropertyValue(mq, master_prefix + "id", master_pid);
+            {                
+                switch (master_flag)
+                {
+                    case "member":
+                        mq.j02id_member = master_pid;
+                        
+                        break;
+                   
+                    default:
+                        BO.Reflexe.SetPropertyValue(mq, master_prefix + "id", master_pid);
+                        break;
+                }
+
             }
-           
+
             return mq;
         }
 

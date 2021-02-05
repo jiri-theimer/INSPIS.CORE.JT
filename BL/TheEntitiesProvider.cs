@@ -243,7 +243,15 @@ namespace BL
                     lis.Add(getREL("a03Institution", "a01_a03", "Instituce", "LEFT OUTER JOIN a03Institution a01_a03 ON a.a03ID=a01_a03.a03ID"));
                     lis.Add(getREL("b02WorkflowStatus", "a01_b02", "Aktuální stav", "LEFT OUTER JOIN b02WorkflowStatus a01_b02 ON a.b02ID=a01_b02.b02ID"));
                     lis.Add(getREL("a10EventType", "a01_a10", "Typ akce", "INNER JOIN a10EventType a01_a10 ON a.a10ID=a01_a10.a10ID"));
-                    lis.Add(getREL("a08Theme", "a01_a08", "Téma akce", "INNER JOIN a08Theme a01_a08 ON a.a08ID=a01_a08.a08ID"));
+                    if (_app.Implementation == "HD")
+                    {
+                        lis.Add(getREL("a08Theme", "a01_a08", "Téma akce", "LEFT OUTER JOIN a08Theme a01_a08 ON a.a08ID=a01_a08.a08ID"));
+                    }
+                    else
+                    {
+                        lis.Add(getREL("a08Theme", "a01_a08", "Téma akce", "INNER JOIN a08Theme a01_a08 ON a.a08ID=a01_a08.a08ID"));
+                    }
+                    
                     lis.Add(getREL("a05Region", "a01_a05", "Kraj", "LEFT OUTER JOIN a05Region a01_a05 ON a01_a03.a05ID=a01_a05.a05ID", "a01_a03"));
                     lis.Add(getREL("a09FounderType", "a01_a09", "Typ zřizovatele", "LEFT OUTER JOIN a09FounderType a01_a09 ON a01_a03.a09ID=a01_a09.a09ID", "a01_a03"));
                     lis.Add(getREL("a42Qes", "a01_a42", "INEZ", "LEFT OUTER JOIN a42Qes a01_a42 ON a.a42ID=a01_a42.a42ID"));
