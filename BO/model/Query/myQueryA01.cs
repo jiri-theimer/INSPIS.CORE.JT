@@ -18,6 +18,7 @@ namespace BO
         public int j02id { get; set; }
         public int j02id_leader { get; set; }
         public int j02id_member { get; set; }
+        public int j02id_member_or_leader { get; set; }
         public int j02id_invited { get; set; }
         public int j02id_involved { get; set; }
         public int j02id_issuer { get; set; }
@@ -85,6 +86,10 @@ namespace BO
             if (this.j02id_member > 0)
             {
                 AQ("a.a01ID IN (select a01ID FROM a41PersonToEvent WHERE a45ID=1 AND j02ID=@j02id_member)", "j02id_member", this.j02id_member);   //je člen akce               
+            }
+            if (this.j02id_member_or_leader > 0)
+            {
+                AQ("a.a01ID IN (select a01ID FROM a41PersonToEvent WHERE a45ID IN (1,2) AND j02ID=@j02id_memberorleader)", "j02id_memberorleader", this.j02id_member_or_leader);   //je člen nebo vedoucí
             }
             if (this.j02id_invited > 0)
             {

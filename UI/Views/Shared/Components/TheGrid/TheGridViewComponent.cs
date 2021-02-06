@@ -25,12 +25,12 @@ namespace UI.Views.Shared.Components.TheGrid
             Invoke(TheGridInput input)
         {
 
-            
+
             //ret.Entity = entity;
             //var mq = new BO.myQuery(entity);
             if (input.query == null)
             {
-                input.query = new BO.InitMyQuery().Load(input.entity);                
+                input.query = new BO.InitMyQuery().Load(input.entity);
             }
 
 
@@ -63,7 +63,7 @@ namespace UI.Views.Shared.Components.TheGrid
 
 
             //var cSup = new UI.TheGridSupport(_f, _colsProvider) { extendpagerhtml = input.extendpagerhtml, oncmclick = input.oncmclick, ondblclick = input.ondblclick, fixedcolumns = input.fixedcolumns };
-            var cSup = new UI.TheGridSupport(input,_f, _colsProvider);
+            var cSup = new UI.TheGridSupport(input, _f, _colsProvider);
 
             var ret = new TheGridViewModel();
             ret.GridInput = input;
@@ -73,7 +73,7 @@ namespace UI.Views.Shared.Components.TheGrid
             //ret.oncmclick = oncmclick;
             ret.GridState = gridState;
             ret.Columns = _colsProvider.ParseTheGridColumns(input.entity.Substring(0, 3), gridState.j72Columns, _f.CurrentUser.j03LangIndex);
-            ret.AdhocFilter = _colsProvider.ParseAdhocFilterFromString(gridState.j75Filter, ret.Columns,_f.CurrentUser.j03LangIndex);
+            ret.AdhocFilter = _colsProvider.ParseAdhocFilterFromString(gridState.j75Filter, ret.Columns, _f.CurrentUser.j03LangIndex);
             //ret.MasterEntity = master_entity;
             //ret.FixedColumns = fixedcolumns;
             //ret.viewstate = viewstate;

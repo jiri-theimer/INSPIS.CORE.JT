@@ -14,7 +14,7 @@
 
 @addTagHelper *,UI
 
-@if (Model.prefix == "a01" && string.IsNullOrEmpty(Model.master_flag))
+@if (Model.prefix == "a01" && string.IsNullOrEmpty(Model.explicitquery))
 {
     <table>
         <tr>
@@ -39,7 +39,7 @@
     </table>
 
 }
-@if (Model.prefix == "h04")
+@if (Model.prefix == "h04" && string.IsNullOrEmpty(Model.explicitquery))
 {
     <table>
         <tr>
@@ -119,7 +119,10 @@
 
         function reload() {
             _showloading();
-            location.replace("/TheGrid/SlaveView?prefix=@Model.prefix&master_entity=@Model.gridinput.master_entity&master_pid=@Model.master_pid");
+            var url = "/TheGrid/SlaveView?prefix=@Model.prefix&master_entity=@Model.gridinput.master_entity&master_pid=@Model.master_pid";
+            url += "&explicitquery=@Model.explicitquery";
+
+            location.replace(url);
 
         }
 
@@ -140,8 +143,8 @@
             });
         }
 
-        function myinvolvement_change(cbx) {            
-            $.post("/Common/SetUserParam", { key: "grid-filter-myinvolvement-@(Model.prefix+"-"+Model.gridinput.master_entity)", value: cbx.value }, function (data) {                
+        function myinvolvement_change(cbx) {
+            $.post("/Common/SetUserParam", { key: "grid-filter-myinvolvement-@(Model.prefix+"-"+Model.gridinput.master_entity)", value: cbx.value }, function (data) {
                 reload();
             });
         }

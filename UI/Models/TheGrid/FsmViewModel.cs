@@ -5,21 +5,21 @@ using System.Threading.Tasks;
 
 namespace UI.Models
 {
-    public class FsmViewModel:BaseViewModel
+    public class FsmViewModel : BaseViewModel
     {
         public string entity { get; set; }
         //public BO.myQuery myQueryGrid { get; set; }
         //public string ExtendPagerHtml { get; set; }
         public TheGridInput gridinput { get; set; }
-        
+
         public string entityTitle { get; set; }
         public string prefix { get; set; }
         //public int j72id { get; set; }
         //public int go2pid { get; set; }
-        
+
         //public string master_entity { get; set; }
         public int master_pid { get; set; }
-        public string master_flag { get; set; } //dodatečný parametr k master_entity+master_pid, příklad: parent/founder
+        public string explicitquery { get; set; } //explicitní myquery ve tvaru název@typ@hodnota, lze předávat více parametrů najednou
 
         public List<NavTab> NavTabs;
 
@@ -41,15 +41,15 @@ namespace UI.Models
 
     public class NavTab
     {
-        
+
         public string Name { get; set; }
         public string Entity { get; set; }
         public string Url { get; set; }
 
         public string CssClass { get; set; } = "nav-link text-dark";
-       
+
 
         public string Badge { get; set; }
-        
+
     }
 }

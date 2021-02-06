@@ -7,140 +7,148 @@ namespace BO
 {
     public class InitMyQuery
     {
-       
-        public BO.baseQuery Load(string prefix, string master_prefix=null, int master_pid=0,string master_flag=null)
-        {                        
-            master_prefix = validate_prefix(master_prefix);
+        private List<string> _eqs { get; set; }
+        private string _master_prefix { get; set; }
+        private int _master_pid { get; set; }
+
+        private void handle_explicitquery_input(string explicitquery)
+        {
+            if (string.IsNullOrEmpty(explicitquery))
+            {
+                return;
+            }
+            _eqs = BO.BAS.ConvertString2List(explicitquery, "@");
+        }
+        public BO.baseQuery Load(string prefix, string master_prefix = null, int master_pid = 0, string explicitquery = null)
+        {
+            handle_explicitquery_input(explicitquery);
+
+            _master_prefix = validate_prefix(master_prefix);
+            _master_pid = master_pid;
+
             var ret = new BO.myQuery(prefix.Substring(0, 3));
             switch (prefix.Substring(0, 3))
             {
-                case "a01":                    
-                    return load_a01(master_prefix, master_pid, master_flag);
+                case "a01":
+                    return LoadA01(master_prefix, master_pid, explicitquery);
                 case "h04":
-                    return load_h04(master_prefix, master_pid);
+                    return LoadH04(master_prefix, master_pid);
                 case "a03":
-                    return load_a03(master_prefix, master_pid, master_flag);    //Kvůli master_flag
+                    return load_a03();
 
-                
-                case "a11":                    
-                    return handle_master(new BO.myQueryA11(), master_prefix, master_pid);
+
+                case "a11":
+                    return handle_myquery_reflexe(new BO.myQueryA11());
                 case "a35":
-                    return handle_master(new BO.myQueryA35(), master_prefix, master_pid);
+                    return handle_myquery_reflexe(new BO.myQueryA35());
                 case "a38":
-                    return handle_master(new BO.myQueryA38(), master_prefix, master_pid);
+                    return handle_myquery_reflexe(new BO.myQueryA38());
                 case "a41":
-                    return handle_master(new BO.myQueryA41(), master_prefix, master_pid);
+                    return handle_myquery_reflexe(new BO.myQueryA41());
                 case "a42":
-                    return handle_master(new BO.myQueryA42(), master_prefix, master_pid);
+                    return handle_myquery_reflexe(new BO.myQueryA42());
                 case "f06":
-                    return handle_master(new BO.myQueryF06(), master_prefix, master_pid);
+                    return handle_myquery_reflexe(new BO.myQueryF06());
                 case "f21":
-                    return handle_master(new BO.myQueryF21(), master_prefix, master_pid);
+                    return handle_myquery_reflexe(new BO.myQueryF21());
                 case "f19":
-                    return handle_master(new BO.myQueryF19(), master_prefix, master_pid);
+                    return handle_myquery_reflexe(new BO.myQueryF19());
                 case "f32":
-                    return handle_master(new BO.myQueryF32(), master_prefix, master_pid);
+                    return handle_myquery_reflexe(new BO.myQueryF32());
                 case "f31":
-                    return handle_master(new BO.myQueryF31(), master_prefix, master_pid);
+                    return handle_myquery_reflexe(new BO.myQueryF31());
                 case "j02":
-                    return handle_master(new BO.myQueryJ02(), master_prefix, master_pid);
+                    return handle_myquery_reflexe(new BO.myQueryJ02());
                 case "j04":
-                    return handle_master(new BO.myQueryJ04(), master_prefix, master_pid);
+                    return handle_myquery_reflexe(new BO.myQueryJ04());
                 case "o27":
-                    return handle_master(new BO.myQueryO27(), master_prefix, master_pid);
+                    return handle_myquery_reflexe(new BO.myQueryO27());
                 case "x40":
-                    return handle_master(new BO.myQueryX40(), master_prefix, master_pid);
+                    return handle_myquery_reflexe(new BO.myQueryX40());
                 case "xx1":
-                    return handle_master(new BO.myQueryXX1(), master_prefix, master_pid);
+                    return handle_myquery_reflexe(new BO.myQueryXX1());
                 default:
-                    return handle_master(new BO.myQuery(prefix.Substring(0, 3)), master_prefix, master_pid);
+                    return handle_myquery_reflexe(new BO.myQuery(prefix.Substring(0, 3)));
             }
-        }
-
-        private BO.baseQuery handle_master(BO.baseQuery mq, string master_prefix, int master_pid)
-        {
-            if (master_pid > 0)
-            {
-                BO.Reflexe.SetPropertyValue(mq, master_prefix + "id", master_pid);
-            }
-            return mq;
         }
 
         
 
-        public BO.myQueryA01 LoadA01(string master_prefix = null, int master_pid = 0, string master_flag = null)
+        private T handle_myquery_reflexe<T>(T mq)
         {
-            master_prefix = validate_prefix(master_prefix);
-            return load_a01(master_prefix, master_pid, master_flag);
-        }
-        public BO.myQueryH04 LoadH04(string master_prefix = null, int master_pid = 0, string master_flag = null)
-        {
-            master_prefix = validate_prefix(master_prefix);
-            return load_h04(master_prefix, master_pid);
+            if (_eqs != null)   
+            {   //na vstupu je explicitní myquery ve tvaru název@typ@hodnota
+                for(int i = 0; i < _eqs.Count; i+=3)
+                {
+                    switch (_eqs[i+1])
+                    {
+                        case "int":
+                            BO.Reflexe.SetPropertyValue(mq, _eqs[i], Convert.ToInt32(_eqs[i+2]));
+                            break;
+                        case "date":
+                            BO.Reflexe.SetPropertyValue(mq, _eqs[i], BO.BAS.String2Date(_eqs[i + 2]));
+                            break;
+                        case "bool":
+                            BO.Reflexe.SetPropertyValue(mq, _eqs[i], BO.BAS.BG(_eqs[i + 2]));
+                            break;
+                        default:
+                            BO.Reflexe.SetPropertyValue(mq, _eqs[i], _eqs[i + 2]);
+                            break;
+                    }
+                }
+            }   
+            else
+            {   //filtr podle master_prefix+master_pid
+                if (_master_pid > 0 && _master_prefix != null)
+                {
+                    BO.Reflexe.SetPropertyValue(mq, _master_prefix + "id", _master_pid);
+                }
+            }
+            
+            return mq;
         }
 
-        private BO.myQueryA01 load_a01(string master_prefix, int master_pid,string master_flag)
+
+        public BO.myQueryA01 LoadA01(string master_prefix = null, int master_pid = 0, string explicitquery = null)
         {
+            handle_explicitquery_input(explicitquery);
+            _master_prefix = validate_prefix(master_prefix);
+            _master_pid = master_pid;
+
             var mq = new BO.myQueryA01();
-            
-            if (master_pid > 0)
-            {                
-                switch (master_flag)
-                {
-                    case "member":
-                        mq.j02id_member = master_pid;
-                        
-                        break;
-                   
-                    default:
-                        BO.Reflexe.SetPropertyValue(mq, master_prefix + "id", master_pid);
-                        break;
-                }
-
-            }
+            mq = handle_myquery_reflexe(mq);
 
             return mq;
+
         }
 
-        private BO.myQueryA03 load_a03(string master_prefix, int master_pid,string master_flag)
+        public BO.myQueryH04 LoadH04(string master_prefix = null, int master_pid = 0, string explicitquery = null)
         {
-            var mq = new BO.myQueryA03();
-            if (master_pid > 0)
-            {
-                switch (master_flag)
-                {
-                    case "founder":
-                        mq.a03id_founder = master_pid;
-                        break;
-                    case "supervisor":
-                        mq.a03id_supervisory = master_pid;
-                        break;
-                    case "parent":
-                        mq.a03id_parent = master_pid;
-                        break;
-                    default:
-                        BO.Reflexe.SetPropertyValue(mq, master_prefix + "id", master_pid);
-                        break;
-                }
-               
-            }
-            
-            return mq;
-        }
-        
-       
-        private BO.myQueryH04 load_h04(string master_prefix, int master_pid)
-        {
+            handle_explicitquery_input(explicitquery);
+            _master_prefix = validate_prefix(master_prefix);
+            _master_pid = master_pid;
+
             var mq = new BO.myQueryH04();
-            if (master_pid > 0)
-            {
-                BO.Reflexe.SetPropertyValue(mq, master_prefix + "id", master_pid);
-            }
-
+            mq = handle_myquery_reflexe(mq);
             return mq;
         }
 
+      
+        private BO.myQueryA03 load_a03()
+        {
+            
+
+            var mq = new BO.myQueryA03();
+            mq = handle_myquery_reflexe(mq);
+
+            return mq;
+
+        }
+
+
         
+
+
 
         private string validate_prefix(string s = null)
         {

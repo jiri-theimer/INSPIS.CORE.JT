@@ -45,35 +45,11 @@ namespace UI
             return render_thegrid_html(gridState, this.gridinput.query);
         }
 
-        //public TheGridOutput Event_GetHtml4TheGrid(TheGridUIContext tgi, BO.myQuery mq) //výchozí grid událost na úvod: Vrací HTML zdroj tabulky pro TheGrid v rámci j72TheGridState
-        //{
-        //    var gridState = _Factory.j72TheGridTemplateBL.LoadState(tgi.j72id, _Factory.CurrentUser.pid);
-        //    if (gridState == null)
-        //    {
-        //        return render_thegrid_error(string.Format("Nelze načíst grid state s id!", tgi.j72id.ToString()));
-
-        //    }
-
-        //    gridState.j75CurrentRecordPid = tgi.go2pid;
-        //    gridState.MasterPID = tgi.master_pid;
-        //    gridState.ContextMenuFlag = tgi.contextmenuflag;
-        //    gridState.OnDblClick = tgi.ondblclick;
-        //    gridState.AddFilterID = tgi.addfilterid;
-        //    gridState.MasterFlag = tgi.master_flag;
-        //    gridState.FixedColumns = tgi.fixedcolumns;
-        //    if (string.IsNullOrEmpty(gridState.FixedColumns) == false)
-        //    {
-        //        gridState.j72Columns = gridState.FixedColumns;
-        //    }
-
-        //    return render_thegrid_html(gridState,mq);
-        //}
+     
 
         public TheGridOutput Event_HandleTheGridOper(TheGridUIContext tgi)     //grid událost: třídění, změna stránky a pagesize
         {
-            //this.oncmclick = tgi.oncmclick;
-            //this.ondblclick = tgi.ondblclick;
-            //this.fixedcolumns = tgi.fixedcolumns;
+            
             var gridState = _Factory.j72TheGridTemplateBL.LoadState(tgi.j72id, _Factory.CurrentUser.pid);   //načtení naposledy uloženého grid stavu uživatele
            
             if (!string.IsNullOrEmpty(this.gridinput.fixedcolumns))
@@ -131,9 +107,7 @@ namespace UI
 
         public TheGridOutput Event_HandleTheGridFilter(TheGridUIContext tgi, List<BO.TheGridColumnFilter> filter)    //grid událost: Změna sloupcového filtru
         {
-            //this.oncmclick = tgi.oncmclick;
-            //this.ondblclick = tgi.ondblclick;
-            //this.fixedcolumns = tgi.fixedcolumns;
+            
             var gridState = _Factory.j72TheGridTemplateBL.LoadState(tgi.j72id, _Factory.CurrentUser.pid);            
 
             
