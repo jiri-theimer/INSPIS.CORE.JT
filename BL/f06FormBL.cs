@@ -184,10 +184,10 @@ namespace BL
             int intOrigF06ID = recOrig.pid;
            
             var lisJ04 = _mother.j04UserRoleBL.GetList(new BO.myQueryJ04() { f06id = intOrigF06ID });
-            var mq=new BO.myQuery("x31");
-            mq.f06id = intOrigF06ID;
-            var lisX31 = _mother.x31ReportBL.GetList(mq);
-            mq = new BO.myQuery("f18");
+            
+            var lisX31 = _mother.x31ReportBL.GetList(new BO.myQueryX31() { f06id = intOrigF06ID });
+
+            var mq = new BO.myQuery("f18");
             mq.f06id = intOrigF06ID;
             var lisF18 = _mother.f18FormSegmentBL.GetList(mq);
             

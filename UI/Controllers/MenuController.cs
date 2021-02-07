@@ -249,7 +249,7 @@ namespace UI.Controllers
             if (Factory.CurrentUser.TestPermCiselniky(j03AdminRoleValueFlagEnum.sestava_er, j03AdminRoleValueFlagEnum.sestava_ro))
             {
                 DIV_TRANS("Pevné tiskové sestavy");
-                AMI("Report šablony", url_ciselniky("x31"));
+                AMI("Report šablony", "/Admin/CiselnikyX31?prefix=x31");    //?prefix=x31 je tam záměrně kvůli menu selection
                 AMI("Report kategorie", url_ciselniky("x32"));
             }
 

@@ -64,6 +64,29 @@ namespace UI.Controllers
             return View(v);
         }
 
+        public IActionResult CiselnikyX31(int go2pid)   //katalog report šablon
+        {
+            var v = new AdminPageX31() { prefix = "x31", go2pid = go2pid };
+            v.QueryX32ID = Factory.CBL.LoadUserParamInt("Admin/CiselnikyX31-x32id");
+            v.lisX32 = Factory.x32ReportTypeBL.GetList(new BO.myQuery("x32"));
+
+            v.gridinput = GetGridInput("x31Report", "x31", go2pid = v.go2pid);
+            if (v.QueryX32ID > 0)
+            {
+                v.gridinput.query = new BO.myQueryX31() { x32id = v.QueryX32ID };   //úvodní grid query
+                v.gridinput.viewstate = "0|x32id@int@" + v.QueryX32ID.ToString();   //uložit query pro grid-javascript
+            }
+            
+
+            if (Factory.CBL.LoadUserParam("Admin /Ciselniky-prefix") != "x31")
+            {
+                Factory.CBL.SetUserParam("Admin/Ciselniky-prefix", "x31");
+            }
+
+            return View(v);
+            
+        }
+
         public IActionResult Ciselniky(string prefix, int go2pid, string view)
         {
             var v = new AdminPage() { prefix = prefix, go2pid = go2pid, view = view };

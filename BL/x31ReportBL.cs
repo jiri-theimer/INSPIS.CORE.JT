@@ -9,7 +9,7 @@ namespace BL
     {
         public BO.x31Report Load(int pid);
         public BO.x31Report LoadByCode(string code, int pid_exclude);
-        public IEnumerable<BO.x31Report> GetList(BO.myQuery mq);
+        public IEnumerable<BO.x31Report> GetList(BO.myQueryX31 mq);
         public int Save(BO.x31Report rec, List<int> x32ids, List<int> j04ids, List<int> a10ids, List<int> a08ids);
         public BO.o27Attachment LoadReportDoc(int x31id);
 
@@ -40,7 +40,7 @@ namespace BL
         }
 
 
-        public IEnumerable<BO.x31Report> GetList(BO.myQuery mq)
+        public IEnumerable<BO.x31Report> GetList(BO.myQueryX31 mq)
         {
             if (mq.explicit_orderby == null) { mq.explicit_orderby = "a.x31Name"; };
             DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);

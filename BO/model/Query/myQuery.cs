@@ -116,7 +116,7 @@ namespace BO
             }
             if (this.x29id > 0)
             {
-                if (this.Prefix == "o13" || this.Prefix == "x31") AQ("a.x29ID=@x29id", "x29id", this.x29id);
+                if (this.Prefix == "o13") AQ("a.x29ID=@x29id", "x29id", this.x29id);
 
             }
             if (this.Prefix == "b02" && this.param1 != null)
@@ -138,7 +138,7 @@ namespace BO
             
             if (this.f06id > 0)
             {               
-                if (this.Prefix == "x31") AQ("a.x31ID IN (select x31ID FROM f08Form_Report WHERE f06ID=@f06id)", "f06id", this.f06id);
+                
                 if (this.Prefix == "f18" || this.Prefix == "a11") AQ("a.f06ID=@f06id", "f06id", this.f06id);                
                 
                           
@@ -171,10 +171,7 @@ namespace BO
             {
                 AQ("a.x24ID IN (1,2,3,4,5)", "", null);    //filtr v datovém typu otázky pro TEXTBOX
             }
-            if (this.Prefix == "x31" && this.param1 == "x31Is4SingleRecord=1")
-            {
-                AQ("a.x31Is4SingleRecord=1", "", null);    //pouze kontextové sestavy
-            }
+            
             if (this.Prefix == "x29")
             {
                 if (this.param1 == "x29IsAttachment") { AQ("a.x29IsAttachment=1", "", null); };    //filtr entit x29IsAttachment=1

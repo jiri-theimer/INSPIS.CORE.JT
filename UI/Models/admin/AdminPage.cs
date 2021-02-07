@@ -17,8 +17,7 @@ namespace UI.Models
 
         public string master_entity { get; set; }
         public int master_pid { get; set; }
-        public string master_flag { get; set; }
-
+        
         public List<NavTab> NavTabs;
 
         public string go2pid_url_in_iframe { get; set; }

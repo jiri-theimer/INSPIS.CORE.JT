@@ -1,0 +1,110 @@
+﻿@model AdminPageX31
+@inject BL.Factory _f
+
+@{
+    Model.PageTitle = _f.tra("Report šablony");
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@addTagHelper *, UI
+
+
+
+
+<div class="row nowrap pt-1 bg-light m-0">
+    <div id="layout_sidebar_contextmenu" class="col-auto">
+        <a id="layout_sidebar_contextmenu_link" class="cm h4 mx-0" onclick="_cm(event, 'Ciselniky',0,'@Model.prefix');">☰@_f.tra("Číselníky")</a>
+        <h4 id="layout_sidebar_contextmenu_onlytext">@_f.tra("Číselníky")</h4>
+    </div>
+    <div class="col-auto nonmobile tabovergrid">
+        @Model.PageTitle
+    </div>
+    <div class="nonmobile nontablet col-auto">
+        <a class="btn btn-light" href="javascript:reload()" title="@_f.tra("Občerstvit")"><span class="k-icon k-i-reload"></span></a>
+    </div>
+
+    <div class="col-auto">
+        <button id="cmdNew" type="button" class="btn btn-primary">@_f.tra("Nový záznam")</button>
+    </div>
+
+
+    <div class="col-auto">
+       <mydropdown asp-for="@Model.QueryX32ID" datasource="@Model.lisX32" textfield="TreeItem" valuefield="pid" event_after_changevalue="x32id_change" isfirstemptyrow="true" firstemptyrowtext="__@_f.tra("Report kategorie")__" firstemptyrowvalue="0"></mydropdown>
+    </div>
+
+
+
+
+
+</div>
+
+<div id="layout_sidebar" class="cm_recpage" style="overflow-y:auto;">Loading...</div>
+
+
+
+<div id="layout_main">
+
+    <vc:the-grid input="@Model.gridinput"></vc:the-grid>
+
+
+
+
+
+
+</div>
+
+
+<script type="text/javascript">
+    $(document.body).css("overflow", "hidden");
+
+
+    $(document).ready(function () {
+
+        $("#cmdNew").click(function () {
+            
+            _window_open("/x31/Record?pid=0",1,"@Model.PageTitle");
+        });
+
+        $.post("/Menu/AdminCiselniky", { prefix: "x31" }, function (data) {
+
+            $("#layout_sidebar").html(data);
+            if (document.getElementById("menu_active_item")) {
+                document.getElementById("menu_active_item").scrollIntoView(true);
+            }
+
+
+
+
+
+        });
+
+
+
+        _mainmenu_highlight_current("cmdAdmin");
+
+
+        var offset = $("#layout_sidebar").offset();
+        var h_vertical = _device.innerHeight - offset.top;
+        h_vertical = parseInt(h_vertical) + 10;
+        $("#layout_sidebar").css("height", h_vertical + "px");
+
+
+    });
+
+    function x32id_change(cbx) {
+        $.post("/Common/SetUserParam", { key: "Admin/CiselnikyX31-x32id", value: cbx.value }, function (data) {
+            reload();
+
+        });
+
+        
+    }
+
+    function reload(){
+        location.replace("/Admin/CiselnikyX31?prefix=x31");
+    }
+
+</script>
+
+
+
