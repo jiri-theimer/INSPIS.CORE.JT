@@ -14,7 +14,7 @@
 
 @addTagHelper *,UI
 
-@if (Model.prefix == "a01" && string.IsNullOrEmpty(Model.explicitquery))
+@if (Model.prefix == "a01" && string.IsNullOrEmpty(Model.myqueryinline))
 {
     <table>
         <tr>
@@ -39,7 +39,7 @@
     </table>
 
 }
-@if (Model.prefix == "h04" && string.IsNullOrEmpty(Model.explicitquery))
+@if (Model.prefix == "h04" && string.IsNullOrEmpty(Model.myqueryinline))
 {
     <table>
         <tr>
@@ -120,7 +120,7 @@
         function reload() {
             _showloading();
             var url = "/TheGrid/SlaveView?prefix=@Model.prefix&master_entity=@Model.gridinput.master_entity&master_pid=@Model.master_pid";
-            url += "&explicitquery=@Model.explicitquery";
+            url += "&myqueryinline=@Model.myqueryinline";
 
             location.replace(url);
 

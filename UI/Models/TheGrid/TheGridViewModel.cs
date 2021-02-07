@@ -44,7 +44,7 @@ namespace UI.Models
         public string value { get; set; }
         
         public string master_entity { get; set; }
-        //public int master_pid { get; set; }
+        public int master_pid { get; set; }
         
         public string ondblclick { get; set; }
         public string oncmclick { get; set; }
@@ -54,6 +54,7 @@ namespace UI.Models
         
         public string pathname { get; set; }   //volající url v prohlížeči
         public List<string> viewstate { get; set; }   //data ze serveru, aby se přenášela s gridem z klienta na server: oddělovač pipe
+        public string myqueryinline { get; set; }
 
     }
 }

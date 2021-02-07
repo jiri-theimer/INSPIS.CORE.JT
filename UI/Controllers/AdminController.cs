@@ -70,12 +70,9 @@ namespace UI.Controllers
             v.QueryX32ID = Factory.CBL.LoadUserParamInt("Admin/CiselnikyX31-x32id");
             v.lisX32 = Factory.x32ReportTypeBL.GetList(new BO.myQuery("x32"));
 
-            v.gridinput = GetGridInput("x31Report", "x31", go2pid = v.go2pid);
-            if (v.QueryX32ID > 0)
-            {
-                v.gridinput.query = new BO.myQueryX31() { x32id = v.QueryX32ID };   //úvodní grid query
-                v.gridinput.viewstate = "0|x32id@int@" + v.QueryX32ID.ToString();   //uložit query pro grid-javascript
-            }
+            v.gridinput = new TheGridInput() { entity = "x31Report", go2pid = v.go2pid };            
+            v.gridinput.query = new BO.myQueryX31() { x32id = v.QueryX32ID };
+            v.gridinput.myqueryinline = "x32id@int@" + v.QueryX32ID.ToString();            
             
 
             if (Factory.CBL.LoadUserParam("Admin /Ciselniky-prefix") != "x31")

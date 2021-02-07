@@ -8,6 +8,7 @@ var _tg_filterinput_timeout;
 var _tg_filter_is_active;
 var _tg_go2pid;
 var _tg_master_entity;
+var _tg_master_pid;
 var _tg_oncmclick;
 var _tg_ondblclick;
 var _tg_tablerows;
@@ -19,6 +20,7 @@ var _tg_current_pid;
 var _tg_is_enable_clipboard = true;
 var _tg_fixedcolumns;
 var _tg_viewstate;
+var _tg_myqueryinline;
 var _tg_langindex = 0;
 var _tg_musite_vybrat_zaznam = "Musíte vybrat minimálně jeden záznam.";
 
@@ -33,11 +35,13 @@ function tg_init(c) {
     _tg_url_filter = c.filterurl;
     _tg_url_export = c.exporturl;
     _tg_go2pid = c.go2pid;
-    _tg_master_entity = c.master_entity;    
+    _tg_master_entity = c.master_entity;
+    _tg_master_pid = c.master_pid;
     _tg_oncmclick = c.oncmclick;
     _tg_ondblclick = c.ondblclick;
     _tg_fixedcolumns = c.fixedcolumns;
     _tg_viewstate = c.viewstate;
+    _tg_myqueryinline = c.myqueryinline;
     _tg_langindex = c.langindex;
 
     if (c.langindex === 2) {
@@ -176,10 +180,12 @@ function tg_post_handler(strOper, strKey, strValue) {
         oper: strOper,
         key: strKey,
         value: strValue,
-        master_entity: _tg_master_entity,        
+        master_entity: _tg_master_entity,
+        master_pid: _tg_master_pid,
+        myqueryinline: _tg_myqueryinline,
         oncmclick: _tg_oncmclick,
         ondblclick: _tg_ondblclick,
-        fixedcolumns: _tg_fixedcolumns,
+        fixedcolumns: _tg_fixedcolumns,        
         viewstate: [],
         pathname: location.pathname
     }
@@ -1045,6 +1051,8 @@ function get_all_tgi_params() {
         ondblclick: _tg_ondblclick,
         fixedcolumns: _tg_fixedcolumns,
         viewstate: [],
+        master_pid: _tg_master_pid,
+        myqueryinline: _tg_myqueryinline,
         pathname: location.pathname
     }
     if (_tg_viewstate !== "") {

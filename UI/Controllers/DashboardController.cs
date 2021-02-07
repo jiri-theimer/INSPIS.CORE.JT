@@ -169,11 +169,11 @@ namespace UI.Controllers
             
             v.NavTabs.Add(AddTab(Factory.tra("Požadavky"), "a01", "/TheGrid/SlaveView?prefix=a01", false, null));
 
-            v.NavTabs.Add(AddTab(Factory.tra("Přímo mně přidělené"), "member", "/TheGrid/SlaveView?prefix=a01&explicitquery=j02id_member_or_leader@int@" + Factory.CurrentUser.j02ID.ToString(), false, null));
+            v.NavTabs.Add(AddTab(Factory.tra("Přímo mně přidělené"), "member", "/TheGrid/SlaveView?prefix=a01&myqueryinline=j02id_member_or_leader@int@" + Factory.CurrentUser.j02ID.ToString(), false, null));
             var lisB02 = Factory.b02WorkflowStatusBL.GetList(new BO.myQuery("b02")).Where(p => p.b01ID == v.b01ID && p.b02IsSeparateTab==true);
             foreach(var recB02 in lisB02)
             {
-                v.NavTabs.Add(AddTab(recB02.b02Name, "b02-"+ recB02.pid.ToString(), "/TheGrid/SlaveView?prefix=a01&explicitquery=b02id@int@"+recB02.pid.ToString(),false, null));
+                v.NavTabs.Add(AddTab(recB02.b02Name, "b02-"+ recB02.pid.ToString(), "/TheGrid/SlaveView?prefix=a01&myqueryinline=b02id@int@" + recB02.pid.ToString(),false, null));
             }
 
             v.NavTabs.Add(AddTab("Nástěnka", "h11", "/TheGrid/SlaveView?prefix=h11", true, parse_badge(c.h11_count)));

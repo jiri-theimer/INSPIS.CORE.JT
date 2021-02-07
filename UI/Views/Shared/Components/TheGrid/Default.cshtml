@@ -221,6 +221,7 @@
         var _thegrid={
             entity: "@Model.GridInput.entity",
             master_entity: "@Model.GridInput.master_entity",
+            master_pid: "@Model.GridInput.master_pid",
             dataurl: "@Url.Action("GetHtml4TheGrid", Model.GridInput.controllername)",
             handlerurl: "@Url.Action("HandleTheGridOper", Model.GridInput.controllername)",
             filterurl: "@Url.Action("HandleTheGridFilter", Model.GridInput.controllername)",
@@ -230,6 +231,7 @@
             fixedcolumns:"@Model.GridInput.fixedcolumns",
             ondblclick: "@Model.GridInput.ondblclick",
             oncmclick: "@Model.GridInput.oncmclick",
+            myqueryinline:"@Model.GridInput.myqueryinline",
             viewstate:"@Model.GridInput.viewstate",
             langindex:@_f.CurrentUser.j03LangIndex
         };

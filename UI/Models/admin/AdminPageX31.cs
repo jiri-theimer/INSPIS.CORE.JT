@@ -9,6 +9,6 @@ namespace UI.Models
     {
         public int QueryX32ID { get; set; }
         public IEnumerable<BO.x32ReportType> lisX32 { get; set; }
-        public string explicitquery { get; set; }
+        public string myqueryinline { get; set; }
     }
 }
