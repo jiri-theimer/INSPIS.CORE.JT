@@ -1,4 +1,4 @@
-﻿
+﻿@inject BL.Factory _f
 @{
     ViewData["Title"] = "System";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -11,8 +11,8 @@
 
 <script type="text/javascript">
     function generate_sp() {
-       
-        $.post("/Admin/GenerateSpGenerateCreateUpdateScript", { scope:"_core"}, function(data) {
+
+        $.post("/Admin/GenerateSpGenerateCreateUpdateScript", { scope: "_core" }, function (data) {
 
             alert(data.message);
         });

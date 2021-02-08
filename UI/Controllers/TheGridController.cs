@@ -70,7 +70,7 @@ namespace UI.Controllers
             return View(v);
         }
 
-
+       
 
         public IActionResult MasterView(string prefix, int go2pid)    //grid horní + spodní panel, není zde filtrovací pruh s fixním filtrem
         {
@@ -299,6 +299,14 @@ namespace UI.Controllers
 
 
                     v.gridinput.query = mqH04;
+                    break;
+                case "z01": //pevné tiskové sestavy
+                    v.FilterX32ID = Factory.CBL.LoadUserParamInt("TheGrid/FlatView-x32id");
+                    v.FilterlisX32 = Factory.x32ReportTypeBL.GetList(new BO.myQuery("x32"));
+
+                    v.gridinput.query = new BO.InitMyQuery().Load("z01",null,0, "x32id@int@" + v.FilterX32ID.ToString());
+                    
+                    v.gridinput.myqueryinline = "x32id@int@" + v.FilterX32ID.ToString();
                     break;
                 default:
                     v.gridinput.query = new BO.InitMyQuery().Load(prefix, masterentity, master_pid, myqueryinline);

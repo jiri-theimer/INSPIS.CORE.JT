@@ -98,6 +98,10 @@ namespace UI.Controllers
                     Factory.CBL.SetUserParam("Admin/Ciselniky-prefix", v.prefix);
                 }
             }
+            if (v.prefix == "x31")
+            {
+                return RedirectToAction("CiselnikyX31", new { go2pid = go2pid });    //report šablony mají vlastní stránku
+            }
             inhale_entity(ref v, v.prefix);
             
             v.gridinput = GetGridInput(v.entity,v.prefix,go2pid=v.go2pid);

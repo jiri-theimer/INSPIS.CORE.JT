@@ -24,10 +24,15 @@ namespace UI.Controllers
             _pp = pp;
         }
 
-        public IActionResult ReportNoContext(int x31id)
+        public IActionResult ReportNoContext(int x31id,string code)
         {
             var v = new ReportNoContextViewModel();
             v.LangIndex = Factory.CurrentUser.j03LangIndex;
+
+            if (x31id == 0 && !string.IsNullOrEmpty(code))
+            {
+                x31id = Factory.x31ReportBL.LoadByCode(code, 0).pid;
+            }
             v.SelectedX31ID = x31id;
             RefreshStateReportNoContext(v);
 
@@ -35,6 +40,7 @@ namespace UI.Controllers
             return ViewTupCiselnik(v, BO.j03AdminRoleValueFlagEnum.sestava_er);
             
         }
+      
         [HttpPost]
         public IActionResult ReportNoContext(ReportNoContextViewModel v, string oper)
         {
@@ -97,8 +103,8 @@ namespace UI.Controllers
 
         }
 
-
-        public IActionResult ReportContext(int pid, string prefix,int x31id)
+        
+        public IActionResult ReportContext(int pid, string prefix,int x31id,string x31pid)
         {
             var v = new ReportContextViewModel() { rec_pid = pid, rec_prefix = prefix };
             v.LangIndex = Factory.CurrentUser.j03LangIndex;
@@ -106,7 +112,7 @@ namespace UI.Controllers
             {
                 return StopPage(true, "pid or prefix missing");
             }
-            if (x31id == 0)
+            if (x31id == 0 && string.IsNullOrEmpty(x31pid))
             {
                 if (v.rec_prefix == "a01")
                 {
@@ -119,6 +125,10 @@ namespace UI.Controllers
                 }
                 x31id = Factory.CBL.LoadUserParamInt(v.UserParamKey);
 
+            }
+            if (x31id==0 && !string.IsNullOrEmpty(x31pid))
+            {
+                x31id = Factory.x31ReportBL.LoadByCode(x31pid, 0).pid;
             }
             v.SelectedX31ID = x31id;
             

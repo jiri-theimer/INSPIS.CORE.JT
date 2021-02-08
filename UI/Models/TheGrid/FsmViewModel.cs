@@ -36,6 +36,10 @@ namespace UI.Models
         public string FilterH07Name { get; set; }   //fixní filtr v horním pruhu
 
 
+        public int FilterX32ID { get; set; }        //kategorie nad pevnými tiskovými sestavami
+        public IEnumerable<BO.x32ReportType> FilterlisX32 { get; set; } //zdroj kategorií pevných sestav
+
+
     }
 
 
