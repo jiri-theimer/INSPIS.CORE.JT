@@ -139,7 +139,13 @@ namespace UI.Controllers
             RefreshState(v);
 
             var cc = new BO.myQueryA11() { a01id = 1, f06id = 2 };
+
+
+            double speedOfLight = 299792.458;
+            string message = $"The speed of light is {speedOfLight:N2} km/s.";
+            v.hovado = message + " ## " + $"{speedOfLight:N2}";
            
+
 
 
             return View(v);
@@ -211,14 +217,7 @@ namespace UI.Controllers
             return View(v);
         }
 
-        public int test1()
-        {
-            var c = Factory.a11EventFormBL.LoadPoll(646278, "7076");
-            
-
-
-            return c.pid;
-        }
+       
 
 
         private void RefreshState(UI.Models.Pokus v)

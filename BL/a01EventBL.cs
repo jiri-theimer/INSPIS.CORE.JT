@@ -431,9 +431,9 @@ namespace BL
         {
             BO.a01EventPermission ret = new BO.a01EventPermission() { PermValue = BO.a01EventPermissionENUM.NoAccess };
 
-            if (_mother.CurrentUser.TestPermission(BO.j05PermValuEnum.AdminGlobal))
+            if (_mother.CurrentUser.TestPermission(BO.j05PermValuEnum.AdminGlobal) && _mother.App.Implementation !="HD")
             {
-                ret.PermValue = BO.a01EventPermissionENUM.FullAccess;    //administrátor - automaticky nejvyšší práva k akci
+                ret.PermValue = BO.a01EventPermissionENUM.FullAccess;    //administrátor - automaticky nejvyšší práva k akci. V Helpdesk implementaci to neplatí
                 ret.IsRecordOwner = true;
             }
             else

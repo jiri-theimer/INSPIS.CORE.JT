@@ -17,7 +17,7 @@ namespace UI.Controllers
             if (v.a10ID > 0)
             {
                 var c = Factory.a10EventTypeBL.Load(a10id);
-                if (string.IsNullOrEmpty(c.a10ViewUrl_Insert)==false)
+                if (!string.IsNullOrEmpty(c.a10ViewUrl_Insert))
                 {
                     if (c.a10ViewUrl_Insert.Contains("?"))
                     {

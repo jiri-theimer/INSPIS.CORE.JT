@@ -23,5 +23,7 @@ namespace UI.Models
 
         public TheGridInput gridinput { get; set; }
         public string ExtendPagerHtml { get; set; }
+
+        public string hovado { get; set; }
     }
 }
