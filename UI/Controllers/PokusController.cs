@@ -144,8 +144,9 @@ namespace UI.Controllers
             double speedOfLight = 299792.458;
             string message = $"The speed of light is {speedOfLight:N2} km/s.";
             v.hovado = message + " ## " + $"{speedOfLight:N2}";
-           
 
+
+            
 
 
             return View(v);

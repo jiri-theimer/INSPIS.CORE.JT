@@ -124,7 +124,15 @@
                         @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.Menu_Events))
                         {
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="cmdA01" role="button" data-bs-toggle="dropdown" aria-expanded="false" tabindex="-1">@_f.tra("Akce").ToUpper()</a>
+                                @if (_f.App.Implementation == "HD")
+                                {
+                                    <a class="nav-link dropdown-toggle" id="cmdA01" role="button" data-bs-toggle="dropdown" aria-expanded="false" tabindex="-1">@_f.tra("Požadavky (Akce)").ToUpper()</a>
+                                }
+                                else
+                                {
+                                    <a class="nav-link dropdown-toggle" id="cmdA01" role="button" data-bs-toggle="dropdown" aria-expanded="false" tabindex="-1">@_f.tra("Akce").ToUpper()</a>
+                                }
+
                                 <ul id="ulA01" class="dropdown-menu" aria-labelledby="cmdA01"><li>Loading....</li></ul>
                             </li>
 
@@ -303,7 +311,7 @@
 
             _resize_textareas();
 
-           
+
         }
 
 

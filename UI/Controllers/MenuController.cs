@@ -27,22 +27,7 @@ namespace UI.Controllers
 
         public string GlobalNavigateMenu()
         {
-            //AMI_NOTRA(string.Format("<img src='{0}'/>",Factory.App.LogoImage), null);
-
-            //if (Factory.App.Implementation == "HD")
-            //{
-            //    AMI_NOTRA("InspIS DATA", "https://inspis.csicr.cz/app");
-            //}
-            //else
-            //{
-            //    AMI_NOTRA("InspIS HELPDESK", "https://helpdesk.csicr.cz/app");
-            //}
-            //AMI_NOTRA("InspIS E-LEARNING", "https://elearning.csicr.cz");
-            //AMI_NOTRA("InspIS PORTAL", "https://portal.csicr.cz");
-            //AMI_NOTRA("InspIS SET", "https://set.csicr.cz");
-            //AMI_NOTRA("InspIS ŠVP", "https://svp.csicr.cz/app");
             
-
             DIV();
             AMI("Odhlásit se", "/Home/logout");
 
@@ -182,7 +167,8 @@ namespace UI.Controllers
             AMI("Osobní stránka", null, null, "Dashboard");
             AMI("Osobní stránka inspektora", "/Dashboard/Inspector", "Dashboard");
             AMI("Osobní stránka školy", "/Dashboard/School", "Dashboard");
-            AMI("Osobní stránka Helpdesk", "/Dashboard/Helpdesk", "Dashboard");
+            AMI("Osobní stránka HD řešitele", "/Dashboard/HdMaster", "Dashboard");
+            AMI("Osobní stránka HD zadavatele", "/Dashboard/HdSlave", "Dashboard");
             AMI("Přihlásit se pod jinou identitou", "/Admin/LogAsUser");
 
             DIV_TRANS("Osobní profily");

@@ -19,14 +19,15 @@
 
     </div>
     <div class="nonmobile nontablet col-auto">
-        <a class="btn btn-light" href="/Dashboard/Helpdesk" title="@_f.tra("Občerstvit")"><span class="k-icon k-i-reload"></span></a>
+        <a class="btn btn-light" href="/Dashboard/HdSlave" title="@_f.tra("Občerstvit")"><span class="k-icon k-i-reload"></span></a>
     </div>
     <div class="col-auto">
-        <mysearch asp-for="@Model.SearchBoxA01" entity="a01Event" placeholder="@_f.tra("Fulltext: Akce")..."></mysearch>
+        <a class="btn btn-primary" href="/a01createhelpdesk">@_f.tra("Nový požadavek")</a>
     </div>
-   <div class="col-auto">
-       <mydropdown asp-for="@Model.b01ID" textfield="b01Name" valuefield="pid" isfirstemptyrow="false" datasource="@Model.lisB01" event_after_changevalue="b01id_change"></mydropdown>
-   </div>
+    <div class="col-auto">
+        <mysearch asp-for="@Model.SearchBoxA01" entity="a01Event" placeholder="@_f.tra("Fulltext")..."></mysearch>
+    </div>
+    
 </div>
 
 
@@ -79,7 +80,7 @@
 
     function reload() {
         _showloading();
-        location.replace("/Dashboard/Helpdesk");
+        location.replace("/Dashboard/HdSlave");
     }
 
 
@@ -87,19 +88,13 @@
 
         $("#navtabs .nav-link").removeClass("active");
         $(tab).addClass("active");
-        $.post("/Common/SetUserParam", { key: "dashboard-tab-helpdesk", value: tab.id.replace("tab", "") }, function (data) {
+        $.post("/Common/SetUserParam", { key: "dashboard-tab-hdslave", value: tab.id.replace("tab", "") }, function (data) {
 
 
         });
     }
 
 
-    function b01id_change(cbx) {  //uložit aktuální workflow šablonu
-       
-        $.post("/Common/SetUserParam", { key: "dashboard-b01id-helpdesk", value: cbx.value }, function (data) {
-            location.replace("/Dashboard/Helpdesk?b01id="+cbx.value);
-
-        });
-    }
+   
 
 </script>

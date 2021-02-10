@@ -140,13 +140,13 @@ namespace UI.Controllers
 
             return View(v);
         }
-        public IActionResult Helpdesk(int b01id=0)
+        public IActionResult HdMaster(int b01id=0)
         {
             var v = new DashboardHelpdesk() { pid = Factory.CurrentUser.j02ID,b01ID=b01id, NavTabs = new List<NavTab>() };
             v.lisB01 = Factory.b01WorkflowTemplateBL.GetList(new BO.myQuery("b01"));
             if (v.b01ID == 0)
             {
-                v.b01ID = Factory.CBL.LoadUserParamInt("dashboard-b01id-helpdesk");
+                v.b01ID = Factory.CBL.LoadUserParamInt("dashboard-b01id-hdmaster");
             }
             if (v.b01ID == 0)
             {
@@ -154,13 +154,23 @@ namespace UI.Controllers
             }
             v.Rec = Factory.j02PersonBL.Load(v.pid);
 
-            RefreshNavTabsHelpdesk(v);
+            RefreshNavTabsHdMaster(v);
 
+            return View(v);
+        }
+        public IActionResult HdSlave()
+        {
+            var v = new DashboardHelpdesk() { pid = Factory.CurrentUser.j02ID, NavTabs = new List<NavTab>() };
+            
+            v.Rec = Factory.j02PersonBL.Load(v.pid);
+
+            
+            RefreshNavTabsHdSlave(v);
 
             return View(v);
         }
 
-        private void RefreshNavTabsHelpdesk(DashboardHelpdesk v)
+        private void RefreshNavTabsHdMaster(DashboardHelpdesk v)
         {
             var c = Factory.j02PersonBL.LoadSummary(v.pid, "dashboard");
             v.NavTabs.Add(AddTab("Dashboard", "dashboard", "/Dashboard/Widgets?skin=inspector&pid=" + Factory.CurrentUser.j02ID));
@@ -182,7 +192,7 @@ namespace UI.Controllers
 
 
 
-            string strDefTab = Factory.CBL.LoadUserParam("dashboard-tab-helpdesk");
+            string strDefTab = Factory.CBL.LoadUserParam("dashboard-tab-hdmaster");
             var deftab = v.NavTabs[0];
 
             foreach (var tab in v.NavTabs)
@@ -192,6 +202,36 @@ namespace UI.Controllers
                     tab.Url += "&master_entity=j02Person&master_pid=" + v.pid.ToString();
                 }
                 
+                if (strDefTab != null && tab.Entity == strDefTab)
+                {
+                    deftab = tab;  //uživatelem naposledy vybraná záložka                    
+                }
+            }
+            deftab.CssClass += " active";
+            v.DefaultNavTabUrl = deftab.Url;
+        }
+
+        private void RefreshNavTabsHdSlave(DashboardHelpdesk v)
+        {
+            var c = Factory.j02PersonBL.LoadSummary(v.pid, "dashboard");
+            v.NavTabs.Add(AddTab("Dashboard", "dashboard", "/Dashboard/Widgets?skin=inspector&pid=" + Factory.CurrentUser.j02ID));
+
+            v.NavTabs.Add(AddTab(Factory.tra("Jsem zadavatel"), "issuer", "/TheGrid/SlaveView?prefix=a01&myqueryinline=j02id_issuer@int@" + Factory.CurrentUser.j02ID.ToString(), false, null));
+            
+            v.NavTabs.Add(AddTab("Nástěnka", "h11", "/TheGrid/SlaveView?prefix=h11", true, parse_badge(c.h11_count)));
+
+            v.NavTabs.Add(AddTab("Inbox", "x40", "/TheGrid/SlaveView?prefix=x40"));
+
+            string strDefTab = Factory.CBL.LoadUserParam("dashboard-tab-hdslave");
+            var deftab = v.NavTabs[0];
+
+            foreach (var tab in v.NavTabs)
+            {
+                if (!tab.Url.Contains("master_entity"))
+                {
+                    tab.Url += "&master_entity=j02Person&master_pid=" + v.pid.ToString();
+                }
+
                 if (strDefTab != null && tab.Entity == strDefTab)
                 {
                     deftab = tab;  //uživatelem naposledy vybraná záložka                    
