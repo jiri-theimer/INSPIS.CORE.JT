@@ -44,8 +44,12 @@ namespace UI.Models
             this.RecordEntity = rec.entity;
             this.RecordPID = rec.pid;
             this.RecordIsClosed = rec.isclosed;
-            
-           
+            if (this.AllowArchive && rec.pid>0)
+            {
+                if (rec.ValidFrom != null) this.ExplicitValidFrom = BO.BAS.ObjectDate2String(rec.ValidFrom);
+                if (rec.ValidUntil != null) this.ExplicitValidUntil = BO.BAS.ObjectDate2String(rec.ValidUntil);
+            }
+
 
             RefreshState();
 
