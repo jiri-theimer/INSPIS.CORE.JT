@@ -178,6 +178,15 @@ input:checked + label {
 }
 
 
+/*asp.net core doplňuje k checkboxům hidden element navíc!!!*/
+input[type="checkbox"]:checked + input[type="hidden"] + label {
+    color: blue;
+}
+
+input[type="checkbox"] + input[type="hidden"] + label:hover {
+    cursor: pointer;
+    color: cornflowerblue;
+}
 
 
 .selcell {
