@@ -580,13 +580,13 @@ namespace UIFT.Repository
         public List<int> SegmentRequiredOtazky(int f18id, int formularId)
         {
             List<int> list = new List<int>();
-            // vyber vsechny otazky v danem segmentu, ktere maji zadanou required expr.
-            IEnumerable<BO.f19Question> otazky = cache.f19QuestionBLGetList(formularId, f18id).Where(t => !string.IsNullOrEmpty(t.f19RequiredExpression));
-
-            foreach (BO.f19Question otazka in otazky)
+            
+            foreach (BO.f19Question otazka in cache.f19QuestionBLGetList(formularId, f18id))
             {
+                if (otazka.f19IsRequired)
+                    list.Add(otazka.pid);
                 // spust evaluator na readonly
-                if (factory.BoolEvaluator(this.a11id, otazka.f19RequiredExpression))
+                else if (!string.IsNullOrEmpty(otazka.f19RequiredExpression) && factory.BoolEvaluator(this.a11id, otazka.f19RequiredExpression))
                     list.Add(otazka.pid);
             }
 
