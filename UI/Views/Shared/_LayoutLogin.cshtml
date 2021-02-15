@@ -17,16 +17,18 @@
 </head>
 <body>
     <header>
-        
     </header>
-    <div class="container-fluid px-0">        
+    <script type="text/javascript">
+        var _relpath = "@(Url.Content("~/favicon.ico"))".replace("favicon.ico", "");   //relativní cesta: detekce kvůli případnému IIS virtuálnímu adresáři
+    </script>
+    <div class="container-fluid px-0">
         <div id="divLoginHeader">
             <img id="imgLoginHeader" src="/images/logo_login_@(_app.LogoImageSuffix).png" />
         </div>
         <main role="main">
             @RenderBody()
         </main>
-        
+
     </div>
 
     <footer style="border-top:1px solid lightgray;position:relative;margin-top:100px;width:100%;">
@@ -34,8 +36,8 @@
             👌@_app.AppName <small>@_app.AppVersion</small><small style="margin-left:10px;color:silver;">@_app.AppBuild</small>
         </div>
     </footer>
-    
-    
+
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>

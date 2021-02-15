@@ -31,9 +31,12 @@
     }
 </head>
 <body>
+    <script type="text/javascript">
+        var _relpath = "@(Url.Content("~/favicon.ico"))".replace("favicon.ico", "");   //relativní cesta: detekce kvůli případnému IIS virtuálnímu adresáři
+    </script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <script src="~/lib/datepicker/bootstrap-datepicker.min.js"></script>
     @switch (_f.CurrentUser.j03LangIndex)
     {
@@ -98,7 +101,7 @@
 
 
 
-<script type="text/javascript">
+    <script type="text/javascript">
         var _modal;
 
     $(document).ready(function ()
@@ -253,7 +256,7 @@
 
 
 
-</script>
+    </script>
 
     @RenderSection("Scripts", required: false)
 
