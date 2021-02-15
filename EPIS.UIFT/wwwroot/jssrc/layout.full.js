@@ -62,7 +62,7 @@ $(window).load(function () {
                             }
                         },
                         {
-                            text: "Prázdný dotazník",
+                            text: UIFT.tra("Prázdný dotazník"),
                             click: function () {
                                 $(this).loading();
                                 location.href = $(this).data("url") + "?showAnswers=false&templateId=" + $("#exportToWordTemplate").val();

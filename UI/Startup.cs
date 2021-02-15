@@ -167,6 +167,7 @@ namespace UI
             app.UseDeveloperExceptionPage();    //zjt: v rámci vývoje
 
             app.UseHttpsRedirection();
+            
             app.UseStaticFiles();
 
             app.UseRouting();

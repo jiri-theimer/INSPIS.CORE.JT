@@ -30,7 +30,11 @@
         @RenderSection("header_content")
     }
     <link href="/images/favicon_@(_f.App.LogoImageSuffix).ico" rel="shortcut icon" type="image/x-icon" />
-
+    <script type="text/javascript">
+        var _relpath = "@(Url.Content("~/favicon.ico"))".replace("favicon.ico", "");   //relativní cesta: detekce kvůli případnému IIS virtuálnímu adresáři
+        
+        
+    </script>
 
     @if (_f.CurrentUser.j03LiveChatTimestamp != null)
     {
@@ -149,8 +153,8 @@
                         @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.Menu_H04))
                         {
                             <li class="nav-item">
-                                <a id="cmdH04" class="nav-link text-white" href="/TheGrid/FlatView?prefix=h04" tabindex="-1">@_f.tra("Úkoly").ToUpper()</a>
-
+                                <a id="cmdH04" class="nav-link text-white" href="~/TheGrid/FlatView?prefix=h04" tabindex="-1">@_f.tra("Úkoly").ToUpper()</a>
+                                
                             </li>
 
 
@@ -332,7 +336,7 @@
                 return false;
             }
         });
-
+            
             register_menu("cmdLangIndex", "ulLangIndex", "/Menu/CurrentUserLangIndex");
             register_menu("cmdFontSize", "ulFontSize", "/Menu/CurrentUserFontSize");
             register_menu("cmdMyProfile", "ulMyProfile", "/Menu/CurrentUserMyProfile");
