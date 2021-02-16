@@ -59,9 +59,14 @@ namespace UI.Controllers
                 BO.a01Event c = new BO.a01Event();
                 c.a10ID = v.a10ID;
                 c.a03ID = v.a03ID;
+                if (c.a03ID == 0)
+                {
+                    c.a01InstitutionPlainText = v.Rec.a01InstitutionPlainText;
+                }
                 c.j02ID_Issuer = v.j02ID;
                 c.a08ID = v.Rec.a08ID;
                 c.a01Description = v.Rec.a01Description;
+                
 
                 c.pid = Factory.a01EventBL.Create(c, true, null, null, null, null);
                 if (c.pid > 0)

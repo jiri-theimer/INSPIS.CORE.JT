@@ -57,7 +57,7 @@ namespace BO
             {
                 AQ("(a.a01ID IN (select a01ID_Left FROM a24EventRelation WHERE a01ID_Left=@a01id OR a01ID_Right=@a01id) OR a.a01ID IN (select a01ID_Right FROM a24EventRelation WHERE a01ID_Left=@a01id OR a01ID_Right=@a01id)) AND a.a01ID<>@a01id", "a01id", this.a01id);
             }
-
+            
             if (this.a01parentid > 0)
             {
                 AQ("a.a01ParentID=@a01parentid", "a01parentid", this.a01parentid);   //podřízené akce
@@ -76,28 +76,31 @@ namespace BO
             }
             if (this.j02id > 0)
             {
-                AQ("a.a01ID IN (select a01ID FROM a41PersonToEvent WHERE j02ID=@j02id)", "j02id", this.j02id);   //je účastníkem akce
-            }
+                AQ("a.a01ID IN (select a01ID FROM a41PersonToEvent WHERE " + GetOcasA41(this.j02id, "@j02id") + ")", "j02id", this.j02id);   //je účastníkem akce
 
+            }
             if (this.j02id_leader > 0)
             {
-                AQ("a.a01ID IN (select a01ID FROM a41PersonToEvent WHERE a45ID=2 AND j02ID=@j02id_leader)", "j02id_leader", this.j02id_leader);   //je vedoucím akce
+                AQ("a.a01ID IN (select a01ID FROM a41PersonToEvent WHERE a45ID=2 AND "+ GetOcasA41(this.j02id_leader, "@j02id_leader") +")", "j02id_leader", this.j02id_leader);   //je vedoucím akce
+
             }
             if (this.j02id_member > 0)
             {
-                AQ("a.a01ID IN (select a01ID FROM a41PersonToEvent WHERE a45ID=1 AND j02ID=@j02id_member)", "j02id_member", this.j02id_member);   //je člen akce               
+                AQ("a.a01ID IN (select a01ID FROM a41PersonToEvent WHERE a45ID=1 AND "+ GetOcasA41(this.j02id_member, "@j02id_member") +")", "j02id_member", this.j02id_member);   //je člen akce
+
             }
             if (this.j02id_member_or_leader > 0)
             {
-                AQ("a.a01ID IN (select a01ID FROM a41PersonToEvent WHERE a45ID IN (1,2) AND j02ID=@j02id_memberorleader)", "j02id_memberorleader", this.j02id_member_or_leader);   //je člen nebo vedoucí
+                AQ("a.a01ID IN (select a01ID FROM a41PersonToEvent WHERE a45ID IN (1,2) AND "+ GetOcasA41(this.j02id_member_or_leader, "@j02id_memberorleader") +")", "j02id_memberorleader", this.j02id_member_or_leader);   //je člen nebo vedoucí
+
             }
             if (this.j02id_invited > 0)
             {
                 AQ("a.a01ID IN (select a01ID FROM a41PersonToEvent WHERE a45ID=6 AND j02ID=@j02id_invited)", "j02id_invited", this.j02id_invited);   //je přizvaná osoba
             }
             if (this.j02id_involved > 0)
-            {
-               AQ("a.a01ID IN (select a01ID FROM a41PersonToEvent WHERE j02ID=@j02id_involved)", "j02id_involved", this.j02id_involved);   //je zapojen do akce
+            {               
+               AQ("a.a01ID IN (select a01ID FROM a41PersonToEvent WHERE " + GetOcasA41(this.j02id_involved, "@j02id_involved") + ")", "j02id_involved", this.j02id_involved);   //je zapojen do akce
             }
             if (this.j02id_issuer > 0)
             {
@@ -136,7 +139,29 @@ namespace BO
 
         }
 
+        private string GetOcasA41(int j02id,string parname)
+        {
+            if (this.CurrentUser == null)
+            {
+                return "j02ID=" + parname;
+            }
 
+            if (this.CurrentUser.AppImplementation == "HD")
+            {
+               if (this.CurrentUser.j02ID == j02id && this.CurrentUser.j11IDs_Cache !=null)
+                {
+                    return "(j02ID=" + parname + " OR j11ID IN (" + this.CurrentUser.j11IDs_Cache + "))";
+                }
+                else
+                {
+                    return "(j02ID=" + parname + " OR j11ID IN (select j11ID FROM j12Team_Person WHERE j02ID="+ parname + "))";
+                }
+            }
+            else
+            {
+                return "j02ID=" + parname;
+            }
+        }
 
         private string GetDisponibleWhere()
         {
