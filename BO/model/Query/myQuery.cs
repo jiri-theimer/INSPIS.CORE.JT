@@ -183,6 +183,11 @@ namespace BO
                 AQ("(a.h11IsPublic=1 OR a.h11ID IN (SELECT h11ID FROM h12NoticeBoard_Permission WHERE j04ID=@j04id_me)) AND GETDATE() BETWEEN a.h11ValidFrom AND a.h11ValidUntil", "j04id_me", this.CurrentUser.j04ID);
 
             }
+            if (this.MyRecordsDisponible && this.Prefix == "x55")
+            {
+                AQ("a.x55ID IN (SELECT x55ID FROM x57WidgetRestriction WHERE j04ID=@j04id_me) AND GETDATE() BETWEEN a.x55ValidFrom AND a.x55ValidUntil", "j04id_me", this.CurrentUser.j04ID);
+
+            }
 
             return this.InhaleRows();
 
