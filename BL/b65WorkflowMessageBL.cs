@@ -104,6 +104,45 @@ namespace BL
             var cMerge = new BO.CLS.MergeContent();
             recB65.b65MessageBody = cMerge.GetMergedContent(recB65.b65MessageBody, dt).Replace("#param1", param1, StringComparison.OrdinalIgnoreCase).Replace("#password#", param1);
             recB65.b65MessageSubject = cMerge.GetMergedContent(recB65.b65MessageSubject, dt).Replace("#param1", param1, StringComparison.OrdinalIgnoreCase);
+            if (recB65.b65MessageBody.Contains("#link#") && !string.IsNullOrEmpty(_mother.App.UserUrl))
+            {
+                string strURL = _mother.App.UserUrl;
+                if (BO.BAS.RightString(strURL, 1) != "/")
+                {
+                    strURL += "/";
+                }
+                switch (recB65.x29ID)
+                {
+                    case 101:
+                        var recA01 = _mother.a01EventBL.Load(datapid);
+                        var recA10 = _mother.a10EventTypeBL.Load(recA01.a10ID);
+                        if (recA10.a10ViewUrl_Page != null)
+                        {
+                            if (recA10.a10ViewUrl_Page.Contains("/"))
+                            {
+                                strURL += recA10.a10ViewUrl_Page;
+                            }
+                            else
+                            {
+                                strURL += "a01/" + recA10.a10ViewUrl_Page;
+                            }
+                            
+                        }
+                        else
+                        {
+                            strURL += "a01/RecPage";
+                        }
+                        strURL += "?pid=" + datapid.ToString();
+                        break;
+                    case 103:
+                        strURL += "a03/RecPage?pid=" + datapid.ToString();
+                        break;
+                    case 502:
+                        strURL += "j02/RecPage?pid=" + datapid.ToString();
+                        break;
+                }
+                recB65.b65MessageBody = recB65.b65MessageBody.Replace("#link#", strURL);
+            }
             return recB65;
         }
 
