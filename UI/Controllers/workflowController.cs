@@ -57,7 +57,12 @@ namespace UI.Controllers
                 int intRet = 0;
                 if (v.SelectedB06ID == 0)
                 {
-                    intRet = Factory.WorkflowBL.SaveWorkflowComment(v.pid, v.Comment,v.UploadGuid, null);    //pouze zapsat komentář
+                    List<int> a45ids_to = null;
+                    if (v.lisCommentTo != null)
+                    {
+                        a45ids_to = v.lisCommentTo.Select(p => p.a45ID).ToList();
+                    }
+                    intRet = Factory.WorkflowBL.SaveWorkflowComment(v.pid, v.Comment,v.UploadGuid, a45ids_to);    //pouze zapsat komentář
                 }
                 else
                 {                    
@@ -119,8 +124,22 @@ namespace UI.Controllers
 
             
             v.lisA41 = Factory.a41PersonToEventBL.GetList(new BO.myQueryA41() { a01id = v.pid, j02id=Factory.CurrentUser.j02ID, CurrentUser = Factory.CurrentUser });
-            RefreshStateTemp(v);
+            if (Factory.App.Implementation == "HD" && Factory.CurrentUser.j04IsAllowedAllEventTypes)
+            {                
+                v.lisCommentTo = new List<BO.a45EventRole>();
+                var lisx = Factory.a41PersonToEventBL.GetList(new BO.myQueryA41() { a01id = v.pid });
+                var qry = from xx in lisx select new { xx.a45ID, xx.a45Name };
 
+
+
+                foreach (var c in qry.Distinct())
+                {
+                    v.lisCommentTo.Add(new BO.a45EventRole() { a45ID = (int)c.a45ID, a45Name = c.a45Name});
+                    
+                }
+            }
+            RefreshStateTemp(v);
+            
             var mq = new BO.myQuery("b06");
            
             mq.b02id = v.RecA01.b02ID;

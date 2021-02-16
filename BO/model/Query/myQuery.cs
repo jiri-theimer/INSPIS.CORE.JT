@@ -185,7 +185,7 @@ namespace BO
             }
             if (this.MyRecordsDisponible && this.Prefix == "x55")
             {
-                AQ("a.x55ID IN (SELECT x55ID FROM x57WidgetRestriction WHERE j04ID=@j04id_me) AND GETDATE() BETWEEN a.x55ValidFrom AND a.x55ValidUntil", "j04id_me", this.CurrentUser.j04ID);
+                AQ("(a.x55ID NOT IN (select x55ID FROM x57WidgetRestriction) OR a.x55ID IN (SELECT x55ID FROM x57WidgetRestriction WHERE j04ID=@j04id_me)) AND GETDATE() BETWEEN a.x55ValidFrom AND a.x55ValidUntil", "j04id_me", this.CurrentUser.j04ID);
 
             }
 

@@ -78,9 +78,25 @@
             </div>
         }
 
+        @if(Model.SelectedB06ID==0 && Model.lisCommentTo != null)
+        {
+            <div class="card">
+                <div class="card-header">
+                    @_f.tra("Komu je komentář určený?")
+                </div>
+                <div class="card-body">
+                    @for (int i = 0; i < Model.lisCommentTo.Count(); i++)
+                    {
+                        <input type="checkbox" asp-for="@Model.lisCommentTo[i].a45IsManual" />
+                        <label for="lisCommentTo_@(i)__a45IsManual">@(Model.lisCommentTo[i].a45Name)</label>
+                    }
+                </div>
+            </div>
+            
+        }
         <div class="my-2">
             <textarea asp-for="@Model.Comment" class="form-control" placeholder="@_f.tra("Doplnit komentář")..." style="height:100px;"></textarea>
-            <span asp-validation-for="@Model.Comment" class="text-danger"></span>
+            
         </div>
 
         <iframe id="fraUpload" src="/FileUpload/Index?prefix=a01&guid=@Model.UploadGuid" height="350" scrolling="no"></iframe>
