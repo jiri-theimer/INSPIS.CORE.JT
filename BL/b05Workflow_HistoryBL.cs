@@ -9,6 +9,7 @@ namespace BL
         public BO.b05Workflow_History LoadLast(int a01id);
         public IEnumerable<BO.b05Workflow_History> GetList(BO.myQuery mq);
         public int Save(BO.b05Workflow_History rec);
+        public IEnumerable<BO.b04WorkflowComment_Restriction> GetList_b04(int b05id);
     }
     class b05Workflow_HistoryBL : BaseBL, Ib05Workflow_HistoryBL
     {
@@ -55,6 +56,11 @@ namespace BL
             if (mq.explicit_orderby == null) mq.explicit_orderby = "a.b05ID DESC";
             DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.b05Workflow_History>(fq.FinalSql, fq.Parameters);
+        }
+
+        public IEnumerable<BO.b04WorkflowComment_Restriction> GetList_b04(int b05id)
+        {
+            return _db.GetList<BO.b04WorkflowComment_Restriction>("select * FROM b04WorkflowComment_Restriction WHERE b05ID=@b05id", new { b05id = b05id });
         }
 
         public int Save(BO.b05Workflow_History rec)

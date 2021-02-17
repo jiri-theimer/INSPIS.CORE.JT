@@ -78,24 +78,33 @@
             </div>
         }
 
-        @if(Model.SelectedB06ID==0 && Model.lisCommentTo != null)
+        @if(Model.lisCommentTo != null)
         {
             <div class="card">
                 <div class="card-header">
                     @_f.tra("Komu je komentář určený?")
                 </div>
                 <div class="card-body">
-                    @for (int i = 0; i < Model.lisCommentTo.Count(); i++)
-                    {
-                        <input type="checkbox" asp-for="@Model.lisCommentTo[i].a45IsManual" />
-                        <label for="lisCommentTo_@(i)__a45IsManual">@(Model.lisCommentTo[i].a45Name)</label>
-                    }
+                    <div>
+                        <input type="checkbox" asp-for="@Model.IsCommentToAll" />
+                        <label for="IsCommentToAll">@_f.tra("Všichni účastníci akce (požadavku)")</label>
+                        <hr />
+                    </div>
+                    <div id="divCommentTo">
+                        @for (int i = 0; i < Model.lisCommentTo.Count(); i++)
+                        {
+                            <input type="checkbox" asp-for="@Model.lisCommentTo[i].a45IsManual" />
+                            <label for="lisCommentTo_@(i)__a45IsManual">@(Model.lisCommentTo[i].a45Name)</label>
+                            <input type="hidden" asp-for="@Model.lisCommentTo[i].a45Name" />
+                            <input type="hidden" asp-for="@Model.lisCommentTo[i].a45ID" />
+                        }
+                    </div>
                 </div>
             </div>
             
         }
         <div class="my-2">
-            <textarea asp-for="@Model.Comment" class="form-control" placeholder="@_f.tra("Doplnit komentář")..." style="height:100px;"></textarea>
+            <textarea asp-for="@Model.Comment" class="form-control" placeholder="@_f.tra("Doplnit komentář")..."></textarea>
             
         </div>
 
@@ -105,13 +114,23 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        
+
         $("#cmdSave").click(function () {
             $(this).text("Processing...");
             $(this).attr("disabled", true);
             form1.submit();
 
         });
+
+        $("#IsCommentToAll").on("change", function () {
+            form1.action = "/workflow/Dialog?oper=postback";
+            form1.submit();
+        });
+
+       @if (Model.IsCommentToAll)
+       {            
+        @:$("#divCommentTo").css("display", "none");        
+       }
 
     })
 
@@ -120,7 +139,9 @@
         form1.submit();
     }
 
-    function j02id_nominee_add(j02id) {        
+
+
+    function j02id_nominee_add(j02id) {
         form1.action = "/workflow/Dialog?oper=add_j02";
         form1.submit();
     }
@@ -138,11 +159,11 @@
         form1.submit();
     }
 
-    function run() {        
+    function run() {
         form1.submit();
     }
 
-   
+
 </script>
 
 

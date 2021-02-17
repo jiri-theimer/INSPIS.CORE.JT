@@ -31,7 +31,8 @@ namespace UI.Models
 
         public string FormValidationErrorMessage { get; set; }
 
-        public List<BO.a45EventRole> lisCommentTo { get; set; }
+        public List<BO.a45EventRole> lisCommentTo { get; set; } //komu je určený komentář (HD)
+        public bool IsCommentToAll { get; set; }    //komentář je určený pro všechny účastníky (HD)
 
     }
 }

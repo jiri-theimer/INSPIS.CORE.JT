@@ -277,6 +277,10 @@
 
         $(document).ready(function ()
         {
+            if ($("textarea").length) {
+                _resize_textareas();    //detekce, že na stránce je textarea
+            }
+
             document.getElementById("site_master_container").style.visibility = "visible";
             document.getElementById("site_loading1").style.display = "none";
 
@@ -286,11 +290,9 @@
             });
 
         @if (_f.CurrentUser.Messages4Notify != null) {
-            @foreach (var c in _f.CurrentUser.Messages4Notify) {  // <----  placed on the same line, WORKING !!!
-            <text>
-            _notify_message("@c.Value","@c.Key");
-            </text>
-             }
+            @foreach (var c in _f.CurrentUser.Messages4Notify) {  // <----  placed on the same line, WORKING !!!            
+                @:_notify_message("@c.Value","@c.Key");            
+            }
         }
         @if (_f.CurrentUser.j03IsMainLogoVisible)
         {
@@ -313,9 +315,7 @@
                 }
             });
 
-            _resize_textareas();
-
-
+            
         }
 
 

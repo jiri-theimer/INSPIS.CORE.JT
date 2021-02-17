@@ -58,9 +58,14 @@ namespace UI.Controllers
                 if (v.SelectedB06ID == 0)
                 {
                     List<int> a45ids_to = null;
-                    if (v.lisCommentTo != null)
+                    if (v.lisCommentTo != null && v.IsCommentToAll==false)
                     {
-                        a45ids_to = v.lisCommentTo.Select(p => p.a45ID).ToList();
+                        a45ids_to = v.lisCommentTo.Where(p=>p.a45IsManual==true).Select(p => p.a45ID).ToList();
+                        if (a45ids_to.Count() == 0)
+                        {
+                            this.AddMessage("Chybí zaškrtnout, komu má být komentář určený.");
+                            return View(v);
+                        }
                     }
                     intRet = Factory.WorkflowBL.SaveWorkflowComment(v.pid, v.Comment,v.UploadGuid, a45ids_to);    //pouze zapsat komentář
                 }
@@ -124,13 +129,12 @@ namespace UI.Controllers
 
             
             v.lisA41 = Factory.a41PersonToEventBL.GetList(new BO.myQueryA41() { a01id = v.pid, j02id=Factory.CurrentUser.j02ID, CurrentUser = Factory.CurrentUser });
-            if (Factory.App.Implementation == "HD" && Factory.CurrentUser.j04IsAllowedAllEventTypes)
-            {                
+            if (Factory.App.Implementation == "HD" && Factory.CurrentUser.j04IsAllowedAllEventTypes && v.lisCommentTo==null)
+            {
+                v.IsCommentToAll = true;
                 v.lisCommentTo = new List<BO.a45EventRole>();
                 var lisx = Factory.a41PersonToEventBL.GetList(new BO.myQueryA41() { a01id = v.pid });
                 var qry = from xx in lisx select new { xx.a45ID, xx.a45Name };
-
-
 
                 foreach (var c in qry.Distinct())
                 {

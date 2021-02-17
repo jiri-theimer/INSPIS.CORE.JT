@@ -376,7 +376,7 @@ namespace BL
 
             if (c.b05IsCommentRestriction)
             {
-                _db.RunSql("INSERT INTO b04WorkflowComment_Restriction(b05ID,a45ID) SELECT @pid,a45ID FROM a45EventRole WHERE a45ID IN (" + string.Join(",", a45ids_restrict_to) + ")");
+                _db.RunSql("INSERT INTO b04WorkflowComment_Restriction(b05ID,a45ID) SELECT @pid,a45ID FROM a45EventRole WHERE a45ID IN (" + string.Join(",", a45ids_restrict_to) + ")",new { pid = intB05ID });
             }
             if (string.IsNullOrEmpty(strUploadGUID) == false)
             {
