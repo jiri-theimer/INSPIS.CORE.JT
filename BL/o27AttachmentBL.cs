@@ -16,7 +16,7 @@ namespace BL
         public BO.o27Attachment InhaleFileByInfox(string strInfoxFullPath);
         public List<BO.o27Attachment> GetTempFiles( string strTempGUID);
         public int Save(BO.o27Attachment rec);
-        public bool SaveChangesAndUpload(string guid, int x29id, int recpid);
+        public bool SaveChangesAndUpload(string guid, int x29id, int recpid,int b05id=0);
         public bool SaveSingleUpload(string guid, int x29id, int recpid);
         public int UploadAndSaveOneFile(BO.o27Attachment rec, string strOrigFileName, string strSourceFullPath, string strExplicitArchiveFileName = null);
         public List<BO.o27Attachment> CopyTempFiles2Upload(string strTempGUID);
@@ -85,7 +85,8 @@ namespace BL
             p.AddInt("o13ID", rec.o13ID, true);
             p.AddInt("x29ID", rec.x29ID, true);
             p.AddInt("o27DataPID", rec.o27DataPID,true);
-            
+            p.AddInt("b05ID", rec.b05ID, true);
+
 
             p.AddString("o27Label", rec.o27Label);
             p.AddString("o27Description", rec.o27Description);
@@ -226,7 +227,7 @@ namespace BL
         }
 
 
-        public bool SaveChangesAndUpload(string guid,int x29id,int recpid)
+        public bool SaveChangesAndUpload(string guid,int x29id,int recpid,int b05id=0)
         {
             using (var sc = new System.Transactions.TransactionScope()) //podléhá jedné transakci
             {
@@ -237,6 +238,9 @@ namespace BL
                     {
                         recO27.o27DataPID = recpid;
                         recO27.o27ArchiveFolder = GetUploadFolder(recO27.o13ID);
+                        recO27.b05ID = b05id;
+                        recO27.o27DownloadGUID = BO.BAS.GetGuid();
+                        recO27.o27GUID = recO27.o27DownloadGUID;
                         var intO27ID = Save(recO27);
                         if (intO27ID > 0)
                         {

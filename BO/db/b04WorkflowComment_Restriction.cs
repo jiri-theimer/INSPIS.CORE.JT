@@ -11,5 +11,6 @@ namespace BO
         public int a45ID { get; set; }
         public int j02ID { get; set; }
         
+        public string a45Name { get; }
     }
 }

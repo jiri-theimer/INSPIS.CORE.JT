@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
+using Microsoft.VisualBasic;
 
 namespace BL
 {
@@ -380,8 +381,36 @@ namespace BL
             }
             if (string.IsNullOrEmpty(strUploadGUID) == false)
             {
-                _mother.o27AttachmentBL.SaveChangesAndUpload(strUploadGUID, 101, intA01ID);
+                _mother.o27AttachmentBL.SaveChangesAndUpload(strUploadGUID, 101, intA01ID, intB05ID);
             }
+            
+            var recA01 = _mother.a01EventBL.Load(intA01ID);
+            var recX40 = new BO.x40MailQueue() { x29ID = 101, x40DataPID = intA01ID, x40IsAutoNotification = true };
+            recX40.x40Subject =_mother.App.AppName+": "+ _mother.tra("Komentář") + " / " + _mother.CurrentUser.FullName;
+            recX40.x40Body = _mother.App.AppName+": "+_mother.CurrentUser.FullName + " / " + BO.BAS.ObjectDateTime2String(DateTime.Now);
+            recX40.x40Body += Constants.vbCrLf + Constants.vbCrLf;
+            recX40.x40Body += _mother.tra("Akce") + ": " + recA01.a10Name + " / " + recA01.a01Signature;
+            recX40.x40Body += Constants.vbCrLf + Constants.vbCrLf;
+            recX40.x40Body += _mother.tra("Komentář")+": "+ Constants.vbCrLf+strComment;
+            recX40.x40Body += Constants.vbCrLf + Constants.vbCrLf;
+            recX40.x40Body += _mother.b65WorkflowMessageBL.GetLinkUrl(101, intA01ID, recA01);
+
+            var lisA41 = _mother.a41PersonToEventBL.GetList(new BO.myQueryA41() { a01id = intA01ID });
+            if (a45ids_restrict_to == null)
+            {
+                a45ids_restrict_to = lisA41.Select(p => (int) p.a45ID).Distinct().ToList();
+            }
+            var persons = new List<BO.j02Person>();
+            foreach (var recA41 in lisA41)
+            {
+                if (a45ids_restrict_to.Contains((int) recA41.a45ID))
+                {
+                    var lisJ02 = GetAllPersonsOfEventRole(recA01, (int)recA41.a45ID, 0, recA41.j11ID, lisA41);
+                    persons.AddRange(lisJ02);
+                }                
+            }
+            recX40.x40Recipient = string.Join(",", persons.Select(p=>p.j02Email).Distinct());
+            _mother.MailBL.SendMessage(recX40, false);
 
             return intB05ID;
         }

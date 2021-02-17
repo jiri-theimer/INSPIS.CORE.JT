@@ -28,7 +28,7 @@ namespace BL
             sb("SELECT a.*,");
             sb(_db.GetSQL1_Ocas("a41",false,false));
             sb(",a11_a45.a45Name,a11_a45.a45IsPlan,a11_a45.a45IsManual");
-            sb(",a11_j11.j11Name,a11_j02.j02IsInvitedPerson,a11_j02.j02FirstName,a11_j02.j02LastName,a11_j02.j02TitleBeforeName,a11_j02.j02TitleAfterName");            
+            sb(",a11_j11.j11Name,a11_j02.j02IsInvitedPerson,a11_j02.j02FirstName,a11_j02.j02LastName,a11_j02.j02TitleBeforeName,a11_j02.j02TitleAfterName,a11_j02.j02Email");            
             sb(" FROM a41PersonToEvent a INNER JOIN a45EventRole a11_a45 ON a.a45ID=a11_a45.a45ID");
             sb(" LEFT OUTER JOIN j11Team a11_j11 on a.j11ID=a11_j11.j11ID LEFT OUTER JOIN j02Person a11_j02 ON a.j02ID=a11_j02.j02ID");            
             sb(strAppend);

@@ -13,6 +13,7 @@ namespace BL
 
         public BO.b65WorkflowMessage MailMergeRecord(BO.b65WorkflowMessage recB65, int datapid, string param1);
         public BO.b65WorkflowMessage MailMergeRecord(int b65id, int datapid, string param1);
+        public string GetLinkUrl(int x29id, int datapid, BO.a01Event recA01 = null);
 
     }
     class b65WorkflowMessageBL : BaseBL, Ib65WorkflowMessageBL
@@ -106,44 +107,55 @@ namespace BL
             recB65.b65MessageSubject = cMerge.GetMergedContent(recB65.b65MessageSubject, dt).Replace("#param1", param1, StringComparison.OrdinalIgnoreCase);
             if (recB65.b65MessageBody.Contains("#link#") && !string.IsNullOrEmpty(_mother.App.UserUrl))
             {
-                string strURL = _mother.App.UserUrl;
-                if (BO.BAS.RightString(strURL, 1) != "/")
-                {
-                    strURL += "/";
-                }
-                switch (recB65.x29ID)
-                {
-                    case 101:
-                        var recA01 = _mother.a01EventBL.Load(datapid);
-                        var recA10 = _mother.a10EventTypeBL.Load(recA01.a10ID);
-                        if (recA10.a10ViewUrl_Page != null)
+
+                recB65.b65MessageBody = recB65.b65MessageBody.Replace("#link#", GetLinkUrl(recB65.x29ID, datapid));
+            }
+            return recB65;
+        }
+
+        public string GetLinkUrl(int x29id,int datapid,BO.a01Event recA01=null)
+        {
+            string strURL = _mother.App.UserUrl;
+            if (BO.BAS.RightString(strURL, 1) != "/")
+            {
+                strURL += "/";
+            }
+            switch (x29id)
+            {
+                case 101:
+                    if (recA01 == null)
+                    {
+                        recA01 = _mother.a01EventBL.Load(datapid);
+                    }
+                   
+                    var recA10 = _mother.a10EventTypeBL.Load(recA01.a10ID);
+                    if (recA10.a10ViewUrl_Page != null)
+                    {
+                        if (recA10.a10ViewUrl_Page.Contains("/"))
                         {
-                            if (recA10.a10ViewUrl_Page.Contains("/"))
-                            {
-                                strURL += recA10.a10ViewUrl_Page;
-                            }
-                            else
-                            {
-                                strURL += "a01/" + recA10.a10ViewUrl_Page;
-                            }
-                            
+                            strURL += recA10.a10ViewUrl_Page;
                         }
                         else
                         {
-                            strURL += "a01/RecPage";
+                            strURL += "a01/" + recA10.a10ViewUrl_Page;
                         }
-                        strURL += "?pid=" + datapid.ToString();
-                        break;
-                    case 103:
-                        strURL += "a03/RecPage?pid=" + datapid.ToString();
-                        break;
-                    case 502:
-                        strURL += "j02/RecPage?pid=" + datapid.ToString();
-                        break;
-                }
-                recB65.b65MessageBody = recB65.b65MessageBody.Replace("#link#", strURL);
+
+                    }
+                    else
+                    {
+                        strURL += "a01/RecPage";
+                    }
+                    strURL += "?pid=" + datapid.ToString();
+                    break;
+                case 103:
+                    strURL += "a03/RecPage?pid=" + datapid.ToString();
+                    break;
+                case 502:
+                    strURL += "j02/RecPage?pid=" + datapid.ToString();
+                    break;
             }
-            return recB65;
+
+            return strURL;
         }
 
     }

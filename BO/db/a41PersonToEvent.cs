@@ -42,6 +42,7 @@ namespace BO
         public string j02LastName;
         public string j02TitleBeforeName;
         public string j02TitleAfterName;
+        public string j02Email;
         public string PersonAsc
         {
             get

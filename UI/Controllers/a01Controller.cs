@@ -255,6 +255,7 @@ namespace UI.Controllers
             var mq = new BO.myQuery("b05");
             mq.a01id = v.pid;
             v.lisB05 = Factory.b05Workflow_HistoryBL.GetList(mq);
+            var lisO27 = Factory.o27AttachmentBL.GetList(new BO.myQueryO27() { a01id = v.pid },null);
             IEnumerable<BO.a41PersonToEvent> lisA41 = null;
             if (v.lisB05.Any(p => p.b05IsCommentRestriction)){
                 //v historii komentářů jsou zprávy cílené pro určité role
@@ -268,11 +269,16 @@ namespace UI.Controllers
                     var lisB04 = Factory.b05Workflow_HistoryBL.GetList_b04(c.pid);
                     if (lisB04.Count() > 0)
                     {
-                        var qry = from a in lisB04 join b in lisA41 on a.a45ID equals (int)b.a45ID select a.b04ID;
-                        if (qry.Count() == 0)
+                        c.b05Comment = "["+string.Join(", ", lisB04.Select(p => p.a45Name)) + "]<br>" + c.b05Comment;
+                        if (c.j03ID_Sys != Factory.CurrentUser.pid)
                         {
-                            c.pid = 0;  //komentář není určený pro roli uživatele v akci
+                            var qry = from a in lisB04 join b in lisA41 on a.a45ID equals (int)b.a45ID select a.b04ID;
+                            if (qry.Count() == 0)
+                            {
+                                c.pid = 0;  //komentář není určený pro roli uživatele v akci
+                            }
                         }
+                        
                     }
                     
                 }
@@ -309,9 +315,19 @@ namespace UI.Controllers
                             c.b05Comment = "";
                         }
                     }
+                    
                     if (c.b05IsCommentRestriction)
                     {
-                        
+                        c.b05Comment = "<div style='background-color:#FFFFE0;'>" + c.b05Comment + "</div>";
+                    }
+                    
+
+                    if (lisO27.Any(p => p.b05ID == c.pid))
+                    {
+                        foreach (var recO27 in lisO27.Where(p => p.b05ID == c.pid))
+                        {
+                            c.b05Comment += $"<br><a target='_blank' href='/FileUpload/FileDownloadInline?downloadguid={recO27.o27DownloadGUID}'>{recO27.o27OriginalFileName}</a>";
+                        }
                     }
                 }
             }

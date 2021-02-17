@@ -15,6 +15,7 @@ namespace BO
         public int f19id { get; set; }
         public int j02id { get; set; }
         public int o13id { get; set; }
+        public int b05id { get; set; }
         public int x29id { get; set; }
         public int recpid { get; set; }
         public myQueryO27()
@@ -28,7 +29,10 @@ namespace BO
             {
                 AQ("a.o13ID=@o13id", "o13id", this.o13id);
             }
-
+            if (this.b05id > 0)
+            {
+                AQ("a.b05ID=@b05id", "b05id", this.b05id);
+            }
             if (this.x29id > 0)
             {
                 AQ("a.x29ID=@x29id", "x29id", this.x29id);

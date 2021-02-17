@@ -60,7 +60,7 @@ namespace BL
 
         public IEnumerable<BO.b04WorkflowComment_Restriction> GetList_b04(int b05id)
         {
-            return _db.GetList<BO.b04WorkflowComment_Restriction>("select * FROM b04WorkflowComment_Restriction WHERE b05ID=@b05id", new { b05id = b05id });
+            return _db.GetList<BO.b04WorkflowComment_Restriction>("select a.*,b.a45Name FROM b04WorkflowComment_Restriction a INNER JOIN a45EventRole b ON a.a45ID=b.a45ID WHERE a.b05ID=@b05id", new { b05id = b05id });
         }
 
         public int Save(BO.b05Workflow_History rec)

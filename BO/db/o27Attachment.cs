@@ -16,6 +16,7 @@ namespace BO
         public int o27ID { get; set; }    
         public int o13ID { get; set; }
         public int x29ID { get; set; }
+        public int b05ID { get; set; }
         public int o27DataPID { get; set; }
         public string o27Label { get; set; }
         public string o27OriginalFileName { get; set; }
