@@ -39,7 +39,7 @@
     <div class="row my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Role"):</label>
         <div class="col-sm-11 col-md-10">
-            <mycombo entity="j04UserRole" asp-for="Rec.j04ID_Explicit" selectedtext="@Model.RoleName" param1="institution"></mycombo>
+            <mycombo entity="j04UserRole" asp-for="Rec.j04ID_Explicit" selectedtext="@Model.RoleName" myqueryinline="institutionrole@bool@1"></mycombo>
         </div>
 
     </div>

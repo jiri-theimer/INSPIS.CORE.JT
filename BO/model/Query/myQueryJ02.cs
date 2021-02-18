@@ -13,7 +13,9 @@ namespace BO
         public int a04id { get; set; }
         public int j11id { get; set; }
         public int h04id { get; set; }
-        
+        public bool? j02isinvitedperson { get; set; }
+        public bool? a02inspector { get; set; }
+        public bool without_teams_and_owner { get; set; }
 
         public myQueryJ02()
         {
@@ -28,7 +30,7 @@ namespace BO
             }
             if (this.a01id > 0)
             {
-                if (this.param1 == "without_teams_and_owner")
+                if (this.without_teams_and_owner)
                 {
                     AQ("a.j02ID IN (select j02ID FROM a41PersonToEvent WHERE a01ID=@a01id AND a45ID<>5 AND j02ID IS NOT NULL)", "a01id", this.a01id);
                 }
@@ -57,17 +59,22 @@ namespace BO
             {
                 AQ("a.j02ID IN (select j02ID FROM h06ToDoReceiver WHERE h04ID=@h04id AND j02ID IS NOT NULL)", "h04id", this.h04id);
             }
-            
-            switch (this.param1)
+            if (this.j02isinvitedperson != null)
             {
-                case "j02IsInvitedPerson":
-                    AQ("a.j02IsInvitedPerson=1", "", null);    //filtr přizvaných osob
-                    break;
-                case "a02Inspector":
-                    AQ("a.j02ID IN (select j02ID FROM a02Inspector)", "", null);    //filtr přizvaných osob
-                    break;
+                AQ("a.j02IsInvitedPerson=@j02isinvitedperson", "j02isinvitedperson", this.j02isinvitedperson);
             }
-           
+            if (this.a02inspector !=null)
+            {
+                if (this.a02inspector==true)
+                {
+                    AQ("a.j02ID IN (select j02ID FROM a02Inspector)", "", null);
+                }
+                else
+                {
+                    AQ("a.j02ID NOT IN (select j02ID FROM a02Inspector)", "", null);
+                }
+            }
+            
 
             if (_searchstring != null && _searchstring.Length > 2)
             {

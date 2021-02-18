@@ -28,7 +28,7 @@ namespace UI.Views.Shared.TagHelpers
 
         [HtmlAttributeName("placeholder")]
         public string PlaceHolder { get; set; }
-        public string Param1 { get; set; }
+        public string myqueryinline { get; set; }
 
         [HtmlAttributeName("masterpid")]
         public int masterpid { get; set; }
@@ -111,7 +111,7 @@ namespace UI.Views.Shared.TagHelpers
             sb("<script type='text/javascript'>");
             _sb.Append(string.Format("var c{0}=", strControlID));
             _sb.Append("{");
-            _sb.Append(string.Format("controlid: '{0}',posturl: '/TheCombo/GetHtml4TheCombo',entity:'{1}',param1: '{2}',defvalue: '{3}',deftext: '{4}',on_after_change: '{5}',viewflag: '{6}',filterflag: '{7}',placeholder: '{8}',masterprefix:'{9}',masterpid:{10}", strControlID, this.Entity, this.Param1, _SelectedValue.ToString(), this.SelectedText.Model, this.Event_After_ChangeValue, this.ViewFlag, this.FilterFlag, this.PlaceHolder, this.masterprefix, this.masterpid));
+            _sb.Append(string.Format("controlid: '{0}',posturl: '/TheCombo/GetHtml4TheCombo',entity:'{1}',myqueryinline: '{2}',defvalue: '{3}',deftext: '{4}',on_after_change: '{5}',viewflag: '{6}',filterflag: '{7}',placeholder: '{8}',masterprefix:'{9}',masterpid:{10}", strControlID, this.Entity, this.myqueryinline, _SelectedValue.ToString(), this.SelectedText.Model, this.Event_After_ChangeValue, this.ViewFlag, this.FilterFlag, this.PlaceHolder, this.masterprefix, this.masterpid));
             _sb.Append("};");
             sb("");
             sb("");

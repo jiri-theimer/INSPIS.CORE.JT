@@ -33,7 +33,7 @@ namespace UI.Controllers
 
                 var mqJ04 = new BO.myQueryJ04();
                 mqJ04.b06id = v.rec_pid;
-                mqJ04.param1 = "b12";
+                //mqJ04.param1 = "b12";
                 v.b12_j04IDs = string.Join(",", Factory.j04UserRoleBL.GetList(mqJ04).Select(p => p.pid));
                 v.b12_j04Names = string.Join(",", Factory.j04UserRoleBL.GetList(mqJ04).Select(p => p.j04Name));
 

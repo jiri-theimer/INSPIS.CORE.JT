@@ -10,6 +10,7 @@ namespace BO
         public int b06id { get; set; }
         public int a08id { get; set; }
         public int f12id { get; set; }
+        public bool? ispollforms { get; set; }  //true: formuláře použitelné jako anketní
         public myQueryF06()
         {
             this.Prefix = "f06";
@@ -35,7 +36,7 @@ namespace BO
             {
                 AQ("a.f12ID=@f12id", "f12id", this.f12id);
             }
-            if (this.param1 == "poll")
+            if (this.ispollforms==true)
             {
                 AQ("ISNULL(a.f06BindScopeQuery,0) IN (0,2)", "", null);    //formuláře použitelné jako anketní
             }

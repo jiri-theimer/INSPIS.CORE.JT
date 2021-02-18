@@ -49,7 +49,7 @@
         $("#divData" + c.controlid).html("Loading...");
 
 
-        $.post(c.posturl, { entity: c.entity, o15flag: "", tableid: _tabid, param1: c.param1, filterflag: _filterflag, searchstring: $(_searchbox).val(), masterprefix: _masterprefix, masterpid: _masterpid }, function (data) {
+        $.post(c.posturl, { entity: c.entity, o15flag: "", tableid: _tabid, myqueryinline: c.myqueryinline, filterflag: _filterflag, searchstring: $(_searchbox).val(), masterprefix: _masterprefix, masterpid: _masterpid }, function (data) {
             $("#divData" + c.controlid).html(data);
 
 
@@ -290,7 +290,7 @@
     function handle_server_filtering() {
         var s = $(_searchbox).val();
         $("#divData" + c.controlid).html("Loading...");
-        $.post(c.posturl, { entity: c.entity, o15flag: "", tableid: _tabid, param1: c.param1, filterflag: _filterflag, searchstring: s, masterprefix: _masterprefix, masterpid: _masterpid }, function (data) {
+        $.post(c.posturl, { entity: c.entity, o15flag: "", tableid: _tabid, myqueryinline: c.myqueryinline, filterflag: _filterflag, searchstring: s, masterprefix: _masterprefix, masterpid: _masterpid }, function (data) {
             $("#divData" + c.controlid).html(data);
 
             $("#" + _tabid + " .txz").on("click", function () {

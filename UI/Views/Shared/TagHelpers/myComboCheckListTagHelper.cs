@@ -28,8 +28,8 @@ namespace UI.Views.Shared.TagHelpers
         [HtmlAttributeName("masterprefix")]
         public string masterprefix { get; set; }
 
-        [HtmlAttributeName("param1")]
-        public string Param1 { get; set; }
+        [HtmlAttributeName("myqueryinline")]
+        public string myqueryinline { get; set; }
 
         [HtmlAttributeName("selectedtext")]
         public ModelExpression SelectedText { get; set; }
@@ -94,7 +94,7 @@ namespace UI.Views.Shared.TagHelpers
             sb("");
             _sb.Append(string.Format("var c{0}=", strControlID));
             _sb.Append("{");
-            _sb.Append(string.Format("controlid: '{0}',posturl: '/TheCombo/GetHtml4Checkboxlist',entity:'{1}',masterprefix:'{2}',masterpid:{3},selectedvalues:'{4}',param1:'{5}',on_after_change:'{6}',placeholder:'{7}'", strControlID, this.Entity, this.masterprefix, this.masterpid, strSelectedValues, this.Param1, this.Event_After_ChangeValue, this.PlaceHolder));
+            _sb.Append(string.Format("controlid: '{0}',posturl: '/TheCombo/GetHtml4Checkboxlist',entity:'{1}',masterprefix:'{2}',masterpid:{3},selectedvalues:'{4}',myqueryinline:'{5}',on_after_change:'{6}',placeholder:'{7}'", strControlID, this.Entity, this.masterprefix, this.masterpid, strSelectedValues, this.myqueryinline, this.Event_After_ChangeValue, this.PlaceHolder));
             _sb.Append("};");
 
             sb("");

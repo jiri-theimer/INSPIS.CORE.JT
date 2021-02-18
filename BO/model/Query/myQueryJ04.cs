@@ -15,6 +15,8 @@ namespace BO
         public int h11id { get; set; }
         public int x55id { get; set; }
         public int j72id { get; set; }
+        public bool? j04isallowInschooladmin { get; set; }
+        public bool institutionrole { get; set; }
         public myQueryJ04()
         {
             this.Prefix = "j04";
@@ -38,12 +40,12 @@ namespace BO
             {
                 AQ("a.j04ID IN (select j04ID FROM f07Form_UserRole_EncryptedPermission WHERE f06ID=@f06id)", "f06id", this.f06id);
             }
-
-            if (this.param1 == "j04IsAllowInSchoolAdmin")
+            if (this.j04isallowInschooladmin != null)
             {
-                AQ("a.j04IsAllowInSchoolAdmin=1", "", null);    //filtr školních rolí podle j04IsAllowInSchoolAdmin=1
+                AQ("a.j04IsAllowInSchoolAdmin=@j04isallowInschooladmin", "j04isallowInschooladmin", this.j04isallowInschooladmin);    //filtr školních rolí podle j04IsAllowInSchoolAdmin=1
             }
-            if (this.param1 == "institution")
+            
+            if (this.institutionrole)
             {
                 AQ("(a.j04IsAllowInSchoolAdmin=1 OR a.j04RelationFlag=2)", "", null);    //filtr školních rolí podle j04IsAllowInSchoolAdmin=1
             }

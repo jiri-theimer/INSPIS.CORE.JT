@@ -25,7 +25,11 @@ namespace BO
         public int f21id { get; set; }
         public int a01id { get; set; }
         public int j04id { get; set; }
-        
+        public bool? a45ismanual { get; set; }
+        public string x24controlname { get; set; }
+        public bool statuses4createtodo { get; set; }   //filtr stavů pro nově zakládaný úkol
+        public bool disponiblesmtpaccounts { get; set; }
+
         public myQuery(string prefix)
         {
             this.Prefix = prefix.Substring(0,3);
@@ -67,7 +71,7 @@ namespace BO
             if (this.b06id > 0)
             {                
                 if (this.Prefix == "o13") AQ("a.o13ID IN (select o13ID FROM b14WorkflowRequiredAttachmentTypeToStep WHERE b06ID=@b06id)", "b06id", this.b06id);
-                if (this.Prefix == "a45" && this.param1 == "b12") AQ("a.a45ID IN (select a45ID FROM b12WorkflowReceiverToHistory WHERE a45ID IS NOT NULL AND b06ID=@b06id)", "b06id", this.b06id);
+                //if (this.Prefix == "a45" && this.param1 == "b12") AQ("a.a45ID IN (select a45ID FROM b12WorkflowReceiverToHistory WHERE a45ID IS NOT NULL AND b06ID=@b06id)", "b06id", this.b06id);
             }
             if (this.b01id > 0)
             {
@@ -109,27 +113,27 @@ namespace BO
                 if (this.Prefix == "a08") AQ("a.a08ID IN (select a08ID FROM a26EventTypeThemeScope WHERE a10ID=@a10id)", "a10id", this.a10id);
             }
             
-            if (this.Prefix == "x29")
-            {
-                if (this.param1 == "x29IsAttachment") { AQ("a.x29IsAttachment=1", "", null); };    //filtr entit x29IsAttachment=1
-                if (this.param1 == "x29IsReport") { AQ("a.x29IsReport=1", "", null); };    //filtr entit x29IsReport=1
-            }
+            //if (this.Prefix == "x29")
+            //{
+            //    if (this.param1 == "x29IsAttachment") { AQ("a.x29IsAttachment=1", "", null); };    //filtr entit x29IsAttachment=1
+            //    if (this.param1 == "x29IsReport") { AQ("a.x29IsReport=1", "", null); };    //filtr entit x29IsReport=1
+            //}
             if (this.x29id > 0)
             {
                 if (this.Prefix == "o13") AQ("a.x29ID=@x29id", "x29id", this.x29id);
 
             }
-            if (this.Prefix == "b02" && this.param1 != null)
-            {
-                AQ("a.b02Entity=@prefix", "prefix", this.param1);    //filtr seznamu stavů podle druhu entity
-            }
-            if (this.Prefix == "h05" && this.param1 == "createtodo")
+            //if (this.Prefix == "b02" && this.param1 != null)
+            //{
+            //    AQ("a.b02Entity=@prefix", "prefix", this.param1);    //filtr seznamu stavů podle druhu entity
+            //}
+            if (this.Prefix == "h05" && this.statuses4createtodo)
             {
                 AQ("a.h05ID IN (1,2)", "", null);    //filtr stavů pro nově zakládaný úkol
             }
             
            
-            if (this.Prefix == "x24" && this.param1 == "textbox")
+            if (this.Prefix == "x24" && this.x24controlname == "textbox")
             {
                 AQ("a.x24ID IN (1,2,3,4,5)", "", null);    //filtr v datovém typu otázky pro TEXTBOX
             }
@@ -149,34 +153,26 @@ namespace BO
             }
 
 
-            if (this.Prefix == "a45" && this.param1 == "a45IsManual1")
+            if (this.Prefix == "a45" && this.a45ismanual !=null)
             {
-                AQ( "a.a45IsManual=1", "", null);
+                AQ("a.a45IsManual=@a45ismanual", "a45ismanual", this.a45ismanual);
             }
-            if (this.Prefix == "b65" && this.param1 != null)
+            if (this.Prefix == "b65" && this.x29id>0)
             {
-                AQ( "a.x29ID=@x29id", "x29id", BO.BAS.InInt(this.param1));
-            }
-            if (this.Prefix == "b02" && this.param1 != null)
-            {
-                AQ( "a.b02Entity=@prefix", "prefix", this.param1);    //filtr seznamu stavů podle druhu entity
-            }
-            if (this.Prefix == "h05" && this.param1 == "createtodo")
-            {
-                AQ("a.h05ID IN (1,2)", "", null);    //filtr stavů pro nově zakládaný úkol
-            }
-           
-           
-            if (this.Prefix == "x24" && this.param1 == "textbox")
-            {
-                AQ("a.x24ID IN (1,2,3,4,5)", "", null);    //filtr v datovém typu otázky pro TEXTBOX
+                AQ( "a.x29ID=@x29id", "x29id", this.x29id);
             }
             
-            if (this.Prefix == "x29")
-            {
-                if (this.param1 == "x29IsAttachment") { AQ("a.x29IsAttachment=1", "", null); };    //filtr entit x29IsAttachment=1
-                if (this.param1 == "x29IsReport") { AQ("a.x29IsReport=1", "", null); };    //filtr entit x29IsReport=1
-            }
+            //if (this.Prefix == "b02" && this.param1 != null)
+            //{
+            //    AQ( "a.b02Entity=@prefix", "prefix", this.param1);    //filtr seznamu stavů podle druhu entity
+            //}
+         
+          
+            //if (this.Prefix == "x29")
+            //{
+            //    if (this.param1 == "x29IsAttachment") { AQ("a.x29IsAttachment=1", "", null); };    //filtr entit x29IsAttachment=1
+            //    if (this.param1 == "x29IsReport") { AQ("a.x29IsReport=1", "", null); };    //filtr entit x29IsReport=1
+            //}
 
             if (this.MyRecordsDisponible && this.Prefix == "h11")
             {
@@ -186,6 +182,11 @@ namespace BO
             if (this.MyRecordsDisponible && this.Prefix == "x55")
             {
                 AQ("(a.x55ID NOT IN (select x55ID FROM x57WidgetRestriction) OR a.x55ID IN (SELECT x55ID FROM x57WidgetRestriction WHERE j04ID=@j04id_me)) AND GETDATE() BETWEEN a.x55ValidFrom AND a.x55ValidUntil", "j04id_me", this.CurrentUser.j04ID);
+
+            }
+            if (this.MyRecordsDisponible && this.Prefix == "j40")
+            {
+                AQ("(a.j40UsageFlag=2 OR (a.j02ID=@j02id AND a.j40UsageFlag=1)) AND GETDATE() between a.j40ValidFrom AND a.j40ValidUntil", "j02id", this.CurrentUser.j02ID);
 
             }
 

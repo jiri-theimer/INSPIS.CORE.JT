@@ -29,7 +29,7 @@
     <div class="row my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Přidat do seznamu"):</label>
         <div class="col-sm-11 col-md-10">
-            <mycombo entity="f21ReplyUnit" asp-for="@Model.SelectedF21ID" selectedtext="@Model.SelectedF21Name" filter-flag="1" param1="search" placeholder="@_f.tra("Vybrat jednotku odpovědi")..." event_after_changevalue="handle_f21id_append"></mycombo>
+            <mycombo entity="f21ReplyUnit" asp-for="@Model.SelectedF21ID" selectedtext="@Model.SelectedF21Name" filter-flag="1" myqueryinline="searchunits@bool@1" placeholder="@_f.tra("Vybrat jednotku odpovědi")..." event_after_changevalue="handle_f21id_append"></mycombo>
         </div>
 
     </div>

@@ -115,15 +115,15 @@ namespace BO
                 AQ("a.a08ID=@a08id", "a08id", this.a08id);
             }
 
-            switch (this.param1)
-            {
-                case "j02IsInvitedPerson":
-                    AQ("a.j02IsInvitedPerson=1", "", null);    //filtr přizvaných osob
-                    break;
-                case "a02Inspector":
-                    AQ("a.j02ID IN (select j02ID FROM a02Inspector)", "", null);    //filtr přizvaných osob
-                    break;
-            }
+            //switch (this.param1)
+            //{
+            //    case "j02IsInvitedPerson":
+            //        AQ("a.j02IsInvitedPerson=1", "", null);    //filtr přizvaných osob
+            //        break;
+            //    case "a02Inspector":
+            //        AQ("a.j02ID IN (select j02ID FROM a02Inspector)", "", null);    //filtr přizvaných osob
+            //        break;
+            //}
 
 
             if (_searchstring != null && _searchstring.Length > 2)

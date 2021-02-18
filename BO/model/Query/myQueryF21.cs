@@ -8,7 +8,7 @@ namespace BO
     {
         public int f22id { get; set; }
         public int f19id { get; set; }
-        
+        public bool searchunits { get; set; }
 
         public myQueryF21()
         {
@@ -25,7 +25,7 @@ namespace BO
             {
                 AQ("a.f21ID IN (SELECT f21ID FROM f20ReplyUnitToQuestion WHERE f19ID=@f19id)", "f19id", this.f19id);
             }
-            if (this.param1 == "search")
+            if (this.searchunits)
             {
                 AQ("ISNULL(a.f21Name,'') NOT IN ('textbox','checkbox','fileupload','')", "", null);    //filtr neprázdných jednotek odpovědi
             }

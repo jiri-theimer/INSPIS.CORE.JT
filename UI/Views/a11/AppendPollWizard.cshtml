@@ -39,7 +39,7 @@
         <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Vybrat formulář"):</label>
             <div class="col-sm-11 col-md-10">
-                <mycombo entity="f06Form" asp-for="@Model.SelectedF06ID" selectedtext="@Model.SelectedForm" placeholder="@_f.tra("Vybrat formulář")..." masterprefix="a08" masterpid="@Model.RecA01.a08ID" param1="poll"></mycombo>
+                <mycombo entity="f06Form" asp-for="@Model.SelectedF06ID" selectedtext="@Model.SelectedForm" placeholder="@_f.tra("Vybrat formulář")..." masterprefix="a08" masterpid="@Model.RecA01.a08ID" myqueryinline="ispollforms@bool@1"></mycombo>
             </div>
 
         </div>
@@ -62,7 +62,7 @@
         <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Šablona notifikační zprávy"):</label>
             <div class="col-sm-11 col-md-10">
-                <mycombo entity="b65WorkflowMessage" asp-for="@Model.SelectedB65ID" selectedtext="@Model.SelectedB65Name" param1="111" event_after_changevalue="b65id_change"></mycombo>
+                <mycombo entity="b65WorkflowMessage" asp-for="@Model.SelectedB65ID" selectedtext="@Model.SelectedB65Name" myqueryinline="x29id@int@111" event_after_changevalue="b65id_change"></mycombo>
             </div>
 
         </div>

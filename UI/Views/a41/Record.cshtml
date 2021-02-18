@@ -15,7 +15,7 @@
     <div class="row">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Role v akci"):</label>
         <div class="col-sm-11 col-md-10">
-            <mycombo entity="a45EventRole" asp-for="Rec.a45ID" selectedtext="Rec.a45Name" placeholder="@_f.tra("Vybrat roli v akci")..." view-flag="2" param1="a45IsManual1"></mycombo>
+            <mycombo entity="a45EventRole" asp-for="Rec.a45ID" selectedtext="Rec.a45Name" placeholder="@_f.tra("Vybrat roli v akci")..." view-flag="2" myqueryinline="a45ismanual@bool@1"></mycombo>
         </div>
     </div>
 

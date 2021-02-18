@@ -14,6 +14,7 @@ namespace BO
         public int a42id { get; set; }
         public int a06id { get; set; }
         public int a29id { get; set; }
+        public int a03parentflag { get; set; } = -1;
         public myQueryA03()
         {
             this.Prefix = "a03";
@@ -55,9 +56,9 @@ namespace BO
             {
                 AQ("a.a03ID IN (select a03ID FROM a43InstitutionToList WHERE a29ID=@a29id)", "a29id", this.a29id);
             }
-            if (this.param1 == "parent")
+            if (this.a03parentflag>-1)
             {
-                AQ("a.a03ParentFlag=1", "", null);    //filtr pouze nadřízené školy
+                AQ("a.a03ParentFlag=@parentflag", "@parentflag", this.a03parentflag);    //filtr pouze nadřízené školy
             }
 
             if (_searchstring !=null && _searchstring.Length > 2)

@@ -57,7 +57,7 @@ namespace UI.Controllers
             }
             else
             {
-                mqJ02.param1 = "a02Inspector";
+                mqJ02.a02inspector = true;               
             }
             if (!string.IsNullOrEmpty(v.o51IDs))
             {

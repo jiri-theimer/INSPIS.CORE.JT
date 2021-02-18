@@ -134,7 +134,7 @@
                 @if (Model.Rec.a03ParentFlag == BO.a03ParentFlagEnum.Slave)
                 {
                     <div class="col-sm-8 col-md-8">
-                        <mycombo entity="a03Institution" asp-for="Rec.a03ID_Parent" selectedtext="@Model.ParentName" filter-flag="1" param1="parent" placeholder="@_f.tra("Vybrat nadřízenou školu")" event_after_changevalue="parent_change"></mycombo>
+                        <mycombo entity="a03Institution" asp-for="Rec.a03ID_Parent" selectedtext="@Model.ParentName" filter-flag="1" myqueryinline="a03parentflag@int@1" placeholder="@_f.tra("Vybrat nadřízenou školu")" event_after_changevalue="parent_change"></mycombo>
 
                     </div>
                 }

@@ -68,7 +68,7 @@ namespace BO
         public bool? IsRecordValid { get; set; }
         public List<int> o51ids { get; set; }
 
-        public string param1 { get; set; }
+        //public string param1 { get; set; }
         public DateTime? global_d1;
         private DateTime? _global_d2;
         public DateTime? global_d2

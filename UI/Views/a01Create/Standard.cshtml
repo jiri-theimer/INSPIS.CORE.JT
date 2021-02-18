@@ -212,7 +212,7 @@
                 <div class="my-2">
                     @if (Model.MasterPrefixComboJ02 == "j02IsInvitedPerson")
                     {
-                        <mycombo entity="j02Person" asp-for="@Model.SelectedJ02ID" selectedtext="@Model.SelectedPerson" filter-flag="1" placeholder="@_f.tra("Přidat přizvanou osobu")..." event_after_changevalue="handle_j02id_append" param1="j02IsInvitedPerson"></mycombo>
+                        <mycombo entity="j02Person" asp-for="@Model.SelectedJ02ID" selectedtext="@Model.SelectedPerson" filter-flag="1" placeholder="@_f.tra("Přidat přizvanou osobu")..." event_after_changevalue="handle_j02id_append" myqueryinline="j02isinvitedperson@bool@1"></mycombo>
                     }
                     else
                     {
@@ -251,7 +251,7 @@
                         <div class="col-sm-4 col-md-4">
                             @if (Model.lisA41[i].a45IsManual)
                             {
-                                <mycombo entity="a45EventRole" asp-for="@Model.lisA41[i].a45ID" selectedtext="@Model.lisA41[i].a45Name" placeholder="@_f.tra("Vybrat roli v akci")..." view-flag="2" param1="a45IsManual1"></mycombo>
+                                <mycombo entity="a45EventRole" asp-for="@Model.lisA41[i].a45ID" selectedtext="@Model.lisA41[i].a45Name" placeholder="@_f.tra("Vybrat roli v akci")..." view-flag="2" myqueryinline="a45ismanual1@bool@1"></mycombo>
                             }
                             else
                             {

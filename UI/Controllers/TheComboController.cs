@@ -27,14 +27,11 @@ namespace UI.Controllers
             return ret;
         }
 
-        public string GetHtml4TheCombo(string entity, string tableid, string param1, string pids, string filterflag, string searchstring, string masterprefix, int masterpid) //Vrací HTML zdroj tabulky pro MyCombo
+        public string GetHtml4TheCombo(string entity, string tableid, string myqueryinline, string pids, string filterflag, string searchstring, string masterprefix, int masterpid) //Vrací HTML zdroj tabulky pro MyCombo
         {
-            var mq = new BO.InitMyQuery().Load(entity,masterprefix,masterpid);
+            var mq = new BO.InitMyQuery().Load(entity,masterprefix,masterpid, myqueryinline);
             mq.SetPids(pids);
-            if (string.IsNullOrEmpty(param1) == false)
-            {
-                mq.param1 = param1;
-            }
+            
 
             var ce = Factory.EProvider.ByPrefix(mq.Prefix);
             if (ce.IsWithoutValidity == false)
@@ -179,13 +176,9 @@ namespace UI.Controllers
 
 
         //zdroj checkboxů pro taghelper mycombochecklist:
-        public string GetHtml4Checkboxlist(string controlid, string entity, string selectedvalues, string masterprefix, int masterpid, string param1) //Vrací HTML seznam checkboxů pro taghelper: mycombochecklist
+        public string GetHtml4Checkboxlist(string controlid, string entity, string selectedvalues, string masterprefix, int masterpid, string myqueryinline) //Vrací HTML seznam checkboxů pro taghelper: mycombochecklist
         {            
-            var mq = new BO.InitMyQuery().Load(entity,masterprefix,masterpid);
-            if (string.IsNullOrEmpty(param1) == false)
-            {
-                mq.param1 = param1;
-            }
+            var mq = new BO.InitMyQuery().Load(entity,masterprefix,masterpid, myqueryinline);          
             
             mq.explicit_columns = _colsProvider.getDefaultPallete(false, mq);
             var ce = Factory.EProvider.ByPrefix(mq.Prefix);

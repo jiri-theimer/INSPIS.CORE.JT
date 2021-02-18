@@ -13,6 +13,7 @@ namespace BO
         public int j02id { get; set; }
         public int h04id { get; set; }
         public int x29id { get; set; }
+        public bool? x31is4singlerecord { get; set; }
         public myQueryX31()
         {
             this.Prefix = "x31";
@@ -55,9 +56,9 @@ namespace BO
                 AQ("a.x31ID IN (select x31ID FROM x34Report_Category WHERE x32ID=@x32id)", "x32id", this.x32id);
             }
 
-            if (this.param1 == "x31Is4SingleRecord=1")
+            if (this.x31is4singlerecord !=null)
             {
-                AQ("a.x31Is4SingleRecord=1", "", null);    //pouze kontextové sestavy
+                AQ("a.x31Is4SingleRecord=@x31is4singlerecord", "x31is4singlerecord", this.x31is4singlerecord);    //pouze kontextové sestavy
             }
 
             return this.InhaleRows();
