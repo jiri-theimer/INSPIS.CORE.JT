@@ -78,9 +78,14 @@ namespace UI.Controllers
             }
             if (oper == "delete")
             {
-                Factory.CBL.DeleteRecord("a24", pid);
-                RefreshStateAddSouvisejici(v);
-                return View(v);
+                if (Factory.CBL.DeleteRecord("a24", pid) == "1")
+                {
+                    v.SetJavascript_CallOnLoad("/a01/RecPage");
+                    RefreshStateAddSouvisejici(v);
+                    return View(v);
+                }
+                
+                
             }
             RefreshStateAddSouvisejici(v);
 
