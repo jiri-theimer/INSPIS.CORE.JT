@@ -9,7 +9,7 @@
 
 @addTagHelper *, UI
 
-<div class="modal_record_container">
+<div class="info_record_container">
     <div class="row">
         <label class="col-sm-1 col-md-2 col-form-label">
             @_f.tra("Název"):
@@ -156,7 +156,7 @@
     </div>
     @if (Model.RecFounder != null)
     {
-        <div class="row my-2">
+        <div class="row my-2 p-0">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Zřizovatel"):</label>
             <div class="col-sm-8 col-md-7">
                 <myval datatype="link" value="@Model.RecFounder.a03Name" linkurl="/a03/RecPage?pid=@Model.RecFounder.pid" linktarget="_top"></myval>
@@ -172,7 +172,7 @@
 
     @if (Model.Rec.a03Email != null || Model.Rec.a03Web != null)
     {
-        <div class="row my-2">
+        <div class="row my-2 p-0">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Kontakt"):</label>
             <div class="col-sm-5 col-md-4">
                 <myval datatype="link" value="@Model.Rec.a03Email" linkurl="mailto:@Model.Rec.a03Email"></myval>

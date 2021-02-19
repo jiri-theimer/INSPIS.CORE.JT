@@ -1,0 +1,67 @@
+﻿@model UI.Models.Recpage.j11RecPage
+@inject BL.Factory _f
+
+@{
+    Model.PageTitle = "Info";
+    Layout = "~/Views/Shared/_LayoutSubform.cshtml";
+    if (Model.Rec == null) return;
+}
+
+@addTagHelper *, UI
+
+
+<div class="info_record_container">
+    <div class="row">
+        <div class="col-auto">
+            <myval value="@Model.Rec.j11Name"></myval>
+
+        </div>
+
+        @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.AdminGlobal_Ciselniky))
+        {
+            <div class="col-auto">
+                <a href="javascript:_window_open('/j11/Record?pid=@(Model.pid)')">@_f.tra("Administrace")</a>
+            </div>
+        }
+    </div>
+    @if (!Model.Rec.j11IsAllUsers)
+    {
+        <div class="card my-2">
+            <div class="card-header">
+                @_f.tra("Členové týmu")
+            </div>
+            <div class="car-body">
+                <table class="table table-sm table-hover">
+                    @foreach (var c in Model.lisJ02)
+                    {
+                        <tr>
+                            <td>
+                                @c.FullNameAsc
+                            </td>
+                            <td>
+                                @c.j02Email
+                            </td>
+                            <td>
+                                @c.j03Login
+                            </td>
+                            <td>
+                                @c.j02Mobile
+                            </td>
+                            <td>
+                                @c.j02Phone
+                            </td>
+                            <td>
+                                @c.a04City
+                            </td>
+                        </tr>
+                    }
+                </table>
+
+            </div>
+        </div>
+    }
+
+
+
+
+</div>

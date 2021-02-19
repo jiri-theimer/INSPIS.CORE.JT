@@ -57,7 +57,7 @@ namespace UI.Controllers
             }
             RefreshStateAddSouvisejici(v);
             var perm = Factory.a01EventBL.InhalePermission(v.RecA01);
-            if (perm.PermValue == BO.a01EventPermissionENUM.FullAccess || perm.PermValue == BO.a01EventPermissionENUM.ShareTeam_Owner || perm.PermValue == BO.a01EventPermissionENUM.ShareTeam_Leader)
+            if (Factory.CurrentUser.TestPermission(BO.j05PermValuEnum.AdminGlobal) || perm.PermValue == BO.a01EventPermissionENUM.FullAccess || perm.PermValue == BO.a01EventPermissionENUM.ShareTeam_Owner || perm.PermValue == BO.a01EventPermissionENUM.ShareTeam_Leader)
             {
             }
             else

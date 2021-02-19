@@ -180,7 +180,7 @@ namespace BL
                 lis = BO.BAS.ConvertString2List(rec.x40Recipient.Replace(";", ","), ",");
                 foreach (string s in lis)
                 {
-                    m.To.Add(new MailAddress(s));
+                    m.To.Add(new MailAddress(s.Trim()));
                 }
             }
             if (String.IsNullOrEmpty(rec.x40Cc) == false)
@@ -375,7 +375,7 @@ namespace BL
             {
                 p.AddString("x40SenderAddress", m.From.Address);
                 p.AddString("x40SenderName", m.From.DisplayName);
-                p.AddString("x40Recipient", String.Join(",", m.To.Select(p => p.Address)));
+                p.AddString("x40Recipient", String.Join(", ", m.To.Select(p => p.Address)));
                 p.AddString("x40Bcc", String.Join(",", m.Bcc.Select(p => p.Address)));
                 p.AddString("x40Cc", String.Join(",", m.CC.Select(p => p.Address)));
                 p.AddString("x40Subject", m.Subject);

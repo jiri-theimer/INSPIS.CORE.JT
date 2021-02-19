@@ -535,11 +535,15 @@ namespace UI.Controllers
                     
 
                     DIV();
-                    AMI("Nový úkol (lhůta)", string.Format("javascript: _window_open('/h04/Record?pid=0&a01id={0}')", pid));
-                    if (Factory.App.Implementation != "HD")
+                    if (!recA01.isclosed)
                     {
-                        AMI("Zadat související akci", string.Format("javascript: _window_open('/a01/AddSouvisejici?pid={0}')", pid));
+                        AMI("Nový úkol (lhůta)", string.Format("javascript: _window_open('/h04/Record?pid=0&a01id={0}')", pid));
+                        if (Factory.App.Implementation != "HD")
+                        {
+                            AMI("Zadat související akci", string.Format("javascript: _window_open('/a01/AddSouvisejici?pid={0}')", pid));
+                        }
                     }
+                    
                     
                     AMI("Odeslat zprávu", string.Format("javascript: _window_open('/Mail/SendMail?x29id=101&x40datapid={0}',2)", pid));
 

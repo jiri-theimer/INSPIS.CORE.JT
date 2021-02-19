@@ -5,11 +5,27 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using UI.Models;
 using UI.Models.Record;
+using UI.Models.Recpage;
 
 namespace UI.Controllers
 {
     public class j11Controller : BaseController
     {
+        public IActionResult Info(int pid)
+        {
+            var v = new j11RecPage() { pid = pid };
+            if (v.pid > 0)
+            {
+                v.Rec = Factory.j11TeamBL.Load(v.pid);
+                if (!v.Rec.j11IsAllUsers)
+                {
+                    v.lisJ02 = Factory.j02PersonBL.GetList(new BO.myQueryJ02() { j11id = pid });
+                }
+                
+               
+            }
+            return View(v);
+        }
         public IActionResult Record(int pid, bool isclone)
         {
             var v = new j11Record() { rec_pid = pid, rec_entity = "j11" };
