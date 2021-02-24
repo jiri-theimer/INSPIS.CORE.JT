@@ -52,15 +52,29 @@ namespace UI
         private void DoWork(object state)
         {
             var count = Interlocked.Increment(ref executionCount);
-
-            
+                        
+            if (_app == null)
+            {
+                LogInfo("_app is null!");
+                return;
+            }
             if (string.IsNullOrEmpty(_app.RobotUser) == true)
             {
                 LogInfo("[RobotUser] of appsettings is missing!");
                 return;
             }
-            
             BO.RunningUser ru = new BO.RunningUser() { j03Login = _app.RobotUser };
+
+            if (_gp == null)
+            {
+                LogInfo("_gp is null!");
+                return;
+            }
+            if (_tt == null)
+            {
+                LogInfo("_tt is null!");
+                return;
+            }
             BL.Factory f = new BL.Factory(ru, _app, null, _gp,_tt);
             if (f.CurrentUser == null)
             {
