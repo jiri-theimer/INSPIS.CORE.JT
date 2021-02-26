@@ -46,11 +46,15 @@ namespace BL
             {
                 return true;
             }
-            if (_db.Load<BO.GetBool>("if exists(SELECT j08ID FROM j08UserRole_EventType WHERE j04id=@pid AND j08IsAllowedCreate=1) select 1 else select 0 as Value", new { pid = j04id }).Value == true)
+
+            if (_db.Load<BO.GetInteger>("SELECT j08ID as Value FROM j08UserRole_EventType WHERE j04id=@pid AND j08IsAllowedCreate=1", new { pid = j04id })==null){
+                return false;
+            }else
             {
                 return true;
             }
-            return false;
+
+           
 
         }
 

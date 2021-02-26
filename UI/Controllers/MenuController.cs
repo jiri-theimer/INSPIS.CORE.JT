@@ -291,7 +291,7 @@ namespace UI.Controllers
 
         public string A01Menu(string userdevice)
         {
-            if (Factory.j04UserRoleBL.IsA01Create(Factory.CurrentUser.j04ID)==true)
+            if (Factory.j04UserRoleBL.IsA01Create(Factory.CurrentUser.j04ID))
             {
                 AMI("Nový", "/a01Create/Index");
                 DIV();
