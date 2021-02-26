@@ -37,12 +37,19 @@ namespace BL
 
         public IEnumerable<BO.f21ReplyUnit> GetList(BO.myQueryF21 mq)
         {
-
+            if (mq.explicit_orderby == null)
+            {
+                mq.explicit_orderby = "a.f21Ordinal";
+            }
             DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
             return _db.GetList<BO.f21ReplyUnit>(fq.FinalSql, fq.Parameters);
         }
         public IEnumerable<BO.f21ReplyUnitJoinedF19> GetListJoinedF19(BO.myQueryXX1 mq)
         {
+            if (mq.explicit_orderby == null)
+            {
+                mq.explicit_orderby = "a.f21Ordinal";
+            }
             sb("SELECT a.*,f20.f19ID,f19.f18ID,f19.f19Name,f19.f23ID,f19.f19StatID,f19.f19IsMultiselect,f18.f18Name,f26.f26Name,f18.f06ID,f06.f06Name,");
             sb(_db.GetSQL1_Ocas("f21"));
             sb(" FROM f21ReplyUnit a");

@@ -147,7 +147,7 @@
 
         var offset = $("#layout_sidebar").offset();
         var h_vertical = _device.innerHeight - offset.top;
-        h_vertical = parseInt(h_vertical) + 10;
+        h_vertical = parseInt(h_vertical);
         $("#layout_sidebar").css("height", h_vertical + "px");
         if (document.getElementById("layout_main_divtree")) {
             $("#layout_main_divtree").css("height", h_vertical + "px");
