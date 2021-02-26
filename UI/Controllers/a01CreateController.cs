@@ -305,10 +305,26 @@ namespace UI.Controllers
             switch (v.MasterPrefixComboJ02)
             {
                 case "a04":
-                    v.MyQueryInlineComboJ02 = "a04id@int@" + v.RecJ02.a04ID.ToString();
+                    if (v.RecJ02.a04ID > 0)
+                    {
+                        v.MyQueryInlineComboJ02 = "a04id@int@" + v.RecJ02.a04ID.ToString();
+                    }
+                    else
+                    {
+                        v.MyQueryInlineComboJ02 = "a04id@int@999999";
+                    }
+                    
                     break;
                 case "a05":
-                    v.MyQueryInlineComboJ02 = "a05id@int@" + v.RecJ02.a05ID.ToString();                    
+                    if (v.RecJ02.a05ID > 0)
+                    {
+                        v.MyQueryInlineComboJ02 = "a05id@int@" + v.RecJ02.a05ID.ToString();
+                    }
+                    else
+                    {
+                        v.MyQueryInlineComboJ02 = "a05id@int@999999";
+                    }
+                    
                     break;
                 case "j02IsInvitedPerson":
                     v.MyQueryInlineComboJ02 = "j02isinvitedperson@bool@1";
@@ -319,6 +335,7 @@ namespace UI.Controllers
                     break;
                 case "all":
                     //všichni
+                    v.MyQueryInlineComboJ02 = "";
                     break;
             }
            

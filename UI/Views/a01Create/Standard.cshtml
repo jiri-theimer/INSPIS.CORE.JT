@@ -214,7 +214,7 @@
 
 
                 </div>
-                <input type="hidden" asp-for="@Model.MyQueryInlineComboJ02" />
+                <input type="hidden" asp-for="@Model.MyQueryInlineComboJ02" value="@Model.MyQueryInlineComboJ02" />
                 <select asp-for="@Model.MasterPrefixComboJ02" onchange="handle_queryj02byprefix_change()">
                     <option value="a04">@_f.tra("Pouze můj inspektorát")</option>
                     <option value="a05">@_f.tra("Pouze můj kraj")</option>
