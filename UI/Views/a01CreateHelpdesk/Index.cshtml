@@ -28,7 +28,7 @@
         <div class="row my-2" style="margin-top:10px;">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typ požadavku"):</label>
             <div class="col-sm-11 col-md-10">
-                <mycombo entity="a10EventType" asp-for="@Model.a10ID" selectedtext="@Model.a10Name" event_after_changevalue="a10id_change"></mycombo>
+                <mycombo entity="a10EventType" asp-for="@Model.a10ID" selectedtext="@Model.a10Name" event_after_changevalue="a10id_change" myqueryinline="MyDisponible4Create@bool@1"></mycombo>
             </div>
         </div>
 

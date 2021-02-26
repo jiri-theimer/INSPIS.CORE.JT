@@ -210,22 +210,19 @@
             <div class="tab-pane" id="tab2" role="tabpanel" style="max-width:1070px;padding-left:20px;">
                 <p></p>
                 <div class="my-2">
-                    @if (Model.MasterPrefixComboJ02 == "j02IsInvitedPerson")
-                    {
-                        <mycombo entity="j02Person" asp-for="@Model.SelectedJ02ID" selectedtext="@Model.SelectedPerson" filter-flag="1" placeholder="@_f.tra("Přidat přizvanou osobu")..." event_after_changevalue="handle_j02id_append" myqueryinline="j02isinvitedperson@bool@1"></mycombo>
-                    }
-                    else
-                    {
-                        <mycombo entity="j02Person" asp-for="@Model.SelectedJ02ID" selectedtext="@Model.SelectedPerson" filter-flag="1" placeholder="@_f.tra("Přidat jméno")..." event_after_changevalue="handle_j02id_append" masterprefix="@Model.MasterPrefixComboJ02" masterpid="@Model.MasterPidComboJ02"></mycombo>
-                    }
+                    <mycombo entity="j02Person" asp-for="@Model.SelectedJ02ID" selectedtext="@Model.SelectedPerson" filter-flag="1" placeholder="@_f.tra("Přidat jméno")..." event_after_changevalue="handle_j02id_append" myqueryinline="@Model.MyQueryInlineComboJ02"></mycombo>
 
 
                 </div>
-                <input type="hidden" asp-for="@Model.MasterPidComboJ02" />
+                <input type="hidden" asp-for="@Model.MyQueryInlineComboJ02" />
                 <select asp-for="@Model.MasterPrefixComboJ02" onchange="handle_queryj02byprefix_change()">
                     <option value="a04">@_f.tra("Pouze můj inspektorát")</option>
                     <option value="a05">@_f.tra("Pouze můj kraj")</option>
-                    <option value="">@_f.tra("Všechny kraje")</option>
+                    @if (_f.CurrentUser.j04RelationFlag == BO.j04RelationFlagEnum.NoRelation)
+                    {
+                        <option value="all">@_f.tra("Všechny kraje")</option>
+                    }
+
                     <option value="j02IsInvitedPerson">@_f.tra("Přizvané osoby")</option>
                 </select>
                 <p></p>

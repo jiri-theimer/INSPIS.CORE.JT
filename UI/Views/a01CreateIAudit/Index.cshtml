@@ -130,7 +130,7 @@
             <div class="row">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typ akce"):</label>
                 <div class="col-sm-11 col-md-10">
-                    <mycombo entity="a10EventType" asp-for="@Model.a10ID_Master" selectedtext="@Model.a10Name_Master" event_after_changevalue="a10_change_master"></mycombo>
+                    <mycombo entity="a10EventType" asp-for="@Model.a10ID_Master" selectedtext="@Model.a10Name_Master" event_after_changevalue="a10_change_master" myqueryinline="MyDisponible4Create@bool@1"></mycombo>
                 </div>
             </div>
             @if (Model.RecA10_Master.a10IsUse_Name)

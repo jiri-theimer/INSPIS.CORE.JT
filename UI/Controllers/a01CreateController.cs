@@ -52,7 +52,7 @@ namespace UI.Controllers
             {
                 return RedirectToAction("Index");
             }
-            var v = new a01CreateViewModel() { j02ID = j02id,a10ID=a10id,CloneByPid=clonebypid };
+            var v = new a01CreateViewModel() { j02ID = j02id,a10ID=a10id,CloneByPid=clonebypid, MasterPrefixComboJ02="a04" };
             if (a03id > 0)
             {
                 v.a03ID = a03id;
@@ -305,10 +305,20 @@ namespace UI.Controllers
             switch (v.MasterPrefixComboJ02)
             {
                 case "a04":
-                    v.MasterPidComboJ02 = v.RecJ02.a04ID;
+                    v.MyQueryInlineComboJ02 = "a04id@int@" + v.RecJ02.a04ID.ToString();
                     break;
                 case "a05":
-                    v.MasterPidComboJ02 = v.RecJ02.a05ID;
+                    v.MyQueryInlineComboJ02 = "a05id@int@" + v.RecJ02.a05ID.ToString();                    
+                    break;
+                case "j02IsInvitedPerson":
+                    v.MyQueryInlineComboJ02 = "j02isinvitedperson@bool@1";
+                    if (Factory.CurrentUser.j04RelationFlag == BO.j04RelationFlagEnum.A05)
+                    {
+                        v.MyQueryInlineComboJ02 += "@a05id@int@" + v.RecJ02.a05ID.ToString();
+                    }
+                    break;
+                case "all":
+                    //všichni
                     break;
             }
            

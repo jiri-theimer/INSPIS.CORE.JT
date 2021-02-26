@@ -36,7 +36,8 @@ namespace BO
                 case "a03":
                     return load_a03();
 
-
+                case "a10":
+                    return handle_myquery_reflexe(new BO.myQueryA10());
                 case "a11":
                     return handle_myquery_reflexe(new BO.myQueryA11());
                 case "a35":

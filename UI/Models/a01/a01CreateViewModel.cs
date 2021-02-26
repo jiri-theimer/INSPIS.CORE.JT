@@ -33,9 +33,8 @@ namespace UI.Models
         public int SelectedJ02ID { get; set; }
         public string SelectedPerson { get; set; }
         public string MasterPrefixComboJ02 { get; set; }
-        public int MasterPidComboJ02 { get; set; }
-        
-
+        public string MyQueryInlineComboJ02 { get; set; }
+       
         public List<BO.a41PersonToEvent> lisA41 { get; set; }
 
     }
