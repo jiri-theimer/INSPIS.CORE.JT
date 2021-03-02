@@ -50,7 +50,7 @@ namespace BL
                     strSP = "_core_x51helpcore_delete";
                     break;
                 default:
-                    strSP = _mother.EProvider.ByPrefix(entity).TableName.ToLower() + "_delete";
+                    strSP = _mother.EProvider.ByPrefix(entity.Substring(0, 3)).TableName.ToLower() + "_delete";
                     break;
             }            
             switch (entity)
