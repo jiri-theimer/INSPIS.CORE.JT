@@ -127,9 +127,30 @@ namespace BO
 
 
             if (_searchstring != null && _searchstring.Length > 2)
-            {                
-                string sw = string.Format("Contains((a.a01Signature,a.a01LeaderInLine,a.a01MemberInLine,a.a01CaseCode,a.a01InstitutionPlainText,a.a01InstitutionPlainTextRedizo),'{0}')", _searchstring);
-                AQ("(" + sw + ")", "", null);
+            {
+                string sw = "";
+                if (this.CurrentUser.FullTextSearch)
+                {
+                    sw = string.Format("Contains((a.a01Signature,a.a01LeaderInLine,a.a01MemberInLine,a.a01CaseCode,a.a01InstitutionPlainText,a.a01InstitutionPlainTextRedizo),'{0}')", _searchstring);
+                    AQ("(" + sw + ")", "", null);
+                }
+                else{
+                    if (BO.BAS.InInt(_searchstring) > 0)
+                    {
+                        sw = "a.a01Signature LIKE '%'+@ss";
+                        sw += " OR a.a03ID IN (select a03ID FROM a03Institution WHERE a03ICO like @ss+'%' OR a03REDIZO like '%'+@ss+'%')";
+                    }
+                    else
+                    {
+                        sw = "a.a01InstitutionPlainText like '%'+@ss+'%' OR a.a01InstitutionPlainTextRedizo LIKE '%'+@ss+'%'";
+                    }
+
+                    sw += " OR a.a01CaseCode LIKE '%'+@ss+'%' OR a.a01LeaderInLine LIKE '%'+@ss+'%' OR a.a01MemberInLine LIKE '%'+@ss+'%'";
+
+                    AQ("(" + sw + ")", "ss", _searchstring);
+                }
+                
+
                 //pro HD:
                 //sw = "Contains((a.a01Signature,a.a01LeaderInLine,a.a01MemberInLine,a.a01CaseCode,a.a01Description,a.a01InstitutionPlainText,a.a01InstitutionPlainTextRedizo),@expr)";
                 //sw += " OR a.a01ID IN (select a01ID FROM b05Workflow_History WHERE Contains((b05Comment),@expr))";

@@ -16,7 +16,7 @@ namespace BL
         public string AppName { get; set; }
         public string AppVersion { get; set; }
         public string AppBuild { get; set; }
-        
+        public bool FulltextSearch { get; set; }
         public string LogoImageSuffix { get; set; }
         public string CssCustomSkin { get; set; }
        public string UserUrl { get; set; }

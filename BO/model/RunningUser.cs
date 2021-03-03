@@ -39,6 +39,7 @@ namespace BO
         public string a10IDs { get; set; }      //výčet všech povolených typů akcí z tabulky j08
 
         public string AppImplementation { get; set; }   //název implementace předaný z RunningApp
+        public bool FullTextSearch { get; set; }    //zda používat FULLTEXT search předaný z RunningApp
         public List<BO.StringPair> Messages4Notify { get; set; }
 
         private bool _WasInitTesting;

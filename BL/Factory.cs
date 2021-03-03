@@ -118,7 +118,7 @@ namespace BL
             DL.DbHandler db = new DL.DbHandler(this.App.ConnectString, this.CurrentUser,this.App.LogFolder);            
             this.CurrentUser = db.Load<BO.RunningUser>("exec dbo._core_j03user_load_sysuser @login", new { login = strLogin });
             this.CurrentUser.AppImplementation = this.App.Implementation;
-
+            this.CurrentUser.FullTextSearch = this.App.FulltextSearch;
 
         }
         //logování přihlášení musí být zde, protože se logují i neńsspěšné pokusy o přihlášení a nešlo by to řešit v j03UserBL

@@ -90,6 +90,8 @@ namespace UI
                 ,
                 AppVersion = Configuration.GetSection("App")["Version"]
                 ,
+                FulltextSearch= BO.BAS.BG(Configuration.GetSection("App")["FulltextSearch"])
+                ,
                 AppBuild = "build: " + BO.BAS.ObjectDateTime2String(versionTime)
                 ,
                 LogoImageSuffix = Configuration.GetSection("App")["LogoImageSuffix"]                                             

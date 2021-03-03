@@ -36,8 +36,8 @@ namespace UI.Controllers
             v.SelectedX31ID = x31id;
             RefreshStateReportNoContext(v);
 
-
-            return ViewTupCiselnik(v, BO.j03AdminRoleValueFlagEnum.sestava_er);
+            return ViewTup(v, BO.j05PermValuEnum.Menu_Reports);
+            //return ViewTupCiselnik(v, BO.j03AdminRoleValueFlagEnum.sestava_er);
             
         }
       

@@ -29,7 +29,7 @@ namespace UI.Controllers
         {
             if (!Factory.CurrentUser.TestPermission(BO.j05PermValuEnum.H11Admin))
             {
-                return Info(pid);
+                return RedirectToAction("Info", new { pid = pid });
             }
             var v = new h11Record() { rec_pid = pid, rec_entity = "h11" };            
             v.Rec = new BO.h11NoticeBoard();

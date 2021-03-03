@@ -79,7 +79,16 @@ namespace BO
             if (_searchstring != null && _searchstring.Length > 2)
             {
                 string sw = string.Format("Contains((a.j02FullText,a.j02Email,a.j02PID,a.j02Address,a.j02Mobile),'{0}')", _searchstring);
-                AQ("(" + sw + ")", "", null);
+                if (CurrentUser.FullTextSearch)
+                {
+                    AQ("(" + sw + ")", "", null);
+                }
+                else
+                {
+                    sw = "a.j02FullText like '%'+@ss+'%' OR a.j02Email LIKE '%'+@ss+'%' OR a.j02PID LIKE '%'+@ss+'%' OR a.j02Address LIKE '%'+@ss+'%' OR a.j02Mobile LIKE '%'+@ss+'%'";
+                    AQ("(" + sw + ")", "ss", _searchstring);
+                }
+                
 
             }
 

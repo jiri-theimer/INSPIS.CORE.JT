@@ -183,7 +183,7 @@ namespace BL
                 }
                 if (recX40.x40RecipientFlag==BO.RecipientFlagEnum.SchoolAdress || recX40.x40RecipientFlag == BO.RecipientFlagEnum.SchoolPlusDirector)
                 {
-                    if (string.IsNullOrEmpty(recA03.a03Email.Trim()) == false && lisX43.Where(p => p.x43Email.ToLower() == recA03.a03Email.Trim().ToLower()).Count() == 0)
+                    if (string.IsNullOrEmpty(recA03.a03Email) == false && lisX43.Where(p => p.x43Email.ToLower() == recA03.a03Email.Trim().ToLower()).Count() == 0)
                     {
                         lisX43.Add(new BO.x43MailQueue_Recipient() { x29ID = 103, x43DataPID = recA03.pid, x43Email = recA03.a03Email.Trim(), x43DisplayName=recA03.a03Name, TempA03ID=a03id });
                     }                    

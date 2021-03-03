@@ -63,15 +63,36 @@ namespace BO
 
             if (_searchstring !=null && _searchstring.Length > 2)
             {
-                string sw = string.Format("Contains((a.a03REDIZO,a.a03Name,a.a03ICO,a.a03City,a.a03Street),'{0}')", _searchstring);
-                if (_searchstring.Length == 9 && BO.BAS.InDouble(_searchstring) > 0)
+                string sw = "";
+                if (this.CurrentUser.FullTextSearch)
                 {
-                    sw = string.Format("Contains((a.a03REDIZO),'{0}')", _searchstring);
-                    sw += string.Format(" OR a.a03ID IN (SELECT a03ID FROM a37InstitutionDepartment WHERE a37IZO = '{0}')", _searchstring);
+                    sw = string.Format("Contains((a.a03REDIZO,a.a03Name,a.a03ICO,a.a03City,a.a03Street),'{0}')", _searchstring);
+                    if (_searchstring.Length == 9 && BO.BAS.InDouble(_searchstring) > 0)
+                    {
+                        sw = string.Format("Contains((a.a03REDIZO),'{0}')", _searchstring);
+                        sw += string.Format(" OR a.a03ID IN (SELECT a03ID FROM a37InstitutionDepartment WHERE a37IZO = '{0}')", _searchstring);
+                    }
+                    AQ("(" + sw + ")", "", null);
                 }
+                else
+                {
+                    sw = "a.a03Name like '%'+@ss+'%' OR a.a03Email LIKE '%'+@ss+'%' OR a.a03City LIKE '%'+@ss+'%' OR a.a03Street LIKE '%'+@ss+'%'";
+                    if (BO.BAS.InInt(_searchstring) > 0)
+                    {                        
+                        sw += " OR a.a03ICO like @ss+'%' OR a.a03REDIZO like '%'+@ss+'%'";
+                    }
+                    if (_searchstring.Length == 9 && BO.BAS.InDouble(_searchstring) > 0)
+                    {
+                        sw += " OR a.a03ID IN (SELECT a03ID FROM a37InstitutionDepartment WHERE a37IZO=@ss)";
+                    }
+                    AQ("(" + sw + ")", "ss", _searchstring);
+                    
+                }
+                    
+                
 
 
-                AQ("(" + sw + ")", "", null);
+                
             }
 
             return this.InhaleRows();
