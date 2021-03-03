@@ -334,9 +334,9 @@ namespace UI.Controllers
 
             var s = new System.Text.StringBuilder();
 
-            if (searchstring == null || searchstring.Length <= 3)
+            if (searchstring == null || searchstring.Length < 3)
             {
-                s.AppendLine("<small style='margin-left:10px;'>"+Factory.tra("Musíte zadat minimálně 4 znaky.")+"</small>");
+                s.AppendLine("<small style='margin-left:10px;'>"+Factory.tra("Musíte zadat minimálně 3 znaky.")+"</small>");
                 return s.ToString();
             }
 

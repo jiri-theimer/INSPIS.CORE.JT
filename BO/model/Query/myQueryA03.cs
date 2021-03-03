@@ -66,7 +66,7 @@ namespace BO
                 string sw = "";
                 if (this.CurrentUser.FullTextSearch)
                 {
-                    sw = string.Format("Contains((a.a03REDIZO,a.a03Name,a.a03ICO,a.a03City,a.a03Street),'{0}')", _searchstring);
+                    sw = string.Format("Contains((a.a03REDIZO,a.a03Name,a.a03ICO,a.a03City,a.a03Street),'\"{0}*\"')", _searchstring);
                     if (_searchstring.Length == 9 && BO.BAS.InDouble(_searchstring) > 0)
                     {
                         sw = string.Format("Contains((a.a03REDIZO),'{0}')", _searchstring);
@@ -77,7 +77,7 @@ namespace BO
                 else
                 {
                     sw = "a.a03Name like '%'+@ss+'%' OR a.a03Email LIKE '%'+@ss+'%' OR a.a03City LIKE '%'+@ss+'%' OR a.a03Street LIKE '%'+@ss+'%'";
-                    if (BO.BAS.InInt(_searchstring) > 0)
+                    if (BO.BAS.InDouble(_searchstring) > 0)
                     {                        
                         sw += " OR a.a03ICO like @ss+'%' OR a.a03REDIZO like '%'+@ss+'%'";
                     }

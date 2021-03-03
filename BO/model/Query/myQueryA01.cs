@@ -131,11 +131,11 @@ namespace BO
                 string sw = "";
                 if (this.CurrentUser.FullTextSearch)
                 {
-                    sw = string.Format("Contains((a.a01Signature,a.a01LeaderInLine,a.a01MemberInLine,a.a01CaseCode,a.a01InstitutionPlainText,a.a01InstitutionPlainTextRedizo),'{0}')", _searchstring);
+                    sw = string.Format("Contains((a.a01Signature,a.a01LeaderInLine,a.a01MemberInLine,a.a01CaseCode,a.a01InstitutionPlainText,a.a01InstitutionPlainTextRedizo),'\"{0}*\"')", _searchstring);
                     AQ("(" + sw + ")", "", null);
                 }
                 else{
-                    if (BO.BAS.InInt(_searchstring) > 0)
+                    if (BO.BAS.InDouble(_searchstring) > 0)
                     {
                         sw = "a.a01Signature LIKE '%'+@ss";
                         sw += " OR a.a03ID IN (select a03ID FROM a03Institution WHERE a03ICO like @ss+'%' OR a03REDIZO like '%'+@ss+'%')";

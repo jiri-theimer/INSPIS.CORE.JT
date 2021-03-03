@@ -670,9 +670,16 @@ namespace UI.Controllers
                     break;
                 case "a42":
                     var recA42 = Factory.a42QesBL.Load(pid);
-                    AMI("Karta záznamu", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
-                    DIV();
-                    AMI("Nový", "javascript:_location_replace_top('/a42/CreatePre')");
+                    if (Factory.CurrentUser.TestPermission(j05PermValuEnum.Menu_RS))
+                    {
+                        AMI("Karta záznamu", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
+                        DIV();
+                        AMI("Nový", "javascript:_location_replace_top('/a42/CreatePre')");
+                    }
+                    else
+                    {
+
+                    }                        
                     break;
                 case "a39":
                     var recA39 = Factory.a39InstitutionPersonBL.Load(pid);
