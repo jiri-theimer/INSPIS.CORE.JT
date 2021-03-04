@@ -151,6 +151,10 @@ namespace UI.Controllers
                         TreeIndexTo = c.TreeIndex + 1,
                         ImgUrl = "/images/battery.png"
                     };
+                    if (recF26.f26Ordinal != 0)
+                    {
+                        cF26.Text += " #" + recF26.f26Ordinal.ToString();
+                    }
                     if (recF26.isclosed)
                     {
                         cF26.CssClass = "closed_item";

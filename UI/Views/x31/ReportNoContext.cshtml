@@ -57,7 +57,7 @@
     <script src="~/js/contextmenu.js" asp-append-version="true"></script>
     <script src="~/js/mycontrols.js" asp-append-version="true"></script>
 
-    <script src="/api/reports/resources/js/telerikReportViewer"></script>
+    <script src="/apix/reports/resources/js/telerikReportViewer"></script>
     @if (Model.IsPeriodFilter || Model.lisJ72 != null)
     {
         <style>
@@ -186,7 +186,7 @@
         $("#reportViewer1")
             .telerik_ReportViewer(
                 {
-                serviceUrl: "/api/reports",
+                serviceUrl: "/apix/reports",
                     reportSource: {
                         report: "@(Model.ReportFileName+"###"+_f.CurrentUser.j03Login+"###"+Model.SelectedJ72ID)",
                         parameters: { j02id: @_f.CurrentUser.j02ID, a05id: @_f.CurrentUser.a05ID, datFrom: d1, datUntil: d2,langindex:"@Model.LangIndex", langsource:"@Model.RecX31.x31Translate"}

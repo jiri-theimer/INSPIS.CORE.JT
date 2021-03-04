@@ -12,7 +12,7 @@ using System;
 
 namespace UI.Controllers
 {    
-    [Route("api/reports")]    
+    [Route("apix/reports")]    
     public class ReportsController : ReportsControllerBase
     {
         

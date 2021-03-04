@@ -42,7 +42,7 @@
     <script src="~/js/contextmenu.js" asp-append-version="true"></script>
     <script src="~/js/mycontrols.js" asp-append-version="true"></script>
 
-    <script src="/api/reports/resources/js/telerikReportViewer"></script>
+    <script src="/apix/reports/resources/js/telerikReportViewer"></script>
 
     <style>
         #reportViewer1 {
@@ -145,7 +145,7 @@
         $("#reportViewer1")
             .telerik_ReportViewer(
                 {
-                serviceUrl: "/api/reports/",
+                serviceUrl: "/apix/reports/",
                 reportSource: {
                     report: "@(Model.ReportFileName+"###"+_f.CurrentUser.j03Login)",
                     parameters: { pid: @Model.rec_pid,langindex:"@Model.LangIndex",langsource:"@Model.RecX31.x31Translate" }
