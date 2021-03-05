@@ -113,11 +113,13 @@
          $("#tree1").kendoTreeView(
             {
                 dataSource: dstree1,
-                 template: "<a class='cm' onclick='_cm(event,\"#: item.prefix #\",#: item.recordid #)'>☰</a><span class='#: item.cssclass #' ondblclick='_edit(\"#: item.prefix #\",#: item.recordid #)'> #: item.text # <span style='background-color: #: item.textocas # '>&nbsp;&nbsp;&nbsp;</span></span>"
+                 template: "<a class='cm' onclick='_cm(event,\"#: item.prefix #\",#: item.recordid #)'>☰</a><span class='#: item.cssclass #' ondblclick='_edit(\"#: item.prefix #\",#: item.recordid #)'> #: item.text # <span style='background-color: #: item.textocas # '>&nbsp;&nbsp;&nbsp;</span></span>",
+                 collapse: tree1_onCollapse,
+                 expand: tree1_onExpand
             }
         );
         </text>
-        
+
         }
 
 
@@ -156,6 +158,23 @@
     });
 
 
+
+    function tree1_onCollapse(e) {
+        var tree = $("#tree1").data("kendoTreeView");
+        var item = tree.dataItem(e.node);
+
+        var cov = _get_cookie("@(Model.TreeStateCookieName)");
+        cov = cov.replace("|" + item.id, "");
+        document.cookie = "@(Model.TreeStateCookieName)=" + cov;
+    }
+
+    function tree1_onExpand(e) {
+        var tree = $("#tree1").data("kendoTreeView");
+        var item = tree.dataItem(e.node);
+        var cov = _get_cookie("@(Model.TreeStateCookieName)") + "|" + item.id;
+
+        document.cookie = "@(Model.TreeStateCookieName)=" + cov;
+    }
 
 
 </script>

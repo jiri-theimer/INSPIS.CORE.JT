@@ -82,10 +82,12 @@ namespace UI.Controllers
             {
                 return this.StopPage(false, "Formulář nelze načíst.");
             }
+
             v.gridinput = GetGridInput(v.f06ID);
             
             if (v.view=="tree")
             {
+                v.TreeStateCookieName = "AdminOneForm_tree1_expanded_" + v.f06ID.ToString();
                 inhale_tree(v);
             }
             return ViewTup(v, BO.j05PermValuEnum.FormDesigner);
@@ -101,7 +103,7 @@ namespace UI.Controllers
 
 
         private void inhale_tree(UI.Models.AdminOneForm v)
-        {
+        {            
             v.treeNodes = new List<myTreeNode>();
             var mq = new BO.myQuery("f18FormSegment");
             mq.f06id = v.f06ID;
@@ -126,8 +128,7 @@ namespace UI.Controllers
                     ParentPid = recF18.f18ParentID,
                     Prefix = "f18",
                     CssClass="segment",
-                    ImgUrl="/images/bullet4.gif",
-                    Expanded=true
+                    ImgUrl="/images/bullet4.gif"
 
                 };
                 if (recF18.isclosed)
@@ -242,6 +243,15 @@ namespace UI.Controllers
                 }
                 
 
+            }
+
+            var arrExpanded = BO.BAS.ConvertString2List(HttpContext.Request.Cookies[v.TreeStateCookieName], "|");
+            foreach (var c in arrExpanded.Where(p=>!string.IsNullOrEmpty(p)))
+            {
+                if (v.treeNodes.Where(p => p.Pid.ToString() + "-" + p.TreeLevel.ToString() == c).Count()>0)
+                {
+                    v.treeNodes.Where(p => p.Pid.ToString() + "-" + p.TreeLevel.ToString() == c).First().Expanded = true;
+                }
             }
             
         }

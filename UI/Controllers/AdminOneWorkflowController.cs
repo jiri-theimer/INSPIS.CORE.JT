@@ -81,6 +81,7 @@ namespace UI.Controllers
 
             if (v.view == "tree")
             {
+                v.TreeStateCookieName = "AdminOneWorkflow_tree1_expanded_" + v.b01ID.ToString();
                 inhale_tree(v);
             }
 
@@ -127,8 +128,7 @@ namespace UI.Controllers
                     Pid = recB02.pid,                    
                     Prefix = "b02",
                     ImgUrl="/images/ministamp.gif",
-                    CssClass="stav",
-                    Expanded=true,
+                    CssClass="stav",                    
                     TextOcas="transparent"
 
                 };
@@ -179,6 +179,15 @@ namespace UI.Controllers
                     
                     v.treeNodes.Add(cB06);
                     c.TreeIndexTo = x;
+                }
+            }
+
+            var arrExpanded = BO.BAS.ConvertString2List(HttpContext.Request.Cookies[v.TreeStateCookieName], "|");
+            foreach (var c in arrExpanded.Where(p => !string.IsNullOrEmpty(p)))
+            {
+                if (v.treeNodes.Where(p => p.Pid.ToString() + "-" + p.TreeLevel.ToString() == c).Count() > 0)
+                {
+                    v.treeNodes.Where(p => p.Pid.ToString() + "-" + p.TreeLevel.ToString() == c).First().Expanded = true;
                 }
             }
         }

@@ -19,5 +19,6 @@ namespace UI.Models
 
         public TheGridInput gridinput { get; set; }
         
+        public string TreeStateCookieName { get; set; }
     }
 }

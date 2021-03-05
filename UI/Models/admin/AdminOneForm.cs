@@ -19,5 +19,7 @@ namespace UI.Models
         
         public bool IsShowF19ID { get; set; }
         public TheGridInput gridinput { get; set; }
+
+        public string TreeStateCookieName { get; set; }
     }
 }
