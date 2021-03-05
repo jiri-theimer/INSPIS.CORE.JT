@@ -25,6 +25,7 @@ namespace BO
             if (this.a03id > 0) this.x29id = 103;
             if (this.j02id > 0) this.x29id = 502;
             if (this.h04id > 0) this.x29id = 604;
+            
 
 
             if (this.x29id > 0)

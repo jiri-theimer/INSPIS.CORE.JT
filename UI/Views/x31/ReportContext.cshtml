@@ -88,14 +88,9 @@
             <div class="row">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Tisková sestava"):</label>
                 <div class="col-sm-9 col-md-8">
-                    @if (Model.rec_prefix == "a01")
-                    {
-                        <mycombo entity="x31Report" asp-for="@Model.SelectedX31ID" selectedtext="@Model.SelectedReport" view-flag="2" masterprefix="a01" masterpid="@Model.rec_pid" myqueryinline="x31is4singlerecord@bool@1" event_after_changevalue="x31id_change"></mycombo>
-                    }
-                    else
-                    {
-                        <mycombo entity="x31Report" asp-for="@Model.SelectedX31ID" selectedtext="@Model.SelectedReport" view-flag="2" masterprefix="x29" masterpid="@Model.x29ID" myqueryinline="x31is4singlerecord@bool@1" event_after_changevalue="x31id_change"></mycombo>
-                    }
+                    <mycombo entity="x31Report" asp-for="@Model.SelectedX31ID" selectedtext="@Model.SelectedReport" view-flag="2" masterprefix="a01" masterpid="@Model.rec_pid" myqueryinline="@(Model.ComboMyQueryInline)" event_after_changevalue="x31id_change"></mycombo>
+
+                    
 
                 </div>
                 <div class="col-sm-1 col-md-1">

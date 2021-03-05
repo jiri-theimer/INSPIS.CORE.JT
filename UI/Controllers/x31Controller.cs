@@ -112,6 +112,7 @@ namespace UI.Controllers
             {
                 return StopPage(true, "pid or prefix missing");
             }
+            v.ComboMyQueryInline = "x31is4singlerecord@bool@1@"+v.rec_prefix+"id@int@"+v.rec_pid.ToString();
             if (x31id == 0 && string.IsNullOrEmpty(x31pid))
             {
                 if (v.rec_prefix == "a01")

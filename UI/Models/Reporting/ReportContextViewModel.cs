@@ -23,5 +23,7 @@ namespace UI.Models
         public List<string> AllGeneratedTempFileNames { get; set; }
         public int LangIndex{get;set;}
 
+        public string ComboMyQueryInline { get; set; }
+
     }
 }
