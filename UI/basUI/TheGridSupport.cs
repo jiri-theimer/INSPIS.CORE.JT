@@ -656,11 +656,20 @@ namespace UI
         {
 
             this.gridinput.query.explicit_columns = _colsProvider.ParseTheGridColumns(this.gridinput.query.Prefix, gridState.j72Columns, _Factory.CurrentUser.j03LangIndex);
-            if (string.IsNullOrEmpty(gridState.j75SortDataField) == false)
-            {
 
-                this.gridinput.query.explicit_orderby = _colsProvider.ByUniqueName(gridState.j75SortDataField).getFinalSqlSyntax_ORDERBY() + " " + gridState.j75SortOrder;
+            if (!string.IsNullOrEmpty(gridState.j75SortDataField))  //v gridu uživatel má nějaké třídění sloupce
+            {
+                if (this.gridinput.query.explicit_columns.Any(p => p.UniqueName == gridState.j75SortDataField))
+                {
+                    this.gridinput.query.explicit_orderby = this.gridinput.query.explicit_columns.Where(p => p.UniqueName == gridState.j75SortDataField).First().getFinalSqlSyntax_ORDERBY() + " " + gridState.j75SortOrder;
+                }
+                //this.gridinput.query.explicit_orderby = _colsProvider.ByUniqueName(gridState.j75SortDataField).getFinalSqlSyntax_ORDERBY() + " " + gridState.j75SortOrder;
             }
+            //if (string.IsNullOrEmpty(gridState.j75SortDataField) == false && _colsProvider.ByUniqueName(gridState.j75SortDataField) !=null)
+            //{
+
+            //    this.gridinput.query.explicit_orderby = _colsProvider.ByUniqueName(gridState.j75SortDataField).getFinalSqlSyntax_ORDERBY() + " " + gridState.j75SortOrder;
+            //}
             if (String.IsNullOrEmpty(gridState.j75Filter) == false)
             {
                 this.gridinput.query.TheGridFilter = _colsProvider.ParseAdhocFilterFromString(gridState.j75Filter, this.gridinput.query.explicit_columns,_Factory.CurrentUser.j03LangIndex);
