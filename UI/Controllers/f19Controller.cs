@@ -46,7 +46,7 @@ namespace UI.Controllers
                     var lisF18 = Factory.f18FormSegmentBL.GetList(mq);
                     if (lisF18.Count() == 0)
                     {
-                        return this.StopPage(true, "Formulář musí obsahovat minimálně jeden segment.");
+                        return this.StopPage(true, "Formulář musí obsahovat minimálně jeden segment.",true);
                     }
                     v.f06ID = f06id;
                     v.f18ID = lisF18.First().f18ID;

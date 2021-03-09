@@ -119,7 +119,7 @@ namespace UI.Controllers
             RefreshState_AppendToA01(v);
             if (v.RecA01.isclosed)
             {
-                return this.StopPage(true, "Tato akce je již uzavřena.");
+                return this.StopPage(true, "Tato akce je již uzavřena.",true);
             }
             v.a05ID = v.RecA01.a05ID;
             v.a05Name = v.RecA01.a05Name;

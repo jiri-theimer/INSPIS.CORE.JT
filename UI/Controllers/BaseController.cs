@@ -77,37 +77,44 @@ namespace UI.Controllers
 
         
 
-        public IActionResult StopPage(bool bolModal,string strMessage)
+        public IActionResult StopPage(bool bolModal,string strMessage,bool is2translate=false)
         {
             var v = new StopPageViewModel() { Message = strMessage, IsModal = bolModal };
+            if (is2translate)
+            {
+                v.Message = this.Factory.tra(v.Message);
+            }
             
             return View("_StopPage",v);
         }
-        public IActionResult StopPageSubform(string strMessage)
+        public IActionResult StopPageSubform(string strMessage, bool is2translate = false)
         {
             var v = new StopPageViewModel() { Message = strMessage, IsSubform = true,IsModal=false };
-
+            if (is2translate)
+            {
+                v.Message = this.Factory.tra(v.Message);
+            }
             return View("_StopPage", v);
         }
-        public IActionResult StopPageEdit(bool bolModal)
-        {
-            return (StopPage(bolModal, "Nemáte oprávnění editovat tento záznam."));            
-        }
-        public IActionResult StopPageCreate(bool bolModal)
-        {
-            return (StopPage(bolModal, "Nemáte oprávnění zakládat tento druh záznamu."));
-        }
-        public IActionResult StopPageCreateEdit(bool bolModal)
-        {
-            return (StopPage(bolModal, "Nemáte oprávnění zakládat nebo editovat tento druh záznamu."));
-        }
-        public IActionResult StopPageClientPageOnly(bool bolModal)
-        {
-            return (StopPage(bolModal, "100% klientský záznam.<hr>Přepněte se do rozhraní [CLIENT]."));
-        }
+        //public IActionResult StopPageEdit(bool bolModal)
+        //{
+        //    return (StopPage(bolModal, "Nemáte oprávnění editovat tento záznam."));            
+        //}
+        //public IActionResult StopPageCreate(bool bolModal)
+        //{
+        //    return (StopPage(bolModal, "Nemáte oprávnění zakládat tento druh záznamu."));
+        //}
+        //public IActionResult StopPageCreateEdit(bool bolModal)
+        //{
+        //    return (StopPage(bolModal, "Nemáte oprávnění zakládat nebo editovat tento druh záznamu."));
+        //}
+        //public IActionResult StopPageClientPageOnly(bool bolModal)
+        //{
+        //    return (StopPage(bolModal, "100% klientský záznam.<hr>Přepněte se do rozhraní [CLIENT]."));
+        //}
         public IActionResult RecMissingPerm(UI.Models.BaseRecordViewModel v)
         {
-            return StopPage(true,"Pro tuto stránku nemáte oprávnění!");
+            return StopPage(true,"Pro tuto stránku nemáte oprávnění!",true);
             
         }
         public ViewResult RecNotFound(UI.Models.BaseRecordViewModel v)

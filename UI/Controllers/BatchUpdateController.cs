@@ -14,7 +14,7 @@ namespace UI.Controllers
             var v = new BatchUpdateA01() { pids = pids };
             if (string.IsNullOrEmpty(pids))
             {
-                return this.StopPage(false, "Na vstupu chybí výběr záznamů.");
+                return this.StopPage(false, "Na vstupu chybí výběr záznamů.",true);
             }
 
             RefreshStateA01(v);
@@ -112,7 +112,7 @@ namespace UI.Controllers
             var v = new BatchUpdateA03() { pids = pids };
             if (string.IsNullOrEmpty(pids))
             {
-                return this.StopPage(false, "Na vstupu chybí výběr záznamů.");
+                return this.StopPage(false, "Na vstupu chybí výběr záznamů.",true);
             }
 
             RefreshStateA03(v);

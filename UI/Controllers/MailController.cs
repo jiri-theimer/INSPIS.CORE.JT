@@ -37,7 +37,7 @@ namespace UI.Controllers
             }
             if (v.lisGUID.Count() == 0)
             {
-                return this.StopPage(false, Factory.tra("Momentálně neexistuje otevřená mail fronta."));
+                return this.StopPage(false, "Momentálně neexistuje otevřená mail fronta.",true);
             }
             switch (oper)
             {

@@ -162,11 +162,11 @@ namespace UI.Controllers
             v.SelectedJ04ID = v.Rec.j04ID_Explicit.ToString();           
             if (v.IsNotSchoolAccount)
             {
-                return this.StopPage(true, "Tento uživatelský účet je možné spravovat pouze přes ČŠI administrátorské rozhraní systému.");
+                return this.StopPage(true, "Tento uživatelský účet je možné spravovat pouze přes ČŠI administrátorské rozhraní systému.",true);
             }
             if (!TestIfSchoolAdmin(v.Rec))
             {
-                return this.StopPage(true, "Nedisponujete oprávněním k administraci uživatelských účtů v instituci.");
+                return this.StopPage(true, "Nedisponujete oprávněním k administraci uživatelských účtů v instituci.",true);
             }
 
             return View(v);

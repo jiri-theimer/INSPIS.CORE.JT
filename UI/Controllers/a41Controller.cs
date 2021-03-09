@@ -86,7 +86,7 @@ namespace UI.Controllers
             }
             if (v.RecA01.isclosed)
             {
-                return this.StopPage(true, "Tato akce je již uzavřena.");
+                return this.StopPage(true, "Tato akce je již uzavřena.",true);
             }
 
             return View(v);

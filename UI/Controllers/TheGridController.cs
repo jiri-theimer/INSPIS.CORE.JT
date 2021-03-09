@@ -66,7 +66,7 @@ namespace UI.Controllers
         {
             if (!TestGridPermissions(prefix))
             {
-                return this.StopPage(false, "Nemáte oprávnění pro tento GRID přehled.");
+                return this.StopPage(false, "Nemáte oprávnění pro tento GRID přehled.",true);
             }
             FsmViewModel v = LoadFsmViewModel(prefix, go2pid, "flatview", null, 0, null);
 
@@ -81,7 +81,8 @@ namespace UI.Controllers
         {
             if (!TestGridPermissions(prefix))
             {
-                return this.StopPage(false, "Nemáte oprávnění pro tento GRID přehled.");
+                return this.StopPage(false, "Nemáte oprávnění pro tento GRID přehled.",true);
+                
             }
             FsmViewModel v = LoadFsmViewModel(prefix, go2pid, "masterview", null, 0, null);
 

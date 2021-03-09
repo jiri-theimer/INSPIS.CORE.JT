@@ -14,7 +14,7 @@ namespace UI.Controllers
         {
             if (pid == 0 && a03id == 0)
             {
-                return this.StopPage(true, "Na vstupu chybí ID školy");
+                return this.StopPage(true, "Na vstupu chybí ID školy",true);
             }
             var v = new a19Record() { rec_pid = pid, a03ID = a03id, rec_entity = "a19" };
             

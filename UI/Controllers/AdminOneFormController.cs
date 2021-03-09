@@ -80,7 +80,7 @@ namespace UI.Controllers
             v.RecF06 = Factory.f06FormBL.Load(v.f06ID);
             if (v.RecF06 == null)
             {
-                return this.StopPage(false, "Formulář nelze načíst.");
+                return this.StopPage(false, "Formulář nelze načíst.",true);
             }
 
             v.gridinput = GetGridInput(v.f06ID);

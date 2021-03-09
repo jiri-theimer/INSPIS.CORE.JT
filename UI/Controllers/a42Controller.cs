@@ -25,7 +25,7 @@ namespace UI.Controllers
             v.Rec = Factory.a42QesBL.Load(v.a42ID);
             if (v.Rec == null)
             {
-                return StopPage(true, "Na vstupu chybí INEZ pid.");
+                return StopPage(true, "Na vstupu chybí INEZ pid.",true);
             }
            
             return View(v);
@@ -36,7 +36,7 @@ namespace UI.Controllers
             v.Rec = Factory.a42QesBL.Load(v.a42ID);
             if (v.Rec == null)
             {
-                return StopPage(true, "Na vstupu chybí INEZ pid.");
+                return StopPage(true, "Na vstupu chybí INEZ pid.",true);
             }
             v.lisP85 = Factory.p85TempboxBL.GetList(v.Rec.a42JobGuid);
             v.lisTempFiles = Factory.o27AttachmentBL.GetTempFiles(v.Rec.a42UploadGuid);

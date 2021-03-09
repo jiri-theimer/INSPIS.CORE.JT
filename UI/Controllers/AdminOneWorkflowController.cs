@@ -76,7 +76,7 @@ namespace UI.Controllers
             v.RecB01 = Factory.b01WorkflowTemplateBL.Load(v.b01ID);
             if (v.RecB01 == null)
             {
-                return this.StopPage(false, "Workflow šablonu nelze načíst.");
+                return this.StopPage(false, "Workflow šablonu nelze načíst.",true);
             }
 
             if (v.view == "tree")

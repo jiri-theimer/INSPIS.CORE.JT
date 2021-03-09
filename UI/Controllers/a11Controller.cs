@@ -273,11 +273,11 @@ namespace UI.Controllers
             }
             if (v.RecA01.a01IsAllFormsClosed)
             {
-                return this.StopPage(true, "Formuláře v akci jsou globálně uzavřeny.");
+                return this.StopPage(true, "Formuláře v akci jsou globálně uzavřeny.",true);
             }
             if (v.RecA01.isclosed)
             {
-                return this.StopPage(true, "Tato akce je již uzavřena.");
+                return this.StopPage(true, "Tato akce je již uzavřena.",true);
             }
 
             return View(v);
@@ -392,11 +392,11 @@ namespace UI.Controllers
             }
             if (v.RecA01.a01IsAllFormsClosed)
             {
-                return this.StopPage(true, "Formuláře v akci jsou globálně uzavřeny.");
+                return this.StopPage(true, "Formuláře v akci jsou globálně uzavřeny.",true);
             }
             if (v.RecA01.isclosed)
             {
-                return this.StopPage(true, "Tato akce je již uzavřena.");
+                return this.StopPage(true, "Tato akce je již uzavřena.",true);
             }
             
             return View(v);
@@ -563,11 +563,11 @@ namespace UI.Controllers
             }
             if (v.RecA01.a01IsAllFormsClosed)
             {
-                return this.StopPage(true, "Formuláře v akci jsou globálně uzavřeny.");
+                return this.StopPage(true, "Formuláře v akci jsou globálně uzavřeny.",true);
             }
             if (v.RecA01.isclosed)
             {
-                return this.StopPage(true, "Tato akce je již uzavřena.");
+                return this.StopPage(true, "Tato akce je již uzavřena.",true);
             }
 
             return View(v);

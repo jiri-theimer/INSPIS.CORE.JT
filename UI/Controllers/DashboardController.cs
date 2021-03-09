@@ -108,13 +108,13 @@ namespace UI.Controllers
             v.RecA03 = Factory.a03InstitutionBL.Load(v.a03ID);
             if (v.RecA03 == null)
             {
-                return this.StopPage(false, "Nelze načíst profil instituce.");
+                return this.StopPage(false, "Nelze načíst profil instituce.",true);
             }
 
             var lisA03 = Factory.a03InstitutionBL.GetList(new BO.myQueryA03() { IsRecordValid = true, j02id = Factory.CurrentUser.j02ID });
             if (!lisA03.Any(p => p.a03ID == v.a03ID))
             {
-                return this.StopPage(false, "Nemáte oprávnění spravovat účty této školy.");
+                return this.StopPage(false, "Nemáte oprávnění spravovat účty této školy.",true);
             }
 
             v.lisA39 = Factory.a39InstitutionPersonBL.GetList(new BO.myQuery("a39") { IsRecordValid = true, a03id = v.a03ID });
@@ -326,7 +326,7 @@ namespace UI.Controllers
             v.lisA03 = Factory.a03InstitutionBL.GetList(new BO.myQueryA03() { IsRecordValid = true, j02id = Factory.CurrentUser.j02ID });
             if (v.lisA03.Count() == 0)
             {
-                return this.StopPage(false, "Váš osobní profil nemá vazbu na instituci (školu).");
+                return this.StopPage(false, "Váš osobní profil nemá vazbu na instituci (školu).",true);
             }
             if (v.a03ID == 0)
             {
@@ -335,7 +335,7 @@ namespace UI.Controllers
             v.RecA03 = Factory.a03InstitutionBL.Load(v.a03ID);
             if (v.RecA03 == null)
             {
-                return this.StopPage(false, "Nelze načíst profil instituce.");
+                return this.StopPage(false, "Nelze načíst profil instituce.",true);
             }
             mq = new BO.myQuery("a39") { IsRecordValid = true, a03id=v.a03ID };
             v.lisA39 = Factory.a39InstitutionPersonBL.GetList(mq);

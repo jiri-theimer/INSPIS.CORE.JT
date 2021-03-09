@@ -114,7 +114,7 @@ namespace UI.Controllers
                 }
                 BO.j03User c = new BO.j03User();
                 if (v.rec_pid > 0) c = Factory.j03UserBL.Load(v.rec_pid);                
-                c.j03Login = v.Rec.j03Login;
+                c.j03Login = v.Rec.j03Login.Trim();
                 c.j04ID = v.Rec.j04ID;
                 c.j03LangIndex = v.Rec.j03LangIndex;
                 c.j03IsDomainAccount = v.Rec.j03IsDomainAccount;

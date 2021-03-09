@@ -33,7 +33,7 @@ namespace UI.Controllers
             {
                 if (!Factory.CurrentUser.TestPermission(BO.j05PermValuEnum.AdminGlobal))
                 {
-                    return this.StopPage(true, "Funkce je dostupná pouze administrátorovi.");
+                    return this.StopPage(true, "Funkce je dostupná pouze administrátorovi.",true);
                 }
             }
 
@@ -62,7 +62,7 @@ namespace UI.Controllers
             }
             else
             {
-                return this.StopPage(true, "Funkce je dostupná pouze vedoucímu týmu nebo administrátorovi.");
+                return this.StopPage(true, "Funkce je dostupná pouze vedoucímu týmu nebo administrátorovi.",true);
             }
             return View(v);
         }
@@ -128,7 +128,7 @@ namespace UI.Controllers
             RefreshStateAddAttachment(v);
             if (v.RecA01.isclosed)
             {
-                return this.StopPage(true, "Tato akce je již uzavřena.");
+                return this.StopPage(true, "Tato akce je již uzavřena.",true);
             }
             return View(v);
         }
@@ -359,7 +359,7 @@ namespace UI.Controllers
             }
             else
             {
-                return this.StopPage(true, "Editace karty akce je dostupná pouze vedoucímu týmu, vlastníkovi akce nebo administrátorovi.");
+                return this.StopPage(true, "Editace karty akce je dostupná pouze vedoucímu týmu, vlastníkovi akce nebo administrátorovi.",true);
             }
             var tg = Factory.o51TagBL.GetTagging("a01", pid);
             v.TagPids = tg.TagPids;

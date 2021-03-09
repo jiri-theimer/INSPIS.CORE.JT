@@ -16,7 +16,7 @@ namespace UI.Controllers
             v.Rec = new BO.f26BatteryBoard();
             if (v.rec_pid==0 && f18id == 0)
             {
-                return this.StopPage(true, "Na vstupu chybí segment formuláře.");
+                return this.StopPage(true, "Na vstupu chybí segment formuláře.",true);
             }            
             if (v.rec_pid > 0)
             {

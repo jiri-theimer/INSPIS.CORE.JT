@@ -32,7 +32,7 @@ namespace UI.Controllers
                 }                
                 if (v.a01ID == 0)
                 {
-                    return this.StopPage(true, "Na vstupu chybí ID akce.");
+                    return this.StopPage(true, "Na vstupu chybí ID akce.",true);
                 }
                 RefreshState(v);
 

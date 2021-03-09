@@ -200,7 +200,7 @@ namespace UI.Controllers
             }
             if (v.a03ID == 0)
             {
-                return StopPage(false, Factory.tra("Na vstupu chybí vazba na instituci."));
+                return StopPage(false, "Na vstupu chybí vazba na instituci.",true);
             }
             
             RefreshStateInjury(v);

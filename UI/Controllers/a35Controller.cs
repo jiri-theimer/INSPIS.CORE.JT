@@ -120,7 +120,7 @@ namespace UI.Controllers
             }
             else
             {
-                return this.StopPage(true, "Chybí oprávnění.");
+                return this.StopPage(true, "Chybí oprávnění.",true);
             }
 
 
@@ -271,7 +271,7 @@ namespace UI.Controllers
             v.RecA01 = Factory.a01EventBL.Load(v.pid);
             if (Factory.a10EventTypeBL.Load(v.RecA01.a10ID).a10IsUse_Period == false)
             {
-                return this.StopPageSubform(string.Format("Typ akce '{0}' nepodporuje časové plánování.", v.RecA01.a10Name));
+                return this.StopPageSubform(string.Format(Factory.tra("Typ akce '{0}' nepodporuje časové plánování."), v.RecA01.a10Name));
             }
             v.PermA01 = Factory.a01EventBL.InhalePermission(v.RecA01);
 
