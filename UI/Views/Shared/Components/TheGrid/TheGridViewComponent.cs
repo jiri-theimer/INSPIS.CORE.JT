@@ -46,10 +46,21 @@ namespace UI.Views.Shared.Components.TheGrid
 
             if (gridState == null)   //pro uživatele zatím nebyl vygenerován záznam v j72 -> vygenerovat
             {
-                var cols = _colsProvider.getDefaultPallete(false, input.query);    //výchozí paleta sloupců
+                var cols = new List<BO.TheGridColumn>();                
+                var recJ72 = new BO.j72TheGridTemplate() { j72IsSystem = true, j72Entity = input.entity, j03ID = _f.CurrentUser.pid, j72MasterEntity = input.master_entity };
 
-                var recJ72 = new BO.j72TheGridTemplate() { j72IsSystem = true, j72Entity = input.entity, j03ID = _f.CurrentUser.pid, j72Columns = String.Join(",", cols.Select(p => p.UniqueName)), j72MasterEntity = input.master_entity };
-
+                var recTemplate = _f.j72TheGridTemplateBL.LoadTemplateGrid(input.entity, input.master_entity);
+                if (recTemplate != null)    
+                {
+                    //vzorový grid podle kterého se má vytvořit grid
+                    recJ72.j72Columns = recTemplate.j72Columns;
+                }
+                else
+                {
+                    cols = _colsProvider.getDefaultPallete(false, input.query);    //výchozí paleta sloupců
+                    recJ72.j72Columns = String.Join(",", cols.Select(p => p.UniqueName));
+                }
+                
                 var intJ72ID = _f.j72TheGridTemplateBL.Save(recJ72, null, null, null);
                 gridState = _f.j72TheGridTemplateBL.LoadState(intJ72ID, _f.CurrentUser.pid);
             }

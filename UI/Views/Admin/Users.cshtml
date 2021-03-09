@@ -54,7 +54,7 @@
 <script type="text/javascript">
     $(document.body).css("overflow", "hidden");
 
-    $(document).ready(function () {        
+    $(document).ready(function () {
         $.post("/Menu/AdminUsers", { prefix: "@Model.prefix" }, function (data) {
 
             $("#layout_sidebar").html(data);
@@ -85,7 +85,14 @@
     });
 
 
-   
+   function change_grid(j72id) {
+            var strKey = "admin-j72id-@(Model.prefix)";
+
+            $.post("/Common/SetUserParam", { key: strKey,value:j72id  }, function (data) {
+                location.replace(location.href);
+
+            });
+        }
 
 </script>
 

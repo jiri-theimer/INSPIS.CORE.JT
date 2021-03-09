@@ -331,6 +331,51 @@
             </div>
         </div>
     }
+    @if (_f.IsUserAdmin() && Model.Rec.j72Entity != "j72TheGridTemplate")
+    {
+        <div class="card">
+            <div class="card-header">
+                @_f.tra("Nastavit jako GRID vzor pro všechny uživatele")
+            </div>
+            <div class="card-body">
+                <table>
+                    <tr>
+                        <td>
+                            Entita:
+                        </td>
+                        <td>
+                            <strong> @Model.Rec.j72Entity</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Master Entita:
+                        </td>
+                        <td>
+                            <strong> @Model.Rec.j72MasterEntity</strong>
+                        </td>
+                    </tr>
+                  
+                </table>
+               
+                <input type="checkbox" asp-for="Rec.j72IsTemplate4SystemGrid" />
+                <label class="col-form-label" for="Rec_j72IsTemplate4SystemGrid">@_f.tra("Tento grid je vzorem pro ostatní uživatele")</label>
+                <div>
+                    <i>
+                        @Model.Rec.UserInsert
+                    </i>
+                    <i style="margin-left:20px;">
+                        @Model.Rec.DateInsert.ToString()
+                    </i>
+                    @if (Model.Rec.j72IsTemplate4SystemGrid)
+                    {
+                        <button id="cmdDeleteSystemDefaultGrids" type="button" class="btn btn-outline-danger">@_f.tra("Vyčistit všem výchozí GRID, by se načetl podle vzoru")</button>
+                    }
+
+                </div>
+            </div>
+        </div>
+    }
 </form>
 
 
@@ -419,6 +464,14 @@
             }
 
             refresh_state();
+        });
+
+        $("#cmdDeleteSystemDefaultGrids").click(function () {
+
+            if (confirm("Opravdu všem uživatelům odstranit jejich výchozí GRID?")) {
+                form1.action = "/TheGridDesigner/Index?oper=deletesystemdefaultgrids";
+                form1.submit();
+            }
         });
 
     });

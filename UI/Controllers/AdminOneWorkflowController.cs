@@ -36,7 +36,7 @@ namespace UI.Controllers
         {
             var b01id = Convert.ToInt32(tgi.viewstate[0]);
             var c = new UI.TheGridSupport(GetGridInput(b01id), Factory, _colsProvider);
-            return c.Event_HandleTheGridMenu(tgi.j72id);
+            return c.Event_HandleTheGridMenu(tgi);
         }
         public TheGridExportedFile HandleTheGridExport(string format, string pids, TheGridUIContext tgi, List<BO.StringPair> pathpars)  //TheGrid povinná metoda pro export dat
         {

@@ -50,7 +50,7 @@ namespace UI.Controllers
             v.gridinput.ondblclick = tgi.ondblclick;
             v.gridinput.oncmclick = tgi.oncmclick;
             var c = new UI.TheGridSupport(v.gridinput, Factory, _colsProvider);
-            return c.Event_HandleTheGridMenu(tgi.j72id);
+            return c.Event_HandleTheGridMenu(tgi);
         }
 
         public TheGridExportedFile HandleTheGridExport(string format, string pids, TheGridUIContext tgi, List<BO.StringPair> pathpars)  //TheGrid povinná metoda pro export dat

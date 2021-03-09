@@ -63,7 +63,8 @@ namespace UI.Controllers
             {
                 var recJ72 = Factory.j72TheGridTemplateBL.Load(v.Rec.pid);
                 var lisJ73 = Factory.j72TheGridTemplateBL.GetList_j73(recJ72.pid,recJ72.j72Entity.Substring(0,3)).ToList();
-                recJ72.j72IsSystem = false; recJ72.j72ID = 0; recJ72.pid = 0; recJ72.j72Name = j72name; recJ72.j03ID = Factory.CurrentUser.pid;
+                recJ72.j72IsSystem = false; recJ72.j72ID = 0; recJ72.pid = 0; recJ72.j72Name = j72name;
+                recJ72.j03ID = Factory.CurrentUser.pid;
                 List<int> j04ids = BO.BAS.ConvertString2ListInt(v.j04IDs);
                 List<int> j11ids = BO.BAS.ConvertString2ListInt(v.j11IDs);
                 var intJ72ID = Factory.j72TheGridTemplateBL.Save(recJ72, lisJ73, j04ids,j11ids);
@@ -117,6 +118,12 @@ namespace UI.Controllers
                 v.lisJ73.Clear();
                 return View(v);
             }
+            if (oper== "deletesystemdefaultgrids" && Factory.IsUserAdmin())
+            {
+                Factory.j72TheGridTemplateBL.DeleteSystemDefaultGrids(v.Rec.j72Entity, v.Rec.j72MasterEntity);
+                v.SetJavascript_CallOnLoad(v.Rec.pid);
+                return View(v);
+            }
             if (restore2factory == true)
             {
                 Factory.CBL.DeleteRecord("j72", v.Rec.pid);
@@ -135,6 +142,10 @@ namespace UI.Controllers
                 gridState.j75Filter = "";   //automaticky vyčistit aktuální sloupcový filtr
                 gridState.j75CurrentPagerIndex = 0;
                 gridState.j75CurrentRecordPid = 0;
+                if (Factory.IsUserAdmin())
+                {
+                    recJ72.j72IsTemplate4SystemGrid = v.Rec.j72IsTemplate4SystemGrid;
+                }
                 
                 if (gridState.j75SortDataField != null)
                 {

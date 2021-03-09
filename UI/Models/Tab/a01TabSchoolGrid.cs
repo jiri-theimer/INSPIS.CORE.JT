@@ -14,7 +14,7 @@ namespace UI.Models.Tab
 
         public int j72id { get; set; }
         public int go2pid { get; set; }
-        public string GridColumns { get; set; }
+        public string FixedGridColumns { get; set; }
         public PeriodViewModel period { get; set; } //fixní filtr v horním pruhu
         public bool IsAllowCreateA01 { get; set; }
 

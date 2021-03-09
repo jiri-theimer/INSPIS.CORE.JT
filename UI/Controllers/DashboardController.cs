@@ -44,7 +44,7 @@ namespace UI.Controllers
             var a10id = Convert.ToInt32(tgi.viewstate[1]);
             var c = new UI.TheGridSupport(GetSchoolA01GridInput(a03id, a10id, tgi.fixedcolumns), Factory, _colsProvider);
 
-            return c.Event_HandleTheGridMenu(tgi.j72id);
+            return c.Event_HandleTheGridMenu(tgi);
         }
         public TheGridExportedFile HandleTheGridExport(string format, string pids, TheGridUIContext tgi, List<BO.StringPair> pathpars)  //TheGrid povinná metoda pro export dat
         {
@@ -73,8 +73,16 @@ namespace UI.Controllers
                 v.IsAllowCreateA01 = true;  //může zakládat akce tohoto typu
             }
 
-            v.gridinput = GetSchoolA01GridInput(v.a03ID, v.a10ID,v.GridColumns);
-
+            v.FixedGridColumns = "a01_a10__a10EventType__a10Name,a__a01Event__a01Signature,a01_a08__a08Theme__a08Name,a01_b02__b02WorkflowStatus__b02Name,a__a01Event__a01DateFrom,a__a01Event__a01DateUntil";
+            
+            //    v.GridColumns = "a__a01Event__a01Signature,a01_a08__a08Theme__a08Name,a01_b02__b02WorkflowStatus__b02Name,a__a01Event__a01DateFrom,a__a01Event__a01DateUntil";
+            //    if (v.RecA10.a10CoreFlag == "injury")
+            //    {
+            //        v.GridColumns += ",a01_xxa__v_uraz_jmenozraneneho__JmenoZraneneho,a01_xxb__v_uraz_datumzraneni__DatumZraneni,a01_xxc__v_uraz_poradovecislo__PoradoveCislo";
+            //    }
+            //}
+            v.gridinput = GetSchoolA01GridInput(v.a03ID, v.a10ID,v.FixedGridColumns);
+            
             v.period = new PeriodViewModel() { IsShowButtonRefresh = true };            
             var per =basUI.InhalePeriodDates(_pp,Factory,"a01", "a03Institution");
             v.period.PeriodValue = per.pid;

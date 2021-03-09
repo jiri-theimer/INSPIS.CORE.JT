@@ -305,6 +305,7 @@ namespace UI.Controllers
             gi.entity = entity;
             gi.query = new BO.InitMyQuery().Load(prefix);
             gi.go2pid = go2pid;
+            gi.j72id = Factory.CBL.LoadUserParamInt("admin-j72id-" + prefix);
             return gi;
         }
 

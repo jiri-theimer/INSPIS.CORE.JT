@@ -537,8 +537,9 @@ namespace UI
 
 
 
-        public string Event_HandleTheGridMenu(int j72id)
+        public string Event_HandleTheGridMenu(TheGridUIContext tgi)
         {
+            int j72id = tgi.j72id;
             var sb = new System.Text.StringBuilder();
             var recJ72 = _Factory.j72TheGridTemplateBL.LoadState(j72id, _Factory.CurrentUser.pid);
 
@@ -559,37 +560,49 @@ namespace UI
                 sb.AppendLine("<a class='nav-link' href='javascript:tg_tagging();'>" + _Factory.tra("Hromadná kategorizace záznamů") + "★</a>");
 
             }
-            
-            sb.AppendLine(string.Format("<div style='margin-top:20px;background-color:#ADD8E6;padding-left:10px;font-weight:bold;'>{0}</div>", _Factory.tra("Seznam pojmenovaných GRID šablon")));
-
-            var lis = _Factory.j72TheGridTemplateBL.GetList(recJ72.j72Entity, recJ72.j03ID, recJ72.j72MasterEntity);
-            sb.AppendLine("<table style='width:100%;margin-bottom:20px;'>");
-            string strGridNavrhar = _Factory.tra("Grid návrhář");
-            foreach (var c in lis)
+            if (tgi.fixedcolumns == null)
             {
-                sb.AppendLine("<tr>");
-                if (c.j72HashJ73Query)
-                {
-                    sb.Append("<td><span class='k-icon k-i-filter'></span></td>");
-                }
-                else
-                {
-                    sb.Append("<td><span class='k-icon k-i-table'></span></td>");
-                }
-                if (c.j72IsSystem)
-                {
-                    c.j72Name = _Factory.tra("Výchozí GRID");
-                }
-                if (c.pid == recJ72.pid)
-                {
-                    c.j72Name += " ✔";
-                }
-                sb.Append(string.Format("<td><a class='nav-link py-0' href='javascript:change_grid({0})'>{1}</a></td>", c.pid, c.j72Name));
+                //pokud grid nemá fixní sloupce natvrdo, pak možnost navrhovat sloupce
+                sb.AppendLine(string.Format("<div style='margin-top:20px;background-color:#ADD8E6;padding-left:10px;font-weight:bold;'>{0}</div>", _Factory.tra("Seznam pojmenovaných GRID šablon")));
 
-                sb.AppendLine(string.Format("<td style='width:30px;'><a title='" + strGridNavrhar + "' class='btn btn-sm btn-primary py-0' href='javascript:_window_open(\"/TheGridDesigner/Index?j72id={0}\",2);'>...</a></td>", c.pid));
-                sb.AppendLine("</tr>");
+                var lis = _Factory.j72TheGridTemplateBL.GetList(recJ72.j72Entity, recJ72.j03ID, recJ72.j72MasterEntity);
+                sb.AppendLine("<table style='width:100%;margin-bottom:20px;'>");
+                string strGridNavrhar = _Factory.tra("Grid návrhář");
+                foreach (var c in lis)
+                {
+                    sb.AppendLine("<tr>");
+                    if (c.j72IsTemplate4SystemGrid)
+                    {
+                        sb.Append("<td><span class='k-icon k-i-table-light-dialog' style='color:red;'></span></td>");
+                    }
+                    else
+                    {
+                        if (c.j72HashJ73Query)
+                        {
+                            sb.Append("<td><span class='k-icon k-i-filter'></span></td>");
+                        }
+                        else
+                        {
+                            sb.Append("<td><span class='k-icon k-i-table'></span></td>");
+                        }
+                    }
+
+                    if (c.j72IsSystem)
+                    {
+                        c.j72Name = _Factory.tra("Výchozí GRID");
+                    }
+                    if (c.pid == recJ72.pid)
+                    {
+                        c.j72Name += " ✔";
+                    }
+                    sb.Append(string.Format("<td><a class='nav-link py-0' href='javascript:change_grid({0})'>{1}</a></td>", c.pid, c.j72Name));
+
+                    sb.AppendLine(string.Format("<td style='width:30px;'><a title='" + strGridNavrhar + "' class='btn btn-sm btn-primary py-0' href='javascript:_window_open(\"/TheGridDesigner/Index?j72id={0}\",2);'>...</a></td>", c.pid));
+                    sb.AppendLine("</tr>");
+                }
+                sb.AppendLine("</table>");
             }
-            sb.AppendLine("</table>");
+            
 
 
 

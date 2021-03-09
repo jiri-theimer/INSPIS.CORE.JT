@@ -487,11 +487,11 @@
             if (typeof layout === "undefined") layout = null;
             _modal_current_layout = layout;
             if (typeof flag === "undefined") flag = 1;
-
+            
             if (url.toLowerCase().indexOf("/j11/record") > -1 || url.toLowerCase().indexOf("/a29/record") > -1 || url.toLowerCase().indexOf("/a10/record") > -1 || url.toLowerCase().indexOf("/x51/record") > -1) {
                 flag = 2;   //automaticky maximalizovat okno
             }
-
+           
 
             if (!$(_modal).attr("initialized") && flag !== 2) {
                 _make_element_draggable(document.getElementById("myModalContent"), document.getElementById("myModalFrame")); //předávání nefunguje přes jquery

@@ -14,12 +14,16 @@ if (screen.availHeight > screen.availWidth || screen.width < 800 || screen.heigh
 }
 
 function _edit(controller, pid, header) {    
-    var url = "";     
+    var url = "";
+    var winflag = 1;
     switch (controller) {
         case "x40":
-            url = "/Mail/Record?pid=" + pid;
+            url = "/Mail/Record?pid=" + pid;            
             break;
-
+        case "j72":
+            url = "/TheGridDesigner/Index?j72id=" + pid;
+            winflag = 2;
+            break;
         case "j90":
         case "j92":
         case "b05":
@@ -31,7 +35,7 @@ function _edit(controller, pid, header) {
             break;
     }
     
-    _window_open(url, 1, header);
+    _window_open(url, winflag, header);
 
 }
 function _location_replace_top(url) {    

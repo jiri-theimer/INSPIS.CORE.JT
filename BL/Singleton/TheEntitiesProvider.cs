@@ -395,6 +395,9 @@ namespace BL
                     lis.Add(getREL("a05Region", "j23_a05", "Kraj", "LEFT OUTER JOIN a05Region j23_a05 ON a.a05ID=j23_a05.a05ID"));
                     lis.Add(getREL("j24NonPersonType", "j23_j24", "Typ zdroje", "LEFT OUTER JOIN j24NonPersonType j23_j24 ON a.j24ID=j23_j24.j24ID"));
                     break;
+                case "j72":
+                    lis.Add(getREL("j03User", "j72_j03", "Vlastník", "INNER JOIN j03User j72_j03 ON a.j03ID=j72_j03.j03ID"));
+                    break;
                 case "o51":
                     lis.Add(getREL("o53TagGroup", "o51_o53", "Kategorie", "LEFT OUTER JOIN o53TagGroup o51_o53 ON a.o53ID=o51_o53.o53ID"));
                     break;

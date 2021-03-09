@@ -178,6 +178,7 @@ namespace UI.Controllers
 
             DIV_TRANS("Prostředí");
             AMI("Widgety", url_users("x55"));
+            AMI("Grid", url_users("j72"));
 
             DIV_TRANS("Provoz");
             AMI("PING Log", url_users("j92"));
@@ -188,7 +189,7 @@ namespace UI.Controllers
             AMI("Poštovní účty", url_users("j40"));
             AMI("OUTBOX", url_users("x40"));
             AMI("MAIL fronta", "/mail/MailBatchFramework");
-            
+
             
 
             handle_selected_item(prefix);

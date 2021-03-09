@@ -349,6 +349,16 @@ namespace BL
             AF("j11Team", "j11Name", "Tým osob", 1, null, "string", false, true);           
             AppendTimestamp("j11Team");
 
+
+            AF("j72TheGridTemplate", "j72Name", "Grid šablona", 1, null, "string", false, true);
+            AF("j72TheGridTemplate", "j72Entity", "Entita",1);
+            AF("j72TheGridTemplate", "j72MasterEntity", "Master Entita",1);
+            AF("j72TheGridTemplate", "j72IsSystem", "Výchozí grid", 1, null, "bool");
+            AF("j72TheGridTemplate", "j72IsTemplate4SystemGrid", "Šablona pro výchozí grid", 1, null, "bool");
+            AF("j72TheGridTemplate", "j72IsPublic", "Sdílený pro všechny", 1, null, "bool");            
+            AppendTimestamp("j72TheGridTemplate");
+            
+
             //a17 = typy činností školy
             AF("a17DepartmentType", "a17Name", "Typ činnosti", 1,null,"string",false,true);
             AF("a17DepartmentType", "a17UIVCode", "UIV", 1,null,"string",false,true);
@@ -947,6 +957,9 @@ namespace BL
 
                 case "o51":
                     ret.Add(InhaleColumn4Relation("o51_o53", "o53TagGroup", "o53Name", rels, bolComboColumns));
+                    break;
+                case "j72":
+                    ret.Add(InhaleColumn4Relation("j72_j03", "j03User", "j03Login", rels, bolComboColumns));
                     break;
             }
 

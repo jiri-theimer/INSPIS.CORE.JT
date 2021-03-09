@@ -15,7 +15,9 @@ namespace BL
         public int SaveState(BO.TheGridState rec, int j03id);
         public IEnumerable<BO.j72TheGridTemplate> GetList(string strEntity, int intJ03ID, string strMasterEntity);
         public IEnumerable<BO.j73TheGridQuery> GetList_j73(int j72id,string prefix);
-        public string getFiltrAlias(string prefix, BO.baseQuery mq);
+        public string getFiltrAlias(string prefix, BO.baseQuery mq);        
+        public BO.j72TheGridTemplate LoadTemplateGrid(string strEntity, string strMasterEntity);
+        public bool DeleteSystemDefaultGrids(string strEntity, string strMasterEntity);
 
     }
 
@@ -54,7 +56,51 @@ namespace BL
             return sbret();
         }
 
+        
+        public bool DeleteSystemDefaultGrids(string strEntity, string strMasterEntity)
+        {
+            var p = new DL.Params4Dapper();
+            p.AddString("entity", strEntity);
+            p.AddString("masterentity", strMasterEntity);
 
+            using (var sc = new System.Transactions.TransactionScope())
+            {
+                _db.RunSql("DELETE FROM j73TheGridQuery WHERE j72ID IN (SELECT j72ID FROM j72TheGridTemplate WHERE j72IsTemplate4SystemGrid=0 AND j72IsSystem=1 AND j72Entity=@entity AND ISNULL(j72MasterEntity,'') = ISNULL(@masterentity,''))", p.getDynamicDapperPars());
+
+                _db.RunSql("DELETE FROM j74TheGridReceiver WHERE j72ID IN (SELECT j72ID FROM j72TheGridTemplate WHERE j72IsTemplate4SystemGrid=0 AND j72IsSystem=1 AND j72Entity=@entity AND ISNULL(j72MasterEntity,'') = ISNULL(@masterentity,''))", p.getDynamicDapperPars());
+
+                _db.RunSql("DELETE FROM j75TheGridState WHERE j72ID IN (SELECT j72ID FROM j72TheGridTemplate WHERE j72IsTemplate4SystemGrid=0 AND j72IsSystem=1 AND j72Entity=@entity AND ISNULL(j72MasterEntity,'') = ISNULL(@masterentity,''))", p.getDynamicDapperPars());                                
+
+                _db.RunSql("DELETE FROM j72TheGridTemplate WHERE j72IsTemplate4SystemGrid=0 AND j72IsSystem=1 AND j72Entity=@entity AND ISNULL(j72MasterEntity,'') = ISNULL(@masterentity,'')", p.getDynamicDapperPars());
+
+                if (string.IsNullOrEmpty(strMasterEntity))
+                {
+                    _db.RunSql("DELETE FROM x36UserParam WHERE x36Key like '%flatview-j72id-" + strEntity.Substring(0, 3) + "%'");
+                    _db.RunSql("DELETE FROM x36UserParam WHERE x36Key like '%admin-j72id-" + strEntity.Substring(0, 3) + "%'");
+                }
+                else
+                {
+                    _db.RunSql("DELETE FROM x36UserParam WHERE x36Key like '%slaveview-j72id-" + strEntity.Substring(0, 3) + "-"+strMasterEntity.Substring(0,3)+"%'");
+                }
+                
+
+                sc.Complete();
+
+                return true;
+            }
+        }
+        public BO.j72TheGridTemplate LoadTemplateGrid(string strEntity,string strMasterEntity)
+        {
+            if (String.IsNullOrEmpty(strMasterEntity))
+            {
+                return _db.Load<BO.j72TheGridTemplate>(GetSQL1(" WHERE a.j72IsTemplate4SystemGrid=1 AND a.j72Entity=@entity"), new { entity = strEntity });
+            }
+            else
+            {
+                return _db.Load<BO.j72TheGridTemplate>(GetSQL1(" WHERE a.j72IsTemplate4SystemGrid=1 AND a.j72Entity=@entity AND a.j72MasterEntity=@masterentity"), new { entity = strEntity, masterentity = strMasterEntity });
+            }
+                
+        }
         public BO.j72TheGridTemplate Load(int j72id)
         {
             return _db.Load<BO.j72TheGridTemplate>(GetSQL1(" WHERE a.j72ID=@j72id"), new { j72id = j72id });
@@ -109,6 +155,7 @@ namespace BL
             p.AddInt("pid", rec.j72ID);
             p.AddString("j72Name", rec.j72Name);
             p.AddBool("j72IsSystem", rec.j72IsSystem);
+            p.AddBool("j72IsTemplate4SystemGrid", rec.j72IsTemplate4SystemGrid);
             p.AddInt("j03ID", rec.j03ID, true);
 
             p.AddString("j72Entity", rec.j72Entity);
@@ -128,6 +175,11 @@ namespace BL
             }
 
             int intJ72ID = _db.SaveRecord("j72TheGridTemplate", p.getDynamicDapperPars(), rec);
+
+            if (rec.j72IsTemplate4SystemGrid)
+            {
+                _db.RunSql("UPDATE j72TheGridTemplate set j72IsTemplate4SystemGrid=0 WHERE j72Entity=@entity AND j72ID<>@pid AND ISNULL(j72MasterEntity,'')=ISNULL(@masterentity,'')", new { entity = rec.j72Entity, pid = intJ72ID, masterentity=rec.j72MasterEntity });
+            }
 
             if (j04ids != null && j11ids != null)
             {
