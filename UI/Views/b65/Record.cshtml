@@ -31,7 +31,7 @@
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
             <div class="col-sm-11 col-md-10">
                 <input class="form-control" asp-for="Rec.b65Name" />
-                <span asp-validation-for="Rec.b65Name" class="text-danger"></span>
+                
             </div>
         </div>
 
@@ -39,15 +39,15 @@
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Předmět zprávy"):</label>
             <div class="col-sm-11 col-md-10">
                 <input class="form-control" asp-for="Rec.b65MessageSubject" />
-                <span asp-validation-for="Rec.b65MessageSubject" class="text-danger"></span>
+                
             </div>
         </div>
 
 
 
-        <div class="row my-2">
+        <div class="my-2">
             <textarea asp-for="Rec.b65MessageBody" class="form-control" placeholder="@_f.tra("Tělo zprávy")"></textarea>
-            <span asp-validation-for="Rec.b65MessageBody" class="text-danger"></span>
+            
         </div>
 
         <div class="row my-2">

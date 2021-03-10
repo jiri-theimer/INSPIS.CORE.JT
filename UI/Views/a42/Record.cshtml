@@ -51,9 +51,9 @@
 
         <mystitky entity="a42Qes" asp-for="@Model.TagPids" tagnames="@Model.TagNames" taghtml="@Model.TagHtml"></mystitky>
 
-        <div class="row my-2">
+        <div class="my-2">
             <textarea asp-for="Rec.a42Description" class="form-control" style="height:150px;" placeholder="@_f.tra("Podrobný popis")"></textarea>
-            <span asp-validation-for="Rec.a42Description" class="text-danger"></span>
+            
         </div>
 
         @if (Model.Rec.a42JobState == BO.a42JobState.MailQueue || Model.Rec.a42JobState == BO.a42JobState.PreparedX40)
