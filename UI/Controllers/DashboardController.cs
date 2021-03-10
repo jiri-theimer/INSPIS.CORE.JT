@@ -118,7 +118,7 @@ namespace UI.Controllers
             }
 
             v.lisA39 = Factory.a39InstitutionPersonBL.GetList(new BO.myQuery("a39") { IsRecordValid = true, a03id = v.a03ID });
-
+            
             return ViewTup(v, BO.j05PermValuEnum.SchoolAdminUser);
         }
 

@@ -57,13 +57,17 @@
                 <mydropdown asp-for="@Model.SelectedJ04ID" datasource="@Model.lisJ04" valuefield="pid" textfield="j04Name"></mydropdown>
             </div>
         </div>
-        <div class="row my-2">
-            <div class="col-sm-8 col-md-8">
-                <input type="checkbox" asp-for="@Model.a39IsAllowInspisWS" />
-                <label class="col-form-label" for="a39IsAllowInspisWS">@_f.tra("Oprávnění k integračním službám se školním IS")</label>
+        @if (_f.App.Implementation == "Default")
+        {
+            <div class="row my-2">
+                <div class="col-sm-8 col-md-8">
+                    <input type="checkbox" asp-for="@Model.a39IsAllowInspisWS" />
+                    <label class="col-form-label" for="a39IsAllowInspisWS">@_f.tra("Oprávnění k integračním službám se školním IS")</label>
 
+                </div>
             </div>
-        </div>
+        }
+
         <div class="row my-2">
             <textarea asp-for="@Model.a39Description" class="form-control" placeholder="@_f.tra("Poznámka k roli")"></textarea>
 
