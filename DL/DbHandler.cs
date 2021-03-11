@@ -515,15 +515,18 @@ namespace DL
         {
             strSQL = strSQL.Replace("#pid#", strPIDValue, StringComparison.OrdinalIgnoreCase);
             strSQL = strSQL.Replace("[%pid%]", strPIDValue, StringComparison.OrdinalIgnoreCase);
+            strSQL = strSQL.Replace("@pid", strPIDValue, StringComparison.OrdinalIgnoreCase);
             if (par1 != null)
             {
                 par1 = OcistitSQL(par1);
                 strSQL = strSQL.Replace("#par1#", par1, StringComparison.OrdinalIgnoreCase);
+                strSQL = strSQL.Replace("@par1", par1, StringComparison.OrdinalIgnoreCase);
             }
             if (par2 != null)
             {
                 par2 = OcistitSQL(par2);
                 strSQL = strSQL.Replace("#par2#", par2, StringComparison.OrdinalIgnoreCase);
+                strSQL = strSQL.Replace("@par2", par2, StringComparison.OrdinalIgnoreCase);
             }            
             return OcistitSQL(strSQL);
         }
