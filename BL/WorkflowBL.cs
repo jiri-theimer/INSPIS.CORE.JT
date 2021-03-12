@@ -484,7 +484,7 @@ namespace BL
                     if (prikaz.b02ID_TargetUpdate > 0)
                     {
                         //nahodit cílový stav u podřízených akcí
-                        SaveStepWithChangeStatus(rec, _mother.b06WorkflowStepBL.Load(intB06ID), _mother.b02WorkflowStatusBL.Load(prikaz.b02ID_TargetUpdate), null, false);
+                        SaveStepWithChangeStatus(c, _mother.b06WorkflowStepBL.Load(intB06ID), _mother.b02WorkflowStatusBL.Load(prikaz.b02ID_TargetUpdate), null, false);
                     }
                 }
                 
