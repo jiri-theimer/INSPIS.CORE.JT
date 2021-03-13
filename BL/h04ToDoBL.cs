@@ -130,7 +130,7 @@ namespace BL
             p.AddDateTime("h04ReminderDate", rec.h04ReminderDate);
 
 
-            int intPID = _db.SaveRecord("h04ToDo", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("h04ToDo", p, rec);
             if (j02ids_resitel != null || j11ids_resitel != null)
             {
                 if (rec.pid > 0) _db.RunSql("DELETE FROM h06ToDoReceiver WHERE h04ID=@pid", new { pid = intPID });

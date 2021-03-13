@@ -119,7 +119,7 @@ namespace BL
             p.AddString("o27PortalPublishUserUpdate", rec.o27PortalPublishUserUpdate);
            
 
-            int intPID = _db.SaveRecord("o27Attachment", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("o27Attachment", p, rec);
 
 
 

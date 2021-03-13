@@ -59,7 +59,7 @@ namespace BL
             p.AddInt("o15Ordinary", rec.o15Ordinary);
 
 
-            int intPID = _db.SaveRecord("o15AutoComplete", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("o15AutoComplete", p, rec);
 
 
 

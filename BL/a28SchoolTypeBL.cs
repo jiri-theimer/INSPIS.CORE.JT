@@ -57,7 +57,7 @@ namespace BL
             p.AddString("a28Code", rec.a28Code);
             p.AddInt("a28Ordinary", rec.a28Ordinary);
            
-            int intPID = _db.SaveRecord("a28SchoolType", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("a28SchoolType", p, rec);
 
 
 

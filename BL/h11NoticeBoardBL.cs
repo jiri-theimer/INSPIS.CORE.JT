@@ -73,7 +73,7 @@ namespace BL
                 }
                 p.AddInt("j02ID_Creator", rec.j02ID_Creator, true);
 
-                intPID = _db.SaveRecord("h11NoticeBoard", p.getDynamicDapperPars(), rec);
+                intPID = _db.SaveRecord("h11NoticeBoard", p, rec);
 
                 if (intPID > 0)
                 {
@@ -84,7 +84,7 @@ namespace BL
                     p.AddString("o11Name", rec.h11Name);
                     p.AddString("o11Html", strHtml);
                     p.AddString("o11PlainText", strPlanText);
-                    int intO11ID = _db.SaveRecord("o11BigtextContent", p.getDynamicDapperPars(), rec);
+                    int intO11ID = _db.SaveRecord("o11BigtextContent", p, rec);
                     _db.RunSql("UPDATE h11NoticeBoard set o11ID=@o11id WHERE h11ID=@pid", new { o11id = intO11ID, pid = intPID });
                 }
                 if (rec.pid > 0)

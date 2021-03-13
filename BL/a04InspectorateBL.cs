@@ -60,7 +60,7 @@ namespace BL
             p.AddString("a04Email", rec.a04Email);
             p.AddBool("a04IsRegional", rec.a04IsRegional);
             
-            int intPID = _db.SaveRecord("a04Inspectorate", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("a04Inspectorate", p, rec);
 
             if (rec.pid > 0 && intPID>0)    //vyčistit uživatelskou cache pro účty s vazbou na tento inspektorát
             {

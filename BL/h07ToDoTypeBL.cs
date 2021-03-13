@@ -56,7 +56,7 @@ namespace BL
             p.AddBool("h07IsToDo", rec.h07IsToDo);
 
 
-            int intPID = _db.SaveRecord("h07ToDoType", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("h07ToDoType", p, rec);
 
 
 

@@ -88,7 +88,7 @@ namespace BL
                 }
             }
 
-            int intPID = _db.SaveRecord("x31Report", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("x31Report", p, rec);
             if (x32ids != null)
             {
                 if (rec.pid > 0)

@@ -55,7 +55,7 @@ namespace BL
             p.AddInt("a05Ordinal", rec.a05Ordinal);
            
 
-            int intPID = _db.SaveRecord("a05Region", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("a05Region", p, rec);
 
 
 

@@ -66,7 +66,7 @@ namespace BL
             p.AddString("x51PlainText", rec.x51PlainText);
             p.AddString("x51NearUrls", rec.x51NearUrls);
 
-            int intPID = _db.SaveRecord("x51HelpCore", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("x51HelpCore", p, rec);
 
 
 

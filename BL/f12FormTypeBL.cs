@@ -57,7 +57,7 @@ namespace BL
             p.AddString("f12Description", rec.f12Description);
             
             
-            int intPID = _db.SaveRecord("f12FormType", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("f12FormType", p, rec);
             if (intPID > 0)
             {
                 _db.RunSql("exec dbo._core_f12_recalc_tree");

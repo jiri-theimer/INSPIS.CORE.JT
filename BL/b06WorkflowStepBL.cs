@@ -105,7 +105,7 @@ namespace BL
             if (rec.b06UC == null) { rec.b06UC = BO.BAS.GetGuid(); }
             p.AddString("b06UC", rec.b06UC);
 
-            int intPID = _db.SaveRecord("b06WorkflowStep", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("b06WorkflowStep", p, rec);
             if (lisB08 != null)
             {
                 if (rec.pid > 0)
@@ -183,7 +183,7 @@ namespace BL
                     p.AddEnumInt("b10TargetScopeFlag", c.b10TargetScopeFlag);
                     p.AddInt("a10ID_TargetUpdate", c.a10ID_TargetUpdate);
                     p.AddInt("b02ID_TargetUpdate", c.b02ID_TargetUpdate, true);
-                    _db.SaveRecord("b10WorkflowCommandCatalog_Binding", p.getDynamicDapperPars(), c, false, false);
+                    _db.SaveRecord("b10WorkflowCommandCatalog_Binding", p, c, false, false);
                     //_db.RunSql("INSERT INTO b10WorkflowCommandCatalog_Binding(b06ID,b09ID,b10Parameter1,b02ID_TargetUpdate) VALUES (@pid,@b09id,@par1)", new { pid = intPID, b09id = c.b09ID, par1 = c.b10Parameter1, });
                 }
             }

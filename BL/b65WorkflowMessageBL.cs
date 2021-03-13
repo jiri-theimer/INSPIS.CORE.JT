@@ -65,7 +65,7 @@ namespace BL
             p.AddString("b65MessageBody", rec.b65MessageBody);
             p.AddEnumInt("b65SystemFlag", rec.b65SystemFlag);
           
-            int intPID = _db.SaveRecord("b65WorkflowMessage", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("b65WorkflowMessage", p, rec);
            
             return intPID;
         }

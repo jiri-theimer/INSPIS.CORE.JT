@@ -57,7 +57,7 @@ namespace BL
             p.AddInt("a19StudyLanguage", rec.a19StudyLanguage);
             p.AddInt("a19StudyPlatform", rec.a19StudyPlatform);            
 
-            int intPID = _db.SaveRecord("a19DomainToInstitutionDepartment", p.getDynamicDapperPars(), rec,false,false);
+            int intPID = _db.SaveRecord("a19DomainToInstitutionDepartment", p, rec,false,false);
 
 
 

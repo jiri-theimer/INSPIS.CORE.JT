@@ -84,7 +84,7 @@ namespace BL
             p.AddString("f21UC", rec.f21UC);
 
 
-            int intPID = _db.SaveRecord("f21ReplyUnit", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("f21ReplyUnit", p, rec);
 
 
             return intPID;

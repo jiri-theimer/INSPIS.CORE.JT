@@ -108,7 +108,7 @@ namespace BL
             p.AddInt("a42TempRowsX40", rec.a42TempRowsX40);
             p.AddString("a42JobGuid", rec.a42JobGuid);
             p.AddString("a42UploadGuid", rec.a42UploadGuid);
-            int intPID = _db.SaveRecord("a42Qes", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("a42Qes", p, rec);
 
 
 

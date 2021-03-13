@@ -62,7 +62,7 @@ namespace BL
             p.AddString("f26UC", rec.f26UC);
 
 
-            int intPID = _db.SaveRecord("f26BatteryBoard", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("f26BatteryBoard", p, rec);
 
 
             return intPID;

@@ -55,7 +55,7 @@ namespace BL
             p.AddString("j23Code", rec.j23Code);
             p.AddString("j23Description", rec.j23Description);
             
-            int intPID = _db.SaveRecord("j23NonPerson", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("j23NonPerson", p, rec);
 
 
 

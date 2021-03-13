@@ -67,7 +67,7 @@ namespace BL
             }
             
 
-            int intPID = _db.SaveRecord("a70SIS", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("a70SIS", p, rec);
 
 
 

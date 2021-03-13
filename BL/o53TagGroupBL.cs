@@ -74,7 +74,7 @@ namespace BL
 
             
 
-            return _db.SaveRecord("o53TagGroup", p.getDynamicDapperPars(), rec);
+            return _db.SaveRecord("o53TagGroup", p, rec);
 
             
         }

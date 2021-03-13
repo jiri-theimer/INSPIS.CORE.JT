@@ -93,7 +93,7 @@ namespace BL
             p.AddString("j40ImapPassword", rec.j40ImapPassword);
             p.AddInt("j40ImapPort", rec.j40ImapPort);
 
-            return _db.SaveRecord("j40MailAccount", p.getDynamicDapperPars(), rec);
+            return _db.SaveRecord("j40MailAccount", p, rec);
         }
 
         private string GetSQLMessage(string strAppend = null)
@@ -405,7 +405,7 @@ namespace BL
             p.AddString("x40EmlFolder", rec.x40EmlFolder);
             p.AddInt("x40EmlFileSize", rec.x40EmlFileSize);
             
-            return _db.SaveRecord("x40MailQueue", p.getDynamicDapperPars(), rec,false);
+            return _db.SaveRecord("x40MailQueue", p, rec,false);
         }
 
         private BO.Result handle_result_error(string strError)

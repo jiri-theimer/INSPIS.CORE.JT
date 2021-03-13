@@ -57,7 +57,7 @@ namespace BL
             p.AddString("x91Lang4", rec.x91Lang4);
             p.AddString("x91Page", rec.x91Page);
            
-            int intPID = _db.SaveRecord("x91Translate", p.getDynamicDapperPars(), rec,false,true);
+            int intPID = _db.SaveRecord("x91Translate", p, rec,false,true);
 
 
 

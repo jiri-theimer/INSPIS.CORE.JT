@@ -63,7 +63,7 @@ namespace BL
             p.AddBool("o13IsPortalDoc", rec.o13IsPortalDoc);
             p.AddBool("o13IsObjection", rec.o13IsObjection);
 
-            int intPID = _db.SaveRecord("o13AttachmentType", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("o13AttachmentType", p, rec);
             if (intPID > 0)
             {
                 _db.RunSql("exec dbo._core_o13_recalc_tree");

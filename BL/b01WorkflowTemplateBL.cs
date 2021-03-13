@@ -55,7 +55,7 @@ namespace BL
             if (rec.b01UC == null) { rec.b01UC = BO.BAS.GetGuid(); }
             p.AddString("b01UC", rec.b01UC);
 
-            int intPID = _db.SaveRecord("b01WorkflowTemplate", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("b01WorkflowTemplate", p, rec);
 
             return intPID;
         }

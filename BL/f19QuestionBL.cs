@@ -102,7 +102,7 @@ namespace BL
             if (rec.f19UC == null) { rec.f19UC = BO.BAS.GetGuid(); }
             p.AddString("f19UC", rec.f19UC);
 
-            int intPID = _db.SaveRecord("f19Question", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("f19Question", p, rec);
             
             if (rec.ReplyControl == BO.ReplyKeyEnum.TextBox || (rec.ReplyControl==BO.ReplyKeyEnum.Checkbox && rec.f19IsMultiselect==false) || rec.ReplyControl==BO.ReplyKeyEnum.FileUpload || rec.ReplyControl==BO.ReplyKeyEnum.HtmlEditor || rec.ReplyControl == BO.ReplyKeyEnum.SummaryOverview || rec.ReplyControl==BO.ReplyKeyEnum.EvalList)
             {

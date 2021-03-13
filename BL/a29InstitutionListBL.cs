@@ -51,7 +51,7 @@ namespace BL
             p.AddString("a29Name", rec.a29Name);
             p.AddString("a29Description", rec.a29Description);
             
-            int intPID = _db.SaveRecord("a29InstitutionList", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("a29InstitutionList", p, rec);
             if (rec.pid > 0)
             {
                 _db.RunSql("DELETE FROM a43InstitutionToList WHERE a29ID=@pid", new { pid = intPID });

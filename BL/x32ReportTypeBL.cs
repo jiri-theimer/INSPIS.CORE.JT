@@ -57,7 +57,7 @@ namespace BL
             p.AddString("x32Description", rec.x32Description);
             p.AddInt("x32Ordinal", rec.x32Ordinal);
 
-            int intPID = _db.SaveRecord("x32ReportType", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("x32ReportType", p, rec);
             if (intPID > 0)
             {
                 _db.RunSql("exec dbo._core_x32_recalc_tree");

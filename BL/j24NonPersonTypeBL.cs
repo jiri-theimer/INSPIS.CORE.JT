@@ -50,7 +50,7 @@ namespace BL
             p.AddString("j24Name", rec.j24Name);          
             p.AddBool("j24IsDriver", rec.j24IsDriver);
 
-            int intPID = _db.SaveRecord("j24NonPersonType", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("j24NonPersonType", p, rec);
 
 
 

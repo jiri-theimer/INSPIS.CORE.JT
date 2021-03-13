@@ -77,7 +77,7 @@ namespace BL
                 p.AddString("a08Ident", rec.a08Ident);
                 p.AddString("a08Description", rec.a08Description);
 
-                int intPID = _db.SaveRecord("a08Theme", p.getDynamicDapperPars(), rec);
+                int intPID = _db.SaveRecord("a08Theme", p, rec);
                 if (lisA12 != null)
                 {
                     if (rec.pid > 0)
@@ -92,7 +92,7 @@ namespace BL
                         p.AddInt("f06ID", c.f06ID, true);
                         p.AddBool("a12IsRequired", c.a12IsRequired);
                         p.AddInt("a12Ordinal", c.a12Ordinal);
-                        _db.SaveRecord("a12ThemeForm", p.getDynamicDapperPars(), c, false, true);
+                        _db.SaveRecord("a12ThemeForm", p, c, false, true);
                     }
                     _db.RunSql("update a11EventForm set a11Ordinal=ISNULL(a12.a12Ordinal,0) from a11EventForm a INNER JOIN a01Event a01 ON a.a01ID=a01.a01ID INNER JOIN a12ThemeForm a12 ON a01.a08ID=a12.a08ID AND a.f06ID=a12.f06ID WHERE a01.a08ID=@a08id", new { a08id = intPID });
 
@@ -119,7 +119,7 @@ namespace BL
                             c.pid = _db.GetIntegerFromSql("select a14ID FROM a14AttachmentToTheme WHERE a08ID=" + intPID.ToString() + " AND o13ID=" + c.o13ID.ToString());                                                 
                         }
                         p.AddInt("pid", c.pid, true);
-                        _db.SaveRecord("a14AttachmentToTheme", p.getDynamicDapperPars(), c, false, false);
+                        _db.SaveRecord("a14AttachmentToTheme", p, c, false, false);
 
                     }
 

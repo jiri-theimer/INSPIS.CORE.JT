@@ -61,7 +61,7 @@ namespace BL
             p.AddString("f25UC", rec.f25UC);
 
 
-            int intPID = _db.SaveRecord("f25ChessBoard", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("f25ChessBoard", p, rec);
 
 
             return intPID;

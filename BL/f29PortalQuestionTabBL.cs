@@ -54,7 +54,7 @@ namespace BL
             p.AddInt("f29Ordinal", rec.f29Ordinal);
             p.AddBool("f29IsSeparatePortalBox", rec.f29IsSeparatePortalBox);
 
-            int intPID = _db.SaveRecord("f29PortalQuestionTab", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("f29PortalQuestionTab", p, rec);
             if (rec.pid > 0)
             {
                 _db.RunSql("DELETE FROM f41PortalQuestionTab_a17Binding WHERE f29ID=@pid", new { pid = intPID });

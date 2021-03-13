@@ -90,7 +90,7 @@ namespace BL
             p.AddEnumInt("a03ParentFlag", rec.a03ParentFlag);
             p.AddInt("a03ID_Parent", rec.a03ID_Parent, true);
 
-            int intPID= _db.SaveRecord("a03Institution", p.getDynamicDapperPars(),rec);
+            int intPID= _db.SaveRecord("a03Institution", p,rec);
 
            
             

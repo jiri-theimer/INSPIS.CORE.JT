@@ -63,7 +63,7 @@ namespace BL
             p.AddInt("a06ID", rec.a06ID, true);
             p.AddString("j75Pairs", rec.j75Pairs);
            
-            int intPID = _db.SaveRecord("j75ImportTemplate", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("j75ImportTemplate", p, rec);
 
             return intPID;
         }

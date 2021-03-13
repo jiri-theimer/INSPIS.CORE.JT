@@ -68,7 +68,7 @@ namespace BL
             p.AddString("a18SubCode4", rec.a18SubCode4);
             
 
-            int intPID = _db.SaveRecord("a18DepartmentDomain", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("a18DepartmentDomain", p, rec);
 
 
 

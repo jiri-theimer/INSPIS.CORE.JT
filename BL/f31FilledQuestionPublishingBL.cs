@@ -60,7 +60,7 @@ namespace BL
             p.AddBool("f31IsPublished", rec.f31IsPublished);
            
 
-            int intPID = _db.SaveRecord("f31FilledQuestionPublishing", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("f31FilledQuestionPublishing", p, rec);
 
             return intPID;
         }

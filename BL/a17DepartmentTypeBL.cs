@@ -54,7 +54,7 @@ namespace BL
             p.AddString("a17Description", rec.a17Description);           
             p.AddBool("a17IsDefault", rec.a17IsDefault);
 
-            int intPID = _db.SaveRecord("a17DepartmentType", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("a17DepartmentType", p, rec);
 
 
 

@@ -89,7 +89,7 @@ namespace BL
                 if (rec.f06UC == null) { rec.f06UC = BO.BAS.GetGuid(); }
                 p.AddString("f06UC", rec.f06UC);
 
-                int intPID = _db.SaveRecord("f06Form", p.getDynamicDapperPars(), rec);
+                int intPID = _db.SaveRecord("f06Form", p, rec);
 
                 if (x31ids != null)
                 {
@@ -127,7 +127,7 @@ namespace BL
                         p.AddInt("f06ID", intPID, true);
                         p.AddBool("a13IsRequired", c.a13IsRequired);
                         p.AddInt("a13Ordinal", c.a13Ordinal);
-                        _db.SaveRecord("a13AttachmentToForm", p.getDynamicDapperPars(), c, false,false);
+                        _db.SaveRecord("a13AttachmentToForm", p, c, false,false);
                     }
                 }
                 sc.Complete();   //potvrzení transakce

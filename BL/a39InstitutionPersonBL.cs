@@ -60,7 +60,7 @@ namespace BL
             p.AddString("a39Description", rec.a39Description);
             p.AddEnumInt("a39RelationFlag", rec.a39RelationFlag);
           
-            int intPID = _db.SaveRecord("a39InstitutionPerson", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("a39InstitutionPerson", p, rec);
 
 
 

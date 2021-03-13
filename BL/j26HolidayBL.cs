@@ -55,7 +55,7 @@ namespace BL
             p.AddString("j26Name", rec.j26Name);
             p.AddDateTime("j26Date", rec.j26Date);
            
-            int intPID = _db.SaveRecord("j26Holiday", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("j26Holiday", p, rec);
 
 
 

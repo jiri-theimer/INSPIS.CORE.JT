@@ -181,7 +181,7 @@ namespace BL
             p.AddString("o51ForeColor", rec.o51ForeColor);
             p.AddString("o51BackColor", rec.o51BackColor);
 
-            int intPID= _db.SaveRecord("o51Tag", p.getDynamicDapperPars(), rec);
+            int intPID= _db.SaveRecord("o51Tag", p, rec);
 
             var pars = new Dapper.DynamicParameters();
             pars.Add("userid", _db.CurrentUser.pid);

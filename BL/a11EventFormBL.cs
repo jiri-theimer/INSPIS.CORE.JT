@@ -105,7 +105,7 @@ namespace BL
             p.AddBool("a11IsLockedByWorkflow", rec.a11IsLockedByWorkflow);
             p.AddString("a11TeacherPID", rec.a11TeacherPID);
 
-            return _db.SaveRecord("a11EventForm", p.getDynamicDapperPars(), rec, false);
+            return _db.SaveRecord("a11EventForm", p, rec, false);
         }
 
         public bool ValidateBeforeSave(BO.a11EventForm c)

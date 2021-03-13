@@ -63,7 +63,7 @@ namespace BL
             p.AddString("a37Email", rec.a37Email);
             p.AddString("a37Web", rec.a37Web);            
 
-            int intPID = _db.SaveRecord("a37InstitutionDepartment", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("a37InstitutionDepartment", p, rec);
 
 
 

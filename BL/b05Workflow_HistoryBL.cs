@@ -86,7 +86,7 @@ namespace BL
             p.AddString("b05SQL", rec.b05SQL);
 
 
-            return _db.SaveRecord("b05Workflow_History", p.getDynamicDapperPars(), rec, false);
+            return _db.SaveRecord("b05Workflow_History", p, rec, false);
         }
     }
 }

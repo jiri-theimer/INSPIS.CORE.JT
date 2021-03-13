@@ -130,7 +130,7 @@ namespace BL
             p.AddInt("a01ID_Right", rec.a01ID_Right, true);
             p.AddString("a24Description", rec.a24Description);          
             
-            int intPID = _db.SaveRecord("a24EventRelation", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("a24EventRelation", p, rec);
 
             if (rec.a46ID == 4 || rec.a46ID == 5)
             {
@@ -214,7 +214,7 @@ namespace BL
             p.AddDateTime("a01DateFrom", rec.a01DateFrom);
             p.AddDateTime("a01DateUntil", BO.BAS.ConvertDateTo235959(Convert.ToDateTime(rec.a01DateUntil)));
 
-            int intPID = _db.SaveRecord("a01Event", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("a01Event", p, rec);
             if (intPID > 0 && rec.pid > 0)
             {
                 RunSpAfterA01Save(intPID);         
@@ -262,7 +262,7 @@ namespace BL
             p.AddDateTime("a01DateUntil", rec.a01DateUntil);
 
 
-            int intPID = _db.SaveRecord("a01Event", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("a01Event", p, rec);
             if (intPID > 0 && rec.pid>0)
             {
                 RunSpAfterA01Save(intPID);  //automaticky pouštět pouze u editace již existujícího a01 záznamu. Pro založení události se volá později                

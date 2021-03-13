@@ -203,8 +203,9 @@ namespace DL
             }
         }
 
-        public int SaveRecord(string strTable, DynamicParameters pars, BO.BaseBO rec,bool isvalidity=true,bool istimestamp=true)
+        public int SaveRecord(string strTable, Params4Dapper p, BO.BaseBO rec,bool isvalidity=true,bool istimestamp=true)
         {
+            DynamicParameters pars = p.getDynamicDapperPars();
             string strPrefix = strTable.Substring(0, 3);
             var strPidField = strPrefix + "ID";
             var s = new System.Text.StringBuilder();
@@ -244,7 +245,7 @@ namespace DL
 
             foreach (var strP in pars.ParameterNames.Where(p => p != "pid"))
             {
-
+                
 
                 if (bolInsert)
                 {
@@ -273,6 +274,17 @@ namespace DL
 
             using (SqlConnection con = new SqlConnection(_conString))
             {
+                foreach (var c in p.getCatalog().Where(p => p.ParamType == "string" && p.ParValue != null && p.ParValue.ToString().Length > 5))
+                {
+                    //kontrola velikosti obsahu string polí
+                    int intMaxSize = con.Query<BO.GetInteger>("select dbo.getfieldsize(@fld, @tbl) as Value", new { fld = c.ParName, tbl = strTable }).FirstOrDefault().Value;
+                    if (c.ParValue.ToString().Length > intMaxSize)
+                    {
+                        CurrentUser.AddMessage($"Max size of field ** {c.ParName} ** is {intMaxSize} characters. You send {c.ParValue.ToString().Length} characters.");
+                        return 0;
+                    }
+                }
+
                 try
                 {
                     if (bolInsert)

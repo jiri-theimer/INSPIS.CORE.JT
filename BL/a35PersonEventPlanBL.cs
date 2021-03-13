@@ -80,7 +80,7 @@ namespace BL
             p.AddInt("j02ID", rec.j02ID, true);
             p.AddDateTime("a35PlanDate", rec.a35PlanDate);
 
-            int inta35ID = _db.SaveRecord("a35PersonEventPlan", p.getDynamicDapperPars(), rec, false);
+            int inta35ID = _db.SaveRecord("a35PersonEventPlan", p, rec, false);
            
             return inta35ID;
         }

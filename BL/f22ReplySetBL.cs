@@ -58,7 +58,7 @@ namespace BL
             p.AddString("f22UC", rec.f22UC);
 
 
-            int intPID = _db.SaveRecord("f22ReplySet", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("f22ReplySet", p, rec);
             if (rec.pid > 0)
             {
                 _db.RunSql("DELETE FROM f43ReplyUnitToSet WHERE f22ID=@pid", new { pid = intPID });

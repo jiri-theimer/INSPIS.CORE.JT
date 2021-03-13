@@ -112,7 +112,7 @@ namespace BL
             }
 
 
-            var intPID = _db.SaveRecord("j03User", p.getDynamicDapperPars(), rec);
+            var intPID = _db.SaveRecord("j03User", p, rec);
             if (intPID > 0)
             {
                 RecoveryUserCache(intPID, 0);

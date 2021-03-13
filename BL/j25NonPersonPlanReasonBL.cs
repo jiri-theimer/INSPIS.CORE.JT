@@ -49,7 +49,7 @@ namespace BL
             p.AddInt("pid", rec.j25ID);
             p.AddString("j25Name", rec.j25Name);
            
-            int intPID = _db.SaveRecord("j25NonPersonPlanReason", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("j25NonPersonPlanReason", p, rec);
 
 
 

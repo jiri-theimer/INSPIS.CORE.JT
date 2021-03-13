@@ -55,7 +55,7 @@ namespace BL
                 s += " AND a.f21ID=@f21id";
                 p.AddInt("f21id", f21id);
             }
-            BO.f32FilledValue c = _db.Load<BO.f32FilledValue>(s,p.getDynamicDapperPars());
+            BO.f32FilledValue c = _db.Load<BO.f32FilledValue>(s,p);
             if (c !=null && c.f33ID > 0)
             {
                 c.Value = GetF33Value(c.f33ID);

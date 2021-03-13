@@ -12,6 +12,10 @@ namespace DL
             _lis = new List<Param4DT>();
 
         }
+        public List<Param4DT> getCatalog()
+        {
+            return _lis;
+        }
         public void Add(string name,object value)
         {
             

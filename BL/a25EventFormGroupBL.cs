@@ -51,7 +51,7 @@ namespace BL
             p.AddString("a25Name", rec.a25Name);
             p.AddString("a25Color", rec.a25Color);
           
-            int intPID = _db.SaveRecord("a25EventFormGroup", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("a25EventFormGroup", p, rec);
 
 
 

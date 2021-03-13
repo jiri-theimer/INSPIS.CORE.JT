@@ -91,7 +91,7 @@ namespace BL
             p.AddString("a10ViewUrl_Page", rec.a10ViewUrl_Page);
             p.AddString("a10CoreFlag", rec.a10CoreFlag);
 
-            int intPID = _db.SaveRecord("a10EventType", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("a10EventType", p, rec);
             if (a08ids != null)
             {
                 if (rec.pid > 0)

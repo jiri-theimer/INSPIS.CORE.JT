@@ -76,7 +76,7 @@ namespace BL
             p.AddString("x55Skin", rec.x55Skin);
 
             p.AddInt("x55BoxMaxHeight", rec.x55BoxMaxHeight);
-            int intPID = _db.SaveRecord("x55Widget", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("x55Widget", p, rec);
             if (intPID > 0)
             {
                 if (j04ids != null)
@@ -163,7 +163,7 @@ namespace BL
             p.AddString("x56Boxes", rec.x56Boxes);
             p.AddString("x56DockState", rec.x56DockState);
            
-            return _db.SaveRecord("x56WidgetBinding", p.getDynamicDapperPars(), rec);
+            return _db.SaveRecord("x56WidgetBinding", p, rec);
 
         }
     }

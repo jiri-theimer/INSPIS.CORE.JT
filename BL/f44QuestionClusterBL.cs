@@ -56,7 +56,7 @@ namespace BL
             p.AddString("f44Code", rec.f44Code);
 
 
-            int intPID = _db.SaveRecord("f44QuestionCluster", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("f44QuestionCluster", p, rec);
             
 
             return intPID;

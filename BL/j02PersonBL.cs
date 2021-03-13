@@ -83,7 +83,7 @@ namespace BL
             p.AddString("j02Position", rec.j02Position);
             p.AddString("j02Guid", rec.j02Guid);
             p.AddString("j02FullText", BO.BAS.IIFS(string.IsNullOrEmpty(rec.j02TitleBeforeName),"",rec.j02TitleBeforeName + " ") + rec.j02FirstName + " " + rec.j02LastName + BO.BAS.IIFS(string.IsNullOrEmpty(rec.j02TitleAfterName),""," "+rec.j02TitleAfterName));
-            return _db.SaveRecord("j02Person", p.getDynamicDapperPars(),rec);
+            return _db.SaveRecord("j02Person", p,rec);
         }
 
         public bool ValidateBeforeSave(BO.j02Person rec)

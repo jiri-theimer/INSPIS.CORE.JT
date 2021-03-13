@@ -72,7 +72,7 @@ namespace BL
             if (rec.b02UC == null) { rec.b02UC = BO.BAS.GetGuid(); }
             p.AddString("b02UC", rec.b02UC);
 
-            int intPID = _db.SaveRecord("b02WorkflowStatus", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("b02WorkflowStatus", p, rec);
             if (intPID>0)
             {
                 if (rec.b02IsDefaultStatus)
@@ -123,7 +123,7 @@ namespace BL
                     p.AddString("b10Parameter3", c.b10Parameter3);
                     p.AddEnumInt("b10TargetScopeFlag", c.b10TargetScopeFlag);
                     p.AddInt("a10ID_TargetUpdate", c.a10ID_TargetUpdate);
-                    _db.SaveRecord("b10WorkflowCommandCatalog_Binding", p.getDynamicDapperPars(), c, false, false);                    
+                    _db.SaveRecord("b10WorkflowCommandCatalog_Binding", p, c, false, false);                    
                 }
             }
 

@@ -56,7 +56,7 @@ namespace BL
             p.AddString("x27Returns", rec.x27Returns);
            
 
-            int intPID = _db.SaveRecord("x27EvalFunction", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("x27EvalFunction", p, rec);
 
 
 

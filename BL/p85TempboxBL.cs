@@ -99,7 +99,7 @@ namespace BL
             p.AddDateTime("p85FreeDate03", rec.p85FreeDate03);
             p.AddDateTime("p85FreeDate04", rec.p85FreeDate04);
 
-            return _db.SaveRecord("p85Tempbox", p.getDynamicDapperPars(), rec);
+            return _db.SaveRecord("p85Tempbox", p, rec);
         }
     }
 }

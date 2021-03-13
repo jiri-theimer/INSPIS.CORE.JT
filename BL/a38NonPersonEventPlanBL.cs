@@ -84,7 +84,7 @@ namespace BL
             p.AddString("a38Location", rec.a38Location);
             p.AddDateTime("a38PlanDate", rec.a38PlanDate);
 
-            int inta38ID = _db.SaveRecord("a38NonPersonEventPlan", p.getDynamicDapperPars(), rec, false);
+            int inta38ID = _db.SaveRecord("a38NonPersonEventPlan", p, rec, false);
 
             return inta38ID;
         }

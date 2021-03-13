@@ -64,7 +64,7 @@ namespace BL
             if (rec.f18UC == null) { rec.f18UC = BO.BAS.GetGuid(); }
             p.AddString("f18UC", rec.f18UC);
 
-            int intPID = _db.SaveRecord("f18FormSegment", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("f18FormSegment", p, rec);
             if (intPID > 0)
             {
                 _db.RunSql("exec dbo._core_f18_recalc_tree @f06id",new { f06id = rec.f06ID });

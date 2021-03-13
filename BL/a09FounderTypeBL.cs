@@ -55,7 +55,7 @@ namespace BL
             p.AddInt("a09Ordinal", rec.a09Ordinal);
 
 
-            int intPID = _db.SaveRecord("a09FounderType", p.getDynamicDapperPars(), rec);
+            int intPID = _db.SaveRecord("a09FounderType", p, rec);
 
 
 

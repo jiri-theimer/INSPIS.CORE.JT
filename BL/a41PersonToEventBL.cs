@@ -66,7 +66,7 @@ namespace BL
             p.AddBool("a41IsAllocateAllPeriod", rec.a41IsAllocateAllPeriod);
          
 
-            int intA41ID = _db.SaveRecord("a41PersonToEvent", p.getDynamicDapperPars(), rec,false);
+            int intA41ID = _db.SaveRecord("a41PersonToEvent", p, rec,false);
             _db.RunSql("UPDATE a01Event set a01LeaderInLine=dbo._core_a41_get_role_inline(@pid,2),a01MemberInLine=dbo._core_a41_get_role_inline(@pid,1) WHERE a01ID=@pid", new { pid = rec.a01ID });
             if (bolAppend2WorkflowHistory)
             {
