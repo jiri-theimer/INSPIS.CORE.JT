@@ -7,12 +7,18 @@ using Microsoft.AspNetCore.Http;
 using UIFT;
 using NLog;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace UIFT.Controllers
 {
     public class FilesController : BaseController
     {
-        private static Logger log = LogManager.GetCurrentClassLogger();
+        private readonly ILogger<FilesController> Log;
+
+        public FilesController(ILogger<FilesController> log)
+        {
+            Log = log;
+        }
 
         /// <summary>
         /// Ulozeni souboru uploadovanych ve formulari
@@ -252,7 +258,7 @@ namespace UIFT.Controllers
             // soubor/ID neexistuje
             if (attachment == null)
             {
-                log.Warn("FilesController.Get: file not found, GUID {0}", id);
+                Log.LogWarning("FilesController.Get: file not found, GUID {0}", id);
                 return Content("FILE NOT FOUND IN DB");
             }
 
@@ -273,7 +279,7 @@ namespace UIFT.Controllers
             // soubor neni na disku
             if (!System.IO.File.Exists(path))
             {
-                log.Warn("FilesController.Get: file doesn't exist, path: {1}; GUID {0}", id, path);
+                Log.LogWarning("FilesController.Get: file doesn't exist, path: {1}; GUID {0}", id, path);
                 return Content("FILE NOT FOUND");
             }
 
@@ -286,7 +292,7 @@ namespace UIFT.Controllers
                 "application/" + fInfo.Extension.Replace(".", "") : attachment.o27ContentType;
 
             // log
-            log.Info("FilesController.Get #3: {0}; ID: {1}; PATH: {2}; CONTENT TYPE: {3};", origName, id, path, contentType);
+            Log.LogInformation("FilesController.Get #3: {0}; ID: {1}; PATH: {2}; CONTENT TYPE: {3};", origName, id, path, contentType);
 
             return PhysicalFile(path, contentType, origName);
         }

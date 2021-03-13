@@ -1,5 +1,4 @@
-﻿using NLog;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -7,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using System.Security.Claims;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace UIFT.Security
 {
@@ -20,12 +20,15 @@ namespace UIFT.Security
 
     public class UIFTAuthMiddleware
     {
-        private static Logger log = LogManager.GetCurrentClassLogger();
+        private readonly ILogger<UIFTAuthMiddleware> Log;
         private readonly RequestDelegate _next;
         private readonly LinkGenerator _linkGenerator;
+        private readonly AppConfiguration Configuration;
 
-        public UIFTAuthMiddleware(RequestDelegate next, LinkGenerator generator)
+        public UIFTAuthMiddleware(RequestDelegate next, LinkGenerator generator, AppConfiguration configuration, ILogger<UIFTAuthMiddleware> log)
         {
+            Log = log;
+            Configuration = configuration;
             _linkGenerator = generator;
             _next = next;
         }
@@ -69,7 +72,7 @@ namespace UIFT.Security
                         }
                         else
                         {
-                            string url = _linkGenerator.GetPathByAction("Index", "Error", new { code = result.FailedCode });
+                            string url = _linkGenerator.GetPathByAction("Index", "Error", new { code = result.FailedCode }, Configuration.BaseUrl);
                             context.Response.Redirect(url, false);
                             return;
                         }
@@ -169,7 +172,7 @@ namespace UIFT.Security
                     {
                         result.FailedCode = 1;
 
-                        log.Warn("AuthorizeRequest: Failed {0}; preview: {1};", result.FailedCode, preview);
+                        Log.LogWarning("AuthorizeRequest: Failed {0}; preview: {1};", result.FailedCode, preview);
                     }
                     else
                     {
@@ -184,7 +187,7 @@ namespace UIFT.Security
                         {
                             result.FailedCode = 3;
 
-                            log.Warn("AuthorizeRequest: Failed {0}; preview: {1};", result.FailedCode, preview);
+                            Log.LogWarning("AuthorizeRequest: Failed {0}; preview: {1};", result.FailedCode, preview);
                         }
                         // kontrola prav na vyplnovani
                         else if ((ev01permission == BO.a01EventPermissionENUM.NoAccess && !ev.a11IsPoll) ||  // nema vubec pravo na formular
@@ -192,21 +195,21 @@ namespace UIFT.Security
                         {
                             result.FailedCode = 18;
 
-                            log.Warn("AuthorizeRequest: Failed {0}; ev01permission: {1}; a11IsPoll: {2}; preview: {3};", result.FailedCode, ev01permission, ev.a11IsPoll, preview);
+                            Log.LogWarning("AuthorizeRequest: Failed {0}; ev01permission: {1}; a11IsPoll: {2}; preview: {3};", result.FailedCode, ev01permission, ev.a11IsPoll, preview);
                         }
                         // anonymni uzivatel (tj. uzivatel prihlaseny pres Login/PIN) nema pravo zobrazovat Preview
                         else if (repository.BL.GlobalParams.LoadParam("UIFT_AnonymousUser") == repository.BL.CurrentUser.j03Login && preview)
                         {
                             result.FailedCode = 16;
 
-                            log.Warn("AuthorizeRequest: Failed {0}; identity.Name: {1}; preview: {2};", result.FailedCode, repository.BL.CurrentUser.j03Login, preview);
+                            Log.LogWarning("AuthorizeRequest: Failed {0}; identity.Name: {1}; preview: {2};", result.FailedCode, repository.BL.CurrentUser.j03Login, preview);
                         }
                         else
                         {
                             // nema pravo na zapis - prepni na Preview
                             if (!ev.a11IsPoll && ev01permission == BO.a01EventPermissionENUM.ReadOnlyAccess)
                             {
-                                log.Info("AuthorizeRequest: Success, but switched to PREVIEW; a11IsPoll: {0}; ev01permission: {1}; User: {2};", ev.a11IsPoll, ev01permission, repository.BL.CurrentUser.j03Login);
+                                Log.LogInformation("AuthorizeRequest: Success, but switched to PREVIEW; a11IsPoll: {0}; ev01permission: {1}; User: {2};", ev.a11IsPoll, ev01permission, repository.BL.CurrentUser.j03Login);
                                 preview = true;
                             }
 
