@@ -130,6 +130,12 @@ namespace UI.Controllers
             {
                 return this.StopPage(true, "Tato akce je již uzavřena.",true);
             }
+            
+            if (v.RecA01.a01ParentID > 0 && Factory.a01EventBL.GetList_a24(v.RecA01.pid).Where(p => p.a46ID == 5).Count() == 0)
+            {
+                return this.StopPage(true, "Tato akce je podřízená.", true);
+            }
+
             return View(v);
         }
         [HttpPost]
