@@ -58,10 +58,14 @@
                     </div>
                 </div>
                 <div class="row my-2">
-                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Učitel školy"):</label>
-                    <div class="col-sm-6 col-md-5">
-                        <mycombo entity="k01Teacher" asp-for="@Model.SelectedK01ID" selectedtext="@Model.SelectedK01fullname_desc" view-flag="2" masterprefix="a03" masterpid="@Model.RecA01.a03ID"></mycombo>
-                    </div>
+                    @if (_f.App.Implementation == "Default")
+                    {
+                        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Učitel školy"):</label>
+                        <div class="col-sm-6 col-md-5">
+                            <mycombo entity="k01Teacher" asp-for="@Model.SelectedK01ID" selectedtext="@Model.SelectedK01fullname_desc" view-flag="2" masterprefix="a03" masterpid="@Model.RecA01.a03ID"></mycombo>
+                        </div>
+                    }
+
                     <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Skupina formulářů v akci"):</label>
                     <div class="col-sm-4 col-md-3">
                         <mycombo entity="a25EventFormGroup" asp-for="@Model.SelectedA25ID" selectedtext="@Model.SelectedA25Name" view-flag="2" masterprefix="a01" masterpid="@Model.RecA01.pid"></mycombo>

@@ -269,7 +269,7 @@ namespace UI.Controllers
             foreach (var c in v.lisB05)
             {
                 
-                if (c.b05IsCommentRestriction)
+                if (c.b05IsCommentRestriction && !Factory.IsUserAdmin())        //admin vidí veškerou historii akce
                 {
                     var lisB04 = Factory.b05Workflow_HistoryBL.GetList_b04(c.pid);
                     if (lisB04.Count() > 0)
@@ -603,15 +603,13 @@ namespace UI.Controllers
                 strBadge = c.h04_actual.ToString() + " + " + c.h04_closed.ToString();
             }
             v.NavTabs.Add(AddTab("Úkoly/Lhůty", "h04ToDo", "/TheGrid/SlaveView?prefix=h04", true, strBadge));
-            if (v.Rec.a01ParentID == 0)
+
+            strBadge = null;
+            if (c.o27_count > 0)
             {
-                strBadge = null;
-                if (c.o27_count > 0)
-                {
-                    strBadge = c.o27_count.ToString();
-                }
-                v.NavTabs.Add(AddTab("Přílohy", "viewAttachments", "/a01/TabAttachments?pid=" + v.pid.ToString(), true, strBadge));
+                strBadge = c.o27_count.ToString();
             }
+            v.NavTabs.Add(AddTab("Přílohy", "viewAttachments", "/a01/TabAttachments?pid=" + v.pid.ToString(), true, strBadge));
 
             strBadge = null;
             if (c.a01_souvisejici > 0 || c.a01_podrizene > 0)

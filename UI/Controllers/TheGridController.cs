@@ -111,7 +111,10 @@ namespace UI.Controllers
                     tabs.Add(AddTab("Činnosti školy", "a37InstitutionDepartment", "SlaveView?prefix=a37"));
                     tabs.Add(AddTab("Vzdělávací obory", "a19DomainToInstitutionDepartment", "SlaveView?prefix=a19"));
                     tabs.Add(AddTab("Kontaktní osoby", "a39InstitutionPerson", "SlaveView?prefix=a39"));
-                    tabs.Add(AddTab("Učitelé", "k01Teacher", "SlaveView?prefix=k01"));
+                    if (Factory.App.Implementation == "Default")
+                    {
+                        tabs.Add(AddTab("Učitelé", "k01Teacher", "SlaveView?prefix=k01"));
+                    }                    
                     tabs.Add(AddTab("INEZ", "a42Qes", "SlaveView?prefix=a42"));
                     tabs.Add(AddTab("Pojmenované seznamy", "a29InstitutionList", "SlaveView?prefix=a29"));
 
