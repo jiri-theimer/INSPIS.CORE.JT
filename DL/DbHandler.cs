@@ -278,7 +278,7 @@ namespace DL
                 {
                     //kontrola velikosti obsahu string polí
                     int intMaxSize = con.Query<BO.GetInteger>("select dbo.getfieldsize(@fld, @tbl) as Value", new { fld = c.ParName, tbl = strTable }).FirstOrDefault().Value;
-                    if (c.ParValue.ToString().Length > intMaxSize)
+                    if (intMaxSize>0 && c.ParValue.ToString().Length > intMaxSize)
                     {
                         CurrentUser.AddMessage($"Max size of field ** {c.ParName} ** is {intMaxSize} characters. You send {c.ParValue.ToString().Length} characters.");
                         return 0;

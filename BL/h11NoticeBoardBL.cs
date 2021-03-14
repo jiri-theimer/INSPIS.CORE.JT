@@ -7,7 +7,7 @@ namespace BL
     public interface Ih11NoticeBoardBL
     {
         public BO.h11NoticeBoard Load(int pid);
-        public string LoadHtmlContent(int pid);
+        public BO.o11BigtextContent LoadHtmlRecord(int h11id);
         public IEnumerable<BO.h11NoticeBoard> GetList(BO.myQuery mq);
         public int Save(BO.h11NoticeBoard rec, List<int> j04ids, string strHtml, string strPlanText);
 
@@ -33,9 +33,10 @@ namespace BL
         {
             return _db.Load<BO.h11NoticeBoard>(GetSQL1(" WHERE a.h11ID=@pid"), new { pid = pid });
         }
-        public string LoadHtmlContent(int pid)
+        public BO.o11BigtextContent LoadHtmlRecord(int h11id)
         {
-            return _db.Load<BO.GetString>("SELECT o11Html as Value FROM o11BigtextContent WHERE x29ID=311 AND o11DataPID=@pid", new { pid = pid }).Value;
+            return _db.Load<BO.o11BigtextContent>("SELECT a.*,"+ _db.GetSQL1_Ocas("o11")+" FROM o11BigtextContent a WHERE a.x29ID=311 AND a.o11DataPID=@pid", new { pid = h11id });
+            
         }
         public IEnumerable<BO.h11NoticeBoard> GetList(BO.myQuery mq)
         {
@@ -77,14 +78,23 @@ namespace BL
 
                 if (intPID > 0)
                 {
+                    var recO11 = LoadHtmlRecord(intPID);
+                    if (recO11 == null)
+                    {
+                        recO11 = new BO.o11BigtextContent() { o11DataPID = intPID };
+                    }
                     p = new DL.Params4Dapper();
-                    p.AddInt("pid", Load(intPID).o11ID);
+                    p.AddInt("pid", recO11.pid);
                     p.AddInt("x29ID", 311);
-                    p.AddInt("o11DataPID", intPID);
+                    p.AddInt("o11DataPID", intPID,true);                    
                     p.AddString("o11Name", rec.h11Name);
                     p.AddString("o11Html", strHtml);
                     p.AddString("o11PlainText", strPlanText);
-                    int intO11ID = _db.SaveRecord("o11BigtextContent", p, rec);
+                    int intO11ID = _db.SaveRecord("o11BigtextContent", p, recO11);
+                    if (intO11ID == 0)
+                    {
+                        return 0;
+                    }
                     _db.RunSql("UPDATE h11NoticeBoard set o11ID=@o11id WHERE h11ID=@pid", new { o11id = intO11ID, pid = intPID });
                 }
                 if (rec.pid > 0)

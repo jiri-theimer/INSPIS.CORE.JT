@@ -17,8 +17,12 @@ namespace UI.Controllers
             if (v.pid > 0)
             {
                 v.Rec = Factory.h11NoticeBoardBL.Load(v.pid);
-                v.HtmlContent = Factory.h11NoticeBoardBL.LoadHtmlContent(v.pid);
-
+                var recHtml = Factory.h11NoticeBoardBL.LoadHtmlRecord(v.pid);
+                if (recHtml != null)
+                {
+                    v.HtmlContent = recHtml.o11Html;
+                }
+               
                 var tg = Factory.o51TagBL.GetTagging("h11", pid);
                 v.TagHtml = tg.TagHtml;
 
@@ -40,8 +44,12 @@ namespace UI.Controllers
                 {
                     return RecNotFound(v);
                 }
-                v.HtmlContent = Factory.h11NoticeBoardBL.LoadHtmlContent(v.rec_pid);
-
+                var recHtml = Factory.h11NoticeBoardBL.LoadHtmlRecord(v.rec_pid);
+                if (recHtml != null)
+                {
+                    v.HtmlContent = recHtml.o11Html;
+                }
+                
                 var mq = new BO.myQueryJ04() { h11id = v.rec_pid };                
                 v.j04IDs = string.Join(",", Factory.j04UserRoleBL.GetList(mq).Select(p => p.pid));
                 v.j04Names = string.Join(",", Factory.j04UserRoleBL.GetList(mq).Select(p => p.j04Name));
