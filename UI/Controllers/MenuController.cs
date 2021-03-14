@@ -400,6 +400,11 @@ namespace UI.Controllers
             {
                 case "a01":
                     var recA01 = Factory.a01EventBL.Load(pid);
+                    bool bolIAPodrizene = false;
+                    if (recA01.a01ParentID > 0 && Factory.a01EventBL.GetList_a24(recA01.pid).Where(p => p.a46ID == 5).Count() > 0)
+                    {
+                        bolIAPodrizene = true;
+                    }
                     if (flag != "recpage")
                     {
                         HEADER(recA01.a01Signature);
@@ -473,7 +478,7 @@ namespace UI.Controllers
                         }
                     }
                     
-                    if (!recA01.isclosed)
+                    if (!recA01.isclosed && (recA01.a01ParentID==0 || bolIAPodrizene))
                     {
                         AMI("Nahrát přílohu", string.Format("javascript:_window_open('/a01/AddAttachment?pid={0}')", pid));
                     }

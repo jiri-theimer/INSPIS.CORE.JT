@@ -257,6 +257,16 @@
                     </div>
 
                 </div>
+                <div class="row my-2">
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Maximální velikost přílohy"):</label>
+                    <div class="col-sm-2 col-md-2">
+
+                        <mynumber asp-for="Rec.f19MaxAllowedSize" decimal-digits="0"></mynumber>
+                    </div>
+                    <div class="col-sm-3 col-md-3">
+                        Bytes
+                    </div>
+                </div>
             }
 
             @if (Model.Rec.ReplyControl == BO.ReplyKeyEnum.DropdownList || Model.Rec.ReplyControl == BO.ReplyKeyEnum.RadiobuttonList || Model.Rec.ReplyControl == BO.ReplyKeyEnum.Listbox || (Model.Rec.ReplyControl == BO.ReplyKeyEnum.Checkbox && Model.Rec.f19IsMultiselect))

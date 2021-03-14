@@ -556,7 +556,7 @@ namespace UI.Controllers
             var c = Factory.a01EventBL.LoadSummary(v.pid);
             string strBadge = null;
             //v.NavTabs.Add(new NavTab() { Name = "Historie událostí", Entity = "b05Workflow_History", Url = "/TheGrid/SlaveView?prefix=b05" });
-            var bolIAPodrizene = false;
+            bool bolIAPodrizene = false;
             if (v.Rec.a01ParentID>0 && Factory.a01EventBL.GetList_a24(v.Rec.pid).Where(p => p.a46ID == 5).Count() > 0)
             {
                 bolIAPodrizene = true;
@@ -609,7 +609,12 @@ namespace UI.Controllers
             {
                 strBadge = c.o27_count.ToString();
             }
-            v.NavTabs.Add(AddTab("Přílohy", "viewAttachments", "/a01/TabAttachments?pid=" + v.pid.ToString(), true, strBadge));
+            if (v.Rec.a01ParentID == 0 || bolIAPodrizene)
+            {
+                
+                v.NavTabs.Add(AddTab("Přílohy", "viewAttachments", "/a01/TabAttachments?pid=" + v.pid.ToString(), true, strBadge));
+            }
+            
 
             strBadge = null;
             if (c.a01_souvisejici > 0 || c.a01_podrizene > 0)
