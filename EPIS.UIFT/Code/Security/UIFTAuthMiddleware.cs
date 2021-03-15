@@ -39,6 +39,7 @@ namespace UIFT.Security
 
         public async Task Invoke(HttpContext context, UIFT.Repository.RepositoryFactory factory, BO.RunningUser runningUser)
         {
+            result = new AuthorizeRequestResult();  //Tento brutální zásah jsem udělal já!!!
             var executingEnpoint = context.GetEndpoint();
             if (executingEnpoint != null)
             {
