@@ -45,5 +45,27 @@ namespace UIFT.Controllers
             else
                 return View(model);
         }
+
+        [IsPreview]
+        public ActionResult Uvod()
+        {
+            // instance formulare
+            Models.Formular model = this.UiRepository.GetFormularBase(this.PersistantData.f06id);
+
+            // formular nebyl nalezen
+            if (model == null)
+                return RedirectToAction("Index", "Error", new { code = 11 });
+
+            return View("~/Views/Formular/Uvod.cshtml", model);
+        }
+
+        [IsPreview]
+        public ActionResult Shrnuti()
+        {
+            // seznam povinnych nevyplnenych otazek
+            Models.ShrnutiResult model = this.UiRepository.GetShrnuti(this.PersistantData.f06id);
+
+            return View("~/Views/Formular/Shrnuti.cshtml", model);
+        }
     }
 }

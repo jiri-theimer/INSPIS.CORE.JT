@@ -175,7 +175,7 @@ namespace UIFT
                     name: "preview",
                     pattern: "Preview/{action}/{a11id}",
                     defaults: new { controller = "Preview" },
-                    constraints: new { a11id = @"\d+", action = "Formular|Sekce|Otazka" }
+                    constraints: new { a11id = @"\d+", action = "Formular|Sekce|Otazka|Uvod|Shrnuti" }
                 );
 
                 // export
