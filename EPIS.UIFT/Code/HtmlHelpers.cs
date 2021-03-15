@@ -79,13 +79,13 @@ namespace UIFT.HtmlHelpers
             StringBuilder html = new StringBuilder("<ul id=\"segmentsTree\" class=\"level-0\">");
 
             // prvni uzel ve stromu - odkaz na uvod dotazniku
-            html.AppendFormat("<li id=\"menusekce-0\" data-id=\"0\"{1}><a href=\"{0}\">{2}</a></li>", generator.GetPathByAction("Uvod", "Formular", new { a11id = storage.a11id }), selectedId == 0 ? " class=\"sel\"" : "", bl.tra("Úvod (informace k vyplňování)"));
+            html.AppendFormat("<li id=\"menusekce-0\" data-id=\"0\"{1}><a href=\"{0}\">{2}</a></li>", generator.GetPathByAction("Uvod", storage.IsPreview ? "Preview" : "Formular", new { a11id = storage.a11id }), selectedId == 0 ? " class=\"sel\"" : "", bl.tra("Úvod (informace k vyplňování)"));
 
             // vytvorit strom
             SekceTreeRecursiveHelper(generator, html, sekce, storage, ref selectedId);
 
             // posledni uzel ve stromu - odkaz na shrnuti
-            html.AppendFormat("<li id=\"menusekce-00\" data-id=\"00\"><a href=\"{0}\">{1}</a></li>", generator.GetPathByAction("Shrnuti", "Formular", new { a11id = storage.a11id }), bl.tra("Kontrola formuláře"));
+            html.AppendFormat("<li id=\"menusekce-00\" data-id=\"00\"><a href=\"{0}\">{1}</a></li>", generator.GetPathByAction("Shrnuti", storage.IsPreview ? "Preview" : "Formular", new { a11id = storage.a11id }), bl.tra("Kontrola formuláře"));
 
             html.Append("</ul>");
 
