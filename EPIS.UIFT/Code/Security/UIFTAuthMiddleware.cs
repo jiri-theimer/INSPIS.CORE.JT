@@ -187,7 +187,7 @@ namespace UIFT.Security
                         {
                             result.FailedCode = 3;
 
-                            Log.LogWarning("AuthorizeRequest: Failed {0}; preview: {1};", result.FailedCode, preview);
+                            Log.LogWarning("AuthorizeRequest: Failed {0}; preview: {1}; user: {2}", result.FailedCode, preview, repository.BL.CurrentUser.j03Login);
                         }
                         // kontrola prav na vyplnovani
                         else if ((ev01permission == BO.a01EventPermissionENUM.NoAccess && !ev.a11IsPoll) ||  // nema vubec pravo na formular
