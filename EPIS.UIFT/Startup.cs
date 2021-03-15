@@ -58,6 +58,7 @@ namespace UIFT
             // autentizace
             services.AddDataProtection()
                 .PersistKeysToFileSystem(new System.IO.DirectoryInfo(AppConfig.Authentication.KeyPath))
+                .DisableAutomaticKeyGeneration()
                 .SetApplicationName(AppConfig.Authentication.AppName);
 
             services

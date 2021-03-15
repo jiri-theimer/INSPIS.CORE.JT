@@ -40,8 +40,8 @@ namespace UI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDataProtection()
-                .PersistKeysToFileSystem(new System.IO.DirectoryInfo(Configuration.GetSection("Authentication")["KeyPath"]))
-                .SetApplicationName(Configuration.GetSection("Authentication")["AppName"]);
+                .PersistKeysToFileSystem(new System.IO.DirectoryInfo(Configuration.GetSection("Authentication")["KeyPath"]))                
+                .SetApplicationName(Configuration.GetSection("Authentication")["AppName"]);                
             
             services.AddAuthentication("Identity.Application")
                  .AddCookie("Identity.Application", config =>

@@ -195,7 +195,7 @@ namespace UIFT.Security
                         {
                             result.FailedCode = 18;
 
-                            Log.LogWarning("AuthorizeRequest: Failed {0}; ev01permission: {1}; a11IsPoll: {2}; preview: {3};", result.FailedCode, ev01permission, ev.a11IsPoll, preview);
+                            Log.LogWarning("AuthorizeRequest: Failed {0}; ev01permission: {1}; a11IsPoll: {2}; preview: {3}; user: {4}", result.FailedCode, ev01permission, ev.a11IsPoll, preview, repository.BL.CurrentUser.j03Login);
                         }
                         // anonymni uzivatel (tj. uzivatel prihlaseny pres Login/PIN) nema pravo zobrazovat Preview
                         else if (repository.BL.GlobalParams.LoadParam("UIFT_AnonymousUser") == repository.BL.CurrentUser.j03Login && preview)
