@@ -221,18 +221,26 @@ namespace UI
 
         private void Handle_MailQueue_INEZ(BL.Factory f)
         {
-            
+            //foreach (BO.o27Attachment c in Factory.o27AttachmentBL.GetTempFiles(v.UploadGuid))
+            //{
+            //    Factory.MailBL.AddAttachment(c.FullPath, c.o27OriginalFileName, c.o27ContentType);
+            //}
             var lisA42= f.a42QesBL.GetList(new BO.myQueryA42()).Where(p => p.a42JobGuid != null && (p.a42JobState == BO.a42JobState.PreparedX40 || p.a42JobState == BO.a42JobState.MailQueue));
             if (lisA42.Count()>0)
             {
                 var recA42 = lisA42.First();
                 //INEZ dávka s poštovními zprávy ve frontě
+                foreach (BO.o27Attachment c in f.o27AttachmentBL.GetTempFiles(recA42.a42UploadGuid))    //přílohy INEZ mail zprávy
+                {
+                    f.MailBL.AddAttachment(c.FullPath, c.o27OriginalFileName, c.o27ContentType);
+                }
                 var mq = new BO.myQueryX40() { explicit_orderby = "a.x40ID DESC", explicit_sqlwhere = "a.x40BatchGuid='" + BO.BAS.GSS(recA42.a42JobGuid)+"'" };
                 var lisX40 = f.MailBL.GetList(mq).Where(p => p.x40Status == BO.x40StateFlag.InQueque).Take(20); //odeslat maximálně 20 zpráv
                 if (lisX40.Count() > 0)
                 {
                     foreach (var recX40 in lisX40)
                     {
+                        
                         if (recA42.a42TestFlag == 1)
                         {
                             f.MailBL.SendMessage(recX40,true);  //testovací režim

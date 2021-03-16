@@ -315,9 +315,13 @@ namespace BL
                 o27GUID = arr[4],
                 o13ID = BO.BAS.InInt(arr[5]),
                 o27Label = arr[6],
-                o27PressMark = arr[7],
-                x29ID=BO.BAS.InInt(arr[8])
+                o27PressMark = arr[7]                
             };
+            if (arr.Count() > 8)
+            {
+                rec.x29ID = BO.BAS.InInt(arr[8]);
+            }
+
             if (rec.o27OriginalFileName.Contains("."))
             {
                 arr = BO.BAS.ConvertString2List(rec.o27OriginalFileName, ".");

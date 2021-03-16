@@ -173,6 +173,7 @@ namespace BL
             var lisA39 = _mother.a39InstitutionPersonBL.GetList(mq).Where(p => p.j02Email != null);
             var lisX43 = new List<BO.x43MailQueue_Recipient>();
             var lisO27 = _mother.o27AttachmentBL.GetTempFiles(strUploadGUID);
+            
 
             foreach (int a03id in a03ids)
             {
