@@ -16,6 +16,7 @@ namespace UI.Models
 
         public string SelectedJ04ID { get; set; }
         public IEnumerable<BO.j04UserRole> lisJ04 { get; set; }
+        public int j03LangIndex { get; set; }
         public string a39Description { get; set; }
         public bool a39IsAllowInspisWS { get; set; }
 

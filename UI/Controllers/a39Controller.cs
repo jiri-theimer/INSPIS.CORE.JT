@@ -285,7 +285,7 @@ namespace UI.Controllers
             {
                 return this.StopPage(true, "a03id missing");
             }
-            var v = new a39CreateSchoolAccount() { a03ID = a03id };
+            var v = new a39CreateSchoolAccount() { a03ID = a03id,j03LangIndex=Factory.App.DefaultLangIndex };
 
             RefreshStateCreateSchoolAccount(v);
             return View(v);
@@ -343,7 +343,7 @@ namespace UI.Controllers
             {
                 return this.StopPage(true, "a03id missing");
             }
-            var v = new a39CreateSchoolAccount() { a03ID = a03id };
+            var v = new a39CreateSchoolAccount() { a03ID = a03id,j03LangIndex=Factory.App.DefaultLangIndex };
 
             RefreshStateCreateSchoolAccount(v);
             return View(v);
@@ -364,7 +364,7 @@ namespace UI.Controllers
 
             if (ModelState.IsValid)
             {
-                var recJ03 = new BO.j03User() { j03Login = v.RecJ02.j02Email, j04ID = Convert.ToInt32(v.SelectedJ04ID) };
+                var recJ03 = new BO.j03User() { j03Login = v.RecJ02.j02Email, j04ID = Convert.ToInt32(v.SelectedJ04ID),j03LangIndex=v.j03LangIndex };
 
                 var recJ02 = new BO.j02Person() { j02TitleBeforeName = v.RecJ02.j02TitleBeforeName, j02FirstName = v.RecJ02.j02FirstName, j02LastName = v.RecJ02.j02LastName, j02TitleAfterName = v.RecJ02.j02TitleAfterName, j02Email = v.RecJ02.j02Email, j02Mobile = v.RecJ02.j02Mobile, j02Phone = v.RecJ02.j02Phone };
 

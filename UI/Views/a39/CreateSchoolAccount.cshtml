@@ -59,6 +59,16 @@
             </div>
         </div>
         <div class="row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Jazyk"):</label>
+            <div class="col-sm-4 col-md-4">
+                <select asp-for="@Model.j03LangIndex" class="form-select">
+                    <option value="0">Česky</option>
+
+                    <option value="2">Українська</option>
+                </select>
+            </div>
+        </div>
+        <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("E-mail adresa"):</label>
             <div class="col-sm-4 col-md-4">
                 <input class="form-control" type="email" asp-for="RecJ02.j02Email" />
