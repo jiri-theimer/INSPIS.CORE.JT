@@ -151,9 +151,9 @@ namespace UI.Controllers
             
             v.lisB06 = new List<BO.b06WorkflowStep>();
 
-            if (v.RecA01.a01ParentID == 0)
+            if (v.RecA01.a01ParentID == 0 || (v.RecA01.a01ParentID > 0 && Factory.a01EventBL.GetList_a24(v.RecA01.pid).Where(p => p.a46ID == 5).Count() > 0))
             {
-                //nabídku spustitelných kroků řešit pouze pro nadřízené akce!
+                //nabídku spustitelných kroků řešit pouze pro nadřízené akce nebo IA audit!
                 var lisB06 = Factory.b06WorkflowStepBL.GetList(mq).OrderBy(p => p.b06Order).Where(p => p.b06IsManualStep == true);
                 foreach (var c in lisB06)
                 {
