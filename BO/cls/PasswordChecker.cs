@@ -74,7 +74,7 @@ namespace BO.CLS
         public string RandomPassword(int PasswordMinLength)
         {
             var x = new Random();
-            string s= BO.BAS.GetGuid().Substring(0, 1).ToUpper() + BO.BAS.GetGuid().Substring(0, PasswordMinLength - 1) + "!@$%^&*()#".Substring(x.Next(0, 9), 1);
+            string s= BO.BAS.GetGuid().Substring(0, 1).ToUpper() + BO.BAS.GetGuid().Substring(0, PasswordMinLength - 1) + "!@$%^*()!$".Substring(x.Next(0, 9), 1);
             if (!s.Any(char.IsUpper))
             {
                 s += "A";

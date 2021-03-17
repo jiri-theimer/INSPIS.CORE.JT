@@ -16,6 +16,7 @@ namespace BL
         public IEnumerable<BO.j05Permission> GetListJ05();
         public IEnumerable<BO.a21InstitutionLegalType> GetListA21();
         public IEnumerable<BO.iSETSchoolClass> GetList_SchoolClasses(string strREDIZO, string strSchoolYear);
+        public void RunRecovery_ClearTemp();
     }
     class FBL : BaseBL, IFBL
     {
@@ -112,6 +113,9 @@ namespace BL
         }
 
 
-
+        public void RunRecovery_ClearTemp()
+        {
+            _db.RunSql("exec dbo._core_recovery_clear_temp");
+        }
     }
 }

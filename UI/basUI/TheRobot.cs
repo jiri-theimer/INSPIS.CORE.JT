@@ -90,6 +90,13 @@ namespace UI
             //čekající pošta na odeslání
             Handle_MailQueue_INEZ(f);
             Handle_MailQueue(f);
+
+            if (DateTime.Now.Hour == 3) 
+            {
+                //mezi 3 - 4 hodinou ráno běží čištění temp tabulek
+                f.FBL.RunRecovery_ClearTemp();
+            }
+            
             
         }
 
