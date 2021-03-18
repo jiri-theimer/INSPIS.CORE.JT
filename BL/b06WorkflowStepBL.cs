@@ -51,7 +51,7 @@ namespace BL
 
         public int Save(BO.b06WorkflowStep rec, List<BO.b08WorkflowReceiverToStep> lisB08, List<BO.b11WorkflowMessageToStep> lisB11, List<BO.b13WorkflowRequiredFormsToStep> lisB13, List<int> o13ids, List<int> b12_j04ids, List<int> b12_a45ids, List<BO.b10WorkflowCommandCatalog_Binding> lisB10)
         {
-            if (ValidateBeforeSave(ref rec, lisB08,lisB10) == false)
+            if (ValidateBeforeSave(ref rec, lisB08,lisB10,lisB11) == false)
             {
                 return 0;
             }
@@ -191,7 +191,7 @@ namespace BL
             return intPID;
         }
 
-        public bool ValidateBeforeSave(ref BO.b06WorkflowStep rec, List<BO.b08WorkflowReceiverToStep> lisB08, List<BO.b10WorkflowCommandCatalog_Binding> lisB10)
+        public bool ValidateBeforeSave(ref BO.b06WorkflowStep rec, List<BO.b08WorkflowReceiverToStep> lisB08, List<BO.b10WorkflowCommandCatalog_Binding> lisB10,List<BO.b11WorkflowMessageToStep> lisB11)
         {            
             if (rec.b02ID == 0)
             {
@@ -255,6 +255,17 @@ namespace BL
                 if (lisB10.Any(p => p.IsUpdateStatusCommand && p.b02ID_TargetUpdate == 0))
                 {
                     this.AddMessage("V rozpisu příkazů chybí vybrat cílový workflow stav."); return false;
+                }
+            }
+            if (lisB11 != null)
+            {
+                if (lisB11.Any(p => p.j04ID == 0 && p.j11ID==0 && p.a45ID==0))
+                {
+                    this.AddMessage("V rozpisu notifikace chybí vybrat příjemce zprávy."); return false;
+                }
+                if (lisB11.Any(p => p.b65ID == 0))
+                {
+                    this.AddMessage("V rozpisu notifikace chybí vybrat šablonu zprávy."); return false;
                 }
             }
 

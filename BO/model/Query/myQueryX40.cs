@@ -8,6 +8,7 @@ namespace BO
     {
         public int j02id { get; set; }
         public int a42id { get; set; }
+        public int a01id { get; set; }
         public myQueryX40()
         {
             this.Prefix = "x40";
@@ -23,6 +24,10 @@ namespace BO
             if (this.a42id > 0)
             {
                 AQ("a.x29ID=101 AND a.x40DataPid IN (select a01ID FROM a01Event WHERE a42ID=@a42id)", "a42id", this.a42id);
+            }
+            if (this.a01id > 0)
+            {
+                AQ("a.x29ID=101 AND a.x40DataPid=@a01id", "a01id", this.a01id);
             }
             return this.InhaleRows();
 

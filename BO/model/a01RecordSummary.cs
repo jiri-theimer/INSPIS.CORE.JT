@@ -14,5 +14,6 @@ namespace BO
         public int a41_count;
         public int a01_souvisejici;
         public int a01_podrizene;
+        public int x40_count;
     }
 }

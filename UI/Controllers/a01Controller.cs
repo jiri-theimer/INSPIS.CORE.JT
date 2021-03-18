@@ -635,7 +635,13 @@ namespace UI.Controllers
             {
                 v.NavTabs.Add(AddTab("Související akce", "a01Event", "/a01/TabSouvisejici?pid=" + v.pid.ToString(), true, strBadge));
             }
-                
+
+            strBadge = null;
+            if (c.x40_count > 0)
+            {
+                strBadge = c.x40_count.ToString();
+            }
+            v.NavTabs.Add(AddTab("OUTBOX", "x40MailQueue", "/TheGrid/SlaveView?prefix=x40", false, strBadge));
 
             string strDefTab = Factory.CBL.LoadUserParam("recpage-tab-a01");
             var deftab = v.NavTabs[0];

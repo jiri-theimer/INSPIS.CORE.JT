@@ -103,6 +103,7 @@ namespace UI.Controllers
                     //tabs.Add(new NavTab() { Name = "Přílohy", Entity = "p12ClientTpv", Url = "SlaveView?prefix=p12" });
                     tabs.Add(AddTab("Úkoly/Lhůty", "h04ToDo", "SlaveView?prefix=h04"));
                     tabs.Add(AddTab("Související akce", "a01Event", "SlaveView?prefix=a01"));
+                    tabs.Add(AddTab("OUTBOX", "x40MailQueue", "SlaveView?prefix=x40"));                    
 
                     break;
                 case "a03":
@@ -317,6 +318,7 @@ namespace UI.Controllers
                     
                     v.gridinput.myqueryinline = "x32id@int@" + v.FilterX32ID.ToString();
                     break;
+               
                 default:
                     v.gridinput.query = new BO.InitMyQuery().Load(prefix, masterentity, master_pid, myqueryinline);
                     break;

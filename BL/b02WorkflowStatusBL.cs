@@ -161,7 +161,18 @@ namespace BL
                     this.AddMessage("V nastavení stavu není povoleno definovat příkaz pro změnu stavu."); return false;
                 }
             }
-            
+            if (lisB07 != null)
+            {
+                if (lisB07.Any(p => p.j04ID == 0 && p.j11ID == 0 && p.a45ID == 0))
+                {
+                    this.AddMessage("V rozpisu notifikace chybí vybrat příjemce zprávy."); return false;
+                }
+                if (lisB07.Any(p => p.b65ID == 0))
+                {
+                    this.AddMessage("V rozpisu notifikace chybí vybrat šablonu zprávy."); return false;
+                }
+            }
+
 
 
             return true;
