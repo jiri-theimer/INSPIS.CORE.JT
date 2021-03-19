@@ -48,7 +48,13 @@
        
         <td>
             @(c.f19Name+" ("+c.f19ID.ToString()+")")
+            @if (c.f19IsRequired)
+            {
+                <strong style="color:red;">*</strong>
+            }
             
+
+
         </td>
         <td>
             @(c.f21Name+" ("+c.f21ID.ToString()+")")
