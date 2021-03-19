@@ -167,8 +167,11 @@ namespace UI.Controllers
             if (v.SelectedX31ID > 0)
             {
                 v.RecX31 = Factory.x31ReportBL.Load(v.SelectedX31ID);
-                v.SelectedReport = v.RecX31.x31Name;
-
+                if (v.RecX31 != null)
+                {
+                    v.SelectedReport = v.RecX31.x31Name;
+                }
+                
                 var recO27 = Factory.x31ReportBL.LoadReportDoc(v.SelectedX31ID);
                
                 if (recO27 !=null)

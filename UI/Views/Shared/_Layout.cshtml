@@ -96,7 +96,8 @@
             <div id="mainmenu1_container" class="container-fluid px-0">
                 @if (_f.CurrentUser.j03HomePageUrl == null)
                 {
-                    <a id="cmdHome" class="navbar-brand mx-0" href="/Dashboard/Widgets" tabindex="-1">@_f.App.AppName</a>
+                    <a id="cmdHome" class="navbar-brand mx-0" href="/Dashboard/Widgets" tabindex="-1" title="@_f.App.AppBuild">@_f.App.AppName</a>
+                    
                 }
                 else
                 {

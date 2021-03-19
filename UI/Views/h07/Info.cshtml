@@ -1,0 +1,35 @@
+﻿@model UI.Models.Recpage.h07RecPage
+@inject BL.Factory _f
+@{
+    Model.PageTitle = _f.tra("Typ úkol");
+    Layout = "~/Views/Shared/_LayoutSubform.cshtml";
+
+}
+
+@addTagHelper *, UI
+
+<div class="info_record_container">
+    <div class="row">
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
+        <div class="col-sm-9 col-md-8">
+            <myval value="@Model.Rec.h07Name"></myval>
+        </div>
+        @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.AdminGlobal_Ciselniky))
+        {
+            <div class="col-sm-2 col-md-2">
+                <a href="javascript:_window_open('/h07/Record?pid=@(Model.pid)')">@_f.tra("Administrace")</a>
+            </div>
+        }
+
+    </div>
+
+    <div>
+        <input type="checkbox" asp-for="Rec.h07IsToDo" disabled="disabled" />
+        <label class="col-form-label" for="Rec_h07IsToDo">@_f.tra("Úkol")</label>
+    </div>
+
+    <div>
+        <input type="checkbox" asp-for="Rec.h07IsCapacityPlan" disabled="disabled" />
+        <label class="col-form-label" for="Rec_h07IsCapacityPlan">@_f.tra("Kapacitní plán")</label>
+    </div>
+</div>

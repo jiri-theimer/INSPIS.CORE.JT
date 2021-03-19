@@ -1,0 +1,198 @@
+﻿@model UI.Models.Recpage.h04RecPage
+@inject BL.Factory _f
+
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (Model.Rec == null) return;
+
+    Model.PageTitle = Model.Rec.h04Signature + ": " + Model.Rec.h07Name;
+}
+
+@addTagHelper *, UI
+
+<div class="row nowrap pt-1 bg-light m-0">
+    <div id="layout_sidebar_contextmenu" class="col-auto">
+        @if (Model.pid > 0)
+        {
+            <a id="layout_sidebar_contextmenu_link" class="cm h4 mx-0" title="@Model.Rec.h04Signature" onclick="_cm(event, 'h04',@Model.Rec.pid);">☰@(Model.Rec.h04Signature) </a>
+            <h4 id="layout_sidebar_contextmenu_onlytext">
+
+
+                @(Model.Rec.h04Signature)
+            </h4>
+        }
+
+    </div>
+    @if (Model.pid > 0)
+    {
+        <div class="col-auto nonmobile tabovergrid">
+            @Model.MenuCode
+        </div>
+
+        <div class="nonmobile col-auto">
+            <a class="btn btn-light" href="/h04/RecPage?pid=@Model.pid" title="@_f.tra("Občerstvit")"><span class="k-icon k-i-reload"></span></a>
+        </div>
+    }
+
+
+
+</div>
+
+<div id="layout_sidebar" class="cm_recpage">Loading...</div>
+
+
+
+<div id="layout_main">
+    <div class="modal_record_container">
+        <div class="row">
+            <label class="col-sm-1 col-md-2 col-form-label">@(_f.tra("Typ")):</label>
+            <div class="col-sm-7 col-md-6">
+                <myval value="@Model.Rec.h07Name" tooltip="@(_f.tra("Typ úkolu"))" hoverprefix="h07" hoverpid="@Model.Rec.h07ID"></myval>
+
+            </div>
+            <div class="col-sm-2 col-md-2">
+                <myval value="@Model.Rec.h04Signature" tooltip="@_f.tra("Kód")"></myval>
+
+            </div>
+
+        </div>
+        <div class="row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
+            <div class="col-sm-7 col-md-6">
+                <myval value="@Model.Rec.h04Name"></myval>
+
+
+            </div>
+            @if (Model.Rec.h07IsToDo)
+            {
+                <div class="col-sm-4 col-md-4">
+                    <myval value="@Model.Rec.h05Name" tooltip="@(_f.tra("Aktuální stav"))"></myval>
+                </div>
+            }
+
+        </div>
+        <div class="row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Termín"):</label>
+            <div class="col-sm-2 col-md-2">
+                <myval value="@Model.Rec.h04Deadline" datatype="datetime"></myval>
+
+
+            </div>
+            @if (Model.Rec.h04ReminderDate != null)
+            {
+                <div class="col-sm-2 col-md-2">
+                    <myval value="@Model.Rec.h04ReminderDate" datatype="datetime" tooltip="@(_f.tra("Připomenutí"))"></myval>
+                </div>
+            }
+            @if (Model.Rec.h07IsCapacityPlan)
+            {
+                <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Plán"):</label>
+                <div class="col-sm-2 col-md-2">
+                    <myval value="@Model.Rec.h04CapacityPlanFrom" datatype="datetime" tooltip="@(_f.tra("Plán od"))"></myval>
+                </div>
+                <div class="col-sm-2 col-md-2">
+                    <myval value="@Model.Rec.h04CapacityPlanUntil" datatype="datetime" tooltip="@(_f.tra("Plán do"))"></myval>
+                </div>
+            }
+
+        </div>
+
+        <div class="row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Akce"):</label>
+            <div class="col-sm-7 col-md-6">
+
+                <myval datatype="link" linkurl="/a01/RecPage?pid=@Model.Rec.a01ID" value="@Model.RecA01.a10Name" hoverprefix="a01" hoverpid="@Model.Rec.a01ID"></myval>
+
+
+            </div>
+            <div class="col-sm-2 col-md-2">
+                <myval value="@Model.RecA01.a10Name" tooltip="@(_f.tra("Typ akce"))"></myval>
+            </div>
+            <div class="col-sm-2 col-md-2">
+                <myval value="@Model.RecA01.a08Name" tooltip="@(_f.tra("Téma akce"))"></myval>
+            </div>
+        </div>
+        <div class="row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Instituce"):</label>
+
+            <div class="col-sm-7 col-md-6">
+                <myval datatype="link" linkurl="/a03/RecPage?pid=@Model.RecA01.a03ID" value="@Model.RecA01.a03Name" tooltip="@Model.RecA01.a03Name" hoverprefix="a03" hoverpid="@Model.RecA01.a03ID"></myval>
+
+
+            </div>
+            <div class="col-sm-2 col-md-2">
+                <myval tooltip="@_f.tra("REDIZO")" value="@Model.RecA01.a03REDIZO"></myval>
+            </div>
+        </div>
+        <div class="row my-2">
+            @if (Model.Rec.h07IsToDo)
+            {
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Rešitelé úkolu"):</label>
+            }
+            else
+            {
+                <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Příjemci"):</label>
+            }
+
+            <div class="col-sm-7 col-md-6">
+                @foreach (var c in Model.lisJ02)
+                {
+                    <myval datatype="link" value="@c.FullNameAsc" linkurl="/j02/RecPage?pid=@c.pid" hoverprefix="j02" hoverpid="@c.pid"></myval>
+                }
+            </div>
+
+        </div>
+
+
+
+        @Html.Raw(Model.TagHtml)
+    </div>
+    @if (Model.Rec.h04Description != null)
+    {
+        <div style="border:dashed 1px silver;padding:6px;max-height:200px;overflow:auto;">
+
+            @Html.Raw(Model.Rec.h04Description.Replace("\r\n", "\n").Replace("\r", "\n").Replace("\n", "<br>"))
+        </div>
+    }
+
+
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        @if(Model.pid>0)
+        {
+            <text>
+        $.post("/Menu/ContextMenu", { entity: "h04ToDo", pid: @Model.pid }, function(data) {
+
+            $("#layout_sidebar").html(data);
+
+            });
+            </text>
+        }
+        else
+        {
+        <text>
+        $("#layout_main").css("display", "none");
+        $("#layout_sidebar").html("");
+        </text>
+        }
+
+
+
+        _mainmenu_highlight_current("cmdH04");
+
+
+
+
+    });
+
+
+
+
+</script>
+
+

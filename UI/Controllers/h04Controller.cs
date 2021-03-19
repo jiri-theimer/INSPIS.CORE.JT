@@ -8,11 +8,52 @@ using Microsoft.VisualBasic;
 using Org.BouncyCastle.Crypto.Parameters;
 using UI.Models;
 using UI.Models.Record;
+using UI.Models.Recpage;
 
 namespace UI.Controllers
 {
+
     public class h04Controller : BaseController
     {
+        public IActionResult RecPage(int pid)
+        {
+            var v = new h04RecPage() { pid = pid };
+                        
+            if (v.pid == 0)
+            {
+                v.pid = Factory.CBL.LoadUserParamInt("h04-RecPage-pid");
+            }
+            if (v.pid > 0)
+            {
+                v.Rec = Factory.h04ToDoBL.Load(v.pid);
+                if (v.Rec == null)
+                {
+                    this.Notify_RecNotFound();
+                    v.pid = 0;
+                }
+                else
+                {
+                    v.RecH07 = Factory.h07ToDoTypeBL.Load(v.Rec.h07ID);
+                    v.MenuCode = v.Rec.h04Signature;
+                    v.TagHtml = Factory.o51TagBL.GetTagging("h04", v.pid).TagHtml;
+                    if (pid > 0)
+                    {
+                        Factory.CBL.SetUserParam("h04-RecPage-pid", pid.ToString());
+                    }
+                    v.RecA01 = Factory.a01EventBL.Load(v.Rec.a01ID);
+
+                    v.lisJ02 = Factory.j02PersonBL.GetList(new BO.myQueryJ02() { h04id = v.Rec.pid });
+                    
+                }
+
+            }
+
+            
+
+            return View(v);
+
+        }
+
         public IActionResult Record(int pid, bool isclone, int a01id)
         {
             var v = new h04Record() { rec_pid = pid, rec_entity = "h04", a01ID = a01id };
