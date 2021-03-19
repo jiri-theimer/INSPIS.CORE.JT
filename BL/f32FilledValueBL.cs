@@ -10,6 +10,7 @@ namespace BL
         public BO.f32FilledValue Load(int pid);
         public BO.f32FilledValue Load(int a11id, int f19id, int f21id = 0);
         public IEnumerable<BO.f32FilledValue> GetList(BO.myQueryF32 mq);
+        public IEnumerable<BO.f32FilledValueExtened> GetListExtended(BO.myQueryF32 mq);
         public int Save(BO.f32FilledValue rec, bool bolDeleteCurrentAnswers);
         public bool Save(IEnumerable<BO.f32FilledValue> lisF32, bool bolDeleteCurrentAnswers);
         public bool SaveHiddenQuestionsInForm(int a11id, List<int> f19ids);
@@ -66,13 +67,14 @@ namespace BL
         public IEnumerable<BO.f32FilledValue> GetList(BO.myQueryF32 mq)
         {
             sb("SELECT a.*,f19.f23ID,a.f32Value as Value,f21.f21Name,f19.x24ID,f31.f31IsPublished,");
-            sb(_db.GetSQL1_Ocas("f32", false, false, true));
-            sb(" FROM f32FilledValue a INNER JOIN f19Question f19 ON a.f19ID=f19.f19ID INNER JOIN f21ReplyUnit f21 ON a.f21ID=f21.f21ID");
-            sb(" LEFT OUTER JOIN f31FilledQuestionPublishing f31 ON a.f19ID=f31.f19ID AND a.a11ID=f31.a11ID");
+            sb(_db.GetSQL1_Ocas("f32", false, false, true));           
+            sb(" FROM f32FilledValue a INNER JOIN f19Question f19 ON a.f19ID=f19.f19ID INNER JOIN f21ReplyUnit f21 ON a.f21ID=f21.f21ID");            
             if (mq.f06id > 0)
             {
                 sb(" INNER JOIN f18FormSegment f18 ON f19.f18ID=f18.f18ID");
             }
+            sb(" LEFT OUTER JOIN f31FilledQuestionPublishing f31 ON a.f19ID=f31.f19ID AND a.a11ID=f31.a11ID");
+
             DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(sbret(), mq, _mother.CurrentUser);
             var lis= _db.GetList<BO.f32FilledValue>(fq.FinalSql, fq.Parameters);
             if (lis.Where(p => p.f33ID > 0).Count() > 0)    //ve výstupu jsou i ntext odpovědi - kvůli db výkonu řešíme samostatným SQL dotazem
@@ -80,6 +82,32 @@ namespace BL
                 List<int> f33ids = lis.Select(p => p.f33ID).ToList();
                 var lisF33 = _db.GetList<BO.f33FilledValueMemo>("select f33ID,f33Value,f32ID FROM f33FilledValueMemo WHERE f33ID IN (" + string.Join(",", f33ids) + ")");
                 foreach(var recF33 in lisF33)
+                {
+                    lis.Where(p => p.f33ID == recF33.f33ID).First().Value = recF33.f33Value;
+                }
+            }
+            return lis;
+        }
+
+        public IEnumerable<BO.f32FilledValueExtened> GetListExtended(BO.myQueryF32 mq)
+        {
+           
+            sb("SELECT a.*,f19.f23ID,a.f32Value as Value,f21.f21Name,f19.x24ID,f31.f31IsPublished,f19.f19Name");
+            sb(",f19.f18ID,f18.f18Name,f19.f19IsRequired,f19.f19Ordinal,f18.f18TreeIndex,x24.x24Name,");
+            sb(_db.GetSQL1_Ocas("f32", false, false, true));
+           
+            sb(" FROM f32FilledValue a INNER JOIN f19Question f19 ON a.f19ID=f19.f19ID INNER JOIN f21ReplyUnit f21 ON a.f21ID=f21.f21ID");
+            sb(" INNER JOIN a11EventForm a11 ON a.a11ID=a11.a11ID INNER JOIN f18FormSegment f18 ON f19.f18ID=f18.f18ID");
+            sb(" LEFT OUTER JOIN f31FilledQuestionPublishing f31 ON a.f19ID=f31.f19ID AND a.a11ID=f31.a11ID");
+            sb(" LEFT OUTER JOIN x24DataType x24 ON f19.x24ID=x24.x24ID");
+
+            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(sbret(), mq, _mother.CurrentUser);
+            var lis = _db.GetList<BO.f32FilledValueExtened>(fq.FinalSql, fq.Parameters);
+            if (lis.Where(p => p.f33ID > 0).Count() > 0)    //ve výstupu jsou i ntext odpovědi - kvůli db výkonu řešíme samostatným SQL dotazem
+            {
+                List<int> f33ids = lis.Select(p => p.f33ID).ToList();
+                var lisF33 = _db.GetList<BO.f33FilledValueMemo>("select f33ID,f33Value,f32ID FROM f33FilledValueMemo WHERE f33ID IN (" + string.Join(",", f33ids) + ")");
+                foreach (var recF33 in lisF33)
                 {
                     lis.Where(p => p.f33ID == recF33.f33ID).First().Value = recF33.f33Value;
                 }

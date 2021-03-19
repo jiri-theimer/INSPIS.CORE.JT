@@ -142,6 +142,14 @@ namespace UI.Controllers
             }
             return new BO.Result(false, Factory.tra("Operace dokončena."));
         }
+        public IActionResult Protocol(int a11id)
+        {
+            var v = new a11ProtocolViewModel() { a11ID=a11id };
+            v.Rec = Factory.a11EventFormBL.Load(v.a11ID);
+            var mq = new BO.myQueryF32() { a11id = v.a11ID };
+            v.lisF32 = Factory.f32FilledValueBL.GetListExtended(mq).OrderBy(p => p.f18TreeIndex).ThenBy(p => p.f19Ordinal);
+            return View(v);
+        }
         public IActionResult ValidateForms(int pid, int a01id)
         {
             var v = new a11ValidateForms() { pid = pid, a01ID = a01id };

@@ -25,6 +25,19 @@ namespace BO
         public bool f31IsPublished;
 
 
+        
 
+
+    }
+
+    public class f32FilledValueExtened : f32FilledValue
+    {
+        public string f19Name { get; }
+        public int f18ID { get; }
+        public string f18Name { get; }
+        public int f19IsRequired { get; }
+        public int f19Ordinal { get; }
+        public int f18TreeIndex { get; }
+        public string x24Name { get; }
     }
 }

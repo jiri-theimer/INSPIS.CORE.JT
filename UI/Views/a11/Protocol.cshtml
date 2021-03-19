@@ -1,0 +1,114 @@
+﻿@model a11ProtocolViewModel
+@inject BL.Factory _f
+
+@{
+    Model.PageTitle = "Protocol";
+    Layout = "~/Views/Shared/_LayoutModal.cshtml";
+    int _lastF18ID = 0;
+}
+@addTagHelper *, UI
+
+
+<h4>@_f.tra("Protokol o vyplnění vybraného formuláře")</h4>
+
+<div class="bg-light" style="padding:10px;">    
+    <button id="cmdClose" type="button" onclick="_window_close()" class="btn btn-light">@_f.tra("Zavřít")</button>
+    <button type="button" onclick="_helppage()" class="btn btn-light"><b>? </b>@_f.tra("Nápověda")</button>
+</div>
+
+
+@if (Model.lisF32.Count() == 0)
+{
+    <h4 class="text-danger">@_f.tra("Zatím žádná uložená odpověď!")</h4>
+}
+<table class="table table-sm table-hover">
+    <tr>
+        <th>@_f.tra("Sekce")</th>
+        
+        <th>@_f.tra("Otázka")</th>
+        <th>@_f.tra("Jednotka")</th>
+        <th></th>
+        <th>@_f.tra("Odpověď")</th>
+        <th>@_f.tra("Vloženo")</th>
+        <th>@_f.tra("Aktualizáno")</th>
+    </tr>
+    @foreach (var c in Model.lisF32)
+    {
+       
+    <tr>
+        <td>
+            @if (_lastF18ID != c.f18ID)
+            {
+            <strong>
+                @c.f18Name
+            </strong>
+            }
+
+        </td>
+       
+        <td>
+            @(c.f19Name+" ("+c.f19ID.ToString()+")")
+            
+        </td>
+        <td>
+            @(c.f21Name+" ("+c.f21ID.ToString()+")")
+        </td>
+        <td>
+            @c.x24Name
+        </td>
+        <td>
+            @c.Value
+            @if(c.f32Comment != null)
+            {
+                <div style="background-color:lightyellow;">
+                    @c.f32Comment
+                </div>
+            }
+        </td>
+        <td>
+            <small>
+                @c.UserInsert
+                <code>/</code>
+                @c.DateInsert
+            </small>
+            
+        </td>
+       
+        <td>
+            @if (c.DateUpdate > c.DateInsert)
+            {
+            <small>
+                @c.UserUpdate
+                <code>/</code>
+                @c.DateUpdate
+            </small>
+                
+            }
+
+        </td>
+    </tr>
+
+        _lastF18ID = c.f18ID;
+    }
+</table>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+
+
+
+    });
+
+    function run() {
+        location.replace(location.href);
+
+
+    }
+
+
+
+
+
+</script>

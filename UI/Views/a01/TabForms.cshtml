@@ -41,8 +41,8 @@
 
 @if (Model.IsGridView == true)
 {
-    
-    <vc:the-grid  input="@Model.gridinput"></vc:the-grid>
+
+    <vc:the-grid input="@Model.gridinput"></vc:the-grid>
 }
 else
 {
@@ -86,7 +86,10 @@ else
                         <a href="@(_f.App.UiftUrl+"/Preview/Formular/"+c.pid.ToString())" target="_blank">@_f.tra("Náhled")</a>
                     </td>
                     <td>
-                        <a href="javascript:_window_open('/a11/ValidateForms?pid=@c.pid.ToString()')">@_f.tra("Kontrola")</a>
+                        <a href="javascript:kontrola(@c.pid)">@_f.tra("Kontrola")</a>
+                    </td>
+                    <td>
+                        <a href="javascript:protokol(@c.pid)">@_f.tra("Protokol")</a>
                     </td>
                     <td>
                         @if (c.a11Description != null)
@@ -150,6 +153,12 @@ else
             });
     }
 
-    
+
+    function kontrola(a11id) {
+        _window_open("/a11/ValidateForms?pid="+a11id,2);
+    }
+    function protokol(a11id) {
+        _window_open("/a11/Protocol?a11id=" + a11id, 2);
+    }
 </script>
 
