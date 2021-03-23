@@ -7,7 +7,7 @@
 }
 
 
-<div class="modal_record_container">
+<div>
     <a class="btn btn-light" href="/FileUpload/DoUpload?Guid=@Model.Guid&x29id=@Model.x29ID&o13id=@Model.o13ID&recpid=@Model.RecPid">@_f.tra("Přidat přílohy")</a>
 
 
@@ -18,6 +18,8 @@
 
 
 <script type="text/javascript">
+    $(document.body).css("overflow", "hidden");
+
     function handle_delete_row(fileguid) {
         $.post("/FileUpload/Delete2Temp", { fileguid: fileguid, guid: "@Model.Guid" }, function (data) {
 

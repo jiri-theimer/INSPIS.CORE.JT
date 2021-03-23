@@ -105,7 +105,7 @@
                         <button type="button" class="btn btn-light" onclick="remember_p65id()">@_f.tra("Zapamatovat si šablonu")</button>
                     </div>
                 </div>
-                <iframe id="fraUpload" src="/FileUpload/Index?prefix=j02&guid=@Model.UploadGuid" frameborder="0" height="220" scrolling="no"></iframe>
+                <iframe id="fraUpload" src="/FileUpload/Index?prefix=j02&guid=@Model.UploadGuid" frameborder="0" height="220" scrolling="yes"></iframe>
 
 
             </div>
@@ -158,6 +158,9 @@
         if ($("#hidA03IDs").val() != "") {
             refresh_a03_table();
         }
+
+
+        
 
     });
 
