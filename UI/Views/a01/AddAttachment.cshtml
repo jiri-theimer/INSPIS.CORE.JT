@@ -49,7 +49,10 @@
 
         var offset = $("#fraUpload").offset();
         var h_vertical = _device.innerHeight - offset.top;
-        h_vertical = parseInt(h_vertical)-20;       
+        h_vertical = parseInt(h_vertical) - 20;    
+        if (_device.type === "Phone") {
+            h_vertical = 400;
+        }
         $("#fraUpload").css("height", h_vertical + "px");
         
 
