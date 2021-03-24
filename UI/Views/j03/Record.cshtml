@@ -67,12 +67,22 @@
         <div class="col-sm-5 col-md-4">
             <select asp-for="Rec.j03LangIndex" class="form-select">
                 <option value="0">Česky</option>
-                
+
                 <option value="2">Українська</option>
             </select>
         </div>
-    </div>
+        <div class="col-sm-6 col-md-6">
+            <input type="checkbox" asp-for="@Model.IsGridClipboard" />
+            <label for="IsGridClipboard">@_f.tra("Podporovat clipboard v textech Grid přehledu (schránka Ctrl+C & Ctrl+V)?")</label>
+            @if (Model.rec_pid > 0)
+            {
+                <br />
+                <button type="button" id="cmdClearParams" class="btn btn-sm btn-outline-danger">@_f.tra("Vyčistit server cache")</button>
+            }
 
+        </div>
+    </div>
+    
 
     @if (Model.IsDefinePassword)
     {
@@ -271,7 +281,14 @@
             form1.submit();
         });
 
-        
+        $("#cmdClearParams").click(function () {
+            if (confirm("@_f.tra("Opravdu vyčištit servech cache?")")) {
+                form1.action = "/j03/Record?oper=clearparams";
+                form1.submit();
+            }
+
+        });
+
 
         @if (Model.rec_pid == 0)
         {

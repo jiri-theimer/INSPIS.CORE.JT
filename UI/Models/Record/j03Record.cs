@@ -8,7 +8,7 @@ namespace UI.Models.Record
     public class j03Record:BaseRecordViewModel
     {
         public BO.j03User Rec { get; set; }
-
+        public bool IsGridClipboard { get; set; }
         public BO.j02Person RecJ02 { get; set; }
 
         public string NewPassword { get; set; }

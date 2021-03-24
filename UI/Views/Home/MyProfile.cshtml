@@ -197,8 +197,18 @@
         </div>
     </div>
 
-
-
+    <div class="card">
+        <div class="card-header">
+            Server cache
+        </div>
+        <div class="card-body">
+            <button type="button" id="cmdClearParams" class="btn btn-outline-danger">@_f.tra("Vyčistit server cache")</button>
+            <i>
+                @_f.tra("Aplikace má snahu si pamatovat časté úkony uživatele. Např. naposledy hledanou akci/instituci/tiskovou sestavu/rozložení panelů apod.")
+            </i>
+        </div>
+    </div>
+    
 </div>
 
 
@@ -216,7 +226,15 @@
 
 
 
-
+        $("#cmdClearParams").click(function () {
+            if (confirm("@_f.tra("Opravdu vyčištit servech cache?")")) {
+                $(this).text("Processing...");
+                $(this).attr("disabled", true);
+                form1.action = "/Home/MyProfile?oper=clearparams";
+                form1.submit();
+            }
+            
+        });
     });
 
     function refresh_state() {

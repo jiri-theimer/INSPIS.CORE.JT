@@ -44,6 +44,10 @@ namespace UI.Controllers
                 {
                     v.user_profile_oper = "nobind"; //uživatel bez osobního profilu
                 }
+                if (v.Rec.j03GridSelectionModeFlag == 1)
+                {
+                    v.IsGridClipboard = true;
+                }
             }
             else
             {
@@ -87,7 +91,12 @@ namespace UI.Controllers
             {
                 return View(v);
             }
-            
+            if (oper == "clearparams")
+            {
+                Factory.CBL.TruncateUserParams(v.rec_pid);
+                this.AddMessage("Server cache vyčištěna.", "info");
+                return View(v);
+            }
             if (oper== "newpwd")
             {
                 v.IsDefinePassword = true;
@@ -121,6 +130,15 @@ namespace UI.Controllers
                 c.j03IsMustChangePassword = v.Rec.j03IsMustChangePassword;
                 c.j03IsSystemAccount = v.Rec.j03IsSystemAccount;
                 c.j03LangIndex = v.Rec.j03LangIndex;
+                if (v.IsGridClipboard)
+                {
+                    c.j03GridSelectionModeFlag = 1;
+                }
+                else
+                {
+                    c.j03GridSelectionModeFlag = 0;
+                }
+                
                 c.j03IsDebugLog = v.Rec.j03IsDebugLog;
                 c.j03AdminRoleValue = "";
                 foreach(var cc in v.lisAdminRoleValues)

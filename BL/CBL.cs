@@ -13,6 +13,7 @@ namespace BL
         public bool LoadUserParamBool(string strKey, bool bolDefault);
         public DateTime? LoadUserParamDate(string strKey);
         public bool SetUserParam(string strKey, string strValue);
+        public void TruncateUserParams(int j03id);
         public string EstimateRecordCode(string entity);
         public string GetRecordAlias(string entity, int pid);
         public void ClearUserParamsCache();
@@ -163,7 +164,12 @@ namespace BL
             {
                 return false;
             }
-        }        
+        }  
+        public void TruncateUserParams(int j03id)
+        {
+            if (j03id <= 0) j03id = _mother.CurrentUser.pid;
+            _db.RunSql("DELETE FROM x36UserParam WHERE j03ID=@j03id", new { j03id = j03id });
+        }
        
         public void ClearUserParamsCache()
         {

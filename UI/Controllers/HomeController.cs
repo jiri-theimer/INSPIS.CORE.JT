@@ -173,8 +173,14 @@ namespace UI.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult MyProfile(Models.MyProfileViewModel v)
+        public IActionResult MyProfile(Models.MyProfileViewModel v,string oper)
         {
+            if (oper == "clearparams")
+            {
+                Factory.CBL.TruncateUserParams(0);
+                this.AddMessage("Server cache vyčištěna.", "info");
+                return MyProfile();
+            }
             if (ModelState.IsValid)
             {
                 if (string.IsNullOrEmpty(v.EmailAddres) == true)
