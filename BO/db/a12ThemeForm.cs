@@ -13,7 +13,7 @@ namespace BO
 
         public string f06Name { get; set; } //combo
         public BO.f06BindScopeQueryENUM f06BindScopeQuery;
-
+        
         public string CssClass
         {
             get

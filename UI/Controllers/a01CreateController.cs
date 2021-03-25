@@ -292,7 +292,7 @@ namespace UI.Controllers
             v.Person = v.RecJ02.FullNameDesc;
             if (v.Rec.a08ID > 0)
             {
-                v.lisA12=Factory.a08ThemeBL.GetListA12(v.Rec.a08ID);
+                v.lisA12 = Factory.a08ThemeBL.GetListA12(v.Rec.a08ID).Where(p => p.f06BindScopeQuery != BO.f06BindScopeQueryENUM.PollOnly);
             }
             if (v.lisA11 == null)
             {

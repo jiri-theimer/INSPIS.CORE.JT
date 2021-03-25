@@ -36,10 +36,18 @@ namespace BO
             {
                 AQ("a.f12ID=@f12id", "f12id", this.f12id);
             }
-            if (this.ispollforms==true)
+            if (this.ispollforms != null)
             {
-                AQ("ISNULL(a.f06BindScopeQuery,0) IN (0,2)", "", null);    //formuláře použitelné jako anketní
+                if (this.ispollforms == true)
+                {
+                    AQ("ISNULL(a.f06BindScopeQuery,0) IN (0,2)", "", null);    //formuláře použitelné jako anketní
+                }
+                else
+                {
+                    AQ("ISNULL(a.f06BindScopeQuery,0) IN (0,1)", "", null);    //formuláře použitelné jako ne-anketní
+                }
             }
+            
 
             if (_searchstring != null && _searchstring.Length > 2)
             {

@@ -275,15 +275,15 @@ namespace UI.Controllers
 
             if (v.RecA01_Master.a08ID > 0)
             {
-                v.lisA12_Master = Factory.a08ThemeBL.GetListA12(v.RecA01_Master.a08ID);
+                v.lisA12_Master = Factory.a08ThemeBL.GetListA12(v.RecA01_Master.a08ID).Where(p => p.f06BindScopeQuery != BO.f06BindScopeQueryENUM.PollOnly);
             }
             if (v.RecA01_Slave1.a08ID > 0)
             {
-                v.lisA12_Slave1 = Factory.a08ThemeBL.GetListA12(v.RecA01_Slave1.a08ID);
+                v.lisA12_Slave1 = Factory.a08ThemeBL.GetListA12(v.RecA01_Slave1.a08ID).Where(p => p.f06BindScopeQuery != BO.f06BindScopeQueryENUM.PollOnly);
             }
             if (v.RecA01_Slave2.a08ID > 0)
             {
-                v.lisA12_Slave2 = Factory.a08ThemeBL.GetListA12(v.RecA01_Slave2.a08ID);
+                v.lisA12_Slave2 = Factory.a08ThemeBL.GetListA12(v.RecA01_Slave2.a08ID).Where(p => p.f06BindScopeQuery != BO.f06BindScopeQueryENUM.PollOnly);
             }
         }
 
