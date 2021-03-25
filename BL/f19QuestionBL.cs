@@ -52,100 +52,106 @@ namespace BL
             {
                 return 0;
             }
-            var p = new DL.Params4Dapper();
-            p.AddInt("pid", rec.f19ID);
-            p.AddInt("f18ID", rec.f18ID, true);
-            p.AddInt("f23ID", rec.f23ID, true);
-            p.AddInt("x24ID", rec.x24ID, true);
-            p.AddInt("f25ID", rec.f25ID, true);
-            p.AddInt("f26ID", rec.f26ID, true);            
-            p.AddInt("f27ID", rec.f27ID, true);
-            p.AddInt("f29ID", rec.f29ID, true);
-            p.AddInt("f44ID", rec.f44ID, true);
-            p.AddInt("f19TemplateID", rec.f19TemplateID, true);
-            p.AddEnumInt("f19PortalPublishFlag", rec.f19PortalPublishFlag);
-            p.AddBool("f19IsSearchablePortalField", rec.f19IsSearchablePortalField);
-            p.AddBool("f19IsRequired", rec.f19IsRequired);
-            p.AddBool("f19IsMultiselect", rec.f19IsMultiselect);
-            p.AddBool("f19IsHorizontalDisplay", rec.f19IsHorizontalDisplay);
-
-            p.AddInt("f19Ordinal", rec.f19Ordinal);
-            p.AddString("f19Name", rec.f19Name);
-            p.AddString("f19Ident", rec.f19Ident);
-            p.AddString("f19SupportingText", rec.f19SupportingText);
-            p.AddString("f19Hint", rec.f19Hint);
-            p.AddString("f19StatID", rec.f19StatID);
-            p.AddString("f19ReadonlyExpression", rec.f19ReadonlyExpression);
-            p.AddString("f19SkipExpression", rec.f19SkipExpression);
-            p.AddString("f19RequiredExpression", rec.f19RequiredExpression);
-            p.AddString("f19DefaultValue", rec.f19DefaultValue);
-            p.AddString("f19CancelValidateExpression", rec.f19CancelValidateExpression);
-            p.AddString("f19CancelValidateExpression_Message", rec.f19CancelValidateExpression_Message);
-            p.AddString("f19Regex", rec.f19Regex);
-            p.AddBool("f19IsDefaultValueHTML", rec.f19IsDefaultValueHTML);
-            p.AddString("f19LinkURL", rec.f19LinkURL);
-            p.AddString("f19AllowedFileUploadExtensions", rec.f19AllowedFileUploadExtensions);
-            p.AddInt("f19MaxUploadFiles", rec.f19MaxUploadFiles);
-
-            p.AddString("f19EvalListSource", rec.f19EvalListSource);
-
-            p.AddInt("f19ChessRow", rec.f19ChessRow);
-            p.AddInt("f19ChessColumn", rec.f19ChessColumn);
-            p.AddInt("f19CHLMaxAnswers", rec.f19CHLMaxAnswers);
-            p.AddInt("f19MaxAllowedSize", rec.f19MaxAllowedSize);
-
-            p.AddBool("f19IsTextboxMultiline", rec.f19IsTextboxMultiline);
-            p.AddString("f19LinkerValue", rec.f19LinkerValue);
-            p.AddString("f19EntityField", rec.f19EntityField);
-            p.AddBool("f19IsEncrypted", rec.f19IsEncrypted);
-
-            if (rec.f19UC == null) { rec.f19UC = BO.BAS.GetGuid(); }
-            p.AddString("f19UC", rec.f19UC);
-
-            int intPID = _db.SaveRecord("f19Question", p, rec);
-            
-            if (rec.ReplyControl == BO.ReplyKeyEnum.TextBox || (rec.ReplyControl==BO.ReplyKeyEnum.Checkbox && rec.f19IsMultiselect==false) || rec.ReplyControl==BO.ReplyKeyEnum.FileUpload || rec.ReplyControl==BO.ReplyKeyEnum.HtmlEditor || rec.ReplyControl == BO.ReplyKeyEnum.SummaryOverview || rec.ReplyControl==BO.ReplyKeyEnum.EvalList)
+            using (var sc = new System.Transactions.TransactionScope())
             {
-                var recF21 = new BO.f21ReplyUnit();
-                if (rec.pid > 0)
+                var p = new DL.Params4Dapper();
+                p.AddInt("pid", rec.f19ID);
+                p.AddInt("f18ID", rec.f18ID, true);
+                p.AddInt("f23ID", rec.f23ID, true);
+                p.AddInt("x24ID", rec.x24ID, true);
+                p.AddInt("f25ID", rec.f25ID, true);
+                p.AddInt("f26ID", rec.f26ID, true);
+                p.AddInt("f27ID", rec.f27ID, true);
+                p.AddInt("f29ID", rec.f29ID, true);
+                p.AddInt("f44ID", rec.f44ID, true);
+                p.AddInt("f19TemplateID", rec.f19TemplateID, true);
+                p.AddEnumInt("f19PortalPublishFlag", rec.f19PortalPublishFlag);
+                p.AddBool("f19IsSearchablePortalField", rec.f19IsSearchablePortalField);
+                p.AddBool("f19IsRequired", rec.f19IsRequired);
+                p.AddBool("f19IsMultiselect", rec.f19IsMultiselect);
+                p.AddBool("f19IsHorizontalDisplay", rec.f19IsHorizontalDisplay);
+
+                p.AddInt("f19Ordinal", rec.f19Ordinal);
+                p.AddString("f19Name", rec.f19Name);
+                p.AddString("f19Ident", rec.f19Ident);
+                p.AddString("f19SupportingText", rec.f19SupportingText);
+                p.AddString("f19Hint", rec.f19Hint);
+                p.AddString("f19StatID", rec.f19StatID);
+                p.AddString("f19ReadonlyExpression", rec.f19ReadonlyExpression);
+                p.AddString("f19SkipExpression", rec.f19SkipExpression);
+                p.AddString("f19RequiredExpression", rec.f19RequiredExpression);
+                p.AddString("f19DefaultValue", rec.f19DefaultValue);
+                p.AddString("f19CancelValidateExpression", rec.f19CancelValidateExpression);
+                p.AddString("f19CancelValidateExpression_Message", rec.f19CancelValidateExpression_Message);
+                p.AddString("f19Regex", rec.f19Regex);
+                p.AddBool("f19IsDefaultValueHTML", rec.f19IsDefaultValueHTML);
+                p.AddString("f19LinkURL", rec.f19LinkURL);
+                p.AddString("f19AllowedFileUploadExtensions", rec.f19AllowedFileUploadExtensions);
+                p.AddInt("f19MaxUploadFiles", rec.f19MaxUploadFiles);
+
+                p.AddString("f19EvalListSource", rec.f19EvalListSource);
+
+                p.AddInt("f19ChessRow", rec.f19ChessRow);
+                p.AddInt("f19ChessColumn", rec.f19ChessColumn);
+                p.AddInt("f19CHLMaxAnswers", rec.f19CHLMaxAnswers);
+                p.AddInt("f19MaxAllowedSize", rec.f19MaxAllowedSize);
+
+                p.AddBool("f19IsTextboxMultiline", rec.f19IsTextboxMultiline);
+                p.AddString("f19LinkerValue", rec.f19LinkerValue);
+                p.AddString("f19EntityField", rec.f19EntityField);
+                p.AddBool("f19IsEncrypted", rec.f19IsEncrypted);
+
+                if (rec.f19UC == null) { rec.f19UC = BO.BAS.GetGuid(); }
+                p.AddString("f19UC", rec.f19UC);
+
+                int intPID = _db.SaveRecord("f19Question", p, rec);
+
+                if (rec.ReplyControl == BO.ReplyKeyEnum.TextBox || (rec.ReplyControl == BO.ReplyKeyEnum.Checkbox && rec.f19IsMultiselect == false) || rec.ReplyControl == BO.ReplyKeyEnum.FileUpload || rec.ReplyControl == BO.ReplyKeyEnum.HtmlEditor || rec.ReplyControl == BO.ReplyKeyEnum.SummaryOverview || rec.ReplyControl == BO.ReplyKeyEnum.EvalList)
                 {
-                    
-                    var lisF21 = _mother.f21ReplyUnitBL.GetList(new BO.myQueryF21() { f19id = rec.pid });
-                    if (lisF21.Count() > 0)
+                    var recF21 = new BO.f21ReplyUnit();
+                    if (rec.pid > 0)
                     {
-                        recF21 = lisF21.First();
+                        var lisF21 = _mother.f21ReplyUnitBL.GetList(new BO.myQueryF21() { f19id_onlyin = rec.pid });
+                        if (lisF21.Count() > 0)
+                        {
+                            recF21 = lisF21.First();
+                        }
+                    }
+                    recF21.f21MinValue = rec.TextBox_MinValue;
+                    recF21.f21MaxValue = rec.TextBox_MaxValue;
+                    recF21.f21ExportValue = rec.TextBox_ExportValue;
+                    recF21.f21Name = rec.f21Name;
+                    var intF21ID = _mother.f21ReplyUnitBL.Save(recF21);
+                    if (rec.pid > 0 && intF21ID > 0)
+                    {
+                        _db.RunSql("DELETE FROM f20ReplyUnitToQuestion WHERE f21ID<>@f21id AND f19ID=@f19id", new { f21id = intF21ID, f19id = intPID });
+                    }
+                    if (intPID > 0 && intF21ID > 0)
+                    {
+                        _db.RunSql("INSERT INTO f20ReplyUnitToQuestion(f19ID,f21ID) SELECT @pid,f21ID FROM f21ReplyUnit WHERE f21ID=@f21id AND f21ID NOT IN (select f21ID FROM f20ReplyUnitToQuestion WHERE f19ID=@pid AND f21ID=@f21id)", new { pid = intPID, f21id = intF21ID });
+                    }
+
+                    f21ids = null;
+                }
+                if (f21ids != null)
+                {
+                    if (rec.pid > 0)
+                    {
+                        _db.RunSql("DELETE FROM f20ReplyUnitToQuestion WHERE f19ID=@pid", new { pid = intPID });
+                    }
+                    if (f21ids.Count > 0)
+                    {
+                        _db.RunSql("INSERT INTO f20ReplyUnitToQuestion(f19ID,f21ID) SELECT @pid,f21ID FROM f21ReplyUnit WHERE f21ID IN (" + string.Join(",", f21ids) + ")", new { pid = intPID });
                     }
                 }
-                recF21.f21MinValue = rec.TextBox_MinValue;
-                recF21.f21MaxValue = rec.TextBox_MaxValue;
-                recF21.f21ExportValue = rec.TextBox_ExportValue;
-                recF21.f21Name = rec.f21Name;
-                var intF21ID=_mother.f21ReplyUnitBL.Save(recF21);
-                if (rec.pid > 0 && intF21ID>0)
-                {
-                    _db.RunSql("DELETE FROM f20ReplyUnitToQuestion WHERE f21ID<>@f21id AND f19ID=@f19id", new { f21id = intF21ID, f19id = intPID });
-                }
-                if (intPID>0 && intF21ID > 0)
-                {
-                    _db.RunSql("INSERT INTO f20ReplyUnitToQuestion(f19ID,f21ID) SELECT @pid,f21ID FROM f21ReplyUnit WHERE f21ID=@f21id AND f21ID NOT IN (select f21ID FROM f20ReplyUnitToQuestion WHERE f19ID=@pid AND f21ID=@f21id)", new { pid = intPID,f21id=intF21ID });                    
-                }
+
+                sc.Complete();
+                return intPID;
+            }
                 
-                f21ids = null;
-            }
-            if (f21ids != null)
-            {
-                if (rec.pid > 0)
-                {
-                    _db.RunSql("DELETE FROM f20ReplyUnitToQuestion WHERE f19ID=@pid", new { pid = intPID });
-                }
-                if (f21ids.Count > 0)
-                {
-                    _db.RunSql("INSERT INTO f20ReplyUnitToQuestion(f19ID,f21ID) SELECT @pid,f21ID FROM f21ReplyUnit WHERE f21ID IN (" + string.Join(",", f21ids) + ")", new { pid = intPID });
-                }
-            }
             
 
-            return intPID;
+            
         }
 
         public bool ValidateBeforeSave(ref BO.f19Question rec, List<int> f21ids)
@@ -266,19 +272,19 @@ namespace BL
         }
 
 
-        private void SaveF12(int intPID,List<BO.f21ReplyUnit> lisF21)
-        {
-            var recF19 = Load(intPID);
-            bool bolVyctova = false;
-            if (recF19.ReplyControl == BO.ReplyKeyEnum.DropdownList || recF19.ReplyControl == BO.ReplyKeyEnum.RadiobuttonList || recF19.ReplyControl == BO.ReplyKeyEnum.Listbox || (recF19.ReplyControl == BO.ReplyKeyEnum.Checkbox && recF19.f19IsMultiselect))
-            {
-                bolVyctova = true;
-            }
-            if (!bolVyctova)
-            {
+        //private void SaveF12(int intPID,List<BO.f21ReplyUnit> lisF21)
+        //{
+        //    var recF19 = Load(intPID);
+        //    bool bolVyctova = false;
+        //    if (recF19.ReplyControl == BO.ReplyKeyEnum.DropdownList || recF19.ReplyControl == BO.ReplyKeyEnum.RadiobuttonList || recF19.ReplyControl == BO.ReplyKeyEnum.Listbox || (recF19.ReplyControl == BO.ReplyKeyEnum.Checkbox && recF19.f19IsMultiselect))
+        //    {
+        //        bolVyctova = true;
+        //    }
+        //    if (!bolVyctova)
+        //    {
 
-            }
-        }
+        //    }
+        //}
 
         public IEnumerable<BO.f27LinkUrl> GetList_AllF27()
         {

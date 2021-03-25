@@ -67,10 +67,11 @@ namespace BL
             int intPID = _db.SaveRecord("f18FormSegment", p, rec);
             if (intPID > 0)
             {
-                _db.RunSql("exec dbo._core_f18_recalc_tree @f06id",new { f06id = rec.f06ID });
+                _db.RunSql("exec dbo._core_f18_recalc_tree @f06id", new { f06id = rec.f06ID });
             }
-
+            
             return intPID;
+
         }
 
         public bool ValidateBeforeSave(BO.f18FormSegment rec)

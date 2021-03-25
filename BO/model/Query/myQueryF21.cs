@@ -8,6 +8,7 @@ namespace BO
     {
         public int f22id { get; set; }
         public int f19id { get; set; }
+        public int f19id_onlyin { get; set; }   //pouze jednotky, které se používají v otázce f19id_onlyin
         public bool searchunits { get; set; }
 
         public myQueryF21()
@@ -24,6 +25,10 @@ namespace BO
             if (this.f19id > 0)
             {
                 AQ("a.f21ID IN (SELECT f21ID FROM f20ReplyUnitToQuestion WHERE f19ID=@f19id)", "f19id", this.f19id);
+            }
+            if (this.f19id_onlyin > 0)
+            {
+                AQ("a.f21ID IN (SELECT f21ID FROM f20ReplyUnitToQuestion WHERE f19ID=@f19id_onlyin) AND a.f21ID NOT IN (select f21ID FROM f20ReplyUnitToQuestion WHERE f19ID<>@f19id_onlyin)", "f19id_onlyin", this.f19id_onlyin);
             }
             if (this.searchunits)
             {
