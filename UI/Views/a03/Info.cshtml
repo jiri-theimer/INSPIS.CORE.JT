@@ -77,9 +77,10 @@
                     }
                 </div>
             </div>
+            
         }
 
-        <div class="col-sm-2 col-md-2 rowvalhover">
+        <div class="col-sm-3 col-md-3 rowvalhover">
             <div class="val-readonly rowvalhover" title="@_f.tra("IČ")">
                 @if (Model.Rec.a03ICO != null)
                 {
@@ -102,7 +103,7 @@
         </div>
         @if (Model.Rec.a06ID == 1)
         {
-            <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Ředitel"):</label>
+            
             <div class="col-sm-3 col-md-3">
                 <span class="val-readonly">@Model.Rec.a03DirectorFullName</span>
             </div>
@@ -207,5 +208,12 @@
 
         </div>
     }
+
+<div class="row my-2 p-0">
+    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typ lokality"):</label>
+    <div class="col-sm-5 col-md-4">
+        <myval value="@Model.Rec.a03LocationFlagAlias"></myval>
+    </div>
+</div>
     @Html.Raw(Model.TagHtml)
 </div>

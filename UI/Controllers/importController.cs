@@ -358,6 +358,15 @@ namespace UI.Controllers
                                 }
 
                                 break;
+                            case "a03LocationFlag":
+                                switch (strVal)
+                                {
+                                    case "1":
+                                        rec.a03LocationFlag = BO.a03LocationFlagEnum.Village;break;
+                                    default:
+                                        rec.a03LocationFlag = BO.a03LocationFlagEnum.City;break;
+                                }
+                                break;
                             case "a03REDIZO_Supervisory":
                                 if (strVal != "" && lisA03.Where(p => p.a03REDIZO == strVal).Count() > 0)
                                 {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UI.Controllers
 {
-    public class Ping : Controller
+    public class PingController : Controller
     {
         public IActionResult Index()
         {

@@ -17,6 +17,11 @@ namespace BO
         Master=1,
         Slave=2
     }
+    public enum a03LocationFlagEnum
+    {
+        City=0,
+        Village=1
+    }
     public class a03Institution:BaseBO
     {
         [Key]
@@ -55,6 +60,7 @@ namespace BO
         public DateTime a03DateUpdate_GMaps { get; set; }
 
         public a03ParentFlagEnum a03ParentFlag { get; set; }
+        public a03LocationFlagEnum a03LocationFlag { get; set; }
         public int a03ID_Parent { get; set; }
 
         public string a05Name { get; set; }//combo
@@ -64,7 +70,22 @@ namespace BO
         public string a09Name { get; set; } //combo
         public string a09UIVCode;
 
-     public string a28Name { get; set; }    //combo
+        public string a03LocationFlagAlias
+        {
+            get
+            {
+                if (this.a03LocationFlag == a03LocationFlagEnum.Village)
+                {
+                    return "Сільска місцевість";
+                }
+                else
+                {
+                    return "Міська місцевість";
+                }
+            }
+        }
+
+        public string a28Name { get; set; }    //combo
         public string NamePlusRedizo
         {
             get
@@ -73,4 +94,6 @@ namespace BO
             }
         }
     }
+
+    
 }

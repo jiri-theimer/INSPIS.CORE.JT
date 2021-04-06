@@ -70,7 +70,8 @@ namespace BL
             p.AddInt("a03ID_Supervisory", rec.a03ID_Supervisory, true);
             
             p.AddBool("a03IsTestRecord", rec.a03IsTestRecord);
-            p.AddEnumInt("a03SchoolPortalFlag", rec.a03SchoolPortalFlag);            
+            p.AddEnumInt("a03SchoolPortalFlag", rec.a03SchoolPortalFlag);
+            p.AddEnumInt("a03LocationFlag", rec.a03LocationFlag);
 
             p.AddString("a03Name", rec.a03Name.ToUpper());
             p.AddString("a03ShortName", rec.a03ShortName);

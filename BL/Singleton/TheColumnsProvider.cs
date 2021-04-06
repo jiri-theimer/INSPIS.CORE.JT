@@ -196,6 +196,7 @@ namespace BL
             AF("a03Institution","a29Names", "Pojmenované seznamy", 0, "dbo._core_a03_get_a29name_inline(a.a03ID)");
             onecol=AF("a03Institution", "a03ParentFlag", "Úroveň", 0, "case a.a03ParentFlag when 1 then '1' when 2 then '2' end");
             onecol.FixedWidth = 100;
+            onecol = AF("a03Institution", "a03LocationFlag", "Typ lokality", 0, "case a.a03LocationFlag when 1 then N'Сільска місцевість' else N'Міська місцевість' end");
             AppendTimestamp("a03Institution");
 
             //a02 = osoba v inspektorátu            
