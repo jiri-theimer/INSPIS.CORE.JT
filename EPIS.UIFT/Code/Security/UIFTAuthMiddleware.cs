@@ -33,7 +33,7 @@ namespace UIFT.Security
             _next = next;
         }
 
-        public async Task Invoke(HttpContext context, UIFT.Repository.RepositoryFactory factory, BO.RunningUser runningUser)
+        public async Task Invoke(HttpContext context, UIFT.Repository.RepositoryFactory factory, BO.RunningUser runningUser, AppConfiguration config)
         {
             var executingEnpoint = context.GetEndpoint();
             if (executingEnpoint != null)
@@ -172,7 +172,7 @@ namespace UIFT.Security
                                         Log.LogWarning("AuthorizeRequest: Failed {0}; ev01permission: {1}; a11IsPoll: {2}; preview: {3}; user: {4}; a11id: {5}", result.FailedCode, ev01permission, ev.a11IsPoll, preview, repository.BL.CurrentUser.j03Login, ev.a11ID);
                                     }
                                     // anonymni uzivatel (tj. uzivatel prihlaseny pres Login/PIN) nema pravo zobrazovat Preview
-                                    else if (repository.BL.GlobalParams.LoadParam("UIFT_AnonymousUser") == repository.BL.CurrentUser.j03Login && preview)
+                                    else if (config.UIFT_AnonymousUser == repository.BL.CurrentUser.j03Login && preview)
                                     {
                                         result.FailedCode = 16;
 

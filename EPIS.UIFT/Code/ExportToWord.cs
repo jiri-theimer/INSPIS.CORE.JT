@@ -27,9 +27,11 @@ namespace UIFT
 
         private WordprocessingDocument wordprocessingDocument;
         private Repository.Repository _Repository;
+        private AppConfiguration _config;
 
-        public ExportToWord(Repository.Repository repository)
+        public ExportToWord(Repository.Repository repository, AppConfiguration config)
         {
+            _config = config;
             _Repository = repository;
         }
 
@@ -158,9 +160,9 @@ namespace UIFT
                             case BO.x24DataTypeEnum.tDecimal:
                             case BO.x24DataTypeEnum.tInteger:
                                 if (!string.IsNullOrEmpty(otazka2.Base.TextBox_MinValue))
-                                    minVal = otazka2.Base.TextBox_MinValue.ConvertFromBL().ToString(_Repository.BL.GlobalParams.LoadParam("UIFT_DateFormat"));
+                                    minVal = otazka2.Base.TextBox_MinValue.ConvertFromBL().ToString(_config.UIFT_DateFormat);
                                 if (!string.IsNullOrEmpty(otazka2.Base.TextBox_MaxValue))
-                                    maxVal = otazka2.Base.TextBox_MaxValue.ConvertFromBL().ToString(_Repository.BL.GlobalParams.LoadParam("UIFT_DateFormat"));
+                                    maxVal = otazka2.Base.TextBox_MaxValue.ConvertFromBL().ToString(_config.UIFT_DateFormat);
                                 break;
                             default:
                                 minVal = otazka2.Base.TextBox_MinValue;
@@ -186,10 +188,10 @@ namespace UIFT
                         switch (otazka.ReplyType)
                         {
                             case BO.x24DataTypeEnum.tDateTime:
-                                txt = txt.ConvertFromBL().ToString(_Repository.BL.GlobalParams.LoadParam("UIFT_DateTimeFormat"));
+                                txt = txt.ConvertFromBL().ToString(_config.UIFT_DateTimeFormat);
                                 break;
                             case BO.x24DataTypeEnum.tDate:
-                                txt = txt.ConvertFromBL().ToString(_Repository.BL.GlobalParams.LoadParam("UIFT_DateFormat"));
+                                txt = txt.ConvertFromBL().ToString(_config.UIFT_DateFormat);
                                 break;
                         }
                         BuildTextArea(1, txt);
@@ -229,7 +231,7 @@ namespace UIFT
                     BO.f32FilledValue val = vyplneneOdpovedi.FirstOrDefault(t => t.f21ID == odpoved.pid);
                     if (val != null)
                     {
-                        if (val.Value == _Repository.BL.GlobalParams.LoadParam("FT_CheckboxAnswerTrueValue"))
+                        if (val.Value == _config.FT_CheckboxAnswerTrueValue)
                             newRun.PrependChild<RunProperties>(new RunProperties() { Bold = new Bold() { Val = new OnOffValue(true) }, Color = new Color() { Val = "green" } });
                     }
                 }

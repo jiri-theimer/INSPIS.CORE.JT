@@ -4,8 +4,6 @@ using System.Linq;
 using System.IO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using UIFT;
-using NLog;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
@@ -14,9 +12,11 @@ namespace UIFT.Controllers
     public class FilesController : BaseController
     {
         private readonly ILogger<FilesController> Log;
+        private readonly AppConfiguration _config;
 
-        public FilesController(ILogger<FilesController> log)
+        public FilesController(ILogger<FilesController> log, AppConfiguration config)
         {
+            _config = config;
             Log = log;
         }
 
@@ -151,7 +151,7 @@ namespace UIFT.Controllers
                         priloha.o27DataPID = f32id;
                         priloha.x29ID = 432;
                         priloha.o27GUID = guid;
-                        priloha.o13ID = Convert.ToInt32(UiRepository.BL.GlobalParams.LoadParam("UIFT_FileUploadType_o13id"));
+                        priloha.o13ID = _config.UIFT_FileUploadType_o13id;
 
                         // ulozit soubor do databaze
                         int o27id = this.UiRepository.BL.o27AttachmentBL.UploadAndSaveOneFile(priloha, fi.Name, fullPath);
