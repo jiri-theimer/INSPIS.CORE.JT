@@ -15,10 +15,7 @@ namespace UI.Controllers
 {
     public class importController : BaseController
     {
-        //public IActionResult file()
-        //{
-
-        //}
+        
 
         public IActionResult a03run(string guid)
         {
