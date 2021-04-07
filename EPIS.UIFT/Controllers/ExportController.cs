@@ -15,6 +15,12 @@ namespace UIFT.Controllers
     //[AllowAnonymous]
     public class ExportController : BaseController
     {
+        private readonly AppConfiguration _config;
+        public ExportController(AppConfiguration config)
+        {
+            _config = config;
+        }
+
         /// <summary>
         /// Obsah modalniho dialogu pro vyber sablony
         /// </summary>
@@ -55,7 +61,7 @@ namespace UIFT.Controllers
                     fs.CopyTo(ms);
                     ms.Seek(0, SeekOrigin.Begin);
 
-                    ExportToWord export = new ExportToWord(this.UiRepository);
+                    ExportToWord export = new ExportToWord(this.UiRepository, _config);
                     export.Run(formular, showAnswers, ms);
                     bytes = ms.ToArray();
                 }

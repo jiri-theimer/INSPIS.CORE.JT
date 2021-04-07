@@ -30,6 +30,10 @@ namespace UIFT
 
         public string UIFT_DateTimeFormat { get; set; }
 
+        public int UIFT_FileUploadType_o13id { get; set; }
+
+        public string UIFT_AnonymousUser { get; set; }
+
         public class Auth
         {
             public string KeyPath { get; set; }
