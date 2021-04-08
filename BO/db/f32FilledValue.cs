@@ -33,7 +33,7 @@ namespace BO
     public class f32FilledValueExtened : f32FilledValue
     {
         public string f19Name { get; }
-        public int f18ID { get; }
+        public int f18ID { get; }        
         public string f18Name { get; }
         public bool f19IsRequired { get; }
         public int f19Ordinal { get; }

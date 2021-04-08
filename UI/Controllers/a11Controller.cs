@@ -148,6 +148,7 @@ namespace UI.Controllers
             v.Rec = Factory.a11EventFormBL.Load(v.a11ID);
             var mq = new BO.myQueryF32() { a11id = v.a11ID };
             v.lisF32 = Factory.f32FilledValueBL.GetListExtended(mq).OrderBy(p => p.f18TreeIndex).ThenBy(p => p.f19Ordinal);
+            v.lisO27 = Factory.o27AttachmentBL.GetList(new BO.myQueryO27() { a11id = a11id },null);
             return View(v);
         }
         public IActionResult ValidateForms(int pid, int a01id)

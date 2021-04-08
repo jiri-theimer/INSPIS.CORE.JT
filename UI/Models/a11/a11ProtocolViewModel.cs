@@ -10,5 +10,7 @@ namespace UI.Models
         public BO.a11EventForm Rec { get; set; }
         public int a11ID { get; set; }
         public IEnumerable<BO.f32FilledValueExtened> lisF32 { get; set; }
+
+        public IEnumerable<BO.o27Attachment> lisO27 { get; set; }
     }
 }

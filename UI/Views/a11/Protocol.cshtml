@@ -11,7 +11,7 @@
 
 <h4>@_f.tra("Protokol o vyplnění vybraného formuláře"): @(Model.Rec.f06Name)</h4>
 
-<div class="bg-light" style="padding:10px;">    
+<div class="bg-light" style="padding:10px;">
     <button id="cmdClose" type="button" onclick="_window_close()" class="btn btn-light">@_f.tra("Zavřít")</button>
     <button type="button" onclick="_helppage()" class="btn btn-light"><b>? </b>@_f.tra("Nápověda")</button>
 </div>
@@ -24,7 +24,7 @@
 <table class="table table-sm table-hover">
     <tr>
         <th>@_f.tra("Sekce")</th>
-        
+
         <th>@_f.tra("Otázka")</th>
         <th>@_f.tra("Jednotka")</th>
         <th></th>
@@ -34,65 +34,77 @@
     </tr>
     @foreach (var c in Model.lisF32)
     {
-       
-    <tr>
-        <td>
-            @if (_lastF18ID != c.f18ID)
-            {
-            <strong>
-                @c.f18Name
-            </strong>
-            }
 
-        </td>
-       
-        <td>
-            @(c.f19Name+" ("+c.f19ID.ToString()+")")
-            @if (c.f19IsRequired)
-            {
-                <strong style="color:red;">*</strong>
-            }
-            
+        <tr>
+            <td>
+                @if (_lastF18ID != c.f18ID)
+                {
+                    <strong>
+                        @c.f18Name
+                    </strong>
+                }
+
+            </td>
+
+            <td>
+                @(c.f19Name+" ("+c.f19ID.ToString()+")")
+                @if (c.f19IsRequired)
+                {
+                    <strong style="color:red;">*</strong>
+                }
 
 
-        </td>
-        <td>
-            @(c.f21Name+" ("+c.f21ID.ToString()+")")
-        </td>
-        <td>
-            @c.x24Name
-        </td>
-        <td>
-            @c.Value
-            @if(c.f32Comment != null)
-            {
-                <div style="background-color:lightyellow;">
-                    @c.f32Comment
-                </div>
-            }
-        </td>
-        <td>
-            <small>
-                @c.UserInsert
-                <code>/</code>
-                @c.DateInsert
-            </small>
-            
-        </td>
-       
-        <td>
-            @if (c.DateUpdate > c.DateInsert)
-            {
-            <small>
-                @c.UserUpdate
-                <code>/</code>
-                @c.DateUpdate
-            </small>
-                
-            }
 
-        </td>
-    </tr>
+            </td>
+            <td>
+                @(c.f21Name+" ("+c.f21ID.ToString()+")")
+            </td>
+            <td>
+                @c.x24Name
+            </td>
+            <td>
+                @c.Value
+
+                @if (c.f23ID == 7 && Model.lisO27.Count() > 0)
+                {
+                    foreach (var recO27 in Model.lisO27.Where(p => p.o27DataPID == c.pid))
+                    {
+                        <div>
+                            <a href="/FileUpload/FileDownloadInline?downloadguid=@recO27.o27DownloadGUID">@recO27.o27OriginalFileName</a>
+                        </div>
+                    }
+                }
+                @if (c.f32Comment != null)
+                {
+                    <div style="background-color:lightyellow;">
+                        @c.f32Comment
+                    </div>
+                }
+
+
+            </td>
+            <td>
+                <small>
+                    @c.UserInsert
+                    <code>/</code>
+                    @c.DateInsert
+                </small>
+
+            </td>
+
+            <td>
+                @if (c.DateUpdate > c.DateInsert)
+                {
+                    <small>
+                        @c.UserUpdate
+                        <code>/</code>
+                        @c.DateUpdate
+                    </small>
+
+                }
+
+            </td>
+        </tr>
 
         _lastF18ID = c.f18ID;
     }

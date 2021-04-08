@@ -7,6 +7,7 @@ namespace BO
     public class myQueryO27:baseQuery
     {
         public int a01id { get; set; }
+        public int a11id { get; set; }
         public int a03id { get; set; }
         public int a42id { get; set; }
         public int f06id { get; set; }
@@ -63,6 +64,11 @@ namespace BO
             if (this.f32id > 0)
             {
                 AQ( "a.x29ID=432 AND a.o27DataPID=@f32id", "f32id", this.f32id);
+            }
+            if (this.a11id > 0)
+            {
+                //seznam souborů upload odpovědí
+                AQ("a.x29ID=432 AND a.o27DataPID IN (select f32ID FROM f32FilledValue WHERE a11ID=@a11id)", "a11id", this.a11id);
             }
             if (this.f18id > 0)
             {
