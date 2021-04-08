@@ -70,7 +70,7 @@
                     foreach (var recO27 in Model.lisO27.Where(p => p.o27DataPID == c.pid))
                     {
                         <div>
-                            <a href="/FileUpload/FileDownloadInline?downloadguid=@recO27.o27DownloadGUID">@recO27.o27OriginalFileName</a>
+                            <a href="/FileUpload/FileDownloadInline?downloadguid=@recO27.o27DownloadGUID" target="_blank">@recO27.o27OriginalFileName</a>
                         </div>
                     }
                 }
