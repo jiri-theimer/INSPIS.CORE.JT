@@ -52,8 +52,9 @@ namespace UIFT.HtmlHelpers
         public static HtmlString FileUploadRow(HttpContext context, int a11id, string guid, int fileLength, string fileName)
         {
             var fac = (UIFT.Repository.RepositoryFactory)context.RequestServices.GetService(typeof(UIFT.Repository.RepositoryFactory));
+            var config = (UIFT.AppConfiguration)context.RequestServices.GetService(typeof(UIFT.AppConfiguration));
             var generator = (LinkGenerator)context.RequestServices.GetService(typeof(LinkGenerator));
-            var url = generator.GetPathByAction("Get", "Files", new { a11id = a11id, id = guid });
+            var url = generator.GetPathByAction("Get", "Files", new { a11id = a11id, id = guid }, config.BaseUrl);
 
             StringBuilder sbHtml = new StringBuilder();
             sbHtml.AppendFormat("<div class=\"uploadFile attachments\" data-guid=\"{0}\">", guid);
@@ -72,6 +73,7 @@ namespace UIFT.HtmlHelpers
         public static HtmlString SekceTree(this IHtmlHelper helper, List<Models.Sekce> sekce, int selectedId = 0)
         {
             var fac = (UIFT.Repository.RepositoryFactory)helper.ViewContext.HttpContext.RequestServices.GetService(typeof(UIFT.Repository.RepositoryFactory));
+            var config = (UIFT.AppConfiguration)helper.ViewContext.HttpContext.RequestServices.GetService(typeof(UIFT.AppConfiguration));
             var bl = fac.Get().BL;
             var generator = (LinkGenerator)helper.ViewContext.HttpContext.RequestServices.GetService(typeof(LinkGenerator));
             var storage = (PersistantDataStorage)helper.ViewContext.HttpContext.Items["PersistantData"];
@@ -79,13 +81,13 @@ namespace UIFT.HtmlHelpers
             StringBuilder html = new StringBuilder("<ul id=\"segmentsTree\" class=\"level-0\">");
 
             // prvni uzel ve stromu - odkaz na uvod dotazniku
-            html.AppendFormat("<li id=\"menusekce-0\" data-id=\"0\"{1}><a href=\"{0}\">{2}</a></li>", generator.GetPathByAction("Uvod", storage.IsPreview ? "Preview" : "Formular", new { a11id = storage.a11id }), selectedId == 0 ? " class=\"sel\"" : "", bl.tra("Úvod (informace k vyplňování)"));
+            html.AppendFormat("<li id=\"menusekce-0\" data-id=\"0\"{1}><a href=\"{0}\">{2}</a></li>", generator.GetPathByAction("Uvod", storage.IsPreview ? "Preview" : "Formular", new { a11id = storage.a11id }, config.BaseUrl), selectedId == 0 ? " class=\"sel\"" : "", bl.tra("Úvod (informace k vyplňování)"));
 
             // vytvorit strom
             SekceTreeRecursiveHelper(generator, html, sekce, storage, ref selectedId);
 
             // posledni uzel ve stromu - odkaz na shrnuti
-            html.AppendFormat("<li id=\"menusekce-00\" data-id=\"00\"><a href=\"{0}\">{1}</a></li>", generator.GetPathByAction("Shrnuti", storage.IsPreview ? "Preview" : "Formular", new { a11id = storage.a11id }), bl.tra("Kontrola formuláře"));
+            html.AppendFormat("<li id=\"menusekce-00\" data-id=\"00\"><a href=\"{0}\">{1}</a></li>", generator.GetPathByAction("Shrnuti", storage.IsPreview ? "Preview" : "Formular", new { a11id = storage.a11id }, config.BaseUrl), bl.tra("Kontrola formuláře"));
 
             html.Append("</ul>");
 
