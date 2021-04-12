@@ -99,9 +99,17 @@ namespace UI.Views.Shared.TagHelpers
 
             sb("");
 
+            string strSelectedText = null;
+            if (this.SelectedText.Model != null)
+            {
+                strSelectedText = this.SelectedText.Model.ToString();
+                if (strSelectedText.Contains("'"))
+                {
+                    strSelectedText = strSelectedText.Replace("'", "");
+                }
+            }
 
-
-            sb(string.Format("<input type='hidden' value='{0}' data-id='text_{1}' name='{2}'/>", this.SelectedText.Model, strControlID, this.SelectedText.Name));
+            sb(string.Format("<input type='hidden' value='{0}' data-id='text_{1}' name='{2}'/>", strSelectedText, strControlID, this.SelectedText.Name));
 
             sb(string.Format("<input type='hidden' value ='{0}' id='{1}' data-id='value_{1}' name='{2}'/>", _SelectedValue.ToString(), strControlID, this.For.Name));   //asp-for pro hostitelské view
 
@@ -111,7 +119,7 @@ namespace UI.Views.Shared.TagHelpers
             sb("<script type='text/javascript'>");
             _sb.Append(string.Format("var c{0}=", strControlID));
             _sb.Append("{");
-            _sb.Append(string.Format("controlid: '{0}',posturl: '/TheCombo/GetHtml4TheCombo',entity:'{1}',myqueryinline: '{2}',defvalue: '{3}',deftext: '{4}',on_after_change: '{5}',viewflag: '{6}',filterflag: '{7}',placeholder: '{8}',masterprefix:'{9}',masterpid:{10}", strControlID, this.Entity, this.myqueryinline, _SelectedValue.ToString(), this.SelectedText.Model, this.Event_After_ChangeValue, this.ViewFlag, this.FilterFlag, this.PlaceHolder, this.masterprefix, this.masterpid));
+            _sb.Append(string.Format("controlid: '{0}',posturl: '/TheCombo/GetHtml4TheCombo',entity:'{1}',myqueryinline: '{2}',defvalue: '{3}',deftext: '{4}',on_after_change: '{5}',viewflag: '{6}',filterflag: '{7}',placeholder: '{8}',masterprefix:'{9}',masterpid:{10}", strControlID, this.Entity, this.myqueryinline, _SelectedValue.ToString(), strSelectedText, this.Event_After_ChangeValue, this.ViewFlag, this.FilterFlag, this.PlaceHolder, this.masterprefix, this.masterpid));
             _sb.Append("};");
             sb("");
             sb("");

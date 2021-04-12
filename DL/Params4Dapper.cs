@@ -24,10 +24,11 @@ namespace DL
         }
         public void AddString(string name,string value)
         {
-            if (System.String.IsNullOrEmpty(value)==true || value.TrimEnd() == "")
+            if (System.String.IsNullOrEmpty(value) || value.TrimEnd() == "")
             {
                 value = null;
             }
+            
             DL.Param4DT c = new DL.Param4DT() {ParamType="string", ParName = name, ParValue = String2Db(value) };
             _lis.Add(c);
         }
