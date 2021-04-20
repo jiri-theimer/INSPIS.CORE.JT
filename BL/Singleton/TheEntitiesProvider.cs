@@ -102,6 +102,7 @@ namespace BL
             AE("a39InstitutionPerson", "Kontaktní osoby", "Kontaktní osoba", "a39InstitutionPerson a", "");
             AE("a45EventRole", "Role v akci", "Role v akci", "a45EventRole a","a.a45ID");
             ByPrefix("a45").IsWithoutValidity = true;
+            AE("a57AutoEvaluation", "Autoevaluační šablony", "Autoevaluační šablona", "a57AutoEvaluation a", "a.a57Name");
 
             AE("b01WorkflowTemplate", "Workflow šablony", "Workflow šablona", "b01WorkflowTemplate a", "a.b01Name");
             AE("b02WorkflowStatus", "Workflow stavy", "Workflow stav", "b02WorkflowStatus a", "a.b01ID,a.b02Order,a.b02Name", "a.b01ID,a.b02Order,a.b02Name");

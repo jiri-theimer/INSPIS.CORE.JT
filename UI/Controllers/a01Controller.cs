@@ -641,7 +641,12 @@ namespace UI.Controllers
             {
                 strBadge = c.x40_count.ToString();
             }
-            v.NavTabs.Add(AddTab("OUTBOX", "x40MailQueue", "/TheGrid/SlaveView?prefix=x40", false, strBadge));
+
+            if (!(Factory.App.Implementation == "HD" && v.Rec.j02ID_Issuer==Factory.CurrentUser.j02ID))
+            {
+                v.NavTabs.Add(AddTab("OUTBOX", "x40MailQueue", "/TheGrid/SlaveView?prefix=x40", false, strBadge));
+            }
+                
 
             string strDefTab = Factory.CBL.LoadUserParam("recpage-tab-a01");
             var deftab = v.NavTabs[0];

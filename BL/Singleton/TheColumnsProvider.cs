@@ -426,6 +426,10 @@ namespace BL
             AF("a70SIS", "a70Description", "Popis");
             AppendTimestamp("a70SIS");
 
+            
+            AF("a57AutoEvaluation", "a57Name", "Autoevaluační šablona", 1, null, "string", false, true);
+            AF("a57AutoEvaluation", "a57Description", "Popis");
+
             //a29 = pojmenovaný seznam institucí
             AF("a29InstitutionList", "a29Name", "Pojmenovaný seznam", 1, null, "string", false, true);            
             AF("a29InstitutionList", "a29Description", "Poznámka");

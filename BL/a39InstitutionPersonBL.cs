@@ -67,32 +67,44 @@ namespace BL
             return intPID;
         }
 
-        private bool ValidateBeforeSave(BO.a39InstitutionPerson c)
+        private bool ValidateBeforeSave(BO.a39InstitutionPerson rec)
         {
-            if (c.a03ID == 0)
+            if (rec.a03ID == 0)
             {
                 this.AddMessage("Na vstupu chybí vazba na školu."); return false;
             }
-            if (c.j02ID == 0)
+            if (rec.j02ID == 0)
             {
                 this.AddMessage("Na vstupu chybí vazba na osobní profil."); return false;
             }
             var mq = new BO.myQuery("a39InstitutionPerson");
-            mq.a03id = c.a03ID;
+            mq.a03id = rec.a03ID;
             var lis = GetList(mq);
 
-            if (lis.Where(p=>p.j02ID==c.j02ID && p.pid != c.pid && p.a39RelationFlag==BO.a39InstitutionPerson.a39RelationFlagEnum.Contact).Count()>0)
+            if (lis.Where(p => p.j02ID == rec.j02ID && p.pid != rec.pid && p.a39RelationFlag == rec.a39RelationFlag).Count() > 0)
             {
-                this.AddMessage("Osoba již je zavedena jako kontaktní u této instituce.");return false;
+                if (rec.a39RelationFlag == BO.a39InstitutionPerson.a39RelationFlagEnum.Contact)
+                {
+                    this.AddMessage("Osoba již je zavedena jako kontaktní u této instituce."); return false;
+                }
+                if (rec.a39RelationFlag == BO.a39InstitutionPerson.a39RelationFlagEnum.Employee)
+                {
+                    this.AddMessage("Osoba již je zavedena jako zaměstnanec u této instituce."); return false;
+                }
             }
-            if (lis.Where(p => p.j02ID == c.j02ID && p.pid != c.pid && p.a39RelationFlag == BO.a39InstitutionPerson.a39RelationFlagEnum.Employee).Count() > 0)
-            {
-                this.AddMessage("Osoba již je zavedena jako zaměstnanec u této instituce."); return false;
-            }
-            mq= new BO.myQuery("a39InstitutionPerson");
-            mq.j02id = c.j02ID;
+
+            //if (lis.Where(p=>p.j02ID==rec.j02ID && p.pid != rec.pid && p.a39RelationFlag==BO.a39InstitutionPerson.a39RelationFlagEnum.Contact).Count()>0)
+            //{
+            //    this.AddMessage("Osoba již je zavedena jako kontaktní u této instituce.");return false;
+            //}
+            //if (lis.Where(p => p.j02ID == rec.j02ID && p.pid != rec.pid && p.a39RelationFlag == BO.a39InstitutionPerson.a39RelationFlagEnum.Employee).Count() > 0)
+            //{
+            //    this.AddMessage("Osoba již je zavedena jako zaměstnanec u této instituce."); return false;
+            //}
+            mq = new BO.myQuery("a39InstitutionPerson");
+            mq.j02id = rec.j02ID;
             lis = GetList(mq);
-            if (lis.Where(p => p.a03ID != c.a03ID && p.pid != c.pid && p.a39RelationFlag == BO.a39InstitutionPerson.a39RelationFlagEnum.Employee).Count() > 0)
+            if (lis.Where(p => p.a03ID != rec.a03ID && p.pid != rec.pid && p.a39RelationFlag == BO.a39InstitutionPerson.a39RelationFlagEnum.Employee).Count() > 0)
             {
                 this.AddMessage("Osoba již je zavedena jako zaměstnanec u jiné instituce."); return false;
             }

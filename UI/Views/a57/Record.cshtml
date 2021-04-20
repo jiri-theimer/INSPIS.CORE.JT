@@ -1,0 +1,42 @@
+﻿@model UI.Models.Record.a57Record
+@inject BL.Factory _f
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutRecord.cshtml";
+    if (Model.Rec == null) return;
+    Model.PageTitle = _f.tra("Autoevaluační šablona");
+}
+@addTagHelper *, UI
+
+<div class="modal_record_container">
+
+    <div class="row">
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
+        <div class="col-sm-11 col-md-10">
+            <input class="form-control" asp-for="Rec.a57Name" />
+
+        </div>
+    </div>
+    <div class="row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typ akce"):</label>
+        <div class="col-sm-11 col-md-10">
+            <mycombo entity="a10EventType" asp-for="Rec.a10ID" selectedtext="@Model.SelectedA10Name"></mycombo>
+        </div>
+
+    </div>
+
+    <div class="row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Téma akce"):</label>
+        <div class="col-sm-11 col-md-10">
+            <mycombo entity="a08Theme" asp-for="Rec.a08ID" selectedtext="@Model.SelectedA08Name"></mycombo>
+        </div>
+
+    </div>
+
+    <div class="my-2">
+        <textarea asp-for="Rec.a57Description" class="form-control" placeholder="@_f.tra("Poznámka")"></textarea>
+
+    </div>
+
+</div>

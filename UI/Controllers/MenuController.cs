@@ -227,6 +227,7 @@ namespace UI.Controllers
                 DIV_TRANS("Akce");
                 AMI("Typy akcí", url_ciselniky("a10"));
                 AMI("Témata akcí", url_ciselniky("a08"));
+                AMI("Autoevaluační šablony", url_ciselniky("a57"));
             }
             if (Factory.CurrentUser.TestPermCiselniky(j03AdminRoleValueFlagEnum.ukol_er, j03AdminRoleValueFlagEnum.ukol_ro))
             {

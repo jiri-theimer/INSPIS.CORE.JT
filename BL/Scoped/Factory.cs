@@ -46,6 +46,7 @@ namespace BL
         private Ia38NonPersonEventPlanBL _a38;
         private Ia41PersonToEventBL _a41;
         private Ia42QesBL _a42;
+        private Ia57AutoEvaluationBL _a57;
         private Ia70SISBL _a70;
 
         private Ib01WorkflowTemplateBL _b01;
@@ -542,6 +543,14 @@ namespace BL
             {
                 if (_a42 == null) _a42 = new a42QesBL(this);
                 return _a42;
+            }
+        }
+        public Ia57AutoEvaluationBL a57AutoEvaluationBL
+        {
+            get
+            {
+                if (_a57 == null) _a57 = new a57AutoEvaluationBL(this);
+                return _a57;
             }
         }
         public Ia28SchoolTypeBL a28SchoolTypeBL
