@@ -323,7 +323,7 @@ namespace UI.Controllers
             v.lisH11 = Factory.h11NoticeBoardBL.GetList(mq);
 
             
-            v.lisA03 = Factory.a03InstitutionBL.GetList(new BO.myQueryA03() { IsRecordValid = true, j02id = Factory.CurrentUser.j02ID });
+            v.lisA03 = Factory.a03InstitutionBL.GetList(new BO.myQueryA03() { IsRecordValid = true, j02id_contact_only = Factory.CurrentUser.j02ID });
             if (v.lisA03.Count() == 0)
             {
                 return this.StopPage(false, "Váš osobní profil nemá vazbu na instituci (školu).",true);

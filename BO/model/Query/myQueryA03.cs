@@ -8,6 +8,8 @@ namespace BO
     {
         
         public int j02id { get; set; }
+        public int j02id_employee_only { get; set; } //osoba zaměstnanec pouze
+        public int j02id_contact_only { get; set; } //osoba kontaktní pouze
         public int a03id_founder { get; set; }
         public int a03id_supervisory { get; set; }
         public int a03id_parent { get; set; }
@@ -29,8 +31,15 @@ namespace BO
 
             if (this.j02id > 0)
             {
-
                 this.AQ("a.a03ID IN (select a03ID FROM a39InstitutionPerson WHERE j02ID=@j02id)", "j02id", this.j02id);
+            }
+            if (this.j02id_employee_only > 0)
+            {
+                this.AQ("a.a03ID IN (select a03ID FROM a39InstitutionPerson WHERE a39RelationFlag=2 AND j02ID=@j02id_employee_only)", "j02id_employee_only", this.j02id_employee_only);
+            }
+            if (this.j02id_contact_only > 0)
+            {
+                this.AQ("a.a03ID IN (select a03ID FROM a39InstitutionPerson WHERE a39RelationFlag=1 AND j02ID=@j02id_contact_only)", "j02id_contact_only", this.j02id_contact_only);
             }
             if (this.a03id_founder > 0)
             {
