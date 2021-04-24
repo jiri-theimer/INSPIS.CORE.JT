@@ -23,7 +23,10 @@ namespace UI.Controllers
 
         private void RefreshState(a01CreateA57ViewModel v)
         {
-
+            if (v.lisSelectedF06IDs == null)
+            {
+                v.lisSelectedF06IDs = new List<int>();
+            }
             if (v.RecA57 == null)
             {
                 v.RecA57 = Factory.a57AutoEvaluationBL.Load(v.a57ID);
