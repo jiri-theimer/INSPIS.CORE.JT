@@ -24,6 +24,7 @@ namespace BO
         public int a03ID { get; set; }
         public int a10ID { get; set; }
         public int a42ID { get; set; }
+        public int a57ID { get; set; }
         public int a08ID { get; set; }
         public int b02ID { get; set; }
         public int a01ParentID { get; set; }

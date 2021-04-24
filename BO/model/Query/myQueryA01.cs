@@ -15,6 +15,7 @@ namespace BO
         public int b02id { get; set; }
         public int a01id { get; set; }
         public int a42id { get; set; }
+        public int a57id { get; set; }
         public int j02id { get; set; }
         public int j02id_leader { get; set; }
         public int j02id_member { get; set; }
@@ -24,6 +25,8 @@ namespace BO
         public int j02id_issuer { get; set; }
         public int a10id { get; set; }
         public int a08id { get; set; }
+        public bool? witha42 { get; set; }
+        public bool? witha57 { get; set; }
         public myQueryA01()
         {
             this.Prefix = "a01";
@@ -74,6 +77,10 @@ namespace BO
             {
                 AQ("a.a42ID=@a42id", "a42id", this.a42id);
             }
+            if (this.a57id > 0)
+            {
+                AQ("a.a57ID=@a57id", "a57id", this.a57id);
+            }
             if (this.j02id > 0)
             {
                 AQ("a.a01ID IN (select a01ID FROM a41PersonToEvent WHERE " + GetOcasA41(this.j02id, "@j02id") + ")", "j02id", this.j02id);   //je účastníkem akce
@@ -113,6 +120,16 @@ namespace BO
             if (this.a08id > 0)
             {
                 AQ("a.a08ID=@a08id", "a08id", this.a08id);
+            }
+            if (witha42 != null)
+            {
+                if (witha42==true) AQ("a.a42ID IS NOT NULL", null, null);
+                if (witha42 == false) AQ("a.a42ID IS NULL", null, null);
+            }
+            if (witha57 != null)
+            {
+                if (witha57 == true) AQ("a.a57ID IS NOT NULL", null, null);
+                if (witha57 == false) AQ("a.a57ID IS NULL", null, null);
             }
 
             //switch (this.param1)

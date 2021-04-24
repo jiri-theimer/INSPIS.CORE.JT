@@ -1,0 +1,97 @@
+﻿@model UI.Models.Tab.a01TabSchoolA57
+@inject BL.Factory _f
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutSubform.cshtml";
+
+
+
+}
+
+@addTagHelper *,UI
+
+
+<div id="subform_div_commands">
+    <div class="row m-0">
+        <div class="dropdown">
+
+            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="cmdInsertWidget" data-bs-toggle="dropdown" aria-expanded="false">
+                <span>@_f.tra("Nový")</span>
+            </a>
+
+            <div class="dropdown-menu" aria-labelledby="cmdInsertWidget">
+                <ul style="list-style:none;">
+
+                    @foreach (var c in Model.lisA57)
+                    {
+                        <li class="nav-item p-2">
+
+                            <a target="_top" href="/a01Create/Index?a57id=@c.pid&a10id=@c.a10ID&a08id=@c.a08ID&a03id=@Model.a03ID">@c.a57Name</a>
+                        </li>
+                    }
+
+                </ul>
+
+            </div>
+        </div>
+
+
+
+    </div>
+
+</div>
+
+
+
+<vc:the-grid input="@Model.gridinput"></vc:the-grid>
+
+
+
+@section Scripts{
+
+    <script type="text/javascript">
+
+    $(document).ready(function () {
+
+
+
+
+
+
+    });
+
+
+
+        function reload() {
+            _showloading();
+            location.replace("/Dashboard/TabSchoolA57Grid?a03id=@Model.a03ID");
+
+        }
+
+
+
+        function change_grid(j72id) {
+            var strKey = "slaveview-j72id-a01a57-a03Institution)";
+
+            $.post("/Common/SetUserParam", { key: strKey,value:j72id  }, function (data) {
+                reload();
+
+            });
+        }
+
+        function a01_doubleclick(row) {
+            _showloading();
+            var pid = row.id.replace("r", "");
+            window.open("/a01/RecPage?pid=" + pid,"_top");
+
+        }
+
+
+
+
+    </script>
+
+}
+
+

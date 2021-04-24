@@ -22,41 +22,47 @@ namespace UI.Controllers
         //-----------Začátek GRID událostí-------------
         public TheGridOutput HandleTheGridFilter(TheGridUIContext tgi, List<BO.StringPair> pathpars, List<BO.TheGridColumnFilter> filter) //TheGrid povinná metoda: sloupcový filtr
         {
-            var a03id = Convert.ToInt32(tgi.viewstate[0]);
-            var a10id = Convert.ToInt32(tgi.viewstate[1]);
-            var c = new UI.TheGridSupport(GetSchoolA01GridInput(a03id,a10id,tgi.fixedcolumns), Factory, _colsProvider);
-
+            
+            var c = new UI.TheGridSupport(GetSchoolA01GridInput(tgi.myqueryinline,tgi.fixedcolumns), Factory, _colsProvider);
+            
             return c.Event_HandleTheGridFilter(tgi, filter);
 
         }
         public TheGridOutput HandleTheGridOper(TheGridUIContext tgi, List<BO.StringPair> pathpars)    //TheGrid povinná metoda: změna třídění, pageindex, změna stránky
         {
-            var a03id = Convert.ToInt32(tgi.viewstate[0]);
-            var a10id = Convert.ToInt32(tgi.viewstate[1]);
-            var c = new UI.TheGridSupport(GetSchoolA01GridInput(a03id, a10id, tgi.fixedcolumns), Factory, _colsProvider);
+            
+            var c = new UI.TheGridSupport(GetSchoolA01GridInput(tgi.myqueryinline, tgi.fixedcolumns), Factory, _colsProvider);
 
             return c.Event_HandleTheGridOper(tgi);
 
         }
         public string HandleTheGridMenu(TheGridUIContext tgi, List<BO.StringPair> pathpars)  //TheGrid povinná metoda: zobrazení grid menu
         {
-            var a03id = Convert.ToInt32(tgi.viewstate[0]);
-            var a10id = Convert.ToInt32(tgi.viewstate[1]);
-            var c = new UI.TheGridSupport(GetSchoolA01GridInput(a03id, a10id, tgi.fixedcolumns), Factory, _colsProvider);
+            
+            var c = new UI.TheGridSupport(GetSchoolA01GridInput(tgi.myqueryinline, tgi.fixedcolumns), Factory, _colsProvider);
 
             return c.Event_HandleTheGridMenu(tgi);
         }
         public TheGridExportedFile HandleTheGridExport(string format, string pids, TheGridUIContext tgi, List<BO.StringPair> pathpars)  //TheGrid povinná metoda pro export dat
         {
-            var a03id = Convert.ToInt32(tgi.viewstate[0]);
-            var a10id = Convert.ToInt32(tgi.viewstate[1]);
-            var c = new UI.TheGridSupport(GetSchoolA01GridInput(a03id, a10id, tgi.fixedcolumns), Factory, _colsProvider);
+            
+            var c = new UI.TheGridSupport(GetSchoolA01GridInput(tgi.myqueryinline, tgi.fixedcolumns), Factory, _colsProvider);
 
             return c.Event_HandleTheGridExport(format, tgi.j72id, pids);
         }
         //-----------Konec GRID událostí-------------
+        private TheGridInput GetSchoolA01GridInput(string myqueryinline, string fixedcolumns)
+        {
+            var gi = new TheGridInput() { entity = "a01Event", controllername = "Dashboard" };
+            gi.query = new BO.InitMyQuery().Load("a01", null, 0, myqueryinline);
+            gi.myqueryinline = myqueryinline;
+            gi.fixedcolumns = fixedcolumns;
+            gi.ondblclick = "a01_doubleclick";
+            
+            return gi;
+        }
 
-        public IActionResult TabSchoolA01Grid(int a03id,int a10id)   //podformulář pro grid školních akcí
+        public IActionResult TabSchoolA01Grid(int a03id,int a10id,bool? witha57)   //podformulář pro grid školních akcí
         {
             var v = new a01TabSchoolGrid() { a03ID = a03id,a10ID=a10id };
             v.RecA03 = Factory.a03InstitutionBL.Load(v.a03ID);
@@ -74,14 +80,18 @@ namespace UI.Controllers
             }
 
             v.FixedGridColumns = "a01_a10__a10EventType__a10Name,a__a01Event__a01Signature,a01_a08__a08Theme__a08Name,a01_b02__b02WorkflowStatus__b02Name,a__a01Event__a01DateFrom,a__a01Event__a01DateUntil";
-            
-            //    v.GridColumns = "a__a01Event__a01Signature,a01_a08__a08Theme__a08Name,a01_b02__b02WorkflowStatus__b02Name,a__a01Event__a01DateFrom,a__a01Event__a01DateUntil";
-            //    if (v.RecA10.a10CoreFlag == "injury")
-            //    {
-            //        v.GridColumns += ",a01_xxa__v_uraz_jmenozraneneho__JmenoZraneneho,a01_xxb__v_uraz_datumzraneni__DatumZraneni,a01_xxc__v_uraz_poradovecislo__PoradoveCislo";
-            //    }
-            //}
-            v.gridinput = GetSchoolA01GridInput(v.a03ID, v.a10ID,v.FixedGridColumns);
+
+            string strMyQueryInline = "a03id@int@" + v.a03ID.ToString();
+            if (v.a10ID > 0)
+            {
+                strMyQueryInline += "@a10id@int@" + v.a10ID.ToString();
+            }
+            if (witha57 == true)
+            {
+                strMyQueryInline += "@witha57@bool@true";
+                v.FixedGridColumns = "a01_a10__a10EventType__a10Name,a__a01Event__a01Signature,a01_a08__a08Theme__a08Name,a01_b02__b02WorkflowStatus__b02Name";
+            }
+            v.gridinput = GetSchoolA01GridInput(strMyQueryInline,v.FixedGridColumns);
             
             v.period = new PeriodViewModel() { IsShowButtonRefresh = true };            
             var per =basUI.InhalePeriodDates(_pp,Factory,"a01", "a03Institution");
@@ -92,15 +102,30 @@ namespace UI.Controllers
             return View(v);
         }
 
-        private TheGridInput GetSchoolA01GridInput(int a03id,int a10id,string fixedcolumns)
+        public IActionResult TabSchoolA57Grid(int a03id)   //podformulář pro grid školních akcí
         {
-            var gi = new TheGridInput() {entity="a01Event", controllername = "Dashboard" };
-            gi.query = new BO.myQueryA01() { a03id = a03id,a10id=a10id };
-            gi.fixedcolumns = fixedcolumns;
-            gi.ondblclick = "a01_doubleclick";
-            gi.viewstate = a03id.ToString() + "|" + a10id.ToString();
-            return gi;
+            var v = new a01TabSchoolA57() { a03ID = a03id };
+            v.RecA03 = Factory.a03InstitutionBL.Load(v.a03ID);
+            v.lisA57 = Factory.a57AutoEvaluationBL.GetList(new BO.myQuery("a57"));
+
+            var lisA39 = Factory.a39InstitutionPersonBL.GetList(new BO.myQuery("a39") { IsRecordValid = true, a03id = v.a03ID });
+            int intCurrentJ04ID = lisA39.Where(p => p.j02ID == Factory.CurrentUser.j02ID).First().j04ID_Explicit;
+            if (intCurrentJ04ID == 0)
+            {
+                intCurrentJ04ID = Factory.CurrentUser.j04ID;
+            }
+            v.RecJ04 = Factory.j04UserRoleBL.Load(intCurrentJ04ID);
+
+            v.FixedGridColumns = "a01_a57__a57AutoEvaluation__a57Name,a01_a10__a10EventType__a10Name,a__a01Event__a01Signature,a01_a08__a08Theme__a08Name,a01_b02__b02WorkflowStatus__b02Name";
+
+            string strMyQueryInline = "witha57@bool@true@a03id@int@" + v.a03ID.ToString();
+                        
+            v.gridinput = GetSchoolA01GridInput(strMyQueryInline, v.FixedGridColumns);
+            
+            return View(v);
         }
+
+
 
         public IActionResult TabSchoolAccounts(int a03id)   //podformulář pro správu školních účtů v rámci školy
         {
@@ -387,22 +412,22 @@ namespace UI.Controllers
                 v.NavTabs.Add(AddTab("Učitelé", "k01", "/TheGrid/SlaveViewSchoolK01", true, null));                
             }
 
+
+
             if (v.RecJ04.j04IsAllowedAllEventTypes == false)
             {
                 var lisJ08 = Factory.j04UserRoleBL.GetListJ08(v.RecJ04.pid);
                 foreach (var c in lisJ08.Where(p => p.a10IsUse_K01 == false))
                 {
-                    v.NavTabs.Add(AddTab(c.a10Name, "a01", "/Dashboard/TabSchoolA01Grid?a03id="+v.a03ID.ToString()+"&a10id=" + c.a10ID.ToString(), false, null));
-
+                    v.NavTabs.Add(AddTab(c.a10Name, "a01", "/Dashboard/TabSchoolA01Grid?a03id=" + v.a03ID.ToString() + "&a10id=" + c.a10ID.ToString(), false, null));
                 }
-
             }
             else
             {
                 v.IsAllowCreateA01 = true;  //může zakládat všechny akce
                 var mq = new BO.myQuery("a10") { IsRecordValid = true };
                 var lis = Factory.a10EventTypeBL.GetList(mq).Where(p => p.a10IsUse_K01 == false);
-                if (lis.Count() <= 8)
+                if (lis.Count() <= 5)
                 {
                     foreach (var c in lis)
                     {
@@ -411,12 +436,15 @@ namespace UI.Controllers
                 }
                 else
                 {
-                    v.NavTabs.Add(AddTab("Akce", "a01", "/Dashboard/TabSchoolA01Grid?a03id=" + v.a03ID.ToString(), false, null));
+                    v.NavTabs.Add(AddTab("Akce", "a01", "/Dashboard/TabSchoolA01Grid?a03id=" + v.a03ID.ToString(), false, null));                                        
                 }
                 
+
             }
 
-            
+            v.NavTabs.Add(AddTab("Autoevaluace", "a57", "/Dashboard/TabSchoolA57Grid?a03id=" + v.a03ID.ToString(), true, null));
+
+
             v.NavTabs.Add(AddTab("Nástěnka", "h11", "/TheGrid/SlaveView?prefix=h11", true, parse_badge(v.lisH11.Count())));
 
          
