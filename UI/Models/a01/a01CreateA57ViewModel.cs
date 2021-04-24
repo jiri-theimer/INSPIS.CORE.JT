@@ -14,6 +14,7 @@ namespace UI.Models
         public BO.a10EventType RecA10 { get; set; }
         public int a08ID { get; set; }
         public BO.a08Theme RecA08 { get; set; }
+        public IEnumerable<BO.a12ThemeForm> lisA12 { get; set; }
         public int a03ID { get; set; }
         public BO.a03Institution RecA03 { get; set; }
         

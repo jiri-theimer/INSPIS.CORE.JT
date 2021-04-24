@@ -1,0 +1,76 @@
+﻿@model a01CreateA57ViewModel
+@inject BL.Factory _f
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (Model.Rec == null) return;
+    Model.PageTitle = _f.tra("Autoevaluace");
+}
+
+
+@addTagHelper *, UI
+
+
+<h4 class="px-2">@Model.RecA57.a57Name</h4>
+
+<div class="bg-light" style="padding:10px;">
+    <button id="cmdSave" class="btn btn-success">@_f.tra("Uložit změny")</button>
+    <a id="cmdCancel" href="/a01CreateA57/Index" class="btn btn-light">@_f.tra("Zrušit")</a>
+
+
+</div>
+
+<form id="form1" asp-controller="a01CreateA57" asp-action="Index" method="POST">
+    <input type="hidden" asp-for="@Model.a57ID" />
+
+    <div class="row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typ akce"):</label>
+        <div class="col-sm-11 col-md-10">
+            <myval value="@Model.RecA10.a10Name" hoverprefix="a10" hoverpid="@Model.RecA10.pid"></myval>
+        </div>
+    </div>
+    <div class="row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Téma akce"):</label>
+        <div class="col-sm-11 col-md-10">
+            <myval value="@Model.RecA08.a08Name" hoverprefix="a08" hoverpid="@Model.RecA08.pid"></myval>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            @_f.tra("Formuláře")
+        </div>
+        <div class="card-body">
+            <mycheckboxlist datasource="@Model.lisA12" valuefield="f06ID" textfield="f06Name"></mycheckboxlist>
+        </div>
+    </div>
+</form>
+
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+      
+        $("#cmdSave").click(function () {
+            $(this).text("Processing...");
+            $(this).attr("disabled", true);
+            form1.submit();
+
+
+        });
+
+        
+
+    });
+
+
+    
+
+    function refresh() {
+        form1.action = "/a01CreateA57/Index?oper=postback";
+        form1.submit();
+    }
+
+    
+</script>

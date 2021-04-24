@@ -32,16 +32,9 @@ namespace UI.Controllers
             }
             v.RecA03 = Factory.a03InstitutionBL.Load(v.a03ID);
 
-            if (v.a10ID > 0)
-            {
-                v.RecA10 = Factory.a10EventTypeBL.Load(v.a10ID);                
-            }
-
-            if (v.a08ID > 0)
-            {
-                v.RecA08 = Factory.a08ThemeBL.Load(v.a08ID);
-
-            }
+            v.RecA10 = Factory.a10EventTypeBL.Load(v.a10ID);
+            v.RecA08 = Factory.a08ThemeBL.Load(v.a08ID);
+            v.lisA12 = Factory.a08ThemeBL.GetListA12(v.RecA08.pid);
 
 
             if (v.Rec == null)
