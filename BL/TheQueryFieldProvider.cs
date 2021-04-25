@@ -64,6 +64,7 @@ namespace BL
                     AF("a01Event", "b02ID", "a.b02ID", "Workflow stav", "b02WorkflowStatus", null, "multi");
                     AF("a01Event", "a42ID", "a.a42ID", "INEZ", "a42Qes", null, "combo");
                     of=AF("a01Event", "a03-a05ID", "a05ID", "Kraj školy", "a05Region", null, "multi");
+                    AF("a01Event", "a57ID", "a.a57ID", "Autoevaluační šablona", "a57AutoEvaluation", null, "multi");
                     of.SqlWrapper = "a.a03ID IN (select a03ID FROM a03Institution WHERE #filter#)";
                     of = AF("a01Event", "a03-a03ID_Founder", "a03ID_Founder", "Zřizovatel školy", "a03Institution", null, "combo");
                     of.SqlWrapper = "a.a03ID IN (select a03ID FROM a03Institution WHERE #filter#)"; of.MasterPrefix = "a06"; of.MasterPid = 2;
