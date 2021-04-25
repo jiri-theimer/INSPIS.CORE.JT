@@ -12,7 +12,14 @@ namespace UI.Controllers
         public IActionResult Index(int a57id,int a03id)
         {
             var v = new a01CreateA57ViewModel() { a57ID=a57id,a03ID=a03id };
-
+            if (v.a57ID == 0)
+            {
+                return this.StopPage(true,"Na vstupu chybí vazba na autoevaluační šablonu.");
+            }
+            if (v.a03ID == 0)
+            {
+                return this.StopPage(true, "Na vstupu chybí vazba na školu.");
+            }
             RefreshState(v);
             
             
