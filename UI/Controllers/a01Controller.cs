@@ -555,6 +555,68 @@ namespace UI.Controllers
 
         }
 
+        //Stránka akce       
+        public IActionResult RecPageA57(int pid)
+        {
+            var v = new a01RecPage();
+            v.pid = pid;
+            v.NavTabs = new List<NavTab>();
+            if (v.pid == 0)
+            {
+                v.pid = Factory.CBL.LoadUserParamInt("a01-RecPage-pid");
+            }
+            if (v.pid > 0)
+            {
+                v.Rec = Factory.a01EventBL.Load(v.pid);
+                if (v.Rec == null)
+                {
+                    this.Notify_RecNotFound();
+                    v.pid = 0;
+                }
+                else
+                {
+                    
+                    v.RecA10 = Factory.a10EventTypeBL.Load(v.Rec.a10ID);
+                    if (v.RecA10.a10ViewUrl_Page != null && !v.RecA10.a10ViewUrl_Page.Contains("RecPageA57"))
+                    {
+                        return Redirect(Factory.a01EventBL.GetPageUrl(v.Rec));    //typ akce má jinou stránku než tuto default
+                    }
+                    if (pid > 0)
+                    {
+                        Factory.CBL.SetUserParam("a01-RecPage-pid", pid.ToString());
+                    }
+
+                    v.RecLastEvent = Factory.b05Workflow_HistoryBL.LoadLast(v.pid);
+                    v.RecIssuer = Factory.j02PersonBL.Load(v.Rec.j02ID_Issuer);
+
+                    string strDefTab = Factory.CBL.LoadUserParam("recpage-tab-a01a57");
+
+                    var tab = AddTab("Historie událostí", "viewHistorie", "/a01/TabHistory?pid=" + v.pid.ToString());
+                    if (strDefTab == tab.Entity) tab.CssClass += " active";
+                    v.NavTabs.Add(tab);
+
+                    tab = AddTab("Formuláře", "viewFormulare", "/a01/TabForms?pid=" + v.pid.ToString(), true, null);
+                    if (strDefTab == tab.Entity || strDefTab==null) tab.CssClass += " active";
+                    v.NavTabs.Add(tab);
+                    v.DefaultNavTabUrl = "/a01/TabForms?pid=" + v.pid.ToString();
+
+                    var tg = Factory.o51TagBL.GetTagging("a01", v.pid);
+                    v.Rec.TagHtml = tg.TagHtml;
+                    v.TagHtml = v.Rec.TagHtml;
+                }
+            }
+
+
+            if (v.pid == 0)
+            {
+                v.Rec = new BO.a01Event();
+            }
+
+            return View(v);
+
+
+        }
+
 
 
         private void RefreshNavTabs(a01RecPage v)

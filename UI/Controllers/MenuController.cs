@@ -417,7 +417,7 @@ namespace UI.Controllers
                         DIV();
                         AMI("Nenávratně odstranit akci", string.Format("javascript: _window_open('/a01/KillRecord?pid={0}')", pid));
                     }
-                    if (recA10.a10CoreFlag =="injury" || recA10.a10CoreFlag=="inez")
+                    if (recA10.a10CoreFlag =="injury" || recA10.a10CoreFlag=="inez" || recA01.a57ID>0 || recA01.a42ID>0)
                     {
                         //akce s jednoduchým menu jako ÚRAZ
                         AMI("Posunout/Doplnit", string.Format("javascript: _window_open('/workflow/Dialog?pid={0}')", pid));

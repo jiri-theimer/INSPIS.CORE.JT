@@ -52,32 +52,39 @@ namespace UI.Controllers
         public IActionResult Index(Models.a01CreateA57ViewModel v, string oper)
         {
             RefreshState(v);
-
             
             if (oper != null)
-            {
-               
+            {               
                 return View(v);
             }
             
 
             if (ModelState.IsValid)
             {
-                
-
+                if (v.lisSelectedF06IDs.Where(p => p > 0).Count() == 0)
+                {
+                    this.AddMessage("Musíte zaškrtnout minimálně jeden formulář.");return View(v);
+                }
                 BO.a01Event c = new BO.a01Event();
+                c.a57ID = v.RecA57.pid;
                 c.a10ID = v.RecA57.a10ID;
                 c.a08ID = v.RecA57.a08ID;
                 c.a03ID = v.a03ID;              
                 c.j02ID_Issuer = Factory.CurrentUser.j02ID;
-                
-                
+                //c.a01DateFrom = DateTime.Today;
+                //c.a01DateUntil = new DateTime(3000, 1, 1);
 
-                c.pid = Factory.a01EventBL.Create(c, true, null, null, null, null);
+                var lisA11 = new List<BO.a11EventForm>();
+                foreach(var f06id in v.lisSelectedF06IDs.Where(p => p > 0))
+                {
+                    lisA11.Add(new BO.a11EventForm() { f06ID = f06id });
+                }
+
+                c.pid = Factory.a01EventBL.Create(c, true, lisA11, null, null, null);
                 if (c.pid > 0)
                 {
 
-                    return RedirectToAction("RecPage", "a01", new { pid = c.pid });
+                    return RedirectToAction("RecPageA57", "a01", new { pid = c.pid });
 
                 }
             }
