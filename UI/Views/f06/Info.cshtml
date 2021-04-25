@@ -46,7 +46,7 @@
     function refresh_f19_table() {
         var url = "@Url.Action("GetWorkTable", "Common")";
 
-        $.post(url, { entity: "f19Question", whereid: "wi2",whereid_pid1: "@Model.pid" }, function (data) {
+        $.post(url, { entity: "f19Question", master_entity: "f06Form",master_pid: "@Model.pid" }, function (data) {
             $("#divF19").html(data);
 
         });
