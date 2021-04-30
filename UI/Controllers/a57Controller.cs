@@ -13,9 +13,9 @@ namespace UI.Controllers
         public IActionResult Record(int pid, bool isclone)
         {
 
-            var v = new a57Record() { rec_pid = pid, rec_entity = "a57" };
+            var v = new a57Record() { rec_pid = pid, rec_entity = "a57",UploadGuid=BO.BAS.GetGuid() };
 
-            v.Rec = new BO.a57AutoEvaluation();
+            v.Rec = new BO.a57AutoEvaluation() { a57CreateFrom = DateTime.Today, a57CreateUntil = DateTime.Today.AddMonths(12) };
             if (v.rec_pid > 0)
             {
                 v.Rec = Factory.a57AutoEvaluationBL.Load(v.rec_pid);
@@ -47,15 +47,21 @@ namespace UI.Controllers
                 c.a08ID = v.Rec.a08ID;
                 c.a57Name = v.Rec.a57Name;                
                 c.a57Description = v.Rec.a57Description;
-                
+                c.a57CreateFrom = v.Rec.a57CreateFrom;
+                c.a57CreateUntil = v.Rec.a57CreateUntil;
+
+
                 c.ValidUntil = v.Toolbar.GetValidUntil(c);
                 c.ValidFrom = v.Toolbar.GetValidFrom(c);
 
                 c.pid = Factory.a57AutoEvaluationBL.Save(c);
                 if (c.pid > 0)
                 {
-                    v.SetJavascript_CallOnLoad(c.pid);
-                    return View(v);
+                    if (Factory.o27AttachmentBL.SaveChangesAndUpload(v.UploadGuid, 157, c.pid))
+                    {
+                        v.SetJavascript_CallOnLoad(c.pid);
+                        return View(v);
+                    }
                 }
 
             }

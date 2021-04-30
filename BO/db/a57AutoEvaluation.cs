@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace BO
@@ -13,5 +14,7 @@ namespace BO
         public string a10Name { get; }
         public string a57Name { get; set; }
         public string a57Description { get; set; }
+        public DateTime a57CreateFrom { get; set; }
+        public DateTime a57CreateUntil { get; set; }
     }
 }

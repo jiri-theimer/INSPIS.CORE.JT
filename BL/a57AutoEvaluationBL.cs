@@ -56,6 +56,8 @@ namespace BL
             p.AddInt("a08ID", rec.a08ID,true);
             p.AddInt("a10ID", rec.a10ID, true);            
             p.AddString("a57Description", rec.a57Description);
+            p.AddDateTime("a57CreateFrom", rec.a57CreateFrom);
+            p.AddDateTime("a57CreateUntil", rec.a57CreateUntil);
             
             int intPID = _db.SaveRecord("a57AutoEvaluation", p, rec);
 

@@ -11,6 +11,7 @@ namespace BO
         public int a03id { get; set; }
         public int a42id { get; set; }
         public int f06id { get; set; }
+        public int a57id { get; set; }
         public int f32id { get; set; }
         public int f18id { get; set; }
         public int f19id { get; set; }
@@ -60,6 +61,10 @@ namespace BO
             if (this.f06id > 0)
             {
                 AQ("a.x29ID=406 AND a.o27DataPID=@f06id", "f06id", this.f06id);
+            }
+            if (this.a57id > 0)
+            {
+                AQ("a.x29ID=157 AND a.o27DataPID=@a57id", "a57id", this.a57id);
             }
             if (this.f32id > 0)
             {

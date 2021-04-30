@@ -34,9 +34,28 @@
 
     </div>
 
+    <div class="row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Závora od"):</label>
+        <div class="col-sm-11 col-md-10">
+            <mydate asp-for="@Model.Rec.a57CreateFrom"></mydate>
+        </div>
+    </div>
+    <div class="row my-2">
+        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Závora do"):</label>
+        <div class="col-sm-11 col-md-10">
+            <mydate asp-for="@Model.Rec.a57CreateUntil"></mydate>
+        </div>
+    </div>
+
     <div class="my-2">
         <textarea asp-for="Rec.a57Description" class="form-control" placeholder="@_f.tra("Poznámka")"></textarea>
 
     </div>
+
+    <input type="hidden" asp-for="@Model.UploadGuid" />
+
+    <string>@_f.tra("Svázané přílohy (metodiky, návody apod.)"):</string>
+
+    <iframe id="fraUpload" src="/FileUpload/Index?prefix=a57&recpid=@(Model.rec_pid)&guid=@Model.UploadGuid" height="220" scrolling="yes"></iframe>
 
 </div>

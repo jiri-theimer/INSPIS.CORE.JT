@@ -429,6 +429,8 @@ namespace BL
             
             AF("a57AutoEvaluation", "a57Name", "Autoevaluační šablona", 1, null, "string", false, true);
             AF("a57AutoEvaluation", "a57Description", "Popis");
+            AF("a57AutoEvaluation", "a57CreateFrom", "Závora od",2, null, "date");
+            AF("a57AutoEvaluation", "a57CreateUntil", "Závora do", 2, null, "date");
 
             //a29 = pojmenovaný seznam institucí
             AF("a29InstitutionList", "a29Name", "Pojmenovaný seznam", 1, null, "string", false, true);            

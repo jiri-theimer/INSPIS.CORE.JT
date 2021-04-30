@@ -10,5 +10,6 @@ namespace UI.Models.Record
         public BO.a57AutoEvaluation Rec { get; set; }
         public string SelectedA10Name { get; set; }
         public string SelectedA08Name { get; set; }
+        public string UploadGuid { get; set; }
     }
 }

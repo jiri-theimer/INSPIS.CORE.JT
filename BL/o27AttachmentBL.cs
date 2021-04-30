@@ -407,6 +407,10 @@ namespace BL
 
         public string GetUploadFolder(int o13id)
         {
+            if (o13id == 0)
+            {
+                return "";
+            }
             var c = _mother.o13AttachmentTypeBL.Load(o13id);
             if (c.SharpFolder != null)
             {

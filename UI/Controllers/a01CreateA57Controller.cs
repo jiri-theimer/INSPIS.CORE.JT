@@ -46,6 +46,7 @@ namespace UI.Controllers
             v.RecA08 = Factory.a08ThemeBL.Load(v.a08ID);
             v.lisA12 = Factory.a08ThemeBL.GetListA12(v.RecA08.pid);
 
+            v.lisO27 = Factory.o27AttachmentBL.GetList(new BO.myQueryO27() { a57id = v.a57ID },null);
 
             if (v.Rec == null)
             {
@@ -78,8 +79,11 @@ namespace UI.Controllers
                 c.a08ID = v.RecA57.a08ID;
                 c.a03ID = v.a03ID;              
                 c.j02ID_Issuer = Factory.CurrentUser.j02ID;
-                //c.a01DateFrom = DateTime.Today;
-                //c.a01DateUntil = new DateTime(3000, 1, 1);
+                
+                if (!(DateTime.Today >= v.RecA57.a57CreateFrom && DateTime.Today <= v.RecA57.a57CreateUntil))
+                {
+                    this.AddMessage("Časová závora autoevaluační šablony nedovoluje založit akci.");return View(v);
+                }
 
                 var lisA11 = new List<BO.a11EventForm>();
                 foreach(var f06id in v.lisSelectedF06IDs.Where(p => p > 0))

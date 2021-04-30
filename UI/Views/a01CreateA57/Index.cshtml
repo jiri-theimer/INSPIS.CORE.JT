@@ -43,6 +43,12 @@
                 <myval value="@Model.RecA08.a08Name" hoverprefix="a08" hoverpid="@Model.RecA08.pid"></myval>
             </div>
         </div>
+        <div class="row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Časová závora akcí"):</label>
+            <div class="col-sm-11 col-md-10">
+                <myval value="@(BO.BAS.ObjectDate2String(Model.RecA57.a57CreateFrom)+" - "+BO.BAS.ObjectDate2String(Model.RecA57.a57CreateUntil))"></myval>
+            </div>
+        </div>
 
         <div class="card">
             <div class="card-header">
@@ -53,6 +59,26 @@
             </div>
         </div>
     </form>
+
+    <table>
+        @foreach (var c in Model.lisO27)
+        {
+            <tr>
+                
+                <td>
+                    @c.o13Name
+                </td>
+
+                <td>
+                    <a target="_blank" href="/FileUpload/FileDownloadInline?downloadguid=@c.o27DownloadGUID">@c.o27OriginalFileName</a>
+                </td>
+                <td>
+                    @(BO.BAS.FormatFileSize(c.o27FileSize))
+                </td>
+               
+            </tr>
+        }
+    </table>
 </div>
 
     

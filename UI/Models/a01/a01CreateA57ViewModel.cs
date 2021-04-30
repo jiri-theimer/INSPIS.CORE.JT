@@ -19,5 +19,6 @@ namespace UI.Models
         public int a03ID { get; set; }
         public BO.a03Institution RecA03 { get; set; }
         
+        public IEnumerable<BO.o27Attachment> lisO27 { get; set; }
     }
 }
