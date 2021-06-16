@@ -60,7 +60,13 @@ namespace BL
                     break;
                 
                 default:
-                    return _db.RunSp(strSP, ref pars);                    
+                    string strRet = _db.RunSp(strSP, ref pars);
+                    if (strRet != "1")
+                    {
+                        return _mother.tra(strRet);
+                    }
+
+                    return strRet;
             }
 
             return "";

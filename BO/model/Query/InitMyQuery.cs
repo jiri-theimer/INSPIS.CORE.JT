@@ -101,15 +101,14 @@ namespace BO
                             break;
                     }
                 }
-            }   
-            else
-            {   //filtr podle master_prefix+master_pid
-                if (_master_pid > 0 && _master_prefix != null)
-                {
-                    BO.Reflexe.SetPropertyValue(mq, _master_prefix + "id", _master_pid);
-                }
             }
-            
+
+            //filtr podle master_prefix+master_pid
+            if (_master_pid > 0 && _master_prefix != null)
+            {
+                BO.Reflexe.SetPropertyValue(mq, _master_prefix + "id", _master_pid);
+            }
+
             return mq;
         }
 
