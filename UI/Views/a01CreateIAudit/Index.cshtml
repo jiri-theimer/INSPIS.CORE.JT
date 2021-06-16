@@ -219,7 +219,7 @@
                                         </div>
 
                                         <div class="col-1">
-                                            <button type="button" class="btn btn-danger" tabindex="-1" title="Odstranit řádek" onclick="handle_delete_f06_master('@(Model.lisA11_Master[i].TempGuid)')">x</button>
+                                            <button type="button" class="btn btn-danger" tabindex="-1" title="@_f.tra("Odstranit řádek")" onclick="handle_delete_f06_master('@(Model.lisA11_Master[i].TempGuid)')">x</button>
 
                                         </div>
 
@@ -332,11 +332,11 @@
 
                                         </div>
                                         <div class="col-sm-4 col-md-4">
-                                            <input type="text" class="form-control" placeholder="Poznámka" asp-for="@Model.lisA11_Slave1[i].a11Description" value="@Model.lisA11_Slave1[i].a11Description" />
+                                            <input type="text" class="form-control" placeholder="@_f.tra("Poznámka")" asp-for="@Model.lisA11_Slave1[i].a11Description" value="@Model.lisA11_Slave1[i].a11Description" />
                                         </div>
 
                                         <div class="col-1">
-                                            <button type="button" class="btn btn-danger" tabindex="-1" title="Odstranit řádek" onclick="handle_delete_f06_slave1('@(Model.lisA11_Slave1[i].TempGuid)')">x</button>
+                                            <button type="button" class="btn btn-danger" tabindex="-1" title="@_f.tra("Odstranit řádek")" onclick="handle_delete_f06_slave1('@(Model.lisA11_Slave1[i].TempGuid)')">x</button>
 
                                         </div>
 
@@ -449,11 +449,11 @@
 
                                         </div>
                                         <div class="col-sm-4 col-md-4">
-                                            <input type="text" class="form-control" placeholder="Poznámka" asp-for="@Model.lisA11_Slave2[i].a11Description" value="@Model.lisA11_Slave2[i].a11Description" />
+                                            <input type="text" class="form-control" placeholder="@_f.tra("Poznámka")" asp-for="@Model.lisA11_Slave2[i].a11Description" value="@Model.lisA11_Slave2[i].a11Description" />
                                         </div>
 
                                         <div class="col-1">
-                                            <button type="button" class="btn btn-danger" tabindex="-1" title="Odstranit řádek" onclick="handle_delete_f06_slave2('@(Model.lisA11_Slave2[i].TempGuid)')">x</button>
+                                            <button type="button" class="btn btn-danger" tabindex="-1" title="@_f.tra("Odstranit řádek")" onclick="handle_delete_f06_slave2('@(Model.lisA11_Slave2[i].TempGuid)')">x</button>
 
                                         </div>
 
