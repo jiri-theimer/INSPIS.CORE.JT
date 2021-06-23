@@ -23,13 +23,12 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <script src="~/lib/datepicker/bootstrap-datepicker.min.js"></script>
     <script src="~/lib/datepicker/bootstrap-datepicker.cs.min.js"></script>
     <script src="~/lib/qtip/jquery.qtip.min.js"></script>
 
-    <script src="/js/reporting/resources.en.js"></script>
-    <script src="/js/reporting/resources.cs.js"></script>
+    
 
 
     <link href="/kendo/styles/kendo.common.min.css" rel="stylesheet" type="text/css" />
@@ -41,6 +40,19 @@
 
     <script src="~/js/contextmenu.js" asp-append-version="true"></script>
     <script src="~/js/mycontrols.js" asp-append-version="true"></script>
+
+    @switch (_f.CurrentUser.j03LangIndex)
+    {
+        case 1:
+            <script src="/js/reporting/resources.en.js"></script>
+            break;
+        case 2:
+            <script src="/js/reporting/resources.ua.js"></script>
+            break;
+        default:
+            <script src="/js/reporting/resources.cs.js"></script>
+            break;
+    }
 
     <script src="/apix/reports/resources/js/telerikReportViewer"></script>
 
