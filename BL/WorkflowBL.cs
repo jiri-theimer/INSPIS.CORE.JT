@@ -291,11 +291,11 @@ namespace BL
             }
             if (recB06.b06IsCommentRequired && string.IsNullOrEmpty(strComment) == true)
             {
-                this.AddMessage(string.Format("Krok {0} vyžaduje zapsat komentář!", recB06.b06Name)); return false;
+                this.AddMessageWithPars("Krok {0} vyžaduje zapsat komentář!", recB06.b06Name); return false;
             }
             if (recB06.b06IsNomineeRequired && (lisNominee == null || lisNominee.Count() == 0))
             {
-                this.AddMessage(string.Format("Krok {0} vyžaduje nominaci!", recB06.b06Name)); return false;
+                this.AddMessageWithPars("Krok {0} vyžaduje nominaci!", recB06.b06Name); return false;
             }
             if (lisNominee != null)
             {
@@ -319,7 +319,7 @@ namespace BL
                 var lisB05 = _mother.b05Workflow_HistoryBL.GetList(mq);
                 if (lisB05.Where(p => p.b06ID == recB06.pid).Count() > 0)
                 {
-                    this.AddMessage(string.Format("Krok {0} je povoleno spouštět pouze jednou!", recB06.b06Name)); return false;
+                    this.AddMessageWithPars("Krok {0} je povoleno spouštět pouze jednou!", recB06.b06Name); return false;
                 }
             }
             if (recB06.b06ValidateBeforeRunSQL != null)
@@ -338,7 +338,7 @@ namespace BL
                     var lisO27 = _mother.o27AttachmentBL.GetList(new BO.myQueryO27() { a01id = rec.pid, o13id = c.o13ID },null);
                     if (lisO27.Count() == 0)
                     {
-                        this.AddMessage(string.Format("Povinný typ dokumentu [{0}] není přiložen v akci.", _mother.o13AttachmentTypeBL.Load(c.o13ID).o13Name));
+                        this.AddMessageWithPars("Povinný typ dokumentu [{0}] není přiložen v akci.", _mother.o13AttachmentTypeBL.Load(c.o13ID).o13Name);
                         return false;
                     }
                 }
@@ -351,7 +351,7 @@ namespace BL
                     var lisO27 = _mother.o27AttachmentBL.GetList(new BO.myQueryO27() { a01id = rec.pid, o13id = intO13ID }, null);
                     if (lisO27.Count() == 0)
                     {
-                        this.AddMessage(string.Format("Tento krok vyžaduje v akci přiložený dokument typu [{0}].", _mother.o13AttachmentTypeBL.Load(intO13ID).o13Name));
+                        this.AddMessageWithPars("Tento krok vyžaduje v akci přiložený dokument typu [{0}].", _mother.o13AttachmentTypeBL.Load(intO13ID).o13Name);                        
                         return false;
                     }
                 }

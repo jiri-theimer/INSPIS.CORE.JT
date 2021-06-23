@@ -35,7 +35,21 @@ namespace BL
             sbinit();
             return s;
         }
+        public void AddMessageWithPars(string strMessage,string strPar1,string  strPar2=null,string template = "error")
+        {
+            string s = _mother.tra(strMessage);
+            
+            if (!string.IsNullOrEmpty(strPar2))
+            {
+                s = string.Format(s,strPar1, strPar2);
+            }
+            else
+            {
+                s = string.Format(s, strPar1);
+            }
+            _mother.CurrentUser.AddMessage(s, template);  //automaticky podléhá překladu do ostatních jazyků
 
+        }
         public void AddMessage(string strMessage, string template = "error")
         {
             _mother.CurrentUser.AddMessage(_mother.tra(strMessage), template);  //automaticky podléhá překladu do ostatních jazyků

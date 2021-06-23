@@ -146,10 +146,7 @@ namespace BL
         public string tra(string strExpression)   //lokalizace do ostatních jazyků
         {
             if (this.CurrentUser.j03LangIndex == 0) return strExpression;
-            //if (this.CurrentUser.j03LangIndex==2 && this.CurrentUser.j03Login == "lamos")
-            //{
-            //    return this.Translator.DoTranslate(strExpression, 2)+" * "+ strExpression;  //kvůli školení
-            //}
+            
             return this.Translator.DoTranslate(strExpression, this.CurrentUser.j03LangIndex);
         }
 

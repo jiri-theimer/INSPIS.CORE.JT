@@ -142,6 +142,21 @@ namespace UI.Controllers
             
             Factory.CurrentUser.AddMessage(Factory.tra(strMessage), template);
         }
+        public void AddMessageWithPars(string strMessage, string strPar1, string strPar2 = null, string template = "error") //doplní string.format
+        {
+            string s = Factory.tra(strMessage);
+
+            if (!string.IsNullOrEmpty(strPar2))
+            {
+                s = string.Format(s, strPar1, strPar2);
+            }
+            else
+            {
+                s = string.Format(s, strPar1);
+            }
+            Factory.CurrentUser.AddMessage(s, template);  //automaticky podléhá překladu do ostatních jazyků
+
+        }
         public void AddMessageTranslated(string strMessage, string template = "error")
         {
             Factory.CurrentUser.AddMessage(strMessage, template);

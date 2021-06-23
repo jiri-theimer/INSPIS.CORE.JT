@@ -79,7 +79,7 @@ namespace UI.Controllers
                 }
                if (errs.Count() > 0)
                 {
-                    this.AddMessage(string.Format("Chyby v akcích: {0}.", string.Join(", ", errs)));
+                    this.AddMessageWithPars("Chyby v akcích: {0}.", string.Join(", ", errs));
                 }
                 
                 v.SetJavascript_CallOnLoad(0);
@@ -172,7 +172,7 @@ namespace UI.Controllers
                 }
                 if (errs.Count() > 0)
                 {
-                    this.AddMessage(string.Format("Chyby v institucích: {0}.", string.Join(", ", errs)));
+                    this.AddMessageWithPars("Chyby v institucích: {0}.", string.Join(", ", errs));
                 }
                 foreach (var c in v.lisA03)
                 {
