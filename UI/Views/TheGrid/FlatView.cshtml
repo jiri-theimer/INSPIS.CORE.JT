@@ -9,7 +9,14 @@
         return;
     }
 
-    Model.PageTitle = Model.entityTitle;
+    if (_f.CurrentUser.j03LangIndex > 0)
+    {
+        Model.PageTitle = _f.tra(Model.entityTitle);
+    }
+    else
+    {
+        Model.PageTitle = Model.entityTitle;
+    }
 
 
 
