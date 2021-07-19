@@ -288,6 +288,11 @@ namespace UI.Controllers
             {
                 return this.StopPage(true, "Tato akce je již uzavřena.",true);
             }
+            var perm = Factory.a01EventBL.InhalePermission(v.RecA01);
+            if (perm.PermValue != BO.a01EventPermissionENUM.ShareTeam_Leader && perm.PermValue != BO.a01EventPermissionENUM.FullAccess)
+            {
+                return this.StopPage(true, "Přidávat formuláře do akce může pouze vedoucí týmu.", true);
+            }
 
             return View(v);
         }
@@ -375,6 +380,7 @@ namespace UI.Controllers
         private void RefreshStateAppend(a11AppendViewModel v)
         {
             v.RecA01 = Factory.a01EventBL.Load(v.a01ID);
+            
 
             if (v.lisA11 == null)
             {
@@ -407,7 +413,12 @@ namespace UI.Controllers
             {
                 return this.StopPage(true, "Tato akce je již uzavřena.",true);
             }
-            
+            var perm = Factory.a01EventBL.InhalePermission(v.RecA01);
+            if (perm.PermValue != BO.a01EventPermissionENUM.ShareTeam_Leader && perm.PermValue != BO.a01EventPermissionENUM.FullAccess)
+            {
+                return this.StopPage(true, "Přidávat formuláře do akce může pouze vedoucí týmu.", true);
+            }
+
             return View(v);
         }
 
@@ -556,6 +567,7 @@ namespace UI.Controllers
         }
 
 
+
         //Průvodce pro anketní formulář
         //Plus notifikační zpráva
         public IActionResult AppendPollWizard(int a01id)
@@ -577,6 +589,11 @@ namespace UI.Controllers
             if (v.RecA01.isclosed)
             {
                 return this.StopPage(true, "Tato akce je již uzavřena.",true);
+            }
+            var perm = Factory.a01EventBL.InhalePermission(v.RecA01);
+            if (perm.PermValue != BO.a01EventPermissionENUM.ShareTeam_Leader && perm.PermValue !=BO.a01EventPermissionENUM.FullAccess)
+            {
+                return this.StopPage(true, "Přidávat formuláře do akce může pouze vedoucí týmu.", true);
             }
 
             return View(v);

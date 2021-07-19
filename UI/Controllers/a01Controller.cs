@@ -200,7 +200,7 @@ namespace UI.Controllers
             v.IsGridView = Factory.CBL.LoadUserParamBool("TabForms-IsGridView", false);
             v.RecA01 = Factory.a01EventBL.Load(v.pid);
             v.RecA10 = Factory.a10EventTypeBL.Load(v.RecA01.a10ID);
-
+            v.RecA01Permission = Factory.a01EventBL.InhalePermission(v.RecA01);
             v.gridinput = GetGridInput("TabForms",v.pid);
 
             if (!v.IsGridView)

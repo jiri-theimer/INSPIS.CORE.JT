@@ -15,5 +15,7 @@ namespace UI.Models.Tab
         public bool IsGridView { get; set; }
 
         public TheGridInput gridinput { get; set; }
+
+        public BO.a01EventPermission RecA01Permission { get; set; }
     }
 }

@@ -21,25 +21,29 @@
         <button type="button" class="btn btn-outline-info" onclick="change_view('1')">@_f.tra("Přepnout na GRID")</button>
     }
 
-    @if (!Model.RecA01.isclosed && !Model.RecA01.a01IsAllFormsClosed)
+    @if (Model.RecA01Permission.PermValue == BO.a01EventPermissionENUM.ShareTeam_Leader || Model.RecA01Permission.PermValue == BO.a01EventPermissionENUM.FullAccess)
     {
-        <button type="button" class="btn btn-primary" onclick="append_f06()">@_f.tra("Přidat formuláře")</button>
+        @if (!Model.RecA01.isclosed && !Model.RecA01.a01IsAllFormsClosed)
+        {
+            <button type="button" class="btn btn-primary" onclick="append_f06()">@_f.tra("Přidat formuláře")</button>
+        }
+
+        @if (Model.RecA10.a10IsUse_Poll && !Model.RecA01.isclosed && !Model.RecA01.a01IsAllFormsClosed)
+        {
+            <button type="button" class="btn btn-outline-secondary" onclick="append_poll()">@_f.tra("Anketní formuláře")</button>
+            <button type="button" class="btn btn-outline-secondary" onclick="append_pollwizard()">@_f.tra("Přidat anketu s notifikací")</button>
+        }
+        @if (!Model.RecA01.isclosed && !Model.RecA01.a01IsAllFormsClosed)
+        {
+            <button type="button" class="btn btn-outline-secondary" onclick="append_a25()">@_f.tra("Přidat skupinu formulářů")</button>
+        }
     }
 
-    @if (Model.RecA10.a10IsUse_Poll && !Model.RecA01.isclosed && !Model.RecA01.a01IsAllFormsClosed)
-    {
-        <button type="button" class="btn btn-outline-secondary" onclick="append_poll()">@_f.tra("Anketní formuláře")</button>
-        <button type="button" class="btn btn-outline-secondary" onclick="append_pollwizard()">@_f.tra("Přidat anketu s notifikací")</button>
-    }
-    @if (!Model.RecA01.isclosed && !Model.RecA01.a01IsAllFormsClosed)
-    {
-        <button type="button" class="btn btn-outline-secondary" onclick="append_a25()">@_f.tra("Přidat skupinu formulářů")</button>
-    }
 
 
 </div>
 
-@if (Model.IsGridView == true)
+@if (Model.IsGridView)
 {
 
     <vc:the-grid input="@Model.gridinput"></vc:the-grid>
