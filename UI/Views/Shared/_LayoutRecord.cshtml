@@ -33,6 +33,7 @@
 <body>
     <script type="text/javascript">
         var _relpath = "@(Url.Content("~/favicon.ico"))".replace("favicon.ico", "");   //relativní cesta: detekce kvůli případnému IIS virtuálnímu adresáři
+        var _toolbar_warn2save_changes_message = "@_f.tra("Změny potvrďte tlačítkem [Uložit změny].")";
     </script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -106,7 +107,7 @@
 
     $(document).ready(function ()
     {
-        if ($("textarea").length) {
+        if ($("textarea").length) {            
             _resize_textareas();    //detekce, že na stránce je textarea
         }
 

@@ -436,7 +436,7 @@ namespace UI.Controllers
                 }
                 else
                 {
-                    v.NavTabs.Add(AddTab("Akce", "a01", "/Dashboard/TabSchoolA01Grid?a03id=" + v.a03ID.ToString(), false, null));                                        
+                    v.NavTabs.Add(AddTab("Akce", "a01", "/Dashboard/TabSchoolA01Grid?a03id=" + v.a03ID.ToString(), true, null));                                        
                 }
                 
 

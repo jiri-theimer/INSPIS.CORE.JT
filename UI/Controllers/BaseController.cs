@@ -114,7 +114,7 @@ namespace UI.Controllers
         //}
         public IActionResult RecMissingPerm(UI.Models.BaseRecordViewModel v)
         {
-            return StopPage(true,"Pro tuto stránku nemáte oprávnění!",true);
+            return StopPage(true,this.Factory.tra("Pro tuto stránku nemáte oprávnění!"),true);
             
         }
         public ViewResult RecNotFound(UI.Models.BaseRecordViewModel v)
@@ -170,7 +170,7 @@ namespace UI.Controllers
         {
             if (!TUP(oneperm))
             {
-                var v = new StopPageViewModel() { Message = "Pro tuto stránku nemáte oprávnění!", IsModal = true };
+                var v = new StopPageViewModel() { Message = this.Factory.tra("Pro tuto stránku nemáte oprávnění!"), IsModal = true };
                 return View("_StopPage",v);
             }
             return View(model);
@@ -179,7 +179,7 @@ namespace UI.Controllers
         {
             if (!Factory.CurrentUser.TestPermCiselniky(ciselnik_perm_edit, BO.j03AdminRoleValueFlagEnum._none))
             {
-                var v = new StopPageViewModel() { Message = "Pro tuto stránku nemáte oprávnění!", IsModal = true };
+                var v = new StopPageViewModel() { Message = this.Factory.tra("Pro tuto stránku nemáte oprávnění!"), IsModal = true };
                 return View("_StopPage", v);
             }
             return View(model);

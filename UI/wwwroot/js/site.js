@@ -13,6 +13,8 @@ if (screen.availHeight > screen.availWidth || screen.width < 800 || screen.heigh
 
 }
 
+
+
 function _edit(controller, pid, header) {    
     var url = "";
     var winflag = 1;
@@ -82,9 +84,13 @@ function _focusAndCursor(selector) {
 }
 
 function _toolbar_warn2save_changes(message) {
-    if (typeof message === "undefined") {
-        message = "Změny potvrďte tlačítkem [Uložit změny]."
+    if (typeof message === "undefined" && typeof _toolbar_warn2save_changes_message !=="undefined") {
+        message = _toolbar_warn2save_changes_message;        //_toolbar_warn2save_changes_message je definován na _layout stránce
     }
+    if (typeof message === "undefined") {
+        message = "Změny potvrďte tlačítkem [Uložit změny]!";
+    }
+
     if ($("#toolbar_changeinfo").length) {
         $("#toolbar_changeinfo").text(message);
     }

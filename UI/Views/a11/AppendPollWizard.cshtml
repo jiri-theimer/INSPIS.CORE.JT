@@ -108,7 +108,7 @@
         $.post("/a11/GetWorkflowMessage", { b65id: b65id  }, function (data) {
             $("#MessageSubject").val(data.b65MessageSubject);
             $("#MessageBody").text(data.b65MessageBody);
-
+            _resize_textareas();
         });
 
 

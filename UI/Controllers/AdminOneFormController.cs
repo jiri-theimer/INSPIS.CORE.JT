@@ -131,6 +131,10 @@ namespace UI.Controllers
                     ImgUrl="/images/bullet4.gif"
 
                 };
+                if (recF18.f18Ordinal != 0)
+                {
+                    c.Text += " #" + recF18.f18Ordinal.ToString();
+                }
                 if (recF18.isclosed)
                 {
                     c.CssClass = "closed_item";

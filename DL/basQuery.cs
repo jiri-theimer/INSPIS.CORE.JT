@@ -41,7 +41,11 @@ namespace DL
                 {
                     ret.SqlWhere = BO.BAS.RightString(ret.SqlWhere.Trim(), ret.SqlWhere.Length - 3);
                 }
-                strPrimarySql += " WHERE " + ret.SqlWhere;
+                if (!string.IsNullOrEmpty(ret.SqlWhere))
+                {
+                    strPrimarySql += " WHERE " + ret.SqlWhere;
+                }
+                
             }
             if (!string.IsNullOrEmpty(mq.explicit_orderby))
             {

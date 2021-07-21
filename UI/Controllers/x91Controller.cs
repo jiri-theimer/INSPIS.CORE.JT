@@ -41,7 +41,8 @@ namespace UI.Controllers
             if (oper == "recovery")
             {
                 Factory.Translator.Recovery();
-                this.AddMessageTranslated("Překlad načten.","info");
+                
+                this.AddMessage("Překlad načten.","info");
                 return View(v);
             }
             if (ModelState.IsValid)

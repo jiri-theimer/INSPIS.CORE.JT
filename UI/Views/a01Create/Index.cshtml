@@ -36,7 +36,7 @@
 
     function gonext() {
         if ($("#a10ID").val() == "0") {
-            _notify_message("Musíte vybrat typ.");
+            _notify_message("@_f.tra("Musíte vybrat typ.")");
             return;
         }
         var url = "/a01Create/Index?a10id=" + $("#a10ID").val();
