@@ -292,7 +292,15 @@ namespace BL
             AppendTimestamp("a37InstitutionDepartment");
 
             AF("a42Qes", "a42Name", "INEZ", 1, null, "string", false, true);
-            AF("a42Qes", "a42JobState", "Stav generování", 1, "case a.a42JobState when 1 then 'Úvodní návrh' when 2 then 'Generují se akce' when 3 then 'Pozastaveno generování akcí' when 4 then 'Akce vygenerovány' when 5 then 'Poštovní zprávy vygenerovány' when 6 then 'Rozesílání zpráv' when 7 then 'Rozesílání zpráv zastaveno' when 99 then 'Hotovo' end");
+            if (_app.Implementation == "UA")
+            {
+                AF("a42Qes", "a42JobState", "Stav generování", 1, "case a.a42JobState when 1 then N'Вступна пропозиція' when 2 then N'Елементи генеруються' when 3 then N'Створено призупинено' when 4 then 'Сформований' when 5 then N'Поштові повідомлення зроблено' when 6 then N'Повідомлення надсилаються' when 7 then N'Надсилання повідомлень припинено' when 99 then N'Готово' end");
+            }
+            else
+            {
+                AF("a42Qes", "a42JobState", "Stav generování", 1, "case a.a42JobState when 1 then 'Úvodní návrh' when 2 then 'Generují se akce' when 3 then 'Pozastaveno generování akcí' when 4 then 'Akce vygenerovány' when 5 then 'Poštovní zprávy vygenerovány' when 6 then 'Rozesílání zpráv' when 7 then 'Rozesílání zpráv zastaveno' when 99 then 'Hotovo' end");
+            }
+                
             AF("a42Qes", "a42DateFrom", "Datum od", 1, null, "date");
             AF("a42Qes", "a42DateUntil", "Datum do", 1, null, "date");
             AF("a42Qes", "a42Description", "Poznámka", 0);
@@ -462,11 +470,19 @@ namespace BL
             AF("f06Form", "f06UserLockFlag", "Zamykání", 0, "case a.f06UserLockFlag when 1 then 'Uživatel nemá možnost' when 2 then 'Ano, pokud je korektně vyplněn' when 3 then 'Kdykoliv' end");
             
             AppendTimestamp("f06Form");
-
+            
             //a39 = kontaktní osoby
             AF("a39InstitutionPerson", "a39IsAllowInspisWS", "Přístup k IS", 0, null, "bool",false,true);
             AF("a39InstitutionPerson", "a39Description", "Poznámka", 2);
-            AF("a39InstitutionPerson", "RelationFlag", "Vztah", 2, "case a.a39RelationFlag when 2 then 'Zaměstnanec' else 'Kontaktní osoba' end");
+            if (_app.Implementation == "UA")
+            {
+                AF("a39InstitutionPerson", "RelationFlag", "Vztah", 2, "case a.a39RelationFlag when 2 then N'Працівник' else N'Контактна особа' end");
+            }
+            else
+            {
+                AF("a39InstitutionPerson", "RelationFlag", "Vztah", 2, "case a.a39RelationFlag when 2 then 'Zaměstnanec' else 'Kontaktní osoba' end");
+            }
+                
 
             //f12 = typ formuláře            
             AF("f12FormType", "TreeItem", "Typ formuláře", 1, "case when a.f12TreeLevel > 1 then replace(space(2 * (a.f12TreeLevel - 1)), ' ', '-') else '' END + a.f12Name", "string", false, true);

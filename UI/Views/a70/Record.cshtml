@@ -34,17 +34,17 @@
             @_f.tra("Rozsah integrace")
         </div>
         <div class="card-body">
-            <input type="radio" id="a70ScopFlagENUM1" onchange="a70ScopFlag_RefreshState()" asp-for="@Model.Rec.a70ScopFlag" value="TestSchoolOnly">
-            <label for="a70ScopFlagENUM1">@_f.tra("Pouze testovací školy")</label>
+            <input type="radio" id="a70ScopeFlagENUM1" onchange="a70ScopeFlag_RefreshState()" asp-for="@Model.Rec.a70ScopeFlag" value="TestSchoolOnly">
+            <label for="a70ScopeFlagENUM1">@_f.tra("Pouze testovací školy")</label>
             <br />
-            <input type="radio" id="a70ScopFlagENUM2" onchange="a70ScopFlag_RefreshState()" asp-for="@Model.Rec.a70ScopFlag" value="RealSchoolOnly">
-            <label for="a70ScopFlagENUM2">@_f.tra("Pouze reálné školy")</label>
+            <input type="radio" id="a70ScopeFlagENUM2" onchange="a70ScopeFlag_RefreshState()" asp-for="@Model.Rec.a70ScopeFlag" value="RealSchoolOnly">
+            <label for="a70ScopeFlagENUM2">@_f.tra("Pouze reálné školy")</label>
             <br />
-            <input type="radio" id="a70ScopFlagENUM3" onchange="a70ScopFlag_RefreshState()" asp-for="@Model.Rec.a70ScopFlag" value="TestAndRealSchool">
-            <label for="a70ScopFlagENUM3">@_f.tra("Všechny školy")</label>
+            <input type="radio" id="a70ScopeFlagENUM3" onchange="a70ScopeFlag_RefreshState()" asp-for="@Model.Rec.a70ScopeFlag" value="TestAndRealSchool">
+            <label for="a70ScopeFlagENUM3">@_f.tra("Všechny školy")</label>
             <br />
-            <input type="radio" id="a70ScopFlagENUM4" onchange="a70ScopFlag_RefreshState()" asp-for="@Model.Rec.a70ScopFlag" value="GlobalSystem">
-            <label for="a70ScopFlagENUM4">@_f.tra("Nad-školní obecně integrovaný systém")</label>
+            <input type="radio" id="a70ScopeFlagENUM4" onchange="a70ScopeFlag_RefreshState()" asp-for="@Model.Rec.a70ScopeFlag" value="GlobalSystem">
+            <label for="a70ScopeFlagENUM4">@_f.tra("Nad-školní obecně integrovaný systém")</label>
         </div>
     </div>
 
@@ -66,12 +66,12 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
-        a70ScopFlag_RefreshState();
+        a70ScopeFlag_RefreshState();
 
     });
 
-    function a70ScopFlag_RefreshState() {
-        var s = $("input:radio[name ='Rec.a70ScopFlag']:checked").val();
+    function a70ScopeFlag_RefreshState() {
+        var s = $("input:radio[name ='Rec.a70ScopeFlag']:checked").val();
         if (s == "GlobalSystem") {
             $("#divLogin").css("visibility", "visible");
         } else {

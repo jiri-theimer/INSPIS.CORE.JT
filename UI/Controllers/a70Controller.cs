@@ -42,7 +42,7 @@ namespace UI.Controllers
                 BO.a70SIS c = new BO.a70SIS();
                 if (v.rec_pid > 0) c = Factory.a70SISBL.Load(v.rec_pid);
 
-                c.a70ScopFlag = v.Rec.a70ScopFlag;
+                c.a70ScopeFlag = v.Rec.a70ScopeFlag;
                 c.a70Name = v.Rec.a70Name;
 
                 c.a70Code = v.Rec.a70Code;

@@ -2,7 +2,7 @@
 
 namespace BO
 {
-    public enum a70ScopFlagENUM
+    public enum a70ScopeFlagENUM
     {
         TestSchoolOnly=1,
         RealSchoolOnly=2,
@@ -16,7 +16,7 @@ namespace BO
         public string a70Name { get; set; }
         public string a70Code { get; set; }
         public string a70Description { get; set; }
-        public a70ScopFlagENUM a70ScopFlag { get; set; }
+        public a70ScopeFlagENUM a70ScopeFlag { get; set; }
 
         public string a70WsLogin { get; set; }
 

@@ -22,7 +22,7 @@ namespace BL
 
         private string GetSQL1(string strAppend = null)
         {
-            sb("SELECT a.*,case a.a70ScopFlag when 2 then 'Pouze reálné školy' when 1 then 'Pouze testovací školy' when 3 then 'Všechny školy' when 4 then 'Obecně integrovaný' end as ScopeFlagAlias,");
+            sb("SELECT a.*,case a.a70ScopeFlag when 2 then 'Pouze reálné školy' when 1 then 'Pouze testovací školy' when 3 then 'Všechny školy' when 4 then 'Obecně integrovaný' end as ScopeFlagAlias,");
             sb(_db.GetSQL1_Ocas("a70"));
             sb(" FROM a70SIS a");
             sb(strAppend);
@@ -55,9 +55,9 @@ namespace BL
             p.AddInt("pid", rec.a70ID);
             p.AddString("a70Name", rec.a70Name);
             p.AddString("a70Code", rec.a70Code);
-            p.AddEnumInt("a70ScopFlag", rec.a70ScopFlag);
+            p.AddEnumInt("a70ScopeFlag", rec.a70ScopeFlag);
             p.AddString("a70Description", rec.a70Description);
-            if (rec.a70ScopFlag == BO.a70ScopFlagENUM.GlobalSystem)
+            if (rec.a70ScopeFlag == BO.a70ScopeFlagENUM.GlobalSystem)
             {
                 p.AddString("a70WsLogin", rec.a70WsLogin);
             }
@@ -84,7 +84,7 @@ namespace BL
             {
                 this.AddMessage("Chybí vyplnit [Kód]."); return false;
             }
-            if (rec.a70ScopFlag==BO.a70ScopFlagENUM.GlobalSystem && string.IsNullOrEmpty(rec.a70WsLogin) == true)
+            if (rec.a70ScopeFlag==BO.a70ScopeFlagENUM.GlobalSystem && string.IsNullOrEmpty(rec.a70WsLogin) == true)
             {
                 this.AddMessage("Pro obecný integrovaný systém je povinné specifikovat [Login web služby]");return false;
             }

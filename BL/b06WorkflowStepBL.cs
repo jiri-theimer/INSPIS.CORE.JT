@@ -60,8 +60,8 @@ namespace BL
             p.AddInt("b02ID", rec.b02ID, true);
             p.AddInt("b02ID_Target", rec.b02ID_Target, true);
             p.AddInt("a45ID_NomineeTarget", rec.a45ID_NomineeTarget, true);
-            p.AddInt("x26ID_Nominee_J02", rec.x26ID_Nominee_J02, true);
-            p.AddInt("x26ID_Nominee_J11", rec.x26ID_Nominee_J11, true);
+            //p.AddInt("x26ID_Nominee_J02", rec.x26ID_Nominee_J02, true);
+            //p.AddInt("x26ID_Nominee_J11", rec.x26ID_Nominee_J11, true);
 
             p.AddString("b06Name", rec.b06Name);
             p.AddString("b06RunSQL", rec.b06RunSQL);
