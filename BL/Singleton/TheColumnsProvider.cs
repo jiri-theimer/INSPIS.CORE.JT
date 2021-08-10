@@ -165,8 +165,13 @@ namespace BL
             AF("a01Event", "SLA", "SLA (hod.)", 0, "case when a01DurationSLA<3600 then 0 else a01DurationSLA / 60 / 60 end", "num");
             AppendTimestamp("a01Event");
 
+            AF("st1_formulare_v_akci", "PocetFormularu", "Počet formulářů", 0, null, "num0",false,true);
+            AF("st1_formulare_v_akci", "AnketniFormulare", "Anketní formuláře", 0, null, "num0",false,true);
+            AF("st1_formulare_v_akci", "UzamceneFormulare", "Uzamčené formuláře", 0, null, "num0",false,true);
+            
+
             //a03Institution = instituce
-            onecol=AF("a03Institution", "a03REDIZO", "REDIZO",1,null,"string",false,true);
+            onecol =AF("a03Institution", "a03REDIZO", "REDIZO",1,null,"string",false,true);
             onecol.FixedWidth = 100;
             AF("a03Institution", "a03Name", "Instituce", 1, null, "string", false, false);
             AF("a03Institution", "a03ShortName", "Zkrácený název", 0);

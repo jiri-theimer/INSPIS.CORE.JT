@@ -86,6 +86,7 @@ namespace BL
             AE("a10EventType", "Typy akcí", "Typ akce", "a10EventType a", "a.a10Name");
             AE("a11EventForm", "Formuláře v akci", "Formulář v akci", "a11EventForm a INNER JOIN a01Event a11_a01 ON a.a01ID=a11_a01.a01ID", "a.a11ID");
             ByPrefix("a11").IsWithoutValidity = true;
+            
             AE("a17DepartmentType", "Typy činností", "Typ činnosti", "a17DepartmentType a","a.a17Name","a.a17Name");
             AE("a18DepartmentDomain", "Kódy vzdělávacích oborů", "Kód vzdělávacího oboru", "a18DepartmentDomain a", "a.a18Name");
             AE("a19DomainToInstitutionDepartment", "Vzdělávací obory", "Vzdělávací obor", "a19DomainToInstitutionDepartment a", "a.a19ID");            
@@ -187,7 +188,7 @@ namespace BL
             AE_TINY("v_uraz_datumzraneni", "Úraz2", "Úraz2");
             AE_TINY("v_uraz_poradovecislo", "Úraz3", "Úraz3");
 
-
+            AE_TINY("st1_formulare_v_akci", "Formuláře v akci", "Formuláře v akci");
         }
 
         private void AE(string strTabName, string strPlural, string strSingular, string strSqlFromGrid, string strSqlOrderByCombo, string strSqlOrderBy = null)
@@ -266,7 +267,9 @@ namespace BL
                         lis.Add(getREL("v_uraz_datumzraneni", "a01_xxb", "Úraz2", "LEFT OUTER JOIN v_uraz_datumzraneni a01_xxb ON a.a01ID=a01_xxb.a01ID"));
                         lis.Add(getREL("v_uraz_poradovecislo", "a01_xxc", "Úraz3", "LEFT OUTER JOIN v_uraz_poradovecislo a01_xxc ON a.a01ID=a01_xxc.a01ID"));
                     }
-                    
+
+                    lis.Add(getREL("st1_formulare_v_akci", "a01_stat", "Formuláře", "LEFT OUTER JOIN (select a01ID,count(a11ID) as PocetFormularu,sum(case when a11IsPoll=1 then 1 end) as AnketniFormulare,sum(case when a11IsLocked=1 then 1 end) as UzamceneFormulare FROM a11EventForm GROUP BY a01ID) a01_stat ON a.a01ID=a01_stat.a01ID"));
+
                     break;
                 case "a02":
                     lis.Add(getREL("a04Inspectorate", "a02_a04", "Inspektorát", "INNER JOIN a04Inspectorate a02_a04 ON a.a04ID=a02_a04.a04ID"));

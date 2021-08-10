@@ -21,7 +21,7 @@
         <button type="button" class="btn btn-outline-info" onclick="change_view('1')">@_f.tra("Přepnout na GRID")</button>
     }
 
-    @if (Model.RecA01Permission.PermValue == BO.a01EventPermissionENUM.ShareTeam_Leader || Model.RecA01Permission.PermValue == BO.a01EventPermissionENUM.FullAccess)
+    @if (Model.RecA01Permission.HasPerm(BO.a01EventPermissionENUM.ShareTeam_Leader) || Model.RecA01Permission.HasPerm(BO.a01EventPermissionENUM.FullAccess))
     {
         @if (!Model.RecA01.isclosed && !Model.RecA01.a01IsAllFormsClosed)
         {

@@ -57,7 +57,7 @@ namespace UI.Controllers
             }
             RefreshStateAddSouvisejici(v);
             var perm = Factory.a01EventBL.InhalePermission(v.RecA01);
-            if (Factory.CurrentUser.TestPermission(BO.j05PermValuEnum.AdminGlobal) || perm.PermValue == BO.a01EventPermissionENUM.FullAccess || perm.PermValue == BO.a01EventPermissionENUM.ShareTeam_Owner || perm.PermValue == BO.a01EventPermissionENUM.ShareTeam_Leader)
+            if (Factory.CurrentUser.TestPermission(BO.j05PermValuEnum.AdminGlobal) || perm.HasPerm(BO.a01EventPermissionENUM.FullAccess) || perm.HasPerm(BO.a01EventPermissionENUM.ShareTeam_Owner) || perm.HasPerm(BO.a01EventPermissionENUM.ShareTeam_Leader))
             {
             }
             else
@@ -360,13 +360,11 @@ namespace UI.Controllers
                 return RecNotFound(v);
             }
             var perm = Factory.a01EventBL.InhalePermission(v.Rec);
-            if (perm.PermValue == BO.a01EventPermissionENUM.FullAccess || perm.PermValue == BO.a01EventPermissionENUM.ShareTeam_Owner || perm.PermValue == BO.a01EventPermissionENUM.ShareTeam_Leader || perm.IsRecordOwner == true)
+            if (!perm.HasPerm(BO.a01EventPermissionENUM.FullAccess ) && !perm.HasPerm(BO.a01EventPermissionENUM.ShareTeam_Owner) && !perm.HasPerm(BO.a01EventPermissionENUM.ShareTeam_Leader))
             {
+                return this.StopPage(true, "Editace karty akce je dostupná pouze vedoucímu týmu, vlastníkovi akce nebo administrátorovi.", true);
             }
-            else
-            {
-                return this.StopPage(true, "Editace karty akce je dostupná pouze vedoucímu týmu, vlastníkovi akce nebo administrátorovi.",true);
-            }
+            
             var tg = Factory.o51TagBL.GetTagging("a01", pid);
             v.TagPids = tg.TagPids;
             v.TagNames = tg.TagNames;

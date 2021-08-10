@@ -114,7 +114,7 @@ namespace UI.Controllers
 
             InhaleCapacityTimeline(v);
 
-            if (v.PermA01.PermValue == BO.a01EventPermissionENUM.ShareTeam_Leader || v.PermA01.PermValue == BO.a01EventPermissionENUM.ShareTeam_Owner || v.PermA01.PermValue == BO.a01EventPermissionENUM.FullAccess)
+            if (v.PermA01.HasPerm(BO.a01EventPermissionENUM.ShareTeam_Leader) || v.PermA01.HasPerm(BO.a01EventPermissionENUM.ShareTeam_Owner) || v.PermA01.HasPerm(BO.a01EventPermissionENUM.FullAccess))
             {
                 return View(v);
             }

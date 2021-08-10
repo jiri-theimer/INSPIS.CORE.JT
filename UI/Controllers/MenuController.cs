@@ -489,7 +489,7 @@ namespace UI.Controllers
                     AMI("Tisková sestava", string.Format("javascript: _window_open('/x31/ReportContext?pid={0}&prefix=a01',2)", pid));
                   
                     
-                    if (Factory.App.Implementation != "HD" && (permA01.PermValue == a01EventPermissionENUM.ShareTeam_Leader || permA01.PermValue == a01EventPermissionENUM.ShareTeam_Owner || permA01.PermValue == a01EventPermissionENUM.FullAccess))
+                    if (Factory.App.Implementation != "HD" && (permA01.HasPerm(a01EventPermissionENUM.ShareTeam_Leader) || permA01.HasPerm(a01EventPermissionENUM.ShareTeam_Owner) || permA01.HasPerm(a01EventPermissionENUM.FullAccess)))
                     {
                         
                         if (recA10.a10IsUse_ReChangeForms || recA10.a10IsUse_Poll)
@@ -556,7 +556,7 @@ namespace UI.Controllers
 
 
                     AMI("Záznam", null, null, "Zaznam");
-                    if (permA01.PermValue == a01EventPermissionENUM.ShareTeam_Leader || permA01.PermValue == a01EventPermissionENUM.ShareTeam_Owner || permA01.PermValue == a01EventPermissionENUM.FullAccess)
+                    if (permA01.HasPerm(a01EventPermissionENUM.ShareTeam_Leader) || permA01.HasPerm(a01EventPermissionENUM.ShareTeam_Owner) || permA01.HasPerm(a01EventPermissionENUM.FullAccess))
                     {
                         if (Factory.App.Implementation !="HD" && recA10.a10IsSupportCloning && recA10.a10ViewUrl_Insert==null)
                         {
@@ -651,7 +651,7 @@ namespace UI.Controllers
                     if (!b)
                     {
                         var perm = Factory.a01EventBL.InhalePermission(Factory.a01EventBL.Load(recA11.a01ID));
-                        if (perm.PermValue == BO.a01EventPermissionENUM.FullAccess || perm.PermValue == BO.a01EventPermissionENUM.ShareTeam_Owner || perm.PermValue == BO.a01EventPermissionENUM.ShareTeam_Leader)
+                        if (perm.HasPerm(BO.a01EventPermissionENUM.FullAccess) || perm.HasPerm(BO.a01EventPermissionENUM.ShareTeam_Owner) || perm.HasPerm(BO.a01EventPermissionENUM.ShareTeam_Leader))
                         {
                             b = true;
                         }

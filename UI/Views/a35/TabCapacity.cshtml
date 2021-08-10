@@ -23,7 +23,7 @@
         <myval datatype="date" value="@Model.RecA01.a01DateUntil"></myval>
     </div>
 
-    @if (Model.RecA01.a10CoreFlag != "aus" && (Model.PermA01.PermValue == BO.a01EventPermissionENUM.ShareTeam_Leader || Model.PermA01.PermValue == BO.a01EventPermissionENUM.ShareTeam_Owner || Model.PermA01.PermValue == BO.a01EventPermissionENUM.FullAccess))
+    @if (Model.RecA01.a10CoreFlag != "aus" && (Model.PermA01.HasPerm(BO.a01EventPermissionENUM.ShareTeam_Leader) || Model.PermA01.HasPerm(BO.a01EventPermissionENUM.ShareTeam_Owner) || Model.PermA01.HasPerm(BO.a01EventPermissionENUM.FullAccess)))
     {
         <div class="col-sm-2 col-md-2">
             <button type="button" class="btn btn-primary" onclick="edit()">@_f.tra("Upravit")</button>

@@ -110,7 +110,7 @@ namespace UIFT.Security
                             {
                                 // a01event a prava na a01
                                 var ev01 = repository.BL.a01EventBL.Load(ev.a01ID);
-                                var ev01permission = repository.BL.a01EventBL.InhalePermission(ev01).PermValue;
+                                var ev01permission = repository.BL.a01EventBL.InhalePermission(ev01);
 
                                 // vytvoreni instance uzivatele
                                 result.User = new UIFTUser(new ClaimsIdentity())
@@ -164,8 +164,8 @@ namespace UIFT.Security
                                         Log.LogWarning("AuthorizeRequest: Failed {0}; preview: {1}; user: {2}; a11id: {3}", result.FailedCode, preview, repository.BL.CurrentUser.j03Login, ev.a11ID);
                                     }
                                     // kontrola prav na vyplnovani
-                                    else if ((ev01permission == BO.a01EventPermissionENUM.NoAccess && !ev.a11IsPoll) ||  // nema vubec pravo na formular
-                                        (ev01permission == BO.a01EventPermissionENUM.NoAccess && ev.a11IsPoll && preview)) // pokud se jedna o Anketu, muze ji editovat kazdy, ale zobrazovat Preview jen podle prav
+                                    else if ((ev01permission.HasPerm(BO.a01EventPermissionENUM.NoAccess) && !ev.a11IsPoll) ||  // nema vubec pravo na formular
+                                        (ev01permission.HasPerm(BO.a01EventPermissionENUM.NoAccess) && ev.a11IsPoll && preview)) // pokud se jedna o Anketu, muze ji editovat kazdy, ale zobrazovat Preview jen podle prav
                                     {
                                         result.FailedCode = 18;
 
@@ -181,7 +181,7 @@ namespace UIFT.Security
                                     else
                                     {
                                         // nema pravo na zapis - prepni na Preview
-                                        if (!ev.a11IsPoll && ev01permission == BO.a01EventPermissionENUM.ReadOnlyAccess)
+                                        if (!ev.a11IsPoll && ev01permission.HasPerm(BO.a01EventPermissionENUM.ReadOnlyAccess))
                                         {
                                             Log.LogInformation("AuthorizeRequest: Success, but switched to PREVIEW; a11IsPoll: {0}; ev01permission: {1}; User: {2};", ev.a11IsPoll, ev01permission, repository.BL.CurrentUser.j03Login);
                                             preview = true;

@@ -131,7 +131,7 @@ namespace UI.Controllers
             if (!b)
             {
                 var perm = Factory.a01EventBL.InhalePermission(Factory.a01EventBL.Load(recA11.a01ID));
-                if (perm.PermValue == BO.a01EventPermissionENUM.FullAccess || perm.PermValue == BO.a01EventPermissionENUM.ShareTeam_Owner || perm.PermValue == BO.a01EventPermissionENUM.ShareTeam_Leader)
+                if (perm.HasPerm(BO.a01EventPermissionENUM.FullAccess) || perm.HasPerm(BO.a01EventPermissionENUM.ShareTeam_Owner) || perm.HasPerm(BO.a01EventPermissionENUM.ShareTeam_Leader))
                 {
                     b = true;
                 }
@@ -289,10 +289,11 @@ namespace UI.Controllers
                 return this.StopPage(true, "Tato akce je již uzavřena.",true);
             }
             var perm = Factory.a01EventBL.InhalePermission(v.RecA01);
-            if (perm.PermValue != BO.a01EventPermissionENUM.ShareTeam_Leader && perm.PermValue != BO.a01EventPermissionENUM.FullAccess)
+            if (!perm.HasPerm(BO.a01EventPermissionENUM.ShareTeam_Leader) && !perm.HasPerm(BO.a01EventPermissionENUM.FullAccess))
             {
                 return this.StopPage(true, "Přidávat formuláře do akce může pouze vedoucí týmu.", true);
             }
+            
 
             return View(v);
         }
@@ -414,7 +415,7 @@ namespace UI.Controllers
                 return this.StopPage(true, "Tato akce je již uzavřena.",true);
             }
             var perm = Factory.a01EventBL.InhalePermission(v.RecA01);
-            if (perm.PermValue != BO.a01EventPermissionENUM.ShareTeam_Leader && perm.PermValue != BO.a01EventPermissionENUM.FullAccess)
+            if (!perm.HasPerm(BO.a01EventPermissionENUM.ShareTeam_Leader) && !perm.HasPerm(BO.a01EventPermissionENUM.FullAccess))
             {
                 return this.StopPage(true, "Přidávat formuláře do akce může pouze vedoucí týmu.", true);
             }
@@ -591,7 +592,7 @@ namespace UI.Controllers
                 return this.StopPage(true, "Tato akce je již uzavřena.",true);
             }
             var perm = Factory.a01EventBL.InhalePermission(v.RecA01);
-            if (perm.PermValue != BO.a01EventPermissionENUM.ShareTeam_Leader && perm.PermValue !=BO.a01EventPermissionENUM.FullAccess)
+            if (!perm.HasPerm(BO.a01EventPermissionENUM.ShareTeam_Leader) && !perm.HasPerm(BO.a01EventPermissionENUM.FullAccess))
             {
                 return this.StopPage(true, "Přidávat formuláře do akce může pouze vedoucí týmu.", true);
             }

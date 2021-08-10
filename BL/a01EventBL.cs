@@ -430,28 +430,40 @@ namespace BL
 
         public BO.a01EventPermission InhalePermission(BO.a01Event rec)
         {
-            BO.a01EventPermission ret = new BO.a01EventPermission() { PermValue = BO.a01EventPermissionENUM.NoAccess };
+            var ret = new BO.a01EventPermission() { PermValue = new List<a01EventPermissionENUM>() };
 
             if (_mother.CurrentUser.TestPermission(BO.j05PermValuEnum.AdminGlobal) && _mother.App.Implementation !="HD")
             {
-                ret.PermValue = BO.a01EventPermissionENUM.FullAccess;    //administrátor - automaticky nejvyšší práva k akci. V Helpdesk implementaci to neplatí
+                ret.PermValue.Add(BO.a01EventPermissionENUM.FullAccess);    //administrátor - automaticky nejvyšší práva k akci. V Helpdesk implementaci to neplatí
+                ret.PermValue.Add(BO.a01EventPermissionENUM.ShareTeam_Leader);
+                ret.PermValue.Add(BO.a01EventPermissionENUM.ShareTeam_Owner);
                 ret.IsRecordOwner = true;
             }
             else
             {
-                int intPerm = _db.Load<BO.GetInteger>("select dbo._core_a01_permission(@a01id,@j03id_sys) as Value", new { a01id = rec.pid, j03id_sys = _mother.CurrentUser.pid }).Value;
-                if (intPerm > 0)
-                {
-                    ret.PermValue = (BO.a01EventPermissionENUM)intPerm;
-                    ret.IsRecordOwner = _db.Load<BO.GetBool>("select dbo._core_a01_is_user_owner(@a01id,@j03id_sys) as Value", new { a01id = rec.pid, j03id_sys = _mother.CurrentUser.pid }).Value;
-                }
-                else
+                //int intPerm = _db.Load<BO.GetInteger>("select dbo._core_a01_permission(@a01id,@j03id_sys) as Value", new { a01id = rec.pid, j03id_sys = _mother.CurrentUser.pid }).Value;
+                string strPermsInLine = _db.Load<BO.GetString>("select dbo._core_a01_permission(@a01id,@j03id_sys) as Value", new { a01id = rec.pid, j03id_sys = _mother.CurrentUser.pid }).Value;
+                if (string.IsNullOrEmpty(strPermsInLine) || strPermsInLine =="00")
                 {
                     if (_mother.CurrentUser.TestPermission(BO.j05PermValuEnum.FormReadonlyPreview))
                     {
-                        ret.PermValue = BO.a01EventPermissionENUM.ReadOnlyAccess;    //oprávnění číst všechny formulář - readonly náhled
+                        ret.PermValue.Add(BO.a01EventPermissionENUM.ReadOnlyAccess);    //oprávnění číst všechny formulář - readonly náhled
+                    }
+                    return ret;
+                }
+                var perms=BO.BAS.ConvertString2ListInt(strPermsInLine, "-");
+                foreach(int x in perms)
+                {
+                    ret.PermValue.Add((BO.a01EventPermissionENUM)x);
+                    if (x == 15)
+                    {
+                        ret.IsRecordOwner = true;
                     }
                 }
+
+               
+                
+               
 
             }
 

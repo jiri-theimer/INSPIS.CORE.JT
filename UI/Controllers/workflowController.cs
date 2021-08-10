@@ -199,31 +199,31 @@ namespace UI.Controllers
                 switch (c.a45ID)
                 {
                     case 1: //člen týmu
-                        if (v.PermA01.PermValue == BO.a01EventPermissionENUM.ShareTeam_Member)
+                        if (v.PermA01.HasPerm(BO.a01EventPermissionENUM.ShareTeam_Member))
                         {
                             return true;
                         }
                         break;
                     case 2: //vedoucí týmu
-                        if (v.PermA01.PermValue == BO.a01EventPermissionENUM.ShareTeam_Leader)
+                        if (v.PermA01.HasPerm( BO.a01EventPermissionENUM.ShareTeam_Leader))
                         {
                             return true;
                         }
                         break;
                     case 6: //přizvaná osoba
-                        if (v.PermA01.PermValue == BO.a01EventPermissionENUM.ShareTeam_InvitedPerson)
+                        if (v.PermA01.HasPerm(BO.a01EventPermissionENUM.ShareTeam_InvitedPerson))
                         {
                             return true;
                         }
                         break;
                     case 3: //zadavatel
-                        if (v.PermA01.PermValue == BO.a01EventPermissionENUM.HD_Requestor)
+                        if (v.PermA01.HasPerm(BO.a01EventPermissionENUM.HD_Requestor))
                         {
                             return true;
                         }
                         break;
                     case 5: //vlastník
-                        if (v.PermA01.PermValue == BO.a01EventPermissionENUM.ShareTeam_Owner)
+                        if (v.PermA01.HasPerm(BO.a01EventPermissionENUM.ShareTeam_Owner))
                         {
                             return true;
                         }

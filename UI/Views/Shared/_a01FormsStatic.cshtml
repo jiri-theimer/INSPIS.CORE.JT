@@ -1,4 +1,5 @@
 ﻿@model List<BO.a11EventForm>
+@inject BL.Factory _f
 
 @addTagHelper *, UI
 
@@ -28,7 +29,7 @@
         </div>
         <div class="col-sm-11 col-md-11">
             <myval datatype="html" value="@c.FullNameHtml" hoverprefix="a11" hoverpid="@c.pid"></myval>
-            
+
         </div>
     </div>
 }
@@ -36,7 +37,7 @@
 @if (Model.Where(p => p.a11IsPoll == true).Count() > 0)
 {
     <hr />
-    <h6>Anketní formuláře:</h6>
+    <h6>@_f.tra("Anketní formuláře"):</h6>
     @foreach (var c in Model.Where(p => p.a11IsPoll == true))
     {
         <div class="row my-2">
@@ -56,7 +57,7 @@
             </div>
             <div class="col-sm-11 col-md-11">
                 <myval datatype="html" value="@c.FullNameHtml" hoverprefix="a11" hoverpid="@c.pid"></myval>
-                
+
             </div>
         </div>
     }
