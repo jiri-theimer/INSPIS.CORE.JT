@@ -106,7 +106,7 @@ namespace UI.Controllers
         {
             var v = new a01TabSchoolA57() { a03ID = a03id };
             v.RecA03 = Factory.a03InstitutionBL.Load(v.a03ID);
-            v.lisA57 = Factory.a57AutoEvaluationBL.GetList(new BO.myQuery("a57"));
+            v.lisA57 = Factory.a57AutoEvaluationBL.GetList(new BO.myQuery("a57")).Where(p => p.a57CreateUntil>=DateTime.Now && p.a57CreateFrom <= DateTime.Now);
 
             var lisA39 = Factory.a39InstitutionPersonBL.GetList(new BO.myQuery("a39") { IsRecordValid = true, a03id = v.a03ID });
             int intCurrentJ04ID = lisA39.Where(p => p.j02ID == Factory.CurrentUser.j02ID).First().j04ID_Explicit;
@@ -413,13 +413,18 @@ namespace UI.Controllers
             }
 
 
+            var lisA57 = Factory.a57AutoEvaluationBL.GetList(new BO.myQuery("a57"));
 
-            if (v.RecJ04.j04IsAllowedAllEventTypes == false)
-            {
-                var lisJ08 = Factory.j04UserRoleBL.GetListJ08(v.RecJ04.pid);
-                foreach (var c in lisJ08.Where(p => p.a10IsUse_K01 == false))
+            if (!v.RecJ04.j04IsAllowedAllEventTypes)
+            {               
+                var lisJ08 = Factory.j04UserRoleBL.GetListJ08(v.RecJ04.pid).Where(p=>p.a10IsUse_K01==false);
+                
+                foreach (var c in lisJ08)
                 {
-                    v.NavTabs.Add(AddTab(c.a10Name, "a01", "/Dashboard/TabSchoolA01Grid?a03id=" + v.a03ID.ToString() + "&a10id=" + c.a10ID.ToString(), false, null));
+                    if (!lisA57.Any(p => p.a10ID == c.a10ID))   //vyhodit typy akcí, které jsou svázány s nějakou autoevaluační šablonou
+                    {
+                        v.NavTabs.Add(AddTab(c.a10Name, "a01", "/Dashboard/TabSchoolA01Grid?a03id=" + v.a03ID.ToString() + "&a10id=" + c.a10ID.ToString(), false, null));
+                    }                    
                 }
             }
             else
@@ -431,7 +436,11 @@ namespace UI.Controllers
                 {
                     foreach (var c in lis)
                     {
-                        v.NavTabs.Add(AddTab(c.a10Name, "a01", "/Dashboard/TabSchoolA01Grid?a03id=" + v.a03ID.ToString() + "&a10id=" + c.a10ID.ToString(), false, null));
+                        if (!lisA57.Any(p => p.a10ID == c.pid)) //vyhodit typy akcí, které jsou svázány s nějakou autoevaluační šablonou
+                        {
+                            v.NavTabs.Add(AddTab(c.a10Name, "a01", "/Dashboard/TabSchoolA01Grid?a03id=" + v.a03ID.ToString() + "&a10id=" + c.a10ID.ToString(), false, null));
+                        }
+                            
                     }
                 }
                 else
