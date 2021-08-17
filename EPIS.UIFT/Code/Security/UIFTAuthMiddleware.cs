@@ -141,9 +141,9 @@ namespace UIFT.Security
                                     return result;*/
                                 }
 
-                                // a11id neexistuje
                                 if (ev == null)
                                 {
+                                    // a11id neexistuje
                                     result.FailedCode = 1;
 
                                     Log.LogWarning("AuthorizeRequest: Failed {0}; preview: {1};", result.FailedCode, preview);
@@ -164,8 +164,8 @@ namespace UIFT.Security
                                         Log.LogWarning("AuthorizeRequest: Failed {0}; preview: {1}; user: {2}; a11id: {3}", result.FailedCode, preview, repository.BL.CurrentUser.j03Login, ev.a11ID);
                                     }
                                     // kontrola prav na vyplnovani
-                                    else if ((ev01permission.HasPerm(BO.a01EventPermissionENUM.NoAccess) && !ev.a11IsPoll) ||  // nema vubec pravo na formular
-                                        (ev01permission.HasPerm(BO.a01EventPermissionENUM.NoAccess) && ev.a11IsPoll && preview)) // pokud se jedna o Anketu, muze ji editovat kazdy, ale zobrazovat Preview jen podle prav
+                                    else if ((!ev01permission.HasPerm(BO.a01EventPermissionENUM.ShareTeam_Member) && !ev01permission.HasPerm(BO.a01EventPermissionENUM.ShareTeam_Leader) && !ev.a11IsPoll && !preview) ||  // nema vubec pravo na formular
+                                        (!ev01permission.HasPerm(BO.a01EventPermissionENUM.ReadOnlyAccess) && ev.a11IsPoll && preview)) // pokud se jedna o Anketu, muze ji editovat kazdy, ale zobrazovat Preview jen podle prav                                        
                                     {
                                         result.FailedCode = 18;
 

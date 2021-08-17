@@ -467,6 +467,11 @@ namespace BL
 
             }
 
+            if (ret.PermValue.Contains(a01EventPermissionENUM.ShareTeam_Leader) || ret.PermValue.Contains(a01EventPermissionENUM.ShareTeam_Member))
+            {
+                ret.PermValue.Add(BO.a01EventPermissionENUM.ReadOnlyAccess);    //právo na čtení má každý člen a vedoucí
+            }
+
             return ret;
         }
 

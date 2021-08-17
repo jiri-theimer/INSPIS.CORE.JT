@@ -221,7 +221,14 @@ namespace UI.Controllers
             {
                 v.MakeClone();
             }
-            return ViewTup(v, BO.j05PermValuEnum.AdminGlobal_Ciselniky);
+            
+            var perm = Factory.a01EventBL.InhalePermission(v.RecA01);
+            if (!perm.HasPerm(BO.a01EventPermissionENUM.ShareTeam_Leader) && !perm.HasPerm(BO.a01EventPermissionENUM.FullAccess))
+            {
+                return this.StopPage(true, "Pro editaci formuláře v akci nemáte oprávnění.", true);
+            }
+            return View(v);
+            //return ViewTup(v, BO.j05PermValuEnum.AdminGlobal_Ciselniky);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
