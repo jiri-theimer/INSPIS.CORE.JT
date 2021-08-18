@@ -181,7 +181,7 @@ namespace UIFT.Security
                                     else
                                     {
                                         // nema pravo na zapis - prepni na Preview
-                                        if (!ev.a11IsPoll && ev01permission.HasPerm(BO.a01EventPermissionENUM.ReadOnlyAccess))
+                                        if (!preview && !ev.a11IsPoll && !ev01permission.HasPerm(BO.a01EventPermissionENUM.ShareTeam_Leader) && !ev01permission.HasPerm(BO.a01EventPermissionENUM.ShareTeam_Member))
                                         {
                                             Log.LogInformation("AuthorizeRequest: Success, but switched to PREVIEW; a11IsPoll: {0}; ev01permission: {1}; User: {2};", ev.a11IsPoll, ev01permission, repository.BL.CurrentUser.j03Login);
                                             preview = true;
