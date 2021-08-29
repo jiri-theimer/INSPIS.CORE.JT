@@ -23,7 +23,7 @@ namespace UI.Models
         public string SearchLogin { get; set; }
         public int SearchJ03ID { get; set; }
         public BO.j03User SearchRecJ03 { get; set; }
-        
 
+        public IEnumerable<BO.b65WorkflowMessage> lisB65 { get; set; }
     }
 }

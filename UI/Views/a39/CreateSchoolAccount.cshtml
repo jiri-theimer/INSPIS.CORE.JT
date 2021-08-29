@@ -129,6 +129,24 @@
             <textarea asp-for="@Model.a39Description" class="form-control" placeholder="@_f.tra("Poznámka k roli")"></textarea>
 
         </div>
+
+        <div class="btn-group">
+            <div class="dropdown">
+                <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    @_f.tra("Uložit změny a odeslat zprávu")
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    @foreach (var c in Model.lisB65)
+                    {
+                        <a class="dropdown-item" href="javascript:save_and_send(@c.pid)">@c.b65Name</a>
+                    }
+
+                </div>
+
+            </div>
+            
+        </div>
+
     </div>
 </form>
 
@@ -155,5 +173,9 @@
         location.replace("/a39/CreateSchoolAccountBySearch?a03id=@Model.a03ID");
     }
 
+    function save_and_send(b65id) {
+        form1.action = "/a39/CreateSchoolAccount?oper=save_and_send&b65id=" + b65id;
+        form1.submit();
+    }
 
 </script>

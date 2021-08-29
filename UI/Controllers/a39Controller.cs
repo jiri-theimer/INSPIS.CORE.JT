@@ -351,7 +351,7 @@ namespace UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateSchoolAccount(Models.a39CreateSchoolAccount v, string oper)
+        public IActionResult CreateSchoolAccount(Models.a39CreateSchoolAccount v, string oper, int b65id)
         {
             RefreshStateCreateSchoolAccount(v);
             if (oper == "newpwd")
@@ -361,6 +361,7 @@ namespace UI.Controllers
                 v.VerifyPassword = v.Password;
                 return View(v);
             }
+            
 
             if (ModelState.IsValid)
             {
@@ -391,11 +392,22 @@ namespace UI.Controllers
                 var recA39 = new BO.a39InstitutionPerson() { j02ID = recJ03.j02ID, a03ID = v.a03ID, j04ID_Explicit = recJ03.j04ID, a39Description = v.a39Description, a39IsAllowInspisWS = v.a39IsAllowInspisWS };
 
                 recA39.pid = Factory.a39InstitutionPersonBL.Save(recA39);
+
                 if (recA39.pid > 0)
                 {
-                    v.SetJavascript_CallOnLoad(recA39.pid);
-                    return View(v);
+                    if (oper == "save_and_send")
+                    {
+                        return Redirect("/Mail/SendMail?x29id=503&j02id=" + recA39.j02ID.ToString() + "&x40datapid=" + recJ03.pid.ToString() + "&b65id=" + b65id.ToString() + "&param1=" + v.Password);
+                    }
+                    else
+                    {
+                        v.SetJavascript_CallOnLoad(recA39.pid);
+                        return View(v);
+                    }
+
                 }
+
+                
 
             }
 
@@ -414,6 +426,8 @@ namespace UI.Controllers
             {
                 v.SearchRecJ03 = Factory.j03UserBL.Load(v.SearchJ03ID);
             }
+
+            v.lisB65 = Factory.b65WorkflowMessageBL.GetList(new BO.myQuery("b65")).Where(p => p.x29ID == 503);
         }
 
         private bool ValidatePreSaveSchoolAccount(BO.j03User c, BO.j02Person d)
