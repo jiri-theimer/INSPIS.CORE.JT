@@ -389,7 +389,7 @@ namespace UI.Controllers
                 recJ03.j03PasswordHash = lu.Pwd2Hash(v.Password, recJ03);
                 recJ03.pid = Factory.j03UserBL.Save(recJ03);
 
-                var recA39 = new BO.a39InstitutionPerson() { j02ID = recJ03.j02ID, a03ID = v.a03ID, j04ID_Explicit = recJ03.j04ID, a39Description = v.a39Description, a39IsAllowInspisWS = v.a39IsAllowInspisWS };
+                var recA39 = new BO.a39InstitutionPerson() { j02ID = recJ03.j02ID, a03ID = v.a03ID, j04ID_Explicit = recJ03.j04ID, a39Description = v.a39Description, a39IsAllowInspisWS = v.a39IsAllowInspisWS, a39RelationFlag=BO.a39InstitutionPerson.a39RelationFlagEnum.Contact };
 
                 recA39.pid = Factory.a39InstitutionPersonBL.Save(recA39);
 

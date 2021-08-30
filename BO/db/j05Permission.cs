@@ -49,7 +49,7 @@ namespace BO
         None = 14,
         A03Admin = 15,
         HelpEditor = 16,
-        StrategyPlanning = 17,
+        Menu_J02=17,                        //StrategyPlanning = 17,
         Timesheet = 18,
         FEP_Editor = 19,         //EPIS II
         FEP_Approver = 20,      //EPIS II

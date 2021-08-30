@@ -132,7 +132,10 @@ namespace UI.Controllers
                 v.Rec = new BO.j02Person();
             }
 
-            return View(v);
+            
+            return ViewTup(v,BO.j05PermValuEnum.Menu_J02);
+
+            
 
         }
 
