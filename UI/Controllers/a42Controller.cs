@@ -437,7 +437,7 @@ namespace UI.Controllers
                 {
                     intOKs += 1;
                     recA01 = Factory.a01EventBL.Load(intA01ID);
-                    ret.Message += ", Nová akce: " + recA01.a01Signature;
+                    ret.Message += ", "+this.Factory.tra("Akce")+": " + recA01.a01Signature;
                 }
                 else
                 {

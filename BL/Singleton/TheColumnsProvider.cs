@@ -645,7 +645,7 @@ namespace BL
 
             //b02 = workflow stav            
             //AF("b02WorkflowStatus", "b02Name", "Stav", 1, null, "string", false, true);
-            AF("b02WorkflowStatus", "b02Name", "Stav", 1);
+            AF("b02WorkflowStatus", "b02Name", "Stav", 1,null,"string",false,true);
             onecol =AF("b02WorkflowStatus", "b02Ident", "Kód stavu", 1);
             onecol.FixedWidth = 70;
             AF("b02WorkflowStatus", "b02IsDefaultStatus", "Výchozí stav", 2, null, "bool");
