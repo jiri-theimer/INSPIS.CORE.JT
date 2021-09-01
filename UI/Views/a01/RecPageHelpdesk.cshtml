@@ -42,7 +42,7 @@
         </div>
     }
 
-    
+
 
 
 
@@ -111,7 +111,15 @@
             <div class="col-sm-3 col-md-2">
                 @if (Model.RecIssuer != null)
                 {
-                    <myval datatype="link" linkurl="/j02/RecPage?pid=@Model.RecIssuer.pid" value="Model.RecIssuer.FullNameAsc" hoverprefix="j02" hoverpid="@Model.RecIssuer.pid"></myval>
+
+                    @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.Menu_J02))
+                    {
+                        <myval datatype="link" linkurl="/j02/RecPage?pid=@Model.RecIssuer.pid" value="Model.RecIssuer.FullNameAsc" hoverprefix="j02" hoverpid="@Model.RecIssuer.pid"></myval>
+                    }
+                    else
+                    {
+                        <myval value="Model.RecIssuer.FullNameAsc" hoverprefix="j02" hoverpid="@Model.RecIssuer.pid"></myval>
+                    }
                 }
             </div>
             <div class="col-sm-2 col-md-2">

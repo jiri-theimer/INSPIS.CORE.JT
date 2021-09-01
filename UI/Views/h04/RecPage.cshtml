@@ -135,12 +135,20 @@
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Příjemci"):</label>
             }
 
-            <div class="col-sm-7 col-md-6">
-                @foreach (var c in Model.lisJ02)
+        <div class="col-sm-7 col-md-6">
+            @foreach (var c in Model.lisJ02)
+            {
+                @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.Menu_J02))
                 {
                     <myval datatype="link" value="@c.FullNameAsc" linkurl="/j02/RecPage?pid=@c.pid" hoverprefix="j02" hoverpid="@c.pid"></myval>
                 }
-            </div>
+                else
+                {
+                    <myval value="@c.FullNameAsc" hoverprefix="j02" hoverpid="@c.pid"></myval>
+                    
+                }
+            }
+        </div>
 
         </div>
 

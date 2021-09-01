@@ -1,7 +1,8 @@
 ﻿@inject UIFT.Repository.RepositoryFactory factory
 @inject BL.RunningApp app
 @{
-    var rep = factory.Get();
+    var rep = factory.Get();    
+    
 }
 <!-- HEADER -->
 <div id="header">
@@ -11,7 +12,7 @@
 </div>
 
 <div class="errorHandler">
-    <h1>@rep.BL.tra("Akci nebylo možné provést:")</h1>
+    <h1 style="display:none;">@rep.BL.tra("Akci nebylo možné provést:")</h1>
     <p>@ViewBag.Message</p>
 </div>
 

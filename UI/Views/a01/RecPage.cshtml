@@ -93,9 +93,14 @@
             @if (Model.RecLastEvent != null)
             {
                 <div class="col-sm-3 col-md-2">
-                    <myval datatype="link" linkurl="/j02/RecPage?pid=@Model.RecLastEvent.j02ID" value="@Model.RecLastEvent.Person" hoverprefix="j02" hoverpid="@Model.RecLastEvent.j02ID"></myval>
-
-
+                    @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.Menu_J02))
+                    {
+                        <myval datatype="link" linkurl="/j02/RecPage?pid=@Model.RecLastEvent.j02ID" value="@Model.RecLastEvent.Person" hoverprefix="j02" hoverpid="@Model.RecLastEvent.j02ID"></myval>
+                    }
+                    else
+                    {
+                        <myval value="@Model.RecLastEvent.Person" hoverprefix="j02" hoverpid="@Model.RecLastEvent.j02ID"></myval>
+                    }
                 </div>
                 <div class="col-sm-2 col-md-2">
                     <myval datatype="datetime" value="@Model.RecLastEvent.DateInsert"></myval>
@@ -114,7 +119,15 @@
             <div class="col-sm-3 col-md-2">
                 @if (Model.RecIssuer != null)
                 {
-                    <myval datatype="link" linkurl="/j02/RecPage?pid=@Model.RecIssuer.pid" value="Model.RecIssuer.FullNameAsc" hoverprefix="j02" hoverpid="@Model.RecIssuer.pid"></myval>
+                    @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.Menu_J02))
+                    {
+                        <myval datatype="link" linkurl="/j02/RecPage?pid=@Model.RecIssuer.pid" value="Model.RecIssuer.FullNameAsc" hoverprefix="j02" hoverpid="@Model.RecIssuer.pid"></myval>
+                    }
+                    else
+                    {
+                        <myval value="Model.RecIssuer.FullNameAsc" hoverprefix="j02" hoverpid="@Model.RecIssuer.pid"></myval>
+                    }
+
                 }
             </div>
             <div class="col-sm-2 col-md-2">
@@ -129,9 +142,14 @@
             @if (Model.Rec.a03ID > 0)
             {
                 <div class="col-sm-9 col-md-8">
-                    <myval datatype="link" linkurl="/a03/RecPage?pid=@Model.Rec.a03ID" value="@Model.Rec.a03Name" tooltip="@Model.Rec.a03Name" hoverprefix="a03" hoverpid="@Model.Rec.a03ID"></myval>
-
-
+                    @if (_f.CurrentUser.TestPermission(BO.j05PermValuEnum.Menu_A03))
+                    {
+                        <myval datatype="link" linkurl="/a03/RecPage?pid=@Model.Rec.a03ID" value="@Model.Rec.a03Name" tooltip="@Model.Rec.a03Name" hoverprefix="a03" hoverpid="@Model.Rec.a03ID"></myval>
+                    }
+                    else
+                    {
+                        <myval value="@Model.Rec.a03Name" tooltip="@Model.Rec.a03Name" hoverprefix="a03" hoverpid="@Model.Rec.a03ID"></myval>
+                    }
                 </div>
                 <div class="col-sm-1 col-md-1">
                     <myval tooltip="@_f.tra("REDIZO")" value="@Model.Rec.a03REDIZO"></myval>
