@@ -62,7 +62,10 @@ namespace UIFT.Controllers
                 {
                     if (this.PersistantData.a11IsPoll) // pokud je to anketa, presmerovat na prihlasovaci obrazovku
                     {
-                        this.UiRepository.BL.a11EventFormBL.LockUnLockPolls(this.PersistantData.a01id, true);
+                        //Nevím, proč tady filip uzamyká všechny anketní formuláře v akci
+                        //změnil jsem to
+                        //this.UiRepository.BL.a11EventFormBL.LockUnLockPolls(this.PersistantData.a01id, true);                        
+                        this.UiRepository.BL.a11EventFormBL.LockUnLockForm(this.PersistantData.a11id, true);
                         return Json(new { success = true, url = Url.Action("AnketaZamkcena", "Login") });
                     }
                     else
