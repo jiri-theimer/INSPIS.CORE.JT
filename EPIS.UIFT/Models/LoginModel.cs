@@ -7,5 +7,7 @@ namespace UIFT.Models
         public string PIN { get; set; }
 
         public string Akce { get; set; }
+
+        public string PrihlasenyUzivatel { get; set; }
     }
 }

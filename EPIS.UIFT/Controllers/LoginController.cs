@@ -22,12 +22,13 @@ namespace UIFT.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Index(string pin = "", string akce = "")
+        public async Task<ActionResult> Index(string pin = "", string akce = "",string uzivatel="")
         {
             Models.LoginModel model = new Models.LoginModel
             {
                 Akce = akce,
-                PIN = pin
+                PIN = pin,
+                PrihlasenyUzivatel=uzivatel
             };
 
             // automaticke prihlaseni
@@ -35,6 +36,8 @@ namespace UIFT.Controllers
             {
                 return await Login(model);
             }
+
+           
 
             return View("Index", model);
         }
@@ -76,23 +79,28 @@ namespace UIFT.Controllers
                     {
                         if (!model2.isclosed && !model2.a01IsClosed)
                         {
-                            // prihlasit umeleho uzivatele
-                            var claims = new List<Claim>
-                            {
+                            if (string.IsNullOrEmpty(model.PrihlasenyUzivatel))
+                            {                               
+                                // prihlasit umeleho uzivatele
+                                var claims = new List<Claim>
+                                {
                                 new Claim(ClaimTypes.Name, rep.BL.GlobalParams.LoadParam("UIFT_AnonymousUser")),
                                 new Claim("PollIdAkce", model.Akce),
                                 new Claim("PollPin", model.PIN),
                                 new Claim("a11ID", model2.pid.ToString())
-                            };
-                            var claimsIdentity = new ClaimsIdentity(claims, "Identity.Application");
+                                };
 
-                            var authProperties = new AuthenticationProperties
-                            {
-                                ExpiresUtc = DateTime.Now.AddHours(4),
-                                IsPersistent = false
-                            };
-                            await HttpContext.SignInAsync("Identity.Application", new ClaimsPrincipal(claimsIdentity), authProperties);
-                        
+                                var claimsIdentity = new ClaimsIdentity(claims, "Identity.Application");
+
+                                var authProperties = new AuthenticationProperties
+                                {
+                                    ExpiresUtc = DateTime.Now.AddHours(4),
+                                    IsPersistent = false
+                                };
+                                await HttpContext.SignInAsync("Identity.Application", new ClaimsPrincipal(claimsIdentity), authProperties);
+                            }
+
+                            
                             // presmerovat na formular
                             return RedirectToRoute("form", new { a11id = model2.pid });
                         }
