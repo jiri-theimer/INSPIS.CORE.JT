@@ -79,7 +79,7 @@ namespace UIFT.Controllers
             {
                 ru.j03Login = HttpContext.User.Identity.Name;                
             }
-            if (string.IsNullOrEmpty(ru.j03Login))
+            if (string.IsNullOrEmpty(ru.j03Login) || ru.j03Login.ToLower()=="anketa")
             {
                 bolAnonym = true;
             }
