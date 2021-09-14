@@ -56,8 +56,9 @@ namespace UI.Controllers
             
             AMI("Změnit přístupové heslo", "/Home/ChangePassword",null,null,null, "k-i-password");
             DIV();
-            
-            AMI("Vyplnit anketní formulář", Factory.App.UiftUrl+ BO.BAS.IIFS(Factory.App.UiftUrl.Contains("?"), "&", "?")+"uzivatel=" +this.Factory.CurrentUser.j03Login,null,null,"_blank");
+
+            //AMI("Vyplnit anketní formulář", Factory.App.UiftUrl+ BO.BAS.IIFS(Factory.App.UiftUrl.Contains("?"), "&", "?")+"uzivatel=" +this.Factory.CurrentUser.j03Login,null,null,"_blank");
+            AMI("Vyplnit anketní formulář", Factory.App.UiftUrl, null, null, "_blank");
             DIV();
             AMI("Nápověda", "javascript: _window_open('/x51/Index')",null,null,null, "k-i-question");
             //AMI("O aplikaci", "/Home/About");

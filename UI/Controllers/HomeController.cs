@@ -142,10 +142,14 @@ namespace UI.Controllers
 
         public IActionResult About()
         {
-            
-            return View();
+            var v = new BaseViewModel();
+            return View(v);
         }
-     
+        public IActionResult Anketa()
+        {
+            var v = new BaseViewModel();
+            return View(v);
+        }
         public IActionResult MyProfile()
         {           
             var v = new MyProfileViewModel();

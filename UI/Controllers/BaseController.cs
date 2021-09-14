@@ -29,6 +29,7 @@ namespace UI.Controllers
                 ru.j03Login = context.HttpContext.User.Identity.Name;
                 
             }
+            
             if (this.Factory == null)
             {
                 this.Factory = (BL.Factory)HttpContext.RequestServices.GetService(typeof(BL.Factory));
@@ -39,6 +40,12 @@ namespace UI.Controllers
             {
                 context.Result = new RedirectResult("~/Login/UserLogin");
                 return;
+            }
+            if (Factory.CurrentUser.j03Login.ToLower() == "anketa")
+            {
+                this.AddMessage("V tomto prohlížeči již vyplňujete anketu přes anonymní přístup.");
+                
+                
             }
             if (Factory.CurrentUser.j03IsMustChangePassword && context.RouteData.Values["action"].ToString() != "ChangePassword")
             {

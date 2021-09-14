@@ -22,14 +22,28 @@ namespace UIFT.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Index(string pin = "", string akce = "",string uzivatel="")
+        public async Task<ActionResult> Index(string pin = "", string akce = "")
         {
             Models.LoginModel model = new Models.LoginModel
             {
                 Akce = akce,
-                PIN = pin,
-                PrihlasenyUzivatel=uzivatel
+                PIN = pin
             };
+
+            try
+            {
+                BO.RunningUser ru = (BO.RunningUser)HttpContext.RequestServices.GetService(typeof(BO.RunningUser));
+                if (string.IsNullOrEmpty(ru.j03Login))
+                {
+                    ru.j03Login = HttpContext.User.Identity.Name;
+                }
+                model.PrihlasenyUzivatel = ru.j03Login;
+            }
+            catch
+            {
+                model.PrihlasenyUzivatel = "??";
+            }
+            
 
             // automaticke prihlaseni
             if (!string.IsNullOrEmpty(pin) && !string.IsNullOrEmpty(akce))
@@ -37,7 +51,7 @@ namespace UIFT.Controllers
                 return await Login(model);
             }
 
-           
+
 
             return View("Index", model);
         }
@@ -58,6 +72,18 @@ namespace UIFT.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(Models.LoginModel model)
         {
+            
+            bool bolAnonym = false;            
+            BO.RunningUser ru = (BO.RunningUser)HttpContext.RequestServices.GetService(typeof(BO.RunningUser));
+            if (string.IsNullOrEmpty(ru.j03Login))
+            {
+                ru.j03Login = HttpContext.User.Identity.Name;                
+            }
+            if (string.IsNullOrEmpty(ru.j03Login))
+            {
+                bolAnonym = true;
+            }
+
             var rep = Factory.Get();
 
             if (string.IsNullOrEmpty(model.PIN))
@@ -74,13 +100,14 @@ namespace UIFT.Controllers
                 {
                     // informace o akci
                     var model2 = rep.BL.a11EventFormBL.LoadPoll(model.Akce, model.PIN);
-                    
+
                     if (model2 != null)
                     {
                         if (!model2.isclosed && !model2.a01IsClosed)
                         {
-                            if (string.IsNullOrEmpty(model.PrihlasenyUzivatel))
-                            {                               
+                            //if (string.IsNullOrEmpty(model.PrihlasenyUzivatel))
+                            if (bolAnonym)
+                            {
                                 // prihlasit umeleho uzivatele
                                 var claims = new List<Claim>
                                 {
@@ -100,7 +127,7 @@ namespace UIFT.Controllers
                                 await HttpContext.SignInAsync("Identity.Application", new ClaimsPrincipal(claimsIdentity), authProperties);
                             }
 
-                            
+
                             // presmerovat na formular
                             return RedirectToRoute("form", new { a11id = model2.pid });
                         }

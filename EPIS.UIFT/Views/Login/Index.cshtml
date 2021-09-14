@@ -25,7 +25,13 @@
         }
     </div>
 </div>
-<p class="loginBox2">Build: @Html.AppVersion()</p>
+<p class="loginBox2">Build: @Html.AppVersion() </p>
+@if (Model != null)
+{
+    <p>
+        User: @Model.PrihlasenyUzivatel
+    </p>
+}
 
 <script type="text/javascript">
     $(function () {
