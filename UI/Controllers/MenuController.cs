@@ -581,7 +581,8 @@ namespace UI.Controllers
                     break;
                 case "a03":
                     var recA03 = Factory.a03InstitutionBL.Load(pid);
-                    if (TUP(j05PermValuEnum.A03Admin))
+                    
+                    if (TUP(j05PermValuEnum.A03Admin) || Factory.CurrentUser.TestPermCiselniky(j03AdminRoleValueFlagEnum.instituce_er, BO.j03AdminRoleValueFlagEnum._none))
                     {
                         AMI("Karta záznamu", string.Format("javascript:_edit('{0}',{1})", prefix, pid));
                         AMI("Kopírovat", string.Format("javascript:_clone('{0}',{1})", prefix, pid));

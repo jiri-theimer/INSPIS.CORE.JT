@@ -57,7 +57,14 @@ namespace UI.Controllers
             {
                 v.MakeClone();
             }
-            return ViewTupCiselnik(v, BO.j03AdminRoleValueFlagEnum.instituce_er);
+            if (Factory.CurrentUser.TestPermission(BO.j05PermValuEnum.A03Admin))
+            {
+                return ViewTup(v, BO.j05PermValuEnum.A03Admin);
+            }
+            else
+            {
+                return ViewTupCiselnik(v, BO.j03AdminRoleValueFlagEnum.instituce_er);
+            }            
             
         }
         [HttpPost]
