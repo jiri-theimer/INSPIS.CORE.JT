@@ -27,7 +27,7 @@ namespace BO
             }
             if (this.a01id > 0)
             {
-                AQ("a.x29ID=101 AND a.x40DataPid=@a01id", "a01id", this.a01id);
+                AQ("(a.x29ID=101 AND a.x40DataPid=@a01id) OR (a.x29ID=111 AND a.x40DataPid IN (SELECT a11ID FROM a11EventForm WHERE a01ID=@a01id)) OR (a.x29ID=604 AND a.x40DataPid IN (SELECT h04ID FROM h04ToDo WHERE a01ID=@a01id))", "a01id", this.a01id);
             }
             return this.InhaleRows();
 
