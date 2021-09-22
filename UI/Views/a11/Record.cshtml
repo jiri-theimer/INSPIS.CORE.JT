@@ -48,6 +48,11 @@
         </div>
 
         <div class="my-2">
+            <input type="checkbox" asp-for="Rec.a11IsLockedByWorkflow" disabled />
+            <label>@_f.tra("Uzamknuto") [BY WORKFLOW]</label>
+        </div>
+
+        <div class="my-2">
             <textarea asp-for="Rec.a11Description" class="form-control" placeholder="@_f.tra("Poznámka")"></textarea>
             
         </div>
