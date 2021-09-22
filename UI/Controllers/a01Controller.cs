@@ -359,6 +359,8 @@ namespace UI.Controllers
             {
                 return RecNotFound(v);
             }
+            v.a10ID = v.Rec.a10ID;
+
             var perm = Factory.a01EventBL.InhalePermission(v.Rec);
             if (!perm.HasPerm(BO.a01EventPermissionENUM.FullAccess ) && !perm.HasPerm(BO.a01EventPermissionENUM.ShareTeam_Owner) && !perm.HasPerm(BO.a01EventPermissionENUM.ShareTeam_Leader))
             {
@@ -370,13 +372,23 @@ namespace UI.Controllers
             v.TagNames = tg.TagNames;
             v.TagHtml = tg.TagHtml;
 
+            RefreshState_Record(v);
+
             v.Toolbar = new MyToolbarViewModel(v.Rec) { AllowArchive = false, AllowClone = false, AllowDelete = Factory.CurrentUser.TestPermission(BO.j05PermValuEnum.AdminGlobal) };
             return View(v);
         }
+
+        private void RefreshState_Record(a01Record v)
+        {
+            v.RecA10 = this.Factory.a10EventTypeBL.Load(v.a10ID);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Record(Models.Record.a01Record v)
         {
+            RefreshState_Record(v);
+
             if (ModelState.IsValid)
             {
                 var c = Factory.a01EventBL.Load(v.rec_pid);
@@ -386,6 +398,10 @@ namespace UI.Controllers
 
                 c.ValidUntil = v.Toolbar.GetValidUntil(c);
                 c.ValidFrom = v.Toolbar.GetValidFrom(c);
+                if (v.RecA10.a10IsUse_Name)
+                {
+                    c.a01Name = v.Rec.a01Name;
+                }
 
                 c.pid = Factory.a01EventBL.SaveA01Record(c, Factory.a10EventTypeBL.Load(c.a10ID));
                 if (c.pid > 0)

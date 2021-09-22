@@ -24,9 +24,10 @@
         <div class="col-sm-11 col-md-10">
             <myval value="@Model.Rec.a10Name"></myval>
         </div>
-        
+
 
     </div>
+
     <div class="row  my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Téma akce"):</label>
         <div class="col-sm-11 col-md-10">
@@ -34,6 +35,17 @@
         </div>
 
     </div>
+    @if (Model.RecA10.a10IsUse_Name)
+    {
+        <div class="row">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
+            <div class="col-sm-11 col-md-10">
+                <input type="text" asp-for="Rec.a01Name" class="form-control" />
+            </div>
+
+
+        </div>
+    }
     <div class="row my-2">
         <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Instituce"):</label>
         <div class="col-sm-11 col-md-10">
@@ -58,5 +70,4 @@
 </div>
 
 
-
-
+<input type="hidden" asp-for="@Model.a10ID" />

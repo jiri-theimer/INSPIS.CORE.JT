@@ -41,6 +41,11 @@ namespace DL
                 {
                     ret.SqlWhere = BO.BAS.RightString(ret.SqlWhere.Trim(), ret.SqlWhere.Length - 3);
                 }
+                
+                if (BO.BAS.RightString(ret.SqlWhere,3).Trim().ToUpper() == "AND")
+                {
+                    ret.SqlWhere = ret.SqlWhere.Substring(0, ret.SqlWhere.Length - 3);
+                }
                 if (!string.IsNullOrEmpty(ret.SqlWhere))
                 {
                     strPrimarySql += " WHERE " + ret.SqlWhere;
