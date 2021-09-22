@@ -164,7 +164,7 @@
             }
         </div>
         <div class="row my-2">
-            @if (Model.Rec.a01CaseCode != null && Model.Rec.a01ParentID == 0)
+            @if (Model.Rec.a01CaseCode != null)
             {
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Spis"):</label>
                 <div class="col-sm-5 col-md-4">
@@ -174,7 +174,22 @@
 
             }
 
+            @if (Model.RecA10.a10IsUse_Name)
+            {
+                @if (Model.Rec.a01CaseCode != null)
+                {
+                    <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Název"):</label>
+                }
+                else
+                {
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Název"):</label>
+                }
+                <div class="col-sm-5 col-md-4">
+                    <myval datatype="string" value="@Model.Rec.a01Name"></myval>
 
+                </div>
+
+            }
 
         </div>
 
