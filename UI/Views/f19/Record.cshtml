@@ -51,7 +51,7 @@
                 <div class="col-sm-4 col-md-3">
                     <mycombo entity="f23ReplyType" asp-for="Rec.f23ID" selectedtext="Rec.f23Name" view-flag="2" event_after_changevalue="handle_f23id_change"></mycombo>
                 </div>
-                @if (Model.Rec.ReplyControl != BO.ReplyKeyEnum.Checkbox && Model.Rec.ReplyControl != BO.ReplyKeyEnum.Button)
+                @if ((Model.Rec.ReplyControl != BO.ReplyKeyEnum.Checkbox && Model.Rec.ReplyControl != BO.ReplyKeyEnum.Button) || (Model.Rec.ReplyControl==BO.ReplyKeyEnum.Checkbox && Model.Rec.f19IsMultiselect))
                 {
                     <div class="col-sm-3 col-md-3">
                         <input type="checkbox" asp-for="Rec.f19IsRequired" />
@@ -61,7 +61,7 @@
                 @if (Model.Rec.ReplyControl == BO.ReplyKeyEnum.Checkbox || Model.Rec.ReplyControl == BO.ReplyKeyEnum.Listbox)
                 {
                     <div class="col-sm-4 col-md-4">
-                        <input type="checkbox" asp-for="Rec.f19IsMultiselect" />
+                        <input type="checkbox" asp-for="Rec.f19IsMultiselect"  onchange="postback()" />
                         <label class="col-form-label" for="Rec_f19IsMultiselect">@_f.tra("Více-násobný výběr odpovědi (multi-select)") </label>
                     </div>
                 }
