@@ -224,23 +224,23 @@ namespace BL
             }
             if (_account == null)
             {
-                return handle_result_error("Chybí poštovní účet odesílatele");
+                return handle_result_error(_mother.tra("Chybí poštovní účet odesílatele"));
             }
             if (m.From == null)
             {
-                return handle_result_error( "Chybí odesílatel zprávy");
+                return handle_result_error( _mother.tra("Chybí odesílatel zprávy"));
             }
             if (m.To.Count == 0)
             {
-                return handle_result_error("Chybí příjemce zprávy");
+                return handle_result_error(_mother.tra("Chybí příjemce zprávy"));
             }
             if (string.IsNullOrEmpty(m.Body) == true)
             {
-                return handle_result_error("Chybí text zprávy.");
+                return handle_result_error(_mother.tra("Chybí text zprávy."));
             }
             if (string.IsNullOrEmpty(m.Subject) == true)
             {
-                return handle_result_error("Chybí předmět zprávy.");
+                return handle_result_error(_mother.tra("Chybí předmět zprávy."));
             }
            
             if (_account.j40SmtpUsePersonalReply)

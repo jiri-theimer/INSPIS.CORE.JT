@@ -105,8 +105,8 @@ namespace UI
             var lisH04 = f.h04ToDoBL.GetList_ReminderWaiting();            
             foreach(var rec in lisH04)
             {                
-                var recB65 = new BO.b65WorkflowMessage() { b65MessageSubject = "Připomenutí | " + rec.h07Name + ": " + rec.a01Signature };
-                recB65.b65MessageBody = "Dobrý den," + System.Environment.NewLine + "posíláme Vám připomenutí k:" + System.Environment.NewLine+ rec.h07Name + ": " + rec.h04Name + System.Environment.NewLine + System.Environment.NewLine + rec.h04Description;
+                var recB65 = new BO.b65WorkflowMessage() { b65MessageSubject = f.tra("Připomenutí")+" | " + rec.h07Name + ": " + rec.a01Signature };
+                recB65.b65MessageBody = f.tra("Dobrý den")+"," + System.Environment.NewLine + f.tra("posíláme Vám připomenutí")+":" + System.Environment.NewLine+ rec.h07Name + ": " + rec.h04Name + System.Environment.NewLine + System.Environment.NewLine + rec.h04Description;
                 var intB65ID = f.h07ToDoTypeBL.Load(rec.h07ID).b65ID;
                 if (intB65ID > 0)
                 {
