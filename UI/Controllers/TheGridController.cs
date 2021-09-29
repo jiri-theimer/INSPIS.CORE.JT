@@ -349,7 +349,7 @@ namespace UI.Controllers
             {
                 if (pagename == "flatview")
                 {
-                    v.gridinput.extendpagerhtml = "<button type='button' class='btn btn-secondary btn-sm mx-4 nonmobile' onclick='switch_to_master(\"" + v.prefix + "\")'>Zapnout spodní panel</button>";
+                    v.gridinput.extendpagerhtml = "<button type='button' class='btn btn-secondary btn-sm mx-4 nonmobile' onclick='switch_to_master(\"" + v.prefix + "\")'>"+Factory.tra("Zapnout spodní panel")+"</button>";
                 }
                 if (pagename == "masterview")
                 {
