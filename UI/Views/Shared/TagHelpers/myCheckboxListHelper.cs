@@ -26,6 +26,9 @@ namespace UI.Views.Shared.TagHelpers
         [HtmlAttributeName("groupfield")]
         public string GroupField { get; set; }
 
+        [HtmlAttributeName("cssclassfield")]
+        public string CssClassField { get; set; }
+
         [HtmlAttributeName("datasource")]
         public ModelExpression DataSource { get; set; }
 
@@ -83,16 +86,25 @@ namespace UI.Views.Shared.TagHelpers
 
                 
                 sb.AppendLine("<li>");
-                sb.Append(string.Format("<input type='checkbox' id='chk{0}_{1}' onclick='mycheckboxlist_checked(this,\"{0}_{1}\",{1})' {2} />", this.For.Name, intValue,strChecked));
-                sb.Append(string.Format("<label style='min-width:200px;' for='chk{0}_{1}'>{2}</label>", this.For.Name, intValue, strText));
-                if (strChecked == "checked")
+                sb.Append($"<input type='checkbox' id='chk{this.For.Name}_{intValue}' onclick='mycheckboxlist_checked(this,\"{this.For.Name}_{intValue}\",{intValue})' {strChecked} />");
+                if (this.CssClassField != null && DataSource.Metadata.ElementMetadata.Properties[this.CssClassField].PropertyGetter(item) != null)
                 {
-                    sb.Append(string.Format("<input type='hidden' id='{0}_{1}' name='{0}' value='{1}' />", this.For.Name, intValue));
+                    sb.Append($"<label style='min-width:200px;' for='chk{this.For.Name}_{intValue}' class='{DataSource.Metadata.ElementMetadata.Properties[this.CssClassField].PropertyGetter(item)}'>{strText}</label>");
 
                 }
                 else
                 {
-                    sb.Append(string.Format("<input type='hidden' id='{0}_{1}' name='{0}' value='0' />", this.For.Name, intValue));
+                    sb.Append($"<label style='min-width:200px;' for='chk{this.For.Name}_{intValue}'>{strText}</label>");
+                }
+                
+                if (strChecked == "checked")
+                {
+                    sb.Append($"<input type='hidden' id='{this.For.Name}_{intValue}' name='{this.For.Name}' value='{intValue}' />");
+
+                }
+                else
+                {
+                    sb.Append($"<input type='hidden' id='{this.For.Name}_{intValue}' name='{this.For.Name}' value='0' />");
 
                 }
 

@@ -125,7 +125,7 @@ namespace BL
 
 
                     //závěrečná SP kvůli mj. narovnání formulářů v auto-evaluačních akcích, které jsou svázány s tímto tématem                                   
-                    _db.RunSql("exec dbo.a08_recovery_autoevaluation @pid", new { pid = intPID });
+                   //vypnuto kvůli UA:  _db.RunSql("exec dbo.a08_recovery_autoevaluation @pid", new { pid = intPID });
 
                 }
                 sc.Complete();   //potvrzení transakce

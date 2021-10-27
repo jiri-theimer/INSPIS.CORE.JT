@@ -67,11 +67,12 @@ namespace BL
                     sb.Append(" LEFT OUTER JOIN a03Institution a03 ON a01.a03ID=a03.a03ID");
                     break;
                 case "a11":
-                    sb.Append("a.*,a01.*,f06.*,a25.*,a37.*,k01.*");
+                    sb.Append("a.*,a01.*,f06.*,a25.*,a37.*,k01.*,issuer_a01.*");
                     sb.Append(" FROM a11EventForm a INNER JOIN f06Form f06 ON a.f06ID=f06.f06ID INNER JOIN a01Event a01 ON a.a01ID=a01.a01ID");
                     sb.Append(" LEFT OUTER JOIN a25EventFormGroup a25 ON a.a25ID=a25.a25ID");
                     sb.Append(" LEFT OUTER JOIN a37InstitutionDepartment a37 ON a.a37ID=a37.a37ID");
                     sb.Append(" LEFT OUTER JOIN k01Teacher k01 ON a.k01ID=k01.k01ID");
+                    sb.Append(" LEFT OUTER JOIN j02Person issuer_a01 ON a01.j02ID_Issuer=issuer_a01.j02ID");
                     break;
                 case "j02":
                     sb.Append("a.*,j07.j07Name,j03.j03Login,j03.j03LangIndex,j04.*");

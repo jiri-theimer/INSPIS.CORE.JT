@@ -69,10 +69,10 @@ namespace UI.Controllers
 
             if (ModelState.IsValid)
             {
-                if (v.lisSelectedF06IDs.Where(p => p > 0).Count() == 0)
-                {
-                    this.AddMessage("Musíte zaškrtnout minimálně jeden formulář.");return View(v);
-                }
+                //if (v.lisSelectedF06IDs.Where(p => p > 0).Count() == 0)
+                //{
+                //    this.AddMessage("Musíte zaškrtnout minimálně jeden formulář.");return View(v);
+                //}
                 BO.a01Event c = new BO.a01Event();
                 c.a57ID = v.RecA57.pid;
                 c.a10ID = v.RecA57.a10ID;

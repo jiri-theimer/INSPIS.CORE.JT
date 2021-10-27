@@ -148,7 +148,7 @@ namespace BL
             {
                 return 0;
             }
-            if (rec.a01IsTemporary==false && lisA11 !=null && recA10.a10IsUse_A08 && ValidateA11(rec,lisA11)==false)
+            if (rec.a01IsTemporary==false && lisA11 !=null && (rec.a08ID>0 || recA10.a10IsUse_A08) && ValidateA11(rec,lisA11)==false)
             {
                 return 0;
             }
