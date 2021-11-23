@@ -108,7 +108,7 @@
                             {
 
                                 <a class="valhover_tooltip" target='_blank' href="https://registry.edbo.gov.ua/institution/@(Model.Rec.a03REDIZO)">EDBO</a>
-                                <a class="valhover_tooltip" target='_blank' href="https://usr.minjust.gov.ua/content/free-search">Мінюст</a>
+
                             }
                             else
                             {
@@ -137,25 +137,31 @@
                     {
                         <span>@Model.Rec.a03ICO</span>
 
-                        @if (Model.Rec.a06ID == 1)
+                        @if (_f.App.Implementation == "UA")
                         {
-                            <a class="valhover_tooltip" target='_blank' href="https://wwwinfo.mfcr.cz/cgi-bin/ares/darv_sko.cgi?ico=@(Model.Rec.a03ICO)&jazyk=cz&xml=1">ares</a>
+                            <a class="valhover_tooltip" target='_blank' href="https://usr.minjust.gov.ua/content/free-search">Мінюст</a>
                         }
                         else
                         {
-                            <a class="valhover_tooltip" target="_blank" href="https://wwwinfo.mfcr.cz/cgi-bin/ares/darv_res.cgi?ico=@(Model.Rec.a03ICO)&jazyk=cz&xml=1">ares</a>
+                            @if (Model.Rec.a06ID == 1)
+                            {
+                                <a class="valhover_tooltip" target='_blank' href="https://wwwinfo.mfcr.cz/cgi-bin/ares/darv_sko.cgi?ico=@(Model.Rec.a03ICO)&jazyk=cz&xml=1">ares</a>
+                            }
+                            else
+                            {
+                                <a class="valhover_tooltip" target="_blank" href="https://wwwinfo.mfcr.cz/cgi-bin/ares/darv_res.cgi?ico=@(Model.Rec.a03ICO)&jazyk=cz&xml=1">ares</a>
+                            }
+                            <a class="valhover_tooltip" target="_blank" href="https://or.justice.cz/ias/ui/rejstrik-$firma?ico=@(Model.Rec.a03ICO)">justice</a>
                         }
-                        <a class="valhover_tooltip" target="_blank" href="https://or.justice.cz/ias/ui/rejstrik-$firma?ico=@(Model.Rec.a03ICO)">justice</a>
 
                     }
-
                 </div>
 
 
             </div>
             @if (Model.Rec.a06ID == 1)
             {
-                
+
                 <div class="col-sm-3 col-md-3">
                     <myval value="@Model.Rec.a03DirectorFullName" tooltip="@_f.tra("Ředitel (txt)")"></myval>
                 </div>
@@ -169,7 +175,7 @@
 
                 <myval value="@Model.Rec.a05Name"></myval>
             </div>
-            
+
 
 
             <div class="col-sm-6 col-md-6">
