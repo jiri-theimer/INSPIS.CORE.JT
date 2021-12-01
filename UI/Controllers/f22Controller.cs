@@ -10,6 +10,7 @@ namespace UI.Controllers
 {
     public class f22Controller : BaseController
     {
+        
         public IActionResult Record(int pid, bool isclone)
         {
             var v = new f22Record() { rec_pid = pid, rec_entity = "f22" };

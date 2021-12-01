@@ -105,6 +105,7 @@ namespace UI.Controllers
         private void inhale_tree(UI.Models.AdminOneForm v)
         {            
             v.treeNodes = new List<myTreeNode>();
+            
             var mq = new BO.myQuery("f18FormSegment");
             mq.f06id = v.f06ID;
             var lis = Factory.f18FormSegmentBL.GetList(mq);
@@ -114,6 +115,7 @@ namespace UI.Controllers
             mq.f06id = v.f06ID;
             var lisF26 = Factory.f26BatteryBoardBL.GetList(mq);
             int x = 0;
+            
 
             foreach (var recF18 in lis)
             {
@@ -249,6 +251,8 @@ namespace UI.Controllers
 
             }
 
+            
+
             var arrExpanded = BO.BAS.ConvertString2List(HttpContext.Request.Cookies[v.TreeStateCookieName], "|");
             foreach (var c in arrExpanded.Where(p=>!string.IsNullOrEmpty(p)))
             {
@@ -257,7 +261,9 @@ namespace UI.Controllers
                     v.treeNodes.Where(p => p.Pid.ToString() + "-" + p.TreeLevel.ToString() == c).First().Expanded = true;
                 }
             }
+
             
+
         }
     }
 }

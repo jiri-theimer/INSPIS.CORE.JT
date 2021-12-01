@@ -19,7 +19,7 @@
             <span asp-validation-for="Rec.f22Name" class="text-danger"></span>
         </div>
     </div>
-    <div class="row my-2">
+    <div>
         <textarea asp-for="Rec.f22Description" class="form-control" placeholder="@_f.tra("Podrobný popis")"></textarea>
         <span asp-validation-for="Rec.f22Description" class="text-danger"></span>
     </div>
@@ -35,6 +35,9 @@
     </div>
     <button type="button" id="cmdNew" class="btn btn-primary btn-sm" onclick="f21_create()">@_f.tra("Vytvořit novou jednotku")</button>
     <button type="button" id="cmdGrid" class="btn btn-secondary btn-sm" onclick="multiselect()">@_f.tra("Přidat hromadně přes Grid")</button>
+    <button type="button" id="cmdImport" class="btn btn-info btn-sm" onclick="import_xls()">@_f.tra("Naimportovat jednotky přes XLS")</button>
+
+
 </div>
 
 <div id="divF21" style="margin-top:20px;margin-bottom:20px;"></div>
@@ -117,6 +120,24 @@
         handle_f21id_append(pid);
     }
 
+    function import_xls() {
+        _window_open("/f21/Import?source=f22");
+    }
+
+    function hardrefresh_afterimport(pid, flag) {
+        var f21ids = flag;
+
+        if ($("#hidF21IDs").val() != "") {
+            $("#hidF21IDs").val($("#hidF21IDs").val()+","+f21ids);
+        } else {
+            $("#hidF21IDs").val(f21ids);
+        }
+        
+        refresh_f21_table();
+
+        _window_in_modal_close();
+        
+    }
 </script>
 
 

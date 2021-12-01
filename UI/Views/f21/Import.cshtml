@@ -1,0 +1,129 @@
+﻿@model f21ImportViewModel
+@inject BL.Factory _f
+
+@{
+    Layout = "~/Views/Shared/_LayoutModal.cshtml";
+
+
+
+    Model.PageTitle = _f.tra("Import množiny jednotek odpovědí");
+
+
+
+
+}
+
+
+@addTagHelper *,UI
+
+<h4>@Model.PageTitle</h4>
+
+<div class="bg-light" style="padding:10px;">
+    @if (!Model.istested)
+    {
+        <button id="cmdTest" type="button" class="btn btn-success">@_f.tra("Otestovat vstupní soubor")</button>
+    }
+    else
+    {
+        <button id="cmdSave" type="button" class="btn btn-success">@_f.tra("Vygenerovat jednotky odpovědí")</button>
+    }
+
+    <button id="cmdClose" type="button" onclick="_window_close()" class="btn btn-light">@_f.tra("Zavřít")</button>
+    <button type="button" onclick="_helppage()" class="btn btn-light"><b>? </b>@_f.tra("Nápověda")</button>
+</div>
+
+
+<form id="form1" asp-controller="f21" asp-action="Import" method="POST" enctype="multipart/form-data">
+    <input type="hidden" asp-for="@Model.guid" />
+    <input type="hidden" asp-for="@Model.source" />
+    <input type="hidden" asp-for="@Model.istested" value="@Model.istested" />
+    <input type="hidden" asp-for="@Model.saved_pids" value="@Model.saved_pids" />
+
+
+    <div class="modal_record_container">
+
+        <div class="row">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Data začínají na řádku"):</label>
+            <div class="col-sm-1 col-md-1">
+                <select class="form-select" asp-for="@Model.datafirstrowindex" onchange="firstrow_change()">
+                    <option value="1">#1</option>
+                    <option value="2">#2</option>
+                    <option value="3">#3</option>
+                    <option value="4">#4</option>
+                </select>
+            </div>
+
+        </div>
+        <i>
+            @_f.tra("Na vstupu je třeba dodržovat pevné pořadí sloupců: Název | Stat ID | Pořadí | Popis")
+        </i>
+
+        <iframe id="fraUpload" src="/FileUpload/SingleUpload?guid=@Model.guid" height="350" scrolling="no"></iframe>
+
+
+        @if (Model.lisPreview != null)
+        {
+            <strong>
+                @_f.tra("Náhled na data"):
+            </strong>
+            <table class="table table-striped">
+                <tr>
+                    <th>@_f.tra("Název")</th>
+                    <th>Stat ID</th>
+                    <th>@_f.tra("Pořadí")</th>
+                    <th>@_f.tra("Popis")</th>
+                </tr>
+                @foreach (var c in Model.lisPreview)
+                {
+                    <tr>
+                        <td>
+                            @c.f21Name
+                        </td>
+                        <td>
+                            @c.f21ExportValue
+                        </td>
+                        <td>
+                            #@c.f21Ordinal
+                        </td>
+                        <td>
+                            <i>
+                                @c.f21Description
+                            </i>
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+    </div>
+</form>
+<div id="divTableRecords"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#cmdSave").click(function () {
+            $(this).text("Processing...");
+            $(this).attr("disabled", true);
+            form1.action = "/f21/Import?oper=save";
+            form1.submit();
+
+        });
+
+        $("#cmdTest").click(function () {
+            $(this).text("Processing...");
+            $(this).attr("disabled", true);
+            form1.action = "/f21/Import?oper=import";
+            form1.submit();
+
+        });
+
+
+    });
+
+    function firstrow_change() {
+        form1.action = "/f21/Import?oper=postback";
+        form1.submit();
+    }
+
+
+</script>
