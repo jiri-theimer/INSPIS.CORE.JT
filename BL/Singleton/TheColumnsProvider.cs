@@ -810,7 +810,9 @@ namespace BL
             AF("x91Translate", "x91Lang1", "English", 1);
             AF("x91Translate", "x91Lang2", "Українська", 1);
 
-
+            AF("x39ConnectString", "x39Name", "Název", 1, null, "string", false, true);
+            AF("x39ConnectString", "x39Code", "Kód", 1, null, "string", false, true);
+            AF("x39ConnectString", "x39Description", "Popis", 2);
 
             if (_app.Implementation == "Default")
             {

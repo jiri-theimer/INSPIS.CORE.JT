@@ -1,0 +1,102 @@
+﻿@model AdminPage
+@inject BL.Factory _f
+
+@{
+    Model.PageTitle = _f.tra("Kategorie");
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@addTagHelper *, UI
+
+
+
+
+
+<div class="row nowrap pt-1 bg-light m-0">
+    <div id="layout_sidebar_contextmenu" class="col-auto">
+        <a id="layout_sidebar_contextmenu_link" class="cm h4 mx-0" onclick="_cm(event, 'Kategorie',0,'@Model.prefix');">☰@_f.tra("Kategorie")</a>
+        <h4 id="layout_sidebar_contextmenu_onlytext">@_f.tra("Kategorie")</h4>
+    </div>
+    <div class="col-auto nonmobile tabovergrid">
+        @Model.entityTitle
+    </div>
+    <div class="nonmobile nontablet col-auto">
+        <a class="btn btn-light" href="/Admin/Kategorie?prefix=@Model.prefix" title="@_f.tra("Občerstvit")"><span class="k-icon k-i-reload"></span></a>
+    </div>
+
+    @if (Model.prefix != null)
+    {
+        <div class="col-auto">
+            <button id="cmdNew" type="button" class="btn btn-primary">@_f.tra("Nový záznam")</button>
+        </div>
+    }
+
+
+   
+
+
+
+
+</div>
+
+<div id="layout_sidebar" class="cm_recpage" style="overflow-y:auto;">Loading...</div>
+
+
+
+<div id="layout_main">
+
+    @if (Model.entity != null)
+    {
+        <vc:the-grid input="@Model.gridinput"></vc:the-grid>
+    }
+    else
+    {
+        <h4 style="margin:20px;">@_f.tra("Administrace kategorií")</h4>
+    }
+
+
+
+
+</div>
+
+
+<script type="text/javascript">
+    $(document.body).css("overflow", "hidden");
+
+    $(document).ready(function () {
+        
+        $("#cmdNew").click(function () {
+                var prefix = "@Model.prefix";
+                var url = "/"+prefix+"/Record?pid=0";
+                _window_open(url,1,"@Model.entityTitle");
+            });
+
+        $.post("/Menu/AdminKategorie", { prefix: "@Model.prefix" }, function (data) {
+
+            $("#layout_sidebar").html(data);
+
+                if (document.getElementById("menu_active_item")) {
+                    document.getElementById("menu_active_item").scrollIntoView(true);
+                }
+
+
+
+            });
+
+
+
+            _mainmenu_highlight_current("cmdAdmin");
+
+
+            var offset = $("#layout_sidebar").offset();
+            var h_vertical = _device.innerHeight - offset.top;
+            h_vertical = parseInt(h_vertical) + 10;
+        $("#layout_sidebar").css("height", h_vertical + "px");
+
+
+        });
+
+
+
+
+</script>

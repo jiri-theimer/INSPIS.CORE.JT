@@ -187,6 +187,26 @@ namespace UI.Controllers
             return View(v);
         }
 
+        public IActionResult Kategorie(string prefix, int go2pid)
+        {
+            var v = new AdminPage() { prefix = prefix, go2pid = go2pid };
+            if (v.prefix == null)
+            {
+                v.prefix = Factory.CBL.LoadUserParam("Admin/Kategorie-prefix", "o53");
+            }
+            else
+            {
+                if (Factory.CBL.LoadUserParam("Admin/Kategorie-prefix") != v.prefix)
+                {
+                    Factory.CBL.SetUserParam("Admin/Kategorie-prefix", v.prefix);
+                }
+            }
+            inhale_entity(ref v, v.prefix);
+            
+            v.gridinput = GetGridInput(v.entity, v.prefix, v.go2pid);
+            return View(v);
+        }
+
 
         private void inhale_entity(ref AdminPage v, string prefix)
         {

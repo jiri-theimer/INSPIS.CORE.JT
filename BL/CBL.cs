@@ -41,6 +41,7 @@ namespace BL
                 case "o53":
                 case "x91":
                 case "j40":
+                case "x39":
                 case "x55":
                     strSP = "_core_" + entity.Substring(0, 3) + "_delete";
                     break;

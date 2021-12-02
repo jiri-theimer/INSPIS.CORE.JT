@@ -90,6 +90,7 @@ namespace BL
         private Ix51HelpCoreBL _x51;
         private Ix55WidgetBL _x55;
         private Ix91TranslateBL _x91;
+        private Ix39ConnectStringBL _x39;
 
         private IMailBL _mail;
         private IWorkflowBL _workflow;
@@ -697,6 +698,14 @@ namespace BL
             {
                 if (_x55 == null) _x55 = new x55WidgetBL(this);
                 return _x55;
+            }
+        }
+        public Ix39ConnectStringBL x39ConnectStringBL
+        {
+            get
+            {
+                if (_x39 == null) _x39 = new x39ConnectStringBL(this);
+                return _x39;
             }
         }
         public Ix91TranslateBL x91TranslateBL

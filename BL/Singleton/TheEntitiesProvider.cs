@@ -175,6 +175,8 @@ namespace BL
             AE("z01_core_view_reports", "Reporty šablony", "Tisková sestava", "z01_core_view_reports a", "a.x31Name", "a.x31Name");
             AE("x32ReportType", "Report kategorie", "Kategorie sestavy", "x32ReportType a", "a.x32TreeIndex", "a.x32TreeIndex");
 
+            AE("x39ConnectString", "Externí datové zdroje", "Externí datový zdroj", "x39ConnectString a","a.x39Name");
+
             AE_TINY("b65WorkflowMessage", "Notifikační zprávy", "Notifikační zpráva");
             AE_TINY("x51HelpCore", "Uživatelská nápověda", "Uživatelská nápověda");
             AE_TINY("x55Widget", "Widgety", "Widget");

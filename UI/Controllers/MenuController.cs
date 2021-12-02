@@ -124,7 +124,10 @@ namespace UI.Controllers
                 AMI("Workflow", "/Admin/Workflow?prefix=b01");
                 AMI("Návrhář workflow", "/AdminOneWorkflow/Index");
             }
-            
+            if (TUP(BO.j05PermValuEnum.AdminGlobal_Ciselniky))
+            {
+                AMI("Kategorie", "/Admin/Kategorie");
+            }
 
             AMI("Import"+": "+Factory.tra("Instituce"), "/import/a03",null,null,"_blank");
             //if (TUP(BO.PermValueEnum.H11Admin))
@@ -142,6 +145,15 @@ namespace UI.Controllers
             handle_selected_item(prefix);
 
             return FlushResult_UL(true,true);
+        }
+        public string AdminKategorie(string prefix)
+        {
+            AMI("Kategorie (Skupiny položek)", url_kategorie("o53"));
+            AMI("Položky kategorií", url_kategorie("o51"));
+
+            handle_selected_item(prefix);
+
+            return FlushResult_UL(true, true);
         }
         public string AdminForms(string prefix)
         {            
@@ -250,9 +262,8 @@ namespace UI.Controllers
             }
             if (Factory.CurrentUser.TestPermCiselniky(j03AdminRoleValueFlagEnum.ostatni_er, j03AdminRoleValueFlagEnum.ostatni_ro))
             {                
-                //DIV_TRANS("Kategorie");
-                AMI("Kategorie (Skupiny položek)", url_ciselniky("o53"));
-                AMI("Položky kategorií", url_ciselniky("o51"));
+                
+                
                 
                 AMI("Šablony notifikačních zpráv", url_ciselniky("b65"));
                 AMI("Články pro nástěnku", url_ciselniky("h11"));
@@ -261,12 +272,17 @@ namespace UI.Controllers
                 
                 AMI("Uživatelská nápověda", url_ciselniky("x51"));
                 AMI("Aplikační překlad", url_ciselniky("x91"));
+                AMI("Externí datové zdroje", url_ciselniky("x39"));
             }
 
 
             handle_selected_item(prefix);
 
             return FlushResult_UL(false,true);
+        }
+        private string url_kategorie(string prefix)
+        {
+            return "/Admin/Kategorie?prefix=" + prefix;
         }
         private string url_ciselniky(string prefix)
         {
