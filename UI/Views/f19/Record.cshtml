@@ -191,6 +191,16 @@
 
                     </div>
                 </div>
+                @if (Model.Rec.f23ID == 10)
+                {
+                    <div class="row my-2">
+                        <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("EvalList zdroj hodnot"):</label>
+                        <div class="col-sm-11 col-md-10">
+                            <textarea asp-for="Rec.f19EvalListSource" class="form-control" style="min-height:40px;"></textarea>
+
+                        </div>
+                    </div>
+                }
             }
 
 

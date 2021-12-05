@@ -9,6 +9,7 @@ namespace BL
     {
         public BO.f19Question Load(int pid);
         public IEnumerable<BO.f19Question> GetList(BO.myQueryF19 mq);
+        public IEnumerable<BO.f19Question> GetList_Merged(BO.myQueryF19 mq, BO.a11EventForm recA11);
         public int Save(BO.f19Question rec, List<int> f21ids);
         public IEnumerable<BO.f27LinkUrl> GetList_AllF27();
 
@@ -44,6 +45,93 @@ namespace BL
             return _db.GetList<BO.f19Question>(fq.FinalSql, fq.Parameters);
         }
 
+        public IEnumerable<BO.f19Question> GetList_Merged(BO.myQueryF19 mq,BO.a11EventForm recA11)
+        {
+            var lis = GetList(mq);
+            var lisX39 = _mother.x39ConnectStringBL.GetList(new BO.myQuery("x39")); //seznam všech connect stringů
+            var cMerge = new BO.CLS.MergeContent();
+            
+            var keys = new List<BO.StringPair>();
+
+            keys.Add(new BO.StringPair() { Key = "@j03login", Value = _mother.CurrentUser.j03Login });
+            keys.Add(new BO.StringPair() { Key = "@a01id", Value = recA11.a01ID.ToString() });
+            keys.Add(new BO.StringPair() { Key = "@a03id", Value = recA11.a03ID.ToString() });
+            if (recA11.a03ID > 0)
+            {
+                var recA03 = _mother.a03InstitutionBL.Load(recA11.a03ID);                
+                if (recA03.a03REDIZO !=null) keys.Add(new BO.StringPair() { Key = "@a03redizo", Value = recA03.a03REDIZO });
+                if (recA03.a03ICO !=null) keys.Add(new BO.StringPair() { Key = "@a03ico", Value = recA03.a03ICO });
+            }
+
+            foreach (var rec in lis)
+            {
+                if (rec.f19Name.Contains("{") && rec.f19Name.Contains("}"))
+                {
+                    rec.f19Name = MergeExternalSqlValue(rec.f19Name, keys, lisX39);
+                }
+                if (rec.f19SupportingText != null && rec.f19SupportingText.Contains("{") && rec.f19SupportingText.Contains("}"))
+                {
+                    rec.f19SupportingText = MergeExternalSqlValue(rec.f19SupportingText, keys, lisX39);
+                }
+                if (rec.TextBox_MinValue !=null && rec.TextBox_MinValue.Contains("{") && rec.TextBox_MinValue.Contains("}"))
+                {
+                    rec.TextBox_MinValue = MergeExternalSqlValue(rec.TextBox_MinValue, keys, lisX39);
+                }
+                if (rec.TextBox_MaxValue != null && rec.TextBox_MaxValue.Contains("{") && rec.TextBox_MaxValue.Contains("}"))
+                {
+                    rec.TextBox_MaxValue = MergeExternalSqlValue(rec.TextBox_MaxValue, keys, lisX39);
+                }
+            }
+                
+            
+            return lis;
+        }
+
+        private string MergeExternalSqlValue(string strValue, List<BO.StringPair> keys, IEnumerable<BO.x39ConnectString> lisX39)
+        {
+            if (string.IsNullOrEmpty(strValue))
+            {
+                return null;
+            }
+
+            var cMerge = new BO.CLS.MergeContent();
+
+            var sqls = cMerge.GetAllMergeExternalSqlsInContent(strValue, keys, lisX39);  //vrátí všechny SQL externí dotazy
+            foreach (BO.MergeExternalSql sql in sqls.Where(p => p.ConnectString != null))
+            {
+                var con = new DL.DbHandler(sql.ConnectString, _mother.CurrentUser, _mother.App.LogFolder); //db connection na databázi                    
+                string ret = null;
+                if (sql.MergedSql.Contains("select ", StringComparison.OrdinalIgnoreCase))
+                {
+                    sql.MergedSql = "SELECT " + sql.MergedSql;
+
+                    var dt = con.GetDataTable(sql.MergedSql);  //výsledek pro select syntaxy se natahuje přes datatable
+                    System.Data.DataRow dbRow = dt.Rows[0];
+                    if (dbRow[0] != DBNull.Value)
+                    {
+                        ret = dbRow[0].ToString();
+                    }
+
+                }
+                else
+                {
+                    sql.MergedSql = "SELECT " + sql.MergedSql + " as Value";
+                    ret = con.Load<BO.GetString>(sql.MergedSql).Value;
+
+                }
+                if (ret != null)
+                {
+
+                }
+                strValue = strValue.Replace(sql.OrigExpr, ret);
+
+                
+
+            }
+
+            return strValue;
+
+        }
 
 
         public int Save(BO.f19Question rec,List<int> f21ids)
