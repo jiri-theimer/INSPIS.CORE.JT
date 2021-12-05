@@ -31,7 +31,7 @@ namespace BO
 
         public int j03ID_Creator { get; set; }
         public int j02ID_Issuer { get; set; }
-        public int a61ID { get; set; }
+        
         public int a22ID { get; set; }
         public int a70ID { get; set; }
         public int a46ID { get; set; }

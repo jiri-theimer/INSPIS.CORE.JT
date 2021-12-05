@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BL
 {
-    public interface If19QuestionBL: BaseInterface
+    public interface If19QuestionBL : BaseInterface
     {
         public BO.f19Question Load(int pid);
         public IEnumerable<BO.f19Question> GetList(BO.myQueryF19 mq);
@@ -45,53 +45,43 @@ namespace BL
             return _db.GetList<BO.f19Question>(fq.FinalSql, fq.Parameters);
         }
 
-        public IEnumerable<BO.f19Question> GetList_Merged(BO.myQueryF19 mq,BO.a11EventForm recA11)
+        public IEnumerable<BO.f19Question> GetList_Merged(BO.myQueryF19 mq, BO.a11EventForm recA11)
         {
+            //vrátí seznam otázek doplněný o sloučené výrazy z externích sql dotazů
             var lis = GetList(mq);
-            var lisX39 = _mother.x39ConnectStringBL.GetList(new BO.myQuery("x39")); //seznam všech connect stringů
-            var cMerge = new BO.CLS.MergeContent();
-            
+            var lisX39 = _mother.x39ConnectStringBL.GetList(new BO.myQuery("x39")); //seznam všech connect stringů            
             var keys = new List<BO.StringPair>();
-
             keys.Add(new BO.StringPair() { Key = "@j03login", Value = _mother.CurrentUser.j03Login });
             keys.Add(new BO.StringPair() { Key = "@a01id", Value = recA11.a01ID.ToString() });
             keys.Add(new BO.StringPair() { Key = "@a03id", Value = recA11.a03ID.ToString() });
             if (recA11.a03ID > 0)
             {
-                var recA03 = _mother.a03InstitutionBL.Load(recA11.a03ID);                
-                if (recA03.a03REDIZO !=null) keys.Add(new BO.StringPair() { Key = "@a03redizo", Value = recA03.a03REDIZO });
-                if (recA03.a03ICO !=null) keys.Add(new BO.StringPair() { Key = "@a03ico", Value = recA03.a03ICO });
+                var recA03 = _mother.a03InstitutionBL.Load(recA11.a03ID);
+                if (recA03.a03REDIZO != null) keys.Add(new BO.StringPair() { Key = "@a03redizo", Value = recA03.a03REDIZO });
+                if (recA03.a03ICO != null) keys.Add(new BO.StringPair() { Key = "@a03ico", Value = recA03.a03ICO });
             }
 
             foreach (var rec in lis)
             {
-                if (rec.f19Name.Contains("{") && rec.f19Name.Contains("}"))
-                {
-                    rec.f19Name = MergeExternalSqlValue(rec.f19Name, keys, lisX39);
-                }
-                if (rec.f19SupportingText != null && rec.f19SupportingText.Contains("{") && rec.f19SupportingText.Contains("}"))
-                {
-                    rec.f19SupportingText = MergeExternalSqlValue(rec.f19SupportingText, keys, lisX39);
-                }
-                if (rec.TextBox_MinValue !=null && rec.TextBox_MinValue.Contains("{") && rec.TextBox_MinValue.Contains("}"))
-                {
-                    rec.TextBox_MinValue = MergeExternalSqlValue(rec.TextBox_MinValue, keys, lisX39);
-                }
-                if (rec.TextBox_MaxValue != null && rec.TextBox_MaxValue.Contains("{") && rec.TextBox_MaxValue.Contains("}"))
-                {
-                    rec.TextBox_MaxValue = MergeExternalSqlValue(rec.TextBox_MaxValue, keys, lisX39);
-                }
+                rec.f19Name = MergeOneExternalSqlValue(rec.f19Name, keys, lisX39);
+                rec.f19SupportingText = MergeOneExternalSqlValue(rec.f19SupportingText, keys, lisX39);
+                rec.TextBox_MinValue = MergeOneExternalSqlValue(rec.TextBox_MinValue, keys, lisX39);
+                rec.TextBox_MaxValue = MergeOneExternalSqlValue(rec.TextBox_MaxValue, keys, lisX39);
             }
-                
-            
+
+
             return lis;
         }
 
-        private string MergeExternalSqlValue(string strValue, List<BO.StringPair> keys, IEnumerable<BO.x39ConnectString> lisX39)
+        private string MergeOneExternalSqlValue(string strValue, List<BO.StringPair> keys, IEnumerable<BO.x39ConnectString> lisX39)
         {
             if (string.IsNullOrEmpty(strValue))
             {
-                return null;
+                return strValue;
+            }
+            if (!strValue.Contains("{") || !strValue.Contains("}"))
+            {
+                return strValue;
             }
 
             var cMerge = new BO.CLS.MergeContent();
@@ -125,7 +115,7 @@ namespace BL
                 }
                 strValue = strValue.Replace(sql.OrigExpr, ret);
 
-                
+
 
             }
 
@@ -134,7 +124,7 @@ namespace BL
         }
 
 
-        public int Save(BO.f19Question rec,List<int> f21ids)
+        public int Save(BO.f19Question rec, List<int> f21ids)
         {
             if (!ValidateBeforeSave(ref rec, f21ids))
             {
@@ -236,10 +226,10 @@ namespace BL
                 sc.Complete();
                 return intPID;
             }
-                
-            
 
-            
+
+
+
         }
 
         public bool ValidateBeforeSave(ref BO.f19Question rec, List<int> f21ids)
@@ -248,15 +238,15 @@ namespace BL
             {
                 this.AddMessage("Chybí vyplnit [Název]: Hlavní text otázky."); return false;
             }
-            if (rec.f25ID>0 && rec.f26ID > 0)
+            if (rec.f25ID > 0 && rec.f26ID > 0)
             {
-                this.AddMessage("Otázka nemůže mít vazbu současně na baterii i šachovnici.");return false;
+                this.AddMessage("Otázka nemůže mít vazbu současně na baterii i šachovnici."); return false;
             }
-            if (rec.f25ID > 0 && rec.ReplyControl !=BO.ReplyKeyEnum.TextBox)
+            if (rec.f25ID > 0 && rec.ReplyControl != BO.ReplyKeyEnum.TextBox)
             {
-                this.AddMessage("K šachovnici se mohou vázat pouze TEXTBOX otázky.");return false;
+                this.AddMessage("K šachovnici se mohou vázat pouze TEXTBOX otázky."); return false;
             }
-            if (rec.f25ID > 0 && (rec.f19ChessColumn<=0 || rec.f19ChessRow<=0))
+            if (rec.f25ID > 0 && (rec.f19ChessColumn <= 0 || rec.f19ChessRow <= 0))
             {
                 this.AddMessage("Upravte index řádku a sloupce v šachovnici."); return false;
             }
@@ -268,7 +258,7 @@ namespace BL
             {
                 if (rec.f29ID == 0)
                 {
-                    this.AddMessage("Otázka musí být zařazena do konkrétního PORTAL boxu.");return false;
+                    this.AddMessage("Otázka musí být zařazena do konkrétního PORTAL boxu."); return false;
                 }
             }
             if (rec.ReplyControl != BO.ReplyKeyEnum.EvalList)
@@ -277,19 +267,19 @@ namespace BL
             }
             if (rec.f19TemplateID == 0) //u zděděné otázky neprobíhá vstupní kontrola
             {
-                if (rec.x24ID==0 && rec.ReplyControl == BO.ReplyKeyEnum.TextBox)
+                if (rec.x24ID == 0 && rec.ReplyControl == BO.ReplyKeyEnum.TextBox)
                 {
-                    this.AddMessage("Datový typ (formát) otázky je povinná pole.");return false;
+                    this.AddMessage("Datový typ (formát) otázky je povinná pole."); return false;
                 }
                 if (rec.f18ID == 0)
                 {
-                    this.AddMessage("Segment formuláře je povinná pole.");return false;
+                    this.AddMessage("Segment formuláře je povinná pole."); return false;
                 }
                 if (rec.f23ID == 0)
                 {
                     this.AddMessage("Typ odpovědi je povinná pole."); return false;
                 }
-                if (rec.ReplyControl==BO.ReplyKeyEnum.TextBox && rec.ReplyType == BO.x24DataTypeEnum.tString && rec.f19Regex !=null)
+                if (rec.ReplyControl == BO.ReplyKeyEnum.TextBox && rec.ReplyType == BO.x24DataTypeEnum.tString && rec.f19Regex != null)
                 {
                     rec.f19Regex = rec.f19Regex.Trim();
                 }
@@ -301,17 +291,17 @@ namespace BL
                 {
                     if (string.IsNullOrEmpty(rec.f19LinkURL) == true && rec.f27ID == 0)
                     {
-                        this.AddMessage("URL tlačítka není vyplněno.");return false;
+                        this.AddMessage("URL tlačítka není vyplněno."); return false;
                     }
                     if (rec.f27ID > 0)
                     {
                         rec.f19LinkURL = "";
                     }
-                    if ((rec.ReplyControl == BO.ReplyKeyEnum.Checkbox && rec.f19IsMultiselect==true) || rec.ReplyControl==BO.ReplyKeyEnum.RadiobuttonList)
+                    if ((rec.ReplyControl == BO.ReplyKeyEnum.Checkbox && rec.f19IsMultiselect == true) || rec.ReplyControl == BO.ReplyKeyEnum.RadiobuttonList)
                     {
-                        if (rec.f26ID>0 && rec.f19IsHorizontalDisplay == true)
+                        if (rec.f26ID > 0 && rec.f19IsHorizontalDisplay == true)
                         {
-                            this.AddMessage("Položky odpovědi musí mít horizontální směr.");return false;
+                            this.AddMessage("Položky odpovědi musí mít horizontální směr."); return false;
                         }
                     }
                 }
@@ -322,14 +312,15 @@ namespace BL
 
                 if (f21ids != null)
                 {
-                    if ((rec.ReplyControl==BO.ReplyKeyEnum.Checkbox && rec.f19IsMultiselect) || (rec.ReplyControl==BO.ReplyKeyEnum.DropdownList || rec.ReplyControl == BO.ReplyKeyEnum.RadiobuttonList || rec.ReplyControl==BO.ReplyKeyEnum.Listbox)){
+                    if ((rec.ReplyControl == BO.ReplyKeyEnum.Checkbox && rec.f19IsMultiselect) || (rec.ReplyControl == BO.ReplyKeyEnum.DropdownList || rec.ReplyControl == BO.ReplyKeyEnum.RadiobuttonList || rec.ReplyControl == BO.ReplyKeyEnum.Listbox))
+                    {
                         if (f21ids.Count <= 1)
                         {
-                            this.AddMessage("V definičním oboru hodnot odpovědi musí být minimálně 2 položky.");return false;
+                            this.AddMessage("V definičním oboru hodnot odpovědi musí být minimálně 2 položky."); return false;
                         }
                     }
-                    
-                    
+
+
                 }
 
                 if (rec.ReplyControl != BO.ReplyKeyEnum.TextBox)
@@ -376,8 +367,8 @@ namespace BL
 
         public IEnumerable<BO.f27LinkUrl> GetList_AllF27()
         {
-            
-            return _db.GetList<BO.f27LinkUrl>("select a.*,"+ _db.GetSQL1_Ocas("f27")+" FROM f27LinkUrl a");
+
+            return _db.GetList<BO.f27LinkUrl>("select a.*," + _db.GetSQL1_Ocas("f27") + " FROM f27LinkUrl a");
         }
 
     }

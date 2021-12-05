@@ -235,7 +235,7 @@ namespace BL
             p.AddInt("a08ID", rec.a08ID, true);
             p.AddInt("a42ID", rec.a42ID, true);
             p.AddInt("a57ID", rec.a57ID, true);
-            p.AddInt("a61ID", rec.a61ID, true);
+            
             p.AddInt("a22ID", rec.a22ID, true);
             p.AddInt("a70ID", rec.a70ID, true);
             p.AddInt("a01ParentID", rec.a01ParentID, true);
