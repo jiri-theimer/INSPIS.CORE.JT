@@ -89,13 +89,13 @@ namespace BL
             var sqls = cMerge.GetAllMergeExternalSqlsInContent(strValue, keys, lisX39);  //vrátí všechny SQL externí dotazy
             foreach (BO.MergeExternalSql sql in sqls.Where(p => p.ConnectString != null))
             {
-                var con = new DL.DbHandler(sql.ConnectString, _mother.CurrentUser, _mother.App.LogFolder); //db connection na databázi                    
+                var dbExternal = new DL.DbHandler(sql.ConnectString, _mother.CurrentUser, _mother.App.LogFolder); //db connection na databázi                    
                 string ret = null;
                 if (sql.MergedSql.Contains("select ", StringComparison.OrdinalIgnoreCase))
                 {
-                    sql.MergedSql = "SELECT " + sql.MergedSql;
+                    //sql.MergedSql = "SELECT " + sql.MergedSql;
 
-                    var dt = con.GetDataTable(sql.MergedSql);  //výsledek pro select syntaxy se natahuje přes datatable
+                    var dt = dbExternal.GetDataTable(sql.MergedSql);  //výsledek pro select syntaxy se natahuje přes datatable
                     System.Data.DataRow dbRow = dt.Rows[0];
                     if (dbRow[0] != DBNull.Value)
                     {
@@ -106,7 +106,7 @@ namespace BL
                 else
                 {
                     sql.MergedSql = "SELECT " + sql.MergedSql + " as Value";
-                    ret = con.Load<BO.GetString>(sql.MergedSql).Value;
+                    ret = dbExternal.Load<BO.GetString>(sql.MergedSql).Value;
 
                 }
                 if (ret != null)

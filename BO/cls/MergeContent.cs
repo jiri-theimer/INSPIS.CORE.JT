@@ -41,15 +41,14 @@ namespace BO.CLS
                 {
                     foreach (BO.StringPair v in vars)
                     {
-                        if (c.MergedSql.Contains("@" + v.Key,StringComparison.OrdinalIgnoreCase))
+                        if (c.MergedSql.Contains(v.Key,StringComparison.OrdinalIgnoreCase))
                         {
-                            c.MergedSql = c.MergedSql.Replace("@" + v.Key, v.Value,StringComparison.OrdinalIgnoreCase);
+                            c.MergedSql = c.MergedSql.Replace(v.Key, v.Value,StringComparison.OrdinalIgnoreCase);
                         }
                     }
                 }
 
-                c.MergedSql = strExpr;  //do Value se uloží výsledek
-               
+                
 
                 lis.Add(c);
             }

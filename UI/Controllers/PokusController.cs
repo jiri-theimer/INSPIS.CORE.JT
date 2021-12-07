@@ -36,6 +36,13 @@ namespace UI.Controllers
             //var c = new EVAL.Evaluator(Factory, 1640734);
             //var s=c.TryEval("a03institution_s('a03Name')");
             //this.AddMessage(s.ToString());
+
+            var mq = new BO.myQueryF19();
+            mq.f06id = 200684;
+            var recA11 = Factory.a11EventFormBL.Load(1643831);
+            var lisF19 = Factory.f19QuestionBL.GetList_Merged(mq, recA11);
+
+            this.AddMessageTranslated(lisF19.Count().ToString());
             return View(v);
         }
 
