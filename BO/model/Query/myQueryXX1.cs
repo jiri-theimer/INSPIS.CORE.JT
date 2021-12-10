@@ -10,6 +10,7 @@ namespace BO
         public int f18id { get; set; }
         public int f19id { get; set; }
         public List<int> f19ids { get; set; }
+        public int f23id { get; set; }
         public myQueryXX1()
         {
             this.Prefix = "xx1";
@@ -24,6 +25,10 @@ namespace BO
             if (this.f18id > 0)
             {
                 AQ("f19.f18ID=@f18id", "f18id", this.f18id); //f21ReplyUnitJoinedF19: GetListJoinedF19
+            }
+            if (this.f23id > 0)
+            {
+                AQ("f19.f23ID=@f23id", "f23id", this.f23id);
             }
             if (this.f19id > 0)
             {

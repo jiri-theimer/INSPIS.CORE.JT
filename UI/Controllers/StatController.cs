@@ -365,7 +365,7 @@ namespace UI.Controllers
                 v.lisF18 = Factory.f18FormSegmentBL.GetList(mq);
                 var mqF19 = new BO.myQueryF19();
                 mqF19.f06ids = v.lisF06.Select(p => p.pid).ToList();
-                v.lisF19 = Factory.f19QuestionBL.GetList(mqF19);
+                v.lisF19 = Factory.f19QuestionBL.GetList(mqF19,false);
 
                 if (!string.IsNullOrEmpty(v.CheckedIDs))
                 {
@@ -373,7 +373,7 @@ namespace UI.Controllers
                     mqF19.f06ids = v.lisF06.Select(p => p.pid).ToList();
                     string strCheckedF19IDs = ParseCheckedF19IDs(v.CheckedIDs);
                     mqF19.SetPids(strCheckedF19IDs);
-                    var lisCheckedF19 = Factory.f19QuestionBL.GetList(mqF19);
+                    var lisCheckedF19 = Factory.f19QuestionBL.GetList(mqF19,false);
                     if (lisCheckedF19.Count() > 0)
                     {
                         v.lisCols = Factory.StatBL.GetList_StatColumns(lisCheckedF19.Select(p => p.f19ID).ToList());

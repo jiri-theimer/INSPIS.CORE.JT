@@ -110,7 +110,7 @@ namespace UI.Controllers
             mq.f06id = v.f06ID;
             var lis = Factory.f18FormSegmentBL.GetList(mq);
            
-            var lisF19 = Factory.f19QuestionBL.GetList(new BO.myQueryF19() { f06id = v.f06ID });
+            var lisF19 = Factory.f19QuestionBL.GetList(new BO.myQueryF19() { f06id = v.f06ID },false);
             mq = new BO.myQuery("f26BatteryBoard");
             mq.f06id = v.f06ID;
             var lisF26 = Factory.f26BatteryBoardBL.GetList(mq);

@@ -191,7 +191,7 @@ namespace BL
             mq.f06id = intOrigF06ID;
             var lisF18 = _mother.f18FormSegmentBL.GetList(mq);
             
-            var lisF19 = _mother.f19QuestionBL.GetList(new BO.myQueryF19() { f06id = intOrigF06ID });
+            var lisF19 = _mother.f19QuestionBL.GetList(new BO.myQueryF19() { f06id = intOrigF06ID },false);
             var pids = new List<CP>();
 
 

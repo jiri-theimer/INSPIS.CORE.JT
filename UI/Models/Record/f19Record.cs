@@ -9,6 +9,8 @@ namespace UI.Models.Record
     {
         public BO.f19Question Rec { get; set; }
 
+       
+
         public int f06ID { get; set; }
         public int f18ID { get; set; }
 

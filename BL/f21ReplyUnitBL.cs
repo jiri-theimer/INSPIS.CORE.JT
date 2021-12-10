@@ -50,7 +50,7 @@ namespace BL
             {
                 mq.explicit_orderby = "a.f21Ordinal";
             }
-            sb("SELECT a.*,f20.f19ID,f19.f18ID,f19.f19Name,f19.f23ID,f19.f19StatID,f19.f19IsMultiselect,f18.f18Name,f26.f26Name,f18.f06ID,f06.f06Name,");
+            sb("SELECT a.*,f20.f19ID,f19.f18ID,f19.f19Name,f19.f23ID,f19.f19StatID,f19.f19IsMultiselect,f18.f18Name,f26.f26Name,f18.f06ID,f06.f06Name,f19.f19SupportingText,");
             sb(_db.GetSQL1_Ocas("f21"));
             sb(" FROM f21ReplyUnit a");
             sb(" INNER JOIN f20ReplyUnitToQuestion f20 ON a.f21ID=f20.f21ID INNER JOIN f19Question f19 ON f20.f19ID=f19.f19ID INNER JOIN f18FormSegment f18 ON f19.f18ID=f18.f18ID");

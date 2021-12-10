@@ -41,8 +41,11 @@ namespace UI.Controllers
             mq.f06id = 200684;
             var recA11 = Factory.a11EventFormBL.Load(1643831);
             var lisF19 = Factory.f19QuestionBL.GetList_Merged(mq, recA11);
-
-            this.AddMessageTranslated(lisF19.Count().ToString());
+            foreach(var c in lisF19)
+            {
+                this.AddMessageTranslated("f19Name: "+c.f19Name+ ", f19EvalListSource: " + c.f19EvalListSource + ", maxvalue: "+c.TextBox_MaxValue);
+            }
+            
             return View(v);
         }
 

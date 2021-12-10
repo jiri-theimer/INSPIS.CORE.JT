@@ -84,7 +84,7 @@ namespace BO
 
         public int f19CHLMaxAnswers { get; set; }
         public string f19Regex { get; set; }
-        public string f19EvalListSource { get; set; }
+        public string f19EvalListSource { get; set; }       //nějaká eval funkce, která vrací výstup ve struktuře id1;text1|id2;text2|id3;text3 ** příklad: evallist_enum1("1;jednička|2;dvojka|3;trojka")
         public string f19LinkerValue { get; set; }
         public string f19EntityField { get; set; }
         public bool f19IsEncrypted { get; set; }
@@ -102,10 +102,10 @@ namespace BO
         public int f06ID;
         public string f06Name;
 
-        //readonly
-        public string TextBox_MinValue { get; set; }
-        public string TextBox_MaxValue { get; set; }
-        public string TextBox_ExportValue { get; set; }
+
+        public string TextBox_MinValue { get; set; }    //Load a GetList se načítá bool volbou
+        public string TextBox_MaxValue { get; set; }    //Load a GetList se načítá bool volbou
+        public string TextBox_ExportValue { get; set; } //Load a GetList se načítá bool volbou
 
         public x24DataTypeEnum ReplyType
         {

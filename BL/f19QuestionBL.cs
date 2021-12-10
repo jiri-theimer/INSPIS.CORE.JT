@@ -8,7 +8,7 @@ namespace BL
     public interface If19QuestionBL : BaseInterface
     {
         public BO.f19Question Load(int pid);
-        public IEnumerable<BO.f19Question> GetList(BO.myQueryF19 mq);
+        public IEnumerable<BO.f19Question> GetList(BO.myQueryF19 mq, bool bolLoadTextboxMinMax=false);
         public IEnumerable<BO.f19Question> GetList_Merged(BO.myQueryF19 mq, BO.a11EventForm recA11);
         public int Save(BO.f19Question rec, List<int> f21ids);
         public IEnumerable<BO.f27LinkUrl> GetList_AllF27();
@@ -35,25 +35,66 @@ namespace BL
         }
         public BO.f19Question Load(int pid)
         {
-            return _db.Load<BO.f19Question>(GetSQL1(" WHERE a.f19ID=@pid"), new { pid = pid });
+            var rec = _db.Load<BO.f19Question>(GetSQL1(" WHERE a.f19ID=@pid"), new { pid = pid });
+            if (rec.f23ID == 1)
+            {
+                //textbox                
+                var lisF21 = _mother.f21ReplyUnitBL.GetList(new BO.myQueryF21() { f19id = rec.pid });
+                if (lisF21.Count() > 0)
+                {
+                    var c = lisF21.First();
+                    rec.TextBox_MinValue = c.f21MinValue;
+                    rec.TextBox_MaxValue = c.f21MaxValue;
+                    rec.TextBox_ExportValue = c.f21ExportValue;
+                }
+            }
+            return rec;
         }
 
-        public IEnumerable<BO.f19Question> GetList(BO.myQueryF19 mq)
+        public IEnumerable<BO.f19Question> GetList(BO.myQueryF19 mq,bool bolLoadTextboxMinMax=false)
         {
             if (mq.explicit_orderby == null) { mq.explicit_orderby = "a.f19Ordinal"; };
             DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);
-            return _db.GetList<BO.f19Question>(fq.FinalSql, fq.Parameters);
+            if (!bolLoadTextboxMinMax)
+            {
+                return _db.GetList<BO.f19Question>(fq.FinalSql, fq.Parameters);
+            }
+            else
+            {
+                //načítat i atributy TextBox_MinValue, TextBox_MaxValue
+                var lis =_db.GetList<BO.f19Question>(fq.FinalSql, fq.Parameters);
+                var lisF21 = _mother.f21ReplyUnitBL.GetListJoinedF19(new BO.myQueryXX1() {f23id=1, f19ids = lis.Select(p=>p.pid).ToList() });
+                foreach(var recF19 in lis.Where(p=>p.f23ID==1))
+                {
+                    if (lisF21.Where(p => p.f19ID == recF19.pid).Count() > 0)
+                    {
+                        var c = lisF21.Where(p => p.f19ID == recF19.pid).First();
+                        recF19.TextBox_MinValue = c.f21MinValue;
+                        recF19.TextBox_MaxValue = c.f21MaxValue;
+                        recF19.TextBox_ExportValue = c.f21ExportValue;
+                       
+                    }
+                }
+
+                return lis;
+            }
+            
+
+           
+            
         }
 
         public IEnumerable<BO.f19Question> GetList_Merged(BO.myQueryF19 mq, BO.a11EventForm recA11)
         {
             //vrátí seznam otázek doplněný o sloučené výrazy z externích sql dotazů
-            var lis = GetList(mq);
+            var lis = GetList(mq,true);
             var lisX39 = _mother.x39ConnectStringBL.GetList(new BO.myQuery("x39")); //seznam všech connect stringů            
             var keys = new List<BO.StringPair>();
             keys.Add(new BO.StringPair() { Key = "@j03login", Value = _mother.CurrentUser.j03Login });
+            keys.Add(new BO.StringPair() { Key = "@j03id", Value = _mother.CurrentUser.pid.ToString() });
             keys.Add(new BO.StringPair() { Key = "@a01id", Value = recA11.a01ID.ToString() });
             keys.Add(new BO.StringPair() { Key = "@a03id", Value = recA11.a03ID.ToString() });
+            
             if (recA11.a03ID > 0)
             {
                 var recA03 = _mother.a03InstitutionBL.Load(recA11.a03ID);
@@ -67,6 +108,12 @@ namespace BL
                 rec.f19SupportingText = MergeOneExternalSqlValue(rec.f19SupportingText, keys, lisX39);
                 rec.TextBox_MinValue = MergeOneExternalSqlValue(rec.TextBox_MinValue, keys, lisX39);
                 rec.TextBox_MaxValue = MergeOneExternalSqlValue(rec.TextBox_MaxValue, keys, lisX39);
+                rec.f19EvalListSource = MergeOneExternalSqlValue(rec.f19EvalListSource, keys, lisX39);
+                rec.f19ReadonlyExpression = MergeOneExternalSqlValue(rec.f19ReadonlyExpression, keys, lisX39);
+                rec.f19SkipExpression = MergeOneExternalSqlValue(rec.f19SkipExpression, keys, lisX39);
+                rec.f19RequiredExpression = MergeOneExternalSqlValue(rec.f19RequiredExpression, keys, lisX39);
+                rec.f19CancelValidateExpression = MergeOneExternalSqlValue(rec.f19CancelValidateExpression, keys, lisX39);
+
             }
 
 
@@ -93,14 +140,13 @@ namespace BL
                 string ret = null;
                 if (sql.MergedSql.Contains("select ", StringComparison.OrdinalIgnoreCase))
                 {
-                    //sql.MergedSql = "SELECT " + sql.MergedSql;
-
                     var dt = dbExternal.GetDataTable(sql.MergedSql);  //výsledek pro select syntaxy se natahuje přes datatable
                     System.Data.DataRow dbRow = dt.Rows[0];
                     if (dbRow[0] != DBNull.Value)
                     {
                         ret = dbRow[0].ToString();
                     }
+
 
                 }
                 else

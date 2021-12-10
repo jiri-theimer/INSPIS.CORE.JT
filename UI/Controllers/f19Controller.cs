@@ -22,19 +22,21 @@ namespace UI.Controllers
                 if (v.Rec == null)
                 {
                     return RecNotFound(v);
-                }                
+                }
+
                 
-                var lisF21 = Factory.f21ReplyUnitBL.GetList(new BO.myQueryF21() { f19id = v.rec_pid });                
                 if (v.Rec.ReplyControl == BO.ReplyKeyEnum.DropdownList || v.Rec.ReplyControl == BO.ReplyKeyEnum.RadiobuttonList || v.Rec.ReplyControl == BO.ReplyKeyEnum.Listbox || (v.Rec.ReplyControl == BO.ReplyKeyEnum.Checkbox && v.Rec.f19IsMultiselect))
                 {
+                    var lisF21 = Factory.f21ReplyUnitBL.GetList(new BO.myQueryF21() { f19id = v.rec_pid });
                     v.f21IDs = string.Join(",", lisF21.Select(p => p.pid));
                 }
-                if (v.Rec.ReplyControl == BO.ReplyKeyEnum.TextBox && lisF21.Count()>0)
-                {                    
-                    v.Rec.TextBox_MinValue = lisF21.First().f21MinValue;
-                    v.Rec.TextBox_MaxValue = lisF21.First().f21MaxValue;
-                    v.Rec.TextBox_ExportValue = lisF21.First().f21ExportValue;
-                }
+                //if (v.Rec.ReplyControl == BO.ReplyKeyEnum.TextBox && lisF21.Count()>0)
+                //{                    
+                //    v.Rec.TextBox_MinValue = lisF21.First().f21MinValue;
+                //    v.Rec.TextBox_MaxValue = lisF21.First().f21MaxValue;
+                //    v.Rec.TextBox_ExportValue = lisF21.First().f21ExportValue;
+
+                //}
             }
             else
             {

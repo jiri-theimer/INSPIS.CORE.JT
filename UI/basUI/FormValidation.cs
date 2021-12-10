@@ -45,7 +45,7 @@ namespace UI
             var segmenty = _Factory.f18FormSegmentBL.GetList(mq);
             //seznam vsech otazek
             
-            var otazky = _Factory.f19QuestionBL.GetList(new BO.myQueryF19() { f06id = cA11.f06ID });
+            var otazky = _Factory.f19QuestionBL.GetList(new BO.myQueryF19() { f06id = cA11.f06ID },false);
             //seznam vsech jiz vyplnenych odpovedi ve formulari                       
             var vyplneneOdpovedi = _Factory.f32FilledValueBL.GetList(new BO.myQueryF32() { a11id = a11id });
 
