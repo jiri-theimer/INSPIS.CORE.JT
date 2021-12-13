@@ -2,7 +2,7 @@
 @inject BL.Factory _f
 
 @{
-    ViewData["Title"] = _f.trawi("Přihlášení",Model.LangIndex);
+    ViewData["Title"] = _f.trawi("Přihlášení", Model.LangIndex);
     Layout = "~/Views/Shared/_LayoutLogin.cshtml";
 
     var _returnurl = @Context.Request.Query["returnurl"];
@@ -11,7 +11,7 @@
 
 
 <div style="margin:auto;max-width:500px;">
-    
+
     <form id="form1" asp-action="UserLogin" method="post">
 
         <h4>@_f.trawi("Přihlášení do aplikace", Model.LangIndex)</h4>
@@ -41,44 +41,44 @@
                 <option value="48">@_f.trawi("48 hodin", Model.LangIndex)</option>
             </select>
         </div>
+        @if (!_f.App.LangChooseIsStopped)
+        {
+            <div class="form-group">
+                <div class="dropdown">
+                    <a class="btn dropdown-toggle" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        @if (Model.LangIndex == 0)
+                        {
+                            <img src="~/images/czechrepublic.gif" />
+                        }
+                        @if (Model.LangIndex == 1)
+                        {
+                            <img src="~/images/uk.gif" />
+                        }
+                        @if (Model.LangIndex == 2)
+                        {
+                            <img src="~/images/ukraine.gif" />
+                        }
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li>
+                            <a class="btn btn-light" href="javascript:change_lang(0)" style="width:200px;text-align:left;"><img src="~/images/czechrepublic.gif" /> Česky</a>
+                        </li>
+                        <li style="display:none;">
+                            <a class="btn btn-light" href="javascript:change_lang(1)" style="width:200px;text-align:left;"><img src="~/images/uk.gif" /> English</a>
+                        </li>
+                        <li>
+                            <a class="btn btn-light" href="javascript:change_lang(2)" style="width:200px;text-align:left;"><img src="~/images/ukraine.gif" /> Українська</a>
+                        </li>
+                    </ul>
+                </div>
 
-        <div class="form-group">
-            <div class="dropdown">
-                <a class="btn dropdown-toggle" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                    @if (Model.LangIndex == 0)
-                    {
-                        <img src="~/images/czechrepublic.gif" />
-                    }
-                    @if (Model.LangIndex == 1)
-                    {
-                        <img src="~/images/uk.gif" />
-                    }
-                    @if (Model.LangIndex == 2)
-                    {
-                        <img src="~/images/ukraine.gif" />
-                    }
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <li>
-                        <a class="btn btn-light" href="javascript:change_lang(0)" style="width:200px;text-align:left;"><img src="~/images/czechrepublic.gif" /> Česky</a>
-                    </li>
-                    <li style="display:none;">
-                        <a class="btn btn-light" href="javascript:change_lang(1)" style="width:200px;text-align:left;"><img src="~/images/uk.gif" /> English</a>
-                    </li>
-                    <li>
-                        <a class="btn btn-light" href="javascript:change_lang(2)" style="width:200px;text-align:left;"><img src="~/images/ukraine.gif" /> Українська</a>
-                    </li>
-                </ul>
             </div>
+        }
 
 
 
 
-        </div>
 
-
-
-       
 
         <input type="hidden" asp-for="@Model.LangIndex" value="@Model.LangIndex" />
         <input type="hidden" asp-for="@Model.IsChangedLangIndex" value="@Model.IsChangedLangIndex" />
@@ -90,7 +90,7 @@
         <input type="hidden" asp-for="@Model.Browser_DeviceType" />
         <input type="hidden" asp-for="@Model.Browser_Host" />
     </form>
-    
+
 
 
 
@@ -124,7 +124,7 @@
         $("#Browser_DeviceType").val(devicetype);
 
 
-       
+
 
 
     });

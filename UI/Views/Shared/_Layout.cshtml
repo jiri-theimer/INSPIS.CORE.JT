@@ -29,7 +29,7 @@
     {
         @RenderSection("header_content")
     }
-    <link href="/images/favicon_@(_f.App.LogoImageSuffix).ico" rel="shortcut icon" type="image/x-icon" />    
+    <link href="/images/favicon_@(_f.App.LogoImageSuffix).ico" rel="shortcut icon" type="image/x-icon" />
 
     @if (_f.CurrentUser.j03LiveChatTimestamp != null)
     {
@@ -98,7 +98,7 @@
                 @if (_f.CurrentUser.j03HomePageUrl == null)
                 {
                     <a id="cmdHome" class="navbar-brand mx-0" href="/Dashboard/Widgets" tabindex="-1" title="@_f.App.AppBuild">@_f.App.AppName</a>
-                    
+
                 }
                 else
                 {
@@ -182,21 +182,7 @@
 
 
                         }
-                        @if (_f.CurrentUser.j03Login == "lamos")
-                        {
-                            if (_f.CurrentUser.j03LangIndex == 0)
-                            {
-                                <li class="nav-item">
-                                    <a class="btn btn-warning" href="javascript:save_langindex_menu(2)" tabindex="-1">🡢UA</a>
-                                </li>
-                            }
-                            if (_f.CurrentUser.j03LangIndex == 2)
-                            {
-                                <li class="nav-item">
-                                    <a class="btn btn-danger" href="javascript:save_langindex_menu(0)" tabindex="-1">🡢CZ</a>
-                                </li>
-                            }
-                        }
+
 
                     </ul>
 
@@ -211,10 +197,14 @@
                                 <a href="javascript:save_mainmenu_logo_visibility('1')"><img src="/images/switch_on_24.png" title="@_f.tra("Zapnout horní pruh")" /></a>
                             }
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" id="cmdLangIndex" role="button" data-bs-toggle="dropdown" aria-expanded="false" tabindex="-1">@_f.CurrentUser.LangName</a>
-                            <ul id="ulLangIndex" class="dropdown-menu" aria-labelledby="cmdLangIndex"><li>Loading....</li></ul>
-                        </li>
+                        @if (!_f.App.LangChooseIsStopped)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="cmdLangIndex" role="button" data-bs-toggle="dropdown" aria-expanded="false" tabindex="-1">@_f.CurrentUser.LangName</a>
+                                <ul id="ulLangIndex" class="dropdown-menu" aria-labelledby="cmdLangIndex"><li>Loading....</li></ul>
+                            </li>
+                        }
+
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="cmdFontSize" role="button" data-bs-toggle="dropdown" aria-expanded="false" tabindex="-1"><span style="font-size:70%;">A</span>A</a>
                             <ul id="ulFontSize" class="dropdown-menu" aria-labelledby="cmdFontSize"><li>Loading....</li></ul>
@@ -292,8 +282,8 @@
             });
 
         @if (_f.CurrentUser.Messages4Notify != null) {
-            @foreach (var c in _f.CurrentUser.Messages4Notify) {  // <----  placed on the same line, WORKING !!!            
-                @:_notify_message("@c.Value","@c.Key");            
+            @foreach (var c in _f.CurrentUser.Messages4Notify) {  // <----  placed on the same line, WORKING !!!
+                @:_notify_message("@c.Value","@c.Key");
             }
         }
         @if (_f.CurrentUser.j03IsMainLogoVisible)
@@ -317,7 +307,7 @@
                 }
             });
 
-            
+
         }
 
 
@@ -339,7 +329,10 @@
             }
         });
 
-            register_menu("cmdLangIndex", "ulLangIndex", "/Menu/CurrentUserLangIndex");
+            if (document.getElementById("cmdLangIndex")) {
+                register_menu("cmdLangIndex", "ulLangIndex", "/Menu/CurrentUserLangIndex");
+            }
+            
             register_menu("cmdFontSize", "ulFontSize", "/Menu/CurrentUserFontSize");
             register_menu("cmdMyProfile", "ulMyProfile", "/Menu/CurrentUserMyProfile");
             if (document.getElementById("cmdAdmin")) {
@@ -489,11 +482,11 @@
             if (typeof layout === "undefined") layout = null;
             _modal_current_layout = layout;
             if (typeof flag === "undefined") flag = 1;
-            
+
             if (url.toLowerCase().indexOf("/j11/record") > -1 || url.toLowerCase().indexOf("/a29/record") > -1 || url.toLowerCase().indexOf("/a10/record") > -1 || url.toLowerCase().indexOf("/x51/record") > -1) {
                 flag = 2;   //automaticky maximalizovat okno
             }
-           
+
 
             if (!$(_modal).attr("initialized") && flag !== 2) {
                 _make_element_draggable(document.getElementById("myModalContent"), document.getElementById("myModalFrame")); //předávání nefunguje přes jquery

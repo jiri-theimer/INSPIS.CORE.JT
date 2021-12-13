@@ -23,11 +23,13 @@ namespace BL
         public string TranslatorMode { get; set; }
 
         public int DefaultLangIndex { get; set; }
+        public bool LangChooseIsStopped { get; set; }   //true: bez nabídky volby jazyku
 
-        public string Implementation { get; set; }  //HD nebo prázdno
+        public string Implementation { get; set; }  //UA/HD/Default
 
         public string UiftUrl { get; set; } //url pro spouštění UIFT
         public string RobotUser { get; set; }   //pod jakým uživatelským loginem běží robot na pozadí
+        public bool RobotIsStopped { get; set; }    //true: běh robota je zastaven
        
         public bool PasswordRequireDigit { get; set; }
         public bool PasswordRequireLowercase { get; set; }

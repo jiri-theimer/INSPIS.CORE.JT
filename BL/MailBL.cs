@@ -143,7 +143,8 @@ namespace BL
             }
             if (_account == null)
             {
-                return new BO.x40MailQueue() { j40ID = 0 };
+                //return new BO.x40MailQueue() { j40ID = 0 };
+                return null;
             }
             rec.j40ID = _account.pid;
             rec.x40SenderAddress = _account.j40SmtpEmail;
@@ -165,12 +166,20 @@ namespace BL
 
             BO.x40MailQueue rec = new BO.x40MailQueue() { x40Recipient = toEmail, x40Subject = subject, x40Body = body, x40IsHtmlBody = ishtml,x40MessageGuid=BO.BAS.GetGuid(),x29ID=x29id,x40DataPID=recpid };
             rec = InhaleMessageSender(j40id,rec);
+            if (rec == null)
+            {
+                return new BO.Result(false,_mother.tra("V systému není zaveden SMTP mail účet."));    //není zaveden mail účet pro SMTP
+            }
             return SendMessage(rec,false);
            
         }
         public BO.Result SendMessage(BO.x40MailQueue rec, bool istest)  //v BO.Result.pid vrací x40id
         {
-            rec = InhaleMessageSender(rec.j40ID, rec);            
+            rec = InhaleMessageSender(rec.j40ID, rec);   
+            if (rec == null)
+            {
+                return new BO.Result(false, _mother.tra("V systému není zaveden SMTP mail účet."));    //není zaveden mail účet pro SMTP
+            }
             MailMessage m = new MailMessage() { Body = rec.x40Body, Subject = rec.x40Subject,IsBodyHtml=rec.x40IsHtmlBody};                        
 
             m.From = new MailAddress(rec.x40SenderAddress, rec.x40SenderName);

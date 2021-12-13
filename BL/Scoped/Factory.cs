@@ -153,7 +153,7 @@ namespace BL
 
         public string trawi(string strExpression,int langindex)   //lokalizace do ostatních jazyků
         {
-            
+            if (langindex == 0) return strExpression;
             return this.Translator.DoTranslate(strExpression, langindex);
         }
 

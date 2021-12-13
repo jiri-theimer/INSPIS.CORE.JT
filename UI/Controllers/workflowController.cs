@@ -48,7 +48,7 @@ namespace UI.Controllers
                 Factory.p85TempboxBL.VirtualDelete(p85id);
                 RefreshStateTemp(v);               
             }
-            if (string.IsNullOrEmpty(oper) == false)
+            if (!string.IsNullOrEmpty(oper))
             {
                 return View(v);
             }

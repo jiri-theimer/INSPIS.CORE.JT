@@ -271,7 +271,11 @@ namespace UI.Controllers
                 AMI("AutoComplete položky", url_ciselniky("o15"));
                 
                 AMI("Uživatelská nápověda", url_ciselniky("x51"));
-                AMI("Aplikační překlad", url_ciselniky("x91"));
+                if (!Factory.App.LangChooseIsStopped)
+                {
+                    AMI("Aplikační překlad", url_ciselniky("x91"));
+                }
+                
                 AMI("Externí datové zdroje", url_ciselniky("x39"));
             }
 

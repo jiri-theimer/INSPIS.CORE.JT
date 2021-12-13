@@ -99,12 +99,16 @@ namespace UI
                 Implementation = Configuration.GetSection("App")["Implementation"]
                 ,
                 DefaultLangIndex = BO.BAS.InInt(Configuration.GetSection("App")["DefaultLangIndex"])
-                ,                
+                ,
+                LangChooseIsStopped = BO.BAS.BG(Configuration.GetSection("App")["LangChooseIsStopped"])
+                ,
                 CssCustomSkin = Configuration.GetSection("App")["CssCustomSkin"]
                 ,
                 UserUrl= Configuration.GetSection("App")["UserUrl"]
                 ,
                 RobotUser = Configuration.GetSection("App")["RobotUser"]
+                ,
+                RobotIsStopped= BO.BAS.BG(Configuration.GetSection("App")["RobotIsStopped"])
                 ,
                 UploadFolder = Configuration.GetSection("Folders")["Upload"]
                 ,
@@ -167,8 +171,8 @@ namespace UI
             //    app.UseHsts();
             //}
             app.UseDeveloperExceptionPage();    //zjt: v rámci vývoje
-
-            app.UseHttpsRedirection();
+            
+            //app.UseHttpsRedirection();
             
             app.UseStaticFiles();
 

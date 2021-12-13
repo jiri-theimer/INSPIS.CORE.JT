@@ -58,7 +58,12 @@ namespace UI
                 LogInfo("_app is null!");
                 return;
             }
-            if (string.IsNullOrEmpty(_app.RobotUser) == true)
+            if (_app.RobotIsStopped)
+            {
+                LogInfo("[RobotIsStopped] is TRUE!");
+                return;
+            }
+            if (string.IsNullOrEmpty(_app.RobotUser))
             {
                 LogInfo("[RobotUser] of appsettings is missing!");
                 return;

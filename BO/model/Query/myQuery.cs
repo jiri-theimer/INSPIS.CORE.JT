@@ -46,6 +46,7 @@ namespace BO
             if (this.a01id > 0)
             {
                 if (this.Prefix == "b05") AQ("a.a01ID=@a01id", "a01id", this.a01id);
+                if (this.Prefix == "a25") AQ("a.a25ID IN (select a25ID FROM a11EventForm WHERE a01ID=@a01id AND a25ID IS NOT NULL)", "a01id", this.a01id);
             }
             if (this.f21id > 0)
             {                
