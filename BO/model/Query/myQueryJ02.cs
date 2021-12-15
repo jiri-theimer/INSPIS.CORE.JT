@@ -78,9 +78,10 @@ namespace BO
 
             if (_searchstring != null && _searchstring.Length > 2)
             {
-                string sw = string.Format("Contains((a.j02FullText,a.j02Email,a.j02PID,a.j02Address,a.j02Mobile),'\"{0}*\"')", _searchstring);
+                string sw = _searchstring;
                 if (CurrentUser.FullTextSearch)
                 {
+                    sw = $"Contains((a.j02FullText,a.j02Email,a.j02PID,a.j02Address,a.j02Mobile),'{this.ConvertSearchString2FulltextSyntax()}')";
                     AQ("(" + sw + ")", "", null);
                 }
                 else

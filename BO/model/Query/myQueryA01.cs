@@ -148,7 +148,7 @@ namespace BO
                 string sw = "";
                 if (this.CurrentUser.FullTextSearch)
                 {
-                    sw = string.Format("Contains((a.a01Signature,a.a01LeaderInLine,a.a01MemberInLine,a.a01CaseCode,a.a01InstitutionPlainText,a.a01InstitutionPlainTextRedizo),'\"{0}*\"')", _searchstring);
+                    sw = string.Format("Contains((a.a01Signature,a.a01LeaderInLine,a.a01MemberInLine,a.a01CaseCode,a.a01InstitutionPlainText,a.a01InstitutionPlainTextRedizo),'{0}')", this.ConvertSearchString2FulltextSyntax());
                     AQ("(" + sw + ")", "", null);
                 }
                 else{

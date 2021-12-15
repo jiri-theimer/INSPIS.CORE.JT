@@ -100,17 +100,69 @@ namespace BO
             set
             {
                 _searchstring = value;
-                if (!string.IsNullOrEmpty(_searchstring))
+                if (!string.IsNullOrEmpty(_searchstring) && _searchstring.Contains(" "))
                 {
                     _searchstring = _searchstring.ToLower().Trim();
-                    _searchstring = _searchstring.Replace("--", "").Replace("drop", "").Replace("delete", "").Replace("truncate", "").Replace(";", " or ").Replace(",", " or ").Replace("  ", " ");
-                    _searchstring = _searchstring.Replace(" or ", "#or#").Replace(" and ", "#and#");
-                    _searchstring = _searchstring.Replace(" ", " and ");
-                    _searchstring = _searchstring.Replace("#or#", " or ").Replace("#and#", " and ");
+                    _searchstring = _searchstring.Replace("--", "").Replace("drop", "").Replace("delete", "").Replace("truncate", "");
+                    //_searchstring = _searchstring.Replace("--", "").Replace("drop", "").Replace("delete", "").Replace("truncate", "").Replace(";", " or ").Replace(",", " or ").Replace("  ", " ");                    
+                    //_searchstring = _searchstring.Replace(" or ", "#or#").Replace(" and ", "#and#");
+                    //_searchstring = _searchstring.Replace(" ", " and ");
+                    //_searchstring = _searchstring.Replace("#or#", " or ").Replace("#and#", " and ");
                     _searchstring = _searchstring.Replace("\"", "");
                 }
                 
             }
+        }
+
+        public string ConvertSearchString2FulltextSyntax()
+        {            
+            if (_searchstring.Contains(";"))    //podmínka OR
+            {
+                var arr = _searchstring.Replace(" ","").Split(";");
+                string sw = "";
+                foreach (string s in arr)
+                {
+                    if (s.Trim().Length > 0)
+                    {
+                        if (sw == "")
+                        {
+                            sw = "\"" + s + "*\"";
+                        }
+                        else
+                        {
+                            sw += " OR \"" + s + "*\"";
+                        }
+                    }
+                }
+
+                return sw;
+            }
+
+            if (_searchstring.Contains(" "))    //podmínka AND
+            {
+                var arr = _searchstring.Split(" ");
+                string sw = "";
+                foreach (string s in arr)
+                {
+                    if (s.Trim().Length > 0)
+                    {
+                        if (sw == "")
+                        {
+                            sw = "\"" + s + "*\"";
+                        }
+                        else
+                        {
+                            sw += " AND \"" + s + "*\"";
+                        }
+                    }
+                }
+
+                return sw;
+            }
+
+
+            return $"\"{_searchstring}*\"";
+
         }
 
         public virtual List<QRow> GetRows()
