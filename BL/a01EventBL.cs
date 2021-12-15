@@ -251,6 +251,7 @@ namespace BL
             p.AddString("a01Description", rec.a01Description);
 
             p.AddBool("a01IsTemporary", rec.a01IsTemporary);
+            p.AddEnumInt("a01TemporaryFlag", rec.a01TemporaryFlag);
             p.AddDateTime("a01DateFrom", rec.a01DateFrom);
             if (rec.a01DateUntil == null)
             {

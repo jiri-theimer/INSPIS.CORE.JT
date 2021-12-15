@@ -483,8 +483,9 @@ namespace UI.Controllers
                 else
                 {
 
-                    if (v.Rec.a01IsTemporary)
+                    if (v.Rec.a01IsTemporary && v.Rec.a10CoreFlag== null)
                     {
+                        
                         this.AddMessage("Toto je akce pro simulaci formuláře. Běheme hodiny systém akci automaticky smaže.", "info");
                     }
                     v.RecA10 = Factory.a10EventTypeBL.Load(v.Rec.a10ID);

@@ -15,6 +15,12 @@ namespace BO
         HD_Requestor = 13
     }
     
+    public enum a01TemporaryFlagENUM
+    {
+        _None=0,
+        FormSimulation=1,
+        InezGeneration=2
+    }
 
     public class a01Event : BaseBO
     {
@@ -76,6 +82,7 @@ namespace BO
 
         public int a01ChildsCount;
         
-        
+        public a01TemporaryFlagENUM a01TemporaryFlag { get; set; }
+
     }
 }

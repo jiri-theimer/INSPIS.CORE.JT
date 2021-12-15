@@ -365,9 +365,9 @@ namespace DL
             switch (strPrefix)
             {
                 case "a01":
-                    if (isthegrid == true)
+                    if (isthegrid)
                     {
-                        return "a.a01ID as pid,dbo._core_a01_isclosed(a.a01IsClosed,a.a01ValidFrom,a.a01ValidUntil) as isclosed,bc.b02Color as bgcolor,a.a01ParentID as parentpid,a.a01ChildsCount as childscount,a.a01IsTemporary as issimulation";
+                        return "a.a01ID as pid,dbo._core_a01_isclosed(a.a01IsClosed,a.a01ValidFrom,a.a01ValidUntil) as isclosed,bc.b02Color as bgcolor,a.a01ParentID as parentpid,a.a01ChildsCount as childscount,a.a01IsTemporary as issimulation,a.a01TemporaryFlag as temporaryflag";
                     }
                     else
                     {
@@ -376,7 +376,7 @@ namespace DL
 
                 case "a11":
                     string s = "a.a11ID as pid,dbo._core_a11_isclosed(a.a11IsLocked,a.a11IsLockedByWorkflow,a11_f06.f06ValidFrom,a11_f06.f06ValidUntil,a11_f06.f06IsA01ClosedStrict,a11_f06.f06IsA01PeriodStrict,a11_a01.a01IsAllFormsClosed,a11_a01.a01IsClosed,a11_a01.a01ValidFrom,a11_a01.a01ValidUntil) as isclosed,case when a.a11IsInProcessing=1 then 'yellow' end as bgcolor";
-                    if (isthegrid == true)
+                    if (isthegrid)
                     {
                         return s;
                     }
@@ -386,7 +386,7 @@ namespace DL
 
                     }
                 case "a03":
-                    if (isthegrid == true)
+                    if (isthegrid)
                     {
                         return string.Format("a.{0}ID as pid,convert(bit,CASE WHEN GETDATE() BETWEEN a.{0}ValidFrom AND a.{0}ValidUntil THEN 0 ELSE 1 end) as isclosed,a.a03ParentFlag as parentflag,a.a03IsTestRecord as istestrecord", strPrefix);
                     }
@@ -395,9 +395,9 @@ namespace DL
                         return string.Format("a.{0}ID as pid,CASE WHEN GETDATE() BETWEEN a.{0}ValidFrom AND a.{0}ValidUntil THEN 0 ELSE 1 end as isclosed,'{0}' as entity,a.{0}DateInsert as DateInsert,a.{0}UserInsert as UserInsert,a.{0}DateUpdate as DateUpdate,a.{0}UserUpdate as UserUpdate,a.{0}ValidFrom as ValidFrom,a.{0}ValidUntil as ValidUntil,a.a03ParentFlag as parentflag,a.a03IsTestRecord as istestrecord", strPrefix);
                     }
                 default:
-                    if (isvalidity == true)
+                    if (isvalidity)
                     {
-                        if (isthegrid == true)
+                        if (isthegrid)
                         {
                             return string.Format("a.{0}ID as pid,convert(bit,CASE WHEN GETDATE() BETWEEN a.{0}ValidFrom AND a.{0}ValidUntil THEN 0 ELSE 1 end) as isclosed", strPrefix);
                         }
@@ -409,13 +409,13 @@ namespace DL
                     }
                     else
                     {
-                        if (isthegrid == true)
+                        if (isthegrid)
                         {
                             return string.Format("a.{0}ID as pid,convert(bit,0) as isclosed", strPrefix);
                         }
                         else
                         {
-                            if (istimestamp == true)
+                            if (istimestamp)
                             {
                                 return string.Format("a.{0}ID as pid,0 as isclosed,'{0}' as entity,a.{0}DateInsert as DateInsert,a.{0}UserInsert as UserInsert,a.{0}DateUpdate as DateUpdate,a.{0}UserUpdate as UserUpdate", strPrefix);
                             }
