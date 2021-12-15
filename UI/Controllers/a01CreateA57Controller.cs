@@ -84,6 +84,13 @@ namespace UI.Controllers
                 {
                     this.AddMessage("Časová závora autoevaluační šablony nedovoluje založit akci.");return View(v);
                 }
+                var recA10 = Factory.a10EventTypeBL.Load(v.RecA57.a10ID);
+                if (recA10.a10IsUse_Period)
+                {
+                    c.a01DateFrom = DateTime.Today;
+                    c.a01DateUntil = Convert.ToDateTime(c.a01DateFrom).AddDays(90);
+                    if (c.a01DateUntil>v.RecA57.a57CreateUntil) c.a01DateUntil=v.RecA57.a57CreateUntil;
+                }
 
                 var lisA11 = new List<BO.a11EventForm>();
                 foreach(var f06id in v.lisSelectedF06IDs.Where(p => p > 0))

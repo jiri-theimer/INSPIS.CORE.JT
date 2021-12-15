@@ -168,7 +168,7 @@ namespace BL
             rec = InhaleMessageSender(j40id,rec);
             if (rec == null)
             {
-                return new BO.Result(false,_mother.tra("V systému není zaveden SMTP mail účet."));    //není zaveden mail účet pro SMTP
+                return new BO.Result(true,_mother.tra("V systému není zaveden SMTP mail účet."));    //není zaveden mail účet pro SMTP
             }
             return SendMessage(rec,false);
            
@@ -178,7 +178,7 @@ namespace BL
             rec = InhaleMessageSender(rec.j40ID, rec);   
             if (rec == null)
             {
-                return new BO.Result(false, _mother.tra("V systému není zaveden SMTP mail účet."));    //není zaveden mail účet pro SMTP
+                return new BO.Result(true, _mother.tra("V systému není zaveden SMTP mail účet."));    //není zaveden mail účet pro SMTP
             }
             MailMessage m = new MailMessage() { Body = rec.x40Body, Subject = rec.x40Subject,IsBodyHtml=rec.x40IsHtmlBody};                        
 

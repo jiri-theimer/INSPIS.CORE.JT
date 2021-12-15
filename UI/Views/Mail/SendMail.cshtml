@@ -160,7 +160,7 @@
         }
 
 
-        
+
 
     });
 
@@ -179,8 +179,10 @@
             _notify_message("@_f.tra("Musíte vybrat seznam.")");
             return;
         }
-        $.post("/Common/GetPidsOfQuery", { entity: "a03Institution", master_prefix: "a29", master_pid: a29id }, function (data) {
+       
+        $.post("/Common/GetPidsOfQuery", { entity: "a03Institution", master_entity: "a29", master_pid: a29id }, function (data) {
             if (data != null) {
+
                 append_a03ids(data,true);
             }
         });
@@ -196,7 +198,7 @@
                 _resize_textareas();
             }
         });
-        
+
     }
     function clear_all() {
         $("#hidA03IDs").val("");
@@ -215,14 +217,18 @@
     function remember_p65id() {
         var x29id = "@Model.Rec.x29ID";
         var strKey = "SendMail-" + x29id + "-b65id";
-        var strVal = $("#b65ID").val();        
+        var strVal = $("#b65ID").val();
         $.post("/Common/SetUserParam", {key: strKey, value: strVal }, function (data) {
-           
+
 
         });
     }
 
     function append_a03ids(arr, silent) {
+        if (arr.length == 0) {
+            _notify_message("@_f.tra("Prázdný seznam.")");
+            return;
+        }
         $("#divA03").html("Loading...");
         var a03ids = [];
         if ($("#hidA03IDs").val() != "") {
@@ -238,8 +244,9 @@
             } else {
                 a03ids.push(arr[i]+"");
             }
+
             if (a03ids.length > 5000) {
-                _notify_message("@_f.tra("Maximální počet cílových institucí v jedné INEZ dávce je 5.000.")");
+                _notify_message("@_f.tra("Maximální počet cílových institucí v jedné INEZ dávce je 5.000.") (" + a03ids.length+")");
                 refresh_a03_table();
                 return;
             }

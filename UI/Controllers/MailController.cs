@@ -98,7 +98,20 @@ namespace UI.Controllers
 
 
             v.Rec.j40ID = BO.BAS.InInt(Factory.CBL.LoadUserParam("SendMail_j40ID"));
-            v.Rec.j40Name = Factory.CBL.LoadUserParam("SendMail_j40Name");
+            if (v.Rec.j40ID > 0)
+            {
+                var recJ40 = Factory.MailBL.LoadJ40(v.Rec.j40ID);
+                if (!recJ40.isclosed)
+                {
+                    v.Rec.j40Name = recJ40.j40SmtpName;
+                }
+                else
+                {
+                    v.Rec.j40ID = 0;
+                }
+            
+            }
+            
             v.Rec.x40MessageGuid = BO.BAS.GetGuid();
 
             v.lisB65 = Factory.b65WorkflowMessageBL.GetList(new BO.myQuery("b65")).Where(p => p.x29ID == v.Rec.x29ID);
@@ -134,6 +147,11 @@ namespace UI.Controllers
             
             if (ModelState.IsValid)
             {
+                if (v.Rec.j40ID == 0 && !v.IsTest)
+                {
+                    this.AddMessage("Chybí poštovní účet odesílatele");
+                    return View(v);
+                }
                 foreach (BO.o27Attachment c in Factory.o27AttachmentBL.GetTempFiles(v.UploadGuid))
                 {
                     Factory.MailBL.AddAttachment(c.FullPath, c.o27OriginalFileName, c.o27ContentType);
@@ -141,6 +159,7 @@ namespace UI.Controllers
 
                 //System.IO.File.AppendAllText("c:\\temp\\hovado.txt", "Try SendMessage: " + DateTime.Now.ToString()+", message: "+ v.Rec.x40Subject);
                 BO.Result ret = new BO.Result(false);
+                
                 if (!string.IsNullOrEmpty(v.a03IDs))
                 {   //poslat to vybraným institucím                    
                     var a03ids = BO.BAS.ConvertString2ListInt(v.a03IDs);
@@ -161,7 +180,7 @@ namespace UI.Controllers
                         v.Rec.x40MessageGuid = BO.BAS.GetGuid();
                         if (a03ids.Count() > 10)
                         {
-                            //odesílat dávkově
+                            //odesílat dávkově                            
                             v.Rec.x40BatchGuid = strBatchGuid;                            
                             v.Rec.x40Status = BO.x40StateFlag.InQueque;
                             Factory.MailBL.SaveX40(null, v.Rec);
@@ -170,6 +189,11 @@ namespace UI.Controllers
                         {
                             //odeslat rovnou
                             ret = Factory.MailBL.SendMessage(v.Rec, v.IsTest);
+                            if (ret.Flag==BO.ResultEnum.Failed)
+                            {
+                                this.AddMessageTranslated(ret.Message);
+                                return View(v);
+                            }
                         }
                         
                     }   
@@ -183,6 +207,11 @@ namespace UI.Controllers
                 else
                 {
                     ret = Factory.MailBL.SendMessage(v.Rec, v.IsTest);
+                    if (ret.Flag==BO.ResultEnum.Failed)
+                    {
+                        this.AddMessageTranslated(ret.Message);
+                        return View(v);
+                    }
                 }
 
 
