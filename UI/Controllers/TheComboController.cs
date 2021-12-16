@@ -288,9 +288,10 @@ namespace UI.Controllers
                 sb.Append(Factory.tra("U hledání osoby systém pracuje s poli:")+" <b>"+Factory.tra("[Jméno], [Příjmení], [E-mail], [Osobní číslo]")+"</b>.");
             }
             sb.Append("<br>");
-            sb.Append("<span class='text-danger'>"+Factory.tra("Fulltext hledání funguje na principu shody celých slov!")+"</span>");
-            sb.Append("<br><span class='text-success'>"+Factory.tra("Mezera mezi slovy je operátor 'and', můžete psát mezi slovy i přímo 'or'.")+"</span>");
-            sb.Append("<br><span class='text-danger'>"+Factory.tra("Narozdíl od GRID filtrování, kde se pracuje s částečnou shodou (LIKE).")+"</span>");
+            sb.Append("<span class='text-danger'>"+Factory.tra("Fulltext hledání funguje na principu částečné shody slov zleva. Pořadí slov nehraje roli (lze uvést např. 'jan novák' nebo 'novák jan').")+"</span>");
+            sb.Append("<br><span class='text-danger'>" + Factory.tra("Narozdíl od GRID filtrování, kde se pracuje s oboustrannou částečnou shodou zleva i zprava a pořadí slov je třeba respektovat.") + "</span>");
+            sb.Append("<br><span class='text-success'>"+Factory.tra("Mezera mezi slovy je operátor 'and'. Středník mezi slovy je 'or'.")+"</span>");
+            
             sb.Append("<hr>");
             sb.Append("<label>"+Factory.tra("Zobrazovat maximálně")+" </label><select id='mysearch_toprecs'>");
             sb.Append(basUI.render_select_option("20", "20", setting.TopRecs.ToString()));

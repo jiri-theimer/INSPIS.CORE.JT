@@ -8,8 +8,9 @@ namespace BL
     public interface If19QuestionBL : BaseInterface
     {
         public BO.f19Question Load(int pid);
+        public BO.f19Question Load_Merged(int pid, BO.a11EventForm recA11); //načte otázku vč. sloučení s externími SQL zdroji dat
         public IEnumerable<BO.f19Question> GetList(BO.myQueryF19 mq, bool bolLoadTextboxMinMax=false);
-        public IEnumerable<BO.f19Question> GetList_Merged(BO.myQueryF19 mq, BO.a11EventForm recA11);
+        public IEnumerable<BO.f19Question> GetList_Merged(BO.myQueryF19 mq, BO.a11EventForm recA11);    //načte seznam otázek vč. sloučení s externími zdroji dat
         public int Save(BO.f19Question rec, List<int> f21ids);
         public IEnumerable<BO.f27LinkUrl> GetList_AllF27();
 
@@ -51,6 +52,46 @@ namespace BL
             return rec;
         }
 
+        public BO.f19Question Load_Merged(int pid, BO.a11EventForm recA11)
+        {
+            var rec = Load(pid);
+            if (rec != null)
+            {
+                var keys = getMergeKeys(recA11);
+                var lisX39 = _mother.x39ConnectStringBL.GetList(new BO.myQuery("x39")); //seznam všech connect stringů
+
+                rec.f19Name = MergeOneExternalSqlValue(rec.f19Name, keys, lisX39);
+                rec.f19SupportingText = MergeOneExternalSqlValue(rec.f19SupportingText, keys, lisX39);
+                rec.TextBox_MinValue = MergeOneExternalSqlValue(rec.TextBox_MinValue, keys, lisX39);
+                rec.TextBox_MaxValue = MergeOneExternalSqlValue(rec.TextBox_MaxValue, keys, lisX39);
+                rec.f19EvalListSource = MergeOneExternalSqlValue(rec.f19EvalListSource, keys, lisX39);
+                rec.f19ReadonlyExpression = MergeOneExternalSqlValue(rec.f19ReadonlyExpression, keys, lisX39);
+                rec.f19SkipExpression = MergeOneExternalSqlValue(rec.f19SkipExpression, keys, lisX39);
+                rec.f19RequiredExpression = MergeOneExternalSqlValue(rec.f19RequiredExpression, keys, lisX39);
+                rec.f19CancelValidateExpression = MergeOneExternalSqlValue(rec.f19CancelValidateExpression, keys, lisX39);
+            }
+
+            return rec;
+        }
+
+        private List<BO.StringPair> getMergeKeys(BO.a11EventForm recA11)
+        {
+            var keys = new List<BO.StringPair>();
+            keys.Add(new BO.StringPair() { Key = "@j03login", Value = _mother.CurrentUser.j03Login });
+            keys.Add(new BO.StringPair() { Key = "@j03id", Value = _mother.CurrentUser.pid.ToString() });
+            keys.Add(new BO.StringPair() { Key = "@a01id", Value = recA11.a01ID.ToString() });
+            keys.Add(new BO.StringPair() { Key = "@a03id", Value = recA11.a03ID.ToString() });
+            if (recA11.a03ID > 0)
+            {
+                var recA03 = _mother.a03InstitutionBL.Load(recA11.a03ID);
+                if (recA03.a03REDIZO != null) keys.Add(new BO.StringPair() { Key = "@a03redizo", Value = recA03.a03REDIZO });
+                if (recA03.a03ICO != null) keys.Add(new BO.StringPair() { Key = "@a03ico", Value = recA03.a03ICO });
+            }
+
+            return keys;
+        }
+        
+
         public IEnumerable<BO.f19Question> GetList(BO.myQueryF19 mq,bool bolLoadTextboxMinMax=false)
         {
             if (mq.explicit_orderby == null) { mq.explicit_orderby = "a.f19Ordinal"; };
@@ -88,19 +129,9 @@ namespace BL
         {
             //vrátí seznam otázek doplněný o sloučené výrazy z externích sql dotazů
             var lis = GetList(mq,true);
-            var lisX39 = _mother.x39ConnectStringBL.GetList(new BO.myQuery("x39")); //seznam všech connect stringů            
-            var keys = new List<BO.StringPair>();
-            keys.Add(new BO.StringPair() { Key = "@j03login", Value = _mother.CurrentUser.j03Login });
-            keys.Add(new BO.StringPair() { Key = "@j03id", Value = _mother.CurrentUser.pid.ToString() });
-            keys.Add(new BO.StringPair() { Key = "@a01id", Value = recA11.a01ID.ToString() });
-            keys.Add(new BO.StringPair() { Key = "@a03id", Value = recA11.a03ID.ToString() });
+            var lisX39 = _mother.x39ConnectStringBL.GetList(new BO.myQuery("x39")); //seznam všech connect stringů
+            var keys = getMergeKeys(recA11);
             
-            if (recA11.a03ID > 0)
-            {
-                var recA03 = _mother.a03InstitutionBL.Load(recA11.a03ID);
-                if (recA03.a03REDIZO != null) keys.Add(new BO.StringPair() { Key = "@a03redizo", Value = recA03.a03REDIZO });
-                if (recA03.a03ICO != null) keys.Add(new BO.StringPair() { Key = "@a03ico", Value = recA03.a03ICO });
-            }
 
             foreach (var rec in lis)
             {
@@ -113,11 +144,10 @@ namespace BL
                 rec.f19SkipExpression = MergeOneExternalSqlValue(rec.f19SkipExpression, keys, lisX39);
                 rec.f19RequiredExpression = MergeOneExternalSqlValue(rec.f19RequiredExpression, keys, lisX39);
                 rec.f19CancelValidateExpression = MergeOneExternalSqlValue(rec.f19CancelValidateExpression, keys, lisX39);
-
             }
 
-
             return lis;
+
         }
 
         private string MergeOneExternalSqlValue(string strValue, List<BO.StringPair> keys, IEnumerable<BO.x39ConnectString> lisX39)
