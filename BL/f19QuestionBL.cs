@@ -13,6 +13,7 @@ namespace BL
         public IEnumerable<BO.f19Question> GetList_Merged(BO.myQueryF19 mq, BO.a11EventForm recA11);    //načte seznam otázek vč. sloučení s externími zdroji dat
         public int Save(BO.f19Question rec, List<int> f21ids);
         public IEnumerable<BO.f27LinkUrl> GetList_AllF27();
+        public IEnumerable<BO.f21ReplyUnitJoinedF19> GetListJoinedF19_Merged(BO.myQueryXX1 mq, BO.a11EventForm recA11);
 
     }
     class f19QuestionBL : BaseBL, If19QuestionBL
@@ -199,6 +200,23 @@ namespace BL
 
         }
 
+        public IEnumerable<BO.f21ReplyUnitJoinedF19> GetListJoinedF19_Merged(BO.myQueryXX1 mq, BO.a11EventForm recA11)
+        {
+            var lis = _mother.f21ReplyUnitBL.GetListJoinedF19(mq);
+            var lisX39 = _mother.x39ConnectStringBL.GetList(new BO.myQuery("x39")); //seznam všech connect stringů
+            var keys = getMergeKeys(recA11);
+
+            foreach (var rec in lis)
+            {
+                rec.f19Name = MergeOneExternalSqlValue(rec.f19Name, keys, lisX39);
+                rec.f19SupportingText = MergeOneExternalSqlValue(rec.f19SupportingText, keys, lisX39);
+                rec.f21MinValue = MergeOneExternalSqlValue(rec.f21MinValue, keys, lisX39);
+                rec.f21MaxValue = MergeOneExternalSqlValue(rec.f21MaxValue, keys, lisX39);                
+            }
+
+            return lis;
+
+        }
 
         public int Save(BO.f19Question rec, List<int> f21ids)
         {

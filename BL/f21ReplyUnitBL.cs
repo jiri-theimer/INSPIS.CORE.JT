@@ -63,6 +63,8 @@ namespace BL
             return _db.GetList<BO.f21ReplyUnitJoinedF19>(fq.FinalSql, fq.Parameters);
         }
 
+        
+
 
         public int Save(BO.f21ReplyUnit rec)
         {
