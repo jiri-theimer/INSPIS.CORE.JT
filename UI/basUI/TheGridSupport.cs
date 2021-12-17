@@ -273,11 +273,11 @@ namespace UI
 
                 if (_grid.GridState.j72SelectableFlag > 0)
                 {
-                    _s.Append(string.Format("<td class='td0' style='width:20px;'><input type='checkbox' id='chk{0}'/></td>", dbRow["pid"]));
+                    _s.Append(string.Format("<td class='td0'><input type='checkbox' style='padding:0px;' id='chk{0}'/></td>", dbRow["pid"]));
                 }
                 else
                 {
-                    _s.Append("<td class='td0' style='width:20px;'></td>");
+                    _s.Append("<td class='td0' ></td>");
                 }
 
                 if ((mq.Prefix == "a01" || mq.Prefix == "a11") && dbRow["bgcolor"] != System.DBNull.Value)

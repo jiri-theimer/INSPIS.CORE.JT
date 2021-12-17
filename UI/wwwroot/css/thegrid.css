@@ -187,7 +187,12 @@ td.td_nowrap {
 
 
 #container_grid td.td0 {
-    text-align: center;
+    width:20px;
+    text-align:center;
+    padding:0px;
+    vertical-align:middle;
+   
+    
 }
 
 #tabgrid1_tbody td.td1 {
