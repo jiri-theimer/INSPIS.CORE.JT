@@ -6,26 +6,39 @@
     if (Model.Rec == null) return;
 
     Model.PageTitle = Model.Rec.a01Signature;
+
+    if (Model.RecA10 == null) return;
 }
 
 @addTagHelper *, UI
 
-<div class="row py-3 bg-light m-0">
-    <div class="col-auto" style="width:190px;">
+<div class="row nowrap pt-1 bg-light m-0">
+    <div id="layout_sidebar_contextmenu" class="col-auto">
         @if (Model.pid > 0)
         {
-            <a class="cm h4 mx-1" title="Menu" onclick="_cm(event, 'a01',@Model.Rec.pid);">☰@Model.Rec.a01Signature</a>
+            <a id="layout_sidebar_contextmenu_link" class="cm h4 mx-1" title="Menu" onclick="_cm(event, 'a01',@Model.Rec.pid);">☰@Model.Rec.a01Signature</a>
+            <h4 id="layout_sidebar_contextmenu_onlytext">
 
+                @Model.Rec.a01Signature
+            </h4>
         }
 
     </div>
-    <div class="col-sm-8">
+    @if (Model.pid > 0)
+    {
+        <div class="col-auto nonmobile tabovergrid">
+            @Model.Rec.a10Name
+        </div>
+
+        <div class="nonmobile col-auto">
+            <a class="btn btn-light" href="/a01/RecPageInjury?pid=@Model.pid" title="@_f.tra("Občerstvit")"><span class="k-icon k-i-reload"></span></a>
+        </div>
+    }
+
+    <div class="col-auto">
         <mysearch asp-for="@Model.SearchBox" entity="a01Event" placeholder="@_f.tra("Fulltext hledání")..."></mysearch>
     </div>
-    <div class="col-sm-1"></div>
-    <div class="nonmobile nontablet">
-        <a class="btn btn-secondary" href="/a01/RecPageInjury?pid=@Model.pid">@(_f.tra("Občerstvit"))</a>
-    </div>
+
 
 
 
@@ -33,7 +46,7 @@
 </div>
 
 
-<div id="layout_sidebar" class="cm_recpage"></div>
+<div id="layout_sidebar" class="cm_recpage">Loading...</div>
 
 
 <div id="layout_main">
@@ -141,7 +154,7 @@
             @foreach (var c in Model.lisA11.Where(p => p.a11IsPoll == false))
             {
                 <tr>
-                    <td style="width:20px;">
+                    <td style="max-width:20px;padding:0px;">
                         @if (c.isclosed)
                         {
                             <img src="~/images/lock.png" />
@@ -199,9 +212,9 @@
         @if (Model.pid > 0)
         {
         <text>
-        $.post("/Menu/ContextMenu", { entity: "a01Event", pid:@Model.pid }, function (data) {
-            var s = "<mark style='margin-left:10px;'>@Model.Rec.a10Name</mark>" + data;
-            $("#layout_sidebar").html(s);
+        $.post("/Menu/ContextMenu", { entity: "a01Event",flag: "recpage", pid:@Model.pid }, function (data) {
+
+            $("#layout_sidebar").html(data);
 
         });
         </text>
@@ -210,18 +223,18 @@
         {
         <text>
         $("#layout_main").css("display", "none");
+        $("#layout_sidebar").html("");
         </text>
         }
 
         var offset = $("#divTabContent").offset();
         var h_vertical = _device.innerHeight - offset.top;
-        h_vertical = parseInt(h_vertical) + 10;
-        
+        h_vertical = parseInt(h_vertical);
+
         if (_device.type === "Phone") {
             h_vertical = 400;
         }
         $("#divTabContent").css("height", h_vertical + "px");
-
 
         _mainmenu_highlight_current("cmdA01");
 

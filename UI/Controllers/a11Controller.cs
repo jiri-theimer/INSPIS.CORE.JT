@@ -68,7 +68,7 @@ namespace UI.Controllers
                 if (lisA11.Count() == 0)
                 {
                     
-                    var recA01 = new BO.a01Event() { a01IsTemporary = true, a10ID = v.a10ID, a08ID = v.a08ID, a03ID = v.a03ID, a01DateFrom = DateTime.Now, a01DateUntil = DateTime.Today.AddDays(2), j03ID_Creator = Factory.CurrentUser.pid, j02ID_Issuer = Factory.CurrentUser.j02ID };
+                    var recA01 = new BO.a01Event() { a01IsTemporary = true,a01TemporaryFlag=BO.a01TemporaryFlagENUM.FormSimulation, a10ID = v.a10ID, a08ID = v.a08ID, a03ID = v.a03ID, a01DateFrom = DateTime.Now, a01DateUntil = DateTime.Today.AddDays(2), j03ID_Creator = Factory.CurrentUser.pid, j02ID_Issuer = Factory.CurrentUser.j02ID };
 
                     var recA11 = new BO.a11EventForm() { f06ID = v.f06ID, a11IsSimulation = true, a37ID = v.a37ID, a11Description = Factory.tra("Simulace chování formuláře.") };
                     var lis = new List<BO.a11EventForm>();

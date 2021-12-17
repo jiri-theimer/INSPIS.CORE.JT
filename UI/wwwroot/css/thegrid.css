@@ -237,8 +237,14 @@ td.td_nowrap {
     color: brown;
 }
 
+#tabgrid1 tr.trtemporary td {
+    color: red;
+    border: dotted 1px red;
+}
+
 #tabgrid1 tr.trsimulation td {
     color: gold;
+    border:dashed 1px gold;
 }
 
 

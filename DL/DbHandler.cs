@@ -367,7 +367,7 @@ namespace DL
                 case "a01":
                     if (isthegrid)
                     {
-                        return "a.a01ID as pid,dbo._core_a01_isclosed(a.a01IsClosed,a.a01ValidFrom,a.a01ValidUntil) as isclosed,bc.b02Color as bgcolor,a.a01ParentID as parentpid,a.a01ChildsCount as childscount,a.a01IsTemporary as issimulation,a.a01TemporaryFlag as temporaryflag";
+                        return "a.a01ID as pid,dbo._core_a01_isclosed(a.a01IsClosed,a.a01ValidFrom,a.a01ValidUntil) as isclosed,bc.b02Color as bgcolor,a.a01ParentID as parentpid,a.a01ChildsCount as childscount,a.a01IsTemporary as istemporary,a.a01TemporaryFlag as temporaryflag";
                     }
                     else
                     {
