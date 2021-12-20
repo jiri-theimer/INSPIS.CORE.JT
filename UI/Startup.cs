@@ -137,6 +137,7 @@ namespace UI
                 PasswordRequireNonAlphanumeric = Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireNonAlphanumeric"])
             });
 
+            services.AddHttpClient();       //kvùli httpclient
 
             services.AddSingleton<BL.TheEntitiesProvider>();
             services.AddSingleton<BL.TheTranslator>();

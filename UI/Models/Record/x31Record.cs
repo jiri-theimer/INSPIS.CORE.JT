@@ -22,6 +22,8 @@ namespace UI.Models.Record
 
         public string UploadGuid { get; set; }
 
+        public string FileFullPath { get; set; }
+
         public BO.o27Attachment RecO27 { get; set; }
     }
 }

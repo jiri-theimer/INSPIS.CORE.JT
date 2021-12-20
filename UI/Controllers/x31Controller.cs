@@ -276,7 +276,8 @@ namespace UI.Controllers
         {
             if (v.rec_pid > 0)
             {
-                v.RecO27 = Factory.x31ReportBL.LoadReportDoc(v.rec_pid);               
+                v.RecO27 = Factory.x31ReportBL.LoadReportDoc(v.rec_pid);    
+                v.FileFullPath=Factory.App.ReportFolder+@"\"+ v.RecO27.o27OriginalFileName;
             }
             
         }
