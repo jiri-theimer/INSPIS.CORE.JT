@@ -40,28 +40,26 @@
             <div class="col-sm-4 col-md-3">
                 <input type="text" class="form-control" asp-for="@Model.InputSpis" />
             </div>
-            <div class="col-sm-3 col-md-3">
-                <button type="button" class="btn btn-sm btn-primary" onclick="nacist_dokumenty_ze_spisu()">Načíst seznam dokumentů ze spisu</button>
-            </div>
+
 
         </div>
 
         <div class="row my-2">
             <label class="col-sm-1 col-md-2 col-form-label">Dokumenty ve spisu::</label>
             <div class="col-sm-7 col-md-6">
-                <select asp-for="@Model.SelectedDokumentCombo" class="form-select">
+                <select asp-for="@Model.SelectedDokumentCombo" class="form-select" onchange="select_document(this)">
                     @foreach (var c in Model.lisDokument)
                     {
-                        <option value="@c.IdDokumentu">@(c.Vec)</option>
+                        <option value="@c.IdDokumentu">@(c.Vec+" ("+c.PriznakCj+")")</option>
                     }
                 </select>
             </div>
         </div>
 
         <div class="row my-2">
-            <label class="col-sm-1 col-md-2 col-form-label">Dokument (ČJ nebo PID):</label>
+            <label class="col-sm-1 col-md-2 col-form-label">Vybraný dokument (ČJ nebo PID):</label>
             <div class="col-sm-4 col-md-3">
-                <input type="text" class="form-control" asp-for="@Model.SelectedDokument" />
+                <input type="text" class="form-control" asp-for="@Model.SelectedDokument" id="txtSelectedDokument" />
             </div>
             <div class="col-sm-3 col-md-3">
                 <button type="button" class="btn btn-sm btn-primary" onclick="nacist_profil_dokumentu()">Načíst profil dokumentu</button>
@@ -74,3 +72,29 @@
 
 
 </form>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#cmdSave").click(function () {
+            $(this).text("Processing...");
+            $(this).attr("disabled", true);
+            form1.submit();
+
+        });
+
+
+
+    });
+
+    function select_document(cbx) {
+
+        $("#txtSelectedDokument").val(cbx.value);
+
+    }
+    
+
+
+
+</script>

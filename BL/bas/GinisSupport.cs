@@ -41,14 +41,14 @@ namespace BL.bas
         }
 
 
-        public async Task<List<BO.Ginis.GinisDocumentType>> SeznamDokumentuVeSpisu(string spis, HttpClient httpclient, BL.Factory f)
+        public async Task<List<BO.Ginis.GinisDocument>> SeznamDokumentuVeSpisu(string spis, HttpClient httpclient, BL.Factory f)
         {            
             using (var request = new HttpRequestMessage(new HttpMethod("GET"), f.App.PipeBaseUrl + "/api/seznamdokumentuspisu?login="+f.CurrentUser.j03Login+"&pid_spis="+spis))
             {
                 var response = await httpclient.SendAsync(request);
 
                 var strJson = await response.Content.ReadAsStringAsync();
-                var lis = JsonConvert.DeserializeObject<List<BO.Ginis.GinisDocumentType>>(strJson);
+                var lis = JsonConvert.DeserializeObject<List<BO.Ginis.GinisDocument>>(strJson);
 
 
                 return lis;

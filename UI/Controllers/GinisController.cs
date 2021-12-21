@@ -27,22 +27,43 @@ namespace UI.Controllers
             var v = new ImportGinisDocViewModel() { a01id = a01id };
 
             RefreshState_ImportGinisDoc(v);
-            v.InputSpis = v.RecA01.a01CaseCode;
-            if (v.RecA01.a01CaseCodePID != null)
-            {
-                v.InputSpis = v.RecA01.a01CaseCodePID;
-            }
-
+                      
             return View(v);
         }
 
         private void RefreshState_ImportGinisDoc(ImportGinisDocViewModel v)
         {
             v.RecA01 = Factory.a01EventBL.Load(v.a01id);
+            if (string.IsNullOrEmpty(v.InputSpis))
+            {
+                v.InputSpis = v.RecA01.a01CaseCode;
+                if (v.RecA01.a01CaseCodePID != null)
+                {
+                    v.InputSpis = v.RecA01.a01CaseCodePID;
+                }
+            }
 
-            v.lisDokument = new List<BO.Ginis.GinisDocument>();
             
-            v.GinisSpisUrl = new BL.bas.GinisSupport().GetGinisURL(v.RecA01.a01CaseCodePID);
+
+            var cG = new BL.bas.GinisSupport();
+            v.GinisSpisUrl = cG.GetGinisURL(v.RecA01.a01CaseCodePID);
+
+            if (!string.IsNullOrEmpty(v.InputSpis))
+            {
+                var httpclient = _httpclientfactory.CreateClient();
+                v.lisDokument = cG.SeznamDokumentuVeSpisu(v.InputSpis, httpclient, Factory).Result;
+                if (v.lisDokument.Count() > 0 && v.SelectedDokument==null)
+                {
+                    v.SelectedDokument = v.lisDokument.First().IdDokumentu;
+                }
+            }
+            else
+            {
+                v.lisDokument = new List<BO.Ginis.GinisDocument>();
+            }
+            
+
+            
 
         }
 
