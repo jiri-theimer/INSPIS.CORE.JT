@@ -10,6 +10,7 @@ using System.Net.Http;
 
 using Newtonsoft.Json;
 using UI.Models;
+using UI.Models.Ginis;
 
 namespace UI.Controllers
 {
@@ -21,39 +22,41 @@ namespace UI.Controllers
         {
             _httpclientfactory = hcf;
         }
-        public IActionResult UploadGinisDocument()
+        public IActionResult ImportGinisDoc(int a01id)
         {
-            return View();
-        }
+            var v = new ImportGinisDocViewModel() { a01id = a01id };
 
-
-
-
-
-        public async Task<List<BO.Ginis.GinisDocumentType>> SeznamDokumentuVeSpisu(string spis)
-        {
-            var httpclient = _httpclientfactory.CreateClient();
-
-            using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://tinspiscore.csicr.cz/pipe/api/seznamtypudokumentu?login=lamos"))
+            RefreshState_ImportGinisDoc(v);
+            v.InputSpis = v.RecA01.a01CaseCode;
+            if (v.RecA01.a01CaseCodePID != null)
             {
-
-                var response = await httpclient.SendAsync(request);
-
-                var strJson = await response.Content.ReadAsStringAsync();
-                var lis=JsonConvert.DeserializeObject<List<BO.Ginis.GinisDocumentType>>(strJson);
-
-                
-                return lis;
+                v.InputSpis = v.RecA01.a01CaseCodePID;
             }
+
+            return View(v);
         }
+
+        private void RefreshState_ImportGinisDoc(ImportGinisDocViewModel v)
+        {
+            v.RecA01 = Factory.a01EventBL.Load(v.a01id);
+
+            v.lisDokument = new List<BO.Ginis.GinisDocument>();
+            
+            v.GinisSpisUrl = new BL.bas.GinisSupport().GetGinisURL(v.RecA01.a01CaseCodePID);
+
+        }
+
+
+
+
+
+        
+        
 
         public IActionResult Index()
         {
-            var v = new UI.Models.a01AddAttachment() { };
-
-            SeznamDokumentuVeSpisu("EE").Wait();
-
-            return View(v);
+            
+            return View();
         }
 
 

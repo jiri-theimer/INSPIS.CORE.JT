@@ -135,6 +135,10 @@ namespace UI
                 PasswordRequireUppercase = Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireUppercase"])
                 ,
                 PasswordRequireNonAlphanumeric = Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireNonAlphanumeric"])
+                ,
+                PipeBaseUrl = Configuration.GetSection("Pipe")["BaseUrl"]
+                ,
+                PipeIsActive = BO.BAS.BG(Configuration.GetSection("Pipe")["IsActive"])
             });
 
             services.AddHttpClient();       //kvùli httpclient

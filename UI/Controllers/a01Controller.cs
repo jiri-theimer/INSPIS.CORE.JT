@@ -8,15 +8,19 @@ using UI.Models;
 using UI.Models.Record;
 using UI.Models.Recpage;
 using UI.Models.Tab;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace UI.Controllers
 {
     public class a01Controller : BaseController
     {
         private readonly BL.TheColumnsProvider _colsProvider;
-        public a01Controller(BL.TheColumnsProvider cp)
+        private readonly IHttpClientFactory _httpclientfactory;
+        public a01Controller(BL.TheColumnsProvider cp, IHttpClientFactory hcf)
         {
             _colsProvider = cp;
+            _httpclientfactory = hcf;
         }
 
         //Odstranit akci
@@ -403,6 +407,28 @@ namespace UI.Controllers
                     c.a01Name = v.Rec.a01Name;
                 }
 
+               if (!string.IsNullOrEmpty(v.Rec.a01CaseCode))
+                {
+                    var cG = new BL.bas.GinisSupport();
+                    if (!cG.IsExpressionPID(v.Rec.a01CaseCode))
+                    {
+                        if (Factory.App.PipeIsActive)
+                        {
+                            //otestovat spisovou službu: ze spisové značky získat pid spisu                            
+                            var httpclient = _httpclientfactory.CreateClient();
+                            c.a01CaseCodePID = cG.GetPidSpisuFromZnacka(v.Rec.a01CaseCode, httpclient,Factory).Result;
+                        }
+                    }
+                    else
+                    {
+                        c.a01CaseCodePID = v.Rec.a01CaseCode;
+                    }                    
+                }
+                else
+                {
+                    v.Rec.a01CaseCodePID = null;
+                }
+
                 c.pid = Factory.a01EventBL.SaveA01Record(c, Factory.a10EventTypeBL.Load(c.a10ID));
                 if (c.pid > 0)
                 {
@@ -504,6 +530,11 @@ namespace UI.Controllers
                     var tg = Factory.o51TagBL.GetTagging("a01", v.pid);
                     v.Rec.TagHtml = tg.TagHtml;
                     v.TagHtml = v.Rec.TagHtml;
+
+                    if (v.Rec.a01CaseCodePID != null)
+                    {
+                        v.GinisSpisUrl = new BL.bas.GinisSupport().GetGinisURL(v.Rec.a01CaseCodePID);
+                    }
                 }
             }
 
@@ -772,6 +803,10 @@ namespace UI.Controllers
             return c.Event_HandleTheGridExport(format, tgi.j72id, pids);
         }
         //-----------Konec GRID událostí-------------
+
+
+
+        
 
 
     }

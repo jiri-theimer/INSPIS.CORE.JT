@@ -504,6 +504,11 @@ namespace UI.Controllers
                     if (!recA01.isclosed && (recA01.a01ParentID==0 || bolIAPodrizene))
                     {
                         AMI("Nahrát přílohu", string.Format("javascript:_window_open('/a01/AddAttachment?pid={0}')", pid));
+                        if (recA10.a10IsUse_CaseCode)
+                        {                            
+                            AMI_NOTRA("Nahrát dokument ze spis.služby", string.Format("javascript:_window_open('/Ginis/ImportGinisDoc?a01id={0}')", pid));
+                        }
+                        
                     }
 
 

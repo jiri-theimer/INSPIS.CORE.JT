@@ -38,5 +38,8 @@ namespace BL
         public int PasswordMinLength { get; set; }
         public int PasswordMaxLength { get; set; }
 
+        public bool PipeIsActive { get; set; }
+        public string PipeBaseUrl { get; set; }     //příklad: https://tinspiscore.csicr.cz/pipe
+
     }
 }

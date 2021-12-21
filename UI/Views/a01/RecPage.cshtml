@@ -170,7 +170,15 @@
             {
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Spis"):</label>
                 <div class="col-sm-5 col-md-4">
-                    <myval datatype="string" value="@Model.Rec.a01CaseCode"></myval>
+                    @if (Model.GinisSpisUrl != null)
+                    {
+                        <myval datatype="link" linktarget="_blank" linkurl="@Model.GinisSpisUrl" value="@Model.Rec.a01CaseCode"></myval>
+                    }
+                    else
+                    {
+                        <myval value="@Model.Rec.a01CaseCode"></myval>
+                    }
+
 
                 </div>
 

@@ -1,0 +1,76 @@
+﻿@model UI.Models.Ginis.ImportGinisDocViewModel
+@inject BL.Factory _f
+
+@{
+    Model.PageTitle = "Načíst dokument ze spisové služby GINIS";
+    Layout = "~/Views/Shared/_LayoutModal.cshtml";
+}
+@addTagHelper *, UI
+
+<h4>Načíst dokument ze spisové služby GINIS do akce: @(Model.RecA01.a01Signature)</h4>
+<div class="bg-light" style="padding:10px;">
+    <button id="cmdSave" type="button" class="btn btn-success">Uložit změny</button>
+    <button id="cmdClose" type="button" onclick="_window_close()" class="btn btn-light">Zavřít</button>
+    <button type="button" onclick="_helppage()" class="btn btn-light"><b>? </b>Nápověda</button>
+</div>
+
+<form id="form1" asp-controller="Ginis" asp-action="ImportGinisDoc" method="POST">
+    <input type="hidden" asp-for="@Model.a01id" />
+
+    <div class="modal_record_container">
+        <div class="alert alert-primary" role="alert">
+            <label style="font-weight:bold;">Číslo akce:</label>
+            @Model.RecA01.a01Signature
+            <label style="font-weight:bold;">Typ akce:</label>
+            @Model.RecA01.a10Name
+            <label style="font-weight:bold;margin-left:20px;">Téma akce:</label>
+            @Model.RecA01.a08Name
+            <label style="font-weight:bold;margin-left:20px;">@(Model.RecA01.a06Name+":")</label>
+            @Model.RecA01.a03Name
+        </div>
+
+        <div class="row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">GINIS spis:</label>
+            <div class="col-sm-4 col-md-3">
+                <a href="@Model.GinisSpisUrl" target="_blank">@Model.RecA01.a01CaseCode</a>
+            </div>
+        </div>
+        <div class="row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">SPIS (sp. zn. nebo PID):</label>
+            <div class="col-sm-4 col-md-3">
+                <input type="text" class="form-control" asp-for="@Model.InputSpis" />
+            </div>
+            <div class="col-sm-3 col-md-3">
+                <button type="button" class="btn btn-sm btn-primary" onclick="nacist_dokumenty_ze_spisu()">Načíst seznam dokumentů ze spisu</button>
+            </div>
+
+        </div>
+
+        <div class="row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">Dokumenty ve spisu::</label>
+            <div class="col-sm-7 col-md-6">
+                <select asp-for="@Model.SelectedDokumentCombo" class="form-select">
+                    @foreach (var c in Model.lisDokument)
+                    {
+                        <option value="@c.IdDokumentu">@(c.Vec)</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="row my-2">
+            <label class="col-sm-1 col-md-2 col-form-label">Dokument (ČJ nebo PID):</label>
+            <div class="col-sm-4 col-md-3">
+                <input type="text" class="form-control" asp-for="@Model.SelectedDokument" />
+            </div>
+            <div class="col-sm-3 col-md-3">
+                <button type="button" class="btn btn-sm btn-primary" onclick="nacist_profil_dokumentu()">Načíst profil dokumentu</button>
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+</form>

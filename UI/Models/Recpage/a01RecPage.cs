@@ -21,5 +21,7 @@ namespace UI.Models.Recpage
         public string DefaultNavTabUrl { get; set; }
 
         public string TagHtml { get; set; }
+
+        public string GinisSpisUrl { get; set; }
     }
 }

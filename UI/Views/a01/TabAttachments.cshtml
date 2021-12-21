@@ -12,6 +12,10 @@
 <div id="subform_div_commands">
 
     <button type="button" class="btn btn-primary" onclick="append()">@_f.tra("Nahrát přílohu")</button>
+    @if (_f.App.Implementation=="Default")
+    {
+        <button type="button" class="btn btn-primary" onclick="append_ginis()">Nahrát dokument ze spisové služby</button>
+    }
 
 </div>
 
@@ -54,7 +58,9 @@
     function append() {
         _window_open("/a01/AddAttachment?pid=@Model.pid");
     }
-
+    function append_ginis() {
+        _window_open("/Ginis/ImportGinisDoc?a01id=@Model.pid");
+    }
 
     function changelabel(fileguid, current_label) {
         var s = prompt("@_f.tra("Zadejte popis/název k příloze.")", current_label);
