@@ -117,8 +117,10 @@ namespace BL
             p.AddEnumInt("o27PortalPublishFlag", rec.o27PortalPublishFlag);
             p.AddDateTime("o27PortalPublishDateUpdate", rec.o27PortalPublishDateUpdate);
             p.AddString("o27PortalPublishUserUpdate", rec.o27PortalPublishUserUpdate);
-           
 
+            p.AddString("o27GinisDocPID", rec.o27GinisDocPID);
+            p.AddString("o27GinisFilePID", rec.o27GinisFilePID);
+            
             int intPID = _db.SaveRecord("o27Attachment", p, rec);
 
 

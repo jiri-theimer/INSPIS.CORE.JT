@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace UI.Models.Ginis
 {
@@ -18,6 +19,7 @@ namespace UI.Models.Ginis
         public List<BO.Ginis.GinisFile> lisSouboryDokumentu { get; set; }
         public string SelectedSouborCombo { get; set; }
 
+        
         public List<BO.Ginis.GinisDocument> lisDokument { get; set; }
 
         public string GinisSpisUrl { get; set; }
@@ -26,5 +28,7 @@ namespace UI.Models.Ginis
         public int SelectedO13ID { get; set; }
         
         public string o27Description { get; set; }
+
+        public HttpClient httpclient { get; set; }
     }
 }

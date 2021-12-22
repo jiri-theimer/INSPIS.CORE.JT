@@ -44,7 +44,31 @@ namespace UI.Controllers
 
             if (ModelState.IsValid)
             {
+                if (string.IsNullOrEmpty(v.SelectedSouborCombo))
+                {
+                    this.AddMessageTranslated("Chybí GINIS soubor v rámci dokumentu."); return View(v);                    
+                }
+
+                var gs = v.lisSouboryDokumentu.Where(p => p.IdSouboru == v.SelectedSouborCombo).First();
+                var cG = new BL.bas.GinisSupport();
+                var ginisfile2save = cG.StahnoutSouborZGinis(gs.IdDokumentu, gs.IdSouboru, gs.TypVazby, v.httpclient, Factory).Result;
+
+                var rec = new BO.o27Attachment() { o27GUID = BO.BAS.GetGuid(),x29ID=101, o27DataPID=v.RecA01.pid,o13ID=v.SelectedO13ID };
+                rec.o27GinisDocPID = gs.IdDokumentu;
+                rec.o27GinisFilePID = gs.IdSouboru;
+                rec.o27OriginalFileName = gs.JmenoOrigSouboru;
                 
+                rec.o27Label = v.o27Description;
+                System.IO.File.Copy(ginisfile2save.JmenoTempSouboru, Factory.App.TempFolder + "\\" +rec.o27GUID+"_"+ ginisfile2save.JmenoOrigSouboru, true);
+
+                string strDestFolder = Factory.App.UploadFolder + "\\" + Factory.o27AttachmentBL.GetUploadFolder(v.SelectedO13ID);
+                if (Factory.o27AttachmentBL.CopyOneTempFile2Upload(rec.o27GUID + "_" + ginisfile2save.JmenoOrigSouboru,strDestFolder, rec.o27GUID + "_" + ginisfile2save.JmenoOrigSouboru))
+                {
+                    rec.o27FileSize = Convert.ToInt32(BO.BASFILE.GetFileInfo(strDestFolder+"\\"+ rec.o27GUID + "_" + ginisfile2save.JmenoOrigSouboru).Length);
+                    rec.o27ArchiveFileName = rec.o27GUID + "_" + ginisfile2save.JmenoOrigSouboru;
+                    rec.o27ArchiveFolder = Factory.o27AttachmentBL.GetUploadFolder(v.SelectedO13ID);
+                    Factory.o27AttachmentBL.Save(rec);
+                }
 
             }
 
@@ -72,10 +96,10 @@ namespace UI.Controllers
 
             if (!string.IsNullOrEmpty(v.InputSpis))
             {
-                var httpclient = _httpclientfactory.CreateClient();
+                v.httpclient = _httpclientfactory.CreateClient();
                 try
                 {
-                    v.lisDokument = cG.SeznamDokumentuVeSpisu(v.InputSpis, httpclient, Factory).Result;
+                    v.lisDokument = cG.SeznamDokumentuVeSpisu(v.InputSpis, v.httpclient, Factory).Result;
                     if (v.lisDokument.Count() > 0 && v.InputDokument == null)
                     {
                         v.InputDokument = v.lisDokument.First().IdDokumentu;
@@ -90,8 +114,8 @@ namespace UI.Controllers
                 {
                     try
                     {
-                        v.RecGinisDokument = cG.DetailDokumentu(v.InputDokument, httpclient, Factory).Result;
-                        v.lisSouboryDokumentu = cG.SeznamSouboruDokumentu(v.RecGinisDokument.IdDokumentu, httpclient, Factory).Result;
+                        v.RecGinisDokument = cG.DetailDokumentu(v.InputDokument, v.httpclient, Factory).Result;
+                        v.lisSouboryDokumentu = cG.SeznamSouboruDokumentu(v.RecGinisDokument.IdDokumentu, v.httpclient, Factory).Result;
                         if (v.lisSouboryDokumentu.Count() == 0)
                         {
                             this.AddMessageTranslated("Dokument neobsahuje soubory.");

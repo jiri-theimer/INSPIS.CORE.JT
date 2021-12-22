@@ -54,6 +54,20 @@ namespace BL.bas
 
         }
 
+        public async Task<BO.Ginis.GinisFile> StahnoutSouborZGinis(string pid_dokument,string pid_soubor,string typvazby, HttpClient httpclient, BL.Factory f)        //volání spisové služby GINIS
+        {
+
+            using (var request = new HttpRequestMessage(new HttpMethod("GET"), f.App.PipeBaseUrl + "/api/StahnoutSouborZGinis?login=" + f.CurrentUser.j03Login + "&pid_dokument=" + pid_dokument+ "&pid_soubor="+pid_soubor+ "&typvazby="+typvazby))
+            {
+                var response = await httpclient.SendAsync(request);
+                var strJson = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<BO.Ginis.GinisFile>(strJson);
+
+            }
+
+
+        }
+
         public async Task<List<BO.Ginis.GinisFile>> SeznamSouboruDokumentu(string pid_dokument,HttpClient httpclient, BL.Factory f)
         {
 

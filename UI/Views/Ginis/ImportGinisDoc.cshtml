@@ -70,7 +70,7 @@
 
         @if (Model.RecGinisDokument != null && Model.RecGinisDokument.IdDokumentu !=null)
         {
-            <div class="card">
+            <div class="card" id="divDocument">
                 <div class="card-header">
                     Detail načteného dokumentu @(Model.InputDokument)
                 </div>
@@ -171,6 +171,7 @@
     function select_document(cbx) {
 
         $("#txtInputDokument").val(cbx.value);
+        $("#divDocument").css("visibility", "hidden");
         postback();
 
     }
