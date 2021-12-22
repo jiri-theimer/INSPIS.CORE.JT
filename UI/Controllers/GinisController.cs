@@ -11,6 +11,7 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using UI.Models;
 using UI.Models.Ginis;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace UI.Controllers
 {
@@ -59,15 +60,21 @@ namespace UI.Controllers
                 rec.o27OriginalFileName = gs.JmenoOrigSouboru;
                 
                 rec.o27Label = v.o27Description;
-                System.IO.File.Copy(ginisfile2save.JmenoTempSouboru, Factory.App.TempFolder + "\\" +rec.o27GUID+"_"+ ginisfile2save.JmenoOrigSouboru, true);
+                string strTempPath = Factory.App.TempFolder + "\\" + rec.o27GUID + "_" + ginisfile2save.JmenoOrigSouboru;
+                System.IO.File.Copy(ginisfile2save.JmenoTempSouboru, strTempPath, true);
+                rec.o27FileSize = Convert.ToInt32(BO.BASFILE.GetFileInfo(strTempPath).Length);
+                rec.o27OriginalExtension = BO.BASFILE.GetFileInfo(strTempPath).Extension;
+                rec.o27ContentType = GetContentTypeForFileExtension(strTempPath);
 
-                string strDestFolder = Factory.App.UploadFolder + "\\" + Factory.o27AttachmentBL.GetUploadFolder(v.SelectedO13ID);
-                if (Factory.o27AttachmentBL.CopyOneTempFile2Upload(rec.o27GUID + "_" + ginisfile2save.JmenoOrigSouboru,strDestFolder, rec.o27GUID + "_" + ginisfile2save.JmenoOrigSouboru))
-                {
-                    rec.o27FileSize = Convert.ToInt32(BO.BASFILE.GetFileInfo(strDestFolder+"\\"+ rec.o27GUID + "_" + ginisfile2save.JmenoOrigSouboru).Length);
+                string strDestFolderName = Factory.o27AttachmentBL.GetUploadFolder(v.SelectedO13ID);
+                if (Factory.o27AttachmentBL.CopyOneTempFile2Upload(rec.o27GUID + "_" + ginisfile2save.JmenoOrigSouboru, strDestFolderName, rec.o27GUID + "_" + ginisfile2save.JmenoOrigSouboru))
+                {                    
                     rec.o27ArchiveFileName = rec.o27GUID + "_" + ginisfile2save.JmenoOrigSouboru;
                     rec.o27ArchiveFolder = Factory.o27AttachmentBL.GetUploadFolder(v.SelectedO13ID);
                     Factory.o27AttachmentBL.Save(rec);
+
+                    v.SetJavascript_CallOnLoad(v.RecA01.pid);
+                    return View(v);
                 }
 
             }
@@ -142,10 +149,22 @@ namespace UI.Controllers
 
 
 
+        public string GetContentTypeForFileExtension(string filePath)
+        {
+            const string DefaultContentType = "application/octet-stream";
+
+            var provider = new FileExtensionContentTypeProvider();
+
+            if (!provider.TryGetContentType(filePath, out string contentType))
+            {
+                contentType = DefaultContentType;
+            }
+
+            return contentType;
+        }
 
 
-        
-        
+
 
         public IActionResult Index()
         {

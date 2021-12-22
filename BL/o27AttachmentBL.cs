@@ -373,7 +373,7 @@ namespace BL
                 System.IO.Directory.CreateDirectory(_mother.App.UploadFolder + "\\" + strDestFolderName);
             }
             string strDestFullPath = _mother.App.UploadFolder;
-            if (string.IsNullOrEmpty(strDestFolderName) == false)
+            if (!string.IsNullOrEmpty(strDestFolderName))
             {
                 strDestFullPath += "\\" + strDestFolderName;
             }
