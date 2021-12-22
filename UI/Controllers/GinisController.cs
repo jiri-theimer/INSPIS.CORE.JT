@@ -122,12 +122,10 @@ namespace UI.Controllers
                 }
                 if (v.ExportFlag == 2)  //založit nový dokument v existujícím spisu
                 {
-                    var strPopisSouboru = v.RecO27.o13Name;
-                    if (v.RecO27.o27Label != null) strPopisSouboru += " (" + v.RecO27.o27Label + ")";
-                    return View(v);
-
-                    v.RecO27.o27GinisFilePID = cG.NahratSouborDoGinis(strPID, v.RecO27.o27OriginalFileName, v.TypVazby, strPopisSouboru, v.httpclient, Factory).Result;
-                    v.RecO27.o27GinisDocPID = strPID;
+                    
+                    v.RecO27.o27GinisDocPID = cG.NovyDokument(v.SelectedTypDokumentu, v.DestSpis, v.Vec, v.httpclient, Factory).Result;
+                    v.RecO27.o27GinisFilePID = cG.NahratSouborDoGinis(v.RecO27.o27GinisDocPID, v.RecO27.o27OriginalFileName, v.TypVazby, v.RecO27.o27Label, v.httpclient, Factory).Result;
+                    
                     Factory.o27AttachmentBL.Save(v.RecO27);
 
                     v.SetJavascript_CallOnLoad(v.RecO27.pid);

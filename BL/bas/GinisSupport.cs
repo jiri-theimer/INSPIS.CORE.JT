@@ -52,6 +52,19 @@ namespace BL.bas
 
         }
 
+        public async Task<String> NovyDokument(string pid_typ_dokumentu, string pid_spis, string vec, HttpClient httpclient, BL.Factory f)        //volání spisové služby GINIS
+        {
+            using (var request = new HttpRequestMessage(new HttpMethod("GET"), f.App.PipeBaseUrl + "/api/NovyDokument?login=" + f.CurrentUser.j03Login + "&PID_Typu_Dokumentu=" + pid_typ_dokumentu+ "&PID_Spisu="+pid_spis+ "&Vec="+vec))
+            {
+                var response = await httpclient.SendAsync(request);
+                var strJson = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<String>(strJson);
+
+            }
+
+
+        }
+
         public async Task<BO.Ginis.GinisDocument> DetailDokumentu(string pid, HttpClient httpclient, BL.Factory f)        //volání spisové služby GINIS
         {
 
