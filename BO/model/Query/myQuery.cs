@@ -11,7 +11,7 @@ namespace BO
         public int b01id { get; set; }
         public int f06id { get; set; }
         public List<int> f06ids { get; set; }
-        public int b06id { get; set; }
+        
         public int f29id { get; set; }
         public int x29id { get; set; }
        
@@ -69,11 +69,7 @@ namespace BO
                 if (this.Prefix=="j23") AQ("a.a05ID=@a05id", "a05id", this.a05id);
             }
 
-            if (this.b06id > 0)
-            {                
-                if (this.Prefix == "o13") AQ("a.o13ID IN (select o13ID FROM b14WorkflowRequiredAttachmentTypeToStep WHERE b06ID=@b06id)", "b06id", this.b06id);
-                //if (this.Prefix == "a45" && this.param1 == "b12") AQ("a.a45ID IN (select a45ID FROM b12WorkflowReceiverToHistory WHERE a45ID IS NOT NULL AND b06ID=@b06id)", "b06id", this.b06id);
-            }
+            
             if (this.b01id > 0)
             {
                 if (this.Prefix == "b06") AQ( "a.b02ID IN (select b02ID FROM b02WorkflowStatus WHERE b01ID=@b01id)", "b01id", this.b01id);
@@ -119,11 +115,7 @@ namespace BO
             //    if (this.param1 == "x29IsAttachment") { AQ("a.x29IsAttachment=1", "", null); };    //filtr entit x29IsAttachment=1
             //    if (this.param1 == "x29IsReport") { AQ("a.x29IsReport=1", "", null); };    //filtr entit x29IsReport=1
             //}
-            if (this.x29id > 0)
-            {
-                if (this.Prefix == "o13") AQ("a.x29ID=@x29id", "x29id", this.x29id);
-
-            }
+            
             //if (this.Prefix == "b02" && this.param1 != null)
             //{
             //    AQ("a.b02Entity=@prefix", "prefix", this.param1);    //filtr seznamu stavů podle druhu entity

@@ -235,7 +235,7 @@ namespace UI.Controllers
         {
             v.treeNodes = new List<myTreeNode>();
 
-            foreach (var rec in Factory.o13AttachmentTypeBL.GetList(new BO.myQuery("o13")))
+            foreach (var rec in Factory.o13AttachmentTypeBL.GetList(new BO.myQueryO13()))
             {
                 var c = new myTreeNode()
                 {

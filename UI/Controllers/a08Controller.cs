@@ -143,7 +143,7 @@ namespace UI.Controllers
             {
                 v.lisA14 = new List<BO.a14AttachmentToTheme>();
             }
-            v.lisO13 = Factory.o13AttachmentTypeBL.GetList(new BO.myQuery("o13"));
+            v.lisO13 = Factory.o13AttachmentTypeBL.GetList(new BO.myQueryO13());
         }
 
     }

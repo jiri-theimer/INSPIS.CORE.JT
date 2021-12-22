@@ -62,6 +62,8 @@ namespace BO
                     return handle_myquery_reflexe(new BO.myQueryJ02());
                 case "j04":
                     return handle_myquery_reflexe(new BO.myQueryJ04());
+                case "o13":
+                    return handle_myquery_reflexe(new BO.myQueryO13());
                 case "o27":
                     return handle_myquery_reflexe(new BO.myQueryO27());
                 case "x31":

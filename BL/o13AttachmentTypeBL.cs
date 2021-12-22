@@ -7,7 +7,7 @@ namespace BL
     public interface Io13AttachmentTypeBL
     {
         public BO.o13AttachmentType Load(int pid);
-        public IEnumerable<BO.o13AttachmentType> GetList(BO.myQuery mq);
+        public IEnumerable<BO.o13AttachmentType> GetList(BO.myQueryO13 mq);
         public int Save(BO.o13AttachmentType rec);
         
 
@@ -37,7 +37,7 @@ namespace BL
             return _db.Load<BO.o13AttachmentType>(GetSQL1(" WHERE a.o13ID=@pid"), new { pid = pid });
         }
 
-        public IEnumerable<BO.o13AttachmentType> GetList(BO.myQuery mq)
+        public IEnumerable<BO.o13AttachmentType> GetList(BO.myQueryO13 mq)
         {            
             if (mq.explicit_orderby == null) { mq.explicit_orderby = "a.o13TreeIndex"; };
             DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql(GetSQL1(), mq, _mother.CurrentUser);

@@ -154,9 +154,8 @@ namespace UI.Controllers
         
         private void RefreshStateDoUpload(FileUploadViewModel v)
         {
-            var mq = new BO.myQuery("o13AttachmentType");
-            mq.x29id = v.x29ID;
-            v.lisO13 = Factory.o13AttachmentTypeBL.GetList(mq);
+            
+            v.lisO13 = Factory.o13AttachmentTypeBL.GetList(new BO.myQueryO13() { x29id = v.x29ID });
             
             if (v.x29ID==101 && Factory.App.Implementation != "HD")
             {

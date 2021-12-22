@@ -179,8 +179,8 @@ namespace BL
                 
                 var lisO27Saved = GetList(new BO.myQueryO27() { recpid = recpid, x29id = x29id }, null);
 
-                var mq = new BO.myQuery("o13");
-                var lisO13 = _mother.o13AttachmentTypeBL.GetList(mq).Where(p => p.x29ID == x29id);
+                var mq = new BO.myQueryO13() { x29id = x29id };
+                var lisO13 = _mother.o13AttachmentTypeBL.GetList(mq);
                 if (lisO13.Count() == 0)
                 {
                     this.AddMessage("Nelze najít vhodný typ dokumentu.");return false;                    

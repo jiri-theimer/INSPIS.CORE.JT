@@ -66,7 +66,7 @@ namespace UIFT.Security
                         // pro ajaxove pozadavky vracej jen 403
                         if (context.Request.Headers["X-Requested-With"] == "XMLHttpRequest")
                         {
-                            string message = "Ajax Request: Access Denied";
+                            //string message = "Ajax Request: Access Denied";
                             context.Response.StatusCode = 403;
                             //await context.Response.Body.WriteAsync(message, 0, message.Length);
                             return;

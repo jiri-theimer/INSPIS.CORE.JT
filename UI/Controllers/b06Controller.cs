@@ -26,10 +26,9 @@ namespace UI.Controllers
                     return RecNotFound(v);
                 }                
                 
-                var mq = new BO.myQuery("o13");
-                mq.b06id = v.rec_pid;                
-                v.o13IDs = string.Join(",", Factory.o13AttachmentTypeBL.GetList(mq).Select(p => p.pid));
-                v.o13Names = string.Join(",", Factory.o13AttachmentTypeBL.GetList(mq).Select(p => p.o13Name));
+                            
+                v.o13IDs = string.Join(",", Factory.o13AttachmentTypeBL.GetList(new BO.myQueryO13() { b06id = v.rec_pid }).Select(p => p.pid));
+                v.o13Names = string.Join(",", Factory.o13AttachmentTypeBL.GetList(new BO.myQueryO13() { b06id = v.rec_pid }).Select(p => p.o13Name));
 
                 var mqJ04 = new BO.myQueryJ04();
                 mqJ04.b06id = v.rec_pid;

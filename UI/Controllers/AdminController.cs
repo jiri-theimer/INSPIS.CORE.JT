@@ -233,7 +233,7 @@ namespace UI.Controllers
         private void inhale_tree_o13(UI.Models.AdminPage v)
         {
             v.treeNodes = new List<myTreeNode>();
-            var lis = Factory.o13AttachmentTypeBL.GetList(new BO.myQuery("o13AttachmentType"));
+            var lis = Factory.o13AttachmentTypeBL.GetList(new BO.myQueryO13());
             foreach (var rec in lis)
             {
                 var c = new myTreeNode()

@@ -416,7 +416,15 @@ namespace UI.Controllers
                         {
                             //otestovat spisovou službu: ze spisové značky získat pid spisu                            
                             var httpclient = _httpclientfactory.CreateClient();
-                            c.a01CaseCodePID = cG.GetPidSpisuFromZnacka(v.Rec.a01CaseCode, httpclient,Factory).Result;
+                            try
+                            {
+                                c.a01CaseCodePID = cG.GetPidSpisuFromZnacka(v.Rec.a01CaseCode, httpclient, Factory).Result;
+                            }catch(Exception e)
+                            {
+                                this.AddMessageTranslated("GINIS Error: "+e.Message);
+                                return View(v);
+                            }
+                            
                         }
                     }
                     else

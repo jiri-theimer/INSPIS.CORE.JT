@@ -13,10 +13,18 @@ namespace UI.Models.Ginis
         public string InputDokument { get; set; }
 
         public string SelectedDokumentCombo { get; set; }
-        public string SelectedDokument { get; set; }
+        
+        public BO.Ginis.GinisDocument RecGinisDokument { get; set; }
+        public List<BO.Ginis.GinisFile> lisSouboryDokumentu { get; set; }
+        public string SelectedSouborCombo { get; set; }
+
         public List<BO.Ginis.GinisDocument> lisDokument { get; set; }
 
         public string GinisSpisUrl { get; set; }
+
+        public IEnumerable<BO.o13AttachmentType> lisO13 { get; set; }
+        public int SelectedO13ID { get; set; }
         
+        public string o27Description { get; set; }
     }
 }

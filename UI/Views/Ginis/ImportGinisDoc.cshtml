@@ -30,22 +30,24 @@
         </div>
 
         <div class="row my-2">
-            <label class="col-sm-1 col-md-2 col-form-label">GINIS spis:</label>
+            <label class="col-sm-2 col-md-3 col-form-label">GINIS spis:</label>
             <div class="col-sm-4 col-md-3">
                 <a href="@Model.GinisSpisUrl" target="_blank">@Model.RecA01.a01CaseCode</a>
             </div>
         </div>
         <div class="row my-2">
-            <label class="col-sm-1 col-md-2 col-form-label">SPIS (sp. zn. nebo PID):</label>
+            <label class="col-sm-2 col-md-3 col-form-label">SPIS (sp. zn. nebo PID):</label>
             <div class="col-sm-4 col-md-3">
                 <input type="text" class="form-control" asp-for="@Model.InputSpis" />
             </div>
-
+            <div class="col-sm-3 col-md-3">
+                <button type="button" class="btn btn-sm btn-primary" onclick="postback()">Občerstvit</button>
+            </div>
 
         </div>
 
         <div class="row my-2">
-            <label class="col-sm-1 col-md-2 col-form-label">Dokumenty ve spisu::</label>
+            <label class="col-sm-2 col-md-3 col-form-label">Dokumenty ve spisu::</label>
             <div class="col-sm-7 col-md-6">
                 <select asp-for="@Model.SelectedDokumentCombo" class="form-select" onchange="select_document(this)">
                     @foreach (var c in Model.lisDokument)
@@ -57,15 +59,93 @@
         </div>
 
         <div class="row my-2">
-            <label class="col-sm-1 col-md-2 col-form-label">Vybraný dokument (ČJ nebo PID):</label>
+            <label class="col-sm-2 col-md-3 col-form-label">Vybraný dokument (ČJ nebo PID):</label>
             <div class="col-sm-4 col-md-3">
-                <input type="text" class="form-control" asp-for="@Model.SelectedDokument" id="txtSelectedDokument" />
+                <input type="text" class="form-control" asp-for="@Model.InputDokument" id="txtInputDokument" value="@Model.InputDokument" />
             </div>
-            <div class="col-sm-3 col-md-3">
-                <button type="button" class="btn btn-sm btn-primary" onclick="nacist_profil_dokumentu()">Načíst profil dokumentu</button>
-            </div>
+           
 
         </div>
+
+
+        @if (Model.RecGinisDokument != null && Model.RecGinisDokument.IdDokumentu !=null)
+        {
+            <div class="card">
+                <div class="card-header">
+                    Detail načteného dokumentu @(Model.InputDokument)
+                </div>
+                <div class="card-body">
+                    <table cellpadding="2" cellspacing="2">
+                        <tr>
+                            <td style="min-width:120px;">
+                                Věc:
+                            </td>
+                            <td>
+                                <strong>
+                                    @Model.RecGinisDokument.Vec
+                                </strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Soubor:
+                            </td>
+                            <td>
+                                <strong>
+                                    @Model.RecGinisDokument.JmenoSouboru
+                                </strong>
+                                <br />
+                                <i>
+                                    @Model.RecGinisDokument.PopisSouboru
+                                </i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                ČJ:
+                            </td>
+                            <td>
+                                <strong>
+                                    @Model.RecGinisDokument.PriznakCj
+                                </strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Soubory v dokumentu:
+                            </td>
+                            <td>
+                                <select asp-for="@Model.SelectedSouborCombo" class="form-select">
+                                    @if (Model.lisSouboryDokumentu != null)
+                                    {
+                                        @foreach (var c in Model.lisSouboryDokumentu)
+                                        {
+                                            <option value="@c.IdSouboru">@(c.TypVazby+": "+c.JmenoOrigSouboru+" ("+c.PopisSouboru+")")</option>
+                                        }
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Do InspIS vložit jako typ:
+                            </td>
+                            <td>
+                                <mydropdown asp-for="@Model.SelectedO13ID" datasource="@Model.lisO13" textfield="TreeItem" valuefield="pid"></mydropdown>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Popis:
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" asp-for="@Model.o27Description" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        }
 
 
     </div>
@@ -90,11 +170,22 @@
 
     function select_document(cbx) {
 
-        $("#txtSelectedDokument").val(cbx.value);
+        $("#txtInputDokument").val(cbx.value);
+        postback();
 
     }
     
+    function postback()
+    {
+        _notify_message("GINIS Loading...", "info");
+        form1.action = "/Ginis/ImportGinisDoc?oper=postback";
+        form1.submit();
+    }
 
 
+    function nacist_ginis_dokument()
+    {
+        postback();
+    }
 
 </script>
