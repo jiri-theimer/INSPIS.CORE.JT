@@ -39,6 +39,18 @@ namespace BL.bas
 
 
         }
+        public async Task<String> GetPidDokumentuFromCJ(string cj, HttpClient httpclient, BL.Factory f)        //volání spisové služby GINIS
+        {
+            using (var request = new HttpRequestMessage(new HttpMethod("GET"), f.App.PipeBaseUrl + "/api/GetPidDokumentuFromCJ?login=" + f.CurrentUser.j03Login + "&cislojednaci=" + cj))
+            {
+                var response = await httpclient.SendAsync(request);
+                var strJson = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<String>(strJson);
+
+            }
+
+
+        }
 
         public async Task<BO.Ginis.GinisDocument> DetailDokumentu(string pid, HttpClient httpclient, BL.Factory f)        //volání spisové služby GINIS
         {
@@ -108,6 +120,26 @@ namespace BL.bas
                 var lis = JsonConvert.DeserializeObject<List<BO.Ginis.GinisDocumentType>>(strJson);
                 return lis;
             }
+        }
+
+
+
+        public async Task<String> NahratSouborDoGinis(string pid,string tempfilename,string typvazby,string popissouboru, HttpClient httpclient, BL.Factory f)        //volání spisové služby GINIS
+        {
+            //tempfilename: Pouze název souboru bez plné cesty
+
+            string url = f.App.PipeBaseUrl + "/api/NahratSouborDoGinis?login=" + f.CurrentUser.j03Login + "&pid=" + pid;
+            url += "&tempfilename=" + tempfilename + "&typvazby=" + typvazby + "&popissouboru=" + popissouboru;
+
+            using (var request = new HttpRequestMessage(new HttpMethod("GET"), url))
+            {
+                var response = await httpclient.SendAsync(request);
+                var strJson = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<String>(strJson);
+
+            }
+
+
         }
     }
 }

@@ -40,6 +40,7 @@ namespace BL
 
         public bool PipeIsActive { get; set; }
         public string PipeBaseUrl { get; set; }     //příklad: https://tinspiscore.csicr.cz/pipe
+        public string GinisExportDocTypes { get; set; }
 
     }
 }

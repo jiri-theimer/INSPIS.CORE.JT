@@ -785,9 +785,14 @@ namespace UI.Controllers
                     break;
                 case "o27":
                     var recO27 = Factory.o27AttachmentBL.Load(pid);
-                    AMI("Karta záznamu", string.Format("javascript:_edit('o27',{0})", pid));
+                    AMI("Karta dokumentu", string.Format("javascript:_edit('o27',{0})", pid));
                     DIV();
                     AMI("Otevřít/Stáhnout dokument", string.Format("/FileUpload/FileDownloadInline?downloadguid={0}", recO27.o27DownloadGUID),null,null,"_blank");
+                    if (recO27.x29ID==101 && recO27.o27DataPID > 0 && Factory.App.Implementation=="Default")
+                    {
+                        DIV();
+                        AMI("Exportovat do spis.služby GINIS", $"javascript: _window_open('/Ginis/ExportGinisDoc?o27id={pid}')");
+                    }
                     break;
                 case "b01":
                     if (flag != "recpage")

@@ -85,60 +85,34 @@ namespace UI
             services.AddSingleton<BL.RunningApp>(x => new BL.RunningApp()
             {
                 ConnectString = Configuration.GetSection("ConnectionStrings")["AppConnection"]
-                ,
-                AppName = Configuration.GetSection("App")["Name"]
-                ,
-                AppVersion = Configuration.GetSection("App")["Version"]
-                ,
-                FulltextSearch= BO.BAS.BG(Configuration.GetSection("App")["FulltextSearch"])
-                ,
-                AppBuild = "build: " + BO.BAS.ObjectDateTime2String(versionTime)
-                ,
-                LogoImageSuffix = Configuration.GetSection("App")["LogoImageSuffix"]                                             
-                ,
-                Implementation = Configuration.GetSection("App")["Implementation"]
-                ,
-                DefaultLangIndex = BO.BAS.InInt(Configuration.GetSection("App")["DefaultLangIndex"])
-                ,
-                LangChooseIsStopped = BO.BAS.BG(Configuration.GetSection("App")["LangChooseIsStopped"])
-                ,
-                CssCustomSkin = Configuration.GetSection("App")["CssCustomSkin"]
-                ,
-                UserUrl= Configuration.GetSection("App")["UserUrl"]
-                ,
-                RobotUser = Configuration.GetSection("App")["RobotUser"]
-                ,
-                RobotIsStopped= BO.BAS.BG(Configuration.GetSection("App")["RobotIsStopped"])
-                ,
-                UploadFolder = Configuration.GetSection("Folders")["Upload"]
-                ,
-                TempFolder = Configuration.GetSection("Folders")["Temp"]
-                ,                
-                ReportFolder = Configuration.GetSection("Folders")["Report"]
-                ,
-                LogFolder = strLogFolder
-                ,
-                AppRootFolder= _hostingEnvironment.ContentRootPath
-                ,
-                TranslatorMode = Configuration.GetSection("App")["TranslatorMode"]
-                ,
-                UiftUrl= Configuration.GetSection("UIFT")["Url"]
-                ,
-                PasswordMinLength= Convert.ToInt32(Configuration.GetSection("PasswordChecker")["MinLength"])
-                ,
-                PasswordMaxLength = Convert.ToInt32(Configuration.GetSection("PasswordChecker")["MaxLength"])
-                ,
-                PasswordRequireDigit= Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireDigit"])
-                ,
-                PasswordRequireLowercase = Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireLowercase"])
-                ,
-                PasswordRequireUppercase = Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireUppercase"])
-                ,
-                PasswordRequireNonAlphanumeric = Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireNonAlphanumeric"])
-                ,
-                PipeBaseUrl = Configuration.GetSection("Pipe")["BaseUrl"]
-                ,
-                PipeIsActive = BO.BAS.BG(Configuration.GetSection("Pipe")["IsActive"])
+                ,AppName = Configuration.GetSection("App")["Name"]
+                ,AppVersion = Configuration.GetSection("App")["Version"]
+                ,FulltextSearch= BO.BAS.BG(Configuration.GetSection("App")["FulltextSearch"])
+                ,AppBuild = "build: " + BO.BAS.ObjectDateTime2String(versionTime)
+                ,LogoImageSuffix = Configuration.GetSection("App")["LogoImageSuffix"]                                             
+                ,Implementation = Configuration.GetSection("App")["Implementation"]
+                ,DefaultLangIndex = BO.BAS.InInt(Configuration.GetSection("App")["DefaultLangIndex"])
+                ,LangChooseIsStopped = BO.BAS.BG(Configuration.GetSection("App")["LangChooseIsStopped"])
+                ,CssCustomSkin = Configuration.GetSection("App")["CssCustomSkin"]
+                ,UserUrl= Configuration.GetSection("App")["UserUrl"]
+                ,RobotUser = Configuration.GetSection("App")["RobotUser"]
+                ,RobotIsStopped= BO.BAS.BG(Configuration.GetSection("App")["RobotIsStopped"])
+                ,UploadFolder = Configuration.GetSection("Folders")["Upload"]
+                ,TempFolder = Configuration.GetSection("Folders")["Temp"]
+                ,ReportFolder = Configuration.GetSection("Folders")["Report"]
+                ,LogFolder = strLogFolder
+                ,AppRootFolder= _hostingEnvironment.ContentRootPath
+                ,TranslatorMode = Configuration.GetSection("App")["TranslatorMode"]
+                ,UiftUrl= Configuration.GetSection("UIFT")["Url"]
+                ,PasswordMinLength= Convert.ToInt32(Configuration.GetSection("PasswordChecker")["MinLength"])
+                ,PasswordMaxLength = Convert.ToInt32(Configuration.GetSection("PasswordChecker")["MaxLength"])
+                ,PasswordRequireDigit= Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireDigit"])
+                ,PasswordRequireLowercase = Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireLowercase"])
+                ,PasswordRequireUppercase = Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireUppercase"])
+                ,PasswordRequireNonAlphanumeric = Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireNonAlphanumeric"])
+                ,PipeBaseUrl = Configuration.GetSection("Pipe")["BaseUrl"]
+                ,PipeIsActive = BO.BAS.BG(Configuration.GetSection("Pipe")["IsActive"])
+                ,GinisExportDocTypes = Configuration.GetSection("App")["GinisExportDocTypes"]   //povolené typy GINIS dokumentù pro export souborù do pøíloh
             });
 
             services.AddHttpClient();       //kvùli httpclient
@@ -160,6 +134,8 @@ namespace UI
             services.AddScoped<BL.Factory, BL.Factory>();
 
             services.AddHostedService<UI.TheRobot>();
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

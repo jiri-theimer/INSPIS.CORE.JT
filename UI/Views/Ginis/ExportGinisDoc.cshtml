@@ -1,0 +1,158 @@
+﻿@model UI.Models.Ginis.ExportGinisDocViewModel
+@inject BL.Factory _f
+
+@{
+    Model.PageTitle = "Export dokumentu do spisové služby GINIS";
+    Layout = "~/Views/Shared/_LayoutModal.cshtml";
+}
+@addTagHelper *, UI
+
+<h4>Export dokument do spisové služby GINIS</h4>
+<div class="bg-light" style="padding:10px;">
+    <button id="cmdSave" type="button" class="btn btn-success">Uložit změny</button>
+    <button id="cmdClose" type="button" onclick="_window_close()" class="btn btn-light">Zavřít</button>
+    <button type="button" onclick="_helppage()" class="btn btn-light"><b>? </b>Nápověda</button>
+</div>
+
+<form id="form1" asp-controller="Ginis" asp-action="ExportGinisDoc" method="POST">
+    <input type="hidden" asp-for="@Model.o27id" />
+
+    <div class="modal_record_container">
+        @if (Model.RecA01 != null)
+        {
+            <div class="alert alert-primary" role="alert">
+                <label style="font-weight:bold;">Číslo akce:</label>
+                @Model.RecA01.a01Signature
+                <label style="font-weight:bold;">Typ akce:</label>
+                @Model.RecA01.a10Name
+                <label style="font-weight:bold;margin-left:20px;">Téma akce:</label>
+                @Model.RecA01.a08Name
+                <label style="font-weight:bold;margin-left:20px;">@(Model.RecA01.a06Name+":")</label>
+                @Model.RecA01.a03Name
+            </div>
+        }
+
+        @if (Model.GinisSpisUrl != null)
+        {
+            <div class="row my-2">
+                <label class="col-sm-2 col-md-3 col-form-label">GINIS spis:</label>
+                <div class="col-sm-4 col-md-3">
+                    <a href="@Model.GinisSpisUrl" target="_blank">@Model.RecA01.a01CaseCode</a>
+                </div>
+            </div>
+        }
+
+        <div class="row my-2">
+            <label class="col-sm-2 col-md-3 col-form-label">Číslo jednací:</label>
+            <div class="col-sm-6 col-md-5">
+                <myval value="@Model.RecO27.o27PressMark"></myval>
+            </div>
+        </div>
+        <div class="row my-2">
+            <label class="col-sm-2 col-md-3 col-form-label">Typ přílohy:</label>
+            <div class="col-sm-6 col-md-5">
+                <myval value="@Model.RecO27.o13Name"></myval>
+            </div>
+        </div>
+        <div class="row my-2">
+            <label class="col-sm-2 col-md-3 col-form-label">Název souboru:</label>
+            <div class="col-sm-6 col-md-5">
+                <myval value="@Model.RecO27.o27OriginalFileName"></myval>
+            </div>
+        </div>
+        <div class="row my-2">
+            <label class="col-sm-2 col-md-3 col-form-label">Popis:</label>
+            <div class="col-sm-6 col-md-5">
+                <myval value="@Model.RecO27.o27Label"></myval>
+            </div>
+        </div>
+
+        <input type="radio" id="ExportFlag1" onchange="postback()" asp-for="@Model.ExportFlag" value="1">
+        <label for="ExportFlag1">Vložit do již existujícího GINIS dokumentu</label>
+        <br />
+        <input type="radio" id="ExportFlag2" onchange="postback()" asp-for="@Model.ExportFlag" value="2">
+        <label for="ExportFlag2">Založit nový dokument v rámci existujícího spisu</label>
+        <div>
+            <button type="button" class="btn btn-sm btn-primary" onclick="postback()">Občerstvit</button>
+        </div>
+
+        @if (Model.ExportFlag == 1)
+        {
+            <div class="row my-2">
+                <label class="col-sm-2 col-md-3 col-form-label">Cílový GINIS dokument (PID nebo ČJ):</label>
+                <div class="col-sm-4 col-md-3">
+                    <input type="text" class="form-control" asp-for="@Model.DestDokument" value="@Model.DestDokument" />
+                </div>
+            </div>
+        }
+        @if (Model.ExportFlag == 2)
+        {
+            <div class="row my-2">
+                <label class="col-sm-2 col-md-3 col-form-label">Cílový GINIS spis (PID nebo značka):</label>
+                <div class="col-sm-4 col-md-3">
+                    <input type="text" class="form-control" asp-for="@Model.DestSpis" value="@Model.DestSpis" />
+                </div>
+            </div>
+            <div class="row my-2">
+                <label class="col-sm-2 col-md-3 col-form-label">Typ cílového GINIS dokumentu:</label>
+                <div class="col-sm-7 col-md-6">
+                    <select asp-for="@Model.SelectedTypDokumentu" class="form-select">
+
+                        @foreach (var c in Model.lisTypyDokumentu.Where(p => p.IdTypuDokumentu != null))
+                        {
+                            <option value="@c.IdTypuDokumentu">@(c.IdNazevTypuDokumentu)</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="row my-2">
+                <label class="col-sm-2 col-md-3 col-form-label">Věc:</label>
+                <div class="col-sm-4 col-md-3">
+                    <input type="text" class="form-control" asp-for="@Model.Vec" id="txtVec" />
+                </div>
+
+
+            </div>
+        }
+
+        <hr />
+        <input type="radio" id="VazbaFlag1" asp-for="@Model.TypVazby" value="elektronicky-obraz">
+        <label for="VazbaFlag1">Exportovat jako elektronický obraz</label>
+        <br />
+        <input type="radio" id="VazbaFlag2" asp-for="@Model.TypVazby" value="elektronicka-priloha">
+        <label for="VazbaFlag2">Exportovat jako přílohu</label>
+
+    </div>
+
+
+</form>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#cmdSave").click(function () {
+            $(this).text("Processing...");
+            $(this).attr("disabled", true);
+            form1.submit();
+
+        });
+
+
+
+    });
+
+   
+
+    function postback()
+    {
+        _notify_message("GINIS Loading...", "info");
+        form1.action = "/Ginis/ExportGinisDoc?oper=postback";
+        form1.submit();
+    }
+
+
+   
+
+</script>
+
