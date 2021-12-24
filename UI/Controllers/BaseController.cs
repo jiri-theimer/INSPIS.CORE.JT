@@ -63,7 +63,7 @@ namespace UI.Controllers
         //Test probíhá po spuštění každé Akce:
         public override void OnActionExecuted(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext context)
         {
-            if (ModelState.IsValid == false)
+            if (!ModelState.IsValid)
             {
                 var modelErrors = new List<string>();
                 foreach (var ms in ModelState.Values)

@@ -43,7 +43,7 @@ namespace BO
         public bool j03IsSystemAccount { get; set; }
         public bool j03IsMustChangePassword { get; set; }
         public int j04ID { get; set; }
-        public string j03PasswordHash { get; set; }
+        public string j03PasswordHash { get; set; } //pro CORE verzi hashované heslo+login
         public int j03AccessFailedCount { get; set; }
         public int j03ModalDialogFlag { get; set; }
         public int j03FontStyleFlag { get; set; }

@@ -8,15 +8,19 @@ using System.Security.Claims;
 using UI.Models;
 using DocumentFormat.OpenXml.EMMA;
 using Microsoft.AspNetCore.Http;
+using System.Net.Http;
 
 namespace UI.Controllers
 {
     public class LoginController : Controller
     {
-        private BL.Factory _f;        
-        public LoginController(BL.Factory f)
+        private BL.Factory _f;
+        private readonly IHttpClientFactory _httpclientfactory; //client pro PIPE api
+
+        public LoginController(BL.Factory f, IHttpClientFactory hcf)
         {
-            _f = f;            
+            _f = f;
+            _httpclientfactory = hcf;   //client pro PIPE api
         }
         [HttpGet]
         public ActionResult UserLogin()
@@ -70,7 +74,6 @@ namespace UI.Controllers
             }
             
             BO.j03User cJ03 = _f.j03UserBL.LoadByLogin(lu.Login,0);
-            BO.j04UserRole cJ04 = _f.j04UserRoleBL.Load(cJ03.j04ID);
             
             if (lu.Password == "hash")
             {
@@ -90,17 +93,32 @@ namespace UI.Controllers
             }
             else
             {
-                var ret = lu.VerifyHash(lu.Password, lu.Login, cJ03);
-                if (ret.Flag == BO.ResultEnum.Failed)
+                if (_f.App.PipeBaseUrl !=null && _f.App.PipeIsActive)
                 {
-                    lu.Message = _f.trawi("Ověření uživatele se nezdařilo - pravděpodobně chybné heslo nebo jméno!", lu.LangIndex);
-                    Write2Accesslog(lu);
-                    return View(lu);
+                    //ověření přes centrální INSPIS ASP MEMBERSHIP 2.0: ČŠI                 
+                    var cP = new BL.bas.PipeSupport(_httpclientfactory.CreateClient(),_f);
+                    if (!cP.ValidateUser(lu.Login, lu.Password).Result)
+                    {
+                        lu.Message = "Ověření uživatele v MEMBERSHIP databázi se nezdařilo - pravděpodobně chybné heslo nebo jméno!";
+                        Write2Accesslog(lu);
+                        return View(lu);
+                    }
                 }
+                else
+                {
+                    //ověření přes lokální Password hash: Ukrajina
+                    var ret = lu.VerifyHash(lu.Password, lu.Login, cJ03);
+                    if (ret.Flag == BO.ResultEnum.Failed)
+                    {
+                        lu.Message = _f.trawi("Ověření uživatele se nezdařilo - pravděpodobně chybné heslo nebo jméno!", lu.LangIndex);
+                        Write2Accesslog(lu);
+                        return View(lu);
+                    }
+                }                
             }
                         
 
-            //ověřený
+            //již ověřený uživatel
             string strEmail = cJ03.j02Email;
             if (strEmail == null){ strEmail = "info@marktime.cz"; };
             var userClaims = new List<Claim>()

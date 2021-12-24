@@ -5,12 +5,18 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using UI.Models;
 using UI.Models.Record;
+using System.Net.Http;
 
 namespace UI.Controllers
 {
     public class j03Controller : BaseController
     {
-        
+        private readonly IHttpClientFactory _httpclientfactory; //client pro PIPE api
+
+        public j03Controller(IHttpClientFactory hcf)
+        {            
+            _httpclientfactory = hcf;   //client pro PIPE api
+        }
         public IActionResult Record(int pid, bool isclone,int j02id)
         {
             var v = new j03Record() { rec_pid = pid, rec_entity = "j03" };
@@ -219,14 +225,25 @@ namespace UI.Controllers
                 }
 
                 
-
-                if (v.rec_pid == 0 && c.pid>0 && v.IsDefinePassword)
+                if (v.IsDefinePassword)
                 {
-                    c = Factory.j03UserBL.Load(c.pid);  //zakládáme nový účet - je třeba pře-generovat j03PasswordHash
-                    var lu = new BO.LoggingUser();
-                    c.j03PasswordHash = lu.Pwd2Hash(v.NewPassword, c);
-                    c.pid = Factory.j03UserBL.Save(c);
+                    //generování nového hesla
+                    if (v.rec_pid == 0 && c.pid > 0)
+                    {
+                        c = Factory.j03UserBL.Load(c.pid);  //zakládáme nový účet - je třeba pře-generovat j03PasswordHash
+                        var lu = new BO.LoggingUser();
+                        c.j03PasswordHash = lu.Pwd2Hash(v.NewPassword, c);
+                        c.pid = Factory.j03UserBL.Save(c);
+                    }
+                    if (Factory.App.PipeBaseUrl != null && Factory.App.PipeIsActive)
+                    {
+                        //uložit nové heslo do centrálního INSPIS membership
+                        var cP = new BL.bas.PipeSupport(_httpclientfactory.CreateClient(), this.Factory);
+                        var strNewPassword = cP.RecoveryPassword(c.j03Login, v.NewPassword).Result;
+                    }
                 }
+                
+                
                 
                 if (c.pid > 0)
                 {

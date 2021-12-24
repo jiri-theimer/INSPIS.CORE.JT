@@ -9,7 +9,7 @@ using UI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Diagnostics;
-
+using System.Net.Http;
 
 namespace UI.Controllers
 {
@@ -20,11 +20,12 @@ namespace UI.Controllers
     {
        
         private readonly ILogger<HomeController> _logger;
+        private readonly IHttpClientFactory _httpclientfactory; //client pro PIPE api
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IHttpClientFactory hcf)
         {
             _logger = logger;
-            
+            _httpclientfactory = hcf;   //client pro PIPE api
         }
 
         public async Task<IActionResult> Logout()
@@ -239,24 +240,50 @@ namespace UI.Controllers
             }
 
             var cJ03 = Factory.j03UserBL.Load(Factory.CurrentUser.pid);
-            var lu = new BO.LoggingUser();
-            
-            res=lu.VerifyHash(v.CurrentPassword, cJ03.j03Login, cJ03);            
-            if (res.Flag == BO.ResultEnum.Success)
+
+            if (Factory.App.PipeBaseUrl !=null && Factory.App.PipeIsActive)
             {
-                cJ03.j03PasswordHash = lu.Pwd2Hash(v.NewPassword, cJ03);
-                cJ03.j03IsMustChangePassword = false;
-                if (Factory.j03UserBL.Save(cJ03) > 0)
+                //heslo v centrální MEMBERSHIP databázi
+                var cP = new BL.bas.PipeSupport(_httpclientfactory.CreateClient(), this.Factory);
+                if (!cP.ValidateUser(cJ03.j03Login, v.CurrentPassword).Result)
                 {
-                    this.AddMessage("Heslo bylo změněno.", "info");
+                    this.AddMessageTranslated("Současné heslo není zadané správně.");
+                    return View(v);
+                }
+                var strNewPassword = cP.RecoveryPassword(cJ03.j03Login, v.NewPassword).Result;
+                if (strNewPassword == v.NewPassword)
+                {
+                    this.AddMessageTranslated("Heslo bylo změněno a uloženo do MEMBERSHIP databáze.", "info");
                     return RedirectToAction("Index");
                 }
-                             
+                else
+                {
+                    this.AddMessageTranslated("Chyba na straně volání PIPE api");
+                    return View(v);
+                }
             }
             else
             {
-                this.AddMessage(res.Message);            
+                //heslo v aplikační db
+                var lu = new BO.LoggingUser();
+                res = lu.VerifyHash(v.CurrentPassword, cJ03.j03Login, cJ03);
+                if (res.Flag == BO.ResultEnum.Success)
+                {
+                    cJ03.j03PasswordHash = lu.Pwd2Hash(v.NewPassword, cJ03);
+                    cJ03.j03IsMustChangePassword = false;
+                    if (Factory.j03UserBL.Save(cJ03) > 0)
+                    {
+                        this.AddMessage("Heslo bylo změněno.", "info");
+                        return RedirectToAction("Index");
+                    }
+
+                }
+                else
+                {
+                    this.AddMessage(res.Message);
+                }
             }
+            
             return View(v);
 
         }
