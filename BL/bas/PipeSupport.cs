@@ -19,7 +19,7 @@ namespace BL.bas
         }
         private string getApiKey()
         {
-            var rec = new BO.p85Tempbox() { p85GUID = BO.BAS.GetGuid(), p85Prefix = "apikey" };
+            var rec = new BO.p85Tempbox() { p85GUID = BO.BAS.GetGuid(), p85Prefix = "apikey",p85FreeText01="PIPE" };
             if (_f.p85TempboxBL.Save(rec) > 1)
             {
                 return rec.p85GUID;
