@@ -14,7 +14,7 @@ namespace BL
         public int SaveWithNewPersonalProfile(BO.j03User rec, BO.j02Person recJ02);
         public void UpdateCurrentUserPing(BO.j92PingLog c);
         public void RecoveryUserCache(int j03id,int j02id);
-
+        public string LoadMembershipUserId(int j03id);
     }
     class j03UserBL : BaseBL, Ij03UserBL
     {
@@ -79,6 +79,20 @@ namespace BL
             }
 
             return Save(rec);
+        }
+
+        public string LoadMembershipUserId(int j03id)
+        {
+            var c = _db.Load<BO.GetString>("SELECT j03MembershipUserId as Value FROM j03User WHERE j03ID=@pid", new { pid = j03id });
+            if (c != null)
+            {
+                return c.Value;
+            }
+            else
+            {
+                return null;
+            }
+            
         }
 
         public int Save(BO.j03User rec)

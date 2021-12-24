@@ -92,7 +92,7 @@ namespace UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Record(Models.Record.j03Record v,string oper,int b65id)
         {
-            v.lisB65 = Factory.b65WorkflowMessageBL.GetList(new BO.myQuery("b65")).Where(p => p.x29ID == 503);
+            v.lisB65 = Factory.b65WorkflowMessageBL.GetList(new BO.myQuery("b65")).Where(p => p.x29ID == 503);            
             if (oper == "postback")
             {
                 return View(v);
@@ -128,7 +128,10 @@ namespace UI.Controllers
                     this.AddMessage("U uživatelského účtu chybí vazba na osobní profil."); return View(v);
                 }
                 BO.j03User c = new BO.j03User();
-                if (v.rec_pid > 0) c = Factory.j03UserBL.Load(v.rec_pid);                
+                if (v.rec_pid > 0)
+                {
+                    c = Factory.j03UserBL.Load(v.rec_pid);                    
+                }                
                 c.j03Login = v.Rec.j03Login.Trim();
                 c.j04ID = v.Rec.j04ID;
                 c.j03LangIndex = v.Rec.j03LangIndex;
@@ -224,7 +227,15 @@ namespace UI.Controllers
                         break;
                 }
 
-                
+                if (v.IsChangeLogin && v.rec_pid > 0 && Factory.App.PipeBaseUrl != null && Factory.App.PipeIsActive)
+                {
+                    //uložit nový login do centrální membership databáze
+                    var cP = new BL.bas.PipeSupport(_httpclientfactory.CreateClient(), this.Factory);
+                    if (!cP.ChangeLogin(Factory.j03UserBL.LoadMembershipUserId(c.pid), c.j03Login).Result)
+                    {
+                        this.AddMessageTranslated("CHyba: ChangeLogin");
+                    }
+                }
                 if (v.IsDefinePassword)
                 {
                     //generování nového hesla
@@ -242,6 +253,7 @@ namespace UI.Controllers
                         var strNewPassword = cP.RecoveryPassword(c.j03Login, v.NewPassword).Result;
                     }
                 }
+                
                 
                 
                 

@@ -48,5 +48,19 @@ namespace BL.bas
 
 
         }
+
+        public async Task<bool> ChangeLogin(string userid, string newlogin)        //volání PIPE api služby
+        {
+
+            using (var request = new HttpRequestMessage(new HttpMethod("GET"), _f.App.PipeBaseUrl + "/api/_ChangeLogin?userid=" + userid + "&newlogin=" + newlogin))
+            {
+                HttpResponseMessage response = await _httpclient.SendAsync(request);
+                string strJson = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<bool>(strJson);
+
+            }
+
+
+        }
     }
 }
