@@ -407,12 +407,12 @@ namespace UI.Controllers
                     c.a01Name = v.Rec.a01Name;
                 }
 
-               if (!string.IsNullOrEmpty(v.Rec.a01CaseCode))
+               if (!string.IsNullOrEmpty(v.Rec.a01CaseCode) && Factory.App.Implementation == "Default")
                 {
                     var cG = new BL.bas.GinisSupport();
                     if (!cG.IsExpressionPID(v.Rec.a01CaseCode))
                     {
-                        if (Factory.App.PipeIsActive)
+                        if (Factory.App.PipeBaseUrl !=null)
                         {
                             //otestovat spisovou službu: ze spisové značky získat pid spisu                            
                             var httpclient = _httpclientfactory.CreateClient();

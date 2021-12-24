@@ -113,12 +113,15 @@ namespace UI.Controllers
             }
             if (oper == "changelogin")
             {
-                v.IsDefinePassword = true;
                 v.IsChangeLogin = true;
-                var c = new BO.CLS.PasswordChecker();
-                v.NewPassword = c.RandomPassword(Factory.App.PasswordMinLength);
-                v.VerifyPassword = v.NewPassword;
-                this.AddMessage("Se změnou přihlašovacího jména je třeba resetovat i přístupové heslo.","info");
+                if (!Factory.App.PipeIsMembershipProvider)
+                {
+                    v.IsDefinePassword = true;
+                    var c = new BO.CLS.PasswordChecker();
+                    v.NewPassword = c.RandomPassword(Factory.App.PasswordMinLength);
+                    v.VerifyPassword = v.NewPassword;
+                    this.AddMessage("Se změnou přihlašovacího jména je třeba resetovat i přístupové heslo.", "info");
+                }                                               
                 return View(v);
             }
             if (ModelState.IsValid)
@@ -227,7 +230,7 @@ namespace UI.Controllers
                         break;
                 }
 
-                if (v.IsChangeLogin && v.rec_pid > 0 && Factory.App.PipeBaseUrl != null && Factory.App.PipeIsActive)
+                if (v.IsChangeLogin && v.rec_pid > 0 && Factory.App.PipeIsMembershipProvider)
                 {
                     //uložit nový login do centrální membership databáze
                     var cP = new BL.bas.PipeSupport(_httpclientfactory.CreateClient(), this.Factory);
@@ -246,7 +249,7 @@ namespace UI.Controllers
                         c.j03PasswordHash = lu.Pwd2Hash(v.NewPassword, c);
                         c.pid = Factory.j03UserBL.Save(c);
                     }
-                    if (Factory.App.PipeBaseUrl != null && Factory.App.PipeIsActive)
+                    if (Factory.App.PipeIsMembershipProvider)
                     {
                         //uložit nové heslo do centrálního INSPIS membership
                         var cP = new BL.bas.PipeSupport(_httpclientfactory.CreateClient(), this.Factory);

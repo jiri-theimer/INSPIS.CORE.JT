@@ -111,8 +111,8 @@ namespace UI
                 ,PasswordRequireUppercase = Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireUppercase"])
                 ,PasswordRequireNonAlphanumeric = Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireNonAlphanumeric"])
                 ,PipeBaseUrl = Configuration.GetSection("Pipe")["BaseUrl"]
-                ,PipeIsActive = BO.BAS.BG(Configuration.GetSection("Pipe")["IsActive"])
-                ,GinisExportDocTypes = Configuration.GetSection("App")["GinisExportDocTypes"]   //povolené typy GINIS dokumentù pro export souborù do pøíloh
+                ,PipeIsMembershipProvider = BO.BAS.BG(Configuration.GetSection("Pipe")["IsMembershipProvider"])
+                ,GinisExportDocTypes = Configuration.GetSection("Pipe")["GinisExportDocTypes"]   //povolené typy GINIS dokumentù pro export souborù do pøíloh
             });
 
             services.AddHttpClient();       //kvùli httpclient

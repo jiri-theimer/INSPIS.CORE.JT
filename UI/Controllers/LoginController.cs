@@ -93,7 +93,7 @@ namespace UI.Controllers
             }
             else
             {
-                if (_f.App.PipeBaseUrl !=null && _f.App.PipeIsActive)
+                if (_f.App.PipeIsMembershipProvider)
                 {
                     //ověření přes centrální INSPIS ASP MEMBERSHIP 2.0: ČŠI                 
                     var cP = new BL.bas.PipeSupport(_httpclientfactory.CreateClient(),_f);

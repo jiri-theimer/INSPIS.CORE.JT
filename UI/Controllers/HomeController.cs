@@ -241,7 +241,7 @@ namespace UI.Controllers
 
             var cJ03 = Factory.j03UserBL.Load(Factory.CurrentUser.pid);
 
-            if (Factory.App.PipeBaseUrl !=null && Factory.App.PipeIsActive)
+            if (Factory.App.PipeIsMembershipProvider)
             {
                 //heslo v centrální MEMBERSHIP databázi
                 var cP = new BL.bas.PipeSupport(_httpclientfactory.CreateClient(), this.Factory);

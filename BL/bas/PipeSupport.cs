@@ -17,10 +17,23 @@ namespace BL.bas
             _httpclient = httpclient;
             _f = f;
         }
+        private string getApiKey()
+        {
+            var rec = new BO.p85Tempbox() { p85GUID = BO.BAS.GetGuid(), p85Prefix = "apikey" };
+            if (_f.p85TempboxBL.Save(rec) > 1)
+            {
+                return rec.p85GUID;
+            }
+            else
+            {
+                throw new Exception("Chyba při generování APIKEY");
+            }
+            
+        }
         public async Task<bool> ValidateUser(string login,string password)        //volání PIPE api služby
         {
 
-            using (var request = new HttpRequestMessage(new HttpMethod("GET"), _f.App.PipeBaseUrl + "/api/_ValidateUser?login=" + login + "&password=" + password))
+            using (var request = new HttpRequestMessage(new HttpMethod("GET"), _f.App.PipeBaseUrl + "/api/_ValidateUser?apikey="+getApiKey()+"&login=" + login + "&password=" + password))
             {
                 HttpResponseMessage response = await _httpclient.SendAsync(request);
                 string strJson = await response.Content.ReadAsStringAsync();
@@ -33,7 +46,7 @@ namespace BL.bas
 
         public async Task<string> RecoveryPassword(string login, string explicitpassword = null)        //volání PIPE api služby
         {
-            string url = _f.App.PipeBaseUrl + "/api/_RecoveryPassword?login=" + login;
+            string url = _f.App.PipeBaseUrl + "/api/_RecoveryPassword?apikey="+getApiKey()+"&login=" + login;
             if (!string.IsNullOrEmpty(explicitpassword))
             {
                 url += "&explicitpassword=" + explicitpassword;
@@ -52,7 +65,7 @@ namespace BL.bas
         public async Task<bool> ChangeLogin(string userid, string newlogin)        //volání PIPE api služby
         {
 
-            using (var request = new HttpRequestMessage(new HttpMethod("GET"), _f.App.PipeBaseUrl + "/api/_ChangeLogin?userid=" + userid + "&newlogin=" + newlogin))
+            using (var request = new HttpRequestMessage(new HttpMethod("GET"), _f.App.PipeBaseUrl + "/api/_ChangeLogin?apikey="+getApiKey()+"&userid=" + userid + "&newlogin=" + newlogin))
             {
                 HttpResponseMessage response = await _httpclient.SendAsync(request);
                 string strJson = await response.Content.ReadAsStringAsync();
@@ -62,5 +75,7 @@ namespace BL.bas
 
 
         }
+
+        
     }
 }
