@@ -26,6 +26,8 @@ namespace BO
         public string Browser_DeviceType { get; set; }
         public string Browser_Host { get; set; }
 
+        public string ReturnUrl { get; set; }
+
         public Result VerifyHash(string strPwd,string strLogin,BO.j03User cSavedJ03)
         {           
             var hasher = new BO.CLS.PasswordHasher();            

@@ -1,0 +1,64 @@
+﻿@model BO.LoggingUser
+@inject BL.Factory _f
+
+@{
+    ViewData["Title"] = "SSO";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+
+    var _returnurl = @Context.Request.Query["returnurl"];
+}
+
+<h1>SSO</h1>
+
+
+@if (Model.Message != null)
+{
+    <div class="alert alert-danger" role="alert">
+        <h4>@Model.Message</h4>
+    </div>
+}
+
+
+<form id="form1" asp-action="sso" method="post">
+    <input type="hidden" asp-for="@Model.Login" />
+    <input type="hidden" asp-for="@Model.ReturnUrl" />
+    <input type="hidden" asp-for="@Model.Browser_AvailWidth" />
+    <input type="hidden" asp-for="@Model.Browser_AvailHeight" />
+    <input type="hidden" asp-for="@Model.Browser_InnerWidth" />
+    <input type="hidden" asp-for="@Model.Browser_InnerHeight" />
+    <input type="hidden" asp-for="@Model.Browser_UserAgent" />
+    <input type="hidden" asp-for="@Model.Browser_DeviceType" />
+    <input type="hidden" asp-for="@Model.Browser_Host" />
+</form>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        $("#Browser_UserAgent").val(navigator.userAgent);
+        $("#Browser_AvailWidth").val(screen.availWidth);
+        $("#Browser_AvailHeight").val(screen.availHeight);
+        $("#Browser_InnerWidth").val(window.innerWidth);
+        $("#Browser_InnerHeight").val(window.innerHeight);
+        $("#Browser_Host").val(location.host);
+
+        var devicetype = "Desktop";
+        if (screen.availHeight > screen.availWidth || screen.width < 800 || screen.height < 600) {   //mobilní zařízení výšku vyšší než šířku
+            devicetype = "Phone";
+        }
+        $("#Browser_DeviceType").val(devicetype);
+
+
+        @if (ViewBag.isshallpostback)
+        {
+            <text>
+        form1.submit();
+            </text>
+        }
+        
+
+    });
+
+   
+</script>

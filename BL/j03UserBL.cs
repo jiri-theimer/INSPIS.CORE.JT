@@ -15,6 +15,7 @@ namespace BL
         public void UpdateCurrentUserPing(BO.j92PingLog c);
         public void RecoveryUserCache(int j03id,int j02id);
         public string LoadMembershipUserId(int j03id);
+        public bool IsLoginSsoTrusted(string login);
     }
     class j03UserBL : BaseBL, Ij03UserBL
     {
@@ -91,8 +92,19 @@ namespace BL
             else
             {
                 return null;
+            }            
+        }
+        public bool IsLoginSsoTrusted(string login)
+        {
+            var c = _db.Load<BO.GetString>("SELECT TOP 1 p85UserInsert as Value FROM p85TempBox WHERE p85UserInsert=@login AND p85Prefix='sso' AND GETDATE() BETWEEN p85ValidFrom AND p85ValidUntil", new { login = login });
+            if (c != null && c.Value==login)
+            {
+                return true;
             }
-            
+            else
+            {
+                return false;
+            }
         }
 
         public int Save(BO.j03User rec)

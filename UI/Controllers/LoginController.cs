@@ -22,6 +22,7 @@ namespace UI.Controllers
             _f = f;
             _httpclientfactory = hcf;   //client pro PIPE api
         }
+        
         [HttpGet]
         public ActionResult UserLogin()
         {
@@ -116,11 +117,25 @@ namespace UI.Controllers
                     }
                 }                
             }
-                        
 
+
+            SetClaim(lu, cJ03, bolWrite2Log);
+
+            if (returnurl == null || returnurl.Length < 3)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                return Redirect(returnurl);
+            }
+        }
+
+        private void SetClaim(BO.LoggingUser lu, BO.j03User cJ03,bool bolWrite2Log)
+        {
             //již ověřený uživatel
             string strEmail = cJ03.j02Email;
-            if (strEmail == null){ strEmail = "info@marktime.cz"; };
+            if (strEmail == null) { strEmail = "info@marktime.cz"; };
             var userClaims = new List<Claim>()
                 {
                 new Claim(ClaimTypes.Name, lu.Login),
@@ -132,46 +147,103 @@ namespace UI.Controllers
 
             var userPrincipal = new ClaimsPrincipal(new[] { grandmaIdentity });
 
-
-
             //prodloužit expiraci cookie na CookieExpiresInHours hodin
             var xx = new AuthenticationProperties() { IsPersistent = true, ExpiresUtc = DateTime.Now.AddHours(lu.CookieExpiresInHours) };
             HttpContext.SignInAsync(userPrincipal, xx);
 
 
             if (bolWrite2Log) Write2Accesslog(lu);
-            if (lu.IsChangedLangIndex)
-            {                
-                var co = new CookieOptions() { Expires = DateTime.Now.AddDays(100) };
-                Response.Cookies.Append("inspis.core.langindex", lu.LangIndex.ToString(), co);
-                var c = _f.j03UserBL.Load(_f.CurrentUser.pid);
-                c.j03LangIndex = lu.LangIndex;
-                _f.j03UserBL.Save(c);
-            }
-            else
+
+            if (!_f.App.LangChooseIsStopped)
             {
-                var c = _f.j03UserBL.Load(_f.CurrentUser.pid);
-                if (lu.LangIndex != c.j03LangIndex)
+                if (lu.IsChangedLangIndex)
                 {
+                    var co = new CookieOptions() { Expires = DateTime.Now.AddDays(100) };
+                    Response.Cookies.Append("inspis.core.langindex", lu.LangIndex.ToString(), co);
+                    var c = _f.j03UserBL.Load(_f.CurrentUser.pid);
                     c.j03LangIndex = lu.LangIndex;
                     _f.j03UserBL.Save(c);
+                }
+                else
+                {
+                    var c = _f.j03UserBL.Load(_f.CurrentUser.pid);
+                    if (lu.LangIndex != c.j03LangIndex)
+                    {
+                        c.j03LangIndex = lu.LangIndex;
+                        _f.j03UserBL.Save(c);
+                    }
                 }
             }
             
 
-            if (returnurl == null || returnurl.Length<3)
+
+            
+        }
+
+        public ActionResult sso(string login, string returnurl)    //SSO trustování z INSPIS membership
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                TryLogout();
+            }
+            ViewBag.isshallpostback = false;           
+            var v = new BO.LoggingUser() { Login = login,ReturnUrl=returnurl };            
+            if (string.IsNullOrEmpty(v.Login))
+            {
+                v.Message = "Na vstupu chybí login!";
+                return View(v);
+            }
+            if (!_f.j03UserBL.IsLoginSsoTrusted(v.Login))
+            {
+                v.Message = $"Pro login [{v.Login}] selhalo SSO ověření!";
+                return View(v);
+            }
+            ViewBag.isshallpostback = true;
+            return View(v);
+        }
+
+        [HttpPost]
+        public ActionResult sso(BO.LoggingUser v)
+        {
+            ViewBag.isshallpostback = false;
+            _f.InhaleUserByLogin(v.Login);
+            if (_f.CurrentUser == null)
+            {
+                v.Message = $"Uživatelský účet [{v.Login}] neexistuje!";
+                return View(v);
+            }
+
+            if (_f.CurrentUser.isclosed)
+            {
+                v.Message = $"Uživatelský účet [{v.Login}] je uzavřený pro přihlašování!";
+                Write2Accesslog(v);
+                return View(v);
+            }
+
+            BO.j03User cJ03 = _f.j03UserBL.LoadByLogin(v.Login, 0);
+
+            SetClaim(v, cJ03, true);
+
+            if (v.ReturnUrl == null)
             {
                 return RedirectToAction("Index", "Home");
             }
             else
             {
-                return Redirect(returnurl);
+                
+                if (v.ReturnUrl.Substring(0,1) != "/")
+                {
+                    v.ReturnUrl = "/" + v.ReturnUrl;
+                }
 
+                //v.Message = "v.ReturnUrl: " + v.ReturnUrl;
+                //return View(v);
+
+                return Redirect(v.ReturnUrl);
+                
             }
-
-
-
         }
+
 
         private void Write2Accesslog(BO.LoggingUser lu)
         {
@@ -195,6 +267,8 @@ namespace UI.Controllers
 
             _f.Write2AccessLog(c);
         }
+
+
 
 
     }
