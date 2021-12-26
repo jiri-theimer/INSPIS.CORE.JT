@@ -24,14 +24,14 @@ namespace UI.Controllers
         }
         
         [HttpGet]
-        public ActionResult UserLogin()
+        public ActionResult UserLogin(string message)
         {
             if (User.Identity.IsAuthenticated)
             {
                 TryLogout();
-            }            
-            
-            var v = new BO.LoggingUser();
+            }
+
+            var v = new BO.LoggingUser() { Message = message };
             v.LangIndex = _f.App.DefaultLangIndex;
             if(Request.Cookies["inspis.core.langindex"] !=null)
             {
@@ -180,7 +180,44 @@ namespace UI.Controllers
             
         }
 
-        public ActionResult sso(string login, string returnurl)    //SSO trustování z INSPIS membership
+        public ActionResult Sso2Memb(string desturl)    //SSO přechod z INSPIS.CORE do Membershipu
+        {
+            var v = new BO.LoggingUser() { ReturnUrl = desturl };
+
+            if (!User.Identity.IsAuthenticated)
+            {
+                Response.Redirect(v.ReturnUrl, true);
+                return View(v);
+            }
+            else
+            {
+                v.Login = User.Identity.Name;
+                //_f.InhaleUserByLogin(v.Login);
+            }
+            
+            
+            if (string.IsNullOrEmpty(v.Login))
+            {
+                v.Message = "Na vstupu chybí login!";
+                return View(v);
+            }
+            if (string.IsNullOrEmpty(v.ReturnUrl))
+            {
+                v.Message = "Na vstupu chybí returnurl!";
+                return View(v);
+            }
+            
+            var c = new BO.p85Tempbox() { p85GUID = BO.BAS.GetGuid(), p85Prefix= "sso2memb",ValidUntil=DateTime.Now.AddMinutes(5) };
+            if (_f.p85TempboxBL.Save(c)>0)
+            {
+                Response.Redirect(_f.App.PipeBaseUrl + "/Sso2Memb?login=" + v.Login + "&returnurl=" + v.ReturnUrl, true);
+            }
+            
+
+            return View(v);
+        }
+
+        public ActionResult Sso2Core(string login, string returnurl)    //Ověření SSO přechodu z Membershipu do INSPIS.CORE
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -196,14 +233,14 @@ namespace UI.Controllers
             if (!_f.j03UserBL.IsLoginSsoTrusted(v.Login))
             {
                 v.Message = $"Pro login [{v.Login}] selhalo SSO ověření!";
-                return View(v);
+                return RedirectToAction("UserLogin", new { message = v.Message });
             }
             ViewBag.isshallpostback = true;
             return View(v);
         }
 
         [HttpPost]
-        public ActionResult sso(BO.LoggingUser v)
+        public ActionResult Sso2Core(BO.LoggingUser v)
         {
             ViewBag.isshallpostback = false;
             _f.InhaleUserByLogin(v.Login);

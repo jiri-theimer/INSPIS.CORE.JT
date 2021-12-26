@@ -1,0 +1,41 @@
+﻿@model BO.LoggingUser
+@inject BL.Factory _f
+
+@{
+    ViewData["Title"] = "Sso2Memb";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+
+
+}
+
+<h1>Sso2Memb</h1>
+
+
+@if (Model.Message != null)
+{
+    <div class="alert alert-danger" role="alert">
+        <h4>@Model.Message</h4>
+    </div>
+}
+
+<div class="row">
+    <div class="col-sm-1 col-md-2">
+        Přihlášený uživatel:
+    </div>
+    <div class="col-sm-3 col-md-4">
+        <strong>
+            @Model.Login
+        </strong>
+    </div>
+</div>
+
+<div class="row my-2">
+    <div class="col-sm-1 col-md-2">
+        Cílová url:
+    </div>
+    <div class="col-sm-3 col-md-4">
+        <strong>
+            @Model.ReturnUrl
+        </strong>
+    </div>
+</div>

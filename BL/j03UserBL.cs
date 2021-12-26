@@ -94,9 +94,9 @@ namespace BL
                 return null;
             }            
         }
-        public bool IsLoginSsoTrusted(string login)
+        public bool IsLoginSsoTrusted(string login) //ověří, zda je platná žádost o přechod z Membershipu do INSPIS.CORE
         {
-            var c = _db.Load<BO.GetString>("SELECT TOP 1 p85UserInsert as Value FROM p85TempBox WHERE p85UserInsert=@login AND p85Prefix='sso' AND GETDATE() BETWEEN p85ValidFrom AND p85ValidUntil", new { login = login });
+            var c = _db.Load<BO.GetString>("SELECT TOP 1 p85UserInsert as Value FROM p85TempBox WHERE p85UserInsert=@login AND p85Prefix='sso2core' AND GETDATE() BETWEEN p85ValidFrom AND p85ValidUntil", new { login = login });
             if (c != null && c.Value==login)
             {
                 return true;
