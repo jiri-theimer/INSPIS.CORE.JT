@@ -20,7 +20,7 @@ namespace BL.bas
         private string getApiKey()
         {
             var rec = new BO.p85Tempbox() { p85GUID = BO.BAS.GetGuid(), p85Prefix = "apikey",ValidUntil=DateTime.Now.AddMinutes(10) };
-            if (_f.p85TempboxBL.Save(rec) > 1)
+            if (_f.p85TempboxBL.Save(rec) > 0)
             {
                 return rec.p85GUID;
             }
@@ -39,6 +39,36 @@ namespace BL.bas
                 string strJson = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<bool>(strJson);
                
+            }
+
+
+        }
+
+        public async Task<string> GetUserID(string login)        //vrací membershipid
+        {
+            string url = _f.App.PipeBaseUrl + "/api/_GetUserID?apikey=" + getApiKey() + "&login=" + login;
+
+            using (var request = new HttpRequestMessage(new HttpMethod("GET"), url))
+            {
+                HttpResponseMessage response = await _httpclient.SendAsync(request);
+                string strJson = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<string>(strJson);
+
+            }
+
+
+        }
+
+        public async Task<string> CreateUser(string login, string email,string password)        //vrací membershipid
+        {
+            string url = _f.App.PipeBaseUrl + "/api/_CreateUser?apikey=" + getApiKey() + "&login=" + login + "&email=" + email + "&password=" + password;
+            
+            using (var request = new HttpRequestMessage(new HttpMethod("GET"), url))
+            {
+                HttpResponseMessage response = await _httpclient.SendAsync(request);
+                string strJson = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<string>(strJson);
+
             }
 
 

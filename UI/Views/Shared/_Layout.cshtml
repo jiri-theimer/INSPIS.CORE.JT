@@ -183,6 +183,11 @@
 
                         }
 
+                        @if (_f.App.PipeIsMembershipProvider)
+                        {
+
+                            <a class="nav-link" id="cmdSso2Memb" role="button" style="color:yellow;margin-left:20px;" href="/Login/SSo2Memb?desturl=https://tinspiscore.csicr.cz/pipe/sso" target="_blank">SSO: Test vstupu do membershipu</a>
+                        }
 
                     </ul>
 
@@ -332,7 +337,7 @@
             if (document.getElementById("cmdLangIndex")) {
                 register_menu("cmdLangIndex", "ulLangIndex", "/Menu/CurrentUserLangIndex");
             }
-            
+
             register_menu("cmdFontSize", "ulFontSize", "/Menu/CurrentUserFontSize");
             register_menu("cmdMyProfile", "ulMyProfile", "/Menu/CurrentUserMyProfile");
             if (document.getElementById("cmdAdmin")) {

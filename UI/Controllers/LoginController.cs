@@ -183,11 +183,11 @@ namespace UI.Controllers
         public ActionResult Sso2Memb(string desturl)    //SSO přechod z INSPIS.CORE do Membershipu
         {
             var v = new BO.LoggingUser() { ReturnUrl = desturl };
-
+            
+           
             if (!User.Identity.IsAuthenticated)
             {
-                Response.Redirect(v.ReturnUrl, true);
-                return View(v);
+                return Redirect(v.ReturnUrl);                
             }
             else
             {
@@ -206,11 +206,13 @@ namespace UI.Controllers
                 v.Message = "Na vstupu chybí returnurl!";
                 return View(v);
             }
-            
+
+            _f.InhaleUserByLogin(v.Login);  //je třeba, factory znala uživatele (p85UserInsert)
             var c = new BO.p85Tempbox() { p85GUID = BO.BAS.GetGuid(), p85Prefix= "sso2memb",ValidUntil=DateTime.Now.AddMinutes(5) };
             if (_f.p85TempboxBL.Save(c)>0)
             {
-                Response.Redirect(_f.App.PipeBaseUrl + "/Sso2Memb?login=" + v.Login + "&returnurl=" + v.ReturnUrl, true);
+                return Redirect(_f.App.PipeBaseUrl + "/Sso2Memb?login=" + v.Login + "&returnurl=" + v.ReturnUrl);
+                //Response.Redirect(_f.App.PipeBaseUrl + "/Sso2Memb?login=" + v.Login + "&returnurl=" + v.ReturnUrl, true);
             }
             
 

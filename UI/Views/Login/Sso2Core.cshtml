@@ -8,7 +8,7 @@
     var _returnurl = @Context.Request.Query["returnurl"];
 }
 
-<h1>Sso2Core</h1>
+<h1>Membership SSO -> INSPIS.CORE</h1>
 
 
 @if (Model.Message != null)
@@ -19,7 +19,7 @@
 }
 
 
-<form id="form1" asp-action="sso2core" method="post">
+<form id="form1" asp-action="Sso2core" method="post">
     <input type="hidden" asp-for="@Model.Login" />
     <input type="hidden" asp-for="@Model.ReturnUrl" />
     <input type="hidden" asp-for="@Model.Browser_AvailWidth" />

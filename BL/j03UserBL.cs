@@ -15,6 +15,7 @@ namespace BL
         public void UpdateCurrentUserPing(BO.j92PingLog c);
         public void RecoveryUserCache(int j03id,int j02id);
         public string LoadMembershipUserId(int j03id);
+        public bool UpdateMembershipUserId(int j03id, string strMembershipID);
         public bool IsLoginSsoTrusted(string login);
     }
     class j03UserBL : BaseBL, Ij03UserBL
@@ -93,6 +94,10 @@ namespace BL
             {
                 return null;
             }            
+        }
+        public bool UpdateMembershipUserId(int j03id,string strMembershipID)
+        {
+            return _db.RunSql("UPDATE j03User set j03MembershipUserId=@s WHERE j03ID=@pid", new { s = strMembershipID, pid = j03id });
         }
         public bool IsLoginSsoTrusted(string login) //ověří, zda je platná žádost o přechod z Membershipu do INSPIS.CORE
         {

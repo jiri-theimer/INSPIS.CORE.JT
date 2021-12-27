@@ -196,20 +196,13 @@ namespace UI.Controllers
                         c.j02ID = 0;    //zakládáme nový osobní profil
                         var cJ02 = new BO.j02Person()
                         {
-                            j02Email = v.RecJ02.j02Email
-                            ,
-                            j02TitleBeforeName = v.RecJ02.j02TitleBeforeName
-                            ,
-                            j02FirstName = v.RecJ02.j02FirstName
-                            ,
-                            j02LastName = v.RecJ02.j02LastName
-                            ,
-                            j02TitleAfterName = v.RecJ02.j02TitleAfterName
-                            ,
-                            j02PID = v.RecJ02.j02PID
-                            ,
-                            j02Mobile = v.RecJ02.j02Mobile
-                            ,
+                            j02Email = v.RecJ02.j02Email,
+                            j02TitleBeforeName = v.RecJ02.j02TitleBeforeName,
+                            j02FirstName = v.RecJ02.j02FirstName,
+                            j02LastName = v.RecJ02.j02LastName,
+                            j02TitleAfterName = v.RecJ02.j02TitleAfterName,
+                            j02PID = v.RecJ02.j02PID,
+                            j02Mobile = v.RecJ02.j02Mobile,
                             j02Phone = v.RecJ02.j02Phone
                         };
                         if (!Factory.j02PersonBL.ValidateBeforeSave(cJ02))
@@ -253,7 +246,22 @@ namespace UI.Controllers
                     {
                         //uložit nové heslo do centrálního INSPIS membership
                         var cP = new BL.bas.PipeSupport(_httpclientfactory.CreateClient(), this.Factory);
-                        var strNewPassword = cP.RecoveryPassword(c.j03Login, v.NewPassword).Result;
+                        string strMembershipID = null;
+                        try
+                        {
+                            strMembershipID= cP.GetUserID(c.j03Login).Result;
+                            var strNewPassword = cP.RecoveryPassword(c.j03Login, v.NewPassword).Result;
+                        }
+                        catch
+                        {
+                            strMembershipID = cP.CreateUser(c.j03Login, c.j02Email, v.NewPassword).Result;
+                        }
+                        
+                        if (Factory.j03UserBL.LoadMembershipUserId(c.pid) == null)
+                        {
+                            Factory.j03UserBL.UpdateMembershipUserId(c.pid, strMembershipID);
+                        }
+                        
                     }
                 }
                 
