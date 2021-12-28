@@ -41,6 +41,7 @@ namespace UI.Controllers
             v.GroupByMode = (BO.StatGroupByMode)Factory.CBL.LoadUserParamInt("Stat-GroupByMode", 0);
             v.IsZeroRow = Factory.CBL.LoadUserParamBool("Stat-IsZeroRow", true);
             v.IsBlankA11IDs = Factory.CBL.LoadUserParamBool("Stat-IsBlankA11IDs", false);
+            v.IsSourceSnapshot = Factory.CBL.LoadUserParamBool("Stat-IsSourceSnapshot", false);
             v.GuidAddFilter = BO.BAS.GetGuid();
             if (string.IsNullOrEmpty(v.f06IDs) == false && System.IO.File.Exists(GetTempFilePath()))
             {
@@ -126,7 +127,8 @@ namespace UI.Controllers
             Factory.CBL.SetUserParam("Stat-GroupByMode", ((int)v.GroupByMode).ToString());
             Factory.CBL.SetUserParam("Stat-IsZeroRow", BO.BAS.GB(v.IsZeroRow));
             Factory.CBL.SetUserParam("Stat-IsBlankA11IDs", BO.BAS.GB(v.IsBlankA11IDs));
-
+            Factory.CBL.SetUserParam("Stat-IsSourceSnapshot", BO.BAS.GB(v.IsSourceSnapshot));
+            
 
             if (ModelState.IsValid)
             {
@@ -175,9 +177,8 @@ namespace UI.Controllers
                 }
                 //System.IO.File.WriteAllText("c:\\temp\\hovadostat.txt", mq.explicit_sqlwhere);
                 v.guid = BO.BAS.GetGuid();
-
-
-                bool b = Factory.StatBL.GenerateStatMatrix(v.guid, mq, v.lisCols, v.ValuesMode, false, v.IsBlankA11IDs, false, bolTestEncryptedValues);
+                
+                bool b = Factory.StatBL.GenerateStatMatrix(v.guid, mq, v.lisCols, v.ValuesMode, false, v.IsBlankA11IDs, false, bolTestEncryptedValues,v.IsSourceSnapshot);
 
                 if (oper == "excel")
                 {

@@ -339,16 +339,18 @@ namespace DL
             {
                 try
                 {
-                    
-                    if (con.Execute(strSQL, param,null,timeout_seconds) > 0)
+                    con.Execute(strSQL, param, null, timeout_seconds);
+                    if (CurrentUser.j03IsDebugLog)
                     {
-                        
-                        if (CurrentUser.j03IsDebugLog)
-                        {
-                            log_debug(strSQL, "RunSql", param);
-                        }                        
-                        return true;
+                        log_debug(strSQL, "RunSql", param);
                     }
+                    return true;
+
+                    //if (con.Execute(strSQL, param,null,timeout_seconds) > 0)
+                    //{
+
+
+                    //}
                 }
                 catch (Exception e)
                 {
@@ -357,7 +359,7 @@ namespace DL
                 }
 
             }
-            return false;
+           
         }
 
         public string GetSQL1_Ocas(string strPrefix, bool isthegrid = false, bool isvalidity = true,bool istimestamp=true)

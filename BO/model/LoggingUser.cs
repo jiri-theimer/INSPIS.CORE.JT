@@ -17,6 +17,7 @@ namespace BO
         public bool IsChangedLangIndex { get; set; }
 
         public string Message { get; set; }
+        public string AppClient { get; set; }
 
         public string Browser_UserAgent { get; set; }
         public int Browser_AvailWidth { get; set; }

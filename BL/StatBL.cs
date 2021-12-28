@@ -10,7 +10,7 @@ namespace BL
     {
         
         public List<BO.StatColumn> GetList_StatColumns(List<int>f19ids);
-        public bool GenerateStatMatrix(string strGUID, BO.myQueryA01 mq, List<BO.StatColumn> lisCols, BO.StatValueMode valueMODE, bool bolConvertNullCheckboxToZero, bool bolIncludeBlankA11IDs, bool bolConvertZeroChkListValsToNull, bool bolTestEncryptedValues);
+        public bool GenerateStatMatrix(string strGUID, BO.myQueryA01 mq, List<BO.StatColumn> lisCols, BO.StatValueMode valueMODE, bool bolConvertNullCheckboxToZero, bool bolIncludeBlankA11IDs, bool bolConvertZeroChkListValsToNull, bool bolTestEncryptedValues,bool bolSourceIsSnapshot);
         public DataTable GetList_StatMatrix(string strGUID, string strAddSqlWHERE, List<BO.StatColumn> lisCols, BO.StatGroupByMode GroupByMode);
 
     }
@@ -20,7 +20,7 @@ namespace BL
         {
 
         }
-        public bool GenerateStatMatrix(string strGUID,BO.myQueryA01 mq,List<BO.StatColumn> lisCols,BO.StatValueMode valueMODE,bool bolConvertNullCheckboxToZero,bool bolIncludeBlankA11IDs,bool bolConvertZeroChkListValsToNull,bool bolTestEncryptedValues)
+        public bool GenerateStatMatrix(string strGUID,BO.myQueryA01 mq,List<BO.StatColumn> lisCols,BO.StatValueMode valueMODE,bool bolConvertNullCheckboxToZero,bool bolIncludeBlankA11IDs,bool bolConvertZeroChkListValsToNull,bool bolTestEncryptedValues, bool bolSourceIsSnapshot)
         {
 
            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql("", mq, _mother.CurrentUser);
@@ -74,7 +74,15 @@ namespace BL
                 x += 1;
             }
 
-            sb(" FROM f32FilledValue f32s INNER JOIN a11EventForm a11s ON f32s.a11ID=a11s.a11ID");
+            if (bolSourceIsSnapshot)
+            {
+                sb(" FROM f32FilledValue_Snapshot f32s INNER JOIN a11EventForm a11s ON f32s.a11ID=a11s.a11ID"); //zdrojem dat je zrcadlová tabulka [f32FilledValue_Snapshot]: Lepší výkon!
+            }
+            else
+            {
+                sb(" FROM f32FilledValue f32s INNER JOIN a11EventForm a11s ON f32s.a11ID=a11s.a11ID");
+            }
+            
             sb(" INNER JOIN f19Question f19s ON f32s.f19ID=f19s.f19ID");
             if (valueMODE==BO.StatValueMode.Nazev || valueMODE == BO.StatValueMode.StatID)
             {

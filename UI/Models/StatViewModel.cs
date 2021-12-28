@@ -7,6 +7,7 @@ namespace UI.Models
 {
     public class StatViewModel:BaseViewModel
     {
+        public bool IsSourceSnapshot { get; set; }  //true: Zdrojem dat je zrcadlová tabulka [f32FilledValue_Snapshot]
         public int ActiveTabIndex { get; set; } = 1;
         public string f06IDs { get; set; }
         public IEnumerable<BO.f06Form> lisF06 { get; set; }

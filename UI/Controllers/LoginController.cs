@@ -118,7 +118,7 @@ namespace UI.Controllers
                 }                
             }
 
-
+            lu.AppClient = "UserLogin";
             SetClaim(lu, cJ03, bolWrite2Log);
 
             if (returnurl == null || returnurl.Length < 3)
@@ -144,7 +144,7 @@ namespace UI.Controllers
                  };
 
             var grandmaIdentity = new ClaimsIdentity(userClaims, "User Identity");
-
+            
             var userPrincipal = new ClaimsPrincipal(new[] { grandmaIdentity });
 
             //prodloužit expiraci cookie na CookieExpiresInHours hodin
@@ -246,6 +246,8 @@ namespace UI.Controllers
         {
             ViewBag.isshallpostback = false;
             _f.InhaleUserByLogin(v.Login);
+            v.AppClient = "Sso2Core";
+
             if (_f.CurrentUser == null)
             {
                 v.Message = $"Uživatelský účet [{v.Login}] neexistuje!";
@@ -303,7 +305,8 @@ namespace UI.Controllers
             c.j90LoginName = lu.Login;
             c.j90CookieExpiresInHours = lu.CookieExpiresInHours;
             c.j90LocationHost = lu.Browser_Host;
-
+            c.j90AppClient = lu.AppClient;
+            
             _f.Write2AccessLog(c);
         }
 
