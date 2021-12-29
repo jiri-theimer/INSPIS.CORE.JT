@@ -25,6 +25,8 @@ namespace UIFT.Repository
             if ((_a11id != a11id && a11id.HasValue) || _repository == null)
             {
                 _repository = new Repository(Factory, Configuration, a11id.GetValueOrDefault());
+                if (a11id.HasValue)
+                    _a11id = a11id.Value;
             }
             return _repository;
         }

@@ -51,7 +51,7 @@
             this.Configuration = configuration;
             
             // vytvorit instanci kesovaci tridy
-            this.cache = new Cache(fac, false);
+            this.cache = new Cache(fac, a11id, false);
         }
     }
 }
