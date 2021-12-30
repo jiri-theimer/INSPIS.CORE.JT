@@ -119,7 +119,7 @@ namespace UI.Controllers
             }
             if (oper == "postback")
             {
-                this.AddMessageTranslated(v.lisCols.Count().ToString());
+                
                 return View(v);
             }
 
