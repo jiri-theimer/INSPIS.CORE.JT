@@ -19,20 +19,29 @@ namespace UIFT.Repository
 
         // ulozena instance BL factory tridy
         private BL.Factory factory;
+        private int _a11id;
+        private BO.a11EventForm _currentEventForm = null;
 
         // set to false for disable caching
         public bool enabled;
 
-        internal Cache(BL.Factory factory, bool enable)
+        internal Cache(BL.Factory factory, int a11id, bool enable)
         {
+            _a11id = a11id;
             this.enabled = enable;
             this.factory = factory;
         }
 
         #region a11
-        public BO.a11EventForm a11EventFormBLLoad(int a11id)
+        public BO.a11EventForm a11EventFormBLLoad(int? a11id = null)
         {
-            return factory.a11EventFormBL.Load(a11id);
+            if (!a11id.HasValue || a11id == _a11id)
+            {
+                if (_currentEventForm == null)
+                    _currentEventForm = factory.a11EventFormBL.Load(_a11id);
+                return _currentEventForm;
+            }
+            return factory.a11EventFormBL.Load(a11id.Value);
         }
         #endregion
 
@@ -72,7 +81,7 @@ namespace UIFT.Repository
         /// <param name="f18id">Pokud je > 0, pak je otazka hledana i v kesi pro dany segment.</param>
         public BO.f19Question f19QuestionBLLoad(int f19id, int cache_f06id = 0)
         {
-            return factory.f19QuestionBL.Load(f19id);
+            return factory.f19QuestionBL.Load_Merged(f19id, a11EventFormBLLoad());
         }
 
         /// <summary>
@@ -95,8 +104,8 @@ namespace UIFT.Repository
                     f06id = f06id
                 };
             }
-
-            return factory.f19QuestionBL.GetList(query);
+            
+            return factory.f19QuestionBL.GetList_Merged(query, a11EventFormBLLoad());
         }
         #endregion
 
@@ -126,7 +135,8 @@ namespace UIFT.Repository
                 };
             }
 
-            return factory.f21ReplyUnitBL.GetListJoinedF19(query);
+            return factory.f19QuestionBL.GetListJoinedF19_Merged(query, a11EventFormBLLoad());
+            //return factory.f21ReplyUnitBL.GetListJoinedF19(query);//nahrazeno merged verzi
         }
         #endregion
 
