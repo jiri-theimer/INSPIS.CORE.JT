@@ -24,7 +24,7 @@ namespace UI.Controllers
             {
                 v.IsDefinePassword = true;
                 v.user_profile_oper = "create";
-                var c = new BO.CLS.PasswordChecker(Factory.App.PwdPolicy);
+                var c = new BL.bas.PasswordChecker();
                 v.NewPassword = c.GetRandomPassword();
                 v.VerifyPassword = v.NewPassword;                
             }
@@ -106,7 +106,7 @@ namespace UI.Controllers
             if (oper== "newpwd")
             {
                 v.IsDefinePassword = true;
-                var c = new BO.CLS.PasswordChecker(Factory.App.PwdPolicy);
+                var c = new BL.bas.PasswordChecker();
                 v.NewPassword = c.GetRandomPassword();
                 v.VerifyPassword = v.NewPassword;
                 return View(v);
@@ -117,7 +117,7 @@ namespace UI.Controllers
                 if (!Factory.App.PipeIsMembershipProvider)
                 {
                     v.IsDefinePassword = true;
-                    var c = new BO.CLS.PasswordChecker(Factory.App.PwdPolicy);
+                    var c = new BL.bas.PasswordChecker();
                     v.NewPassword = c.GetRandomPassword();
                     v.VerifyPassword = v.NewPassword;
                     this.AddMessage("Se změnou přihlašovacího jména je třeba resetovat i přístupové heslo.", "info");
@@ -288,8 +288,8 @@ namespace UI.Controllers
         }
 
         private bool ValidateUserPassword(j03Record v)
-        {            
-            var c = new BO.CLS.PasswordChecker(Factory.App.PwdPolicy);
+        {
+            var c = new BL.bas.PasswordChecker();
             var res=c.CheckPassword(v.NewPassword);
             if (res.Flag == BO.ResultEnum.Failed)
             {

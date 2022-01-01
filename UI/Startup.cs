@@ -81,22 +81,10 @@ namespace UI
 
             var execAssembly = System.Reflection.Assembly.GetExecutingAssembly();
             var versionTime = new System.IO.FileInfo(execAssembly.Location).LastWriteTime;
-            var cPwdPolicy = new BO.PasswordPolicity()
-            {
-                MinLength= Convert.ToInt32(Configuration.GetSection("PasswordChecker")["MinLength"])
-                ,MaxLength = Convert.ToInt32(Configuration.GetSection("PasswordChecker")["MaxLength"])
-                ,RequireDigit= Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireDigit"])
-                ,RequireLowercase = Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireLowercase"])
-                ,RequireUppercase = Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireUppercase"])
-                ,RequireNonAlphanumeric = Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireNonAlphanumeric"])
-            };
-
-
-
+           
             services.AddSingleton<BL.RunningApp>(x => new BL.RunningApp()
-            {
-                PwdPolicy = cPwdPolicy
-                ,ConnectString = Configuration.GetSection("ConnectionStrings")["AppConnection"]
+            {                
+                ConnectString = Configuration.GetSection("ConnectionStrings")["AppConnection"]
                 , AppName = Configuration.GetSection("App")["Name"]
                 , AppVersion = Configuration.GetSection("App")["Version"]
                 , FulltextSearch = BO.BAS.BG(Configuration.GetSection("App")["FulltextSearch"])
@@ -115,13 +103,7 @@ namespace UI
                 , LogFolder = strLogFolder
                 , AppRootFolder = _hostingEnvironment.ContentRootPath
                 , TranslatorMode = Configuration.GetSection("App")["TranslatorMode"]
-                , UiftUrl = Configuration.GetSection("UIFT")["Url"]
-                //,PasswordMinLength= Convert.ToInt32(Configuration.GetSection("PasswordChecker")["MinLength"])
-                //,PasswordMaxLength = Convert.ToInt32(Configuration.GetSection("PasswordChecker")["MaxLength"])
-                //,PasswordRequireDigit= Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireDigit"])
-                //,PasswordRequireLowercase = Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireLowercase"])
-                //,PasswordRequireUppercase = Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireUppercase"])
-                //,PasswordRequireNonAlphanumeric = Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireNonAlphanumeric"])
+                , UiftUrl = Configuration.GetSection("UIFT")["Url"]               
                 , PipeBaseUrl = Configuration.GetSection("Pipe")["BaseUrl"]
                 , PipeIsMembershipProvider = BO.BAS.BG(Configuration.GetSection("Pipe")["IsMembershipProvider"])
                 , GinisExportDocTypes = Configuration.GetSection("Pipe")["GinisExportDocTypes"]   //povolené typy GINIS dokumentù pro export souborù do pøíloh
