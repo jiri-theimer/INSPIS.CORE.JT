@@ -140,6 +140,7 @@ namespace BL
                 rec.f19SupportingText = MergeOneExternalSqlValue(rec.f19SupportingText, keys, lisX39);
                 rec.TextBox_MinValue = MergeOneExternalSqlValue(rec.TextBox_MinValue, keys, lisX39);
                 rec.TextBox_MaxValue = MergeOneExternalSqlValue(rec.TextBox_MaxValue, keys, lisX39);
+                rec.f19DefaultValue = MergeOneExternalSqlValue(rec.f19DefaultValue, keys, lisX39);
                 rec.f19EvalListSource = MergeOneExternalSqlValue(rec.f19EvalListSource, keys, lisX39);
                 rec.f19ReadonlyExpression = MergeOneExternalSqlValue(rec.f19ReadonlyExpression, keys, lisX39);
                 rec.f19SkipExpression = MergeOneExternalSqlValue(rec.f19SkipExpression, keys, lisX39);
@@ -183,8 +184,16 @@ namespace BL
                 else
                 {
                     sql.MergedSql = "SELECT " + sql.MergedSql + " as Value";
-                    ret = dbExternal.Load<BO.GetString>(sql.MergedSql).Value;
-
+                    try
+                    {
+                        ret = dbExternal.Load<BO.GetString>(sql.MergedSql).Value;
+                    }
+                    catch(Exception e)
+                    {
+                        ret = e.Message;
+                    }
+                    
+                    
                 }
                 if (ret != null)
                 {

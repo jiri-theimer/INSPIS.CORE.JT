@@ -81,39 +81,51 @@ namespace UI
 
             var execAssembly = System.Reflection.Assembly.GetExecutingAssembly();
             var versionTime = new System.IO.FileInfo(execAssembly.Location).LastWriteTime;
+            var cPwdPolicy = new BO.PasswordPolicity()
+            {
+                MinLength= Convert.ToInt32(Configuration.GetSection("PasswordChecker")["MinLength"])
+                ,MaxLength = Convert.ToInt32(Configuration.GetSection("PasswordChecker")["MaxLength"])
+                ,RequireDigit= Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireDigit"])
+                ,RequireLowercase = Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireLowercase"])
+                ,RequireUppercase = Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireUppercase"])
+                ,RequireNonAlphanumeric = Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireNonAlphanumeric"])
+            };
+
+
 
             services.AddSingleton<BL.RunningApp>(x => new BL.RunningApp()
             {
-                ConnectString = Configuration.GetSection("ConnectionStrings")["AppConnection"]
-                ,AppName = Configuration.GetSection("App")["Name"]
-                ,AppVersion = Configuration.GetSection("App")["Version"]
-                ,FulltextSearch= BO.BAS.BG(Configuration.GetSection("App")["FulltextSearch"])
-                ,AppBuild = "build: " + BO.BAS.ObjectDateTime2String(versionTime)
-                ,LogoImageSuffix = Configuration.GetSection("App")["LogoImageSuffix"]                                             
-                ,Implementation = Configuration.GetSection("App")["Implementation"]
-                ,DefaultLangIndex = BO.BAS.InInt(Configuration.GetSection("App")["DefaultLangIndex"])
-                ,LangChooseIsStopped = BO.BAS.BG(Configuration.GetSection("App")["LangChooseIsStopped"])
-                ,CssCustomSkin = Configuration.GetSection("App")["CssCustomSkin"]
-                ,UserUrl= Configuration.GetSection("App")["UserUrl"]
-                ,RobotUser = Configuration.GetSection("App")["RobotUser"]
-                ,RobotIsStopped= BO.BAS.BG(Configuration.GetSection("App")["RobotIsStopped"])
-                ,UploadFolder = Configuration.GetSection("Folders")["Upload"]
-                ,TempFolder = Configuration.GetSection("Folders")["Temp"]
-                ,ReportFolder = Configuration.GetSection("Folders")["Report"]
-                ,LogFolder = strLogFolder
-                ,AppRootFolder= _hostingEnvironment.ContentRootPath
-                ,TranslatorMode = Configuration.GetSection("App")["TranslatorMode"]
-                ,UiftUrl= Configuration.GetSection("UIFT")["Url"]
-                ,PasswordMinLength= Convert.ToInt32(Configuration.GetSection("PasswordChecker")["MinLength"])
-                ,PasswordMaxLength = Convert.ToInt32(Configuration.GetSection("PasswordChecker")["MaxLength"])
-                ,PasswordRequireDigit= Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireDigit"])
-                ,PasswordRequireLowercase = Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireLowercase"])
-                ,PasswordRequireUppercase = Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireUppercase"])
-                ,PasswordRequireNonAlphanumeric = Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireNonAlphanumeric"])
-                ,PipeBaseUrl = Configuration.GetSection("Pipe")["BaseUrl"]
-                ,PipeIsMembershipProvider = BO.BAS.BG(Configuration.GetSection("Pipe")["IsMembershipProvider"])
-                ,GinisExportDocTypes = Configuration.GetSection("Pipe")["GinisExportDocTypes"]   //povolené typy GINIS dokumentù pro export souborù do pøíloh
-            });
+                PwdPolicy = cPwdPolicy
+                ,ConnectString = Configuration.GetSection("ConnectionStrings")["AppConnection"]
+                , AppName = Configuration.GetSection("App")["Name"]
+                , AppVersion = Configuration.GetSection("App")["Version"]
+                , FulltextSearch = BO.BAS.BG(Configuration.GetSection("App")["FulltextSearch"])
+                , AppBuild = "build: " + BO.BAS.ObjectDateTime2String(versionTime)
+                , LogoImageSuffix = Configuration.GetSection("App")["LogoImageSuffix"]
+                , Implementation = Configuration.GetSection("App")["Implementation"]
+                , DefaultLangIndex = BO.BAS.InInt(Configuration.GetSection("App")["DefaultLangIndex"])
+                , LangChooseIsStopped = BO.BAS.BG(Configuration.GetSection("App")["LangChooseIsStopped"])
+                , CssCustomSkin = Configuration.GetSection("App")["CssCustomSkin"]
+                , UserUrl = Configuration.GetSection("App")["UserUrl"]
+                , RobotUser = Configuration.GetSection("App")["RobotUser"]
+                , RobotIsStopped = BO.BAS.BG(Configuration.GetSection("App")["RobotIsStopped"])
+                , UploadFolder = Configuration.GetSection("Folders")["Upload"]
+                , TempFolder = Configuration.GetSection("Folders")["Temp"]
+                , ReportFolder = Configuration.GetSection("Folders")["Report"]
+                , LogFolder = strLogFolder
+                , AppRootFolder = _hostingEnvironment.ContentRootPath
+                , TranslatorMode = Configuration.GetSection("App")["TranslatorMode"]
+                , UiftUrl = Configuration.GetSection("UIFT")["Url"]
+                //,PasswordMinLength= Convert.ToInt32(Configuration.GetSection("PasswordChecker")["MinLength"])
+                //,PasswordMaxLength = Convert.ToInt32(Configuration.GetSection("PasswordChecker")["MaxLength"])
+                //,PasswordRequireDigit= Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireDigit"])
+                //,PasswordRequireLowercase = Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireLowercase"])
+                //,PasswordRequireUppercase = Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireUppercase"])
+                //,PasswordRequireNonAlphanumeric = Convert.ToBoolean(Configuration.GetSection("PasswordChecker")["RequireNonAlphanumeric"])
+                , PipeBaseUrl = Configuration.GetSection("Pipe")["BaseUrl"]
+                , PipeIsMembershipProvider = BO.BAS.BG(Configuration.GetSection("Pipe")["IsMembershipProvider"])
+                , GinisExportDocTypes = Configuration.GetSection("Pipe")["GinisExportDocTypes"]   //povolené typy GINIS dokumentù pro export souborù do pøíloh
+            }); ;
 
             services.AddHttpClient();       //kvùli httpclient
 

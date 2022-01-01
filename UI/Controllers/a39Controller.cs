@@ -356,8 +356,8 @@ namespace UI.Controllers
             RefreshStateCreateSchoolAccount(v);
             if (oper == "newpwd")
             {
-                var c = new BO.CLS.PasswordChecker();
-                v.Password = c.RandomPassword(Factory.App.PasswordMinLength);
+                var c = new BO.CLS.PasswordChecker(Factory.App.PwdPolicy);
+                v.Password = c.GetRandomPassword();
                 v.VerifyPassword = v.Password;
                 return View(v);
             }
@@ -449,8 +449,8 @@ namespace UI.Controllers
 
         private bool ValidateUserPassword(a39CreateSchoolAccount v)
         {
-            var c = new BO.CLS.PasswordChecker();
-            var res = c.CheckPassword(v.Password, Factory.App.PasswordMinLength, Factory.App.PasswordMaxLength, Factory.App.PasswordRequireDigit, Factory.App.PasswordRequireUppercase, Factory.App.PasswordRequireLowercase, Factory.App.PasswordRequireNonAlphanumeric);
+            var c = new BO.CLS.PasswordChecker(Factory.App.PwdPolicy);
+            var res = c.CheckPassword(v.Password);
             if (res.Flag == BO.ResultEnum.Failed)
             {
                 this.AddMessage(res.Message); return false;

@@ -24,8 +24,8 @@ namespace UI.Controllers
             {
                 v.IsDefinePassword = true;
                 v.user_profile_oper = "create";
-                var c = new BO.CLS.PasswordChecker();
-                v.NewPassword = c.RandomPassword(Factory.App.PasswordMinLength);
+                var c = new BO.CLS.PasswordChecker(Factory.App.PwdPolicy);
+                v.NewPassword = c.GetRandomPassword();
                 v.VerifyPassword = v.NewPassword;                
             }
             else
@@ -106,8 +106,8 @@ namespace UI.Controllers
             if (oper== "newpwd")
             {
                 v.IsDefinePassword = true;
-                var c = new BO.CLS.PasswordChecker();
-                v.NewPassword = c.RandomPassword(Factory.App.PasswordMinLength);
+                var c = new BO.CLS.PasswordChecker(Factory.App.PwdPolicy);
+                v.NewPassword = c.GetRandomPassword();
                 v.VerifyPassword = v.NewPassword;
                 return View(v);
             }
@@ -117,8 +117,8 @@ namespace UI.Controllers
                 if (!Factory.App.PipeIsMembershipProvider)
                 {
                     v.IsDefinePassword = true;
-                    var c = new BO.CLS.PasswordChecker();
-                    v.NewPassword = c.RandomPassword(Factory.App.PasswordMinLength);
+                    var c = new BO.CLS.PasswordChecker(Factory.App.PwdPolicy);
+                    v.NewPassword = c.GetRandomPassword();
                     v.VerifyPassword = v.NewPassword;
                     this.AddMessage("Se změnou přihlašovacího jména je třeba resetovat i přístupové heslo.", "info");
                 }                                               
@@ -289,8 +289,8 @@ namespace UI.Controllers
 
         private bool ValidateUserPassword(j03Record v)
         {            
-            var c = new BO.CLS.PasswordChecker();
-            var res=c.CheckPassword(v.NewPassword, Factory.App.PasswordMinLength, Factory.App.PasswordMaxLength, Factory.App.PasswordRequireDigit, Factory.App.PasswordRequireUppercase, Factory.App.PasswordRequireLowercase, Factory.App.PasswordRequireNonAlphanumeric);
+            var c = new BO.CLS.PasswordChecker(Factory.App.PwdPolicy);
+            var res=c.CheckPassword(v.NewPassword);
             if (res.Flag == BO.ResultEnum.Failed)
             {
                 this.AddMessage(res.Message);return false;

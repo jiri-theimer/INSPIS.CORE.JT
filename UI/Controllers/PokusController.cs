@@ -30,21 +30,25 @@ namespace UI.Controllers
 
        
 
-        public IActionResult Evaluator()
+        public IActionResult Evaluator(int a11id)
         {
             var v = new UI.Models.Pokus();
             //var c = new EVAL.Evaluator(Factory, 1640734);
             //var s=c.TryEval("a03institution_s('a03Name')");
             //this.AddMessage(s.ToString());
+            var ret = new List<string>();
 
-            var mq = new BO.myQueryF19();
-            mq.f06id = 200684;
-            var recA11 = Factory.a11EventFormBL.Load(1643831);
+            var mq = new BO.myQueryF19();            
+            var recA11 = Factory.a11EventFormBL.Load(a11id);
+            mq.f06id = recA11.f06ID; ;
             var lisF19 = Factory.f19QuestionBL.GetList_Merged(mq, recA11);
             foreach(var c in lisF19)
             {
-                this.AddMessageTranslated("f19Name: "+c.f19Name+ ", f19EvalListSource: " + c.f19EvalListSource + ", maxvalue: "+c.TextBox_MaxValue);
+                
+                ret.Add("f19Name: "+c.f19Name+ ", f19EvalListSource: " + c.f19EvalListSource + ",minvalue: "+c.TextBox_MinValue+", maxvalue: "+c.TextBox_MaxValue+ ", f19DefaultValue: " + c.f19DefaultValue+ ", f19ReadonlyExpression: " + c.f19ReadonlyExpression);
             }
+
+            v.lisResponse = ret;
             
             return View(v);
         }

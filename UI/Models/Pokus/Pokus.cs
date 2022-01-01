@@ -25,5 +25,7 @@ namespace UI.Models
         public string ExtendPagerHtml { get; set; }
 
         public string hovado { get; set; }
+
+        public List<string> lisResponse { get; set; }
     }
 }
