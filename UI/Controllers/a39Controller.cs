@@ -356,7 +356,7 @@ namespace UI.Controllers
             RefreshStateCreateSchoolAccount(v);
             if (oper == "newpwd")
             {
-                var c = new BL.bas.PasswordChecker();
+                var c = new BL.bas.PasswordSupport();
                 v.Password = c.GetRandomPassword();
                 v.VerifyPassword = v.Password;
                 return View(v);
@@ -385,8 +385,8 @@ namespace UI.Controllers
                 }
 
                 recJ03 = Factory.j03UserBL.Load(recJ03.pid);  //zakládáme nový účet - je třeba pře-generovat j03PasswordHash
-                var lu = new BO.LoggingUser();
-                recJ03.j03PasswordHash = lu.Pwd2Hash(v.Password, recJ03);
+                
+                recJ03.j03PasswordHash =new BL.bas.PasswordSupport().GetPasswordHash(v.Password, recJ03);
                 recJ03.pid = Factory.j03UserBL.Save(recJ03);
 
                 var recA39 = new BO.a39InstitutionPerson() { j02ID = recJ03.j02ID, a03ID = v.a03ID, j04ID_Explicit = recJ03.j04ID, a39Description = v.a39Description, a39IsAllowInspisWS = v.a39IsAllowInspisWS, a39RelationFlag=BO.a39InstitutionPerson.a39RelationFlagEnum.Contact };
@@ -449,7 +449,7 @@ namespace UI.Controllers
 
         private bool ValidateUserPassword(a39CreateSchoolAccount v)
         {
-            var c = new BL.bas.PasswordChecker();
+            var c = new BL.bas.PasswordSupport();
             var res = c.CheckPassword(v.Password);
             if (res.Flag == BO.ResultEnum.Failed)
             {

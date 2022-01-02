@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using System.Security.Cryptography;
 
 namespace BL.bas
 {
-    public class PasswordChecker
+    public class PasswordSupport
     {
+        //Password Checker:
         const string _LOWER_CASE = "abcdefghijklmnopqursuvwxyz";
         const string _UPPER_CAES = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         const string _NUMBERS = "123456789";
@@ -20,7 +22,14 @@ namespace BL.bas
         private int MinLength { get; set; }
         private int MaxLength { get; set; }
 
-        public PasswordChecker()
+        //Password Hasher:
+        public byte Version => 1;
+        public int Pbkdf2IterCount { get; } = 50000;
+        public int Pbkdf2SubkeyLength { get; } = 256 / 8; // 256 bits
+        public int SaltSize { get; } = 256 / 8; // 256 bits        
+        public HashAlgorithmName HashAlgorithmName { get; } = HashAlgorithmName.SHA256;
+
+        public PasswordSupport()
         {
             var strFolder = System.IO.Directory.GetCurrentDirectory();
             var config = new ConfigurationBuilder().AddJsonFile(strFolder + "\\appsettings.json", true).Build();
@@ -106,6 +115,111 @@ namespace BL.bas
             return ret.Substring(0, this.MinLength);
 
 
+        }
+
+
+        //Password Hasher:
+        public string HashPassword(string password)
+        {
+            if (password == null)
+                throw new ArgumentNullException(nameof(password));
+
+            byte[] salt;
+            byte[] bytes;
+            using (var rfc2898DeriveBytes = new Rfc2898DeriveBytes(password, SaltSize, Pbkdf2IterCount, HashAlgorithmName))
+            {
+                salt = rfc2898DeriveBytes.Salt;
+                bytes = rfc2898DeriveBytes.GetBytes(Pbkdf2SubkeyLength);
+            }
+
+            var inArray = new byte[1 + SaltSize + Pbkdf2SubkeyLength];
+            inArray[0] = Version;
+            Buffer.BlockCopy(salt, 0, inArray, 1, SaltSize);
+            Buffer.BlockCopy(bytes, 0, inArray, 1 + SaltSize, Pbkdf2SubkeyLength);
+
+            return Convert.ToBase64String(inArray);
+        }
+
+        public BO.Result VerifyUserPassword(string strPwd, string strLogin, BO.j03User recSavedJ03)
+        {
+            
+            var overeni = VerifyHashedPassword(recSavedJ03.j03PasswordHash, getUserSul(strLogin, strPwd, recSavedJ03.pid));
+            if (overeni == BO.ResultEnum.Failed)
+            {
+
+                return new BO.Result(true, "Ověření uživatele se nezdařilo - pravděpodobně chybné heslo nebo jméno!");
+            }
+            else
+            {
+                return new BO.Result(false);
+            }
+        }
+
+        public string GetPasswordHash(string strPwd, BO.j03User recJ03)
+        {
+
+            return HashPassword(getUserSul(recJ03.j03Login, strPwd, recJ03.pid));
+        }
+
+        private string getUserSul(string strLogin, string strPwd, int intPid)
+        {
+            return strLogin.ToUpper() + "+kurkuma+" + strPwd + "+" + intPid.ToString();
+        }
+
+        private BO.ResultEnum VerifyHashedPassword(string hashedPassword, string password)
+        {
+            if (password == null)
+                throw new ArgumentNullException(nameof(password));
+
+            if (hashedPassword == null)
+                return BO.ResultEnum.Failed;
+
+            byte[] numArray = Convert.FromBase64String(hashedPassword);
+            if (numArray.Length < 1)
+                return BO.ResultEnum.Failed;
+
+            byte version = numArray[0];
+            if (version > Version)
+                return BO.ResultEnum.Failed;
+
+            byte[] salt = new byte[SaltSize];
+            Buffer.BlockCopy(numArray, 1, salt, 0, SaltSize);
+            byte[] a = new byte[Pbkdf2SubkeyLength];
+            Buffer.BlockCopy(numArray, 1 + SaltSize, a, 0, Pbkdf2SubkeyLength);
+            byte[] bytes;
+            using (var rfc2898DeriveBytes = new Rfc2898DeriveBytes(password, salt, Pbkdf2IterCount, HashAlgorithmName))
+            {
+                bytes = rfc2898DeriveBytes.GetBytes(Pbkdf2SubkeyLength);
+            }
+
+            if (FixedTimeEquals(a, bytes))
+                return BO.ResultEnum.Success;
+
+
+
+            return BO.ResultEnum.Failed;
+        }
+
+
+
+        public static bool FixedTimeEquals(byte[] left, byte[] right)
+        {
+            // NoOptimization because we want this method to be exactly as non-short-circuiting as written.
+            // NoInlining because the NoOptimization would get lost if the method got inlined.
+            if (left.Length != right.Length)
+            {
+                return false;
+            }
+
+            int length = left.Length;
+            int accum = 0;
+
+            for (int i = 0; i < length; i++)
+            {
+                accum |= left[i] - right[i];
+            }
+
+            return accum == 0;
         }
     }
 }

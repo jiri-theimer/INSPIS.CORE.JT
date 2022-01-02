@@ -23,9 +23,8 @@ namespace UI.Controllers
             if (v.rec_pid == 0)
             {
                 v.IsDefinePassword = true;
-                v.user_profile_oper = "create";
-                var c = new BL.bas.PasswordChecker();
-                v.NewPassword = c.GetRandomPassword();
+                v.user_profile_oper = "create";                
+                v.NewPassword =new BL.bas.PasswordSupport().GetRandomPassword();
                 v.VerifyPassword = v.NewPassword;                
             }
             else
@@ -92,7 +91,9 @@ namespace UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Record(Models.Record.j03Record v,string oper,int b65id)
         {
-            v.lisB65 = Factory.b65WorkflowMessageBL.GetList(new BO.myQuery("b65")).Where(p => p.x29ID == 503);            
+            v.lisB65 = Factory.b65WorkflowMessageBL.GetList(new BO.myQuery("b65")).Where(p => p.x29ID == 503);
+            var cPwdSupp = new BL.bas.PasswordSupport();
+
             if (oper == "postback")
             {
                 return View(v);
@@ -105,9 +106,8 @@ namespace UI.Controllers
             }
             if (oper== "newpwd")
             {
-                v.IsDefinePassword = true;
-                var c = new BL.bas.PasswordChecker();
-                v.NewPassword = c.GetRandomPassword();
+                v.IsDefinePassword = true;                
+                v.NewPassword = cPwdSupp.GetRandomPassword();
                 v.VerifyPassword = v.NewPassword;
                 return View(v);
             }
@@ -116,9 +116,8 @@ namespace UI.Controllers
                 v.IsChangeLogin = true;
                 if (!Factory.App.PipeIsMembershipProvider)
                 {
-                    v.IsDefinePassword = true;
-                    var c = new BL.bas.PasswordChecker();
-                    v.NewPassword = c.GetRandomPassword();
+                    v.IsDefinePassword = true;                    
+                    v.NewPassword = cPwdSupp.GetRandomPassword();
                     v.VerifyPassword = v.NewPassword;
                     this.AddMessage("Se změnou přihlašovacího jména je třeba resetovat i přístupové heslo.", "info");
                 }                                               
@@ -188,7 +187,7 @@ namespace UI.Controllers
                         return View(v);
                     }
                     var lu = new BO.LoggingUser();
-                    c.j03PasswordHash = lu.Pwd2Hash(v.NewPassword, c);
+                    c.j03PasswordHash = cPwdSupp.GetPasswordHash(v.NewPassword, c);
                 }
                
                 switch (v.user_profile_oper){
@@ -237,9 +236,8 @@ namespace UI.Controllers
                     //generování nového hesla
                     if (v.rec_pid == 0 && c.pid > 0)
                     {
-                        c = Factory.j03UserBL.Load(c.pid);  //zakládáme nový účet - je třeba pře-generovat j03PasswordHash
-                        var lu = new BO.LoggingUser();
-                        c.j03PasswordHash = lu.Pwd2Hash(v.NewPassword, c);
+                        c = Factory.j03UserBL.Load(c.pid);  //zakládáme nový účet - je třeba pře-generovat j03PasswordHash                        
+                        c.j03PasswordHash = cPwdSupp.GetPasswordHash(v.NewPassword, c);
                         c.pid = Factory.j03UserBL.Save(c);
                     }
                     if (Factory.App.PipeIsMembershipProvider)
@@ -288,9 +286,8 @@ namespace UI.Controllers
         }
 
         private bool ValidateUserPassword(j03Record v)
-        {
-            var c = new BL.bas.PasswordChecker();
-            var res=c.CheckPassword(v.NewPassword);
+        {            
+            var res= new BL.bas.PasswordSupport().CheckPassword(v.NewPassword);
             if (res.Flag == BO.ResultEnum.Failed)
             {
                 this.AddMessage(res.Message);return false;

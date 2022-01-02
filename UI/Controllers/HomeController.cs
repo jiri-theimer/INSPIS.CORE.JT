@@ -228,8 +228,8 @@ namespace UI.Controllers
         [HttpPost]
         public IActionResult ChangePassword(Models.ChangePasswordViewModel v)
         {
-            var c = new BL.bas.PasswordChecker();
-            var res = c.CheckPassword(v.NewPassword);
+            var cPwdSupp = new BL.bas.PasswordSupport();
+            var res = cPwdSupp.CheckPassword(v.NewPassword);
             if (res.Flag == BO.ResultEnum.Failed)
             {
                 this.AddMessage(res.Message); return View(v);
@@ -265,11 +265,11 @@ namespace UI.Controllers
             else
             {
                 //heslo v aplikační db
-                var lu = new BO.LoggingUser();
-                res = lu.VerifyHash(v.CurrentPassword, cJ03.j03Login, cJ03);
+                
+                res = cPwdSupp.VerifyUserPassword(v.CurrentPassword, cJ03.j03Login, cJ03);
                 if (res.Flag == BO.ResultEnum.Success)
                 {
-                    cJ03.j03PasswordHash = lu.Pwd2Hash(v.NewPassword, cJ03);
+                    cJ03.j03PasswordHash = cPwdSupp.GetPasswordHash(v.NewPassword, cJ03);
                     cJ03.j03IsMustChangePassword = false;
                     if (Factory.j03UserBL.Save(cJ03) > 0)
                     {

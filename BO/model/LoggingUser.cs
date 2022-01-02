@@ -29,31 +29,6 @@ namespace BO
 
         public string ReturnUrl { get; set; }
 
-        public Result VerifyHash(string strPwd,string strLogin,BO.j03User cSavedJ03)
-        {           
-            var hasher = new BO.CLS.PasswordHasher();            
-            var overeni = hasher.VerifyHashedPassword(cSavedJ03.j03PasswordHash, getSul(strLogin,strPwd, cSavedJ03.pid));
-            if (overeni == BO.CLS.PasswordVerificationResult.Failed)
-            {
-
-                return new Result(true, "Ověření uživatele se nezdařilo - pravděpodobně chybné heslo nebo jméno!");
-            }
-            else
-            {
-                return new Result(false);
-            }
-        }
-       
-
-        public string Pwd2Hash(string strPwd,BO.j03User cJ03)
-        {
-            var hasher = new BO.CLS.PasswordHasher();
-           return hasher.HashPassword(getSul(cJ03.j03Login,  strPwd , cJ03.pid));
-        }
-
-        private string getSul(string strLogin,string strPwd, int intPid)
-        {
-            return strLogin.ToUpper() + "+kurkuma+" + strPwd + "+" + intPid.ToString();
-        }
+        
     }
 }
