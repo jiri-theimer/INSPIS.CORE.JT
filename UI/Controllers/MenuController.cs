@@ -54,7 +54,11 @@ namespace UI.Controllers
                 AMI("Odeslat zprávu", "javascript:_sendmail()",null,null,null, "k-i-email");
             }
             
-            AMI("Změnit přístupové heslo", "/Home/ChangePassword",null,null,null, "k-i-password");
+            if (!Factory.CurrentUser.j03IsDomainAccount)
+            {
+                AMI("Změnit přístupové heslo", "/Home/ChangePassword", null, null, null, "k-i-password");
+            }
+            
             DIV();
 
             //AMI("Vyplnit anketní formulář", Factory.App.UiftUrl+ BO.BAS.IIFS(Factory.App.UiftUrl.Contains("?"), "&", "?")+"uzivatel=" +this.Factory.CurrentUser.j03Login,null,null,"_blank");
