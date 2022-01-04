@@ -107,6 +107,7 @@ namespace UI
                 , PipeBaseUrl = Configuration.GetSection("Pipe")["BaseUrl"]
                 , PipeIsMembershipProvider = BO.BAS.BG(Configuration.GetSection("Pipe")["IsMembershipProvider"])
                 , GinisExportDocTypes = Configuration.GetSection("Pipe")["GinisExportDocTypes"]   //povolené typy GINIS dokumentù pro export souborù do pøíloh
+                ,TrustedUserDomain= Configuration.GetSection("Authentication")["TrustedUserDomain"] //trustovaná doména
             }); ;
 
             services.AddHttpClient();       //kvùli httpclient

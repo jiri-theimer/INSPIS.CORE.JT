@@ -95,7 +95,23 @@ namespace UI.Controllers
             var cPwdSupp = new BL.bas.PasswordSupport();
 
             if (oper == "postback")
-            {
+            {      
+                if (v.rec_pid == 0)
+                {
+                    v.IsDefinePassword = !v.Rec.j03IsDomainAccount;
+                }
+                else
+                {
+                    if (v.Rec.j03IsDomainAccount) v.IsDefinePassword = false;
+                }
+              
+                if (v.IsDefinePassword && v.NewPassword == null)
+                {
+                    v.NewPassword = cPwdSupp.GetRandomPassword();
+                    v.VerifyPassword = v.NewPassword;
+                }
+
+
                 return View(v);
             }
             if (oper == "clearparams")
@@ -132,7 +148,12 @@ namespace UI.Controllers
                 BO.j03User c = new BO.j03User();
                 if (v.rec_pid > 0)
                 {
-                    c = Factory.j03UserBL.Load(v.rec_pid);                    
+                    c = Factory.j03UserBL.Load(v.rec_pid);
+                    if (!v.Rec.j03IsDomainAccount && Factory.App.PipeIsMembershipProvider && !v.IsDefinePassword &&  Factory.j03UserBL.LoadMembershipUserId(c.pid) == null)
+                    {
+                        this.AddMessage("Uživatelský účet nemá vygenerované heslo v membership databázi.");return View(v);
+                    }
+                   
                 }                
                 c.j03Login = v.Rec.j03Login.Trim();
                 c.j04ID = v.Rec.j04ID;

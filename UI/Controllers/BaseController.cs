@@ -7,7 +7,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 using UI.Models;
-using Microsoft.AspNetCore.Http.Extensions;
 
 namespace UI.Controllers    
 {
@@ -17,7 +16,9 @@ namespace UI.Controllers
         
         public BL.Factory Factory;
         public BO.j05PermValuEnum MustHavePerm;
-               
+        
+
+        
 
         //Test probíhá před spuštěním každé Akce!
         public override void OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext context)

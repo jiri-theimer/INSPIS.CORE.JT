@@ -9,6 +9,8 @@ using UI.Models;
 using DocumentFormat.OpenXml.EMMA;
 using Microsoft.AspNetCore.Http;
 using System.Net.Http;
+using System.Web;
+
 
 namespace UI.Controllers
 {
@@ -16,7 +18,7 @@ namespace UI.Controllers
     {
         private BL.Factory _f;
         private readonly IHttpClientFactory _httpclientfactory; //client pro PIPE api
-
+        
         public LoginController(BL.Factory f, IHttpClientFactory hcf)
         {
             _f = f;
@@ -37,6 +39,8 @@ namespace UI.Controllers
             {
                 v.LangIndex = BO.BAS.InInt(Request.Cookies["inspis.core.langindex"]);
             }
+
+            
 
             return View(v);
         }
@@ -59,7 +63,7 @@ namespace UI.Controllers
                 return View(lu);
             }
             
-
+            
             _f.InhaleUserByLogin(lu.Login);
             if (_f.CurrentUser == null)
             {

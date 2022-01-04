@@ -36,5 +36,7 @@ namespace BL
         public string PipeBaseUrl { get; set; }     //příklad: https://tinspiscore.csicr.cz/pipe
         public string GinisExportDocTypes { get; set; }
 
+        public string TrustedUserDomain { get; set; }   //pokud je vyplněno, trustovat uživatele z této domény
+
     }
 }
