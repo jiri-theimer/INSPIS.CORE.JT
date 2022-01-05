@@ -100,7 +100,7 @@ namespace BL
             {
                 this.AddMessage("Chybí vyplnit [E-mail]."); return false;
             }
-            if (!BO.BAS.IsValidEmail(rec.j02Email))
+            if (!BO.basValidate.IsValidEmail(rec.j02Email))
             {
                 this.AddMessage("Zadaná e-mail adresa není platná"); return false;
             }

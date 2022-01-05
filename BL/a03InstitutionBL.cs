@@ -114,6 +114,10 @@ namespace BL
             {
                 this.AddMessage("Chybí vyplnit [Město]."); return false;
             }
+            if (!string.IsNullOrEmpty(c.a03Email) && !BO.basValidate.IsValidEmail(c.a03Email))
+            {
+                this.AddMessage("E-mail adresa není validní."); return false;
+            }
             if (!string.IsNullOrEmpty(c.a03PostCode))
             {
                 c.a03PostCode = c.a03PostCode.Replace(" ", "");

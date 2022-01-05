@@ -173,6 +173,10 @@ namespace BL
             {
                 this.AddMessage("Přihlašovací jméno nesmí obsahovat znak [mezera]."); return false;
             }
+            if (rec.j03Login.Contains("@") && !BO.basValidate.IsValidEmail(rec.j03Login))
+            {
+                this.AddMessage("Přihlašovací jméno neodpovídá formátu platné e-mail adresy."); return false;
+            }
             if (LoadByLogin(rec.j03Login, rec.pid) != null)
             {
                 this.AddMessageTranslated(string.Format(_mother.tra("V systému již existuje jiný uživatel s přihlašovacím jménem [{0}]."), rec.j03Login));
