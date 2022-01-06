@@ -46,10 +46,10 @@
 
 
 
-    <div class="modal_record_container">
+    
         <div class="tab-content">
 
-            <div class="tab-pane" id="tab1" role="tabpanel">
+            <div class="tab-pane" id="tab1" role="tabpanel" style="max-width:1000px;">
                 <!-- Tab1 -->
                 <p></p>
                 <div>
@@ -119,24 +119,25 @@
 
                 <hr />
                 <button type="button" id="cmdGrid" class="btn btn-secondary btn-sm" onclick="multiselect()">@_f.tra("Přidat hromadně přes Grid")</button>
-                <button type="button" id="cmdClear" class="btn btn-danger btn-sm" style="visibility:hidden;" onclick="clear_all()">@_f.tra("Odebrat vše")</button>
-                <button type="button" id="cmdRemoveClosed" class="btn btn-danger btn-sm" style="visibility:hidden;" onclick="handle_remove_closed()">@_f.tra("Odebrat neplatné")</button>
+                <button type="button" id="cmdClear" class="btn btn-danger btn-sm" onclick="clear_all()">@_f.tra("Odebrat vše")</button>
+                <button type="button" id="cmdRemoveClosed" class="btn btn-danger btn-sm" onclick="handle_remove_closed()">@_f.tra("Odebrat neplatné")</button>
 
 
-
+                <vc:the-grid input="@Model.gridinput"></vc:the-grid>
+                
             </div>
 
-            <div class="tab-pane" id="tab3" role="tabpanel">
+            <div class="tab-pane" id="tab3" role="tabpanel" style="max-width:1000px;">
                 <iframe id="fraUpload" src="/FileUpload/Index?prefix=j02&guid=@Model.UploadGuid" frameborder="0" height="220" scrolling="yes"></iframe>
             </div>
         </div>
-    </div>
+   
 
 </form>
 
-<button type="button" onclick="postback()">postback</button>
 
-<vc:the-grid input="@Model.gridinput"></vc:the-grid>
+
+
 
 
 
@@ -155,17 +156,20 @@
         $("#link_tab@(Model.ActiveTabIndex)").attr("class", "nav-link active");
 
 
-        $('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
+        $('a[data-bs-toggle="tab"]').on("shown.bs.tab", function (e) {
             // v e.target.id je id kliknutá záložka
             var tabindex = e.target.id.substring(e.target.id.length - 1, e.target.id.length);
+            
             $("#ActiveTabIndex").val(tabindex);
 
 
         });
 
 
-
-
+       
+        tg_adjust_for_screen();
+        
+        
 
 
     });
@@ -208,9 +212,8 @@
 
     }
     function clear_all() {
-        $("#hidA03IDs").val("");
-        _a03IDsCount = 0;
-        $("#a03IDs_Count").text(_a03IDsCount);
+        $("#hidA03IDs").val("-1");        
+        
         postback();
     }
     function handle_remove_closed() {

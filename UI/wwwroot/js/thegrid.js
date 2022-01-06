@@ -146,7 +146,7 @@ function tg_post_data() {
 
 
     $.post(_tg_url_data, { tgi: get_all_tgi_params(), pathpars: get_all_path_values() }, function (data) {
-
+        
         refresh_environment_after_post("first_data", data);
 
         if (_tg_go2pid !== null && _tg_go2pid !== 0) {
@@ -909,11 +909,17 @@ function tg_adjust_for_screen(strParentElementID) {
 
     $("#container_vScroll").width($("#container_grid").width() + $("#container_grid").scrollLeft());
 
-    //var basewidth = $("#tabgrid0").width();
-    //$("#tabgrid1").width(basewidth);
-    //$("#tabgrid2").width(basewidth);
-
-
+    
+    var basewidth = $("#tabgrid0").width();
+    if (basewidth > 0 && $("#tabgrid1").width() !== basewidth)
+    {        
+        $("#tabgrid1").width(basewidth);
+        $("#tabgrid2").width(basewidth);
+        
+    }
+    
+    
+    
 
 }
 
