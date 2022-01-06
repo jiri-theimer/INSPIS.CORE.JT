@@ -92,7 +92,10 @@ namespace UI.Controllers
                 c.ValidFrom = v.Toolbar.GetValidFrom(c);
 
                 var j05ids = new List<int>();
-                j05ids.InsertRange(0, v.SelectedJ05IDs_EPIS1);
+                if (v.SelectedJ05IDs_EPIS1 != null)
+                {
+                    j05ids.InsertRange(0, v.SelectedJ05IDs_EPIS1);
+                }                
                 if (v.SelectedJ05IDs_EPIS2 != null)
                 {
                     j05ids.InsertRange(0, v.SelectedJ05IDs_EPIS2);

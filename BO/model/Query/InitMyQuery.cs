@@ -98,6 +98,9 @@ namespace BO
                         case "bool":
                             BO.Reflexe.SetPropertyValue(mq, _mqi[i], BO.BAS.BG(_mqi[i + 2]));
                             break;
+                        case "list_int":
+                            BO.Reflexe.SetPropertyValue(mq, _mqi[i], BO.BAS.ConvertString2ListInt(_mqi[i + 2]));
+                            break;
                         default:
                             BO.Reflexe.SetPropertyValue(mq, _mqi[i], _mqi[i + 2]);
                             break;

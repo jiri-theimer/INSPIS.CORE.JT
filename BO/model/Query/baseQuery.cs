@@ -47,7 +47,7 @@ namespace BO
                 return _pkfield;
             }
         }
-        public List<int> pids;
+        public List<int> pids { get; set; }
         public void SetPids(string strPids)
         {
             this.pids = BO.BAS.ConvertString2ListInt(strPids);

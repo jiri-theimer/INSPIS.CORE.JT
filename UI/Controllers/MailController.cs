@@ -113,8 +113,7 @@ namespace UI.Controllers
             }
             
             v.Rec.x40MessageGuid = BO.BAS.GetGuid();
-
-            v.lisB65 = Factory.b65WorkflowMessageBL.GetList(new BO.myQuery("b65")).Where(p => p.x29ID == v.Rec.x29ID);
+            
             if (v.b65ID > 0)
             {
                 var sp = Inhale_MergeTemplate(v.b65ID, v.Rec.x40DataPID,v.Param1);               
@@ -138,13 +137,30 @@ namespace UI.Controllers
 
             }
 
+            RefreshState_SendMail(v);
+
             return View(v);
+        }
+        
+        private void RefreshState_SendMail(SendMailViewModel v)
+        {
+            v.lisB65 = Factory.b65WorkflowMessageBL.GetList(new BO.myQuery("b65")).Where(p => p.x29ID == v.Rec.x29ID);
+
+            if (string.IsNullOrEmpty(v.a03IDs)) v.a03IDs = "-1";
+            v.gridinput = new TheGridInput() { entity = "a03Institution", master_entity = "inform", myqueryinline = "pids@list_int@" + v.a03IDs, oncmclick = "", ondblclick = "" };
+            v.gridinput.query = new BO.InitMyQuery().Load("a03", null, 0, "pids@list_int@" + v.a03IDs);
+
         }
         [HttpPost]
         public IActionResult SendMail(Models.SendMailViewModel v,string oper)
         {
-            v.lisB65 = Factory.b65WorkflowMessageBL.GetList(new BO.myQuery("b65")).Where(p => p.x29ID == v.Rec.x29ID);
-            
+            RefreshState_SendMail(v);
+
+            if (oper == "postback")
+            {
+                return View(v);
+            }
+
             if (ModelState.IsValid)
             {
                 if (v.Rec.j40ID == 0 && !v.IsTest)

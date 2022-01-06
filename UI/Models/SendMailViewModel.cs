@@ -23,5 +23,7 @@ namespace UI.Models
         public string a03IDs { get; set; }
 
         public bool IsTest { get; set; }
+
+        public TheGridInput gridinput { get; set; }
     }
 }
