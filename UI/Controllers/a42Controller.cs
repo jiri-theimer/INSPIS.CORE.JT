@@ -380,6 +380,14 @@ namespace UI.Controllers
             return a03ids;
         }
 
+        public string RemoveSelected(string a03ids,string a03ids_selected)
+        {
+            var mq = new BO.myQueryA03();            
+            mq.SetPids(a03ids);
+            a03ids = string.Join(",", Factory.a03InstitutionBL.GetList(mq).Select(p => p.pid));
+            return a03ids;
+        }
+
         public BO.b65WorkflowMessage InhaleMessage(int b65id)
         {
             return Factory.b65WorkflowMessageBL.Load(b65id);

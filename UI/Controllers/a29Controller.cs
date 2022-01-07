@@ -31,13 +31,29 @@ namespace UI.Controllers
             {
                 v.MakeClone();
             }
+
+            RefreshState_Record(v);
+
             return ViewTupCiselnik(v, BO.j03AdminRoleValueFlagEnum.instituce_er);
         }
+        private void RefreshState_Record(a29Record v)
+        {
+            
+            if (string.IsNullOrEmpty(v.a03IDs)) v.a03IDs = "-1";
+            v.gridinput = new TheGridInput() { entity = "a03Institution", master_entity = "a29record", myqueryinline = "pids@list_int@" + v.a03IDs, oncmclick = "", ondblclick = "" };
+            v.gridinput.query = new BO.InitMyQuery().Load("a03", null, 0, "pids@list_int@" + v.a03IDs);
+            
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Record(Models.Record.a29Record v)
+        public IActionResult Record(Models.Record.a29Record v,string oper)
         {
-
+            RefreshState_Record(v);
+            if (oper == "postback")
+            {
+                return View(v);
+            }
             if (ModelState.IsValid)
             {
                 BO.a29InstitutionList c = new BO.a29InstitutionList();

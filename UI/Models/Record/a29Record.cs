@@ -12,5 +12,7 @@ namespace UI.Models.Record
 
         public int SelectedA03ID { get; set; }
         public string SelectedInstitution { get; set; }
+
+        public TheGridInput gridinput { get; set; }
     }
 }

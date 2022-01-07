@@ -9,7 +9,6 @@
 }
 @addTagHelper *, UI
 
-<script src="~/lib/selection/ds.min.js"></script>
 
 <input type="hidden" id="hidA03IDs" asp-for="@Model.a03IDs" />
 
@@ -36,17 +35,21 @@
 
     </div>
     <button type="button" id="cmdGrid" class="btn btn-secondary btn-sm" onclick="multiselect()">@_f.tra("Přidat hromadně přes Grid")</button>
+
+    <button type="button" id="cmdRemoveSelected" class="btn btn-warning btn-sm" onclick="handle_remove_selected()">@_f.tra("Odebrat vybrané")</button>
+    <button type="button" id="cmdClear" class="btn btn-danger btn-sm" onclick="clear_all()">@_f.tra("Odebrat vše")</button>
+    <button type="button" id="cmdRemoveClosed" class="btn btn-danger btn-sm" onclick="handle_remove_closed()">@_f.tra("Odebrat neplatné")</button>
 </div>
 
-<div id="divA03" style="margin-top:20px;margin-bottom:20px;"></div>
-<button type="button" id="cmdClear" class="btn btn-warning btn-sm" style="display:none;" onclick="clear_all()">@_f.tra("Vyčistit vše")</button>
+
+
+
+<vc:the-grid input="@Model.gridinput"></vc:the-grid>
 
 <script type="text/javascript">
     $(document).ready(function () {
 
-        if ($("#hidA03IDs").val() != "") {
-            refresh_a03_table();
-        }
+        tg_adjust_for_screen();
 
     });
 
@@ -63,20 +66,10 @@
         }
         a03ids.push(a03id);
         $("#hidA03IDs").val(a03ids.join(","));
-        refresh_a03_table();
+        postback();
 
     }
-    function handle_a03id_delete(a03id) {
-        var a03ids = [];
-        a03ids = $("#hidA03IDs").val().split(",");
-        var x = a03ids.indexOf(a03id.toString());
-        a03ids.splice(x, 1);
-
-        $("#hidA03IDs").val(a03ids.join(","));
-        refresh_a03_table();
-        _toolbar_warn2save_changes();
-
-    }
+    
 
     function handle_a05id_append(a05id) {
         if (a05id == "") {
@@ -89,7 +82,7 @@
         $.post("/a29/Geta03idsByRegion", { a05id: a05id }, function (data) {
             a03ids.push(data);
             $("#hidA03IDs").val(a03ids.join(","));
-            refresh_a03_table();
+            postback();
         });
 
 
@@ -97,31 +90,49 @@
 
     }
 
-    function refresh_a03_table() {
-        var url = "@Url.Action("GetWorkTable", "Common")";
-        var pids = $("#hidA03IDs").val();
+    function postback() {
+        form1.action = "/a29/Record?oper=postback";
+        form1.submit();
+    }
 
-        if (pids == "") {
-            $("#divA03").html("");
-            $("#cmdClear").css("display", "none");
-            return;
-        }
-        $.post(url, { entity: "a03Institution", tableid: "tabA03IDs", pids: pids, delete_function: "handle_a03id_delete",selectable:true }, function (data) {
-            $("#divA03").html(data);
-            $("#cmdClear").css("display", "block");
-
-            $("#tabA03IDs td").each(function () {
-                $(this).addClass("no_clipboard");
-            });
-
-            worktable_setup_selectable("divA03");
-        });
+    function hardrefresh(pid, flag) {
+        postback();
     }
 
     function clear_all() {
         $("#hidA03IDs").val("");
-        refresh_a03_table();
-        _toolbar_warn2save_changes();
+        postback();
+    }
+
+    function handle_remove_selected() {
+        var pids = $("#tg_selected_pids").val();
+        if (pids === "") {
+            _notify_message(_tg_musite_vybrat_zaznam);
+            return;
+        }
+        var selids = [];
+        var allids = [];
+        allids = $("#hidA03IDs").val().split(",");
+        selids = pids.split(",");
+
+        var x = -1;
+
+        for (i = 0; i < selids.length; i++) {
+            x = allids.indexOf(selids[i].toString());
+            allids.splice(x, 1);
+        }        
+
+        $("#hidA03IDs").val(allids.join(","));
+        postback()
+
+    }
+
+    function handle_remove_closed() {
+        $.post("/a42/RemoveClosed", { a03ids: $("#hidA03IDs").val() }, function (data) {
+            $("#hidA03IDs").val(data);
+            postback();
+        });
+
     }
 
     function multiselect() {
@@ -129,42 +140,7 @@
     }
 
 
-    function worktable_setup_selectable(containerID) {
 
-        var ds1 = new DragSelect({
-            selectables: document.getElementsByClassName("can-select"), // node/nodes that can be selected. This is also optional, you could just add them later with .addSelectables.
-            selectedClass: "selcell",
-            area: document.getElementById(containerID), // area in which you can drag. If not provided it will be the whole document.
-            customStyles: false,  // If set to true, no styles (except for position absolute) will be applied by default.
-            multiSelectKeys: ['ctrlKey', 'shiftKey', 'metaKey'],  // special keys that allow multiselection.
-            multiSelectMode: false,  // If set to true, the multiselection behavior will be turned on by default without the need of modifier keys. Default: false
-            autoScrollSpeed: 20,  // Speed in which the area scrolls while selecting (if available). Unit is pixel per movement. Set to 0 to disable autoscrolling. Default = 1
-            onDragStart: function (element) { }, // fired when the user clicks in the area. This callback gets the event object. Executed after DragSelect function code ran, befor the setup of event listeners.
-            onDragMove: function (element) { }, // fired when the user drags. This callback gets the event object. Executed before DragSelect function code ran, after getting the current mouse position.
-            onElementSelect: function (element) { }, // fired every time an element is selected. (element) = just selected node
-            onElementUnselect: function (element) { }, // fired every time an element is de-selected. (element) = just de-selected node.
-            callback: function (elements) {
-                // fired once the user releases the mouse. (elements) = selected nodes.
-
-                if (elements.length > 0) {
-                    var _rowids = [];
-
-                    for (i = 0; i < elements.length; i++) {
-                        var rowid = $(elements[i]).attr("data-v");
-
-                        _rowids.push(rowid);
-
-                    }
-
-
-                }
-
-            }
-
-
-
-        });
-    }
 
 </script>
 

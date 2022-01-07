@@ -119,12 +119,13 @@
 
                 <hr />
                 <button type="button" id="cmdGrid" class="btn btn-secondary btn-sm" onclick="multiselect()">@_f.tra("Přidat hromadně přes Grid")</button>
+                <button type="button" id="cmdRemoveSelected" class="btn btn-warning btn-sm" onclick="handle_remove_selected()">@_f.tra("Odebrat vybrané")</button>
                 <button type="button" id="cmdClear" class="btn btn-danger btn-sm" onclick="clear_all()">@_f.tra("Odebrat vše")</button>
                 <button type="button" id="cmdRemoveClosed" class="btn btn-danger btn-sm" onclick="handle_remove_closed()">@_f.tra("Odebrat neplatné")</button>
 
 
                 <vc:the-grid input="@Model.gridinput"></vc:the-grid>
-                
+
             </div>
 
             <div class="tab-pane" id="tab3" role="tabpanel" style="max-width:1000px;">
@@ -216,8 +217,29 @@
         
         postback();
     }
-    function handle_remove_closed() {
+    function handle_remove_selected() {
+        var pids = $("#tg_selected_pids").val();
+        if (pids === "") {
+            _notify_message(_tg_musite_vybrat_zaznam);
+            return;
+        }
+        var selids = [];
+        var allids = [];
+        allids = $("#hidA03IDs").val().split(",");
+        selids = pids.split(",");
 
+        var x = -1;
+
+        for (i = 0; i < selids.length; i++) {
+            x = allids.indexOf(selids[i].toString());
+            allids.splice(x, 1);
+        }
+
+        $("#hidA03IDs").val(allids.join(","));
+        postback()
+
+    }
+    function handle_remove_closed() {
         $.post("/a42/RemoveClosed", { a03ids: $("#hidA03IDs").val() }, function (data) {
             $("#hidA03IDs").val(data);
             postback();
