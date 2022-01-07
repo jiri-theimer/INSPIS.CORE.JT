@@ -44,17 +44,19 @@
 
     </div>
     <button type="button" id="cmdGrid" class="btn btn-secondary btn-sm" onclick="multiselect()">@_f.tra("Přidat hromadně přes Grid")</button>
+
+    <button type="button" id="cmdRemoveSelected" class="btn btn-warning btn-sm" onclick="handle_remove_selected()">@_f.tra("Odebrat vybrané")</button>
+    <button type="button" id="cmdClear" class="btn btn-danger btn-sm" onclick="clear_all()">@_f.tra("Odebrat vše")</button>
+    <button type="button" id="cmdRemoveClosed" class="btn btn-danger btn-sm" onclick="handle_remove_closed()">@_f.tra("Odebrat neplatné")</button>
 </div>
 
-<div id="divJ02" style="margin-top:20px;margin-bottom:20px;"></div>
-<button type="button" id="cmdClear" class="btn btn-warning btn-sm" style="display:none;" onclick="clear_all()">@_f.tra("Vyčistit vše")</button>
+
+<vc:the-grid input="@Model.gridinput"></vc:the-grid>
 
 <script type="text/javascript">
     $(document).ready(function () {
 
-        if ($("#hidJ02IDs").val() != "") {
-            refresh_j02_table();
-        }
+        tg_adjust_for_screen();
 
     });
 
@@ -71,7 +73,7 @@
         }
         j02ids.push(j02id);
         $("#hidJ02IDs").val(j02ids.join(","));
-        refresh_j02_table();
+        postback();
 
     }
     function handle_j02id_delete(j02id) {
@@ -81,8 +83,8 @@
         j02ids.splice(x, 1);
 
         $("#hidJ02IDs").val(j02ids.join(","));
-        refresh_j02_table();
-        _toolbar_warn2save_changes();
+        postback();
+       
 
     }
 
@@ -97,7 +99,7 @@
         $.post("/j11/GetJ02IDsByRegion", { a05id: a05id }, function (data) {
             j02ids.push(data);
             $("#hidJ02IDs").val(j02ids.join(","));
-            refresh_j02_table();
+            postback();
         });
 
 
@@ -105,28 +107,53 @@
 
     }
 
-    function refresh_j02_table() {
-        var url = "@Url.Action("GetWorkTable", "Common")";
-        var pids = $("#hidJ02IDs").val();
+    
 
-        if (pids == "") {
-            $("#divJ02").html("");
-            $("#cmdClear").css("display", "none");
-            return;
-        }
-        $.post(url, { entity: "j02Person", tableid: "tabJ02IDs", pids: pids, delete_function: "handle_j02id_delete" }, function (data) {
-            $("#divJ02").html(data);
-            $("#cmdClear").css("display", "block");;
-        });
+    function postback() {
+        form1.action = "/j11/Record?oper=postback";
+        form1.submit();
     }
+
+   
 
     function clear_all() {
-        $("#hidJ02IDs").val("");
-        refresh_j02_table();
-        _toolbar_warn2save_changes();
+        $("#hidJ02IDs").val("");        
+        postback();
     }
     function multiselect() {
         _window_open("/Record/GridMultiSelect?prefix=j02");
     }
+
+    function handle_remove_selected() {
+        var pids = $("#tg_selected_pids").val();
+        if (pids === "") {
+            _notify_message(_tg_musite_vybrat_zaznam);
+            return;
+        }
+        var selids = [];
+        var allids = [];
+        allids = $("#hidJ02IDs").val().split(",");
+        selids = pids.split(",");
+
+        var x = -1;
+
+        for (i = 0; i < selids.length; i++) {
+            x = allids.indexOf(selids[i].toString());
+            allids.splice(x, 1);
+        }
+
+        $("#hidJ02IDs").val(allids.join(","));
+        postback()
+
+    }
+
+    function handle_remove_closed() {
+        $.post("/j11/RemoveClosed", { j02ids: $("#hidJ02IDs").val() }, function (data) {
+            $("#hidJ02IDs").val(data);
+            postback();
+        });
+
+    }
+
 </script>
 

@@ -46,13 +46,27 @@ namespace UI.Controllers
             {
                 v.MakeClone();
             }
+            RefreshState_Record(v);
+
             return ViewTupCiselnik(v, BO.j03AdminRoleValueFlagEnum.uzivatel_er);
         }
+
+        private void RefreshState_Record(j11Record v)
+        {
+            if (string.IsNullOrEmpty(v.j02IDs)) v.j02IDs = "-1";
+            v.gridinput = new TheGridInput() { entity = "j02Person", master_entity = "j11record", myqueryinline = "pids@list_int@" + v.j02IDs, oncmclick = "", ondblclick = "" };
+            v.gridinput.query = new BO.InitMyQuery().Load("j02", null, 0, "pids@list_int@" + v.j02IDs);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Record(Models.Record.j11Record v)
+        public IActionResult Record(Models.Record.j11Record v,string oper)
         {
-
+            RefreshState_Record(v);
+            if (oper == "postback")
+            {
+                return View(v);
+            }
             if (ModelState.IsValid)
             {
                 BO.j11Team c = new BO.j11Team();
@@ -82,6 +96,15 @@ namespace UI.Controllers
 
             var mq = new BO.myQueryJ02() { a05id = a05id,IsRecordValid=true };           
             return Factory.j02PersonBL.GetList(mq).Select(p => p.pid).ToList();
+        }
+
+        public string RemoveClosed(string j02ids)
+        {
+            var mq = new BO.myQueryJ02();
+            mq.IsRecordValid = true;
+            mq.SetPids(j02ids);
+            j02ids = string.Join(",", Factory.j02PersonBL.GetList(mq).Select(p => p.pid));
+            return j02ids;
         }
     }
 }

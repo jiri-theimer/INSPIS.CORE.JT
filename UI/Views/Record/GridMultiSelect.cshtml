@@ -43,10 +43,10 @@
         window.parent.document.getElementById(hiddenID).value = val;
 
         if (prefix == "a03") {
-            window.parent.hardrefresh();
+            window.parent.postback();
         }
         if (prefix == "j02") {
-            window.parent.refresh_j02_table();
+            window.parent.postback();
         }
         if (prefix == "f06") {
             window.parent.refresh_f06_table(pids);

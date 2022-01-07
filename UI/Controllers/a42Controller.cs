@@ -221,6 +221,10 @@ namespace UI.Controllers
 
         private void RefreshStateCreate(Models.a42CreateViewModel v)
         {
+            if (string.IsNullOrEmpty(v.a03IDs)) v.a03IDs = "-1";
+            v.gridinput = new TheGridInput() { entity = "a03Institution", master_entity = "a42create", myqueryinline = "pids@list_int@" + v.a03IDs, oncmclick = "", ondblclick = "" };
+            v.gridinput.query = new BO.InitMyQuery().Load("a03", null, 0, "pids@list_int@" + v.a03IDs);
+
             if (v.a10ID > 0)
             {
                 v.RecA10 = Factory.a10EventTypeBL.Load(v.a10ID);
@@ -380,13 +384,7 @@ namespace UI.Controllers
             return a03ids;
         }
 
-        public string RemoveSelected(string a03ids,string a03ids_selected)
-        {
-            var mq = new BO.myQueryA03();            
-            mq.SetPids(a03ids);
-            a03ids = string.Join(",", Factory.a03InstitutionBL.GetList(mq).Select(p => p.pid));
-            return a03ids;
-        }
+        
 
         public BO.b65WorkflowMessage InhaleMessage(int b65id)
         {

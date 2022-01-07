@@ -48,5 +48,6 @@ namespace UI.Models
         public int LeftA12ID { get; set; }
         public int RightA12ID { get; set; }
         public string SelectedA12IDs { get; set; }
+        public TheGridInput gridinput { get; set; }
     }
 }

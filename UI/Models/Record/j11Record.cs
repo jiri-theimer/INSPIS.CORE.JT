@@ -15,5 +15,7 @@ namespace UI.Models.Record
 
         public int SelectedA05ID { get; set; }
         public string SelectedRegion { get; set; }
+
+        public TheGridInput gridinput { get; set; }
     }
 }
