@@ -100,6 +100,10 @@ namespace UI.Controllers
 
         public string RemoveClosed(string j02ids)
         {
+            if (string.IsNullOrEmpty(j02ids))
+            {
+                return j02ids;
+            }
             var mq = new BO.myQueryJ02();
             mq.IsRecordValid = true;
             mq.SetPids(j02ids);

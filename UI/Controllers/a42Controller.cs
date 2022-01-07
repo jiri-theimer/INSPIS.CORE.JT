@@ -377,6 +377,10 @@ namespace UI.Controllers
 
         public string RemoveClosed(string a03ids)
         {
+            if (string.IsNullOrEmpty(a03ids))
+            {
+                return a03ids;
+            }
             var mq = new BO.myQueryA03();
             mq.IsRecordValid = true;
             mq.SetPids(a03ids);
