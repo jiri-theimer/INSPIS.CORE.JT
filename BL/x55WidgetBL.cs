@@ -74,6 +74,9 @@ namespace BL
             p.AddEnumInt("x55DataTablesButtons", rec.x55DataTablesButtons);
             p.AddString("x55Help", rec.x55Help);
             p.AddString("x55Skin", rec.x55Skin);
+            p.AddString("x55ChartSql", rec.x55ChartSql);
+            p.AddString("x55ChartHeaders", rec.x55ChartHeaders);
+            p.AddString("x55ChartType", rec.x55ChartType);
 
             p.AddInt("x55BoxMaxHeight", rec.x55BoxMaxHeight);
             int intPID = _db.SaveRecord("x55Widget", p, rec);
@@ -109,6 +112,15 @@ namespace BL
             if (LoadByCode(rec.x55Code, rec.pid) != null)
             {
                 this.AddMessageTranslated(string.Format(_mother.tra("V systému již existuje jiný widget s kódem: {0}."), rec.x55Code)); return false;
+            }
+
+            if (!string.IsNullOrEmpty(rec.x55ChartSql) && rec.x55ChartType==null)
+            {
+                this.AddMessage("Chybí vyplnit [Typ grafu]."); return false;
+            }
+            if (!string.IsNullOrEmpty(rec.x55ChartSql) && rec.x55ChartHeaders == null)
+            {
+                this.AddMessage("Chybí vyplnit [Názvy veličin grafu]."); return false;
             }
 
             return true;

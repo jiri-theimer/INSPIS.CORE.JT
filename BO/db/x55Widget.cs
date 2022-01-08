@@ -35,6 +35,10 @@ namespace BO
         public bool IsUseDatatables { get; set; }   //není db pole - naplní ho incializátor widgetů na stránce
         public string x55Skin { get; set; }
 
+        public string x55ChartSql { get; set; }
+        public string x55ChartHeaders { get; set; }
+        public string x55ChartType { get; set; }
+
         public string CssHeaderDiv { get
             {
                 if (this.x55HeaderBackColor==null && this.x55HeaderForeColor == null)

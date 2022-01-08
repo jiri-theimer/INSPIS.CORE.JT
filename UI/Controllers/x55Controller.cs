@@ -75,6 +75,9 @@ namespace UI.Controllers
                 c.x55BoxMaxHeight = v.Rec.x55BoxMaxHeight;
                 c.x55DataTablesLimit = v.Rec.x55DataTablesLimit;
                 c.x55DataTablesButtons = v.Rec.x55DataTablesButtons;
+                c.x55ChartHeaders = v.Rec.x55ChartHeaders;
+                c.x55ChartSql = v.Rec.x55ChartSql;
+                c.x55ChartType = v.Rec.x55ChartType;
                 c.x55Help = v.HtmlHelp;
                 c.x55Skin = v.Rec.x55Skin;
 
