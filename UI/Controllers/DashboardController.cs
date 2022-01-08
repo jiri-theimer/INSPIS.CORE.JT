@@ -541,7 +541,7 @@ namespace UI.Controllers
                 string strStaticHtml = rec.x55Content;
                 if (rec.x55ChartSql !=null && rec.x55ChartHeaders != null)
                 {
-                    string s = rec.x55TableSql;
+                    string s = rec.x55ChartSql;
                     s = DL.BAS.ParseMergeSQL(s, Factory.CurrentUser.j02ID.ToString()).Replace("@j04id", Factory.CurrentUser.j04ID.ToString().Replace("@j03id", Factory.CurrentUser.pid.ToString()));
                     var dt = Factory.gridBL.GetListFromPureSql(s);
                     var cGen = new BO.CLS.Datatable2Chart();
