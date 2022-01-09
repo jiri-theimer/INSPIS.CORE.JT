@@ -42,6 +42,7 @@ namespace UI.Controllers
             v.IsZeroRow = Factory.CBL.LoadUserParamBool("Stat-IsZeroRow", true);
             v.IsBlankA11IDs = Factory.CBL.LoadUserParamBool("Stat-IsBlankA11IDs", false);
             v.IsSourceSnapshot = Factory.CBL.LoadUserParamBool("Stat-IsSourceSnapshot", true);
+            v.GridTopRecs = Factory.CBL.LoadUserParamInt("Stat-GridTopRecs", 50);
             v.GuidAddFilter = BO.BAS.GetGuid();
             if (string.IsNullOrEmpty(v.f06IDs) == false && System.IO.File.Exists(GetTempFilePath()))
             {
@@ -128,7 +129,7 @@ namespace UI.Controllers
             Factory.CBL.SetUserParam("Stat-IsZeroRow", BO.BAS.GB(v.IsZeroRow));
             Factory.CBL.SetUserParam("Stat-IsBlankA11IDs", BO.BAS.GB(v.IsBlankA11IDs));
             Factory.CBL.SetUserParam("Stat-IsSourceSnapshot", BO.BAS.GB(v.IsSourceSnapshot));
-            
+            Factory.CBL.SetUserParam("Stat-GridTopRecs", v.GridTopRecs.ToString());
 
             if (ModelState.IsValid)
             {
@@ -177,8 +178,10 @@ namespace UI.Controllers
                 }
                 //System.IO.File.WriteAllText("c:\\temp\\hovadostat.txt", mq.explicit_sqlwhere);
                 v.guid = BO.BAS.GetGuid();
-                
-                bool b = Factory.StatBL.GenerateStatMatrix(v.guid, mq, v.lisCols, v.ValuesMode, false, v.IsBlankA11IDs, false, bolTestEncryptedValues,v.IsSourceSnapshot);
+                int intMaxTopRecs = v.GridTopRecs;
+                if (oper == "excel") intMaxTopRecs = 0;
+
+                bool b = Factory.StatBL.GenerateStatMatrix(v.guid, mq, v.lisCols, v.ValuesMode, false, v.IsBlankA11IDs, false, bolTestEncryptedValues,v.IsSourceSnapshot,intMaxTopRecs);
 
                 if (oper == "excel")
                 {
@@ -220,7 +223,7 @@ namespace UI.Controllers
             {
                 v.GridContainerCssStyle = "width: " + (1000 + v.lisCols.Count() * 100).ToString() + "px;overflow-x:auto;";
             }
-
+            
             v.GridColumns = sb1.ToString();
             v.GridHeaders = sb2.ToString();
             Factory.CBL.SetUserParam("Stat-GridGuid", v.guid);
@@ -532,7 +535,7 @@ namespace UI.Controllers
         {
             var gridguid = tgi.viewstate[0];
             var c = new UI.TheGridSupport(GetGridInput(tgi.fixedcolumns, gridguid), Factory, _colsProvider);
-
+            
             return c.Event_HandleTheGridFilter(tgi, filter);
 
         }
@@ -548,7 +551,7 @@ namespace UI.Controllers
         {
             var gridguid = tgi.viewstate[0];
             var c = new UI.TheGridSupport(GetGridInput(tgi.fixedcolumns, gridguid), Factory, _colsProvider);
-
+            
             return c.Event_HandleTheGridMenu(tgi);
         }
         public TheGridExportedFile HandleTheGridExport(string format, string pids, TheGridUIContext tgi, List<BO.StringPair> pathpars)  //TheGrid povinná metoda pro export dat

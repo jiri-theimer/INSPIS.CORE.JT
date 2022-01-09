@@ -30,6 +30,7 @@ namespace UI.Models
         public string guid { get; set; }
 
         public string XlsExportTempFileName { get; set; }
+        public int GridTopRecs { get; set; }
         public string GridGuid { get; set; }
         public string GridColumns { get; set; }
         public string GridHeaders { get; set; }

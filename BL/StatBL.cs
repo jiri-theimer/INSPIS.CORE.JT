@@ -10,7 +10,7 @@ namespace BL
     {
         
         public List<BO.StatColumn> GetList_StatColumns(List<int>f19ids);
-        public bool GenerateStatMatrix(string strGUID, BO.myQueryA01 mq, List<BO.StatColumn> lisCols, BO.StatValueMode valueMODE, bool bolConvertNullCheckboxToZero, bool bolIncludeBlankA11IDs, bool bolConvertZeroChkListValsToNull, bool bolTestEncryptedValues,bool bolSourceIsSnapshot);
+        public bool GenerateStatMatrix(string strGUID, BO.myQueryA01 mq, List<BO.StatColumn> lisCols, BO.StatValueMode valueMODE, bool bolConvertNullCheckboxToZero, bool bolIncludeBlankA11IDs, bool bolConvertZeroChkListValsToNull, bool bolTestEncryptedValues,bool bolSourceIsSnapshot,int intMaxTopRecs);
         public DataTable GetList_StatMatrix(string strGUID, string strAddSqlWHERE, List<BO.StatColumn> lisCols, BO.StatGroupByMode GroupByMode);
 
     }
@@ -20,7 +20,7 @@ namespace BL
         {
 
         }
-        public bool GenerateStatMatrix(string strGUID,BO.myQueryA01 mq,List<BO.StatColumn> lisCols,BO.StatValueMode valueMODE,bool bolConvertNullCheckboxToZero,bool bolIncludeBlankA11IDs,bool bolConvertZeroChkListValsToNull,bool bolTestEncryptedValues, bool bolSourceIsSnapshot)
+        public bool GenerateStatMatrix(string strGUID,BO.myQueryA01 mq,List<BO.StatColumn> lisCols,BO.StatValueMode valueMODE,bool bolConvertNullCheckboxToZero,bool bolIncludeBlankA11IDs,bool bolConvertZeroChkListValsToNull,bool bolTestEncryptedValues, bool bolSourceIsSnapshot, int intMaxTopRecs)
         {
 
            DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql("", mq, _mother.CurrentUser);
@@ -38,7 +38,12 @@ namespace BL
             string strF_A01 = "a01Event a INNER JOIN a10EventType a10 ON a.a10ID=a10.a10ID LEFT OUTER JOIN a03Institution a03 ON a.a03ID=a03.a03ID LEFT OUTER JOIN a08Theme a08 ON a.a08ID=a08.a08ID LEFT OUTER JOIN b02WorkflowStatus b02 ON a.b02ID=b02.b02ID";    //sql pro vnořený seznam akcí
 
             string strColsInsertOcas = "";
-            string strFinalS = "SELECT a11ID,'" + strGUID + "',max(a01ID) as a01ID,min(a01Signature) as a01Signature";
+            string strFinalS = "SELECT";
+            if (intMaxTopRecs > 0)
+            {
+                strFinalS += " TOP " + intMaxTopRecs.ToString();
+            }
+            strFinalS += " a11ID,'" + strGUID + "',max(a01ID) as a01ID,min(a01Signature) as a01Signature";
             sb("SELECT a11s.a11ID,a01s.a01ID,a01s.a01Signature");
             int x = 1;
             foreach (var col in lisCols)

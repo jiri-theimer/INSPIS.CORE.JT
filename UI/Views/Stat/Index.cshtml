@@ -44,10 +44,19 @@
 
     <div class="bg-light" style="padding:10px;">
         <div class="row" style="max-width:1100px;">
-            <div class="col-sm-4 col-md-4">
+            <div class="col-sm-2 col-md-2">
                 <button id="cmdRunGrid" class="btn btn-sm btn-success">@_f.tra("Vygenerovat výsledek do GRIDu")</button>
-                <button id="cmdRunExcel" class="btn btn-sm btn-outline-secondary">@_f.tra("Vygenerovat výsledek do XLS")</button>
+                <br />
+                <select asp-for="@Model.GridTopRecs">
+                    <option value="50">@_f.tra("Do GRIDu prvních 50")</option>
+                    <option value="100">@_f.tra("Do GRIDu prvních 100")</option>
+                    <option value="200">@_f.tra("Do GRIDu prvních 200")</option>
+                    <option value="0">@_f.tra("Do GRIDu všechny záznamy")</option>
+                </select>
 
+            </div>
+            <div class="col-sm-2 col-md-2">
+                <button id="cmdRunExcel" class="btn btn-sm btn-outline-secondary">@_f.tra("Vygenerovat výsledek do XLS")</button>
             </div>
             <div class="col-sm-2 col-md-2">
                 <select asp-for="@Model.IsSourceSnapshot">
