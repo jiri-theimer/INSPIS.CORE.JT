@@ -41,7 +41,7 @@ namespace UI.Controllers
             v.GroupByMode = (BO.StatGroupByMode)Factory.CBL.LoadUserParamInt("Stat-GroupByMode", 0);
             v.IsZeroRow = Factory.CBL.LoadUserParamBool("Stat-IsZeroRow", true);
             v.IsBlankA11IDs = Factory.CBL.LoadUserParamBool("Stat-IsBlankA11IDs", false);
-            v.IsSourceSnapshot = Factory.CBL.LoadUserParamBool("Stat-IsSourceSnapshot", false);
+            v.IsSourceSnapshot = Factory.CBL.LoadUserParamBool("Stat-IsSourceSnapshot", true);
             v.GuidAddFilter = BO.BAS.GetGuid();
             if (string.IsNullOrEmpty(v.f06IDs) == false && System.IO.File.Exists(GetTempFilePath()))
             {

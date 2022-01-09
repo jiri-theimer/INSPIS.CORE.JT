@@ -658,7 +658,22 @@ namespace UI.Controllers
                     }
 
                 }
+                if (c.x55TableSql != null && c.x55TableColHeaders != null && c.x55DataTablesButtons > BO.x55DataTablesBtns.None)
+                {
+                    v.IsExportButtons = true;   //zobrazovat tlačítka XLS/CSV/COPY
+                }
+                if (c.x55TableSql != null && c.x55TableColHeaders != null && c.x55DataTablesButtons == BO.x55DataTablesBtns.ExportPrintPdf)
+                {
+                    v.IsPdfButtons = true;      //zobrazovat i tlačítko PDF
+                }
+                if (v.IsPdfButtons || c.x55DataTablesButtons == BO.x55DataTablesBtns.ExportPrint)
+                {
+                    v.IsPrintButton = true;      //zobrazovat i tlačítko PDF
+                }
             }
+
+            
+
             switch (v.ColumnsPerPage)
             {
                 case 1:
