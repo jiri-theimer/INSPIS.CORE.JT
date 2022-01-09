@@ -17,7 +17,7 @@
 
 
 <link rel="stylesheet" href="/lib/jquery-ui/jquery-ui.min_sortable.css" />
-@if (Model.lisUserWidgets.Any(p => p.IsUseDatatables))
+@if (Model.lisUserWidgets.Exists(p => p.x55TableSql !=null))
 {
     <link rel="stylesheet" href="/lib/datatables/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css" />
@@ -29,7 +29,7 @@
 
 
 <script src="/lib/jquery-ui/jquery-ui.min_sortable.js"></script>
-@if (Model.lisUserWidgets.Where(p => p.IsUseDatatables).Count() > 0)
+@if (Model.lisUserWidgets.Exists(p => p.x55TableSql !=null))
 {
     <script src="/lib/datatables/js/jquery.dataTables.min.js"></script>
 
@@ -48,10 +48,13 @@
 
 
 }
-<script src="https://www.gstatic.com/charts/loader.js"></script>
+@if (Model.lisUserWidgets.Exists(p => p.x55ChartSql != null))
+{
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+}
 
 
-<div id="@(BO.BAS.IIFS(Model.IsSubform,"header_subform","header_index"))" class="row bg-light" >
+<div id="@(BO.BAS.IIFS(Model.IsSubform,"header_subform","header_index"))" class="row bg-light">
     @if (!Model.IsSubform)
     {
         <div class="col-auto">
@@ -64,55 +67,55 @@
 
         </div>
     }
-<div class="dropdown col-auto">
+    <div class="dropdown col-auto">
 
-    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="cmdInsertWidget" data-bs-toggle="dropdown" aria-expanded="false">
-        <span>@_f.tra("Vložit widget na plochu")</span>
-    </a>
+        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="cmdInsertWidget" data-bs-toggle="dropdown" aria-expanded="false">
+            <span>@_f.tra("Vložit widget na plochu")</span>
+        </a>
 
-    <div class="dropdown-menu" aria-labelledby="cmdInsertWidget">
-        <ul id="rp1_menu" style="list-style:none;columns:3;width:1000px;">
+        <div class="dropdown-menu" aria-labelledby="cmdInsertWidget">
+            <ul id="rp1_menu" style="list-style:none;columns:3;width:1000px;">
 
-            @foreach (var c in Model.lisAllWidgets)
+                @foreach (var c in Model.lisAllWidgets)
+                {
+                    <li class="nav-item p-2">
+                        @if (Model.lisUserWidgets.Where(p => p.pid == c.pid).Count() > 0)
+                        {
+                            <span style="color:silver;">@c.x55Name</span>
+                        }
+                        else
+                        {
+                            <a href="javascript:handle_insert_snippet(@c.pid)">@c.x55Name</a>
+                        }
+
+
+                    </li>
+                }
+
+
+
+            </ul>
+
+            @if (Model.IsSubform)
             {
-                <li class="nav-item p-2">
-                    @if (Model.lisUserWidgets.Where(p => p.pid == c.pid).Count() > 0)
+                <hr />
+                <div style="padding:8px;">
+                    @if (Model.lisUserWidgets.Count() > 0)
                     {
-                        <span style="color:silver;">@c.x55Name</span>
+                        <button type="button" onclick="clear_to_factory_confirm()" class="btn btn-sm btn-light">@_f.tra("Nahodit plochu do výchozího (továrního) nastavení")</button>
                     }
                     else
                     {
-                        <a href="javascript:handle_insert_snippet(@c.pid)">@c.x55Name</a>
+                        <button type="button" onclick="clear_to_factory_silent()" class="btn btn-sm btn-light">@_f.tra("Nahodit plochu do výchozího (továrního) nastavení")</button>
                     }
 
-
-                </li>
+                </div>
             }
 
 
 
-        </ul>
-
-        @if (Model.IsSubform)
-        {
-            <hr />
-            <div style="padding:8px;">
-                @if (Model.lisUserWidgets.Count() > 0)
-                {
-                    <button type="button" onclick="clear_to_factory_confirm()" class="btn btn-sm btn-light">@_f.tra("Nahodit plochu do výchozího (továrního) nastavení")</button>
-                }
-                else
-                {
-                    <button type="button" onclick="clear_to_factory_silent()" class="btn btn-sm btn-light">@_f.tra("Nahodit plochu do výchozího (továrního) nastavení")</button>
-                }
-
-            </div>
-        }
-
-
-
+        </div>
     </div>
-</div>
     <div class="col-auto">
         <select asp-for="@Model.ColumnsPerPage" class="form-select" onchange="handle_pocet_sloupcu(this)" title="@_f.tra("Počet sloupců na ploše")">
             <option value="1">1</option>
@@ -140,8 +143,9 @@
                     {
                         <a class="float-end btn btn-sm btn-light py-0 px-1 mx-3" title="@_f.tra("Widget nápověda")" href="javascript:widget_help(@c.pid)">?</a>
                     }
+                    <a class="float-end btn btn-sm btn-light py-0 px-1 mx-3" title="@_f.tra("Obnovit obsah widgetu")" href="javascript:load_widget_content(@c.pid)">⟲</a>
                 </div>
-                <div class="portlet-content" @Html.Raw(c.CssContentDiv)>
+                <div id="box_content_@(c.pid)" class="portlet-content" @Html.Raw(c.CssContentDiv)>
                     @Html.Raw(c.x55Content)
 
                 </div>
@@ -165,8 +169,9 @@
                         {
                             <a class="float-end btn btn-sm btn-light py-0 px-1 mx-3" title="@_f.tra("Widget nápověda")" href="javascript:widget_help(@c.pid)">?</a>
                         }
+                        <a class="float-end btn btn-sm btn-light py-0 px-1 mx-3" title="@_f.tra("Obnovit obsah widgetu")" href="javascript:load_widget_content(@c.pid)">⟲</a>
                     </div>
-                    <div class="portlet-content" @Html.Raw(c.CssContentDiv)>
+                    <div id="box_content_@(c.pid)" class="portlet-content" @Html.Raw(c.CssContentDiv)>
                         @Html.Raw(c.x55Content)
                     </div>
                 </div>
@@ -190,8 +195,9 @@
                         {
                             <a class="float-end btn btn-sm btn-light py-0 px-1 mx-3" title="@_f.tra("Widget nápověda")" href="javascript:widget_help(@c.pid)">?</a>
                         }
+                        <a class="float-end btn btn-sm btn-light py-0 px-1 mx-3" title="@_f.tra("Obnovit obsah widgetu")" href="javascript:load_widget_content(@c.pid)">⟲</a>
                     </div>
-                    <div class="portlet-content" @Html.Raw(c.CssContentDiv)>
+                    <div id="box_content_@(c.pid)" class="portlet-content" @Html.Raw(c.CssContentDiv)>
                         @Html.Raw(c.x55Content)
                     </div>
                 </div>
@@ -215,10 +221,10 @@
 
 
     $(document).ready(function () {
-        
+
         _mainmenu_highlight_current("cmdHome");
 
-        
+
 
         $(".column").sortable({
             connectWith: ".column",
@@ -250,65 +256,13 @@
         }
 
 
-
-        @foreach(var c in Model.lisUserWidgets.Where(p => p.IsUseDatatables))
+        @foreach (var c in Model.lisUserWidgets)
         {
             <text>
-
-        $("#@(c.x55Code)").DataTable({
-            stateSave: true,
-            language: {
-                url:"@(Model.DataTables_Localisation)"
-
-            },
-            dom: "Blfrtip",
-            buttons: [
-                @if (Model.IsPdfButtons)
-                {
-                    <text>
-                {
-                    extend: 'pdfHtml5',
-                    footer: true,
-                    orientation: 'portrait',
-                    pageSize: 'A4',
-                    text: '@_f.tra("PDF (na výšku)")'
-                },
-                {
-                    extend: "pdfHtml5",
-                    footer: true,
-                    orientation: "landscape",
-                    pageSize: 'A4',
-                    text: "@_f.tra("PDF (na šířku)")"
-                },
-                    </text>
-                }
-                @if (Model.IsExportButtons)
-                {
-
-                    <text>
-                {
-                    extend: "excelHtml5",
-                    footer: true,
-                    text: "XLS"
-                },
-                { extend: "csvHtml5", footer: true },
-                { extend: "copyHtml5", footer: true },
-                {
-                    extend: "print",
-                    text: "@_f.tra("Tisk")",
-                    footer: true,
-                    autoPrint: true
-                }
-                    </text>
-
-                }
-            ],
-            paging: true
-
-        });
-
+            load_widget_content(@c.pid,@Model.ColumnsPerPage);
             </text>
         }
+
 
     });
 
@@ -390,6 +344,129 @@
 
 
             });
+
+    }
+
+    function load_widget_content(x55id) {
+        var h = $("#box_content_" + x55id).height();
+        $("#box_content_" + x55id).html("<div style='height:"+h+"px;'><strong>Loading...</strong></div>");
+        
+        $.post("/Dashboard/GetWidgetHtmlContent", { x55id: x55id, columnsperpage:@Model.ColumnsPerPage }, function (data) {
+            
+            $("#box_content_" + x55id).html(data.x55Content);
+
+            if (data.isUseDatatables)
+            {
+                var lang = "cs_CZ";
+                @if (_f.CurrentUser.j03LangIndex == 2)
+                {
+                    <text>
+                lang = "uk_UA";
+                    </text>
+                }
+                //splněna podmínka pro práci s pluginem Datatables
+                if (data.x55DataTablesButtons == 3) {
+                    datatables_init_buttons_export_print_pdf(data.x55Code, lang);
+                }
+                if (data.x55DataTablesButtons == 2) {
+                    datatables_init_buttons_export_print(data.x55Code, lang);
+                }
+                if (data.x55DataTablesButtons < 2) {
+                    datatables_init_nobuttons(data.x55Code, lang);
+                }
+            }
+
+
+
+        });
+    }
+
+    function datatables_init_nobuttons(tableid, lang) {
+        $("#" + tableid).DataTable({
+            stateSave: true,
+            language: {
+                url: "/lib/datatables/localisation/" + lang + ".json"
+
+            },
+            dom: "Blfrtip",
+            paging: true
+
+        });
+    }
+    function datatables_init_buttons_export_print(tableid, lang) {
+        
+        $("#" + tableid).DataTable({
+            stateSave: true,
+            language: {
+                url: "/lib/datatables/localisation/" + lang + ".json"
+
+            },
+            dom: "Blfrtip",
+            buttons: [
+
+                {
+                    extend: "excelHtml5",
+                    footer: true,
+                    text: "XLS"
+                },
+                { extend: "csvHtml5", footer: true },
+                { extend: "copyHtml5", footer: true },
+                {
+                    extend: "print",
+                    text: "@_f.tra("Tisk")",
+                    footer: true,
+                    autoPrint: true
+                }
+            ],
+            paging: true
+
+        });
+    }
+
+
+    function datatables_init_buttons_export_print_pdf(tableid, lang) {
+        $("#" + tableid).DataTable({
+            stateSave: true,
+            language: {
+                url: "/lib/datatables/localisation/" + lang + ".json"
+
+            },
+            dom: "Blfrtip",
+            buttons: [
+
+                {
+                    extend: 'pdfHtml5',
+                    footer: true,
+                    orientation: 'portrait',
+                    pageSize: 'A4',
+                    text: "@_f.tra("PDF (na výšku)")"
+                },
+                {
+                    extend: "pdfHtml5",
+                    footer: true,
+                    orientation: "landscape",
+                    pageSize: 'A4',
+                    text: "@_f.tra("PDF (na šířku)")"
+                },
+
+                {
+                    extend: "excelHtml5",
+                    footer: true,
+                    text: "XLS"
+                },
+                { extend: "csvHtml5", footer: true },
+                { extend: "copyHtml5", footer: true },
+                {
+                    extend: "print",
+                    text: "@_f.tra("Tisk")",
+                    footer: true,
+                    autoPrint: true
+                }
+            ],
+            paging: true
+
+        });
+
 
     }
 </script>
