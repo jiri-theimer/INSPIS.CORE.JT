@@ -15,15 +15,25 @@
 }
 @addTagHelper *, UI
 
+@section header_content{
 
-<link rel="stylesheet" href="/lib/jquery-ui/jquery-ui.min_sortable.css" />
-@if (Model.IsDataTables)
-{
-    <link rel="stylesheet" href="/lib/datatables/css/jquery.dataTables.min.css" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css" />
+    @if (Model.PageAutoRefreshPerSeconds > 0)
+    {
+        <meta http-equiv="refresh" content="@Model.PageAutoRefreshPerSeconds">
+    }
+
+    <link rel="stylesheet" href="/lib/jquery-ui/jquery-ui.min_sortable.css" />
+    @if (Model.IsDataTables)
+    {
+        <link rel="stylesheet" href="/lib/datatables/css/jquery.dataTables.min.css" />
+
+    }
+
+    <link rel="stylesheet" href="~/css/widgets.css" />
+
 }
 
-<link rel="stylesheet" href="~/css/widgets.css" />
+
 
 
 
@@ -121,6 +131,15 @@
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
+        </select>
+    </div>
+    <div class="col-auto">
+        <select asp-for="@Model.PageAutoRefreshPerSeconds" class="form-select" onchange="handle_autorefresh(this)" title="@_f.tra("Automaticky obnovovat stránku")">
+            <option value="0">@_f.tra("Bez auto-obnovování")</option>
+            <option value="30">@_f.tra("Po 30ti sekundách")</option>
+            <option value="60">@_f.tra("Po 60ti sekundách")</option>
+            <option value="300">@_f.tra("Po 5ti minutách")</option>
+            <option value="600">@_f.tra("Po 10ti minutách")</option>
         </select>
     </div>
 </div>
@@ -323,6 +342,12 @@
 
         });
     }
+    function handle_autorefresh(cbx) {
+        $.post("/Dashboard/SavePageAutoRefresh", { x: cbx.value, skin: "@Model.Skin" }, function (data) {
+            reload();
+
+        });
+    }
     function widget_help(x55id) {
         _window_open("/x55/Help?pid=" + x55id);
     }
@@ -350,9 +375,9 @@
     function load_widget_content(x55id) {
         var h = $("#box_content_" + x55id).height();
         $("#box_content_" + x55id).html("<div style='height:"+h+"px;'><strong>Loading...</strong></div>");
-        
+
         $.post("/Dashboard/GetWidgetHtmlContent", { x55id: x55id, columnsperpage:@Model.ColumnsPerPage }, function (data) {
-            
+
             $("#box_content_" + x55id).html(data.x55Content);
 
             if (data.isUseDatatables)
@@ -394,7 +419,7 @@
         });
     }
     function datatables_init_buttons_export_print(tableid, lang) {
-        
+
         $("#" + tableid).DataTable({
             stateSave: true,
             language: {

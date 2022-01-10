@@ -521,6 +521,11 @@ namespace UI.Controllers
             Factory.CBL.SetUserParam("Widgets-ColumnsPerPage-" + skin, x.ToString());
             return new BO.Result(false);            
         }
+        public BO.Result SavePageAutoRefresh(int x, string skin)
+        {
+            Factory.CBL.SetUserParam("Widgets-PageAutoRefresh-" + skin, x.ToString());
+            return new BO.Result(false);
+        }
 
         public BO.Result Clear2FactoryState(string skin)    //vyčistí plochu do továrního nastavení
         {
@@ -591,6 +596,7 @@ namespace UI.Controllers
 
             v.lisUserWidgets = new List<BO.x55Widget>();
             v.ColumnsPerPage = Factory.CBL.LoadUserParamInt("Widgets-ColumnsPerPage-" + v.Skin, 2);
+            v.PageAutoRefreshPerSeconds = Factory.CBL.LoadUserParamInt("Widgets-PageAutoRefresh-" + v.Skin, 0);
             v.recX56 = Factory.x55WidgetBL.LoadState(Factory.CurrentUser.pid, v.Skin);
             v.DockStructure = new WidgetsEnvironment(v.recX56.x56DockState);
 
