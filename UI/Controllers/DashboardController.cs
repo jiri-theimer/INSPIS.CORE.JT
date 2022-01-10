@@ -658,21 +658,34 @@ namespace UI.Controllers
                     }
 
                 }
-                if (c.x55TableSql != null && c.x55TableColHeaders != null && c.x55DataTablesButtons > BO.x55DataTablesBtns.None)
+                
+            }
+
+            if (v.lisUserWidgets.Exists(p => p.x55TableSql != null && p.x55TableColHeaders != null))
+            {
+                v.IsDataTables = true;
+            }
+            if (v.IsDataTables)
+            {
+                if (v.lisUserWidgets.Exists(p => p.x55DataTablesButtons > BO.x55DataTablesBtns.None))
                 {
                     v.IsExportButtons = true;   //zobrazovat tlačítka XLS/CSV/COPY
                 }
-                if (c.x55TableSql != null && c.x55TableColHeaders != null && c.x55DataTablesButtons == BO.x55DataTablesBtns.ExportPrintPdf)
+                if (v.lisUserWidgets.Exists(p => p.x55DataTablesButtons == BO.x55DataTablesBtns.ExportPrintPdf))
                 {
                     v.IsPdfButtons = true;      //zobrazovat i tlačítko PDF
                 }
-                if (v.IsPdfButtons || c.x55DataTablesButtons == BO.x55DataTablesBtns.ExportPrint)
+                if (v.IsPdfButtons || v.lisUserWidgets.Exists(p => p.x55DataTablesButtons == BO.x55DataTablesBtns.ExportPrint))
                 {
                     v.IsPrintButton = true;      //zobrazovat i tlačítko PDF
                 }
             }
+            if (v.lisUserWidgets.Exists(p => p.x55ChartSql != null && p.x55ChartHeaders != null))
+            {
+                v.IsCharts = true;
+            }
 
-            
+
 
             switch (v.ColumnsPerPage)
             {

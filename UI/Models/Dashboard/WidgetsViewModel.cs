@@ -19,7 +19,8 @@ namespace UI.Models.Dashboard
         public IEnumerable<BO.x55Widget> lisAllWidgets { get; set; }
         public List<BO.x55Widget> lisUserWidgets { get; set; }
         public int ColumnsPerPage { get; set; }
-
+        public bool IsCharts { get; set; }
+        public bool IsDataTables { get; set; }
         public string DataTables_Localisation { get; set; }
 
         public bool IsPdfButtons { get; set; }
