@@ -77,7 +77,7 @@
                     }
                 </div>
             </div>
-            
+
         }
 
         <div class="col-sm-3 col-md-3 rowvalhover">
@@ -86,7 +86,7 @@
                 {
                     <span>@Model.Rec.a03ICO</span>
 
-                    
+
                     @if (Model.Rec.a06ID == 1)
                     {
                         <a class="valhover_tooltip" target='_blank' href="https://wwwinfo.mfcr.cz/cgi-bin/ares/darv_sko.cgi?ico=@(Model.Rec.a03ICO)&jazyk=cz&xml=1">ares</a>
@@ -103,7 +103,7 @@
         </div>
         @if (Model.Rec.a06ID == 1)
         {
-            
+
             <div class="col-sm-3 col-md-3">
                 <span class="val-readonly">@Model.Rec.a03DirectorFullName</span>
             </div>
@@ -209,11 +209,15 @@
         </div>
     }
 
-<div class="row my-2 p-0">
-    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typ lokality"):</label>
-    <div class="col-sm-5 col-md-4">
-        <myval value="@Model.Rec.a03LocationFlagAlias"></myval>
-    </div>
-</div>
+    @if (_f.App.Implementation == "UA")
+    {
+        <div class="row my-2 p-0">
+            <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Typ lokality"):</label>
+            <div class="col-sm-5 col-md-4">
+                <myval value="@Model.Rec.a03LocationFlagAlias"></myval>
+            </div>
+        </div>
+    }
+
     @Html.Raw(Model.TagHtml)
 </div>

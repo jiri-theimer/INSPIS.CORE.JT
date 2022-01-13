@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace BL
 {
@@ -109,10 +110,13 @@ namespace BL
             {
                 this.AddMessage("Chybí vyplnit [Kód]."); return false;
             }
+            rec.x55Code = Regex.Replace(rec.x55Code, "[^a-zA-Z0-9]", "_"); //kód raději pouze pro alfanumerické znaky
+
             if (LoadByCode(rec.x55Code, rec.pid) != null)
             {
                 this.AddMessageTranslated(string.Format(_mother.tra("V systému již existuje jiný widget s kódem: {0}."), rec.x55Code)); return false;
             }
+            
 
             if (!string.IsNullOrEmpty(rec.x55ChartSql) && rec.x55ChartType==null)
             {

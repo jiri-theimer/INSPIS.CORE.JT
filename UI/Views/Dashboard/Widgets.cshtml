@@ -126,21 +126,53 @@
 
         </div>
     </div>
-    <div class="col-auto">
-        <select asp-for="@Model.ColumnsPerPage" class="form-select" onchange="handle_pocet_sloupcu(this)" title="@_f.tra("Počet sloupců na ploše")">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-        </select>
-    </div>
-    <div class="col-auto">
-        <select asp-for="@Model.PageAutoRefreshPerSeconds" class="form-select" onchange="handle_autorefresh(this)" title="@_f.tra("Automaticky obnovovat stránku")">
-            <option value="0">@_f.tra("Bez auto-obnovování")</option>
-            <option value="30">@_f.tra("Po 30ti sekundách")</option>
-            <option value="60">@_f.tra("Po 60ti sekundách")</option>
-            <option value="300">@_f.tra("Po 5ti minutách")</option>
-            <option value="600">@_f.tra("Po 10ti minutách")</option>
-        </select>
+    <div class="dropdown col-auto">
+        <a class="btn dropdown-toggle" href="#" role="button" id="cmdMore" data-bs-toggle="dropdown" aria-expanded="false">
+            @_f.tra("Více")
+        </a>
+        <div class="dropdown-menu" aria-labelledby="cmdMore" style="min-width:300px;">
+
+            <div class="card m-3">
+                <div class="card-header">
+                    @_f.tra("Počet sloupců na ploše")
+                </div>
+                <div class="card-body">
+                    <input type="radio" id="opgCols1" asp-for="@Model.ColumnsPerPage" value="1" onchange="handle_pocet_sloupcu(this)" />
+                    <label for="opgCols1">1 @_f.tra("sloupec")</label>
+                    <br />
+                    <input type="radio" id="opgCols2" asp-for="@Model.ColumnsPerPage" value="2" onchange="handle_pocet_sloupcu(this)" />
+                    <label for="opgCols2">2 @_f.tra("sloupce")</label>
+                    <br />
+                    <input type="radio" id="opgCols3" asp-for="@Model.ColumnsPerPage" value="3" onchange="handle_pocet_sloupcu(this)" />
+                    <label for="opgCols3">3 @_f.tra("sloupce")</label>
+                </div>
+            </div>
+
+            
+
+            <div class="card m-3">
+                <div class="card-header">
+                    @_f.tra("Automaticky obnovovat dashboard plochu")
+                </div>
+                <div class="card-body">
+                    <input type="radio" id="opgRefresh0" asp-for="@Model.PageAutoRefreshPerSeconds" value="0" onchange="handle_autorefresh(this)" />
+                    <label for="opgRefresh0">@_f.tra("Bez auto-obnovování")</label>
+                    <br />
+                    <input type="radio" id="opgRefresh30" asp-for="@Model.PageAutoRefreshPerSeconds" value="30" onchange="handle_autorefresh(this)" />
+                    <label for="opgRefresh30">@_f.tra("Po 30ti sekundách")</label>
+                    <br />
+                    <input type="radio" id="opgRefresh60" asp-for="@Model.PageAutoRefreshPerSeconds" value="60" onchange="handle_autorefresh(this)" />
+                    <label for="opgRefresh60">@_f.tra("Po 60ti sekundách")</label>
+                    <br />
+                    <input type="radio" id="opgRefresh300" asp-for="@Model.PageAutoRefreshPerSeconds" value="300" onchange="handle_autorefresh(this)" />
+                    <label for="opgRefresh300">3 @_f.tra("Po 5ti minutách")</label>
+                    <br />
+                    <input type="radio" id="opgRefresh600" asp-for="@Model.PageAutoRefreshPerSeconds" value="600" onchange="handle_autorefresh(this)" />
+                    <label for="opgRefresh600">@_f.tra("Po 10ti minutách")</label>
+                </div>
+            </div>
+
+        </div>
     </div>
 </div>
 

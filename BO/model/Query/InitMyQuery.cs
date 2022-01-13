@@ -33,9 +33,10 @@ namespace BO
                     return LoadA01(master_prefix, master_pid, myqueryinline);
                 case "h04":
                     return LoadH04(master_prefix, master_pid);
-                case "a03":
+                case "a03":                    
+                    //return handle_myquery_reflexe(new BO.myQueryA03());
                     return load_a03();
-
+                    
                 case "a10":
                     return handle_myquery_reflexe(new BO.myQueryA10());
                 case "a11":
@@ -143,9 +144,11 @@ namespace BO
         }
 
       
-        private BO.myQueryA03 load_a03()
+        private BO.myQueryA03 load_a03(string master_prefix = null, int master_pid = 0, string myqueryinline = null)
         {
-            
+            handle_myqueryinline_input(myqueryinline);
+            _master_prefix = validate_prefix(master_prefix);
+            _master_pid = master_pid;
 
             var mq = new BO.myQueryA03();
             mq = handle_myquery_reflexe(mq);

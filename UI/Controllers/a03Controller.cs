@@ -227,13 +227,22 @@ namespace UI.Controllers
             {
                 v.NavTabs.Add(AddTab("Učitelé", "k01Teacher", "/TheGrid/SlaveView?prefix=k01"));
             }            
-            v.NavTabs.Add(AddTab("Školy zřizovatele", "a03Institution", "/TheGrid/SlaveView?prefix=a03&myqueryinline=a03id_founder@int@"+v.Rec.pid.ToString()));
-            strBadge = null;
-            if (c.supervisory_count > 0) strBadge = c.supervisory_count.ToString();
-            v.NavTabs.Add(AddTab("Dohled", "Dohled", "/TheGrid/SlaveView?prefix=a03&myqueryinline=a03id_supervisory@int@"+v.Rec.pid.ToString(), true,strBadge));
-            strBadge = null;
-            if (c.podrizene_count > 0) strBadge = c.podrizene_count.ToString();
-            v.NavTabs.Add(AddTab("Podřízené", "Podrizene", "/TheGrid/SlaveView?prefix=a03&myqueryinline=a03id_parent@int@"+v.Rec.pid.ToString(), true,strBadge));
+            if (v.Rec.a06ID == 2)   //zřizovatel
+            {
+                v.NavTabs.Add(AddTab("Školy zřizovatele", "a03Institution", "/TheGrid/SlaveView?prefix=a03&myqueryinline=a03id_founder@int@" + v.Rec.pid.ToString()));
+            }
+            
+
+            if (Factory.App.Implementation == "UA")
+            {
+                strBadge = null;
+                if (c.supervisory_count > 0) strBadge = c.supervisory_count.ToString();
+                v.NavTabs.Add(AddTab("Dohled", "Dohled", "/TheGrid/SlaveView?prefix=a03&myqueryinline=a03id_supervisory@int@" + v.Rec.pid.ToString(), true, strBadge));
+                strBadge = null;
+                if (c.podrizene_count > 0) strBadge = c.podrizene_count.ToString();
+                v.NavTabs.Add(AddTab("Podřízené", "Podrizene", "/TheGrid/SlaveView?prefix=a03&myqueryinline=a03id_parent@int@" + v.Rec.pid.ToString(), true, strBadge));
+            }
+            
             strBadge = null;
             if (c.a42_count > 0) strBadge = c.a42_count.ToString();
             v.NavTabs.Add(AddTab("INEZ", "a42Qes", "/TheGrid/SlaveView?prefix=a42",true,strBadge));

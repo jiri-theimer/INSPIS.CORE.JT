@@ -124,9 +124,13 @@
                         }
                     </div>
                 </div>
-                <div class="col-sm-1 col-md-1">
-                    <myval value="@Model.Rec.a03LocationFlagAlias"></myval>
-                </div>
+                @if (_f.App.Implementation == "UA")
+                {
+                    <div class="col-sm-1 col-md-1">
+                        <myval value="@Model.Rec.a03LocationFlagAlias"></myval>
+                    </div>
+                }
+
 
             }
 
