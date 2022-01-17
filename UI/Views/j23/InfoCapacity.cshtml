@@ -59,21 +59,26 @@
             @foreach (var c in Model.lisA01)
             {
                 <tr>
+                   
                     <td>
                         <a target="_blank" href="/a01/RecPage?pid=@c.a01ID">@c.a01Signature</a>
-                        @foreach (var recA38 in Model.lisA38.Where(p => p.a01ID == c.pid).GroupBy(p => p.a38PlanDate))
-                        {
-                    <div>
-                        <span style="color:orangered">
-                            @(BO.BAS.ObjectDate2String(recA38.First().a38PlanDate))
-                        </span>
-                        <span style="background-color:darkviolet;color:white;">
-                            @(string.Join(",",recA38.Where(p=>p.a38IsDriver==true).Select(p => p.PersonAsc)))
-                        </span>
-                        @(string.Join(" + ",recA38.Where(p=>p.a38IsDriver==false).Select(p => p.PersonAsc)))
-                        
-                    </div>
-                        }
+                        <table>
+                            @foreach (var recA38 in Model.lisA38.Where(p => p.a01ID == c.pid).GroupBy(p => p.a38PlanDate))
+                            {
+                                <tr>
+                                    <td style="color:orangered;width:100px;">
+                                        @(BO.BAS.ObjectDate2String(recA38.First().a38PlanDate))
+                                    </td>
+                                    <td style="background-color:darkviolet;color:white;width:150px;">
+                                        @(string.Join(",",recA38.Where(p=>p.a38IsDriver==true).Select(p => p.PersonAsc)))
+                                    </td>
+                                    <td>
+                                        @(string.Join(" + ",recA38.Where(p=>p.a38IsDriver==false).Select(p => p.PersonAsc)))
+                                    </td>
+
+                                </tr>
+                            }
+                        </table>
                     </td>
                     <td>
                         @c.a10Name

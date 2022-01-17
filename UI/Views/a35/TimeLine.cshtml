@@ -127,7 +127,7 @@
     @foreach (var recJ02 in Model.lisJ02)
     {
         <tr>
-            <td>
+            <td style="padding-left:2px;">
                 @if (Model.lisTimeLine.Where(p => p.j02ID == recJ02.pid && p.Krat > 1).Count() > 0)
                 {
                     <span style="background-color:pink;">
