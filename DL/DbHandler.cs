@@ -11,6 +11,12 @@ namespace DL
         public BO.RunningUser CurrentUser { get; set; }
         private string _conString;
         private string _logDir;
+        private string _lastError { get; set; }
+
+        public string GetLastError()
+        {
+            return _lastError;
+        }
         public DbHandler(string connectstring, BO.RunningUser ru, string strLogDir)
         {
             _conString = connectstring;
@@ -21,7 +27,8 @@ namespace DL
 
 
         public string RunSp(string strProcName, ref Dapper.DynamicParameters pars,int? timeout_seconds=null)
-        {            
+        {
+            _lastError = null;
             using (SqlConnection con = new SqlConnection(_conString))
             {
                 try
@@ -52,6 +59,7 @@ namespace DL
 
         public T Load<T>(string strSQL)
         {
+            _lastError = null;
             using (SqlConnection con = new SqlConnection(_conString))
             {
                 try
@@ -68,6 +76,7 @@ namespace DL
         }
         public T Load<T>(string strSQL, object param)
         {
+            _lastError = null;
             using (SqlConnection con = new SqlConnection(_conString))
             {
 
@@ -85,6 +94,7 @@ namespace DL
         }
         public T Load<T>(string strSQL, Dapper.DynamicParameters pars)
         {
+            _lastError = null;
             using (SqlConnection con = new SqlConnection(_conString))
             {
                 try
@@ -102,6 +112,7 @@ namespace DL
         }
         public IEnumerable<T> GetList<T>(string strSQL)
         {
+            _lastError = null;
             using (SqlConnection con = new SqlConnection(_conString))
             {
                 try
@@ -123,6 +134,7 @@ namespace DL
         }
         public IEnumerable<T> GetList<T>(string strSQL, object param)
         {
+            _lastError = null;
             using (SqlConnection con = new SqlConnection(_conString))
             {
                 try
@@ -143,7 +155,7 @@ namespace DL
         }
         public IEnumerable<T> GetList<T>(string strSQL, Dapper.DynamicParameters pars)
         {
-            //var t0 = DateTime.Now;
+            _lastError = null;            
             using (SqlConnection con = new SqlConnection(_conString))
             {
                 try
@@ -166,6 +178,7 @@ namespace DL
 
         public System.Data.DataTable GetDataTable(string strSQL, List<DL.Param4DT> pars = null)
         {
+            _lastError = null;
             System.Data.DataTable dt = new System.Data.DataTable();
 
             using (SqlConnection con = new SqlConnection(_conString))
@@ -205,6 +218,7 @@ namespace DL
 
         public int SaveRecord(string strTable, Params4Dapper p, BO.BaseBO rec,bool isvalidity=true,bool istimestamp=true)
         {
+            _lastError = null;
             DynamicParameters pars = p.getDynamicDapperPars();
             string strPrefix = strTable.Substring(0, 3);
             var strPidField = strPrefix + "ID";
@@ -335,6 +349,7 @@ namespace DL
         //}
         public bool RunSql(string strSQL, object param = null, int? timeout_seconds = null)
         {
+            _lastError = null;
             using (SqlConnection con = new SqlConnection(_conString))
             {
                 try
@@ -475,6 +490,7 @@ namespace DL
         }
         private void log_error(Exception e, string strSQL, DynamicParameters pars)
         {
+            _lastError = e.Message;
             CurrentUser.AddMessage(e.Message);
             var strPath = string.Format("{0}\\sql-error-{1}.log", _logDir, DateTime.Now.ToString("yyyy.MM.dd"));
 
@@ -504,6 +520,7 @@ namespace DL
 
         private void log_error(Exception e, string strSQL, object param = null)
         {
+            _lastError = e.Message;
             if (CurrentUser != null) CurrentUser.AddMessage(e.Message);
             var strPath = string.Format("{0}\\sql-error-{1}.log", _logDir, DateTime.Now.ToString("yyyy.MM.dd"));
 

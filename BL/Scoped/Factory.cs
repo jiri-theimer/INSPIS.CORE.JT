@@ -24,6 +24,7 @@ namespace BL
         private Ij25NonPersonPlanReasonBL _j25;
         private Ij26HolidayBL _j26;
         private Ij72TheGridTemplateBL _j72;
+        private Ij76NamedQueryBL _j76;
         private Ij75ImportTemplateBL _j75;
         private Ia01EventBL _a01;
         private Ia02InspectorBL _a02;
@@ -376,6 +377,14 @@ namespace BL
             {
                 if (_j72 == null) _j72 = new j72TheGridTemplateBL(this);
                 return _j72;
+            }
+        }
+        public Ij76NamedQueryBL j76NamedQueryBL
+        {
+            get
+            {
+                if (_j76 == null) _j76 = new j76NamedQueryBL(this);
+                return _j76;
             }
         }
         public Ij75ImportTemplateBL j75ImportTemplateBL

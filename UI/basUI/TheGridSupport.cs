@@ -166,9 +166,12 @@ namespace UI
 
             var dtFooter = _Factory.gridBL.GetList(mq, true);
             int intVirtualRowsCount = 0;
-            if (dtFooter.Columns.Count > 0)
+            if (dtFooter.Rows.Count>0 && dtFooter.Columns.Count > 0)
             {
                 intVirtualRowsCount = Convert.ToInt32(dtFooter.Rows[0]["RowsCount"]);
+
+                
+                
             }
             else
             {
@@ -190,7 +193,7 @@ namespace UI
 
             var dt = _Factory.gridBL.GetList(mq);
 
-
+            
 
             if (_grid.GridState.j75CurrentRecordPid > 0 && intVirtualRowsCount > gridState.j75PageSize)
             {
@@ -353,7 +356,7 @@ namespace UI
 
         private void Render_TOTALS(System.Data.DataTable dt)
         {
-            if (dt.Columns.Count == 0)
+            if (dt.Columns.Count == 0 || dt.Rows.Count==0)
             {
                 return;
             }
