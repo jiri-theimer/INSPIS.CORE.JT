@@ -14,9 +14,9 @@ namespace UI.Controllers
         {            
             _pp = pp;
         }
-        public IActionResult Index(int j76id,string entity)
+        public IActionResult Index(int j76id,string entity,bool create)
         {
-            var v = new QueryBuilderViewModel() { SelectedJ76ID = j76id,Entity=entity };
+            var v = new QueryBuilderViewModel() { SelectedJ76ID = j76id,Entity=entity,IsCreate=create };
             if (v.SelectedJ76ID > 0)
             {
                 InhaleRecAndList(v);
@@ -27,7 +27,10 @@ namespace UI.Controllers
                 {
                     return this.StopPage(true, "entity missing");
                 }                
-                
+                if (v.IsCreate)
+                {
+                    v.Rec = new BO.j76NamedQuery() { j76Entity = v.Entity };
+                }
             }
 
             
@@ -40,6 +43,7 @@ namespace UI.Controllers
         private void InhaleRecAndList(QueryBuilderViewModel v)
         {
             v.Rec = Factory.j76NamedQueryBL.Load(v.SelectedJ76ID);
+            v.Entity = v.Rec.j76Entity;
             v.lisJ77 = Factory.j76NamedQueryBL.GetList_j77(v.Rec.pid, v.Entity.Substring(0, 3)).ToList();
             foreach (var c in v.lisJ77)
             {
@@ -49,12 +53,12 @@ namespace UI.Controllers
 
         private void RefreshState(QueryBuilderViewModel v)
         {
-            v.lisJ76 = Factory.j76NamedQueryBL.GetList(v.Entity, Factory.CurrentUser.pid);
+            v.lisJ76 = Factory.j76NamedQueryBL.GetList(v.Entity, Factory.CurrentUser.pid).OrderBy(p => p.j76Name);
             if (!Factory.IsUserAdmin())
             {
                 v.lisJ76 = v.lisJ76.Where(p => p.j03ID == Factory.CurrentUser.pid);
             }
-            if (v.lisJ76.Count()>0 && (v.SelectedJ76ID == 0 || !v.lisJ76.Any(p=>p.pid==v.SelectedJ76ID)))
+            if (!v.IsCreate && v.lisJ76.Count()>0 && (v.SelectedJ76ID == 0 || !v.lisJ76.Any(p=>p.pid==v.SelectedJ76ID)))
             {
                 v.SelectedJ76ID = v.lisJ76.First().pid;
                 InhaleRecAndList(v);
@@ -62,6 +66,7 @@ namespace UI.Controllers
             if (v.Rec == null)
             {
                 v.Rec = new BO.j76NamedQuery() { j76Entity = v.Entity };
+                v.IsCreate = true;
             }
             if (v.Rec.pid==0 || v.Rec.j03ID==Factory.CurrentUser.pid || Factory.IsUserAdmin())
             {
@@ -105,6 +110,10 @@ namespace UI.Controllers
             {
                 return View(v);
             }
+            if (oper == "create")
+            {
+                return RedirectToActionPermanent("Index", new {entity=v.Entity, create = true });
+            }
             if (oper == "saveas" && !string.IsNullOrEmpty(j76name))
             {
                 var recJ76 = Factory.j76NamedQueryBL.Load(v.Rec.pid);
@@ -120,7 +129,7 @@ namespace UI.Controllers
             {
                 if (Factory.CBL.DeleteRecord("j76", v.Rec.pid) == "1")
                 {
-                    return RedirectToActionPermanent("Index");
+                    return RedirectToActionPermanent("Index", new { entity = v.Entity });
                     
                 }
             }

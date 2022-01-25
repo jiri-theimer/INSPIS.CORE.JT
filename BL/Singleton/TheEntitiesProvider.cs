@@ -147,6 +147,8 @@ namespace BL
             AE_TINY("j26Holiday", "Dny svátků", "Svátek");
             AE_TINY("j40MailAccount", "Poštovní účty", "Poštovní účet");
 
+            AE_TINY("j76NamedQuery", "Uložené filtry", "Uložený filtr");
+
             AE("f23ReplyType", "Typy otázek", "Typ odpovědi", "f23ReplyType a", "a.f23Name", "a.f23Name");
 
             AE("f29PortalQuestionTab", "Portál boxy", "Portal box", "f29PortalQuestionTab a", "a.f29Ordinal", "a.f29Ordinal");

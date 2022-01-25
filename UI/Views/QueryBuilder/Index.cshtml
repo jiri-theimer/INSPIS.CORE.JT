@@ -25,20 +25,21 @@
                 @Model.PageTitle
             </h3>
         </td>
-        <td>
-            
-            <mydropdown asp-for="@Model.SelectedJ76ID" datavalue="@Model.SelectedJ76ID" datasource="@Model.lisJ76" valuefield="pid" textfield="j76Name" firstemptyrowtext="false" event_after_changevalue="handle_combo_change"></mydropdown>
+        <td style="padding-left:20px;">
+            @if (!Model.IsCreate)
+            {
+                <mydropdown asp-for="@Model.SelectedJ76ID" datavalue="@Model.SelectedJ76ID" datasource="@Model.lisJ76" valuefield="pid" textfield="j76Name" firstemptyrowtext="false" event_after_changevalue="handle_combo_change"></mydropdown>
+            }
+            else
+            {
+                <i>@_f.tra("Založení nového filtru")</i>
+            }
+
         </td>
     </tr>
 </table>
 
-@if (Model.Rec == null)
-{
-    <i>
-        Zatím žádný založený filtr.
-    </i>
-    return;
-}
+
 
 
 <div class="bg-light" style="padding:10px;">
@@ -52,7 +53,12 @@
         <button type="button" id="cmdSaveAs" onclick="saveas()" class="btn btn-outline-success">@_f.tra("Uložit jako")...</button>
     }
 
+    @if (!Model.IsCreate)
+    {
+        <button type="button" id="cmdCreate" onclick="create()" class="btn btn-outline-success">@_f.tra("Založit nový")</button>
+    }
 
+    <button type="button" id="cmdRefresh" onclick="reload()" class="btn btn-light">@_f.tra("Občerstvit")</button>
 
     <button type="button" id="cmdClose" onclick="_window_close()" class="btn btn-light">@_f.tra("Zavřít")</button>
 
@@ -64,8 +70,9 @@
     <input type="hidden" asp-for="Rec.j76Entity" />
     <input type="hidden" asp-for="@Model.Entity" />
     <input type="hidden" asp-for="@Model.HasOwnerPermissions" value="@Model.HasOwnerPermissions" />
+    <input type="hidden" asp-for="@Model.IsCreate" value="@Model.IsCreate" />
 
-    <div class="row" style="max-width:1000px;margin-bottom:20px;">
+    <div class="row" style="max-width:1000px;margin-bottom:20px;margin-top:20px;">
         <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Název filtru"):</label>
         <div class="col-sm-8 col-md-8">
             @if (Model.HasOwnerPermissions)
@@ -78,10 +85,14 @@
             }
 
         </div>
-        <div class="col-sm-3 col-md-3">
-            <input type="checkbox" id="chkIsPublic" asp-for="Rec.j76IsPublic" />
-            <label for="chkIsPublic">@_f.tra("Zpřístupnit filtr všem uživatelům")</label>
-        </div>
+        @if (_f.IsUserAdmin())
+        {
+            <div class="col-sm-3 col-md-3">
+                <input type="checkbox" id="chkIsPublic" asp-for="Rec.j76IsPublic" />
+                <label for="chkIsPublic">@_f.tra("Zpřístupnit filtr všem uživatelům")</label>
+            </div>
+        }
+
     </div>
 
 
@@ -264,11 +275,14 @@
 
 
     function handle_combo_change(cbx) {
-        var j76id = cbx.Value;
-        alert(j76id);
+        var j76id = cbx.value;
+        location.replace("/QueryBuilder/Index?j76id="+j76id);
 
     }
 
+    function reload() {
+        location.replace("/QueryBuilder/Index?j76id=@(Model.SelectedJ76ID)&entity=@(Model.Entity)");
+    }
     function saveas() {
         var s = prompt("@_f.tra("Zadejte název nového filtru")");
         if (s.length > 0) {
@@ -276,7 +290,11 @@
             form1.submit();
         }
     }
-  
+
+    function create() {
+        form1.action = "/QueryBuilder/Index?oper=create";
+        form1.submit();
+    }
 
     function delete_record() {
         if (confirm("@_f.tra("Opravdu chcete nenávratně odstranit tento filtr?")")) {

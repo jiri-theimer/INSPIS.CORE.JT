@@ -9,6 +9,7 @@ namespace UI.Models
     {
         public int SelectedJ76ID { get; set; }
         public string Entity { get; set; }
+        public bool IsCreate { get; set; }
         public IEnumerable<BO.j76NamedQuery> lisJ76 { get; set; }
         public BO.j76NamedQuery Rec { get; set; }
         public List<BO.j77NamedQueryRow> lisJ77 { get; set; }
