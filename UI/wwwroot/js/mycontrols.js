@@ -516,7 +516,7 @@ function mytree_init(expandall) {
 }
 
 
-function myselect_focus(e, cbx, entity, textfield,orderfield) { //zpracování událost focus pro taghelper mySelect
+function myselect_focus(e, cbx, entity, textfield,orderfield,wherecond) { //zpracování událost focus pro taghelper mySelect
     
     if ($(cbx).prop("naplneno")) {
         return; //dropdown byl již dříve naplněn daty
@@ -541,7 +541,7 @@ function myselect_focus(e, cbx, entity, textfield,orderfield) { //zpracování u
     
     //$(cbx).load("/TheCombo/GetMySelectHtmlOptions?entity=" + entity + "&textfield=" + textfield);
    
-    $.post("/TheCombo/GetMySelectHtmlOptions", { textfield: textfield, entity: entity, orderfield: orderfield }, function (data) {
+    $.post("/TheCombo/GetMySelectHtmlOptions", { textfield: textfield, entity: entity, orderfield: orderfield, wherecond: wherecond }, function (data) {
 
         $(cbx).html(firstrow + data);
 

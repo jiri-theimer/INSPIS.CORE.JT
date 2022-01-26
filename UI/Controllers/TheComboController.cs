@@ -423,7 +423,7 @@ namespace UI.Controllers
             return s.ToString();
         }
 
-        public string GetMySelectHtmlOptions(string entity,string textfield,string orderfield)
+        public string GetMySelectHtmlOptions(string entity,string textfield,string orderfield,string wherecond)
         {
             var sb = new System.Text.StringBuilder();
             var mq = new BO.myQuery(entity) { IsRecordValid = true };
@@ -433,6 +433,10 @@ namespace UI.Controllers
             {               
                 orderfield = System.Web.HttpUtility.UrlDecode(orderfield).Replace("##", "'");
                 mq.explicit_orderby = orderfield;
+            }
+            if (wherecond != null)
+            {
+                mq.explicit_sqlwhere = BO.BAS.OcistitSQL(System.Web.HttpUtility.UrlDecode(wherecond));
             }
             
             var dt = Factory.gridBL.GetList(mq);

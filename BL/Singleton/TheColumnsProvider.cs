@@ -371,7 +371,11 @@ namespace BL
             AF("j72TheGridTemplate", "j72IsTemplate4SystemGrid", "Šablona pro výchozí grid", 1, null, "bool");
             AF("j72TheGridTemplate", "j72IsPublic", "Sdílený pro všechny", 1, null, "bool");            
             AppendTimestamp("j72TheGridTemplate");
-            
+
+            AF("j76NamedQuery", "j76Name", "Pojmenovaný filtr", 1, null, "string", false, true);
+            AF("j76NamedQuery", "j76IsPublic", "Sdílený", 1, null, "bool");           
+            AppendTimestamp("j76NamedQuery");
+
 
             //a17 = typy činností školy
             AF("a17DepartmentType", "a17Name", "Typ činnosti", 1,null,"string",false,true);

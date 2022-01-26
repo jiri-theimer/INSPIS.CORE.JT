@@ -24,6 +24,9 @@ namespace UI.Views.Shared.TagHelpers
         [HtmlAttributeName("orderfield")]
         public string OrderField { get; set; }
 
+        [HtmlAttributeName("wherecond")]
+        public string WhereCondition { get; set; }
+
         [HtmlAttributeName("firstemptyrowtext")]
         public string FirstEmptyRowText { get; set; }
         [HtmlAttributeName("firstemptyrowvalue")]
@@ -56,10 +59,14 @@ namespace UI.Views.Shared.TagHelpers
             {
                 this.OrderField = System.Web.HttpUtility.UrlEncode(this.OrderField.Replace("'", "##"));
             }
+            if (this.WhereCondition != null)
+            {
+                this.WhereCondition = System.Web.HttpUtility.UrlEncode(this.WhereCondition.Replace("'", "##"));
+            }
             string strClass = "form-select";
             if (bolSelected && CssClass_Selected !=null) strClass += " "+this.CssClass_Selected;
 
-            sb.AppendLine(string.Format("<select class='{5}' id='{0}' name='{1}' onfocus=\"myselect_focus(event,this,'{2}','{3}','{4}')\"", strControlID, this.For.Name, this.Entity,this.TextField,this.OrderField,strClass));
+            sb.AppendLine($"<select class='{strClass}' id='{strControlID}' name='{this.For.Name}' onfocus=\"myselect_focus(event,this,'{this.Entity}','{this.TextField}','{this.OrderField}','{this.WhereCondition}')\"");
             if (this.Event_After_ChangeValue != null)
             {
                 sb.Append(string.Format(" onchange='{0}(this)'", this.Event_After_ChangeValue));

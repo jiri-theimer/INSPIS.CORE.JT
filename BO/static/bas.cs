@@ -393,7 +393,7 @@ namespace BO
             strSQL = strSQL.Replace("drop ", "", StringComparison.OrdinalIgnoreCase);
             strSQL = strSQL.Replace("truncate ", "", StringComparison.OrdinalIgnoreCase);
             strSQL = strSQL.Replace("delete ", "", StringComparison.OrdinalIgnoreCase);
-
+            strSQL = strSQL.Replace("##", "'");
             return strSQL;
 
         }

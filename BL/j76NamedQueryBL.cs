@@ -11,7 +11,7 @@ namespace BL
         
         public int Save(BO.j76NamedQuery rec, List<BO.j77NamedQueryRow> lisJ77);
         
-        public IEnumerable<BO.j76NamedQuery> GetList(string strEntity, int intJ03ID);
+        public IEnumerable<BO.j76NamedQuery> GetList(string strEntity);
         public IEnumerable<BO.j77NamedQueryRow> GetList_j77(int j76id,string prefix);
         public string getFiltrAlias(string prefix, BO.baseQuery mq);
         
@@ -169,16 +169,13 @@ namespace BL
         }
 
 
-        public IEnumerable<BO.j76NamedQuery> GetList(string strEntity, int intJ03ID)
+        public IEnumerable<BO.j76NamedQuery> GetList(string strEntity)
         {            
-            var p = new Dapper.DynamicParameters();
-            p.Add("j03id", intJ03ID);
+            var p = new Dapper.DynamicParameters();            
             p.Add("entity", strEntity);
 
             var s = string.Format("SELECT a.*,{0} FROM j76NamedQuery a WHERE a.j76Entity=@entity", _db.GetSQL1_Ocas("j76"));
-            
-            s += " AND (a.j03ID=@j03id OR a.j76IsPublic=1)";
-
+           
 
             return _db.GetList<BO.j76NamedQuery>(s, p);
         }

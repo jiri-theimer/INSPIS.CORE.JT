@@ -29,8 +29,8 @@ namespace UI.Models
 
         public string FilterA10ID { get; set; }     //fixní filtr v horním pruhu
         public string FilterA10Name { get; set; }   //fixní filtr v horním pruhu
-        public string FilterA08ID { get; set; }     //fixní filtr v horním pruhu
-        public string FilterA08Name { get; set; }   //fixní filtr v horním pruhu
+        public string FilterJ76ID { get; set; }     //fixní filtr v horním pruhu
+        public string FilterJ76Name { get; set; }   //fixní filtr v horním pruhu
         public string FilterMyInvolvement { get; set; } //fixní filtr v horním pruhu
         public string FilterH07ID { get; set; }     //fixní filtr v horním pruhu
         public string FilterH07Name { get; set; }   //fixní filtr v horním pruhu

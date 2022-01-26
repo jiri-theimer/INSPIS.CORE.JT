@@ -259,15 +259,12 @@ namespace UI.Controllers
                             v.FilterA10ID = mqA01.a10id.ToString();
                             v.FilterA10Name = Factory.CBL.LoadUserParam(get_param_key("grid-filter-a10name", masterentity));
                         }
-                        if (pagename != "slaveview")    //v podformuláři akcí se nefiltruje podle tématu
+                        
+                        mqA01.j76id = Factory.CBL.LoadUserParamInt(get_param_key($"grid-filter-j76id-a01", masterentity));
+                        if (mqA01.j76id > 0)
                         {
-                            mqA01.a08id = Factory.CBL.LoadUserParamInt(get_param_key("grid-filter-a08id", masterentity));
-                            if (mqA01.a08id > 0)
-                            {
-                                v.FilterA08ID = mqA01.a08id.ToString();
-                                v.FilterA08Name = Factory.CBL.LoadUserParam(get_param_key("grid-filter-a08name", masterentity));
-                            }
-
+                            v.FilterJ76ID = mqA01.j76id.ToString();
+                            v.FilterJ76Name = Factory.CBL.LoadUserParam(get_param_key($"grid-filter-j76name-a01", masterentity));
                         }
 
                         v.FilterMyInvolvement = Factory.CBL.LoadUserParam(get_param_key("grid-filter-myinvolvement-a01", masterentity));

@@ -53,7 +53,7 @@ namespace UI.Controllers
 
         private void RefreshState(QueryBuilderViewModel v)
         {
-            v.lisJ76 = Factory.j76NamedQueryBL.GetList(v.Entity, Factory.CurrentUser.pid).OrderBy(p => p.j76Name);
+            v.lisJ76 = Factory.j76NamedQueryBL.GetList(v.Entity).Where(p=>p.j03ID== Factory.CurrentUser.pid || p.j76IsPublic).OrderBy(p => p.j76Name);
             if (!Factory.IsUserAdmin())
             {
                 v.lisJ76 = v.lisJ76.Where(p => p.j03ID == Factory.CurrentUser.pid);
