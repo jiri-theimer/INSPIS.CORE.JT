@@ -61,7 +61,10 @@ namespace BL
             
            
             int intJ76ID = _db.SaveRecord("j76NamedQuery", p, rec);
-
+            if (rec.pid > 0)
+            {
+                _db.RunSql("UPDATE x36UserParam set x36Value=@pid+'|'+@newvalue WHERE x36Key LIKE 'grid-filter-j76name%' AND x36Value LIKE @pid+'|%'", new { newvalue = rec.j76Name,pid=rec.pid.ToString() });
+            }
                       
             if (lisJ77 != null)
             {

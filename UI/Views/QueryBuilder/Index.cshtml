@@ -58,7 +58,9 @@
         <button type="button" id="cmdCreate" onclick="create()" class="btn btn-outline-success">@_f.tra("Založit nový")</button>
     }
 
-    <button type="button" id="cmdRefresh" onclick="reload()" class="btn btn-light">@_f.tra("Občerstvit")</button>
+    <a onclick="reload()" class="btn btn-light" title="@_f.tra("Občerstvit")" href="#"><span class="k-icon k-i-reload"></span></a>
+
+    
 
     <button type="button" id="cmdClose" onclick="_window_close()" class="btn btn-light">@_f.tra("Zavřít")</button>
 
