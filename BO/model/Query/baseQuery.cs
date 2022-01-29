@@ -63,9 +63,10 @@ namespace BO
         public string explicit_sqlwhere { get; set; }
         public BO.RunningUser CurrentUser;
         public List<BO.TheGridColumnFilter> TheGridFilter { get; set; }     //sloupcový filtr
-        public IEnumerable<BO.j73TheGridQuery> lisJ73 { get; set; }         //uložený filtr z návrháře sloupců
+        public IEnumerable<BO.j73TheGridQuery> lisJ73_Grid { get; set; }         //uložený filtr z návrháře sloupců
+        public IEnumerable<BO.j73TheGridQuery> lisJ73_Named { get; set; }         //uložený filtr z pojmenovaného filtru
         public int j76id { get; set; }  //Uložený filtr
-        public IEnumerable<BO.j77NamedQueryRow> lisJ77 { get; set; }         //uložený filtr z pojmenovaných filtrů
+        
         public bool MyRecordsDisponible { get; set; }
         public bool? IsRecordValid { get; set; }
         public List<int> o51ids { get; set; }
@@ -199,13 +200,18 @@ namespace BO
             {
                 AQ(this.explicit_sqlwhere, "", null);
             }
-            if (this.lisJ73 != null)
+            if (this.lisJ73_Grid != null)
             {
-                ParseJ73Query();
+                ParseJ73Query(this.lisJ73_Grid);
             }
             if (this.TheGridFilter != null)
             {
                 ParseSqlFromTheGridFilter();  //složit filtrovací podmínku ze sloupcového filtru gridu
+            }
+
+            if (this.lisJ73_Named != null)
+            {
+                ParseJ73Query(this.lisJ73_Named);   //složit filtrovací podmínku z pojmenovaného filtru
             }
 
             return _lis;
@@ -356,15 +362,15 @@ namespace BO
         }
 
 
-        private void ParseJ73Query()    //zpracování vnitřní filtrovací podmínky z návrháře sloupců
+        private void ParseJ73Query(IEnumerable<BO.j73TheGridQuery> lisJ73)    //zpracování vnitřní filtrovací podmínky z tabulky j73
         {
             int x = 0; string ss = ""; string strField = ""; string strAndOrZleva = "";
-            if (this.lisJ73.Count() > 0)
+            if (lisJ73.Count() > 0)
             {
-                this.lisJ73.First().j73BracketLeft += "(";
-                this.lisJ73.Last().j73BracketRight += ")";
+                lisJ73.First().j73BracketLeft += "(";
+                lisJ73.Last().j73BracketRight += ")";
             }
-            foreach (var c in this.lisJ73)
+            foreach (var c in lisJ73)
             {
                 x += 1;
                 ss = x.ToString();
@@ -390,11 +396,11 @@ namespace BO
                         AQ( "ISNULL(" + strField + ",0)=0", "", null, strAndOrZleva, c.j73BracketLeft, c.j73BracketRight);
                         break;
                     case "CONTAINS":                        
-                        AQ( strField + " LIKE '%" + BO.BAS.GSS(c.j73Value) + "+%'", null, null, strAndOrZleva, c.j73BracketLeft, c.j73BracketRight);
+                        AQ( strField + " LIKE '%" + BO.BAS.GSS(c.j73Value) + "%'", null, null, strAndOrZleva, c.j73BracketLeft, c.j73BracketRight);
 
                         break;
                     case "STARTS":                        
-                        AQ( strField + " LIKE '" + BO.BAS.GSS(c.j73Value) + "+%'", null, null, strAndOrZleva, c.j73BracketLeft, c.j73BracketRight);
+                        AQ( strField + " LIKE '" + BO.BAS.GSS(c.j73Value) + "%'", null, null, strAndOrZleva, c.j73BracketLeft, c.j73BracketRight);
                         
                         break;
                     case "INTERVAL":

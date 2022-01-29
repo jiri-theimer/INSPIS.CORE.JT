@@ -73,14 +73,16 @@ namespace UI.Controllers
                 {
                     var recJ72 = f.j72TheGridTemplateBL.Load(intJ72ID);                    
                     var mq = new BO.InitMyQuery().Load(recJ72.j72Entity);
-                    mq.lisJ73= f.j72TheGridTemplateBL.GetList_j73(intJ72ID, recJ72.j72Entity.Substring(0, 3));
+                    mq.lisJ73_Grid= f.j72TheGridTemplateBL.GetList_j73(intJ72ID, recJ72.j72Entity.Substring(0, 3));
                     
                     DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql("", mq, cu);
                     //File.WriteAllText("c:\\temp\\hovado.txt", fq.SqlWhere);
                     string strFilterAlias = recJ72.j72Name;
                     if (recJ72.j72HashJ73Query)
                     {
-                        strFilterAlias = f.j72TheGridTemplateBL.getFiltrAlias(recJ72.j72Entity.Substring(0, 3), mq);
+                        var cc = new BL.bas.QuerySupport();
+                        strFilterAlias = cc.getFiltrAlias(recJ72.j72Entity.Substring(0, 3), mq.lisJ73_Grid, f);
+                        
                     }
                     reportXml = reportXml.Replace("1=1", fq.SqlWhere).Replace("#query_alias#", strFilterAlias);
                     

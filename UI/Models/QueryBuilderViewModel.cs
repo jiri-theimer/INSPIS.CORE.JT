@@ -12,7 +12,7 @@ namespace UI.Models
         public bool IsCreate { get; set; }
         public IEnumerable<BO.j76NamedQuery> lisJ76 { get; set; }
         public BO.j76NamedQuery Rec { get; set; }
-        public List<BO.j77NamedQueryRow> lisJ77 { get; set; }
+        public List<BO.j73TheGridQuery> lisJ73 { get; set; }
 
         public List<BO.TheQueryField> lisQueryFields { get; set; }
 

@@ -9,11 +9,10 @@ namespace BL
         public BO.j76NamedQuery Load(int j76id);
 
         
-        public int Save(BO.j76NamedQuery rec, List<BO.j77NamedQueryRow> lisJ77);
+        public int Save(BO.j76NamedQuery rec, List<BO.j73TheGridQuery> lisJ73);
         
         public IEnumerable<BO.j76NamedQuery> GetList(string strEntity);
-        public IEnumerable<BO.j77NamedQueryRow> GetList_j77(int j76id,string prefix);
-        public string getFiltrAlias(string prefix, BO.baseQuery mq);
+        public IEnumerable<BO.j73TheGridQuery> GetList_j73(int j76id,string prefix);
         
 
     }
@@ -45,9 +44,9 @@ namespace BL
        
         
 
-        public int Save(BO.j76NamedQuery rec, List<BO.j77NamedQueryRow> lisJ77)
+        public int Save(BO.j76NamedQuery rec, List<BO.j73TheGridQuery> lisJ73)
         {
-            if (ValidateBeforeSave(rec, lisJ77) == false)
+            if (ValidateBeforeSave(rec, lisJ73) == false)
             {
                 return 0;
             }
@@ -66,42 +65,42 @@ namespace BL
                 _db.RunSql("UPDATE x36UserParam set x36Value=@pid+'|'+@newvalue WHERE x36Key LIKE 'grid-filter-j76name%' AND x36Value LIKE @pid+'|%'", new { newvalue = rec.j76Name,pid=rec.pid.ToString() });
             }
                       
-            if (lisJ77 != null)
+            if (lisJ73 != null)
             {
                 if (rec.pid > 0)
                 {
-                    _db.RunSql("if EXISTS(select j77ID FROM j77NamedQueryRow WHERE j76ID=@pid) DELETE FROM j77NamedQueryRow WHERE j76ID=@pid", new { pid = intJ76ID });
+                    _db.RunSql("if EXISTS(select j73ID FROM j73TheGridQuery WHERE j76ID=@pid) DELETE FROM j73TheGridQuery WHERE j76ID=@pid", new { pid = intJ76ID });
                 }
-                foreach (var c in lisJ77)
+                foreach (var c in lisJ73)
                 {
-                    if (c.IsTempDeleted == true && c.j77ID > 0)
+                    if (c.IsTempDeleted == true && c.j73ID > 0)
                     {
-                        _db.RunSql("DELETE FROM j77NamedQueryRow WHERE j77ID=@pid", new { pid = c.j77ID });
+                        _db.RunSql("DELETE FROM j73TheGridQuery WHERE j73ID=@pid", new { pid = c.j73ID });
                     }
                     else
                     {
                         p = new DL.Params4Dapper();
-                        p.AddInt("pid", c.j77ID, true);
+                        p.AddInt("pid", c.j73ID, true);
                         p.AddInt("j76ID", intJ76ID, true);
-                        p.AddString("j77Column", c.j77Column);
-                        p.AddString("j77Operator", c.j77Operator);
-                        p.AddInt("j77ComboValue", c.j77ComboValue);
-                        p.AddInt("j77DatePeriodFlag", c.j77DatePeriodFlag);
-                        if (c.j77DatePeriodFlag > 0)
+                        p.AddString("j73Column", c.j73Column);
+                        p.AddString("j73Operator", c.j73Operator);
+                        p.AddInt("j73ComboValue", c.j73ComboValue);
+                        p.AddInt("j73DatePeriodFlag", c.j73DatePeriodFlag);
+                        if (c.j73DatePeriodFlag > 0)
                         {
-                            c.j77Date1 = null; c.j77Date2 = null;
+                            c.j73Date1 = null; c.j73Date2 = null;
                         }
-                        p.AddDateTime("j77Date1", c.j77Date1);
-                        p.AddDateTime("j77Date2", c.j77Date2);
-                        p.AddDouble("j77Num1", c.j77Num1);
-                        p.AddDouble("j77Num2", c.j77Num2);
-                        p.AddString("j77Value", c.j77Value);
-                        p.AddString("j77ValueAlias", c.j77ValueAlias);
-                        p.AddInt("j77Ordinal", c.j77Ordinal);
-                        p.AddString("j77Op", c.j77Op);
-                        p.AddString("j77BracketLeft", c.j77BracketLeft);
-                        p.AddString("j77BracketRight", c.j77BracketRight);
-                        _db.SaveRecord("j77NamedQueryRow", p, c, false, true);
+                        p.AddDateTime("j73Date1", c.j73Date1);
+                        p.AddDateTime("j73Date2", c.j73Date2);
+                        p.AddDouble("j73Num1", c.j73Num1);
+                        p.AddDouble("j73Num2", c.j73Num2);
+                        p.AddString("j73Value", c.j73Value);
+                        p.AddString("j73ValueAlias", c.j73ValueAlias);
+                        p.AddInt("j73Ordinal", c.j73Ordinal);
+                        p.AddString("j73Op", c.j73Op);
+                        p.AddString("j73BracketLeft", c.j73BracketLeft);
+                        p.AddString("j73BracketRight", c.j73BracketRight);
+                        _db.SaveRecord("j73TheGridQuery", p, c, false, true);
                     }
 
                 }
@@ -110,52 +109,52 @@ namespace BL
 
             return intJ76ID;
         }
-        private bool ValidateBeforeSave(BO.j76NamedQuery rec, List<BO.j77NamedQueryRow> lisJ77)
+        private bool ValidateBeforeSave(BO.j76NamedQuery rec, List<BO.j73TheGridQuery> lisJ73)
         {
            if (string.IsNullOrEmpty(rec.j76Name))
             {
                 this.AddMessage("Chybí vyplnit [Název]."); return false;
             }
-            if (lisJ77 == null || lisJ77.Count()==0)
+            if (lisJ73 == null || lisJ73.Count()==0)
             {
                 this.AddMessage("Filtr musí mít alespoň jeden řádek."); return false;
             }
 
             int x = 0; string lb = ""; string rb = "";
-            foreach (var c in lisJ77.Where(p => p.IsTempDeleted == false))
+            foreach (var c in lisJ73.Where(p => p.IsTempDeleted == false))
             {
                 x += 1;
-                if (c.j77BracketLeft != null)
+                if (c.j73BracketLeft != null)
                 {
-                    lb += c.j77BracketLeft;
+                    lb += c.j73BracketLeft;
                 }
-                if (c.j77BracketRight != null)
+                if (c.j73BracketRight != null)
                 {
-                    rb += c.j77BracketRight;
+                    rb += c.j73BracketRight;
                 }
 
                 switch (c.FieldType)
                 {
                     case "date":
-                        if (c.j77Operator == "INTERVAL" && c.j77Date1 == null && c.j77Date2 == null && c.j77DatePeriodFlag == 0)
+                        if (c.j73Operator == "INTERVAL" && c.j73Date1 == null && c.j73Date2 == null && c.j73DatePeriodFlag == 0)
                         {
                             this.AddMessageTranslated(string.Format(_mother.tra("Filtr řádek [{0}] musí mít alespoň jedno vyplněné datum nebo pojmenované období."), x)); return false;
                         }
                         break;
                     case "string":
-                        if (string.IsNullOrEmpty(c.j77Value) == true && (c.j77Operator == "CONTAINS" || c.j77Operator == "STARTS" || c.j77Operator == "EQUAL" || c.j77Operator == "NOT-EQUAL"))
+                        if (string.IsNullOrEmpty(c.j73Value) == true && (c.j73Operator == "CONTAINS" || c.j73Operator == "STARTS" || c.j73Operator == "EQUAL" || c.j73Operator == "NOT-EQUAL"))
                         {
                             this.AddMessageTranslated(string.Format(_mother.tra("Filtr řádek [{0}] obsahuje nevyplněnou hodnotu."), x)); return false;
                         }
                         break;
                     case "combo":
-                        if (c.j77ComboValue == 0 && (c.j77Operator == "EQUAL" || c.j77Operator == "NOT-EQUAL"))
+                        if (c.j73ComboValue == 0 && (c.j73Operator == "EQUAL" || c.j73Operator == "NOT-EQUAL"))
                         {
                             this.AddMessageTranslated(string.Format(_mother.tra("Filtr řádek [{0}] obsahuje nevyplněnou hodnotu."), x)); return false;
                         }
                         break;
                     case "multi":
-                        if (string.IsNullOrEmpty(c.j77Value) == true && (c.j77Operator == "EQUAL" || c.j77Operator == "NOT-EQUAL"))
+                        if (string.IsNullOrEmpty(c.j73Value) == true && (c.j73Operator == "EQUAL" || c.j73Operator == "NOT-EQUAL"))
                         {
                             this.AddMessageTranslated(string.Format(_mother.tra("Filtr řádek [{0}] obsahuje nevyplněnou hodnotu."), x)); return false;
                         }
@@ -185,19 +184,19 @@ namespace BL
 
 
 
-        public IEnumerable<BO.j77NamedQueryRow> GetList_j77(int j76id,string prefix)
+        public IEnumerable<BO.j73TheGridQuery> GetList_j73(int j76id,string prefix)
         {
-            string s = "SELECT a.* FROM j77NamedQueryRow a WHERE a.j76ID=@j76id ORDER BY a.j77Ordinal";
+            string s = "SELECT a.* FROM j73TheGridQuery a WHERE a.j76ID=@j76id ORDER BY a.j73Ordinal";
 
-            var lis = _db.GetList<BO.j77NamedQueryRow>(s, new { j76id = j76id });
+            var lis = _db.GetList<BO.j73TheGridQuery>(s, new { j76id = j76id });
             if (lis.Count() > 0)
             {
                 var lisQueryFields = new BL.TheQueryFieldProvider(prefix).getPallete();
-                foreach (var c in lis.Where(p => p.j77Column != null))
+                foreach (var c in lis.Where(p => p.j73Column != null))
                 {
-                    if (lisQueryFields.Where(p => p.Field == c.j77Column).Count() > 0)
+                    if (lisQueryFields.Where(p => p.Field == c.j73Column).Count() > 0)
                     {
-                        var cc = lisQueryFields.Where(p => p.Field == c.j77Column).First();
+                        var cc = lisQueryFields.Where(p => p.Field == c.j73Column).First();
                         c.FieldType = cc.FieldType;
                         c.FieldEntity = cc.SourceEntity;
                         c.FieldSqlSyntax = cc.FieldSqlSyntax;
@@ -209,94 +208,7 @@ namespace BL
             return lis;
         }
 
-        public string getFiltrAlias(string prefix, BO.baseQuery mq)
-        {
-            if (mq.lisJ77==null || mq.lisJ77.Count() == 0) return "";
-            var lisFields = new BL.TheQueryFieldProvider(prefix).getPallete();
-
-            var lis = new List<string>();
-
-            foreach (var c in mq.lisJ77)
-            {
-                string ss = "";
-                BO.TheQueryField cField = null;
-                if (c.j77BracketLeft != null)
-                {
-                    ss += "(";
-                }
-                if (c.j77Op == "OR")
-                {
-                    ss += " OR ";
-                }
-                if (lisFields.Where(p => p.Field == c.j77Column).Count() > 0)
-                {
-                    cField = lisFields.Where(p => p.Field == c.j77Column).First();
-                    string s = cField.Header;
-                    if (_mother.CurrentUser.j03LangIndex > 0)
-                    {
-                        s = _mother.tra(s);
-                    }
-                    ss = "[" + s + "] ";
-                }
-                switch (c.j77Operator)
-                {
-                    case "EQUAL":
-                        ss += "=";
-                        break;
-                    case "NOT-ISNULL":
-                        ss += _mother.tra("Není prázdné");
-                        break;
-                    case "ISNULL":
-                        ss += _mother.tra("Je prázdné");
-                        break;
-                    case "INTERVAL":
-                        ss += _mother.tra("Je interval");
-                        break;
-                    case "GREATERZERO":
-                        ss += _mother.tra("Je větší než nula");
-                        break;
-                    case "ISNULLORZERO":
-                        ss += _mother.tra("Je nula nebo prázdné");
-                        break;
-                    case "NOT-EQUAL":
-                        ss += _mother.tra("Není rovno");
-                        break;
-                    case "CONTAINS":
-                        lis.Add(_mother.tra("Obsahuje"));
-                        break;
-                    case "STARTS":
-                        ss += _mother.tra("Začíná na");
-                        break;
-                    default:
-                        break;
-                }
-                if (c.j77ValueAlias != null)
-                {
-                    ss += c.j77ValueAlias;
-                }
-                else
-                {
-                    ss += c.j77Value;
-                }
-                if (c.j77DatePeriodFlag > 0)
-                {
-                    var cPeriods = new BO.CLS.ThePeriodProviderSupport();
-                    var lisPeriods = cPeriods.GetPallete();
-
-                    var d1 = lisPeriods.Where(p => p.pid == c.j77DatePeriodFlag).First().d1;
-                    var d2 = Convert.ToDateTime(lisPeriods.Where(p => p.pid == c.j77DatePeriodFlag).First().d2).AddDays(1).AddMinutes(-1);
-                    ss += ": " + BO.BAS.ObjectDate2String(d1, "dd.MM.yyyy") + " - " + BO.BAS.ObjectDate2String(d2, "dd.MM.yyyy");
-                }
-
-                if (c.j77BracketRight != null)
-                {
-                    ss += ")";
-                }
-                lis.Add(ss);
-            }
-
-            return string.Join("; ", lis);
-        }
+        
 
 
     }

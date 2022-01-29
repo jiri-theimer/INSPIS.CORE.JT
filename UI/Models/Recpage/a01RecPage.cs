@@ -23,5 +23,6 @@ namespace UI.Models.Recpage
         public string TagHtml { get; set; }
 
         public string GinisSpisUrl { get; set; }
+        public string GridUrl { get; set; }
     }
 }

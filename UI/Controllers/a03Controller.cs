@@ -151,13 +151,20 @@ namespace UI.Controllers
             return View(v);
         }
         public IActionResult RecPage(int pid)
-        {           
-            var v = new a03RecPage();
-            v.NavTabs = new List<NavTab>();
-            v.pid = pid;
+        {
+            var v = new a03RecPage() { pid = pid, NavTabs = new List<NavTab>() };
+                               
             if (v.pid == 0)
             {
                 v.pid = Factory.CBL.LoadUserParamInt("a03-RecPage-pid");
+            }
+            if (!Factory.CBL.LoadUserParamBool("grid-a03-show11", false))
+            {
+                v.GridUrl = $"/TheGrid/FlatView?prefix=a03&go2pid={v.pid}";
+            }
+            else
+            {
+                v.GridUrl = $"/TheGrid/MasterView?prefix=a03&go2pid={v.pid}";
             }
             if (v.pid > 0)
             {

@@ -26,7 +26,15 @@ namespace UI.Models
        
         public void SetJavascript_CallOnLoad(int intPID, string strFlag = null,string jsfunction= "_reload_layout_and_close")
         {
-            this.Javascript_CallOnLoad = string.Format(jsfunction+"({0},'{1}');", intPID,strFlag);
+            if (jsfunction.Contains("("))
+            {
+                this.Javascript_CallOnLoad = jsfunction;
+            }
+            else
+            {                
+                this.Javascript_CallOnLoad = string.Format(jsfunction + "({0},'{1}');", intPID, strFlag);
+            }
+            
         }
 
         public void SetJavascript_CallOnLoad(string reloadurl_parentsite)

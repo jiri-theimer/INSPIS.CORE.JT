@@ -164,7 +164,7 @@ namespace UI.Controllers
                 if (intJ72ID > 0)
                 {
                     var recJ72 = Factory.j72TheGridTemplateBL.Load(intJ72ID);
-                    mq.lisJ73 = Factory.j72TheGridTemplateBL.GetList_j73(intJ72ID, "a01");
+                    mq.lisJ73_Grid = Factory.j72TheGridTemplateBL.GetList_j73(intJ72ID, "a01");
                     DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql("", mq, Factory.CurrentUser);
                     if (!string.IsNullOrEmpty(fq.SqlWhere))
                     {

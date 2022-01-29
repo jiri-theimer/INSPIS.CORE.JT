@@ -54,7 +54,7 @@ namespace BL
                     AF("a03Institution", "a03Mobile", "a.a03Mobile", "Mobil");
                     AF("a03Institution", "a03IsTestRecord", "a.a03IsTestRecord", "Testovací záznam", null, null, "bool");
                     AF("a03Institution", "a03DateInsert", "a.a03DateInsert", "Datum založení záznamu", null, null, "date");
-                    
+                    AF("a03Institution", "ValidRecord", "case when GETDATE() between a.a03ValidFrom AND a.a03ValidUntil then 1 else 0 end", "Časově platný záznam", null, null, "bool");
 
                     break;
                 case "a01":

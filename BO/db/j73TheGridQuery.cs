@@ -8,6 +8,7 @@ namespace BO
         [Key]
         public int j73ID { get; set; }
         public int j72ID { get; set; }
+        public int j76ID { get; set; }
 
         public string j73Op { get; set; }
         public string j73BracketLeft { get; set; }
@@ -28,8 +29,8 @@ namespace BO
         public int j73Ordinal { get; set; }
 
 
-        public string MasterPrefix { get; set; }
-        public int MasterPid { get; set; }
+        public string MasterPrefix { get; set; }    //pouze pro grid
+        public int MasterPid { get; set; }          //pouze pro grid
 
     }
 }

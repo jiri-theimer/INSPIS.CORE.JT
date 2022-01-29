@@ -158,8 +158,10 @@ namespace UI
 
             if (gridState.j72HashJ73Query)
             {
-                mq.lisJ73 = _Factory.j72TheGridTemplateBL.GetList_j73(gridState.j72ID, gridState.j72Entity.Substring(0, 3));
-                _grid.GridMessage = _Factory.j72TheGridTemplateBL.getFiltrAlias(gridState.j72Entity.Substring(0, 3), mq);
+                mq.lisJ73_Grid = _Factory.j72TheGridTemplateBL.GetList_j73(gridState.j72ID, gridState.j72Entity.Substring(0, 3));
+                var cc = new BL.bas.QuerySupport();
+                _grid.GridMessage = cc.getFiltrAlias(gridState.j72Entity.Substring(0, 3), mq.lisJ73_Grid,_Factory);
+                
 
 
             }
@@ -700,7 +702,7 @@ namespace UI
             }
             if (gridState.j72HashJ73Query)
             {
-                this.gridinput.query.lisJ73 = _Factory.j72TheGridTemplateBL.GetList_j73(gridState.j72ID, gridState.j72Entity.Substring(0, 3));
+                this.gridinput.query.lisJ73_Grid = _Factory.j72TheGridTemplateBL.GetList_j73(gridState.j72ID, gridState.j72Entity.Substring(0, 3));
             }
 
             return _Factory.gridBL.GetList(this.gridinput.query);

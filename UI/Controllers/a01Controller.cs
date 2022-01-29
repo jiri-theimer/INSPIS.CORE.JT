@@ -499,12 +499,19 @@ namespace UI.Controllers
         //Stránka akce       
         public IActionResult RecPage(int pid)
         {
-            var v = new a01RecPage();
-            v.pid = pid;
-            v.NavTabs = new List<NavTab>();
+            var v = new a01RecPage() { pid = pid, NavTabs = new List<NavTab>() };
+                        
             if (v.pid == 0)
             {
                 v.pid = Factory.CBL.LoadUserParamInt("a01-RecPage-pid");
+            }
+            if (!Factory.CBL.LoadUserParamBool("grid-a01-show11", false))
+            {
+                v.GridUrl = $"/TheGrid/FlatView?prefix=a01&go2pid={v.pid}";
+            }
+            else
+            {
+                v.GridUrl = $"/TheGrid/MasterView?prefix=a01&go2pid={v.pid}";
             }
             if (v.pid > 0)
             {

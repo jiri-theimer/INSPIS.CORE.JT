@@ -259,13 +259,9 @@ namespace UI.Controllers
                             v.FilterA10ID = mqA01.a10id.ToString();
                             v.FilterA10Name = Factory.CBL.LoadUserParam(get_param_key("grid-filter-a10name", masterentity));
                         }
+
+                        Inhale_j76Query(mqA01, v, masterentity);
                         
-                        mqA01.j76id = Factory.CBL.LoadUserParamInt(get_param_key($"grid-filter-j76id-a01", masterentity));
-                        if (mqA01.j76id > 0)
-                        {
-                            v.FilterJ76ID = mqA01.j76id.ToString();
-                            v.FilterJ76Name = Factory.CBL.LoadUserParam(get_param_key($"grid-filter-j76name-a01", masterentity));
-                        }
 
                         v.FilterMyInvolvement = Factory.CBL.LoadUserParam(get_param_key("grid-filter-myinvolvement-a01", masterentity));
                         switch (v.FilterMyInvolvement)
@@ -288,6 +284,7 @@ namespace UI.Controllers
                     break;
                 case "h04":
                     var mqH04 = new BO.InitMyQuery().LoadH04(masterentity, master_pid, myqueryinline);
+                    Inhale_j76Query(mqH04, v, masterentity);
                     v.FilterMyInvolvement = Factory.CBL.LoadUserParam(get_param_key("grid-filter-myinvolvement-h04", masterentity));
                     switch (v.FilterMyInvolvement)
                     {
@@ -315,7 +312,11 @@ namespace UI.Controllers
                     
                     v.gridinput.myqueryinline = "x32id@int@" + v.FilterX32ID.ToString();
                     break;
-               
+                case "a03":
+                case "j02":
+                    v.gridinput.query = new BO.InitMyQuery().Load(prefix, masterentity, master_pid, myqueryinline);
+                    Inhale_j76Query(v.gridinput.query, v, masterentity);
+                    break;
                 default:
                     v.gridinput.query = new BO.InitMyQuery().Load(prefix, masterentity, master_pid, myqueryinline);
                     break;
@@ -358,6 +359,21 @@ namespace UI.Controllers
 
             return v;
 
+        }
+
+        private void Inhale_j76Query(BO.baseQuery mq, FsmViewModel v,string masterentity)
+        {
+            mq.j76id = Factory.CBL.LoadUserParamInt(get_param_key($"grid-filter-j76id-"+v.prefix, masterentity));
+            if (mq.j76id > 0)
+            {
+                v.FilterJ76ID = mq.j76id.ToString();
+                v.FilterJ76Name = Factory.CBL.LoadUserParam(get_param_key($"grid-filter-j76name-"+v.prefix, masterentity));
+                if (!string.IsNullOrEmpty(v.FilterJ76Name) && v.FilterJ76Name.Contains("|"))
+                {
+                    v.FilterJ76Name = v.FilterJ76Name.Split("|")[1];
+                }
+                mq.lisJ73_Named = Factory.j76NamedQueryBL.GetList_j73(mq.j76id, v.prefix);
+            }
         }
 
         //private BO.baseQuery InhaleQueryA01(FsmViewModel v,string pagename, string masterentity)

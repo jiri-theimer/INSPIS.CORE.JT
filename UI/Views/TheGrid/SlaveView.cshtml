@@ -25,6 +25,9 @@
                 <myselect entity="j76NamedQuery" asp-for="@Model.FilterJ76ID" firstemptyrowtext="--@_f.tra("Pojmenovaný filtr")--" firstemptyrowvalue="0" textfield="j76Name" selectedvalue="@Model.FilterJ76ID" selectedtext="@Model.FilterJ76Name" event_after_changevalue="j76id_onchange" orderfield="j76Name" cssclass_selected="filtered" wherecond="j76Entity LIKE '@(Model.prefix)%' AND (j03ID=@_f.CurrentUser.pid OR j76IsPublic=1)"></myselect>
             </td>
             <td>
+                <a class="btn btn-light" href="javascript:querybuilder()" title="@_f.tra("Návrhář filtru")"><span class="k-icon k-i-filter"></span></a>
+            </td>
+            <td>
                 <select class="form-select" asp-for="@Model.FilterMyInvolvement" onchange="myinvolvement_change(this)">
                     <option value="">@("-- "+_f.tra("Mé zapojení do akce")+" --")</option>
                     <option value="involved">@_f.tra("Jsem zapojen do akce")</option>
@@ -45,6 +48,12 @@
 {
     <table>
         <tr>
+            <td>
+                <myselect entity="j76NamedQuery" asp-for="@Model.FilterJ76ID" firstemptyrowtext="--@_f.tra("Pojmenovaný filtr")--" firstemptyrowvalue="0" textfield="j76Name" selectedvalue="@Model.FilterJ76ID" selectedtext="@Model.FilterJ76Name" event_after_changevalue="j76id_onchange" orderfield="j76Name" cssclass_selected="filtered" wherecond="j76Entity LIKE '@(Model.prefix)%' AND (j03ID=@_f.CurrentUser.pid OR j76IsPublic=1)"></myselect>
+            </td>
+            <td>
+                <a class="btn btn-light" href="javascript:querybuilder()" title="@_f.tra("Návrhář filtru")"><span class="k-icon k-i-filter"></span></a>
+            </td>
             <td>
                 <select class="form-select" asp-for="@Model.FilterMyInvolvement" onchange="myinvolvement_change(this)">
                     <option value="">@("-- "+_f.tra("Mé zapojení do úkolu")+" --")</option>
@@ -146,9 +155,17 @@
         }
 
         function j76id_onchange(cbx) {
-            $.post("/Common/SetUserParams", { keys: ["grid-filter-j76id-@(Model.prefix)-@(Model.gridinput.master_entity)", "grid-filter-j76name-@(Model.prefix)-@(Model.gridinput.master_entity)"], values: [cbx.value, cbx.options[cbx.selectedIndex].text] }, function (data) {
+            handle_j76id_change(cbx.value, cbx.options[cbx.selectedIndex].text);
+        }
+        function handle_j76id_change(j76id, j76name)
+        {
+            $.post("/Common/SetUserParams", { keys: ["grid-filter-j76id-@(Model.prefix)-@(Model.gridinput.master_entity)", "grid-filter-j76name-@(Model.prefix)-@(Model.gridinput.master_entity)"], values: [j76id, j76id + "|" +j76name] }, function (data) {
                 reload();
             });
+        }
+        function querybuilder()
+        {
+            _window_open("/QueryBuilder/Index?j76id=@(BO.BAS.InInt(Model.FilterJ76ID))&entity=@Model.prefix",2);
         }
 
         function myinvolvement_change(cbx) {

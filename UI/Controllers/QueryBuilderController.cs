@@ -44,8 +44,8 @@ namespace UI.Controllers
         {
             v.Rec = Factory.j76NamedQueryBL.Load(v.SelectedJ76ID);
             v.Entity = v.Rec.j76Entity;
-            v.lisJ77 = Factory.j76NamedQueryBL.GetList_j77(v.Rec.pid, v.Entity.Substring(0, 3)).ToList();
-            foreach (var c in v.lisJ77)
+            v.lisJ73 = Factory.j76NamedQueryBL.GetList_j73(v.Rec.pid, v.Entity.Substring(0, 3)).ToList();
+            foreach (var c in v.lisJ73)
             {
                 c.TempGuid = BO.BAS.GetGuid();
             }
@@ -83,15 +83,15 @@ namespace UI.Controllers
             }
 
             v.lisPeriods = _pp.getPallete();
-            if (v.lisJ77 == null)
+            if (v.lisJ73 == null)
             {
-                v.lisJ77 = new List<BO.j77NamedQueryRow>();
+                v.lisJ73 = new List<BO.j73TheGridQuery>();
             }
-            foreach (var c in v.lisJ77.Where(p => p.j77Column != null))
+            foreach (var c in v.lisJ73.Where(p => p.j73Column != null))
             {
-                if (v.lisQueryFields.Where(p => p.Field == c.j77Column).Count() > 0)
+                if (v.lisQueryFields.Where(p => p.Field == c.j73Column).Count() > 0)
                 {
-                    var cc = v.lisQueryFields.Where(p => p.Field == c.j77Column).First();
+                    var cc = v.lisQueryFields.Where(p => p.Field == c.j73Column).First();
                     c.FieldType = cc.FieldType;
                     c.FieldEntity = cc.SourceEntity;
                     //c.MasterPrefix = cc.MasterPrefix;
@@ -117,11 +117,11 @@ namespace UI.Controllers
             if (oper == "saveas" && !string.IsNullOrEmpty(j76name))
             {
                 var recJ76 = Factory.j76NamedQueryBL.Load(v.Rec.pid);
-                var lisJ77 = Factory.j76NamedQueryBL.GetList_j77(recJ76.pid, recJ76.j76Entity.Substring(0, 3)).ToList();
+                var lisJ73 = Factory.j76NamedQueryBL.GetList_j73(recJ76.pid, recJ76.j76Entity.Substring(0, 3)).ToList();
                 recJ76.j76ID = 0; recJ76.pid = 0; recJ76.j76Name = j76name;
                 recJ76.j03ID = Factory.CurrentUser.pid;
                 
-                var intJ76ID = Factory.j76NamedQueryBL.Save(recJ76, lisJ77);
+                var intJ76ID = Factory.j76NamedQueryBL.Save(recJ76, lisJ73);
                 return RedirectToActionPermanent("Index", new { j76id = intJ76ID });
             }
             
@@ -141,33 +141,33 @@ namespace UI.Controllers
                     this.AddMessageTranslated("guid missing");
                     return View(v);
                 }
-                if (v.lisJ77.Where(p => p.TempGuid == guid).Count() > 0)
+                if (v.lisJ73.Where(p => p.TempGuid == guid).Count() > 0)
                 {
-                    var c = v.lisJ77.Where(p => p.TempGuid == guid).First();
-                    c.j77Value = null; c.j77ValueAlias = null;
-                    c.j77ComboValue = 0;
-                    c.j77Date1 = null; c.j77Date2 = null;
-                    c.j77Num1 = 0; c.j77Num2 = 0;
+                    var c = v.lisJ73.Where(p => p.TempGuid == guid).First();
+                    c.j73Value = null; c.j73ValueAlias = null;
+                    c.j73ComboValue = 0;
+                    c.j73Date1 = null; c.j73Date2 = null;
+                    c.j73Num1 = 0; c.j73Num2 = 0;
                 }
                 return View(v);
             }
-            if (oper == "add_j77")
+            if (oper == "add_j73")
             {
-                var c = new BO.j77NamedQueryRow() { TempGuid = BO.BAS.GetGuid(), j77Column = v.lisQueryFields.First().Field };
-                c.FieldType = v.lisQueryFields.Where(p => p.Field == c.j77Column).First().FieldType;
-                c.FieldEntity = v.lisQueryFields.Where(p => p.Field == c.j77Column).First().SourceEntity;
-                v.lisJ77.Add(c);
+                var c = new BO.j73TheGridQuery() { TempGuid = BO.BAS.GetGuid(), j73Column = v.lisQueryFields.First().Field };
+                c.FieldType = v.lisQueryFields.Where(p => p.Field == c.j73Column).First().FieldType;
+                c.FieldEntity = v.lisQueryFields.Where(p => p.Field == c.j73Column).First().SourceEntity;
+                v.lisJ73.Add(c);
 
                 return View(v);
             }
-            if (oper == "delete_j77")
+            if (oper == "delete_j73")
             {
-                v.lisJ77.First(p => p.TempGuid == guid).IsTempDeleted = true;
+                v.lisJ73.First(p => p.TempGuid == guid).IsTempDeleted = true;
                 return View(v);
             }
-            if (oper == "clear_j77")
+            if (oper == "clear_j73")
             {
-                v.lisJ77.Clear();
+                v.lisJ73.Clear();
                 return View(v);
             }
 
@@ -181,12 +181,11 @@ namespace UI.Controllers
                 }
                 c.j76Name = v.Rec.j76Name;
                 c.j76IsPublic = v.Rec.j76IsPublic;
-                var intJ76ID = Factory.j76NamedQueryBL.Save(c, v.lisJ77.Where(p => p.j77ID > 0 || !p.IsTempDeleted).ToList());
+                var intJ76ID = Factory.j76NamedQueryBL.Save(c, v.lisJ73.Where(p => p.j73ID > 0 || !p.IsTempDeleted).ToList());
                 if (intJ76ID > 0)
                 {
-                    Factory.CBL.SetUserParam("masterview-j76id-" +v.Entity.Substring(0, 3), intJ76ID.ToString());
-
-                    v.SetJavascript_CallOnLoad(v.Rec.pid);
+                   
+                    v.SetJavascript_CallOnLoad(v.Rec.pid,null, $"window.parent.handle_j76id_change({intJ76ID},'{c.j76Name}')");
                     return View(v);
                 }
                 else
