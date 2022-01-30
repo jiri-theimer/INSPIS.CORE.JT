@@ -86,7 +86,7 @@ namespace UI.Controllers
                         }
                         if (strXmlContent.Contains("1=1"))
                         {
-                            v.lisJ76 = Factory.j76NamedQueryBL.GetList("a01Event").Where(p => p.j03ID == Factory.CurrentUser.pid || p.j76IsPublic).OrderBy(p => p.j76Name);
+                            v.lisJ76 = Factory.j76NamedQueryBL.GetList("a01").Where(p => p.j03ID == Factory.CurrentUser.pid || p.j76IsPublic).OrderBy(p => p.j76Name);
 
                             
                         }

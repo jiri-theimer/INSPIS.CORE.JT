@@ -149,13 +149,13 @@
             <div style="max-width:1000px;">
                 @Html.EditorFor(m => m.PeriodFilter, "~/Views/Shared/_Period.cshtml")
             </div>
-            @if (Model.lisJ72 != null)
+            @if (Model.lisJ76 != null)
             {
                 <div class="row my-4" style="max-width:1000px;">
 
-                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Pojmenovaný GRID filtr"):</label>
+                    <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Pojmenovaný filtr"):</label>
                     <div class="col-sm-7 col-md-7">
-                        <mydropdown asp-for="@Model.SelectedJ72ID" datasource="@Model.lisJ72" textfield="j72Name" valuefield="pid" firstemptyrowvalue="0" isfirstemptyrow="true" event_after_changevalue="j72id_change"></mydropdown>
+                        <mydropdown asp-for="@Model.SelectedJ76ID" datasource="@Model.lisJ76" textfield="j76Name" valuefield="pid" firstemptyrowvalue="0" isfirstemptyrow="true" event_after_changevalue="j76id_change"></mydropdown>
 
                     </div>
 

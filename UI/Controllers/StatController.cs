@@ -160,11 +160,11 @@ namespace UI.Controllers
                     lis.Add("(a.a01DateUntil<=" + BO.BAS.GD(v.PeriodFilter.d2)+ " OR a.a01DateUntil=convert(datetime,'01.01.3000',104))");
                 }
 
-                int intJ72ID = BO.BAS.InInt(v.SelectedJ72ID);
-                if (intJ72ID > 0)
+                int intJ76ID = BO.BAS.InInt(v.SelectedJ76ID);
+                if (intJ76ID > 0)
                 {
-                    var recJ72 = Factory.j72TheGridTemplateBL.Load(intJ72ID);
-                    mq.lisJ73_Grid = Factory.j72TheGridTemplateBL.GetList_j73(intJ72ID, "a01");
+                    var recJ76 = Factory.j76NamedQueryBL.Load(intJ76ID);
+                    mq.lisJ73_Named = Factory.j76NamedQueryBL.GetList_j73(intJ76ID, "a01");
                     DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql("", mq, Factory.CurrentUser);
                     if (!string.IsNullOrEmpty(fq.SqlWhere))
                     {
@@ -387,11 +387,8 @@ namespace UI.Controllers
 
             }
 
-            v.lisJ72 = Factory.j72TheGridTemplateBL.GetList("a01Event", Factory.CurrentUser.pid, null).Where(p => p.j72HashJ73Query == true);
-            foreach (var c in v.lisJ72.Where(p => p.j72IsSystem == true))
-            {
-                c.j72Name = Factory.tra("Výchozí GRID");
-            }
+            v.lisJ76 = Factory.j76NamedQueryBL.GetList("a01").Where(p => p.j03ID == Factory.CurrentUser.pid || p.j76IsPublic).OrderBy(p => p.j76Name);
+            
 
             SaveAddFilter2Temp(v);
 

@@ -36,8 +36,8 @@ namespace UI.Models
         public string GridHeaders { get; set; }
         public string GridContainerCssStyle { get; set; }
 
-        public string SelectedJ72ID { get; set; }
-        public IEnumerable<BO.j72TheGridTemplate> lisJ72 { get; set; }
+        public string SelectedJ76ID { get; set; }
+        public IEnumerable<BO.j76NamedQuery> lisJ76 { get; set; }
 
         public string TreeContainerHeight { get; set; }
 
