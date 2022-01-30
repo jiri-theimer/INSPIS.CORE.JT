@@ -23,6 +23,7 @@ namespace UI.Controllers
             {
                 v.pid = Factory.CBL.LoadUserParamInt("h04-RecPage-pid");
             }
+            v.GridUrl = $"/TheGrid/FlatView?prefix=h04&go2pid={v.pid}";
             if (v.pid > 0)
             {
                 v.Rec = Factory.h04ToDoBL.Load(v.pid);

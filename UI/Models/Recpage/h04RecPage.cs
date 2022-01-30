@@ -16,9 +16,10 @@ namespace UI.Models.Recpage
         public string TagHtml { get; set; }
 
         public int pid { get; set; }
-
+        
         public string MenuCode { get; set; }
 
         public IEnumerable<BO.j02Person> lisJ02 { get; set; }
+        public string GridUrl { get; set; }
     }
 }

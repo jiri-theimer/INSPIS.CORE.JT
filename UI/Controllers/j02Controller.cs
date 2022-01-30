@@ -88,6 +88,14 @@ namespace UI.Controllers
             {
                 v.pid = Factory.CBL.LoadUserParamInt("j02-RecPage-pid");
             }
+            if (!Factory.CBL.LoadUserParamBool("grid-j02-show11", false))
+            {
+                v.GridUrl = $"/TheGrid/FlatView?prefix=j02&go2pid={v.pid}";
+            }
+            else
+            {
+                v.GridUrl = $"/TheGrid/MasterView?prefix=j02&go2pid={v.pid}";
+            }
             if (v.pid > 0)
             {
                 v.Rec = Factory.j02PersonBL.Load(v.pid);

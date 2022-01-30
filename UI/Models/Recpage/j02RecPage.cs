@@ -26,5 +26,6 @@ namespace UI.Models.Recpage
         public string DefaultNavTabUrl { get; set; }
 
         public string MenuCode { get; set; }
+        public string GridUrl { get; set; }
     }
 }
