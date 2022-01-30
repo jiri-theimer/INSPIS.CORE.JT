@@ -79,7 +79,7 @@ namespace UI.Controllers
                     //File.WriteAllText("c:\\temp\\hovado.txt", fq.SqlWhere);
                     string strFilterAlias = recJ76.j76Name;
                     var cc = new BL.bas.QuerySupport();
-                    strFilterAlias = cc.getFiltrAlias(recJ76.j76Entity.Substring(0, 3), mq.lisJ73_Grid, f);
+                    strFilterAlias = cc.getFiltrAlias(recJ76.j76Entity.Substring(0, 3), mq.lisJ73_Named, f);
 
                     reportXml = reportXml.Replace("1=1", fq.SqlWhere).Replace("#query_alias#", strFilterAlias);
                     
