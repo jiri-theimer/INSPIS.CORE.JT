@@ -86,11 +86,9 @@ namespace UI.Controllers
                         }
                         if (strXmlContent.Contains("1=1"))
                         {
-                            v.lisJ72 = Factory.j72TheGridTemplateBL.GetList("a01Event", Factory.CurrentUser.pid, null).Where(p => p.j72HashJ73Query == true);
-                            foreach(var c in v.lisJ72.Where(p => p.j72IsSystem == true))
-                            {
-                                c.j72Name = Factory.tra("Výchozí GRID");
-                            }
+                            v.lisJ76 = Factory.j76NamedQueryBL.GetList("a01Event").Where(p => p.j03ID == Factory.CurrentUser.pid || p.j76IsPublic).OrderBy(p => p.j76Name);
+
+                            
                         }
                     }
                     

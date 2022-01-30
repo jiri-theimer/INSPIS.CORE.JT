@@ -25,6 +25,26 @@
 <script src="/kendo/js/kendo.treeview.min.js"></script>
 
 <style type="text/css">
+    /*2 panely pro rozložení layout stránky*/
+    #panel_left {
+        height: 100%;
+        width: 300px;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        background-color: #F8F9FA;
+        border-right: solid 1px #F5F5F5;
+        overflow-x: visible;
+        transition: 0.5s;
+    }
+
+    #panel_right {
+        transition: margin-left .5s;
+        padding: 0px;
+        margin-left: 300px;
+        display: block;
+    }
+
     #tree1 .stav {
         font-weight: bold;
     }
@@ -34,11 +54,11 @@
     }
 </style>
 
-<div id="layout_sidebar" style="overflow-y:auto;width:300px;">
+<div id="panel_left" style="overflow-y:auto;width:300px;">
     <kendotree tree-datasource="@Model.treeNodes" clientid="tree1"></kendotree>
 </div>
 
-<div id="layout_main">
+<div id="panel_right">
 
     <div id="layout_main_divtree">
         
@@ -58,13 +78,13 @@
         $("#tree1").kendoTreeView(
             {
                 dataSource: dstree1,
-                template: "<a class='cm' onclick='_cm(event,\"#: item.prefix #\",#: item.recordid #)'>☰</a><span class='#: item.cssclass #' ondblclick='_edit(\"#: item.prefix #\",#: item.recordid #)'> #: item.text # <span style='background-color: #: item.textocas # '>&nbsp;&nbsp;&nbsp;</span></span>",
+                template: "<a class='cm' onclick='_cm(event,\"#: item.prefix #\",#: item.recordid #)'>☰</a><span class='#: item.cssclass #' onclick='showreplist(\"#: item.prefix #\",#: item.recordid #)'> #: item.text # <span style='background-color: #: item.textocas # '>&nbsp;&nbsp;&nbsp;</span></span>",
                 collapse: tree1_onCollapse,
                 expand: tree1_onExpand
             }
         );
 
-        
+
 
 
 
@@ -100,6 +120,27 @@
         document.cookie = "@(Model.TreeStateCookieName)=" + cov;
     }
 
+
+    function showreplist(prefix, x32id) {
+        $("#layout_main_divtree").html("<i>Loading...</i>");
+
+        $.post("/ReportCatalog/ReportListHtml", { x32id: x32id }, function(data) {
+
+            $("#layout_main_divtree").html(data);
+
+        });
+
+    }
+
+
+    function report_nocontext(x31id, blank) {
+        if (blank) {
+            window.open("/x31/ReportNoContext?x31id=" + x31id, "_blank");
+        } else {
+            _window_open("/x31/ReportNoContext?x31id=" + x31id, 2);
+        }
+
+    }
 
 </script>
 

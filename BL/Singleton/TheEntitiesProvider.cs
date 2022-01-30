@@ -174,7 +174,7 @@ namespace BL
             AE("x27EvalFunction", "EVALuation funkce", "EVAL funkce", "x27EvalFunction a", "a.x27Ordinal", "a.x27Ordinal");
 
             AE_TINY("x31Report", "Report šablony", "Pevná tisková sestava");
-            AE("z01_core_view_reports", "Reporty šablony", "Tisková sestava", "z01_core_view_reports a", "a.x31Name", "a.x31Name");
+            //AE("z01_core_view_reports", "Reporty šablony", "Tisková sestava", "z01_core_view_reports a", "a.x31Name", "a.x31Name");
             AE("x32ReportType", "Report kategorie", "Kategorie sestavy", "x32ReportType a", "a.x32TreeIndex", "a.x32TreeIndex");
 
             AE("x39ConnectString", "Externí datové zdroje", "Externí datový zdroj", "x39ConnectString a","a.x39Name");
@@ -419,9 +419,9 @@ namespace BL
                     lis.Add(getREL("h04ToDo", "x40_h04", "Úkol/Lhůta", "LEFT OUTER JOIN h04ToDo x40_h04 ON (a.x40DataPID=x40_h04.h04ID AND a.x29ID=604)"));
                     break;
                 case "x31":
-                case "z01":
-                    lis.Add(getREL("x29Entity", "x31_x29", "Entita", "LEFT OUTER JOIN x29Entity x31_x29 ON a.x29ID=x31_x29.x29ID"));
-                    break;
+                //case "z01":
+                //    lis.Add(getREL("x29Entity", "x31_x29", "Entita", "LEFT OUTER JOIN x29Entity x31_x29 ON a.x29ID=x31_x29.x29ID"));
+                //    break;
                 //lis.Add(getREL("j02Person", "o51_owner", "Vlastník záznamu", getOwnerSql("o51")));
 
                 default:

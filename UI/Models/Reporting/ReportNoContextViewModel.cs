@@ -20,9 +20,9 @@ namespace UI.Models
 
         public PeriodViewModel PeriodFilter { get; set; }
 
-        public string SelectedJ72ID{get;set;}
+        public string SelectedJ76ID{get;set;}
        
-        public IEnumerable<BO.j72TheGridTemplate> lisJ72 { get; set; }
+        public IEnumerable<BO.j76NamedQuery> lisJ76 { get; set; }
 
         public int LangIndex { get; set; }
 

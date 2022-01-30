@@ -72,5 +72,30 @@ namespace UI.Controllers
                 }
             }
         }
+
+        public string ReportListHtml(int x32id)
+        {
+            var mq = new BO.myQueryX31() { x32id = x32id };
+            mq.CurrentUser = Factory.CurrentUser;
+            mq.x31is4singlerecord = false;
+            var lisX31 = Factory.x31ReportBL.GetList(mq);
+            var s = new System.Text.StringBuilder();
+            s.AppendLine("<table class='table table-borderless table-hover'>");
+            foreach(var c in lisX31)
+            {
+                s.Append("<tr>");
+                s.Append("<td>");
+                s.Append($"<a href='javascript:report_nocontext({c.pid},true)'>{c.x31Name}</a>");
+                if (c.x31Description != null)
+                {
+                    s.Append("<br><i>" + c.x31Description + "</i>");
+                }
+                
+                s.Append("</td>");
+                s.Append("</tr>");
+            }
+            s.AppendLine("</table>");
+            return s.ToString();
+        }
     }
 }
