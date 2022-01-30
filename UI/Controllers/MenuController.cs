@@ -405,7 +405,8 @@ namespace UI.Controllers
         {
             if (TUP(BO.j05PermValuEnum.Menu_Reports))
             {
-                AMI("Pevné tiskové sestavy", "/TheGrid/FlatView?prefix=z01");
+                //AMI("Pevné tiskové sestavy", "/TheGrid/FlatView?prefix=z01");
+                AMI("Pevné tiskové sestavy", "/ReportCatalog/Index");
             }
             if (TUP(BO.j05PermValuEnum.Menu_Analyze))
             {

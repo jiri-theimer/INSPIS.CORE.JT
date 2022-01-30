@@ -20,5 +20,7 @@ namespace BO
         public string ParentName { get; set; }    //combo
         public string ParentPath;
         public string TreeItem { get; set; }
+
+        
     }
 }

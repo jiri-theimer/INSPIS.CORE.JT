@@ -1,0 +1,106 @@
+﻿@model ReportCatalogViewModel
+@inject BL.Factory _f
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (Model == null)
+    {
+        return;
+    }
+    Model.PageTitle = "Tiskové sestavy";
+}
+
+@addTagHelper *, UI
+
+@section header_content{
+
+
+    <link href="/kendo/styles/kendo.default.min.css" rel="stylesheet" type="text/css" />
+    <link href="/kendo/styles/kendo.default.mobile.min.css" rel="stylesheet" type="text/css" />
+}
+
+<script src="/kendo/js/kendo.core.min.js"></script>
+
+<script src="/kendo/js/kendo.data.min.js"></script>
+<script src="/kendo/js/kendo.treeview.min.js"></script>
+
+<style type="text/css">
+    #tree1 .stav {
+        font-weight: bold;
+    }
+
+    #tree1 .non-manualstep {
+        border-left: dashed blue 2px;
+    }
+</style>
+
+<div id="layout_sidebar" style="overflow-y:auto;width:300px;">
+    <kendotree tree-datasource="@Model.treeNodes" clientid="tree1"></kendotree>
+</div>
+
+<div id="layout_main">
+
+    <div id="layout_main_divtree">
+        
+
+
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+    $(document.body).css("overflow", "hidden");
+
+
+    $(document).ready(function () {
+
+        $("#tree1").kendoTreeView(
+            {
+                dataSource: dstree1,
+                template: "<a class='cm' onclick='_cm(event,\"#: item.prefix #\",#: item.recordid #)'>☰</a><span class='#: item.cssclass #' ondblclick='_edit(\"#: item.prefix #\",#: item.recordid #)'> #: item.text # <span style='background-color: #: item.textocas # '>&nbsp;&nbsp;&nbsp;</span></span>",
+                collapse: tree1_onCollapse,
+                expand: tree1_onExpand
+            }
+        );
+
+        
+
+
+
+        _mainmenu_highlight_current("cmdX31");
+
+
+        var offset = $("#layout_sidebar").offset();
+        var h_vertical = _device.innerHeight - offset.top;
+        h_vertical = parseInt(h_vertical);
+        $("#layout_sidebar").css("height", h_vertical + "px");
+        if (document.getElementById("layout_main_divtree")) {
+            $("#layout_main_divtree").css("height", h_vertical + "px");
+        }
+
+    });
+
+
+
+    function tree1_onCollapse(e) {
+        var tree = $("#tree1").data("kendoTreeView");
+        var item = tree.dataItem(e.node);
+
+        var cov = _get_cookie("@(Model.TreeStateCookieName)");
+        cov = cov.replace("|" + item.id, "");
+        document.cookie = "@(Model.TreeStateCookieName)=" + cov;
+    }
+
+    function tree1_onExpand(e) {
+        var tree = $("#tree1").data("kendoTreeView");
+        var item = tree.dataItem(e.node);
+        var cov = _get_cookie("@(Model.TreeStateCookieName)") + "|" + item.id;
+
+        document.cookie = "@(Model.TreeStateCookieName)=" + cov;
+    }
+
+
+</script>
+
+

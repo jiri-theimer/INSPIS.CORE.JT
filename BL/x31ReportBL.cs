@@ -12,6 +12,7 @@ namespace BL
         public IEnumerable<BO.x31Report> GetList(BO.myQueryX31 mq);
         public int Save(BO.x31Report rec, List<int> x32ids, List<int> j04ids, List<int> a10ids, List<int> a08ids);
         public BO.o27Attachment LoadReportDoc(int x31id);
+        public IEnumerable<BO.x34Report_Category> GetListX34();
 
     }
     class x31ReportBL : BaseBL, Ix31ReportBL
@@ -47,7 +48,11 @@ namespace BL
             return _db.GetList<BO.x31Report>(fq.FinalSql, fq.Parameters);
         }
 
-
+        public IEnumerable<BO.x34Report_Category> GetListX34()
+        {
+                        
+            return _db.GetList<BO.x34Report_Category>("select * from x34Report_Category");
+        }
 
         public int Save(BO.x31Report rec, List<int> x32ids, List<int> j04ids, List<int> a10ids, List<int> a08ids)
         {

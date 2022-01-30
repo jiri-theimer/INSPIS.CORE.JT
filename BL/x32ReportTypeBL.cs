@@ -22,10 +22,12 @@ namespace BL
 
         private string GetSQL1(string strAppend = null)
         {
-            sb("SELECT a.*,dbo._core_x32_get_parent_inline(a.x32ID) as ParentPath,x32parent.x32Name as ParentName,");
-            sb("case when a.x32TreeLevel>1 then replace(space(2*(a.x32TreeLevel-1)),' ','-') else '' END+a.x32Name as TreeItem,");
+            sb("SELECT a.*,dbo._core_x32_get_parent_inline(a.x32ID) as ParentPath,x32parent.x32Name as ParentName");
+            sb(",case when a.x32TreeLevel>1 then replace(space(2*(a.x32TreeLevel-1)),' ','-') else '' END+a.x32Name as TreeItem,");
+            
             sb(_db.GetSQL1_Ocas("x32"));
             sb(" FROM x32ReportType a LEFT OUTER JOIN x32ReportType x32parent ON a.x32ParentID=x32parent.x32ID");
+            
             sb(strAppend);
 
             return sbret();

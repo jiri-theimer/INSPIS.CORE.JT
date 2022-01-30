@@ -39,7 +39,7 @@ namespace BO
 
 
             }
-            if (this.CurrentUser != null && this.CurrentUser.TestPermission(j05PermValuEnum.AdminGlobal) == false)
+            if (this.CurrentUser != null && !this.CurrentUser.TestPermission(j05PermValuEnum.AdminGlobal))
             {
                 AQ("a.x31ID IN (select x31ID FROM x37ReportRestriction_UserRole WHERE j04ID=@j04id)", "j04id", this.CurrentUser.j04ID);
             }
