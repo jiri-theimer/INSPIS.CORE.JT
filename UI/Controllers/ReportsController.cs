@@ -73,7 +73,7 @@ namespace UI.Controllers
                 {
                     var recJ76 = f.j76NamedQueryBL.Load(intJ76ID);                    
                     var mq = new BO.InitMyQuery().Load(recJ76.j76Entity);
-                    mq.lisJ73_Named= f.j76NamedQueryBL.GetList_j73(intJ76ID, recJ76.j76Entity.Substring(0, 3));
+                    mq.lisJ73_Named= f.j76NamedQueryBL.GetList_j73(intJ76ID, recJ76.j76Entity);
                     
                     DL.FinalSqlCommand fq = DL.basQuery.GetFinalSql("", mq, cu);
                     //File.WriteAllText("c:\\temp\\hovado.txt", fq.SqlWhere);
