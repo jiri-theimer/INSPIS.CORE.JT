@@ -37,6 +37,9 @@
                 <myselect entity="j76NamedQuery" asp-for="@Model.FilterJ76ID" firstemptyrowtext="--@_f.tra("Pojmenovaný filtr")--" firstemptyrowvalue="0" textfield="j76Name" selectedvalue="@Model.FilterJ76ID" selectedtext="@Model.FilterJ76Name" event_after_changevalue="j76id_onchange" orderfield="j76Name" cssclass_selected="filtered" wherecond="j76Entity LIKE '@(Model.prefix)%' AND (j03ID=@_f.CurrentUser.pid OR j76IsPublic=1)"></myselect>
             </td>
             <td>
+                <a class="btn btn-light" href="javascript:querybuilder()" title="@_f.tra("Návrhář filtru")"><span class="k-icon k-i-filter"></span></a>
+            </td>
+            <td>
                 <select class="form-select" asp-for="@Model.FilterMyInvolvement" onchange="myinvolvement_change(this)">
                     <option value="">@("-- "+_f.tra("Mé zapojení do akce")+" --")</option>
                     <option value="involved">@_f.tra("Jsem zapojen do akce")</option>

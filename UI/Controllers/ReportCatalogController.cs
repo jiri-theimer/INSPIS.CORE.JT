@@ -31,7 +31,8 @@ namespace UI.Controllers
             mqX31.CurrentUser = Factory.CurrentUser;
             mqX31.x31is4singlerecord = false;
             v.lisX31 = Factory.x31ReportBL.GetList(mqX31);
-            var lisX34 = Factory.x31ReportBL.GetListX34();
+
+            var lisX34 = Factory.x31ReportBL.GetListX34(v.lisX31.Select(p=>p.pid).ToList());
 
             int x = 0;
             

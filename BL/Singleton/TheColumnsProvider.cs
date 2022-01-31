@@ -1075,9 +1075,9 @@ namespace BL
             {
                 arr = sels[i].Split("__");
 
-                if (_lis.Exists(p => p.Entity == arr[1] && p.Field == arr[2]))
+                if (arr.Count()>2 && _lis.Exists(p => p.Entity == arr[1] && p.Field == arr[2]))
                 {
-                    //var c0 = _lis.Where(p => p.Entity == arr[1] && p.Field == arr[2]).First();
+                    bool bolError = false;
                     BO.TheGridColumn c = Clone2NewInstance(_lis.Where(p => p.Entity == arr[1] && p.Field == arr[2]).First());
                     switch (intLangIndex)
                     {
@@ -1101,27 +1101,40 @@ namespace BL
                     else
                     {
                         c.RelName = arr[0]; //název relace v sql dotazu
-                        rel = applicable_rels.Where(p => p.RelName == c.RelName).First();
-                        c.RelSql = rel.SqlFrom;    //sql klauzule relace    
-                        if (c.NotShowRelInHeader == false)
+                        try
                         {
-                            c.Header = c.Header + " [" + rel.AliasSingular + "]";   //zobrazovat název entity v záhlaví sloupce                           
+                            rel = applicable_rels.Where(p => p.RelName == c.RelName).First();
+                            c.RelSql = rel.SqlFrom;    //sql klauzule relace    
+                            if (c.NotShowRelInHeader == false)
+                            {
+                                c.Header = c.Header + " [" + rel.AliasSingular + "]";   //zobrazovat název entity v záhlaví sloupce                           
+                            }
+
+
+                            if (rel.RelNameDependOn != null)
+                            {
+                                c.RelSqlDependOn = applicable_rels.Where(p => p.RelName == rel.RelNameDependOn).First().SqlFrom;    //relace závisí na jiné relaci
+                            }
+                        }
+                        catch
+                        {
+
+                            bolError = true;
                         }
                         
-
-                        if (rel.RelNameDependOn != null)
-                        {
-                            c.RelSqlDependOn = applicable_rels.Where(p => p.RelName == rel.RelNameDependOn).First().SqlFrom;    //relace závisí na jiné relaci
-                        }
+                        
                     }
 
 
-
-                    if ((i == sels.Count - 1) && (c.FieldType == "num" || c.FieldType == "num0" || c.FieldType == "num3"))
+                    if (!bolError)
                     {
-                        c.CssClass = "tdn_lastcol";
+                        if ((i == sels.Count - 1) && (c.FieldType == "num" || c.FieldType == "num0" || c.FieldType == "num3"))
+                        {
+                            c.CssClass = "tdn_lastcol";
+                        }
+                        ret.Add(c);
                     }
-                    ret.Add(c);
+                    
                 }
 
 

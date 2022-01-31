@@ -56,7 +56,7 @@
             <div class="row my-2">
                 <label class="col-sm-1 col-md-2 col-form-label">@_f.tra("Uzamykání"):</label>
                 <div class="col-sm-5 col-md-4">
-                    <select asp-for="Rec.f06UserLockFlag" class="form-control">
+                    <select asp-for="Rec.f06UserLockFlag" class="form-select">
                         <option value="NoLockOffer">@_f.tra("Bez možnosti, aby uživatel sám uzamknul formulář")</option>
                         <option value="LockOnlyIfValid">@_f.tra("Uživatel může uzamknout formulář, pokud je korektně vyplněn")</option>
                         <option value="LockWhenever">@_f.tra("Uživatel může uzamknout formulář kdykoliv")</option>
@@ -64,7 +64,7 @@
                 </div>
                 <label class="col-sm-1 col-md-1 col-form-label">@_f.tra("Ankety"):</label>
                 <div class="col-sm-5 col-md-5">
-                    <select asp-for="Rec.f06BindScopeQuery" class="form-control">
+                    <select asp-for="Rec.f06BindScopeQuery" class="form-select">
                         <option value="None">@_f.tra("Formulář lze přikládat jako ne-anketní i anketní")</option>
                         <option value="DirectOnly">@_f.tra("Formulář je pouze ne-anketní")</option>
                         <option value="PollOnly">@_f.tra("Formulář je pouze anketní")</option>
@@ -95,7 +95,7 @@
                 {
                     <label class="col-sm-2 col-md-2 col-form-label">@_f.tra("Vazba k entitě [Učitel]"):</label>
                     <div class="col-sm-6 col-md-6">
-                        <select asp-for="Rec.f06RelationWithTeacher" class="form-control">
+                        <select asp-for="Rec.f06RelationWithTeacher" class="form-select">
                             <option value="None">@_f.tra("Bez povinné vazby na entitu [Učitel]")</option>
                             <option value="All">@_f.tra("Povinně založit novou vazbu nebo vybrat z existujících")</option>
                             <option value="OnlyNew">@_f.tra("Povinně založit novou vazbu ke škole")</option>

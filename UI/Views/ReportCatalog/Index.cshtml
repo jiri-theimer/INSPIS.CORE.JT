@@ -78,7 +78,7 @@
         $("#tree1").kendoTreeView(
             {
                 dataSource: dstree1,
-                template: "<a class='cm' onclick='_cm(event,\"#: item.prefix #\",#: item.recordid #)'>☰</a><span class='#: item.cssclass #' onclick='showreplist(\"#: item.prefix #\",#: item.recordid #)'> #: item.text # <span style='background-color: #: item.textocas # '>&nbsp;&nbsp;&nbsp;</span></span>",
+                template: "<span class='#: item.cssclass #' onclick='showreplist(\"#: item.prefix #\",#: item.recordid #)'> #: item.text # <span style='background-color: #: item.textocas # '>&nbsp;&nbsp;&nbsp;</span></span>",
                 collapse: tree1_onCollapse,
                 expand: tree1_onExpand
             }
@@ -91,10 +91,10 @@
         _mainmenu_highlight_current("cmdX31");
 
 
-        var offset = $("#layout_sidebar").offset();
+        var offset = $("#panel_left").offset();
         var h_vertical = _device.innerHeight - offset.top;
         h_vertical = parseInt(h_vertical);
-        $("#layout_sidebar").css("height", h_vertical + "px");
+        $("#panel_left").css("height", h_vertical + "px");
         if (document.getElementById("layout_main_divtree")) {
             $("#layout_main_divtree").css("height", h_vertical + "px");
         }
