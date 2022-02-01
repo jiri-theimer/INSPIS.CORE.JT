@@ -440,10 +440,12 @@ namespace UI.Controllers
             {
                 return View(v);
             }
-            if (oper == "lock" || oper == "unlock")
+            if ((oper == "lock" || oper == "unlock") && !string.IsNullOrEmpty(pids))
             {
-                foreach (var c in v.lisA11Saved)
+                var a11ids = BO.BAS.ConvertString2ListInt(pids);
+                foreach (int a11id in a11ids)
                 {
+                    var c = Factory.a11EventFormBL.Load(a11id);
                     if (oper == "lock")
                     {
                         c.a11IsLocked = true;
@@ -457,7 +459,7 @@ namespace UI.Controllers
                 v.SetJavascript_CallOnLoad("/a01/RecPage?pid=" + v.RecA01.pid.ToString());
                 return View(v);
             }
-            if (oper == "delete" && pids != "")
+            if (oper == "delete" && !string.IsNullOrEmpty(pids))
             {
                 var a11ids = BO.BAS.ConvertString2ListInt(pids);
                 for (int i = 0; i <= a11ids.Count - 1; i++)
@@ -565,11 +567,14 @@ namespace UI.Controllers
         {
             v.RecA01 = Factory.a01EventBL.Load(v.a01ID);
 
-
             var mq = new BO.myQueryA11();
             mq.a01id = v.a01ID;
 
             v.lisA11Saved = Factory.a11EventFormBL.GetList(mq).Where(p => p.a11IsPoll == true);
+
+            var myqueryinline = "pids@list_int@" + string.Join(",", v.lisA11Saved.Select(p => p.pid));
+            v.gridinput = new TheGridInput() { entity = "a11EventForm", master_entity = "a11poll", myqueryinline = myqueryinline, oncmclick = "", ondblclick = "" };
+            v.gridinput.query = new BO.InitMyQuery().Load("a11", null, 0, myqueryinline);
 
             //v.gridinput = GetGridInput(v.a01ID);
         }

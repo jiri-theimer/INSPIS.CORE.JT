@@ -149,6 +149,8 @@ namespace BL
             {
                 onecol = AF("a01Event", "a01Signature", "Signatura", 1, null, "string", false, true);
                 onecol.FixedWidth = 100;
+                onecol = AF("a01Event", "a01SignatureNumber", "Signatura (číslo)", 0, "case when ISNUMERIC(a01Signature)=1 then convert(bigint,a01Signature) end", "num0", false, true);
+                onecol.FixedWidth = 100;
                 AF("a01Event", "a01LeaderInLine", "Vedoucí", 1);
                 AF("a01Event", "a01MemberInLine", "Členové", 2);
                 AF("a01Event", "a01DateFrom", "Plán od", 1, null, "date");

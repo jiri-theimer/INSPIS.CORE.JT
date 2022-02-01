@@ -1082,3 +1082,13 @@ function get_all_path_values() {    //rozloží kompletní querystring do pole v
 
     return pars;
 }
+
+function tg_select_all_toggle() {
+    var pids = $("#tg_selected_pids").val();
+   
+    if (pids.indexOf(",") === -1) {
+        tg_select(1000);    //zaškrtnout vše
+    } else {        
+        tg_clear_selection();   //odškrtnout vše
+    }
+}

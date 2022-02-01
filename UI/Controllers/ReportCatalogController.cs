@@ -27,9 +27,7 @@ namespace UI.Controllers
             var mq = new BO.myQuery("x32");
             v.lisX32 = Factory.x32ReportTypeBL.GetList(mq).OrderBy(p => p.x32TreeIndex);
 
-            var mqX31 = new BO.myQueryX31();
-            mqX31.CurrentUser = Factory.CurrentUser;
-            mqX31.x31is4singlerecord = false;
+            var mqX31 = new BO.myQueryX31() { IsRecordValid = true, CurrentUser = Factory.CurrentUser, x31is4singlerecord = false };                      
             v.lisX31 = Factory.x31ReportBL.GetList(mqX31);
 
             var lisX34 = Factory.x31ReportBL.GetListX34(v.lisX31.Select(p=>p.pid).ToList());

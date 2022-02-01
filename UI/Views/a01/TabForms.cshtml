@@ -81,7 +81,7 @@ else
                         }
                     </td>
                     <td>
-                        @if (c.isclosed == false)
+                        @if (!c.isclosed && !c.a11IsPoll)
                         {
                             <a href="@(_f.App.UiftUrl+"/Formular/"+c.pid.ToString())" target="_blank">@_f.tra("Vyplnit")</a>
                         }
